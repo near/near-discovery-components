@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"name": "⛓ mainnet",
+			"uri": "near:/"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {}
+}

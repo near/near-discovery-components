@@ -27,15 +27,16 @@ const Card = styled.div`
   border-radius: 12px;
   z-index: 1070;
   background: #fff;
-  border: 1px solid #ECEEF0;
-  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  border: 1px solid #eceef0;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   padding: 12px;
 `;
 
 const FollowButtonWrapper = styled.div`
   width: 100%;
-  
-  div, button {
+
+  div,
+  button {
     width: 100%;
   }
 `;
@@ -44,19 +45,19 @@ const overlay = (
   <CardWrapper>
     <Card onMouseEnter={handleOnMouseEnter} onMouseLeave={handleOnMouseLeave}>
       <Widget
-        src="calebjacob.near/widget/AccountProfile"
+        src="adminalpha.near/widget/AccountProfile"
         props={{ accountId: props.accountId, profile, noOverlay: true }}
       />
 
       <Widget
-        src="calebjacob.near/widget/Tags"
+        src="adminalpha.near/widget/Tags"
         props={{ tags, scroll: true }}
       />
 
       {!!context.accountId && context.accountId !== props.accountId && (
         <FollowButtonWrapper>
           <Widget
-            src="calebjacob.near/widget/FollowButton"
+            src="adminalpha.near/widget/FollowButton"
             props={{ accountId: props.accountId }}
           />
         </FollowButtonWrapper>

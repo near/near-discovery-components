@@ -9,7 +9,7 @@ const index = {
 };
 
 const Post = styled.div`
-  border-bottom: 1px solid #ECEEF0;
+  border-bottom: 1px solid #eceef0;
   padding: 24px 0 12px;
 
   @media (max-width: 1200px) {
@@ -21,7 +21,7 @@ const renderItem = (a) =>
   a.value.type === "md" && (
     <Post className="post" key={JSON.stringify(a)}>
       <Widget
-        src="calebjacob.near/widget/Posts.Post"
+        src="adminalpha.near/widget/Posts.Post"
         props={{ accountId: a.accountId, blockHeight: a.blockHeight }}
       />
     </Post>

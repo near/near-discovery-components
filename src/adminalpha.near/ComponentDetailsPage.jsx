@@ -17,7 +17,7 @@ const code = Social.get(`${accountId}/widget/${widgetName}`);
 const data = Social.get(`${accountId}/widget/${widgetName}/**`);
 const metadata = data.metadata;
 const tags = Object.keys(metadata.tags || {});
-const detailsUrl = `/#/calebjacob.near/widget/ComponentDetailsPage?src=${src}`;
+const detailsUrl = `/#/adminalpha.near/widget/ComponentDetailsPage?src=${src}`;
 const shareUrl = `https://alpha.near.org${detailsUrl}`;
 
 const dependencyMatch =
@@ -46,14 +46,14 @@ const SummaryWrapper = styled.div`
 const Tabs = styled.div`
   display: flex;
   height: 48px;
-  border-bottom: 1px solid #ECEEF0;
+  border-bottom: 1px solid #eceef0;
   margin-bottom: 32px;
   overflow: auto;
   scroll-behavior: smooth;
 
   @media (max-width: 900px) {
-    background: #F8F9FA;
-    border-top: 1px solid #ECEEF0;
+    background: #f8f9fa;
+    border-top: 1px solid #eceef0;
     margin: 0 -12px 48px;
 
     > * {
@@ -79,18 +79,18 @@ const TabsButton = styled.a`
   text-decoration: none !important;
 
   &:hover {
-    color: #11181C;
+    color: #11181c;
   }
 
   &::after {
-    content: '';
+    content: "";
     display: ${(p) => (p.selected ? "block" : "none")};
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
     height: 3px;
-    background: #59E692;
+    background: #59e692;
   }
 `;
 
@@ -108,19 +108,19 @@ const Content = styled.div`
 const Sidebar = styled.div`
   > div {
     padding-bottom: 32px;
-    border-bottom: 1px solid #ECEEF0;
+    border-bottom: 1px solid #eceef0;
     margin-bottom: 32px;
 
     &:last-child {
-        padding-bottom: 0;
-        border-bottom: none;
-        margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+      margin-bottom: 0;
     }
   }
-  
+
   @media (max-width: 995px) {
     padding-bottom: 32px;
-    border-bottom: 1px solid #ECEEF0;
+    border-bottom: 1px solid #eceef0;
     grid-row: 1;
   }
 `;
@@ -142,7 +142,7 @@ const TextLink = styled.a`
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: #0091FF;
+  color: #0091ff;
   font-weight: 600;
   font-size: 12px;
   line-height: 15px;
@@ -185,7 +185,7 @@ return (
   <Wrapper>
     <SummaryWrapper>
       <Widget
-        src="calebjacob.near/widget/ComponentSummary"
+        src="adminalpha.near/widget/ComponentSummary"
         props={{
           primaryAction: "open",
           size: "large",
@@ -231,14 +231,14 @@ return (
         <Sidebar>
           {(tags.includes("Coming Soon") || tags.includes("coming-soon")) && (
             <div>
-              <Widget src="calebjacob.near/widget/waitList" />
+              <Widget src="adminalpha.near/widget/waitList" />
             </div>
           )}
 
           <div>
             <SmallTitle>Developer</SmallTitle>
             <Widget
-              src="calebjacob.near/widget/AccountProfile"
+              src="adminalpha.near/widget/AccountProfile"
               props={{
                 accountId: accountId,
               }}
@@ -249,7 +249,7 @@ return (
             <div>
               <SmallTitle>Tags</SmallTitle>
               <Widget
-                src="calebjacob.near/widget/Tags"
+                src="adminalpha.near/widget/Tags"
                 props={{
                   tags,
                 }}
@@ -300,7 +300,7 @@ return (
             {dependencySources.map((source) => (
               <Dependency key={source}>
                 <Widget
-                  src="calebjacob.near/widget/ComponentProfile"
+                  src="adminalpha.near/widget/ComponentProfile"
                   props={{ src: source }}
                 />
               </Dependency>

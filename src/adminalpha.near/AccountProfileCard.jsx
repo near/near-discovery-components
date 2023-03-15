@@ -1,7 +1,7 @@
 const accountId = props.accountId;
 const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
 const tags = Object.keys(profile.tags || {});
-const profileUrl = `/#/calebjacob.near/widget/ProfilePage?accountId=${accountId}`;
+const profileUrl = `/#/adminalpha.near/widget/ProfilePage?accountId=${accountId}`;
 
 State.init({
   show: false,
@@ -16,8 +16,9 @@ const Card = styled.div`
   border-radius: 12px;
   z-index: 1070;
   background: #fff;
-  border: 1px solid #ECEEF0;
-  box-shadow: 0px 1px 3px rgba(16, 24, 40, 0.1), 0px 1px 2px rgba(16, 24, 40, 0.06);
+  border: 1px solid #eceef0;
+  box-shadow: 0px 1px 3px rgba(16, 24, 40, 0.1),
+    0px 1px 2px rgba(16, 24, 40, 0.06);
   overflow: hidden;
   padding: 16px;
 `;
@@ -41,7 +42,7 @@ const Avatar = styled.a`
   width: 60px;
   height: 60px;
   flex-shrink: 0;
-  border: 1px solid #ECEEF0;
+  border: 1px solid #eceef0;
   overflow: hidden;
   border-radius: 56px;
   transition: border-color 200ms;
@@ -54,7 +55,7 @@ const Avatar = styled.a`
 
   &:hover,
   &:focus {
-    border-color: #D0D5DD;
+    border-color: #d0d5dd;
   }
 `;
 
@@ -107,7 +108,7 @@ return (
         {tags.length > 0 && (
           <TagsWrapper>
             <Widget
-              src="calebjacob.near/widget/Tags"
+              src="adminalpha.near/widget/Tags"
               props={{ tags, scroll: true }}
             />
           </TagsWrapper>
@@ -117,7 +118,7 @@ return (
 
     {!!context.accountId && context.accountId !== props.accountId && (
       <Widget
-        src="calebjacob.near/widget/FollowButton"
+        src="adminalpha.near/widget/FollowButton"
         props={{ accountId: props.accountId }}
       />
     )}

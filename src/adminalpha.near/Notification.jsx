@@ -7,14 +7,14 @@ const isComment = path.indexOf("/post/comment") > 0 || type === "comment";
 const isPost = !isComment && path.indexOf("/post/main") > 0;
 const likedPost = type === "like" && isPost;
 const likedComment = type === "like" && isComment;
-let postUrl = `/#/calebjacob.near/widget/PostPage?accountId=${
+let postUrl = `/#/adminalpha.near/widget/PostPage?accountId=${
   props.accountId
 }&${isComment ? "commentBlockHeight" : "blockHeight"}=${props.blockHeight}`;
 
 if (type === "like") {
   const parentAccountId = path.split("/")[0];
   const parentBlockHeight = item.blockHeight;
-  postUrl = `/#/calebjacob.near/widget/PostPage?accountId=${parentAccountId}&${
+  postUrl = `/#/adminalpha.near/widget/PostPage?accountId=${parentAccountId}&${
     isComment ? "commentBlockHeight" : "blockHeight"
   }=${parentBlockHeight}`;
 }
@@ -32,8 +32,9 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 24px;
-  border: 1px solid #ECEEF0;
-  box-shadow: 0px 1px 3px rgba(16, 24, 40, 0.1), 0px 1px 2px rgba(16, 24, 40, 0.06);
+  border: 1px solid #eceef0;
+  box-shadow: 0px 1px 3px rgba(16, 24, 40, 0.1),
+    0px 1px 2px rgba(16, 24, 40, 0.06);
   padding: 12px;
   border-radius: 12px;
   transition: background-color 200ms;
@@ -44,7 +45,7 @@ const Wrapper = styled.div`
 
   > *:first-child {
     width: 200px;
-    border-right: 1px solid #ECEEF0;
+    border-right: 1px solid #eceef0;
     padding-right: 24px;
   }
 
@@ -82,15 +83,15 @@ const Text = styled.p`
 
   b {
     font-weight: 600;
-    color: #11181C;
+    color: #11181c;
   }
-  
+
   &[href] {
     font-weight: 600;
-    color: #006ADC !important;
+    color: #006adc !important;
     display: inline-flex;
     gap: 0.25rem;
-    
+
     &:hover,
     &:focus {
       text-decoration: underline;
@@ -111,14 +112,14 @@ const Button = styled.a`
   line-height: 15px;
   text-align: center;
   cursor: pointer;
-  background: #FBFCFD;
-  border: 1px solid #D7DBDF;
-  color: #006ADC !important;
+  background: #fbfcfd;
+  border: 1px solid #d7dbdf;
+  color: #006adc !important;
   white-space: nowrap;
 
   &.button--primary {
     width: 100%;
-    color: #006ADC !important;
+    color: #006adc !important;
 
     @media (max-width: 1200px) {
       width: auto;
@@ -127,13 +128,13 @@ const Button = styled.a`
 
   &:hover,
   &:focus {
-    background: #ECEDEE;
+    background: #ecedee;
     text-decoration: none;
     outline: none;
   }
 
   i {
-    color: #7E868C;
+    color: #7e868c;
   }
 
   .bi-16 {
@@ -153,7 +154,7 @@ return (
   <Wrapper>
     <div>
       <Widget
-        src="calebjacob.near/widget/AccountProfile"
+        src="adminalpha.near/widget/AccountProfile"
         props={{ accountId: props.accountId }}
       />
     </div>
@@ -178,14 +179,14 @@ return (
     <div>
       {(type === "follow" || type === "unfollow") && (
         <Widget
-          src="calebjacob.near/widget/FollowButton"
+          src="adminalpha.near/widget/FollowButton"
           props={{ accountId: props.accountId }}
         />
       )}
 
       {type === "poke" && (
         <Widget
-          src="calebjacob.near/widget/PokeButton"
+          src="adminalpha.near/widget/PokeButton"
           props={{ accountId: props.accountId, back: true, primary: true }}
         />
       )}

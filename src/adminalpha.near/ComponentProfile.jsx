@@ -21,9 +21,9 @@ const Wrapper = styled.a`
 
   &:hover,
   &:focus {
-      div:first-child {
-          border-color: #D0D5DD;
-      }
+    div:first-child {
+      border-color: #d0d5dd;
+    }
   }
 `;
 
@@ -43,7 +43,7 @@ const Thumbnail = styled.div`
   width: 48px;
   height: 48px;
   flex-shrink: 0;
-  border: 1px solid #ECEEF0;
+  border: 1px solid #eceef0;
   border-radius: 8px;
   overflow: hidden;
   transition: border-color 200ms;
@@ -57,7 +57,7 @@ const Thumbnail = styled.div`
 
 return (
   <Wrapper
-    href={`/#/calebjacob.near/widget/ComponentDetailsPage?src=${props.src}`}
+    href={`/#/adminalpha.near/widget/ComponentDetailsPage?src=${props.src}`}
   >
     <Thumbnail>
       <Widget

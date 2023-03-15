@@ -129,7 +129,7 @@ const Textarea = styled.div`
   align-items: center;
   position: relative;
   align-items: stretch;
-  
+
   &::after,
   textarea {
     width: 100%;
@@ -137,7 +137,8 @@ const Textarea = styled.div`
     height: unset;
     min-height: 164px;
     font: inherit;
-    padding: var(--padding) var(--padding) calc(40px + (var(--padding) * 2)) calc(40px + (var(--padding) * 2));
+    padding: var(--padding) var(--padding) calc(40px + (var(--padding) * 2))
+      calc(40px + (var(--padding) * 2));
     margin: 0;
     resize: none;
     background: none;
@@ -155,9 +156,9 @@ const Textarea = styled.div`
       padding-left: var(--padding);
     }
   }
-  
+
   &::after {
-    content: attr(data-value) ' ';
+    content: attr(data-value) " ";
     visibility: hidden;
     white-space: pre-wrap;
   }
@@ -175,7 +176,7 @@ const Textarea = styled.div`
     }
 
     &:focus {
-      box-shadow: inset 0 0 30px rgba(0,0,0,0.05);
+      box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.05);
     }
   }
 `;
@@ -219,8 +220,8 @@ const Actions = styled.div`
 
   .commit-post-button,
   .preview-post-button {
-    background: #59E692;
-    color: #09342E;
+    background: #59e692;
+    color: #09342e;
     border-radius: 40px;
     height: 40px;
     padding: 0 35px;
@@ -243,8 +244,8 @@ const Actions = styled.div`
   }
 
   .preview-post-button {
-    color: #11181C;
-    background: #F1F3F5;
+    color: #11181c;
+    background: #f1f3f5;
     padding: 0;
     width: 40px;
 
@@ -259,8 +260,8 @@ const Actions = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #F1F3F5;
-    color: #11181C;
+    background: #f1f3f5;
+    color: #11181c;
     border-radius: 40px;
     height: 40px;
     min-width: 40px;
@@ -324,7 +325,7 @@ return (
     {state.showPreview ? (
       <PreviewWrapper>
         <Widget
-          src="calebjacob.near/widget/Posts.Post"
+          src="adminalpha.near/widget/Posts.Post"
           props={{
             accountId: context.accountId,
             blockHeight: "now",
@@ -374,7 +375,7 @@ return (
     {autocompleteEnabled && state.showAccountAutocomplete && (
       <AutoComplete>
         <Widget
-          src="calebjacob.near/widget/AccountAutocomplete"
+          src="adminalpha.near/widget/AccountAutocomplete"
           props={{
             term: state.text.split("@").pop(),
             onSelect: autoCompleteAccountId,

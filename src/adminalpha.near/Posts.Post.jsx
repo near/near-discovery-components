@@ -3,7 +3,7 @@ const blockHeight =
   props.blockHeight === "now" ? "now" : parseInt(props.blockHeight);
 const subscribe = !!props.subscribe;
 const notifyAccountId = accountId;
-const postUrl = `https://alpha.near.org/#/calebjacob.near/widget/PostPage?accountId=${accountId}&blockHeight=${blockHeight}`;
+const postUrl = `https://alpha.near.org/#/adminalpha.near/widget/PostPage?accountId=${accountId}&blockHeight=${blockHeight}`;
 
 const content =
   props.content ??
@@ -19,14 +19,14 @@ const Post = styled.div`
   position: relative;
 
   &::before {
-    content: '';
+    content: "";
     display: block;
     position: absolute;
     left: 19px;
     top: 52px;
     bottom: 12px;
     width: 2px;
-    background: #ECEEF0;
+    background: #eceef0;
   }
 `;
 
@@ -76,7 +76,7 @@ return (
   <Post>
     <Header>
       <Widget
-        src="calebjacob.near/widget/AccountProfile"
+        src="adminalpha.near/widget/AccountProfile"
         props={{
           accountId,
           hideAccountId: true,
@@ -106,7 +106,7 @@ return (
       <Content>
         {content.text && (
           <Widget
-            src="calebjacob.near/widget/SocialMarkdown"
+            src="adminalpha.near/widget/SocialMarkdown"
             props={{ text: content.text }}
           />
         )}
@@ -124,21 +124,21 @@ return (
       {blockHeight !== "now" && (
         <Actions>
           <Widget
-            src="calebjacob.near/widget/LikeButton"
+            src="adminalpha.near/widget/LikeButton"
             props={{
               item,
               notifyAccountId,
             }}
           />
           <Widget
-            src="calebjacob.near/widget/CommentButton"
+            src="adminalpha.near/widget/CommentButton"
             props={{
               item,
               onClick: () => State.update({ showReply: !state.showReply }),
             }}
           />
           <Widget
-            src="calebjacob.near/widget/CopyUrlButton"
+            src="adminalpha.near/widget/CopyUrlButton"
             props={{
               url: postUrl,
             }}
@@ -149,7 +149,7 @@ return (
       {state.showReply && (
         <div className="mb-2">
           <Widget
-            src="calebjacob.near/widget/Comments.Compose"
+            src="adminalpha.near/widget/Comments.Compose"
             props={{
               notifyAccountId,
               item,
@@ -161,7 +161,7 @@ return (
 
       <Comments>
         <Widget
-          src="calebjacob.near/widget/Comments.Feed"
+          src="adminalpha.near/widget/Comments.Feed"
           props={{
             item,
             highlightComment: props.highlightComment,

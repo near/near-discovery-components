@@ -8,23 +8,23 @@ if (customWidgets === null) {
 
 const defaultWidgets = [
   {
-    src: "calebjacob.near/widget/LatestNews",
+    src: "adminalpha.near/widget/LatestNews",
   },
   {
-    src: "calebjacob.near/widget/LatestPeople",
+    src: "adminalpha.near/widget/LatestPeople",
   },
   {
-    src: "calebjacob.near/widget/LatestFollowActivity",
+    src: "adminalpha.near/widget/LatestFollowActivity",
   },
   {
-    src: "calebjacob.near/widget/RootIconLinks",
+    src: "adminalpha.near/widget/RootIconLinks",
   },
 ];
 
 const widgets = (customWidgets && JSON.parse(customWidgets)) ?? defaultWidgets;
 
 const Section = styled.div`
-  border-bottom: 1px solid #ECEEF0;
+  border-bottom: 1px solid #eceef0;
   padding-bottom: 25px;
   margin-bottom: 25px;
 
@@ -47,13 +47,13 @@ const ButtonLink = styled.a`
   line-height: 15px;
   text-align: center;
   cursor: pointer;
-  border: 1px solid #D7DBDF;
-  background: #FBFCFD;
-  color: #11181C !important;
+  border: 1px solid #d7dbdf;
+  background: #fbfcfd;
+  color: #11181c !important;
 
   &:hover,
   &:focus {
-    background: #ECEDEE;
+    background: #ecedee;
     text-decoration: none;
     outline: none;
   }

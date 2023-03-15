@@ -10,7 +10,7 @@ const Wrapper = styled.a`
   align-items: center;
   cursor: pointer;
   margin: 0;
-  color: #006ADC !important;
+  color: #006adc !important;
   outline: none;
   text-decoration: none;
   max-width: 100%;
@@ -25,7 +25,7 @@ const Wrapper = styled.a`
     text-decoration: underline;
 
     div:first-child {
-      border-color: #D0D5DD;
+      border-color: #d0d5dd;
     }
   }
 `;
@@ -50,7 +50,7 @@ const Avatar = styled.div`
   left: 0;
   right: 0;
   flex-shrink: 0;
-  border: 1px solid #ECEEF0;
+  border: 1px solid #eceef0;
   overflow: hidden;
   border-radius: 24px;
   transition: border-color 200ms;
@@ -66,7 +66,7 @@ const Avatar = styled.div`
 
 const AccountProfile = (
   <Wrapper
-    href={`/#/calebjacob.near/widget/ProfilePage?accountId=${accountId}`}
+    href={`/#/adminalpha.near/widget/ProfilePage?accountId=${accountId}`}
   >
     {!props.hideAvatar && (
       <Avatar>
@@ -90,7 +90,7 @@ if (props.noOverlay) return AccountProfile;
 
 return (
   <Widget
-    src="calebjacob.near/widget/AccountProfileOverlay"
+    src="adminalpha.near/widget/AccountProfileOverlay"
     props={{
       accountId: props.accountId,
       profile,

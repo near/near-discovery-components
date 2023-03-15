@@ -24,7 +24,7 @@ const Wrapper = styled.div`
 const H2 = styled.h2`
   font-size: 19px;
   line-height: 22px;
-  color: #11181C;
+  color: #11181c;
   margin: 0;
 `;
 
@@ -40,20 +40,20 @@ const ButtonLink = styled.a`
   width: 100%;
   padding: 8px;
   height: 32px;
-  background: #FBFCFD;
-  border: 1px solid #D7DBDF;
+  background: #fbfcfd;
+  border: 1px solid #d7dbdf;
   border-radius: 50px;
   font-weight: 600;
   font-size: 12px;
   line-height: 15px;
   text-align: center;
   cursor: pointer;
-  color: #11181C !important;
+  color: #11181c !important;
   margin: 0;
 
   &:hover,
   &:focus {
-    background: #ECEDEE;
+    background: #ecedee;
     text-decoration: none;
     outline: none;
   }
@@ -71,7 +71,7 @@ return (
       {accounts.map((account) => (
         <Item key={account.accountId}>
           <Widget
-            src="calebjacob.near/widget/AccountProfile"
+            src="adminalpha.near/widget/AccountProfile"
             props={{
               accountId: account.accountId,
               blockHeight: account.blockHeight,
@@ -81,7 +81,7 @@ return (
       ))}
     </Items>
 
-    <ButtonLink href="/#/calebjacob.near/widget/PeoplePage">
+    <ButtonLink href="/#/adminalpha.near/widget/PeoplePage">
       View All People <span>({totalAccounts})</span>
     </ButtonLink>
   </Wrapper>

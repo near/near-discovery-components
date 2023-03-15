@@ -11,7 +11,7 @@ const data = Social.get(`${accountId}/widget/${widgetName}/metadata/**`);
 const metadata = data || {};
 const tags = Object.keys(metadata.tags || {});
 const appUrl = `/#/${src}`;
-const detailsUrl = `/#/calebjacob.near/widget/ComponentDetailsPage?src=${src}`;
+const detailsUrl = `/#/adminalpha.near/widget/ComponentDetailsPage?src=${src}`;
 const shareUrl = `https://alpha.near.org${detailsUrl}`;
 const size = props.size || "large";
 
@@ -48,7 +48,7 @@ const Header = styled.div`
   margin-bottom: 32px;
 
   > * {
-      min-width: 0;
+    min-width: 0;
   }
 
   @media (max-width: 770px) {
@@ -70,7 +70,7 @@ const Actions = styled.div`
 const Title = styled.h1`
   font-size: ${(p) => sizes[p.size].title};
   line-height: 1.2em;
-  color: #11181C;
+  color: #11181c;
   margin: 0 0 8px;
   font-weight: 600;
 
@@ -84,10 +84,11 @@ const Thumbnail = styled.div`
   width: ${(p) => sizes[p.size].thumbnail};
   height: ${(p) => sizes[p.size].thumbnail};
   flex-shrink: 0;
-  border: 1px solid #ECEEF0;
+  border: 1px solid #eceef0;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0px 1px 3px rgba(16, 24, 40, 0.1), 0px 1px 2px rgba(16, 24, 40, 0.06);
+  box-shadow: 0px 1px 3px rgba(16, 24, 40, 0.1),
+    0px 1px 2px rgba(16, 24, 40, 0.06);
 
   img {
     object-fit: cover;
@@ -193,7 +194,7 @@ return (
     {props.showTags && tags.length > 0 && (
       <TagsWrapper>
         <Widget
-          src="calebjacob.near/widget/Tags"
+          src="adminalpha.near/widget/Tags"
           props={{
             tags,
           }}

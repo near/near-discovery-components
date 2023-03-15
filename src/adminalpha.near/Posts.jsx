@@ -32,7 +32,7 @@ function selectTab(selectedTab) {
 const H2 = styled.h2`
   font-size: 19px;
   line-height: 22px;
-  color: #11181C;
+  color: #11181c;
   margin: 0 0 24px;
   padding: 0 24px;
 
@@ -50,11 +50,11 @@ const Content = styled.div`
 `;
 
 const ComposeWrapper = styled.div`
-  border-top: 1px solid #ECEEF0;
+  border-top: 1px solid #eceef0;
 `;
 
 const FilterWrapper = styled.div`
-  border-top: 1px solid #ECEEF0;
+  border-top: 1px solid #eceef0;
   padding: 24px 24px 0;
 
   @media (max-width: 1200px) {
@@ -78,7 +78,7 @@ const PillSelect = styled.div`
 const PillSelectButton = styled.button`
   display: block;
   position: relative;
-  border: 1px solid #E6E8EB;
+  border: 1px solid #e6e8eb;
   border-right: none;
   padding: 3px 24px;
   border-radius: 0;
@@ -90,14 +90,14 @@ const PillSelectButton = styled.button`
   transition: all 200ms;
 
   &:hover {
-    background: #ECEDEE;
+    background: #ecedee;
     text-decoration: none;
   }
 
   &:focus {
     outline: none;
-    border-color: #006ADC !important;
-    box-shadow: 0 0 0 1px #006ADC;
+    border-color: #006adc !important;
+    box-shadow: 0 0 0 1px #006adc;
     z-index: 5;
   }
 
@@ -106,7 +106,7 @@ const PillSelectButton = styled.button`
   }
   &:last-child {
     border-radius: 0 6px 6px 0;
-    border-right: 1px solid #E6E8EB;
+    border-right: 1px solid #e6e8eb;
   }
 `;
 
@@ -130,7 +130,7 @@ return (
       {context.accountId && (
         <>
           <ComposeWrapper>
-            <Widget src="calebjacob.near/widget/Posts.Compose" />
+            <Widget src="adminalpha.near/widget/Posts.Compose" />
           </ComposeWrapper>
 
           <FilterWrapper>
@@ -156,7 +156,7 @@ return (
       )}
 
       <FeedWrapper>
-        <Widget src="calebjacob.near/widget/Posts.Feed" props={{ accounts }} />
+        <Widget src="adminalpha.near/widget/Posts.Feed" props={{ accounts }} />
       </FeedWrapper>
     </Content>
   </>

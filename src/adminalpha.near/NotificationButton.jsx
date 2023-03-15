@@ -17,7 +17,7 @@ if (filterUsers === null) {
 }
 
 const filterUsers = filterUsersRaw ? JSON.parse(filterUsersRaw) : [];
-const notificationFeedSrc = "calebjacob.near/widget/NotificationsPage";
+const notificationFeedSrc = "adminalpha.near/widget/NotificationsPage";
 const lastBlockHeight = Storage.get("lastBlockHeight", notificationFeedSrc);
 let notifications =
   Social.index("notify", accountId, {
@@ -36,8 +36,8 @@ const Button = styled.a`
   width: 40px;
   height: 40px;
   border-radius: 100%;
-  background: #2B2F31;
-  color: #ECEDEE;
+  background: #2b2f31;
+  color: #ecedee;
   transition: all 200ms;
   margin: 0;
   padding: 0;
@@ -64,7 +64,7 @@ const Button = styled.a`
     padding: 0 3px;
     display: block;
     color: #fff;
-    background: #E5484D;
+    background: #e5484d;
     border-radius: 100px;
     font-size: 10px;
     line-height: 13px;

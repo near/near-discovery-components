@@ -113,11 +113,11 @@ const Wrapper = styled.div`
   border-radius: 8px;
   overflow: hidden;
   transition: all 200ms;
-  border: 1px solid #ECEEF0;
+  border: 1px solid #eceef0;
   border-radius: 8px;
 
   &:focus-within {
-    box-shadow: inset 0 0 30px rgba(0,0,0,0.05);
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.05);
     border-color: #687076;
   }
 `;
@@ -128,7 +128,7 @@ const Textarea = styled.div`
   align-items: center;
   position: relative;
   align-items: stretch;
-  
+
   &::after,
   textarea {
     width: 100%;
@@ -136,7 +136,8 @@ const Textarea = styled.div`
     height: unset;
     min-height: 124px;
     font: inherit;
-    padding: var(--padding) var(--padding) calc(40px + (var(--padding) * 2))  var(--padding);
+    padding: var(--padding) var(--padding) calc(40px + (var(--padding) * 2))
+      var(--padding);
     margin: 0;
     resize: none;
     background: none;
@@ -146,9 +147,9 @@ const Textarea = styled.div`
     overflow: hidden;
     outline: none;
   }
-  
+
   &::after {
-    content: attr(data-value) ' ';
+    content: attr(data-value) " ";
     visibility: hidden;
     white-space: pre-wrap;
   }
@@ -162,8 +163,8 @@ const Actions = styled.div`
   right: var(--padding);
 
   .commit-post-button {
-    background: #59E692;
-    color: #11181C;
+    background: #59e692;
+    color: #11181c;
     border-radius: 40px;
     height: 40px;
     padding: 0 35px;
@@ -189,8 +190,8 @@ const Actions = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #F1F3F5;
-    color: #11181C;
+    background: #f1f3f5;
+    color: #11181c;
     border-radius: 40px;
     height: 40px;
     min-width: 40px;
@@ -261,7 +262,7 @@ return (
     {autocompleteEnabled && state.showAccountAutocomplete && (
       <AutoComplete>
         <Widget
-          src="calebjacob.near/widget/AccountAutocomplete"
+          src="adminalpha.near/widget/AccountAutocomplete"
           props={{
             term: state.text.split("@").pop(),
             onSelect: autoCompleteAccountId,

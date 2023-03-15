@@ -1,7 +1,7 @@
 const limitPerPage = 21;
 let people = [];
 let totalPeople = 0;
-const peopleUrl = "/#/calebjacob.near/widget/PeoplePage";
+const peopleUrl = "/#/adminalpha.near/widget/PeoplePage";
 let followingData = null;
 let followersData = null;
 
@@ -82,9 +82,9 @@ const Header = styled.div`
 
 const Search = styled.div`
   width: 246px;
-  
+
   @media (max-width: 500px) {
-      width: 100%;
+    width: 100%;
   }
 `;
 
@@ -92,7 +92,7 @@ const H1 = styled.h1`
   font-weight: 600;
   font-size: 32px;
   line-height: 39px;
-  color: #11181C;
+  color: #11181c;
   margin: 0;
 `;
 
@@ -117,13 +117,13 @@ const Text = styled.p`
 
   b {
     font-weight: 600;
-    color: #11181C;
+    color: #11181c;
   }
-  
+
   &[href] {
     display: inline-flex;
     gap: 0.25rem;
-    
+
     &:hover,
     &:focus {
       text-decoration: underline;
@@ -152,20 +152,20 @@ const Button = styled.button`
   width: 100%;
   padding: 8px;
   height: 32px;
-  background: #FBFCFD;
-  border: 1px solid #D7DBDF;
+  background: #fbfcfd;
+  border: 1px solid #d7dbdf;
   border-radius: 50px;
   font-weight: 600;
   font-size: 12px;
   line-height: 15px;
   text-align: center;
   cursor: pointer;
-  color: #11181C !important;
+  color: #11181c !important;
   margin: 0;
 
   &:hover,
   &:focus {
-    background: #ECEDEE;
+    background: #ecedee;
     text-decoration: none;
     outline: none;
   }
@@ -178,14 +178,14 @@ const Button = styled.button`
 const Tabs = styled.div`
   display: flex;
   height: 48px;
-  border-bottom: 1px solid #ECEEF0;
+  border-bottom: 1px solid #eceef0;
   margin-bottom: -24px;
   overflow: auto;
   scroll-behavior: smooth;
 
   @media (max-width: 1200px) {
-    background: #F8F9FA;
-    border-top: 1px solid #ECEEF0;
+    background: #f8f9fa;
+    border-top: 1px solid #eceef0;
     margin-left: -12px;
     margin-right: -12px;
 
@@ -212,18 +212,18 @@ const TabsButton = styled.a`
   text-decoration: none !important;
 
   &:hover {
-    color: #11181C;
+    color: #11181c;
   }
 
   &::after {
-    content: '';
+    content: "";
     display: ${(p) => (p.selected ? "block" : "none")};
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
     height: 3px;
-    background: #59E692;
+    background: #59e692;
   }
 `;
 
@@ -236,7 +236,7 @@ return (
 
     <Search>
       <Widget
-        src="calebjacob.near/widget/ProfileSearch"
+        src="adminalpha.near/widget/ProfileSearch"
         props={{
           limit: 21,
           onChange: onSearchChange,
@@ -282,7 +282,7 @@ return (
         {items.map((person, i) => (
           <Item key={person.accountId}>
             <Widget
-              src="calebjacob.near/widget/AccountProfileCard"
+              src="adminalpha.near/widget/AccountProfileCard"
               props={{
                 accountId: person.accountId,
                 blockHeight: person.blockHeight,

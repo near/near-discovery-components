@@ -1,6 +1,6 @@
 const accountId = props.accountId || context.accountId;
 const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
-const profileUrl = `/#/calebjacob.near/widget/ProfilePage?accountId=${accountId}`;
+const profileUrl = `/#/adminalpha.near/widget/ProfilePage?accountId=${accountId}`;
 
 const Wrapper = styled.a`
   display: inline-grid;
@@ -25,7 +25,7 @@ const Wrapper = styled.a`
   &:hover,
   &:focus {
     div:first-child {
-      border-color: #D0D5DD;
+      border-color: #d0d5dd;
     }
   }
 `;
@@ -46,7 +46,7 @@ const Avatar = styled.div`
   width: ${props.avatarSize || "40px"};
   height: ${props.avatarSize || "40px"};
   flex-shrink: 0;
-  border: 1px solid #ECEEF0;
+  border: 1px solid #eceef0;
   overflow: hidden;
   border-radius: 40px;
   transition: border-color 200ms;
@@ -111,7 +111,7 @@ if (props.noOverlay) return AccountProfile;
 
 return (
   <Widget
-    src="calebjacob.near/widget/AccountProfileOverlay"
+    src="adminalpha.near/widget/AccountProfileOverlay"
     props={{
       accountId: props.accountId,
       profile,

@@ -14,7 +14,7 @@ if (props.tab && props.tab !== state.selectedTab) {
 }
 
 const profile = props.profile ?? Social.getr(`${accountId}/profile`);
-const accountUrl = `/#/calebjacob.near/widget/ProfilePage?accountId=${accountId}`;
+const accountUrl = `/#/adminalpha.near/widget/ProfilePage?accountId=${accountId}`;
 
 const Wrapper = styled.div`
   padding-bottom: 48px;
@@ -23,7 +23,7 @@ const Wrapper = styled.div`
 const Main = styled.div`
   display: grid;
   gap: 40px;
-  grid-template-columns: 352px  minmax(0, 1fr);
+  grid-template-columns: 352px minmax(0, 1fr);
   align-items: start;
 
   @media (max-width: 1200px) {
@@ -36,7 +36,7 @@ const BackgroundImage = styled.div`
   border-radius: 20px 20px 0 0;
   overflow: hidden;
   margin: 0 -12px;
-  background: #ECEEF0;
+  background: #eceef0;
 
   img {
     object-fit: cover;
@@ -75,7 +75,7 @@ const Title = styled.h1`
   font-weight: 600;
   font-size: ${(p) => p.size || "25px"};
   line-height: 1.2em;
-  color: #11181C;
+  color: #11181c;
   margin: ${(p) => (p.margin ? "0 0 24px" : "0")};
   overflow-wrap: anywhere;
 `;
@@ -83,14 +83,14 @@ const Title = styled.h1`
 const Tabs = styled.div`
   display: flex;
   height: 48px;
-  border-bottom: 1px solid #ECEEF0;
+  border-bottom: 1px solid #eceef0;
   margin-bottom: 72px;
   overflow: auto;
   scroll-behavior: smooth;
 
   @media (max-width: 1200px) {
-    background: #F8F9FA;
-    border-top: 1px solid #ECEEF0;
+    background: #f8f9fa;
+    border-top: 1px solid #eceef0;
     margin: 0 -12px 48px;
 
     > * {
@@ -116,23 +116,23 @@ const TabsButton = styled.a`
   text-decoration: none !important;
 
   &:hover {
-    color: #11181C;
+    color: #11181c;
   }
 
   &::after {
-    content: '';
+    content: "";
     display: ${(p) => (p.selected ? "block" : "none")};
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
     height: 3px;
-    background: #59E692;
+    background: #59e692;
   }
 `;
 
 const Bio = styled.div`
-  color: #11181C;
+  color: #11181c;
   font-size: 14px;
   line-height: 20px;
   margin-bottom: 48px;
@@ -169,7 +169,7 @@ return (
     <Main>
       <SidebarWrapper>
         <Widget
-          src="calebjacob.near/widget/ProfilePage.Sidebar"
+          src="adminalpha.near/widget/ProfilePage.Sidebar"
           props={{
             accountId,
             profile,
@@ -225,7 +225,7 @@ return (
 
                 <Bio>
                   <Widget
-                    src="calebjacob.near/widget/SocialMarkdown"
+                    src="adminalpha.near/widget/SocialMarkdown"
                     props={{ text: profile.description }}
                   />
                 </Bio>
@@ -233,7 +233,7 @@ return (
             )}
 
             <Widget
-              src="calebjacob.near/widget/Posts.Feed"
+              src="adminalpha.near/widget/Posts.Feed"
               props={{ accounts: [accountId] }}
             />
           </>
@@ -241,28 +241,28 @@ return (
 
         {state.selectedTab === "nfts" && (
           <Widget
-            src="calebjacob.near/widget/NFTCollection"
+            src="adminalpha.near/widget/NFTCollection"
             props={{ accountId }}
           />
         )}
 
         {state.selectedTab === "apps" && (
           <Widget
-            src="calebjacob.near/widget/ComponentCollection"
+            src="adminalpha.near/widget/ComponentCollection"
             props={{ accountId }}
           />
         )}
 
         {state.selectedTab === "followers" && (
           <Widget
-            src="calebjacob.near/widget/FollowersList"
+            src="adminalpha.near/widget/FollowersList"
             props={{ accountId }}
           />
         )}
 
         {state.selectedTab === "following" && (
           <Widget
-            src="calebjacob.near/widget/FollowingList"
+            src="adminalpha.near/widget/FollowingList"
             props={{ accountId }}
           />
         )}

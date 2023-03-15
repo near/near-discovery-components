@@ -2,18 +2,23 @@ const Wrapper = styled.div`
   font-size: 14px;
   line-height: 20px;
   font-weight: 400;
-  color: #11181C;
+  color: #11181c;
   word-break: break-word;
 
   > * {
     margin-bottom: 12px;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-weight: 600;
     font-size: 14px;
     line-height: 1.4em;
-    color: #11181C;
+    color: #11181c;
   }
 
   h1 {
@@ -28,13 +33,13 @@ const Wrapper = styled.div`
   }
 
   a {
-    color: #006ADC;
+    color: #006adc;
     outline: none;
     font-weight: 600;
 
     &:hover,
     &:focus {
-      color: #006ADC;
+      color: #006adc;
       text-decoration: underline;
     }
   }
@@ -51,7 +56,7 @@ const renderMention =
   ((accountId) => (
     <Widget
       key={accountId}
-      src="calebjacob.near/widget/AccountProfileInline"
+      src="adminalpha.near/widget/AccountProfileInline"
       props={{
         accountId,
         hideAvatar: true,

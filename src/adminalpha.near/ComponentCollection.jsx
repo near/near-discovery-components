@@ -67,20 +67,20 @@ const Button = styled.button`
   width: 100%;
   padding: 8px;
   height: 32px;
-  background: #FBFCFD;
-  border: 1px solid #D7DBDF;
+  background: #fbfcfd;
+  border: 1px solid #d7dbdf;
   border-radius: 50px;
   font-weight: 600;
   font-size: 12px;
   line-height: 15px;
   text-align: center;
   cursor: pointer;
-  color: #11181C !important;
+  color: #11181c !important;
   margin: 0;
 
   &:hover,
   &:focus {
-    background: #ECEDEE;
+    background: #ecedee;
     text-decoration: none;
     outline: none;
   }
@@ -99,7 +99,7 @@ return (
     <Items>
       {components.map((component, i) => (
         <Widget
-          src="calebjacob.near/widget/ComponentCard"
+          src="adminalpha.near/widget/ComponentCard"
           props={{
             src: `${component.accountId}/widget/${component.widgetName}`,
             blockHeight: component.blockHeight,

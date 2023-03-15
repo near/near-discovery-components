@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 const H2 = styled.h2`
   font-size: 19px;
   line-height: 22px;
-  color: #11181C;
+  color: #11181c;
   margin: 0;
 `;
 
@@ -31,7 +31,7 @@ const Item = styled.div`
   overflow: hidden;
 
   > * {
-    min-width: 0
+    min-width: 0;
   }
 `;
 
@@ -59,7 +59,7 @@ return (
       {follows.map((item, i) => (
         <Item key={i}>
           <Widget
-            src="calebjacob.near/widget/AccountProfile"
+            src="adminalpha.near/widget/AccountProfile"
             props={{ accountId: item.accountId, hideAccountId: true }}
           />
 
@@ -73,7 +73,7 @@ return (
           </Text>
 
           <Widget
-            src="calebjacob.near/widget/AccountProfile"
+            src="adminalpha.near/widget/AccountProfile"
             props={{ accountId: item.value.accountId, hideAccountId: true }}
           />
         </Item>

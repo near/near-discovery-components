@@ -1,5 +1,5 @@
-const componentsUrl = `/#/calebjacob.near/widget/ComponentsPage`;
-const peopleUrl = `/#/calebjacob.near/widget/PeoplePage`;
+const componentsUrl = `/#/adminalpha.near/widget/ComponentsPage`;
+const peopleUrl = `/#/adminalpha.near/widget/PeoplePage`;
 
 function onSearchChange({ result, term }) {
   if (term.trim()) {
@@ -9,7 +9,7 @@ function onSearchChange({ result, term }) {
   }
 }
 
-const Wrapper = styled.div` 
+const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 48px;
@@ -30,7 +30,7 @@ const H1 = styled.h1`
   font-weight: 600;
   font-size: 32px;
   line-height: 39px;
-  color: #11181C;
+  color: #11181c;
   margin: 0;
 `;
 
@@ -77,17 +77,17 @@ const Text = styled.p`
 
   b {
     font-weight: 600;
-    color: #11181C;
+    color: #11181c;
   }
-  
+
   &[href] {
-    color: #006ADC;
+    color: #006adc;
     outline: none;
     font-weight: 600;
 
     &:hover,
     &:focus {
-      color: #006ADC;
+      color: #006adc;
       text-decoration: underline;
     }
   }
@@ -111,7 +111,7 @@ return (
 
     <Search>
       <Widget
-        src="calebjacob.near/widget/GlobalSearch"
+        src="adminalpha.near/widget/GlobalSearch"
         props={{
           limitPerGroup: 3,
           onChange: onSearchChange,
@@ -138,7 +138,7 @@ return (
           {state.searchResults.people.map((person, i) => (
             <Item key={person.accountId}>
               <Widget
-                src="calebjacob.near/widget/AccountProfileCard"
+                src="adminalpha.near/widget/AccountProfileCard"
                 props={{
                   accountId: person.accountId,
                 }}
@@ -162,7 +162,7 @@ return (
           {state.searchResults.components.map((component, i) => (
             <Item key={component.accountId + component.widgetName}>
               <Widget
-                src="calebjacob.near/widget/ComponentCard"
+                src="adminalpha.near/widget/ComponentCard"
                 props={{
                   src: `${component.accountId}/widget/${component.widgetName}`,
                 }}

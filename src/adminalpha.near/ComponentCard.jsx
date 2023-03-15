@@ -4,17 +4,18 @@ const metadata = Social.get(
   "final"
 );
 const tags = Object.keys(metadata.tags || {});
-const detailsUrl = `/#/calebjacob.near/widget/ComponentDetailsPage?src=${accountId}/widget/${widgetName}`;
+const detailsUrl = `/#/adminalpha.near/widget/ComponentDetailsPage?src=${accountId}/widget/${widgetName}`;
 const appUrl = `/#/${accountId}/widget/${widgetName}`;
-const accountUrl = `/#/calebjacob.near/widget/ProfilePage?accountId=${accountId}`;
+const accountUrl = `/#/adminalpha.near/widget/ProfilePage?accountId=${accountId}`;
 
 const Card = styled.div`
   position: relative;
   width: 100%;
   border-radius: 12px;
   background: #fff;
-  border: 1px solid #ECEEF0;
-  box-shadow: 0px 1px 3px rgba(16, 24, 40, 0.1), 0px 1px 2px rgba(16, 24, 40, 0.06);
+  border: 1px solid #eceef0;
+  box-shadow: 0px 1px 3px rgba(16, 24, 40, 0.1),
+    0px 1px 2px rgba(16, 24, 40, 0.06);
   overflow: hidden;
 `;
 
@@ -38,14 +39,14 @@ const CardFooter = styled.div`
   grid-template-columns: 1fr 1fr;
   gap: 16px;
   padding: 16px;
-  border-top: 1px solid #ECEEF0;
+  border-top: 1px solid #eceef0;
 `;
 
 const CardTag = styled.p`
   margin: 0;
   font-size: 9px;
   line-height: 14px;
-  background: #ECEEF0;
+  background: #eceef0;
   color: #687076;
   font-weight: 400;
   white-space: nowrap;
@@ -100,7 +101,7 @@ const Thumbnail = styled.a`
   width: 60px;
   height: 60px;
   flex-shrink: 0;
-  border: 1px solid #ECEEF0;
+  border: 1px solid #eceef0;
   border-radius: 8px;
   overflow: hidden;
   outline: none;
@@ -108,7 +109,7 @@ const Thumbnail = styled.a`
 
   &:focus,
   &:hover {
-    border-color: #D0D5DD;
+    border-color: #d0d5dd;
   }
 
   img {
@@ -126,7 +127,7 @@ const TagsWrapper = styled.div`
 const ButtonLink = styled.a`
   padding: 8px;
   height: 32px;
-  border: 1px solid #D7DBDF;
+  border: 1px solid #d7dbdf;
   border-radius: 100px;
   font-weight: 600;
   font-size: 12px;
@@ -134,12 +135,12 @@ const ButtonLink = styled.a`
   text-align: center;
   cursor: pointer;
   color: ${(p) => (p.primary ? "#006ADC" : "#11181C")} !important;
-  background: #FBFCFD;
+  background: #fbfcfd;
   white-space: nowrap;
 
   &:hover,
   &:focus {
-    background: #ECEDEE;
+    background: #ecedee;
     text-decoration: none;
     outline: none;
   }
@@ -186,7 +187,7 @@ return (
         {tags.length > 0 && (
           <TagsWrapper>
             <Widget
-              src="calebjacob.near/widget/Tags"
+              src="adminalpha.near/widget/Tags"
               props={{
                 tags,
                 scroll: true,

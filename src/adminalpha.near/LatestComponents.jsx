@@ -2,7 +2,7 @@ const requiredTag = "app";
 const limit = 5;
 let apps = [];
 let totalComponents = 0;
-const componentsUrl = `/#/calebjacob.near/widget/ComponentsPage`;
+const componentsUrl = `/#/adminalpha.near/widget/ComponentsPage`;
 
 const taggedData = Social.keys(
   `*/widget/*/metadata/tags/${requiredTag}`,
@@ -47,7 +47,7 @@ const Wrapper = styled.div`
 const H2 = styled.h2`
   font-size: 19px;
   line-height: 22px;
-  color: #11181C;
+  color: #11181c;
   margin: 0;
 `;
 
@@ -64,20 +64,20 @@ const ButtonLink = styled.a`
   width: 100%;
   padding: 8px;
   height: 32px;
-  background: #FBFCFD;
-  border: 1px solid #D7DBDF;
+  background: #fbfcfd;
+  border: 1px solid #d7dbdf;
   border-radius: 50px;
   font-weight: 600;
   font-size: 12px;
   line-height: 15px;
   text-align: center;
   cursor: pointer;
-  color: #11181C !important;
+  color: #11181c !important;
   margin: 0;
 
   &:hover,
   &:focus {
-    background: #ECEDEE;
+    background: #ecedee;
     text-decoration: none;
     outline: none;
   }
@@ -95,7 +95,7 @@ const Header = styled.div`
 `;
 
 const TextLink = styled.a`
-  color: #006ADC;
+  color: #006adc;
   outline: none;
   font-weight: 600;
   font-size: 12px;
@@ -103,7 +103,7 @@ const TextLink = styled.a`
 
   &:hover,
   &:focus {
-    color: #006ADC;
+    color: #006adc;
     text-decoration: underline;
   }
 `;
@@ -119,7 +119,7 @@ return (
       {apps.map((app, i) => (
         <Item key={i}>
           <Widget
-            src="calebjacob.near/widget/ComponentCard"
+            src="adminalpha.near/widget/ComponentCard"
             props={{
               src: `${app.accountId}/widget/${app.widgetName}`,
               blockHeight: app.blockHeight,

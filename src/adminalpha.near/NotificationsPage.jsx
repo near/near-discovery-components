@@ -31,7 +31,7 @@ const Wrapper = styled.div`
 const H1 = styled.h1`
   font-size: 24px;
   line-height: 1.2em;
-  color: #11181C;
+  color: #11181c;
   margin: 0 0 24px;
 `;
 
@@ -40,7 +40,7 @@ const renderItem = (item, i) => {
     Storage.set("lastBlockHeight", item.blockHeight);
   }
   return (
-    <Widget src="calebjacob.near/widget/Notification" key={i} props={item} />
+    <Widget src="adminalpha.near/widget/Notification" key={i} props={item} />
   );
 };
 

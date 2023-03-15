@@ -52,17 +52,21 @@ function onResultClick(id) {
 
 const Wrapper = styled.div`
   position: relative;
-  background: #ECEEF0;
+  background: #eceef0;
 
   &::before {
-      content: '';
-      display: block;
-      position: absolute;
-      right: 0;
-      width: 6px;
-      height: 100%;
-      background: linear-gradient(to left, rgba(236, 238, 240, 1), rgba(236, 238, 240, 0));
-      z-index: 10;
+    content: "";
+    display: block;
+    position: absolute;
+    right: 0;
+    width: 6px;
+    height: 100%;
+    background: linear-gradient(
+      to left,
+      rgba(236, 238, 240, 1),
+      rgba(236, 238, 240, 0)
+    );
+    z-index: 10;
   }
 `;
 
@@ -84,17 +88,18 @@ const Scroller = styled.div`
     max-width: 175px;
     flex-grow: 0;
     flex-shrink: 0;
-    
-    button {
-        border: 1px solid #ECEEF0;
-        background: #fff !important;
-        border-radius: 6px;
-        padding: 3px 6px;
-        transition: all 200ms;
 
-        &:focus, &:hover {
-            border-color: #687076;
-        }
+    button {
+      border: 1px solid #eceef0;
+      background: #fff !important;
+      border-radius: 6px;
+      padding: 3px 6px;
+      transition: all 200ms;
+
+      &:focus,
+      &:hover {
+        border-color: #687076;
+      }
     }
   }
 `;
@@ -125,7 +130,7 @@ return (
         return (
           <Widget
             key={result.accountId}
-            src="calebjacob.near/widget/AccountProfile"
+            src="adminalpha.near/widget/AccountProfile"
             props={{
               avatarSize: "34px",
               accountId: result.accountId,

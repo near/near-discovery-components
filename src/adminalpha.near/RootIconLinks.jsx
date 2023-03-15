@@ -8,12 +8,12 @@ const IconButtonLink = styled.a`
   text-align: center;
   cursor: pointer;
   border: none;
-  background: #F1F3F5;
-  color: #006ADC !important;
+  background: #f1f3f5;
+  color: #006adc !important;
 
   &:hover,
   &:focus {
-    background: #ECEDEE;
+    background: #ecedee;
     text-decoration: none;
     outline: none;
   }
@@ -28,7 +28,7 @@ const IconButtons = styled.div`
 return (
   <>
     <IconButtons>
-      <IconButtonLink href="/#/calebjacob.near/widget/ProfilePage?accountId=self.social.near">
+      <IconButtonLink href="/#/adminalpha.near/widget/ProfilePage?accountId=self.social.near">
         <i className="bi bi-person-circle"></i>
       </IconButtonLink>
       <IconButtonLink href="https://t.me/NearSocial">

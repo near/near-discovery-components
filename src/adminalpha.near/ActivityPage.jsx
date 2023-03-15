@@ -8,7 +8,7 @@ if (props.tab && props.tab !== state.selectedTab) {
   });
 }
 
-const activityUrl = `/#/calebjacob.near/widget/ActivityPage`;
+const activityUrl = `/#/adminalpha.near/widget/ActivityPage`;
 
 const Wrapper = styled.div`
   margin-top: calc(var(--body-top-padding) * -1);
@@ -33,7 +33,7 @@ const Section = styled.div`
   > div {
     padding-bottom: 24px;
     margin-bottom: 24px;
-    border-bottom: 1px solid #ECEEF0;
+    border-bottom: 1px solid #eceef0;
 
     &:last-child {
       padding-bottom: 0;
@@ -54,8 +54,8 @@ const Section = styled.div`
 const Tabs = styled.div`
   display: none;
   height: 48px;
-  background: #F8F9FA;
-  border-bottom: 1px solid #ECEEF0;
+  background: #f8f9fa;
+  border-bottom: 1px solid #eceef0;
   margin-bottom: ${(p) => (p.noMargin ? "0" : p.halfMargin ? "24px" : "24px")};
   overflow: auto;
   scroll-behavior: smooth;
@@ -88,18 +88,18 @@ const TabsButton = styled.a`
   text-decoration: none !important;
 
   &:hover {
-    color: #11181C;
+    color: #11181c;
   }
 
   &::after {
-    content: '';
+    content: "";
     display: ${(p) => (p.selected ? "block" : "none")};
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
     height: 3px;
-    background: #59E692;
+    background: #59e692;
   }
 `;
 
@@ -133,14 +133,14 @@ return (
 
     <Main>
       <Section active={state.selectedTab === "apps"}>
-        <Widget src="calebjacob.near/widget/FeaturedComponents" />
-        <Widget src="calebjacob.near/widget/LatestComponents" />
+        <Widget src="adminalpha.near/widget/FeaturedComponents" />
+        <Widget src="adminalpha.near/widget/LatestComponents" />
       </Section>
       <Section negativeMargin primary active={state.selectedTab === "posts"}>
-        <Widget src="calebjacob.near/widget/Posts" />
+        <Widget src="adminalpha.near/widget/Posts" />
       </Section>
       <Section active={state.selectedTab === "explore"}>
-        <Widget src="calebjacob.near/widget/ExploreWidgets" />
+        <Widget src="adminalpha.near/widget/ExploreWidgets" />
       </Section>
     </Main>
   </Wrapper>

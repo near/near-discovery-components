@@ -46,11 +46,11 @@ return (
     {following.map(([accountId], i) => (
       <Item key={i}>
         <Widget
-          src="calebjacob.near/widget/AccountProfile"
+          src="adminalpha.near/widget/AccountProfile"
           props={{ accountId }}
         />
         <Widget
-          src="calebjacob.near/widget/FollowButton"
+          src="adminalpha.near/widget/FollowButton"
           props={{ accountId }}
         />
       </Item>

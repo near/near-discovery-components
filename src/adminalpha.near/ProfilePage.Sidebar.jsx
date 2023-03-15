@@ -13,7 +13,7 @@ if (!accountId) {
 // Profile Data:
 const tags = Object.keys(profile.tags || {});
 const viewingOwnAccount = accountId === context.accountId;
-const accountUrl = `/#/calebjacob.near/widget/ProfilePage?accountId=${accountId}`;
+const accountUrl = `/#/adminalpha.near/widget/ProfilePage?accountId=${accountId}`;
 const shareUrl = `https://alpha.near.org${accountUrl}`;
 
 // Follower Count:
@@ -58,13 +58,13 @@ const Wrapper = styled.div`
     line-height: 15px;
     text-align: center;
     cursor: pointer;
-    background: #FBFCFD;
-    border: 1px solid #D7DBDF;
-    color: #11181C !important;
+    background: #fbfcfd;
+    border: 1px solid #d7dbdf;
+    color: #11181c !important;
 
     &.button--primary {
       width: 100%;
-      color: #006ADC !important;
+      color: #006adc !important;
 
       @media (max-width: 1200px) {
         width: auto;
@@ -73,13 +73,13 @@ const Wrapper = styled.div`
 
     &:hover,
     &:focus {
-      background: #ECEDEE;
+      background: #ecedee;
       text-decoration: none;
       outline: none;
     }
 
     i {
-      color: #7E868C;
+      color: #7e868c;
     }
 
     .bi-16 {
@@ -104,7 +104,8 @@ const Avatar = styled.div`
   border: 3px solid #fff;
   overflow: hidden;
   border-radius: 100%;
-  box-shadow: 0px 12px 16px rgba(16, 24, 40, 0.08), 0px 4px 6px rgba(16, 24, 40, 0.03);
+  box-shadow: 0px 12px 16px rgba(16, 24, 40, 0.08),
+    0px 4px 6px rgba(16, 24, 40, 0.03);
 
   img {
     object-fit: cover;
@@ -122,7 +123,7 @@ const Title = styled.h1`
   font-weight: 600;
   font-size: ${(p) => p.size || "25px"};
   line-height: 1.2em;
-  color: #11181C;
+  color: #11181c;
   margin: ${(p) => (p.margin ? "0 0 24px" : "0")};
   overflow-wrap: anywhere;
 `;
@@ -140,13 +141,13 @@ const Text = styled.p`
 
   b {
     font-weight: 600;
-    color: #11181C;
+    color: #11181c;
   }
-  
+
   &[href] {
     display: inline-flex;
     gap: 0.25rem;
-    
+
     &:hover,
     &:focus {
       text-decoration: underline;
@@ -161,7 +162,7 @@ const TextLink = styled.a`
   margin: 0;
   font-size: 14px;
   line-height: 20px;
-  color: #11181C !important;
+  color: #11181c !important;
   font-weight: 400;
   font-size: 14px;
   white-space: nowrap;
@@ -173,7 +174,7 @@ const TextLink = styled.a`
   }
 
   i {
-    color: #7E868C;
+    color: #7e868c;
   }
 `;
 
@@ -207,12 +208,14 @@ const SocialLinks = styled.div`
 
 const FollowButtonWrapper = styled.div`
   width: 100%;
-  div,button {
+  div,
+  button {
     width: 100%;
   }
   @media (max-width: 1200px) {
     width: auto;
-    div,button {
+    div,
+    button {
       width: auto;
     }
   }
@@ -244,7 +247,7 @@ return (
         {viewingOwnAccount ? (
           <a
             className="button button--primary"
-            href="/#/calebjacob.near/widget/ProfileEditor"
+            href="/#/adminalpha.near/widget/ProfileEditor"
           >
             <i className="bi bi-pencil"></i>
             Edit Profile
@@ -253,7 +256,7 @@ return (
           <>
             <FollowButtonWrapper>
               <Widget
-                src="calebjacob.near/widget/FollowButton"
+                src="adminalpha.near/widget/FollowButton"
                 props={{
                   accountId,
                 }}
@@ -261,7 +264,7 @@ return (
             </FollowButtonWrapper>
 
             <Widget
-              src="calebjacob.near/widget/PokeButton"
+              src="adminalpha.near/widget/PokeButton"
               props={{
                 accountId,
               }}
@@ -301,7 +304,7 @@ return (
     {tags.length > 0 && (
       <Section>
         <Widget
-          src="calebjacob.near/widget/Tags"
+          src="adminalpha.near/widget/Tags"
           props={{
             tags,
           }}

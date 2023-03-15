@@ -1,7 +1,7 @@
 const limitPerPage = 21;
 let components = [];
 let totalComponents = 0;
-const componentsUrl = "/#/calebjacob.near/widget/ComponentsPage";
+const componentsUrl = "/#/adminalpha.near/widget/ComponentsPage";
 
 State.init({
   currentPage: 0,
@@ -70,9 +70,9 @@ const Header = styled.div`
 
 const Search = styled.div`
   width: 246px;
-  
+
   @media (max-width: 500px) {
-      width: 100%;
+    width: 100%;
   }
 `;
 
@@ -80,7 +80,7 @@ const H1 = styled.h1`
   font-weight: 600;
   font-size: 32px;
   line-height: 39px;
-  color: #11181C;
+  color: #11181c;
   margin: 0;
 `;
 
@@ -105,13 +105,13 @@ const Text = styled.p`
 
   b {
     font-weight: 600;
-    color: #11181C;
+    color: #11181c;
   }
-  
+
   &[href] {
     display: inline-flex;
     gap: 0.25rem;
-    
+
     &:hover,
     &:focus {
       text-decoration: underline;
@@ -140,20 +140,20 @@ const Button = styled.button`
   width: 100%;
   padding: 8px;
   height: 32px;
-  background: #FBFCFD;
-  border: 1px solid #D7DBDF;
+  background: #fbfcfd;
+  border: 1px solid #d7dbdf;
   border-radius: 50px;
   font-weight: 600;
   font-size: 12px;
   line-height: 15px;
   text-align: center;
   cursor: pointer;
-  color: #11181C !important;
+  color: #11181c !important;
   margin: 0;
 
   &:hover,
   &:focus {
-    background: #ECEDEE;
+    background: #ecedee;
     text-decoration: none;
     outline: none;
   }
@@ -166,14 +166,14 @@ const Button = styled.button`
 const Tabs = styled.div`
   display: flex;
   height: 48px;
-  border-bottom: 1px solid #ECEEF0;
+  border-bottom: 1px solid #eceef0;
   margin-bottom: -24px;
   overflow: auto;
   scroll-behavior: smooth;
 
   @media (max-width: 1200px) {
-    background: #F8F9FA;
-    border-top: 1px solid #ECEEF0;
+    background: #f8f9fa;
+    border-top: 1px solid #eceef0;
     margin-left: -12px;
     margin-right: -12px;
 
@@ -200,18 +200,18 @@ const TabsButton = styled.a`
   text-decoration: none !important;
 
   &:hover {
-    color: #11181C;
+    color: #11181c;
   }
 
   &::after {
-    content: '';
+    content: "";
     display: ${(p) => (p.selected ? "block" : "none")};
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
     height: 3px;
-    background: #59E692;
+    background: #59e692;
   }
 `;
 
@@ -224,7 +224,7 @@ return (
 
     <Search>
       <Widget
-        src="calebjacob.near/widget/ComponentSearch"
+        src="adminalpha.near/widget/ComponentSearch"
         props={{
           limit: 21,
           onChange: onSearchChange,
@@ -259,7 +259,7 @@ return (
         {items.map((component, i) => (
           <Item key={component.accountId + component.widgetName}>
             <Widget
-              src="calebjacob.near/widget/ComponentCard"
+              src="adminalpha.near/widget/ComponentCard"
               props={{
                 src: `${component.accountId}/widget/${component.widgetName}`,
                 blockHeight: component.blockHeight,

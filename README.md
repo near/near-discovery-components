@@ -4,6 +4,8 @@ This is a repository that holds the source code of all NEAR discovery widgets th
 
 Widgets will be deployed to production automatically as they are merged into the main branch.
 
+Keep in mind that folders under `src` will be prepended to the widget name when it's deployed. E.g. `src/post/comment.jsx` will be deployed as `post.comment`.
+
 # Contributing
 
 Please create feature branches off of develop. 

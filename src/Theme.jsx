@@ -7,11 +7,6 @@ const Theme = styled.div`
   --text-2xl: 400 30px/1.4 "Mona Sans", sans-serif;
   --text-3xl: 400 42px/1.4 "Mona Sans", sans-serif;
 
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 12px;
-
   --black: hsl(0, 0%, 0%);
   --white: hsl(0, 0%, 100%);
 
@@ -131,6 +126,9 @@ const Theme = styled.div`
   --viole10: hsla(246, 57%, 61%, 1);
   --violet11: hsla(241, 50%, 32%, 1);
   --violet12: hsla(244, 49%, 17%, 1);
+
+  color: var(--sand12);
+  font: var(--text-base);
 `;
 
 return <Theme>{props.children}</Theme>;

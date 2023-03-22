@@ -1,4 +1,17 @@
 const Theme = styled.div`
+  --text-xs: 400 12px/1.4 "Mona Sans", sans-serif;
+  --text-s: 400 14px/1.4 "Mona Sans", sans-serif;
+  --text-base: 400 16px/1.4 "Mona Sans", sans-serif;
+  --text-l: 400 20px/1.4 "Mona Sans", sans-serif;
+  --text-xl: 400 24px/1.4 "Mona Sans", sans-serif;
+  --text-2xl: 400 30px/1.4 "Mona Sans", sans-serif;
+  --text-3xl: 400 42px/1.4 "Mona Sans", sans-serif;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 12px;
+
   --black: hsl(0, 0%, 0%);
   --white: hsl(0, 0%, 100%);
 

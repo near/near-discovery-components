@@ -8,7 +8,6 @@ const Theme = styled.div`
   --text-3xl: 400 42px/1.4 "Mona Sans", sans-serif;
 
   --black: hsl(0, 0%, 0%);
-  --white: hsl(0, 0%, 100%);
   --blackA1: hsla(0, 0%, 0%, 0.012);
   --blackA2: hsla(0, 0%, 0%, 0.027);
   --blackA3: hsla(0, 0%, 0%, 0.047);
@@ -22,6 +21,7 @@ const Theme = styled.div`
   --blackA11: hsla(0, 0%, 0%, 0.565);
   --blackA12: hsla(0, 0%, 0%, 0.91);
 
+  --white: hsl(0, 0%, 100%);
   --whiteA1: hsla(0, 0%, 100%, 0);
   --whiteA2: hsla(0, 0%, 100%, 0.013);
   --whiteA3: hsla(0, 0%, 100%, 0.034);

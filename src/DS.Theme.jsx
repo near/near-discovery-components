@@ -9,7 +9,6 @@ const Theme = styled.div`
 
   --black: hsl(0, 0%, 0%);
   --white: hsl(0, 0%, 100%);
-
   --blackA1: hsla(0, 0%, 0%, 0.012);
   --blackA2: hsla(0, 0%, 0%, 0.027);
   --blackA3: hsla(0, 0%, 0%, 0.047);

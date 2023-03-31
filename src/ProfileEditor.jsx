@@ -79,7 +79,7 @@ return (
           </CommitButton>
           <a
             className="btn btn-outline-primary ms-2"
-            href={`#/mob.near/widget/ProfilePage?accountId=${accountId}`}
+            href={`#/adminalpha.near/widget/ProfilePage?accountId=${accountId}`}
           >
             View profile
           </a>

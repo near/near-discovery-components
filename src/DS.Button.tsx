@@ -219,6 +219,11 @@ const sizes = {
   },
 };
 
+function returnColor(state) {
+  if (state === "default") return variants[variant][fill];
+  return variants[variant][fill][state] || variants[variant][fill];
+}
+
 const Button = styled.button`
   all: unset;
   position: relative;
@@ -233,29 +238,29 @@ const Button = styled.button`
   font-weight: 600;
   line-height: 1;
   border-radius: 100px;
-  background: ${variants[variant][fill].background};
-  color: ${variants[variant][fill].color};
-  border: 1px solid ${variants[variant][fill].border};
+  background: ${returnColor("default").background};
+  color: ${returnColor("default").color};
+  border: 1px solid ${returnColor("default").border};
   box-shadow: 0 0 0 0px var(--violet4);
   cursor: pointer;
   transition: all 200ms;
   text-decoration: none !important;
 
   &:hover {
-    background: ${variants[variant][fill].hover.background};
-    color: ${variants[variant][fill].hover.color};
-    border: 1px solid ${variants[variant][fill].hover.border};
+    background: ${returnColor("hover").background};
+    color: ${returnColor("hover").color};
+    border: 1px solid ${returnColor("hover").border};
   }
   &:focus {
-    background: ${variants[variant][fill].focus.background};
-    color: ${variants[variant][fill].focus.color};
-    border: 1px solid ${variants[variant][fill].focus.border};
+    background: ${returnColor("focus").background};
+    color: ${returnColor("focus").color};
+    border: 1px solid ${returnColor("focus").border};
     box-shadow: 0 0 0 4px var(--violet4);
   }
   &:active {
-    background: ${variants[variant][fill].active.background};
-    color: ${variants[variant][fill].active.color};
-    border: 1px solid ${variants[variant][fill].active.border};
+    background: ${returnColor("active").background};
+    color: ${returnColor("active").color};
+    border: 1px solid ${returnColor("active").border};
   }
 
   ${loading &&
@@ -286,7 +291,7 @@ const Inner = styled.span`
   i {
     font-size: ${sizes[size].icon};
     line-height: ${sizes[size].icon};
-    color: ${icon ? undefined : variants[variant][fill].iconColor};
+    color: ${icon ? undefined : returnColor("default").iconColor};
   }
 
   ${loading &&

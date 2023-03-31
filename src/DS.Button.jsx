@@ -52,7 +52,7 @@ const variants = {
     },
     solid: {
       background: "var(--sand12)",
-      border: "var(--sand1)",
+      border: "var(--sand12)",
       color: "var(--sand1)",
       iconColor: "var(--sand11)",
       hover: {

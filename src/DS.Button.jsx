@@ -219,9 +219,9 @@ const sizes = {
   },
 };
 
-function returnColor(state) {
-  if (state === "default") return variants[variant][fill];
-  return variants[variant][fill][state] || variants[variant][fill];
+function returnColor(state, key) {
+  if (state === "default") return variants[variant][fill][key];
+  return variants[variant][fill][state][key] || variants[variant][fill][key];
 }
 
 const Button = styled.button`
@@ -238,29 +238,29 @@ const Button = styled.button`
   font-weight: 600;
   line-height: 1;
   border-radius: 100px;
-  background: ${returnColor("default").background};
-  color: ${returnColor("default").color};
-  border: 1px solid ${returnColor("default").border};
+  background: ${returnColor("default", "background")};
+  color: ${returnColor("default", "color")};
+  border: 1px solid ${returnColor("default", "border")};
   box-shadow: 0 0 0 0px var(--violet4);
   cursor: pointer;
   transition: all 200ms;
   text-decoration: none !important;
 
   &:hover {
-    background: ${returnColor("hover").background};
-    color: ${returnColor("hover").color};
-    border: 1px solid ${returnColor("hover").border};
+    background: ${returnColor("hover", "background")};
+    color: ${returnColor("hover", "color")};
+    border: 1px solid ${returnColor("hover", "border")};
   }
   &:focus {
-    background: ${returnColor("focus").background};
-    color: ${returnColor("focus").color};
-    border: 1px solid ${returnColor("focus").border};
+    background: ${returnColor("focus", "background")};
+    color: ${returnColor("focus", "color")};
+    border: 1px solid ${returnColor("focus", "border")};
     box-shadow: 0 0 0 4px var(--violet4);
   }
   &:active {
-    background: ${returnColor("active").background};
-    color: ${returnColor("active").color};
-    border: 1px solid ${returnColor("active").border};
+    background: ${returnColor("active", "background")};
+    color: ${returnColor("active", "color")};
+    border: 1px solid ${returnColor("active", "border")};
   }
 
   ${loading &&
@@ -291,7 +291,7 @@ const Inner = styled.span`
   i {
     font-size: ${sizes[size].icon};
     line-height: ${sizes[size].icon};
-    color: ${icon ? undefined : returnColor("default").iconColor};
+    color: ${icon ? undefined : returnColor("default", "iconColor")};
   }
 
   ${loading &&

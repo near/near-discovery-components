@@ -59,14 +59,8 @@ const variants = {
         background: "var(--sand11)",
         border: "var(--sand11)",
       },
-      focus: {
-        background: "var(--sand12)",
-        border: "var(--sand12)",
-      },
-      active: {
-        background: "var(--sand12)",
-        border: "var(--sand12)",
-      },
+      focus: {},
+      active: {},
     },
   },
   secondary: {
@@ -95,12 +89,10 @@ const variants = {
         background: "var(--sand4)",
       },
       focus: {
-        background: "var(--sand3)",
         border: "var(--violet8)",
       },
       active: {
         background: "var(--sand5)",
-        border: "var(--sand6)",
       },
     },
   },
@@ -130,12 +122,10 @@ const variants = {
         background: "var(--red10)",
       },
       focus: {
-        background: "var(--red9)",
         border: "var(--red11)",
       },
       active: {
         background: "var(--red8)",
-        border: "var(--red8)",
       },
     },
   },
@@ -165,12 +155,10 @@ const variants = {
         background: "var(--green10)",
       },
       focus: {
-        background: "var(--green9)",
         border: "var(--green11)",
       },
       active: {
         background: "var(--green8)",
-        border: "var(--green8)",
       },
     },
   },

@@ -57,12 +57,15 @@ const variants = {
       iconColor: "var(--sand11)",
       hover: {
         background: "var(--sand11)",
+        border: "var(--sand11)",
       },
       focus: {
         background: "var(--sand12)",
+        border: "var(--sand12)",
       },
       active: {
         background: "var(--sand12)",
+        border: "var(--sand12)",
       },
     },
   },
@@ -89,15 +92,15 @@ const variants = {
       color: "var(--sand12)",
       iconColor: "var(--sand11)",
       hover: {
-        background: "var(--sand5)",
-        border: "var(--sand6)",
+        background: "var(--sand4)",
       },
       focus: {
         background: "var(--sand3)",
         border: "var(--violet8)",
       },
       active: {
-        background: "var(--sand6)",
+        background: "var(--sand5)",
+        border: "var(--sand6)",
       },
     },
   },
@@ -124,8 +127,7 @@ const variants = {
       color: "var(--red12)",
       iconColor: "var(--red11)",
       hover: {
-        background: "var(--red8)",
-        border: "var(--red10)",
+        background: "var(--red10)",
       },
       focus: {
         background: "var(--red9)",
@@ -160,8 +162,7 @@ const variants = {
       color: "var(--green12)",
       iconColor: "var(--green11)",
       hover: {
-        background: "var(--green8)",
-        border: "var(--green10)",
+        background: "var(--green10)",
       },
       focus: {
         background: "var(--green9)",

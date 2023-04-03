@@ -215,6 +215,7 @@ function returnColor(state, key) {
 
 const Button = styled.button`
   all: unset;
+  box-sizing: border-box;
   position: relative;
   display: inline-flex;
   align-items: center;

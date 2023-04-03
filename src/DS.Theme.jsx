@@ -122,7 +122,7 @@ const Theme = styled.div`
   --violet7: hsla(245, 62%, 72%, 1);
   --violet8: hsla(250, 53%, 54%, 1);
   --violet9: hsla(245, 64%, 68%, 1);
-  --viole10: hsla(246, 57%, 61%, 1);
+  --violet10: hsla(246, 57%, 61%, 1);
   --violet11: hsla(241, 50%, 32%, 1);
   --violet12: hsla(244, 49%, 17%, 1);
 

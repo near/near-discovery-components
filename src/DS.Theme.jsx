@@ -6,7 +6,7 @@ const Theme = styled.div`
   --text-xl: 450 24px/1.3 "Mona Sans", sans-serif;
   --text-2xl: 450 30px/1.3 "Mona Sans", sans-serif;
   --text-3xl: 450 42px/1.3 "Mona Sans", sans-serif;
-  --text-hero: 450 80px/1.1 "Mona Sans", sans-serif;
+  --text-hero: 500 80px/1.1 "Mona Sans", sans-serif;
 
   --black: hsl(0, 0%, 0%);
   --blackA1: hsla(0, 0%, 0%, 0.012);

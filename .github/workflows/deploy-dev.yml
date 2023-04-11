@@ -17,7 +17,7 @@ jobs:
 
       - name: Install near-social CLI
         run: |
-          curl --proto '=https' --tlsv1.2 -L -sSf https://github.com/FroVolod/near-social/releases/download/v0.2.4/installer.sh | sh
+          curl --proto '=https' --tlsv1.2 -L -sSf https://github.com/FroVolod/near-social/releases/download/v0.2.3/installer.sh | sh
 
       - name: Deploy widgets
         run: |

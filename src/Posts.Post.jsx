@@ -143,6 +143,12 @@ return (
               url: postUrl,
             }}
           />
+          <Widget
+            src="adminalpha.near/widget/FlagButton"
+            props={{
+              item
+            }}
+          />
         </Actions>
       )}
 

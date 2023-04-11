@@ -143,6 +143,16 @@ return (
               url: commentUrl,
             }}
           />
+          <Widget
+            src="adminalpha.near/widget/FlagButton"
+            props={{
+              item: {
+                type: "social",
+                path: `${accountId}/post/comment`,
+                blockHeight,
+              },
+            }}
+          />
         </Actions>
       )}
 

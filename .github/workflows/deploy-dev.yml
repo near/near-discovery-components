@@ -1,7 +1,7 @@
 name: Deploy Widgets to Testnet
 on:
   push:
-    branches: [develop, deploy-components-to-testnet]
+    branches: [develop]
 jobs:
   deploy-widgets:
     runs-on: ubuntu-latest

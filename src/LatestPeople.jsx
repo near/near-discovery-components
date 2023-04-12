@@ -1,12 +1,19 @@
-const accountData = Social.keys("*/profile", "final", {
+const accountsData = Social.keys("*", "final", {
+  return_type: "BlockHeight",
+});
+
+const accountsWithProfileData = Social.keys("*/profile", "final", {
   return_type: "BlockHeight",
 });
 
 const limit = 5;
-const totalAccounts = Object.keys(accountData || {}).length;
+const totalAccounts = Object.keys(accountsData || {}).length;
+const totalAccountsWithProfile = Object.keys(
+  accountsWithProfileData || {}
+).length;
 
-let accounts = Object.entries(accountData || {})
-  .slice(totalAccounts - limit, totalAccounts)
+let accounts = Object.entries(accountsWithProfileData || {})
+  .slice(totalAccountsWithProfile - limit, totalAccountsWithProfile)
   .map((entry) => {
     return {
       accountId: entry[0],

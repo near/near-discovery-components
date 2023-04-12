@@ -30,7 +30,7 @@ return (
         </div>
         <div className="mb-2">
           <Widget
-            src="adminalpha.near/widget/MetadataEditor"
+            src="near/widget/MetadataEditor"
             props={{
               initialMetadata: profile,
               onChange: (profile) => State.update({ profile }),
@@ -79,7 +79,7 @@ return (
           </CommitButton>
           <a
             className="btn btn-outline-primary ms-2"
-            href={`#/adminalpha.near/widget/ProfilePage?accountId=${accountId}`}
+            href={`#/near/widget/ProfilePage?accountId=${accountId}`}
           >
             View profile
           </a>

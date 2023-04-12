@@ -8,4 +8,4 @@ if (homepage === null) {
   return "Loading";
 }
 
-return <Widget src={homepage ?? "adminalpha.near/widget/ActivityPage"} />;
+return <Widget src={homepage ?? "near/widget/ActivityPage"} />;

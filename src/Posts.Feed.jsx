@@ -21,7 +21,7 @@ const renderItem = (a) =>
   a.value.type === "md" && (
     <Post className="post" key={JSON.stringify(a)}>
       <Widget
-        src="adminalpha.near/widget/Posts.Post"
+        src="near/widget/Posts.Post"
         props={{ accountId: a.accountId, blockHeight: a.blockHeight }}
       />
     </Post>
@@ -29,7 +29,7 @@ const renderItem = (a) =>
 
 return (
   <Widget
-    src="adminalpha.near/widget/IndexFeed"
-    props={{ index, renderItem, moderatorAccount: "adminalpha.near" }}
+    src="near/widget/IndexFeed"
+    props={{ index, renderItem, moderatorAccount: "bosmod.near" }}
   />
 );

@@ -14,7 +14,7 @@ if (props.tab && props.tab !== state.selectedTab) {
 }
 
 const profile = props.profile ?? Social.getr(`${accountId}/profile`);
-const accountUrl = `/#/adminalpha.near/widget/ProfilePage?accountId=${accountId}`;
+const accountUrl = `/#/near/widget/ProfilePage?accountId=${accountId}`;
 
 const Wrapper = styled.div`
   padding-bottom: 48px;
@@ -169,7 +169,7 @@ return (
     <Main>
       <SidebarWrapper>
         <Widget
-          src="adminalpha.near/widget/ProfilePage.Sidebar"
+          src="near/widget/ProfilePage.Sidebar"
           props={{
             accountId,
             profile,
@@ -225,7 +225,7 @@ return (
 
                 <Bio>
                   <Widget
-                    src="adminalpha.near/widget/SocialMarkdown"
+                    src="near/widget/SocialMarkdown"
                     props={{ text: profile.description }}
                   />
                 </Bio>
@@ -233,38 +233,26 @@ return (
             )}
 
             <Widget
-              src="adminalpha.near/widget/Posts.Feed"
+              src="near/widget/Posts.Feed"
               props={{ accounts: [accountId] }}
             />
           </>
         )}
 
         {state.selectedTab === "nfts" && (
-          <Widget
-            src="adminalpha.near/widget/NFTCollection"
-            props={{ accountId }}
-          />
+          <Widget src="near/widget/NFTCollection" props={{ accountId }} />
         )}
 
         {state.selectedTab === "apps" && (
-          <Widget
-            src="adminalpha.near/widget/ComponentCollection"
-            props={{ accountId }}
-          />
+          <Widget src="near/widget/ComponentCollection" props={{ accountId }} />
         )}
 
         {state.selectedTab === "followers" && (
-          <Widget
-            src="adminalpha.near/widget/FollowersList"
-            props={{ accountId }}
-          />
+          <Widget src="near/widget/FollowersList" props={{ accountId }} />
         )}
 
         {state.selectedTab === "following" && (
-          <Widget
-            src="adminalpha.near/widget/FollowingList"
-            props={{ accountId }}
-          />
+          <Widget src="near/widget/FollowingList" props={{ accountId }} />
         )}
       </Content>
     </Main>

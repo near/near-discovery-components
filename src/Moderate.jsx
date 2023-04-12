@@ -1,4 +1,4 @@
-const moderatorAccount = props?.moderatorAccount || "adminalpha.near";
+const moderatorAccount = props?.moderatorAccount || "bosmod.near";
 State.init({ inputContent: "" });
 
 const filterUserList = Social.get(

@@ -99,7 +99,7 @@ return (
       <div className="mb-2">
         {options.image.label ?? "Image"}
         <Widget
-          src="adminalpha.near/widget/ImageEditorTabs"
+          src="near/widget/ImageEditorTabs"
           props={{
             image: state.image,
             onChange: (image) => State.update({ image }),
@@ -111,7 +111,7 @@ return (
       <div className="mb-2">
         {options.backgroundImage.label ?? "Background image"}
         <Widget
-          src="adminalpha.near/widget/ImageEditorTabs"
+          src="near/widget/ImageEditorTabs"
           props={{
             image: state.backgroundImage,
             onChange: (backgroundImage) => State.update({ backgroundImage }),

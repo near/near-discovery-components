@@ -1,4 +1,4 @@
-const componentsUrl = "/#/adminalpha.near/widget/ComponentsPage";
+const componentsUrl = "/#/near/widget/ComponentsPage";
 //bozon.near/widget/WidgetHistory
 
 const Wrapper = styled.div`
@@ -53,31 +53,31 @@ return (
     <Items>
       <Item>
         <Widget
-          src="adminalpha.near/widget/ComponentCard"
-          props={{ src: "adminalpha.near/widget/FastAuth" }}
+          src="near/widget/ComponentCard"
+          props={{ src: "near/widget/FastAuth" }}
         />
       </Item>
       <Item>
         <Widget
-          src="adminalpha.near/widget/ComponentCard"
+          src="near/widget/ComponentCard"
           props={{ src: "dataplatform.near/widget/NearQueryApi" }}
         />
       </Item>
       <Item>
         <Widget
-          src="adminalpha.near/widget/ComponentCard"
-          props={{ src: "adminalpha.near/widget/ActivityPage" }}
+          src="near/widget/ComponentCard"
+          props={{ src: "near/widget/ActivityPage" }}
         />
       </Item>
       <Item>
         <Widget
-          src="adminalpha.near/widget/ComponentCard"
+          src="near/widget/ComponentCard"
           props={{ src: "devgovgigs.near/widget/Ideas" }}
         />
       </Item>
       <Item>
         <Widget
-          src="adminalpha.near/widget/ComponentCard"
+          src="near/widget/ComponentCard"
           props={{ src: "frichard2.near/widget/most-active-contracts" }}
         />
       </Item>

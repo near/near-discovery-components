@@ -1,6 +1,6 @@
 const limitPerPage = 21;
 let people = [];
-const peopleUrl = "/#/adminalpha.near/widget/PeoplePage";
+const peopleUrl = "/#/near/widget/PeoplePage";
 let followingData = null;
 let followersData = null;
 
@@ -240,7 +240,7 @@ return (
 
     <Search>
       <Widget
-        src="adminalpha.near/widget/ProfileSearch"
+        src="near/widget/ProfileSearch"
         props={{
           limit: 21,
           onChange: onSearchChange,
@@ -286,7 +286,7 @@ return (
         {items.map((person, i) => (
           <Item key={person.accountId}>
             <Widget
-              src="adminalpha.near/widget/AccountProfileCard"
+              src="near/widget/AccountProfileCard"
               props={{
                 accountId: person.accountId,
                 blockHeight: person.blockHeight,

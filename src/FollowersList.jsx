@@ -47,14 +47,8 @@ return (
   <Wrapper>
     {followers.map(([accountId], i) => (
       <Item key={i}>
-        <Widget
-          src="adminalpha.near/widget/AccountProfile"
-          props={{ accountId }}
-        />
-        <Widget
-          src="adminalpha.near/widget/FollowButton"
-          props={{ accountId }}
-        />
+        <Widget src="near/widget/AccountProfile" props={{ accountId }} />
+        <Widget src="near/widget/FollowButton" props={{ accountId }} />
       </Item>
     ))}
   </Wrapper>

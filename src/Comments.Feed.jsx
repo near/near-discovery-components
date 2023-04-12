@@ -35,7 +35,7 @@ const renderItem = (a) =>
   a.value.type === "md" && (
     <div key={JSON.stringify(a)}>
       <Widget
-        src="adminalpha.near/widget/Comments.Comment"
+        src="near/widget/Comments.Comment"
         props={{
           accountId: a.accountId,
           blockHeight: a.blockHeight,
@@ -51,7 +51,7 @@ const renderItem = (a) =>
 return (
   <Wrapper>
     <Widget
-      src="adminalpha.near/widget/IndexFeed"
+      src="near/widget/IndexFeed"
       props={{
         index,
         manual: true,
@@ -59,7 +59,7 @@ return (
         renderItem,
         nextLimit: 10,
         loadMoreText: "Show earlier comments...",
-        moderatorAccount: "adminalpha.near",
+        moderatorAccount: "bosmod.near",
       }}
     />
   </Wrapper>

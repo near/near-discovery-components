@@ -130,7 +130,7 @@ return (
       {context.accountId && (
         <>
           <ComposeWrapper>
-            <Widget src="adminalpha.near/widget/Posts.Compose" />
+            <Widget src="near/widget/Posts.Compose" />
           </ComposeWrapper>
 
           <FilterWrapper>
@@ -156,7 +156,7 @@ return (
       )}
 
       <FeedWrapper>
-        <Widget src="adminalpha.near/widget/Posts.Feed" props={{ accounts }} />
+        <Widget src="near/widget/Posts.Feed" props={{ accounts }} />
       </FeedWrapper>
     </Content>
   </>

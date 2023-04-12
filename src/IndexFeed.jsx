@@ -3,7 +3,7 @@ if (!index) {
   return "props.index is not defined";
 }
 
-const moderatorAccount = props?.moderatorAccount || "adminalpha.near";
+const moderatorAccount = props?.moderatorAccount || "bosmod.near";
 
 const filterUsersRaw = Social.get(
   `${moderatorAccount}/moderate/users`, //TODO

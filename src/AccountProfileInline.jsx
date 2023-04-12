@@ -65,9 +65,7 @@ const Avatar = styled.div`
 `;
 
 const AccountProfile = (
-  <Wrapper
-    href={`/#/adminalpha.near/widget/ProfilePage?accountId=${accountId}`}
-  >
+  <Wrapper href={`/#/near/widget/ProfilePage?accountId=${accountId}`}>
     {!props.hideAvatar && (
       <Avatar>
         <Widget
@@ -90,7 +88,7 @@ if (props.noOverlay) return AccountProfile;
 
 return (
   <Widget
-    src="adminalpha.near/widget/AccountProfileOverlay"
+    src="near/widget/AccountProfileOverlay"
     props={{
       accountId: props.accountId,
       profile,

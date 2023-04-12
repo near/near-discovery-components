@@ -1,6 +1,6 @@
 const accountId = props.accountId || context.accountId;
 const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
-const profileUrl = `/#/adminalpha.near/widget/ProfilePage?accountId=${accountId}`;
+const profileUrl = `/#/near/widget/ProfilePage?accountId=${accountId}`;
 
 const Wrapper = styled.a`
   display: inline-grid;
@@ -111,7 +111,7 @@ if (props.noOverlay) return AccountProfile;
 
 return (
   <Widget
-    src="adminalpha.near/widget/AccountProfileOverlay"
+    src="near/widget/AccountProfileOverlay"
     props={{
       accountId: props.accountId,
       profile,

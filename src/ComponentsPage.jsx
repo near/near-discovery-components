@@ -1,7 +1,7 @@
 const limitPerPage = 21;
 let components = [];
 let totalComponents = 0;
-const componentsUrl = "/#/adminalpha.near/widget/ComponentsPage";
+const componentsUrl = "/#/near/widget/ComponentsPage";
 
 State.init({
   currentPage: 0,
@@ -224,7 +224,7 @@ return (
 
     <Search>
       <Widget
-        src="adminalpha.near/widget/ComponentSearch"
+        src="near/widget/ComponentSearch"
         props={{
           limit: 21,
           onChange: onSearchChange,
@@ -259,7 +259,7 @@ return (
         {items.map((component, i) => (
           <Item key={component.accountId + component.widgetName}>
             <Widget
-              src="adminalpha.near/widget/ComponentCard"
+              src="near/widget/ComponentCard"
               props={{
                 src: `${component.accountId}/widget/${component.widgetName}`,
                 blockHeight: component.blockHeight,

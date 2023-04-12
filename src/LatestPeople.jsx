@@ -78,7 +78,7 @@ return (
       {accounts.map((account) => (
         <Item key={account.accountId}>
           <Widget
-            src="adminalpha.near/widget/AccountProfile"
+            src="near/widget/AccountProfile"
             props={{
               accountId: account.accountId,
               blockHeight: account.blockHeight,
@@ -88,7 +88,7 @@ return (
       ))}
     </Items>
 
-    <ButtonLink href="/#/adminalpha.near/widget/PeoplePage">
+    <ButtonLink href="/#/near/widget/PeoplePage">
       View All People <span>({totalAccounts})</span>
     </ButtonLink>
   </Wrapper>

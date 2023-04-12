@@ -1,5 +1,5 @@
-const componentsUrl = `/#/adminalpha.near/widget/ComponentsPage`;
-const peopleUrl = `/#/adminalpha.near/widget/PeoplePage`;
+const componentsUrl = `/#/near/widget/ComponentsPage`;
+const peopleUrl = `/#/near/widget/PeoplePage`;
 
 function onSearchChange({ result, term }) {
   if (term.trim()) {
@@ -111,7 +111,7 @@ return (
 
     <Search>
       <Widget
-        src="adminalpha.near/widget/GlobalSearch"
+        src="near/widget/GlobalSearch"
         props={{
           limitPerGroup: 3,
           onChange: onSearchChange,
@@ -138,7 +138,7 @@ return (
           {state.searchResults.people.map((person, i) => (
             <Item key={person.accountId}>
               <Widget
-                src="adminalpha.near/widget/AccountProfileCard"
+                src="near/widget/AccountProfileCard"
                 props={{
                   accountId: person.accountId,
                 }}
@@ -162,7 +162,7 @@ return (
           {state.searchResults.components.map((component, i) => (
             <Item key={component.accountId + component.widgetName}>
               <Widget
-                src="adminalpha.near/widget/ComponentCard"
+                src="near/widget/ComponentCard"
                 props={{
                   src: `${component.accountId}/widget/${component.widgetName}`,
                 }}

@@ -3,7 +3,9 @@ const blockHeight =
   props.blockHeight === "now" ? "now" : parseInt(props.blockHeight);
 const subscribe = !!props.subscribe;
 const notifyAccountId = accountId;
-const postUrl = `https://alpha.near.org/#/adminalpha.near/widget/PostPage?accountId=${accountId}&blockHeight=${blockHeight}`;
+const postUrl = `https://alpha.near.org/#/near/widget/PostPage?accountId=${accountId}&blockHeight=${blockHeight}`;
+
+State.init({ hasBeenFlagged: false });
 
 const content =
   props.content ??
@@ -72,11 +74,19 @@ const Comments = styled.div`
   }
 `;
 
+if (state.hasBeenFlagged) {
+  return (
+    <div className="alert alert-secondary">
+      <i className="bi bi-flag" /> This content has been flagged for moderation
+    </div>
+  );
+}
+
 return (
   <Post>
     <Header>
       <Widget
-        src="adminalpha.near/widget/AccountProfile"
+        src="near/widget/AccountProfile"
         props={{
           accountId,
           hideAccountId: true,
@@ -106,7 +116,7 @@ return (
       <Content>
         {content.text && (
           <Widget
-            src="adminalpha.near/widget/SocialMarkdown"
+            src="near/widget/SocialMarkdown"
             props={{ text: content.text }}
           />
         )}
@@ -124,29 +134,32 @@ return (
       {blockHeight !== "now" && (
         <Actions>
           <Widget
-            src="adminalpha.near/widget/LikeButton"
+            src="near/widget/LikeButton"
             props={{
               item,
               notifyAccountId,
             }}
           />
           <Widget
-            src="adminalpha.near/widget/CommentButton"
+            src="near/widget/CommentButton"
             props={{
               item,
               onClick: () => State.update({ showReply: !state.showReply }),
             }}
           />
           <Widget
-            src="adminalpha.near/widget/CopyUrlButton"
+            src="near/widget/CopyUrlButton"
             props={{
               url: postUrl,
             }}
           />
           <Widget
-            src="adminalpha.near/widget/FlagButton"
+            src="near/widget/FlagButton"
             props={{
-              item
+              item,
+              onFlag: () => {
+                State.update({ hasBeenFlagged: true });
+              },
             }}
           />
         </Actions>
@@ -155,7 +168,7 @@ return (
       {state.showReply && (
         <div className="mb-2">
           <Widget
-            src="adminalpha.near/widget/Comments.Compose"
+            src="near/widget/Comments.Compose"
             props={{
               notifyAccountId,
               item,
@@ -167,7 +180,7 @@ return (
 
       <Comments>
         <Widget
-          src="adminalpha.near/widget/Comments.Feed"
+          src="near/widget/Comments.Feed"
           props={{
             item,
             highlightComment: props.highlightComment,

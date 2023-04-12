@@ -27,7 +27,7 @@ if (commentBlockHeight) {
 if (parentPost) {
   return (
     <Widget
-      src="adminalpha.near/widget/Posts.Post"
+      src="near/widget/Posts.Post"
       props={{
         ...parentPost,
         highlightComment: { accountId, blockHeight: commentBlockHeight },
@@ -41,7 +41,7 @@ if (parentPost) {
 
 return (
   <Widget
-    src="adminalpha.near/widget/Posts.Post"
+    src="near/widget/Posts.Post"
     props={{ ...props, commentsLimit: 30, subscribe: true }}
   />
 );

@@ -325,7 +325,7 @@ return (
     {state.showPreview ? (
       <PreviewWrapper>
         <Widget
-          src="adminalpha.near/widget/Posts.Post"
+          src="near/widget/Posts.Post"
           props={{
             accountId: context.accountId,
             blockHeight: "now",
@@ -375,7 +375,7 @@ return (
     {autocompleteEnabled && state.showAccountAutocomplete && (
       <AutoComplete>
         <Widget
-          src="adminalpha.near/widget/AccountAutocomplete"
+          src="near/widget/AccountAutocomplete"
           props={{
             term: state.text.split("@").pop(),
             onSelect: autoCompleteAccountId,

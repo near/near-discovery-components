@@ -1,6 +1,5 @@
 const limitPerPage = 21;
 let people = [];
-let totalPeople = 0;
 const peopleUrl = "/#/adminalpha.near/widget/PeoplePage";
 let followingData = null;
 let followersData = null;
@@ -21,6 +20,13 @@ if (context.accountId) {
   followersData = Social.keys(`*/graph/follow/${context.accountId}`, "final");
 }
 
+// This data includes all accounts with or without profiles:
+const accountsData = Social.keys("*", "final", {
+  return_type: "BlockHeight",
+});
+const totalAccounts = Object.keys(accountsData || {}).length;
+
+// This data only includes accounts that have set up a profile:
 const data = Social.keys("*/profile", "final", {
   return_type: "BlockHeight",
 });
@@ -29,8 +35,6 @@ if (data) {
   const result = [];
 
   Object.keys(data).forEach((accountId) => {
-    totalPeople++;
-
     const isFollowing =
       followingData &&
       followingData[context.accountId]?.graph?.follow[accountId] === true;
@@ -230,7 +234,7 @@ const TabsButton = styled.a`
 return (
   <Wrapper>
     <Header>
-      <H1>{totalPeople} People</H1>
+      <H1>{totalAccounts} People</H1>
       <H2>Connect with the NEAR community.</H2>
     </Header>
 

@@ -46,10 +46,9 @@ return (
             },
           },
           {
-            // onCommit: () => {
-            //TODO kick off refresh or hide the item once we have
-            // updated the feed to filter flagged items
-            // },
+            onCommit: () => {
+              props.onFlag && props.onFlag();
+            },
           }
         );
       }}

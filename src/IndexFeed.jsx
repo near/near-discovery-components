@@ -24,6 +24,31 @@ const filterUsers = filterUsersRaw ? JSON.parse(filterUsersRaw) : [];
 //   State.update({ filterUsers: jFilterUsers, cachedItems: {} });
 // }
 
+// get the full list of posts that the current user has flagged so
+// they can be hidden
+const selfFlaggedPosts = context.accountId
+  ? Social.index("flag", "main", {
+      accountId: context.accountId,
+    })
+  : [];
+
+// declares that a post/comment should be filtered if it is authored
+// by an account on the global block list or if the user has personally
+// flagged the item for moderation
+const shouldFilter = (item) => {
+  return (
+    filterUsers.includes(item.accountId) ||
+    selfFlaggedPosts.find(
+      (flagged) =>
+        flagged?.value?.blockHeight === item.blockHeight &&
+        flagged?.value?.path ===
+          `${item.accountId}${
+            index.action === "comment" ? "/post/comment" : "/post/main"
+          }` // using ternary since post and comment indices are formed differently compared to flagged path
+    )
+  );
+};
+
 const renderItem =
   props.renderItem ??
   ((item, i) => (
@@ -58,7 +83,7 @@ if (initialItems === null) {
 }
 const initialFoundItems = !!initialItems.length;
 // moderate
-initialItems = initialItems.filter((i) => !filterUsers.includes(i.accountId));
+initialItems = initialItems.filter((i) => !shouldFilter(i));
 
 const computeFetchFrom = (items, limit, previouslyFoundItems) => {
   // we must get an explicit bool on whether we previously found items
@@ -123,7 +148,7 @@ if (state.fetchFrom) {
   if (newItems !== null) {
     const newFoundItems = !!newItems.length;
     // moderate
-    newItems = newItems.filter((i) => !filterUsers.includes(i.accountId));
+    newItems = newItems.filter((i) => !shouldFilter(i));
     State.update({
       items: mergeItems(newItems),
       fetchFrom: false,

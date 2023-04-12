@@ -8,7 +8,7 @@ if (props.tab && props.tab !== state.selectedTab) {
   });
 }
 
-const activityUrl = `/#/adminalpha.near/widget/ActivityPage`;
+const activityUrl = `/#/near/widget/ActivityPage`;
 
 const Wrapper = styled.div`
   margin-top: calc(var(--body-top-padding) * -1);
@@ -133,14 +133,14 @@ return (
 
     <Main>
       <Section active={state.selectedTab === "apps"}>
-        <Widget src="adminalpha.near/widget/FeaturedComponents" />
-        <Widget src="adminalpha.near/widget/LatestComponents" />
+        <Widget src="near/widget/FeaturedComponents" />
+        <Widget src="near/widget/LatestComponents" />
       </Section>
       <Section negativeMargin primary active={state.selectedTab === "posts"}>
-        <Widget src="adminalpha.near/widget/Posts" />
+        <Widget src="near/widget/Posts" />
       </Section>
       <Section active={state.selectedTab === "explore"}>
-        <Widget src="adminalpha.near/widget/ExploreWidgets" />
+        <Widget src="near/widget/ExploreWidgets" />
       </Section>
     </Main>
   </Wrapper>

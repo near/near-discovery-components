@@ -7,14 +7,14 @@ const isComment = path.indexOf("/post/comment") > 0 || type === "comment";
 const isPost = !isComment && path.indexOf("/post/main") > 0;
 const likedPost = type === "like" && isPost;
 const likedComment = type === "like" && isComment;
-let postUrl = `/#/adminalpha.near/widget/PostPage?accountId=${
-  props.accountId
-}&${isComment ? "commentBlockHeight" : "blockHeight"}=${props.blockHeight}`;
+let postUrl = `/#/near/widget/PostPage?accountId=${props.accountId}&${
+  isComment ? "commentBlockHeight" : "blockHeight"
+}=${props.blockHeight}`;
 
 if (type === "like") {
   const parentAccountId = path.split("/")[0];
   const parentBlockHeight = item.blockHeight;
-  postUrl = `/#/adminalpha.near/widget/PostPage?accountId=${parentAccountId}&${
+  postUrl = `/#/near/widget/PostPage?accountId=${parentAccountId}&${
     isComment ? "commentBlockHeight" : "blockHeight"
   }=${parentBlockHeight}`;
 }
@@ -154,7 +154,7 @@ return (
   <Wrapper>
     <div>
       <Widget
-        src="adminalpha.near/widget/AccountProfile"
+        src="near/widget/AccountProfile"
         props={{ accountId: props.accountId }}
       />
     </div>
@@ -179,14 +179,14 @@ return (
     <div>
       {(type === "follow" || type === "unfollow") && (
         <Widget
-          src="adminalpha.near/widget/FollowButton"
+          src="near/widget/FollowButton"
           props={{ accountId: props.accountId }}
         />
       )}
 
       {type === "poke" && (
         <Widget
-          src="adminalpha.near/widget/PokeButton"
+          src="near/widget/PokeButton"
           props={{ accountId: props.accountId, back: true, primary: true }}
         />
       )}

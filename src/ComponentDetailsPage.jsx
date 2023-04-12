@@ -17,7 +17,7 @@ const code = Social.get(`${accountId}/widget/${widgetName}`);
 const data = Social.get(`${accountId}/widget/${widgetName}/**`);
 const metadata = data.metadata;
 const tags = Object.keys(metadata.tags || {});
-const detailsUrl = `/#/adminalpha.near/widget/ComponentDetailsPage?src=${src}`;
+const detailsUrl = `/#/near/widget/ComponentDetailsPage?src=${src}`;
 const shareUrl = `https://alpha.near.org${detailsUrl}`;
 
 const dependencyMatch =
@@ -185,7 +185,7 @@ return (
   <Wrapper>
     <SummaryWrapper>
       <Widget
-        src="adminalpha.near/widget/ComponentSummary"
+        src="near/widget/ComponentSummary"
         props={{
           primaryAction: "open",
           size: "large",
@@ -231,14 +231,14 @@ return (
         <Sidebar>
           {(tags.includes("Coming Soon") || tags.includes("coming-soon")) && (
             <div>
-              <Widget src="adminalpha.near/widget/waitList" />
+              <Widget src="near/widget/waitList" />
             </div>
           )}
 
           <div>
             <SmallTitle>Developer</SmallTitle>
             <Widget
-              src="adminalpha.near/widget/AccountProfile"
+              src="near/widget/AccountProfile"
               props={{
                 accountId: accountId,
               }}
@@ -249,7 +249,7 @@ return (
             <div>
               <SmallTitle>Tags</SmallTitle>
               <Widget
-                src="adminalpha.near/widget/Tags"
+                src="near/widget/Tags"
                 props={{
                   tags,
                 }}
@@ -300,7 +300,7 @@ return (
             {dependencySources.map((source) => (
               <Dependency key={source}>
                 <Widget
-                  src="adminalpha.near/widget/ComponentProfile"
+                  src="near/widget/ComponentProfile"
                   props={{ src: source }}
                 />
               </Dependency>

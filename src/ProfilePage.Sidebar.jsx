@@ -13,7 +13,7 @@ if (!accountId) {
 // Profile Data:
 const tags = Object.keys(profile.tags || {});
 const viewingOwnAccount = accountId === context.accountId;
-const accountUrl = `/#/adminalpha.near/widget/ProfilePage?accountId=${accountId}`;
+const accountUrl = `/#/near/widget/ProfilePage?accountId=${accountId}`;
 const shareUrl = `https://alpha.near.org${accountUrl}`;
 
 // Follower Count:
@@ -247,7 +247,7 @@ return (
         {viewingOwnAccount ? (
           <a
             className="button button--primary"
-            href="/#/adminalpha.near/widget/ProfileEditor"
+            href="/#/near/widget/ProfileEditor"
           >
             <i className="bi bi-pencil"></i>
             Edit Profile
@@ -256,7 +256,7 @@ return (
           <>
             <FollowButtonWrapper>
               <Widget
-                src="adminalpha.near/widget/FollowButton"
+                src="near/widget/FollowButton"
                 props={{
                   accountId,
                 }}
@@ -264,7 +264,7 @@ return (
             </FollowButtonWrapper>
 
             <Widget
-              src="adminalpha.near/widget/PokeButton"
+              src="near/widget/PokeButton"
               props={{
                 accountId,
               }}
@@ -304,7 +304,7 @@ return (
     {tags.length > 0 && (
       <Section>
         <Widget
-          src="adminalpha.near/widget/Tags"
+          src="near/widget/Tags"
           props={{
             tags,
           }}

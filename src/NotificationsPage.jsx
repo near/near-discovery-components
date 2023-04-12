@@ -39,17 +39,15 @@ const renderItem = (item, i) => {
   if (i === 0) {
     Storage.set("lastBlockHeight", item.blockHeight);
   }
-  return (
-    <Widget src="adminalpha.near/widget/Notification" key={i} props={item} />
-  );
+  return <Widget src="near/widget/Notification" key={i} props={item} />;
 };
 
 return (
   <Wrapper>
     <H1>Your Notifications</H1>
     <Widget
-      src="adminalpha.near/widget/IndexFeed"
-      props={{ index, renderItem, moderatorAccount: "adminalpha.near" }}
+      src="near/widget/IndexFeed"
+      props={{ index, renderItem, moderatorAccount: "bosmod.near" }}
     />
   </Wrapper>
 );

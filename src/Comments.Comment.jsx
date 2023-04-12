@@ -8,6 +8,8 @@ const parentItem = content.item;
 const highlight = !!props.highlight;
 const raw = !!props.raw;
 
+State.init({ hasBeenFlagged: false });
+
 const extractNotifyAccountId = (parentItem) => {
   if (!parentItem || parentItem.type !== "social" || !parentItem.path) {
     return undefined;
@@ -68,6 +70,14 @@ const Actions = styled.div`
   gap: 12px;
   margin: -6px -6px 6px;
 `;
+
+if (state.hasBeenFlagged) {
+  return (
+    <div className="alert alert-secondary">
+      <i className="bi bi-flag" /> This content has been flagged for moderation
+    </div>
+  );
+}
 
 return (
   <Comment>
@@ -150,6 +160,9 @@ return (
                 type: "social",
                 path: `${accountId}/post/comment`,
                 blockHeight,
+              },
+              onFlag: () => {
+                State.update({ hasBeenFlagged: true });
               },
             }}
           />

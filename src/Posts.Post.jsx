@@ -5,6 +5,8 @@ const subscribe = !!props.subscribe;
 const notifyAccountId = accountId;
 const postUrl = `https://alpha.near.org/#/near/widget/PostPage?accountId=${accountId}&blockHeight=${blockHeight}`;
 
+State.init({ hasBeenFlagged: false });
+
 const content =
   props.content ??
   JSON.parse(Social.get(`${accountId}/post/main`, blockHeight) ?? "null");
@@ -71,6 +73,14 @@ const Comments = styled.div`
     padding-top: 12px;
   }
 `;
+
+if (state.hasBeenFlagged) {
+  return (
+    <div className="alert alert-secondary">
+      <i className="bi bi-flag" /> This content has been flagged for moderation
+    </div>
+  );
+}
 
 return (
   <Post>
@@ -147,6 +157,9 @@ return (
             src="near/widget/FlagButton"
             props={{
               item,
+              onFlag: () => {
+                State.update({ hasBeenFlagged: true });
+              },
             }}
           />
         </Actions>

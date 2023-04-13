@@ -1,10 +1,10 @@
 const nearOrgLinks = {
   getFundingPage:
-    "/near/widget/NearOrg.Ecosystem.GetFunding",
+    "/near/widget/NearOrg.Ecosystem.GetFundingPage",
   communityPage:
-    "/near/widget/NearOrg.Ecosystem.Community",
+    "/near/widget/NearOrg.Ecosystem.CommunityPage",
   workAndEarnPage:
-    "/near/widget/NearOrg.Ecosystem.WorkAndEarn",
+    "/near/widget/NearOrg.Ecosystem.WorkAndEarnPage",
 };
 
 const Wrapper = styled.div`

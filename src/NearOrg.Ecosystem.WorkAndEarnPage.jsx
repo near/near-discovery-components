@@ -1,6 +1,6 @@
 const nearOrgLinks = {
   getFundingPage:
-    "/near/widget/NearOrg.Ecosystem.GetFunding",
+    "/near/widget/NearOrg.Ecosystem.GetFundingPage",
 };
 
 const Wrapper = styled.div`

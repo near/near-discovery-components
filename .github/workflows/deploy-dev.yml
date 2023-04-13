@@ -17,10 +17,8 @@ jobs:
 
       - name: Install near-social CLI
         run: |
-          sudo apt install -y pkg-config libusb-1.0-0-dev libftdi1-dev
-          sudo apt-get install libudev-dev
-          cargo install --git https://github.com/FroVolod/near-social --branch required-deposit
-
+          curl --proto '=https' --tlsv1.2 -LsSf https://github.com/FroVolod/near-social/releases/download/v0.2.5/near-social-v0.2.5-installer.sh | sh
+      
       - name: Deploy widgets
         run: |
           which near-social

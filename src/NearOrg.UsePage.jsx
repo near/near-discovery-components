@@ -225,7 +225,7 @@ return (
             </Text>
           </Flex>
           <Widget
-            src="adminalpha.near/widget/DIG.Button"
+            src="near/widget/DIG.Button"
             props={{
               href: "#set-up-account",
               iconRight: "ph-bold ph-arrow-down",
@@ -251,7 +251,7 @@ return (
             </Text>
           </Flex>
           <Widget
-            src="adminalpha.near/widget/DIG.Button"
+            src="near/widget/DIG.Button"
             props={{
               href: "#explore-dapps",
               iconRight: "ph-bold ph-arrow-down",
@@ -275,7 +275,7 @@ return (
             <Text>Become a web3 citizen and help build a better world</Text>
           </Flex>
           <Widget
-            src="adminalpha.near/widget/DIG.Button"
+            src="near/widget/DIG.Button"
             props={{
               href: "#why-it-matters",
               iconRight: "ph-bold ph-arrow-down",
@@ -341,7 +341,7 @@ return (
       </Flex>
 
       <Widget
-        src="adminalpha.near/widget/DIG.Button"
+        src="near/widget/DIG.Button"
         props={{
           href: "#todo",
           iconRight: "ph-bold ph-arrow-up-right",
@@ -408,7 +408,7 @@ return (
 
       <Flex gap="16px" wrap="wrap" justifyContent="center">
         <Widget
-          src="adminalpha.near/widget/DIG.Button"
+          src="near/widget/DIG.Button"
           props={{
             href: "#todo",
             iconRight: "ph-bold ph-arrow-up-right",
@@ -418,7 +418,7 @@ return (
           }}
         />
         <Widget
-          src="adminalpha.near/widget/DIG.Button"
+          src="near/widget/DIG.Button"
           props={{
             href: "https://awesomenear.com/categories/defi",
             target: "_blank",
@@ -493,7 +493,7 @@ return (
 
       <Flex gap="16px" wrap="wrap" justifyContent="center">
         <Widget
-          src="adminalpha.near/widget/DIG.Button"
+          src="near/widget/DIG.Button"
           props={{
             href: "#todo",
             iconRight: "ph-bold ph-arrow-up-right",
@@ -503,7 +503,7 @@ return (
           }}
         />
         <Widget
-          src="adminalpha.near/widget/DIG.Button"
+          src="near/widget/DIG.Button"
           props={{
             href: "https://awesomenear.com/categories/nft",
             target: "_blank",
@@ -577,7 +577,7 @@ return (
       </Flex>
 
       <Widget
-        src="adminalpha.near/widget/DIG.Button"
+        src="near/widget/DIG.Button"
         props={{
           href: "https://awesomenear.com/categories/social",
           target: "_blank",
@@ -627,7 +627,7 @@ return (
             every sector of society.
           </Text>
           <Widget
-            src="adminalpha.near/widget/DIG.Button"
+            src="near/widget/DIG.Button"
             props={{
               href: "#todo",
               iconRight: "ph-bold ph-arrow-up-right",
@@ -679,7 +679,7 @@ return (
           </Text>
           <Text>Your assets, your data, your identity</Text>
           <Widget
-            src="adminalpha.near/widget/DIG.Button"
+            src="near/widget/DIG.Button"
             props={{
               href: "#regain-ownership",
               iconRight: "ph-bold ph-arrow-down",
@@ -700,7 +700,7 @@ return (
           </Text>
           <Text>Free flow of values and information</Text>
           <Widget
-            src="adminalpha.near/widget/DIG.Button"
+            src="near/widget/DIG.Button"
             props={{
               href: "#interact-freely",
               iconRight: "ph-bold ph-arrow-down",
@@ -721,7 +721,7 @@ return (
           </Text>
           <Text>Value is distributed through transparent and fair rules</Text>
           <Widget
-            src="adminalpha.near/widget/DIG.Button"
+            src="near/widget/DIG.Button"
             props={{
               href: "#fair-economies",
               iconRight: "ph-bold ph-arrow-down",
@@ -805,7 +805,7 @@ return (
             </Text>
           </Flex>
           <Widget
-            src="adminalpha.near/widget/DIG.Button"
+            src="near/widget/DIG.Button"
             props={{
               href: "#todo",
               iconRight: "ph-bold ph-arrow-right",
@@ -831,7 +831,7 @@ return (
             </Text>
           </Flex>
           <Widget
-            src="adminalpha.near/widget/DIG.Button"
+            src="near/widget/DIG.Button"
             props={{
               href: "https://fewfar.com/",
               target: "_blank",
@@ -940,7 +940,7 @@ return (
             </Text>
           </Flex>
           <Widget
-            src="adminalpha.near/widget/DIG.Button"
+            src="near/widget/DIG.Button"
             props={{
               href: "https://youminter.com/",
               target: "_blank",
@@ -966,7 +966,7 @@ return (
             </Text>
           </Flex>
           <Widget
-            src="adminalpha.near/widget/DIG.Button"
+            src="near/widget/DIG.Button"
             props={{
               href: "https://www.niche.club/",
               target: "_blank",
@@ -1094,7 +1094,7 @@ return (
             </Text>
           </Flex>
           <Widget
-            src="adminalpha.near/widget/DIG.Button"
+            src="near/widget/DIG.Button"
             props={{
               href: "https://nearweek.com/",
               target: "_blank",
@@ -1121,7 +1121,7 @@ return (
             </Text>
           </Flex>
           <Widget
-            src="adminalpha.near/widget/DIG.Button"
+            src="near/widget/DIG.Button"
             props={{
               href: "https://sweateconomy.com/",
               target: "_blank",
@@ -1165,7 +1165,7 @@ return (
     </Section>
 
     <Section>
-      <Widget src="adminalpha.near/widget/NearOrg.LearningLinks" />
+      <Widget src="near/widget/NearOrg.LearningLinks" />
     </Section>
   </Wrapper>
 );

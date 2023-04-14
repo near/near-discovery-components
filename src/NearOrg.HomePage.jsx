@@ -91,12 +91,12 @@ const H1 = styled.h1`
     background: #00ec97;
     border-radius: 20px;
     position: relative;
-    padding: 0.1em 0.2em;
+    padding: 0.1em 0.2em 0;
 
     svg {
       position: absolute;
-      bottom: -12px;
-      right: -12px;
+      bottom: -8px;
+      right: -10px;
       width: 24px;
     }
   }
@@ -105,10 +105,11 @@ const H1 = styled.h1`
     font-size: 50px;
 
     span {
+      border-radius: 12px;
       svg {
         position: absolute;
-        bottom: -4px;
-        right: -4px;
+        bottom: -6px;
+        right: -7px;
         width: 16px;
       }
     }

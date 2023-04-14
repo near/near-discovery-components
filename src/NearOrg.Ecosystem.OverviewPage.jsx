@@ -1,20 +1,16 @@
 const nearOrgLinks = {
-  getFundingPage:
-    "/near/widget/NearOrg.Ecosystem.GetFundingPage",
-  communityPage:
-    "/near/widget/NearOrg.Ecosystem.CommunityPage",
-  workAndEarnPage:
-    "/near/widget/NearOrg.Ecosystem.WorkAndEarnPage",
+  getFundingPage: "/near/widget/NearOrg.Ecosystem.GetFundingPage",
+  communityPage: "/near/widget/NearOrg.Ecosystem.CommunityPage",
+  workAndEarnPage: "/near/widget/NearOrg.Ecosystem.WorkAndEarnPage",
 };
 
 const Wrapper = styled.div`
   --section-gap: 162px;
   --large-gap: 82px;
   --medium-gap: 48px;
-  margin: calc(var(--body-top-padding) * -1) calc(var(--bs-gutter-x) * -.5) 0;
-  padding: calc(var(--section-gap) / 2) 0;
+  margin: calc(var(--body-top-padding) * -1) calc(var(--bs-gutter-x) * -0.5) 0;
+  padding: calc(var(--section-gap) / 2) 0 0;
   position: relative;
-
 
   @media (max-width: 900px) {
     --section-gap: 60px;
@@ -67,7 +63,7 @@ const Small = styled.span`
   font: inherit;
   color: inherit;
   margin: 0;
-  font-size: ${(p) => p.size}
+  font-size: ${(p) => p.size};
 `;
 const Flex = styled.div`
   display: flex;
@@ -110,12 +106,12 @@ const Card = styled.div`
   background: ${(p) => p.background ?? "var(--sand1)"};
 `;
 const NumericLabel = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 14px 21px 14px 21px;
-    border-radius: 10px;
-    background-color: ${(p) => p.backgroundColor ?? "var(--white)"};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px 21px 14px 21px;
+  border-radius: 10px;
+  background-color: ${(p) => p.backgroundColor ?? "var(--white)"};
 `;
 const StickyNav = styled.div`
   position: sticky;
@@ -1961,5 +1957,7 @@ return (
         <Widget src="near/widget/NearOrg.LearningLinks" />
       </Section>
     </Section>
+
+    <Widget src="near/widget/NearOrg.Footer" />
   </Wrapper>
 );

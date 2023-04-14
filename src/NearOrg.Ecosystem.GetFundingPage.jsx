@@ -2,10 +2,9 @@ const Wrapper = styled.div`
   --section-gap: 162px;
   --large-gap: 82px;
   --medium-gap: 48px;
-  margin: calc(var(--body-top-padding) * -1) calc(var(--bs-gutter-x) * -.5) 0;
-  padding: calc(var(--section-gap) / 2) 0;
+  margin: calc(var(--body-top-padding) * -1) calc(var(--bs-gutter-x) * -0.5) 0;
+  padding: calc(var(--section-gap) / 2) 0 0;
   position: relative;
-
 
   @media (max-width: 900px) {
     --section-gap: 60px;
@@ -476,5 +475,7 @@ return (
         />
       </div>
     </Section>
+
+    <Widget src="near/widget/NearOrg.Footer" />
   </Wrapper>
 );

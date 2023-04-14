@@ -54,7 +54,7 @@ const variants = {
       background: "var(--sand12)",
       border: "var(--sand12)",
       color: "var(--sand1)",
-      iconColor: "var(--sand11)",
+      iconColor: "var(--sand9)",
       hover: {
         background: "var(--sand11)",
         border: "var(--sand11)",

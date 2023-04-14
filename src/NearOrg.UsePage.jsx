@@ -1167,5 +1167,7 @@ return (
     <Section>
       <Widget src="near/widget/NearOrg.LearningLinks" />
     </Section>
+
+    <Widget src="near/widget/NearOrg.Footer" />
   </Wrapper>
 );

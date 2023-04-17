@@ -358,6 +358,7 @@ const Line = styled.div`
   border: var(--size) solid var(--color);
   position: absolute;
   z-index: 10;
+  pointer-events: none;
 
   ${(p) =>
     p.straightVertical &&
@@ -397,6 +398,7 @@ const LineRoundedCorners = (props) => {
       style={{
         zIndex: 10,
         position: "absolute",
+        pointerEvents: "none",
         ...props.style,
       }}
     >

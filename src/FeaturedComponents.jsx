@@ -87,6 +87,12 @@ return (
           props={{ src: "microchipgnu.near/widget/Game.FlappyBOS" }}
         />
       </Item>
+      <Item>
+        <Widget
+          src="near/widget/ComponentCard"
+          props={{ src: "mintbase.near/widget/nft-marketplace" }}
+        />
+      </Item>
     </Items>
   </Wrapper>
 );

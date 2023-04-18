@@ -54,31 +54,37 @@ return (
       <Item>
         <Widget
           src="near/widget/ComponentCard"
-          props={{ src: "near/widget/FastAuth" }}
-        />
-      </Item>
-      <Item>
-        <Widget
-          src="near/widget/ComponentCard"
-          props={{ src: "dataplatform.near/widget/NearQueryApi" }}
-        />
-      </Item>
-      <Item>
-        <Widget
-          src="near/widget/ComponentCard"
-          props={{ src: "near/widget/ActivityPage" }}
-        />
-      </Item>
-      <Item>
-        <Widget
-          src="near/widget/ComponentCard"
           props={{ src: "devgovgigs.near/widget/Ideas" }}
         />
       </Item>
       <Item>
         <Widget
           src="near/widget/ComponentCard"
+          props={{ src: "let45fc.near/widget/LaserChess3D" }}
+        />
+      </Item>
+      <Item>
+        <Widget
+          src="near/widget/ComponentCard"
+          props={{ src: "zavodil.near/widget/social-avatar-editor" }}
+        />
+      </Item>
+      <Item>
+        <Widget
+          src="near/widget/ComponentCard"
           props={{ src: "frichard2.near/widget/most-active-contracts" }}
+        />
+      </Item>
+      <Item>
+        <Widget
+          src="near/widget/ComponentCard"
+          props={{ src: "mob.near/widget/Explorer" }}
+        />
+      </Item>
+      <Item>
+        <Widget
+          src="near/widget/ComponentCard"
+          props={{ src: "microchipgnu.near/widget/Game.FlappyBOS" }}
         />
       </Item>
     </Items>

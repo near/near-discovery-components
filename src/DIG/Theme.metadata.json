@@ -1,0 +1,4 @@
+{
+  "description": "This wrapper provides accessible color and font values to all children via CSS variables.\n\n### Props\n\n`children`\n- type: jsx\n",
+  "name": "DIG.Theme"
+}

@@ -437,7 +437,7 @@ return (
         <Widget
           src="near/widget/DIG.Button"
           props={{
-            href: "/edit",
+            href: "/sandbox",
             label: "Try It Now",
             variant: "affirmative",
             size: "large",
@@ -546,7 +546,8 @@ return (
               <Widget
                 src="near/widget/DIG.Button"
                 props={{
-                  href: "#todo",
+                  href: "https://docs.near.org/discovery",
+                  target: "_blank",
                   label: "Read the Docs",
                   iconRight: "ph-bold ph-arrow-right",
                   variant: "affirmative",
@@ -574,7 +575,7 @@ return (
               <Widget
                 src="near/widget/DIG.Button"
                 props={{
-                  href: "/edit",
+                  href: "/sandbox",
                   label: "Try it now",
                   iconRight: "ph-bold ph-arrow-right",
                   variant: "affirmative",
@@ -778,7 +779,7 @@ return (
               <Widget
                 src="near/widget/DIG.Button"
                 props={{
-                  href: "#todo",
+                  href: "/sandbox",
                   label: "Try it out",
                   iconRight: "ph-bold ph-arrow-right",
                   variant: "primary",
@@ -978,7 +979,7 @@ return (
             <Widget
               src="near/widget/DIG.Button"
               props={{
-                href: "#todo",
+                href: "/sandbox",
                 label: "Get Started",
                 iconRight: "ph-bold ph-arrow-right",
                 variant: "secondary",
@@ -992,7 +993,7 @@ return (
               <Widget
                 src="near/widget/DIG.Button"
                 props={{
-                  href: "#todo",
+                  href: "/people",
                   label: "Community",
                   iconRight: "ph-bold ph-arrow-right",
                   variant: "primary",
@@ -1009,7 +1010,7 @@ return (
               <Widget
                 src="near/widget/DIG.Button"
                 props={{
-                  href: "#todo",
+                  href: "/events",
                   label: "Events",
                   iconRight: "ph-bold ph-arrow-right",
                   variant: "primary",
@@ -1026,7 +1027,7 @@ return (
               <Widget
                 src="near/widget/DIG.Button"
                 props={{
-                  href: "#todo",
+                  href: "/news",
                   label: "News",
                   iconRight: "ph-bold ph-arrow-right",
                   variant: "primary",

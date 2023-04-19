@@ -22,6 +22,8 @@ const content = JSON.parse(
 
 const postUrl = `https://alpha.near.org/#/${previewWidget}?accountId=${accountId}&blockHeight=${blockHeight}&dbAction=${dbAction}`;
 
+State.init({ hasBeenFlagged: false });
+
 // all children comments will be identified by this object
 const item = {
   accountId,
@@ -30,61 +32,69 @@ const item = {
 };
 
 const Post = styled.div`
-    position: relative;
-  
-    &::before {
-      content: '';
-      display: block;
-      position: absolute;
-      left: 19px;
-      top: 52px;
-      bottom: 12px;
-      width: 2px;
-      background: #ECEEF0;
-    }
-  `;
+  position: relative;
+
+  &::before {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 19px;
+    top: 52px;
+    bottom: 12px;
+    width: 2px;
+    background: #eceef0;
+  }
+`;
 
 const Header = styled.div`
-    margin-bottom: 0;
-    display: inline-flex;
-  `;
+  margin-bottom: 0;
+  display: inline-flex;
+`;
 
 const Body = styled.div`
-    padding-left: 52px;
-    padding-bottom: 1px;
-  `;
+  padding-left: 52px;
+  padding-bottom: 1px;
+`;
 
 const Content = styled.div`
-    img {
-      display: block;
-      max-width: 100%;
-      max-height: 80vh;
-      margin: 0 0 12px;
-    }
-  `;
+  img {
+    display: block;
+    max-width: 100%;
+    max-height: 80vh;
+    margin: 0 0 12px;
+  }
+`;
 
 const Text = styled.p`
-    display: block;
-    margin: 0;
-    font-size: 14px;
-    line-height: 20px;
-    font-weight: 400;
-    color: #687076;
-    white-space: nowrap;
-  `;
+  display: block;
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  color: #687076;
+  white-space: nowrap;
+`;
 
 const Actions = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: -6px -6px 6px;
-  `;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: -6px -6px 6px;
+`;
 
 const Comments = styled.div`
-    > div > div:first-child {
-      padding-top: 12px;
-    }
-  `;
+  > div > div:first-child {
+    padding-top: 12px;
+  }
+`;
+
+if (state.hasBeenFlagged) {
+  return (
+    <div className="alert alert-secondary">
+      <i className="bi bi-flag" /> This content has been flagged for moderation
+    </div>
+  );
+}
 
 return (
   <Post>
@@ -148,6 +158,19 @@ return (
             src="calebjacob.near/widget/CopyUrlButton"
             props={{
               url: postUrl,
+            }}
+          />
+          <Widget
+            src="near/widget/FlagButton"
+            props={{
+              item: {
+                type: "social",
+                path: `${accountId}/discuss`,
+                blockHeight,
+              },
+              onFlag: () => {
+                State.update({ hasBeenFlagged: true });
+              },
             }}
           />
         </Actions>

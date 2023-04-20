@@ -120,7 +120,7 @@ if (
   });
 
   const latestAccept = acceptJson
-    ? JSON.parse(acceptJson[context.accountId]["index"]["tosAccept"])
+    ? JSON.parse(acceptJson[context.accountId]?.index?.tosAccept)
     : undefined;
 
   if (

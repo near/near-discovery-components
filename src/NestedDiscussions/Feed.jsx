@@ -38,7 +38,7 @@ const renderItem = (a) =>
 return (
   <>
     <Widget
-      src="adminalpha.near/widget/IndexFeed"
+      src="near/widget/IndexFeed"
       props={{ index, renderItem, moderatorAccount, reverse: true }}
     />
   </>

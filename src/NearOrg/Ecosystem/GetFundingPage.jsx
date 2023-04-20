@@ -8,9 +8,8 @@ const Wrapper = styled.div`
 
   @media (max-width: 900px) {
     --section-gap: 60px;
-    --large-gap: 24px;
-    --medium-gap: 16px;
-    padding-top: 0;
+    --large-gap: 48px;
+    --medium-gap: 24px;
   }
 `;
 const H1 = styled.h1`
@@ -19,6 +18,7 @@ const H1 = styled.h1`
   letter-spacing: -0.015em;
   color: var(--sand12);
   margin: 0;
+  max-width: 960px;
 
   @media (max-width: 900px) {
     font: var(--text-2xl);
@@ -66,19 +66,25 @@ const Flex = styled.div`
     `
     @media (max-width: 900px) {
       flex-direction: column;
-      gap: var(--section-gap);
+      gap: ${(p) =>
+        p.mobileStack === true ? "var(--section-gap)" : p.mobileStack};
     }
   `}
 `;
 const Section = styled.div`
   display: flex;
-  padding: calc(var(--section-gap) / 2) 16px;
+  padding: calc(var(--section-gap) / 2);
   gap: ${(p) => p.gap ?? "var(--medium-gap)"};
   flex-direction: column;
   align-items: ${(p) => (p.center ? "center" : undefined)};
   justify-content: ${(p) => (p.center ? "center" : undefined)};
   text-align: ${(p) => (p.center ? "center" : undefined)};
   background: ${(p) => p.background};
+
+  @media (max-width: 900px) {
+    padding-left: var(--medium-gap);
+    padding-right: var(--medium-gap);
+  }
 `;
 const Card = styled.div`
   display: flex;

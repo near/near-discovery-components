@@ -438,228 +438,793 @@ const nearHubsCards = [
 ];
 
 return (
-  <Wrapper>
-    <Section center style={{ position: "relative" }}>
-      <Flex gap="16px" direction="column" alignItems="center">
-        <H1>Building the Open Web together</H1>
-        <Text size="text-xl" color="sand12" style={{ maxWidth: "662px" }}>
-          Projects building on NEAR are at the center. The Ecosystem is
-          supporting them with everything they need to succeed.
-        </Text>
-      </Flex>
-      <Flex gap="16px" alignItems="center" wrap="wrap" justifyContent="center">
-        {navLinks.map((nav) => (
-          <Text key={nav.href} as="a" href={`#${nav.href}`}>
-            {nav.name}
+  <>
+    <Wrapper className="container-xl">
+      <Section center style={{ position: "relative" }}>
+        <Flex gap="16px" direction="column" alignItems="center">
+          <H1>Building the Open Web together</H1>
+          <Text size="text-xl" color="sand12" style={{ maxWidth: "662px" }}>
+            Projects building on NEAR are at the center. The Ecosystem is
+            supporting them with everything they need to succeed.
           </Text>
-        ))}
-      </Flex>
-    </Section>
-    <Section center>
-      <Flex gap="var(--large-gap)" wrap="wrap" justifyContent="center">
-        <Widget
-          src="mob.near/widget/Image"
-          props={{
-            image: returnIpfsImage(ipfsImages.headerImage),
-            className: "img-fluid",
-          }}
-        />
-      </Flex>
-    </Section>
-    <Section background="linear-gradient(to right, hsla(0, 0%, 100%, 0), var(--sand3), hsla(0, 0%, 100%, 0))">
-      <div class="row row-cols-md-2 row-cols-1 g-4 text-md-start text-center">
-        <div class="col order-md-0 order-1">
-          <Flex gap="16px" direction="column">
-            <Text size="text-3xl" color="sand12">
-              Hundreds of Projects and DAOs
+        </Flex>
+        <Flex
+          gap="16px"
+          alignItems="center"
+          wrap="wrap"
+          justifyContent="center"
+        >
+          {navLinks.map((nav) => (
+            <Text key={nav.href} as="a" href={`#${nav.href}`}>
+              {nav.name}
             </Text>
-            <Text size="text-xl" color="sand12">
-              Projects and DAOs bring value to users, and change to the world.
-            </Text>
-            <Flex
-              gap="32px"
-              className="justify-content-md-start justify-content-center"
-            >
-              <NumericLabel>
-                <Text size="text-3xl" color="cyan8" fontWeight="600">
-                  750
-                </Text>
-                <Text size="text-l" color="sand12">
-                  Active projects
-                </Text>
-              </NumericLabel>
-              <NumericLabel>
-                <Text size="text-3xl" color="cyan8" fontWeight="600">
-                  125
-                </Text>
-                <Text size="text-l" color="sand12">
-                  DAOs
-                </Text>
-              </NumericLabel>
-            </Flex>
-          </Flex>
-        </div>
-        <div class="col order-md-1 order-0">
+          ))}
+        </Flex>
+      </Section>
+      <Section center>
+        <Flex gap="var(--large-gap)" wrap="wrap" justifyContent="center">
           <Widget
             src="mob.near/widget/Image"
             props={{
-              image: returnIpfsImage(ipfsImages.projectDAOs),
+              image: returnIpfsImage(ipfsImages.headerImage),
               className: "img-fluid",
             }}
           />
-        </div>
-      </div>
-
-      <Section center id="anker_projects_daos">
-        <Text size="text-3xl" color="sand12">
-          Projects: Building the future on NEAR
-        </Text>
-        <Widget
-          src="mob.near/widget/Image"
-          props={{
-            image: returnIpfsImage(ipfsImages.homepageApps),
-            className: "img-fluid px-5",
-          }}
-        />
-        <Text size="text-3xl" color="sand12">
-          Explore hundreds of dApps already built on NEAR
-        </Text>
-        <Widget
-          src="near/widget/DIG.Button"
-          props={{
-            href: "https://awesomenear.com/",
-            iconRight: "ph-bold ph-arrow-up-right",
-            label: "Visit AwesomeNEAR",
-            variant: "affirmative",
-            size: "large",
-            as: "a",
-            target: "_blank",
-          }}
-        />
-      </Section>
-
-      <Section center>
-        <Text size="text-3xl" color="sand12">
-          DAOs: A new way to organize, fund, and empower communities
-        </Text>
-        <Text size="text-xl" color="sand12">
-          DAOs offer a new way for communities to collaborate. Members own the
-          organization and receive rewards in proportion to their contributions.
-          There are no bosses and no hierarchy. Instead, a common purpose unites
-          the participants. One way to think of a DAO is a Facebook group with
-          its own bank account.
-        </Text>
-      </Section>
-
-      <Section center>
-        <Text size="text-3xl" color="sand12">
-          Explore DAOs, participate or get funding
-        </Text>
-        <Flex gap="24px" mobileStack="24px">
-          <Card center>
-            <Widget
-              src="mob.near/widget/Image"
-              props={{
-                image: returnIpfsImage(ipfsImages.nearWeek),
-                className: "img-fluid",
-              }}
-            />
-            <Flex direction="column" gap="8px">
-              <Text size="text-xl" fontWeight="600" color="sand12">
-                NEARWEEK
-              </Text>
-              <Text>
-                NEARWEEK is a Web3 news & community platform. Community members
-                earn rewards by submitting news items to the NEARWEEK DAO.
-              </Text>
-            </Flex>
-            <Widget
-              src="near/widget/DIG.Button"
-              props={{
-                href: "https://nearweek.com/",
-                iconRight: "ph-bold ph-arrow-up-right",
-                label: "Learn more",
-                variant: "primary",
-                fill: "outline",
-                size: "large",
-                as: "a",
-                target: "_blank",
-              }}
-            />
-          </Card>
-
-          <Card center>
-            <Widget
-              src="mob.near/widget/Image"
-              props={{
-                image: returnIpfsImage(ipfsImages.humanGuild),
-                className: "img-fluid",
-              }}
-            />
-            <Flex direction="column" gap="8px">
-              <Text size="text-xl" fontWeight="600" color="sand12">
-                Human Guild
-              </Text>
-              <Text>
-                Human Guild awards grants to promising gaming projects building
-                on NEAR and supports them in an advisory role along with other
-                services.
-              </Text>
-            </Flex>
-            <Widget
-              src="near/widget/DIG.Button"
-              props={{
-                href: "https://humanguild.io/",
-                iconRight: "ph-bold ph-arrow-up-right",
-                label: "Learn more",
-                variant: "primary",
-                fill: "outline",
-                size: "large",
-                as: "a",
-                target: "_blank",
-              }}
-            />
-          </Card>
-
-          <Card center>
-            <Widget
-              src="mob.near/widget/Image"
-              props={{
-                image: returnIpfsImage(ipfsImages.tenkDao),
-                className: "img-fluid",
-              }}
-            />
-            <Flex direction="column" gap="8px">
-              <Text size="text-xl" fontWeight="600" color="sand12">
-                TenK DAO
-              </Text>
-              <Text>
-                TenK DAO offers professional services to help artists build
-                generative art projects. The DAO is compensated with a
-                percentage of sales and royalties.
-              </Text>
-            </Flex>
-            <Widget
-              src="near/widget/DIG.Button"
-              props={{
-                href: "https://tenk.dev/",
-                iconRight: "ph-bold ph-arrow-up-right",
-                label: "Learn more",
-                variant: "primary",
-                fill: "outline",
-                size: "large",
-                as: "a",
-                target: "_blank",
-              }}
-            />
-          </Card>
         </Flex>
-        <Flex gap="32px" mobileStack="32px">
-          <Card center direction="row" className="flex-md-nowrap flex-wrap">
+      </Section>
+      <Section background="linear-gradient(to right, hsla(0, 0%, 100%, 0), var(--sand3), hsla(0, 0%, 100%, 0))">
+        <div class="row row-cols-md-2 row-cols-1 g-4 text-md-start text-center">
+          <div class="col order-md-0 order-1">
+            <Flex gap="16px" direction="column">
+              <Text size="text-3xl" color="sand12">
+                Hundreds of Projects and DAOs
+              </Text>
+              <Text size="text-xl" color="sand12">
+                Projects and DAOs bring value to users, and change to the world.
+              </Text>
+              <Flex
+                gap="32px"
+                className="justify-content-md-start justify-content-center"
+              >
+                <NumericLabel>
+                  <Text size="text-3xl" color="cyan8" fontWeight="600">
+                    750
+                  </Text>
+                  <Text size="text-l" color="sand12">
+                    Active projects
+                  </Text>
+                </NumericLabel>
+                <NumericLabel>
+                  <Text size="text-3xl" color="cyan8" fontWeight="600">
+                    125
+                  </Text>
+                  <Text size="text-l" color="sand12">
+                    DAOs
+                  </Text>
+                </NumericLabel>
+              </Flex>
+            </Flex>
+          </div>
+          <div class="col order-md-1 order-0">
             <Widget
               src="mob.near/widget/Image"
               props={{
-                image: returnIpfsImage(ipfsImages.unchainLogo),
+                image: returnIpfsImage(ipfsImages.projectDAOs),
+                className: "img-fluid",
+              }}
+            />
+          </div>
+        </div>
+
+        <Section center id="anker_projects_daos">
+          <Text size="text-3xl" color="sand12">
+            Projects: Building the future on NEAR
+          </Text>
+          <Widget
+            src="mob.near/widget/Image"
+            props={{
+              image: returnIpfsImage(ipfsImages.homepageApps),
+              className: "img-fluid px-5",
+            }}
+          />
+          <Text size="text-3xl" color="sand12">
+            Explore hundreds of dApps already built on NEAR
+          </Text>
+          <Widget
+            src="near/widget/DIG.Button"
+            props={{
+              href: "https://awesomenear.com/",
+              iconRight: "ph-bold ph-arrow-up-right",
+              label: "Visit AwesomeNEAR",
+              variant: "affirmative",
+              size: "large",
+              as: "a",
+              target: "_blank",
+            }}
+          />
+        </Section>
+
+        <Section center>
+          <Text size="text-3xl" color="sand12">
+            DAOs: A new way to organize, fund, and empower communities
+          </Text>
+          <Text size="text-xl" color="sand12">
+            DAOs offer a new way for communities to collaborate. Members own the
+            organization and receive rewards in proportion to their
+            contributions. There are no bosses and no hierarchy. Instead, a
+            common purpose unites the participants. One way to think of a DAO is
+            a Facebook group with its own bank account.
+          </Text>
+        </Section>
+
+        <Section center>
+          <Text size="text-3xl" color="sand12">
+            Explore DAOs, participate or get funding
+          </Text>
+          <Flex gap="24px" mobileStack="24px">
+            <Card center>
+              <Widget
+                src="mob.near/widget/Image"
+                props={{
+                  image: returnIpfsImage(ipfsImages.nearWeek),
+                  className: "img-fluid",
+                }}
+              />
+              <Flex direction="column" gap="8px">
+                <Text size="text-xl" fontWeight="600" color="sand12">
+                  NEARWEEK
+                </Text>
+                <Text>
+                  NEARWEEK is a Web3 news & community platform. Community
+                  members earn rewards by submitting news items to the NEARWEEK
+                  DAO.
+                </Text>
+              </Flex>
+              <Widget
+                src="near/widget/DIG.Button"
+                props={{
+                  href: "https://nearweek.com/",
+                  iconRight: "ph-bold ph-arrow-up-right",
+                  label: "Learn more",
+                  variant: "primary",
+                  fill: "outline",
+                  size: "large",
+                  as: "a",
+                  target: "_blank",
+                }}
+              />
+            </Card>
+
+            <Card center>
+              <Widget
+                src="mob.near/widget/Image"
+                props={{
+                  image: returnIpfsImage(ipfsImages.humanGuild),
+                  className: "img-fluid",
+                }}
+              />
+              <Flex direction="column" gap="8px">
+                <Text size="text-xl" fontWeight="600" color="sand12">
+                  Human Guild
+                </Text>
+                <Text>
+                  Human Guild awards grants to promising gaming projects
+                  building on NEAR and supports them in an advisory role along
+                  with other services.
+                </Text>
+              </Flex>
+              <Widget
+                src="near/widget/DIG.Button"
+                props={{
+                  href: "https://humanguild.io/",
+                  iconRight: "ph-bold ph-arrow-up-right",
+                  label: "Learn more",
+                  variant: "primary",
+                  fill: "outline",
+                  size: "large",
+                  as: "a",
+                  target: "_blank",
+                }}
+              />
+            </Card>
+
+            <Card center>
+              <Widget
+                src="mob.near/widget/Image"
+                props={{
+                  image: returnIpfsImage(ipfsImages.tenkDao),
+                  className: "img-fluid",
+                }}
+              />
+              <Flex direction="column" gap="8px">
+                <Text size="text-xl" fontWeight="600" color="sand12">
+                  TenK DAO
+                </Text>
+                <Text>
+                  TenK DAO offers professional services to help artists build
+                  generative art projects. The DAO is compensated with a
+                  percentage of sales and royalties.
+                </Text>
+              </Flex>
+              <Widget
+                src="near/widget/DIG.Button"
+                props={{
+                  href: "https://tenk.dev/",
+                  iconRight: "ph-bold ph-arrow-up-right",
+                  label: "Learn more",
+                  variant: "primary",
+                  fill: "outline",
+                  size: "large",
+                  as: "a",
+                  target: "_blank",
+                }}
+              />
+            </Card>
+          </Flex>
+          <Flex gap="32px" mobileStack="32px">
+            <Card center direction="row" className="flex-md-nowrap flex-wrap">
+              <Widget
+                src="mob.near/widget/Image"
+                props={{
+                  image: returnIpfsImage(ipfsImages.unchainLogo),
+                  className: "img-fluid me-4",
+                }}
+              />
+              <Flex
+                direction="column"
+                gap="16px"
+                className="align-items-center align-items-md-start justify-content-center justify-content-md-start"
+              >
+                <Text size="text-xl" fontWeight="600" color="sand12">
+                  How crypto became a major source of relief for embattled
+                  Ukraine
+                </Text>
+                <Text className="text-center text-md-start">
+                  Created on AstroDAO, a DAO-launching platform built on NEAR,
+                  Unchain Fund raises funds for humanitarian efforts in in
+                  Ukraine, including evacuation, shelter, food, and more. In
+                  under a month, Unchain has collected over $7 million USD and
+                  counting across a range of cryptocurrencies including, BSC,
+                  ETH, Harmony, NEAR, and Polygon.
+                </Text>
+                <Widget
+                  src="near/widget/DIG.Button"
+                  props={{
+                    href: "https://unchain.fund/",
+                    iconRight: "ph-bold ph-arrow-up-right",
+                    label: "Learn more",
+                    variant: "primary",
+                    fill: "outline",
+                    size: "large",
+                    as: "a",
+                    target: "_blank",
+                  }}
+                />
+              </Flex>
+            </Card>
+          </Flex>
+          <Flex gap="32px">
+            <Widget
+              src="near/widget/DIG.Button"
+              props={{
+                href: "https://astrodao.com/",
+                iconRight: "ph-bold ph-arrow-up-right",
+                label: "Browse DAOs on AstroDAO",
+                variant: "affirmative",
+                size: "large",
+                as: "a",
+                target: "_blank",
+              }}
+            />
+          </Flex>
+        </Section>
+        <Section gap="24px">
+          <Card>
+            <Text size="text-xl" fontWeight="600" color="sand12" align="left">
+              Looking for funding to start a project or DAO?
+            </Text>
+            <Text align="left">
+              The NEAR ecosystem has plenty of options available to fund
+              promising projects or initiatives that bring the ecosystem
+              forward.
+            </Text>
+            <div>
+              <Widget
+                src="near/widget/DIG.Button"
+                props={{
+                  href: nearOrgLinks.getFundingPage,
+                  iconRight: "ph-bold ph-arrow-right",
+                  label: "Explore funding options",
+                  variant: "affirmative",
+                  size: "large",
+                }}
+              />
+            </div>
+          </Card>
+
+          <Card>
+            <Text size="text-xl" fontWeight="600" color="sand12" align="left">
+              Thinking about starting a DAO?
+            </Text>
+            <Text align="left">
+              Whether you want to organize your annual tailgate party so you can
+              enjoy it more or manage the budget of your first film, you can set
+              up a DAO that supports your needs. Platforms like SputnikDAO and
+              AstroDAO are ways for organizations around the world to represent
+              membership, facilitate governance, make decisions, and interact
+              with other DAOs. Create your own DAO today!
+            </Text>
+            <div>
+              <Widget
+                src="near/widget/DIG.Button"
+                props={{
+                  href: "https://app.astrodao.com/all/daos",
+                  iconRight: "ph-bold ph-arrow-up-right",
+                  label: "Create a new DAO",
+                  variant: "affirmative",
+                  size: "large",
+                  as: "a",
+                  target: "_blank",
+                }}
+              />
+            </div>
+          </Card>
+        </Section>
+      </Section>
+
+      <Section gap="32px" id="anker_community">
+        <div class="row row-cols-md-2 row-cols-1 g-4 text-md-start text-center">
+          <div class="col order-md-0 order-1">
+            <Flex gap="16px" direction="column">
+              <Text size="text-3xl" color="sand12">
+                A vibrant, welcoming community
+              </Text>
+              <Text size="text-xl" color="sand12">
+                NEAR’s vibrant community is a globally distributed home for
+                developers, token holders, validators, and members supporting
+                the protocol’s platform, ecosystem, and applications.
+              </Text>
+              <Flex
+                gap="32px"
+                wrap="wrap"
+                className="justify-content-md-start justify-content-center"
+              >
+                <NumericLabel backgroundColor="var(--sand3)">
+                  <Text size="text-3xl" color="cyan8" fontWeight="600">
+                    550<Small size="20px">k</Small>
+                  </Text>
+                  <Text size="text-l" color="sand12">
+                    Members
+                  </Text>
+                </NumericLabel>
+                <NumericLabel backgroundColor="var(--sand3)">
+                  <Text size="text-3xl" color="cyan8" fontWeight="600">
+                    4<Small size="20px">k</Small>
+                  </Text>
+                  <Text size="text-l" color="sand12">
+                    Developers
+                  </Text>
+                </NumericLabel>
+                <NumericLabel backgroundColor="var(--sand3)">
+                  <Text size="text-3xl" color="cyan8" fontWeight="600">
+                    120
+                  </Text>
+                  <Text size="text-l" color="sand12">
+                    Guilds
+                  </Text>
+                </NumericLabel>
+              </Flex>
+            </Flex>
+          </div>
+          <div class="col order-md-1 order-0">
+            <Widget
+              src="mob.near/widget/Image"
+              props={{
+                image: returnIpfsImage(ipfsImages.ecosystemCommunity),
+                className: "img-fluid mx-auto",
+              }}
+            />
+          </div>
+        </div>
+        <Flex className="justify-content-md-start justify-content-center">
+          <Widget
+            src="near/widget/DIG.Button"
+            props={{
+              href: nearOrgLinks.communityPage,
+              iconRight: "ph-bold ph-arrow-right",
+              label: "Explore all parts of the Community",
+              variant: "affirmative",
+              size: "large",
+            }}
+          />
+        </Flex>
+      </Section>
+
+      <Section className="mx-auto" style={{ maxWidth: "1000px" }}>
+        <Text size="text-3xl" color="sand12" align="center">
+          Join the NEAR community
+        </Text>
+        <Card
+          gap="0"
+          padding="0"
+          direction="row"
+          background="var(--violet3)"
+          style={{ overflow: "hidden" }}
+        >
+          <div class="row">
+            <div class="col-12 col-sm-6">
+              <Widget
+                src="mob.near/widget/Image"
+                props={{
+                  image: returnIpfsImage(ipfsImages.ecosystemBanner),
+                  className: "img-fluid",
+                  style: {
+                    objectFit: "cover",
+                    width: "100%",
+                    height: "calc(100% + 1px)",
+                  },
+                }}
+              />
+            </div>
+            <div class="col-12 col-sm-6 p-4">
+              <Flex gap="24px" direction="column">
+                <Text size="text-2xl" color="sand12">
+                  Join the NEAR Governance Forum
+                </Text>
+                <Text size="text-xl" color="sand12">
+                  Here, NEAR Community members, developers, and the NEAR
+                  Foundation team come together to build something great and
+                  expand the NEAR ecosystem.
+                </Text>
+                <div>
+                  <Widget
+                    src="near/widget/DIG.Button"
+                    props={{
+                      href: "https://gov.near.org/",
+                      iconRight: "ph-bold ph-arrow-up-right",
+                      label: "Browse Governance Forum",
+                      variant: "affirmative",
+                      size: "large",
+                      as: "a",
+                      target: "_blank",
+                    }}
+                  />
+                </div>
+              </Flex>
+            </div>
+          </div>
+        </Card>
+
+        <Card
+          gap="0"
+          padding="0"
+          direction="row"
+          background="var(--red3)"
+          style={{ overflow: "hidden" }}
+        >
+          <div class="row">
+            <div class="col-12 col-sm-6">
+              <Widget
+                src="mob.near/widget/Image"
+                props={{
+                  image: returnIpfsImage(ipfsImages.ecosystemBlog),
+                  className: "img-fluid",
+                  style: {
+                    objectFit: "cover",
+                    width: "100%",
+                    height: "calc(100% + 1px)",
+                  },
+                }}
+              />
+            </div>
+            <div class="col-12 col-sm-6 p-4">
+              <Flex gap="24px" direction="column">
+                <Text size="text-2xl" color="sand12">
+                  Explore the NEAR Community Blog
+                </Text>
+                <Text size="text-xl" color="sand12">
+                  Read articles from all across the ecosystem, easily accessible
+                  through Medium.
+                </Text>
+                <div>
+                  <Widget
+                    src="near/widget/DIG.Button"
+                    props={{
+                      href: "https://medium.com/nearprotocol",
+                      iconRight: "ph-bold ph-arrow-up-right",
+                      label: "Read on Medium",
+                      variant: "destructive",
+                      size: "large",
+                      as: "a",
+                      target: "_blank",
+                    }}
+                  />
+                </div>
+              </Flex>
+            </div>
+          </div>
+        </Card>
+        <Flex gap="24px" justifyContent="center">
+          <SocialLink
+            title="Official Discord server"
+            href="http://near.chat"
+            target="_blank"
+          >
+            <SocialIcon className="bi bi-discord" />
+          </SocialLink>
+          <SocialLink
+            title="Official Twitter account"
+            href="https://twitter.com/nearprotocol"
+            target="_blank"
+          >
+            <SocialIcon className="bi bi-twitter" />
+          </SocialLink>
+          <SocialLink
+            title="Official YouTube channel"
+            href="https://www.youtube.com/channel/UCuKdIYVN8iE3fv8alyk1aMw"
+            target="_blank"
+          >
+            <SocialIcon className="bi bi-youtube" />
+          </SocialLink>
+          <SocialLink
+            title="Main reddit"
+            href="https://www.reddit.com/r/nearprotocol"
+            target="_blank"
+          >
+            <SocialIcon className="bi bi-reddit" />
+          </SocialLink>
+        </Flex>
+        <Flex justifyContent="center">
+          <Widget
+            src="near/widget/DIG.Button"
+            props={{
+              href: nearOrgLinks.communityPage,
+              iconRight: "ph-bold ph-arrow-right",
+              label: "Explore all parts of the Community",
+              variant: "affirmative",
+              size: "large",
+            }}
+          />
+        </Flex>
+      </Section>
+
+      <Section
+        id="anker_venture_support"
+        background="linear-gradient(to right, hsla(0, 0%, 100%, 0), var(--sand3), hsla(0, 0%, 100%, 0))"
+        gap="32px"
+      >
+        <div class="row row-cols-md-2 row-cols-1 g-4 text-md-start text-center">
+          <div class="col order-md-0 order-1">
+            <Flex gap="16px" direction="column">
+              <Text size="text-3xl" color="sand12">
+                Strong venture support
+              </Text>
+              <Text size="text-xl" color="sand12">
+                The ecosystem offers financial support, advice and networking to
+                projects to help them become thriving businesses.
+              </Text>
+              <Flex
+                gap="32px"
+                className="justify-content-md-start justify-content-center"
+              >
+                <NumericLabel>
+                  <Text size="text-3xl" color="cyan8" fontWeight="600">
+                    $120<Small size="20px">M+</Small>
+                  </Text>
+                  <Text size="text-l" color="sand12">
+                    Awarded
+                  </Text>
+                </NumericLabel>
+                <NumericLabel>
+                  <Text size="text-3xl" color="cyan8" fontWeight="600">
+                    2000<Small size="20px">+</Small>
+                  </Text>
+                  <Text size="text-l" color="sand12">
+                    Projects funded
+                  </Text>
+                </NumericLabel>
+              </Flex>
+            </Flex>
+          </div>
+          <div class="col order-md-1 order-0">
+            <Widget
+              src="mob.near/widget/Image"
+              props={{
+                image: returnIpfsImage(ipfsImages.ecosystemVenue),
+                className: "img-fluid",
+              }}
+            />
+          </div>
+        </div>
+        <Flex className="justify-content-md-start justify-content-center">
+          <Widget
+            src="near/widget/DIG.Button"
+            props={{
+              href: nearOrgLinks.getFundingPage,
+              iconRight: "ph-bold ph-arrow-right",
+              label: "Learn more about funding",
+              variant: "affirmative",
+              size: "large",
+            }}
+          />
+        </Flex>
+      </Section>
+
+      <Section>
+        <Text size="text-3xl" color="sand12" align="center">
+          Funding
+        </Text>
+        <Text size="text-xl" color="sand12" align="center">
+          There are several options to get financial support for your idea
+        </Text>
+        <Flex
+          gap="var(--large-gap)"
+          justifyContent="center"
+          className="d-none d-md-flex"
+        >
+          <Widget
+            src="mob.near/widget/Image"
+            props={{
+              image: returnIpfsImage(ipfsImages.fundingArrows),
+              className: "img-fluid",
+              style: { padding: "0 10%" },
+            }}
+          />
+        </Flex>
+        <div class="row justify-content-center text-center">
+          <div class="col-md-3 col-12 align-items-center">
+            <SocialIcon
+              className="ph ph-circles-three-plus"
+              color="var(--red7)"
+            />
+            <Text size="text-m" color="sand12">
+              Ecosystem Grants
+            </Text>
+          </div>
+          <div class="col-md-3 col-12">
+            <SocialIcon className="ph ph-trend-up" color="var(--red7)" />
+            <Text size="text-m" color="sand12">
+              Accelerators & Incubators
+            </Text>
+          </div>
+          <div class="col-md-3 col-12">
+            <SocialIcon className="ph ph-users-four" color="var(--red7)" />
+            <Text size="text-m" color="sand12">
+              Community-led DAOs
+            </Text>
+          </div>
+          <div class="col-md-3 col-12">
+            <SocialIcon className="ph ph-planet" color="var(--red7)" />
+            <Text size="text-m" color="sand12">
+              Regional hubs
+            </Text>
+          </div>
+        </div>
+      </Section>
+      <Section>
+        <Flex gap="24px" mobileStack="24px">
+          {fundingRows.firstRow.map((item) => (
+            <Card
+              key={item.ipfsImage}
+              direction="row"
+              padding="32px 0"
+              background="transparent"
+              border="none"
+            >
+              <Widget
+                src="mob.near/widget/Image"
+                props={{
+                  image: returnIpfsImage(item.ipfsImage),
+                  style: { width: "80px", height: "80px" },
+                }}
+              />
+              <Flex direction="column" gap="8px">
+                <Text
+                  size="text-xl"
+                  fontWeight="600"
+                  color="sand12"
+                  align="left"
+                >
+                  {item.title}
+                </Text>
+                <Text color="sand12" align="left">
+                  {item.content}
+                </Text>
+                <Widget
+                  src="near/widget/DIG.Button"
+                  props={{
+                    href: item.href,
+                    iconRight: "ph-bold ph-arrow-up-right",
+                    label: "Learn more",
+                    variant: "primary",
+                    fill: "outline",
+                    size: "large",
+                    as: "a",
+                    target: "_blank",
+                  }}
+                />
+              </Flex>
+            </Card>
+          ))}
+        </Flex>
+        <Flex gap="24px" mobileStack="24px">
+          {fundingRows.secondRow.map((item) => (
+            <Card
+              key={item.ipfsImage}
+              direction="row"
+              padding="32px 0"
+              background="transparent"
+              border="none"
+            >
+              <Widget
+                src="mob.near/widget/Image"
+                props={{
+                  image: returnIpfsImage(item.ipfsImage),
+                  style: { width: "80px", height: "80px" },
+                }}
+              />
+              <Flex direction="column" gap="8px">
+                <Text
+                  size="text-xl"
+                  fontWeight="600"
+                  color="sand12"
+                  align="left"
+                >
+                  {item.title}
+                </Text>
+                <Text color="sand12" align="left">
+                  {item.content}
+                </Text>
+                <Widget
+                  src="near/widget/DIG.Button"
+                  props={{
+                    href: item.href,
+                    iconRight: "ph-bold ph-arrow-up-right",
+                    label: "Learn more",
+                    variant: "primary",
+                    fill: "outline",
+                    size: "large",
+                    as: "a",
+                    target: "_blank",
+                  }}
+                />
+              </Flex>
+            </Card>
+          ))}
+        </Flex>
+        <Flex justifyContent="center">
+          <Widget
+            src="near/widget/DIG.Button"
+            props={{
+              href: nearOrgLinks.getFundingPage,
+              iconRight: "ph-bold ph-arrow-right",
+              label: "See all funding options",
+              variant: "affirmative",
+              size: "large",
+            }}
+          />
+        </Flex>
+      </Section>
+
+      <Section background="linear-gradient(to right, hsla(0, 0%, 100%, 0), var(--sand3), hsla(0, 0%, 100%, 0))">
+        <Text size="text-3xl" color="sand12" align="center">
+          Company builders
+        </Text>
+        <Text size="text-xl" color="sand12" align="center">
+          Join a company builder to get all the support you need from
+          experienced startup founders and other experts.
+        </Text>
+        <Flex gap="32px" mobileStack="32px">
+          <Card
+            center
+            direction="row"
+            background="var(--black)"
+            className="flex-md-nowrap flex-wrap"
+          >
+            <Widget
+              src="mob.near/widget/Image"
+              props={{
+                image: returnIpfsImage(ipfsImages.ecosystemOwcLogo),
                 className: "img-fluid me-4",
               }}
             />
@@ -668,23 +1233,26 @@ return (
               gap="16px"
               className="align-items-center align-items-md-start justify-content-center justify-content-md-start"
             >
-              <Text size="text-xl" fontWeight="600" color="sand12">
-                How crypto became a major source of relief for embattled Ukraine
+              <Text
+                size="text-xl"
+                fontWeight="600"
+                color="white"
+                className="text-center text-md-start"
+              >
+                Boost your project with OWC
               </Text>
-              <Text className="text-center text-md-start">
-                Created on AstroDAO, a DAO-launching platform built on NEAR,
-                Unchain Fund raises funds for humanitarian efforts in in
-                Ukraine, including evacuation, shelter, food, and more. In under
-                a month, Unchain has collected over $7 million USD and counting
-                across a range of cryptocurrencies including, BSC, ETH, Harmony,
-                NEAR, and Polygon.
+              <Text color="white" className="text-center text-md-start">
+                Open Web Collective is a blockchain accelerator program
+                supporting entrepreneurs building the decentralized web. By
+                bringing together capital and seasoned advisors, OWC helps
+                founders de-risk, accelerate, and advance Web 3.0.
               </Text>
               <Widget
                 src="near/widget/DIG.Button"
                 props={{
-                  href: "https://unchain.fund/",
+                  href: "https://www.openwebcollective.com/",
                   iconRight: "ph-bold ph-arrow-up-right",
-                  label: "Learn more",
+                  label: "Contact OWC",
                   variant: "primary",
                   fill: "outline",
                   size: "large",
@@ -695,545 +1263,251 @@ return (
             </Flex>
           </Card>
         </Flex>
-        <Flex gap="32px">
-          <Widget
-            src="near/widget/DIG.Button"
-            props={{
-              href: "https://astrodao.com/",
-              iconRight: "ph-bold ph-arrow-up-right",
-              label: "Browse DAOs on AstroDAO",
-              variant: "affirmative",
-              size: "large",
-              as: "a",
-              target: "_blank",
-            }}
-          />
-        </Flex>
+
+        <Section className="mx-auto" style={{ maxWidth: "1020px" }}>
+          <Text size="text-3xl" color="sand12" align="center">
+            Venture capital
+          </Text>
+          <Text size="text-xl" color="sand12" align="center">
+            Many VCs are investing in projects building on NEAR. Recent examples
+            include:
+          </Text>
+          <div class="row row-cols-lg-2 row-cols-1 g-4">
+            {ventureCards.map((item) => (
+              <div class="col" key={item.ipfsImage}>
+                <Card gap="12px" direction="row" style={{ height: "100%" }}>
+                  <Widget
+                    src="mob.near/widget/Image"
+                    props={{
+                      image: returnIpfsImage(item.ipfsImage),
+                      style: { width: "80px", height: "80px" },
+                    }}
+                  />
+                  <Flex
+                    direction="column"
+                    gap="16px"
+                    alignItems="start"
+                    justifyContent="start"
+                  >
+                    <Text
+                      size="text-l"
+                      fontWeight="600"
+                      align="left"
+                      fontWeight="600"
+                      color="sand12"
+                    >
+                      {item.title}
+                    </Text>
+                    <Text align="left" color="sand12" size="text-m">
+                      {item.content}
+                    </Text>
+                    <Widget
+                      src="near/widget/DIG.Button"
+                      props={{
+                        href: item.href,
+                        iconRight: "ph-bold ph-arrow-up-right",
+                        label: item.hrefText,
+                        variant: "primary",
+                        fill: "outline",
+                        size: "large",
+                        as: "a",
+                        target: "_blank",
+                      }}
+                    />
+                  </Flex>
+                </Card>
+              </div>
+            ))}
+          </div>
+        </Section>
       </Section>
-      <Section gap="24px">
-        <Card>
-          <Text size="text-xl" fontWeight="600" color="sand12" align="left">
-            Looking for funding to start a project or DAO?
-          </Text>
-          <Text align="left">
-            The NEAR ecosystem has plenty of options available to fund promising
-            projects or initiatives that bring the ecosystem forward.
-          </Text>
-          <div>
+
+      <Section id="anker_tech_base">
+        <div class="row row-cols-md-2 row-cols-1 g-4 text-md-start text-center">
+          <div class="col order-md-0 order-1">
+            <Flex gap="16px" direction="column">
+              <Text size="text-3xl" color="sand12">
+                NEAR’s strong technical base
+              </Text>
+              <Text size="text-xl" color="sand12">
+                Everything a developer needs to build amazing dApps.
+              </Text>
+            </Flex>
+          </div>
+          <div class="col order-md-1 order-0">
+            <Widget
+              src="mob.near/widget/Image"
+              props={{
+                image: returnIpfsImage(ipfsImages.ecosystemTechnicalBase),
+                className: "img-fluid",
+              }}
+            />
+          </div>
+        </div>
+      </Section>
+
+      <Section
+        gap="24px"
+        center
+        className="mx-auto"
+        style={{ maxWidth: "1000px" }}
+      >
+        <Text size="text-3xl" color="sand12">
+          NEAR’s core platform
+        </Text>
+        <Text size="text-xl" color="sand12">
+          The simple, yet powerful base to build on
+        </Text>
+        <Flex gap="24px">
+          <Card>
+            <Text size="text-3xl" color="sand12">
+              Use familiar Programming Languages
+            </Text>
+            <Text size="text-l" color="sand12">
+              Write your smart contracts in the most used or most loved
+              language. No need to wrestle with Solidity or Vyper.
+            </Text>
+            <Section>
+              <Flex gap="48px" mobileStack="32px" justifyContent="center">
+                <Flex gap="24px" alignItems="center">
+                  <Widget
+                    src="mob.near/widget/Image"
+                    props={{
+                      image: returnIpfsImage(ipfsImages.jsIcon),
+                      className: "img-fluid",
+                    }}
+                  />
+                  <Widget
+                    src="near/widget/DIG.Button"
+                    props={{
+                      href: "https://docs.near.org/develop/quickstart-guide",
+                      iconRight: "ph-bold ph-arrow-up-right",
+                      label: "Start building",
+                      variant: "primary",
+                      fill: "outline",
+                      size: "large",
+                      as: "a",
+                      target: "_blank",
+                    }}
+                  />
+                </Flex>
+                <Flex gap="24px" alignItems="center">
+                  <Widget
+                    src="mob.near/widget/Image"
+                    props={{
+                      image: returnIpfsImage(ipfsImages.rustIcon),
+                      className: "img-fluid",
+                    }}
+                  />
+                  <Widget
+                    src="near/widget/DIG.Button"
+                    props={{
+                      href: "https://www.near-sdk.io",
+                      iconRight: "ph-bold ph-arrow-up-right",
+                      label: "Start building",
+                      variant: "primary",
+                      fill: "outline",
+                      size: "large",
+                      as: "a",
+                      target: "_blank",
+                    }}
+                  />
+                </Flex>
+              </Flex>
+              <div>
+                <Widget
+                  src="near/widget/DIG.Button"
+                  props={{
+                    href: "https://docs.near.org",
+                    iconRight: "ph-bold ph-arrow-up-right",
+                    label: "Just take me to the docs",
+                    variant: "primary",
+                    fill: "outline",
+                    size: "large",
+                    as: "a",
+                    target: "_blank",
+                  }}
+                />
+              </div>
+            </Section>
+          </Card>
+        </Flex>
+        <Flex gap="24px" mobileStack="24px">
+          <Card>
+            <SocialIcon className="ph ph-lightning" />
+            <Text size="text-xl" color="sand12" fontWeight="600">
+              Be super-productive with our dev-tools
+            </Text>
+            <Text size="text-m" color="sand12">
+              We have all you need – powerful CLI, easy-to-use SDKs, and more
+            </Text>
             <Widget
               src="near/widget/DIG.Button"
               props={{
-                href: nearOrgLinks.getFundingPage,
+                href: "https://near.org/developers/tools",
                 iconRight: "ph-bold ph-arrow-right",
-                label: "Explore funding options",
-                variant: "affirmative",
+                label: "Get started with our dev tools",
+                variant: "primary",
+                fill: "outline",
                 size: "large",
               }}
             />
-          </div>
-        </Card>
-
-        <Card>
-          <Text size="text-xl" fontWeight="600" color="sand12" align="left">
-            Thinking about starting a DAO?
-          </Text>
-          <Text align="left">
-            Whether you want to organize your annual tailgate party so you can
-            enjoy it more or manage the budget of your first film, you can set
-            up a DAO that supports your needs. Platforms like SputnikDAO and
-            AstroDAO are ways for organizations around the world to represent
-            membership, facilitate governance, make decisions, and interact with
-            other DAOs. Create your own DAO today!
-          </Text>
-          <div>
+          </Card>
+          <Card>
+            <SocialIcon className="ph ph-lightbulb" />
+            <Text size="text-xl" color="sand12" fontWeight="600">
+              Help yourself with excellent documentations
+            </Text>
+            <Text size="text-m" color="sand12">
+              Docs that answer almost any question. Loads of tutorials and
+              examples
+            </Text>
             <Widget
               src="near/widget/DIG.Button"
               props={{
-                href: "https://app.astrodao.com/all/daos",
-                iconRight: "ph-bold ph-arrow-up-right",
-                label: "Create a new DAO",
-                variant: "affirmative",
+                href: "https://near.org/developers/documentation",
+                iconRight: "ph-bold ph-arrow-right",
+                label: "Explore all documentations",
+                variant: "primary",
+                fill: "outline",
                 size: "large",
-                as: "a",
-                target: "_blank",
               }}
             />
-          </div>
-        </Card>
+          </Card>
+        </Flex>
       </Section>
-    </Section>
 
-    <Section gap="32px" id="anker_community">
-      <div class="row row-cols-md-2 row-cols-1 g-4 text-md-start text-center">
-        <div class="col order-md-0 order-1">
-          <Flex gap="16px" direction="column">
-            <Text size="text-3xl" color="sand12">
-              A vibrant, welcoming community
-            </Text>
-            <Text size="text-xl" color="sand12">
-              NEAR’s vibrant community is a globally distributed home for
-              developers, token holders, validators, and members supporting the
-              protocol’s platform, ecosystem, and applications.
-            </Text>
-            <Flex
-              gap="32px"
-              wrap="wrap"
-              className="justify-content-md-start justify-content-center"
-            >
-              <NumericLabel backgroundColor="var(--sand3)">
-                <Text size="text-3xl" color="cyan8" fontWeight="600">
-                  550<Small size="20px">k</Small>
-                </Text>
-                <Text size="text-l" color="sand12">
-                  Members
-                </Text>
-              </NumericLabel>
-              <NumericLabel backgroundColor="var(--sand3)">
-                <Text size="text-3xl" color="cyan8" fontWeight="600">
-                  4<Small size="20px">k</Small>
-                </Text>
-                <Text size="text-l" color="sand12">
-                  Developers
-                </Text>
-              </NumericLabel>
-              <NumericLabel backgroundColor="var(--sand3)">
-                <Text size="text-3xl" color="cyan8" fontWeight="600">
-                  120
-                </Text>
-                <Text size="text-l" color="sand12">
-                  Guilds
-                </Text>
-              </NumericLabel>
-            </Flex>
-          </Flex>
-        </div>
-        <div class="col order-md-1 order-0">
-          <Widget
-            src="mob.near/widget/Image"
-            props={{
-              image: returnIpfsImage(ipfsImages.ecosystemCommunity),
-              className: "img-fluid mx-auto",
-            }}
-          />
-        </div>
-      </div>
-      <Flex className="justify-content-md-start justify-content-center">
-        <Widget
-          src="near/widget/DIG.Button"
-          props={{
-            href: nearOrgLinks.communityPage,
-            iconRight: "ph-bold ph-arrow-right",
-            label: "Explore all parts of the Community",
-            variant: "affirmative",
-            size: "large",
-          }}
-        />
-      </Flex>
-    </Section>
+      <Section center className="mx-auto" style={{ maxWidth: "1000px" }}>
+        <Text size="text-3xl" color="sand12">
+          Bridges and emulators
+        </Text>
+        <Text size="text-xl" color="sand12">
+          Highly interoperable for a multi-chain world
+        </Text>
 
-    <Section className="mx-auto" style={{ maxWidth: "1000px" }}>
-      <Text size="text-3xl" color="sand12" align="center">
-        Join the NEAR community
-      </Text>
-      <Card
-        gap="0"
-        padding="0"
-        direction="row"
-        background="var(--violet3)"
-        style={{ overflow: "hidden" }}
-      >
-        <div class="row">
-          <div class="col-12 col-sm-6">
+        <Flex gap="24px" mobileStack="24px">
+          <Card center>
             <Widget
               src="mob.near/widget/Image"
               props={{
-                image: returnIpfsImage(ipfsImages.ecosystemBanner),
-                className: "img-fluid",
-                style: {
-                  objectFit: "cover",
-                  width: "100%",
-                  height: "calc(100% + 1px)",
-                },
-              }}
-            />
-          </div>
-          <div class="col-12 col-sm-6 p-4">
-            <Flex gap="24px" direction="column">
-              <Text size="text-2xl" color="sand12">
-                Join the NEAR Governance Forum
-              </Text>
-              <Text size="text-xl" color="sand12">
-                Here, NEAR Community members, developers, and the NEAR
-                Foundation team come together to build something great and
-                expand the NEAR ecosystem.
-              </Text>
-              <div>
-                <Widget
-                  src="near/widget/DIG.Button"
-                  props={{
-                    href: "https://gov.near.org/",
-                    iconRight: "ph-bold ph-arrow-up-right",
-                    label: "Browse Governance Forum",
-                    variant: "affirmative",
-                    size: "large",
-                    as: "a",
-                    target: "_blank",
-                  }}
-                />
-              </div>
-            </Flex>
-          </div>
-        </div>
-      </Card>
-
-      <Card
-        gap="0"
-        padding="0"
-        direction="row"
-        background="var(--red3)"
-        style={{ overflow: "hidden" }}
-      >
-        <div class="row">
-          <div class="col-12 col-sm-6">
-            <Widget
-              src="mob.near/widget/Image"
-              props={{
-                image: returnIpfsImage(ipfsImages.ecosystemBlog),
-                className: "img-fluid",
-                style: {
-                  objectFit: "cover",
-                  width: "100%",
-                  height: "calc(100% + 1px)",
-                },
-              }}
-            />
-          </div>
-          <div class="col-12 col-sm-6 p-4">
-            <Flex gap="24px" direction="column">
-              <Text size="text-2xl" color="sand12">
-                Explore the NEAR Community Blog
-              </Text>
-              <Text size="text-xl" color="sand12">
-                Read articles from all across the ecosystem, easily accessible
-                through Medium.
-              </Text>
-              <div>
-                <Widget
-                  src="near/widget/DIG.Button"
-                  props={{
-                    href: "https://medium.com/nearprotocol",
-                    iconRight: "ph-bold ph-arrow-up-right",
-                    label: "Read on Medium",
-                    variant: "destructive",
-                    size: "large",
-                    as: "a",
-                    target: "_blank",
-                  }}
-                />
-              </div>
-            </Flex>
-          </div>
-        </div>
-      </Card>
-      <Flex gap="24px" justifyContent="center">
-        <SocialLink
-          title="Official Discord server"
-          href="http://near.chat"
-          target="_blank"
-        >
-          <SocialIcon className="bi bi-discord" />
-        </SocialLink>
-        <SocialLink
-          title="Official Twitter account"
-          href="https://twitter.com/nearprotocol"
-          target="_blank"
-        >
-          <SocialIcon className="bi bi-twitter" />
-        </SocialLink>
-        <SocialLink
-          title="Official YouTube channel"
-          href="https://www.youtube.com/channel/UCuKdIYVN8iE3fv8alyk1aMw"
-          target="_blank"
-        >
-          <SocialIcon className="bi bi-youtube" />
-        </SocialLink>
-        <SocialLink
-          title="Main reddit"
-          href="https://www.reddit.com/r/nearprotocol"
-          target="_blank"
-        >
-          <SocialIcon className="bi bi-reddit" />
-        </SocialLink>
-      </Flex>
-      <Flex justifyContent="center">
-        <Widget
-          src="near/widget/DIG.Button"
-          props={{
-            href: nearOrgLinks.communityPage,
-            iconRight: "ph-bold ph-arrow-right",
-            label: "Explore all parts of the Community",
-            variant: "affirmative",
-            size: "large",
-          }}
-        />
-      </Flex>
-    </Section>
-
-    <Section
-      id="anker_venture_support"
-      background="linear-gradient(to right, hsla(0, 0%, 100%, 0), var(--sand3), hsla(0, 0%, 100%, 0))"
-      gap="32px"
-    >
-      <div class="row row-cols-md-2 row-cols-1 g-4 text-md-start text-center">
-        <div class="col order-md-0 order-1">
-          <Flex gap="16px" direction="column">
-            <Text size="text-3xl" color="sand12">
-              Strong venture support
-            </Text>
-            <Text size="text-xl" color="sand12">
-              The ecosystem offers financial support, advice and networking to
-              projects to help them become thriving businesses.
-            </Text>
-            <Flex
-              gap="32px"
-              className="justify-content-md-start justify-content-center"
-            >
-              <NumericLabel>
-                <Text size="text-3xl" color="cyan8" fontWeight="600">
-                  $120<Small size="20px">M+</Small>
-                </Text>
-                <Text size="text-l" color="sand12">
-                  Awarded
-                </Text>
-              </NumericLabel>
-              <NumericLabel>
-                <Text size="text-3xl" color="cyan8" fontWeight="600">
-                  2000<Small size="20px">+</Small>
-                </Text>
-                <Text size="text-l" color="sand12">
-                  Projects funded
-                </Text>
-              </NumericLabel>
-            </Flex>
-          </Flex>
-        </div>
-        <div class="col order-md-1 order-0">
-          <Widget
-            src="mob.near/widget/Image"
-            props={{
-              image: returnIpfsImage(ipfsImages.ecosystemVenue),
-              className: "img-fluid",
-            }}
-          />
-        </div>
-      </div>
-      <Flex className="justify-content-md-start justify-content-center">
-        <Widget
-          src="near/widget/DIG.Button"
-          props={{
-            href: nearOrgLinks.getFundingPage,
-            iconRight: "ph-bold ph-arrow-right",
-            label: "Learn more about funding",
-            variant: "affirmative",
-            size: "large",
-          }}
-        />
-      </Flex>
-    </Section>
-
-    <Section>
-      <Text size="text-3xl" color="sand12" align="center">
-        Funding
-      </Text>
-      <Text size="text-xl" color="sand12" align="center">
-        There are several options to get financial support for your idea
-      </Text>
-      <Flex
-        gap="var(--large-gap)"
-        justifyContent="center"
-        className="d-none d-md-flex"
-      >
-        <Widget
-          src="mob.near/widget/Image"
-          props={{
-            image: returnIpfsImage(ipfsImages.fundingArrows),
-            className: "img-fluid",
-            style: { padding: "0 10%" },
-          }}
-        />
-      </Flex>
-      <div class="row justify-content-center text-center">
-        <div class="col-md-3 col-12 align-items-center">
-          <SocialIcon
-            className="ph ph-circles-three-plus"
-            color="var(--red7)"
-          />
-          <Text size="text-m" color="sand12">
-            Ecosystem Grants
-          </Text>
-        </div>
-        <div class="col-md-3 col-12">
-          <SocialIcon className="ph ph-trend-up" color="var(--red7)" />
-          <Text size="text-m" color="sand12">
-            Accelerators & Incubators
-          </Text>
-        </div>
-        <div class="col-md-3 col-12">
-          <SocialIcon className="ph ph-users-four" color="var(--red7)" />
-          <Text size="text-m" color="sand12">
-            Community-led DAOs
-          </Text>
-        </div>
-        <div class="col-md-3 col-12">
-          <SocialIcon className="ph ph-planet" color="var(--red7)" />
-          <Text size="text-m" color="sand12">
-            Regional hubs
-          </Text>
-        </div>
-      </div>
-    </Section>
-    <Section>
-      <Flex gap="24px" mobileStack="24px">
-        {fundingRows.firstRow.map((item) => (
-          <Card
-            key={item.ipfsImage}
-            direction="row"
-            padding="32px 0"
-            background="transparent"
-            border="none"
-          >
-            <Widget
-              src="mob.near/widget/Image"
-              props={{
-                image: returnIpfsImage(item.ipfsImage),
+                image: returnIpfsImage(ipfsImages.logoAurora),
                 style: { width: "80px", height: "80px" },
               }}
             />
-            <Flex direction="column" gap="8px">
-              <Text size="text-xl" fontWeight="600" color="sand12" align="left">
-                {item.title}
-              </Text>
-              <Text color="sand12" align="left">
-                {item.content}
-              </Text>
-              <Widget
-                src="near/widget/DIG.Button"
-                props={{
-                  href: item.href,
-                  iconRight: "ph-bold ph-arrow-up-right",
-                  label: "Learn more",
-                  variant: "primary",
-                  fill: "outline",
-                  size: "large",
-                  as: "a",
-                  target: "_blank",
-                }}
-              />
-            </Flex>
-          </Card>
-        ))}
-      </Flex>
-      <Flex gap="24px" mobileStack="24px">
-        {fundingRows.secondRow.map((item) => (
-          <Card
-            key={item.ipfsImage}
-            direction="row"
-            padding="32px 0"
-            background="transparent"
-            border="none"
-          >
-            <Widget
-              src="mob.near/widget/Image"
-              props={{
-                image: returnIpfsImage(item.ipfsImage),
-                style: { width: "80px", height: "80px" },
-              }}
-            />
-            <Flex direction="column" gap="8px">
-              <Text size="text-xl" fontWeight="600" color="sand12" align="left">
-                {item.title}
-              </Text>
-              <Text color="sand12" align="left">
-                {item.content}
-              </Text>
-              <Widget
-                src="near/widget/DIG.Button"
-                props={{
-                  href: item.href,
-                  iconRight: "ph-bold ph-arrow-up-right",
-                  label: "Learn more",
-                  variant: "primary",
-                  fill: "outline",
-                  size: "large",
-                  as: "a",
-                  target: "_blank",
-                }}
-              />
-            </Flex>
-          </Card>
-        ))}
-      </Flex>
-      <Flex justifyContent="center">
-        <Widget
-          src="near/widget/DIG.Button"
-          props={{
-            href: nearOrgLinks.getFundingPage,
-            iconRight: "ph-bold ph-arrow-right",
-            label: "See all funding options",
-            variant: "affirmative",
-            size: "large",
-          }}
-        />
-      </Flex>
-    </Section>
-
-    <Section background="linear-gradient(to right, hsla(0, 0%, 100%, 0), var(--sand3), hsla(0, 0%, 100%, 0))">
-      <Text size="text-3xl" color="sand12" align="center">
-        Company builders
-      </Text>
-      <Text size="text-xl" color="sand12" align="center">
-        Join a company builder to get all the support you need from experienced
-        startup founders and other experts.
-      </Text>
-      <Flex gap="32px" mobileStack="32px">
-        <Card
-          center
-          direction="row"
-          background="var(--black)"
-          className="flex-md-nowrap flex-wrap"
-        >
-          <Widget
-            src="mob.near/widget/Image"
-            props={{
-              image: returnIpfsImage(ipfsImages.ecosystemOwcLogo),
-              className: "img-fluid me-4",
-            }}
-          />
-          <Flex
-            direction="column"
-            gap="16px"
-            className="align-items-center align-items-md-start justify-content-center justify-content-md-start"
-          >
-            <Text
-              size="text-xl"
-              fontWeight="600"
-              color="white"
-              className="text-center text-md-start"
-            >
-              Boost your project with OWC
+            <Text size="text-xl" color="sand12" fontWeight="600">
+              Ethereum & EVM
             </Text>
-            <Text color="white" className="text-center text-md-start">
-              Open Web Collective is a blockchain accelerator program supporting
-              entrepreneurs building the decentralized web. By bringing together
-              capital and seasoned advisors, OWC helps founders de-risk,
-              accelerate, and advance Web 3.0.
+            <Text size="text-m" color="sand12">
+              Easily migrate your Solidity contracts to the Aurora EVM. Use the
+              Rainbow Bridge to transfer assets between Ethereum, NEAR and
+              Aurora EVM. EVM.
             </Text>
             <Widget
               src="near/widget/DIG.Button"
               props={{
-                href: "https://www.openwebcollective.com/",
+                href: "https://aurora.dev",
                 iconRight: "ph-bold ph-arrow-up-right",
-                label: "Contact OWC",
+                label: "Go to Aurora",
                 variant: "primary",
                 fill: "outline",
                 size: "large",
@@ -1241,22 +1515,104 @@ return (
                 target: "_blank",
               }}
             />
-          </Flex>
-        </Card>
-      </Flex>
+          </Card>
+          <Card center>
+            <Widget
+              src="mob.near/widget/Image"
+              props={{
+                image: returnIpfsImage(ipfsImages.logoOctopus),
+                style: { width: "80px", height: "80px" },
+              }}
+            />
+            <Text size="text-xl" color="sand12" fontWeight="600">
+              AppChains on Substrate
+            </Text>
+            <Text size="text-m" color="sand12">
+              Build app-specific chains with substrate on the Octopus network.
+            </Text>
+            <Widget
+              src="near/widget/DIG.Button"
+              props={{
+                href: "https://oct.network",
+                iconRight: "ph-bold ph-arrow-up-right",
+                label: "Go to Octopus",
+                variant: "primary",
+                fill: "outline",
+                size: "large",
+                as: "a",
+                target: "_blank",
+              }}
+            />
+          </Card>
+        </Flex>
+      </Section>
 
-      <Section className="mx-auto" style={{ maxWidth: "1020px" }}>
-        <Text size="text-3xl" color="sand12" align="center">
-          Venture capital
+      <Section center>
+        <Text size="text-3xl" color="sand12">
+          Infrastructure providers
         </Text>
-        <Text size="text-xl" color="sand12" align="center">
-          Many VCs are investing in projects building on NEAR. Recent examples
-          include:
+        <Text size="text-xl" color="sand12">
+          Connecting NEAR to the outside world
         </Text>
-        <div class="row row-cols-lg-2 row-cols-1 g-4">
-          {ventureCards.map((item) => (
+      </Section>
+
+      <Section
+        center
+        gap="24px"
+        className="mx-auto"
+        style={{ maxWidth: "1000px" }}
+      >
+        <Text size="text-3xl" color="sand12">
+          RPC-Providers
+        </Text>
+        <Flex gap="24px" mobileStack="24px" style={{ width: "100%" }}>
+          {rpcCards.map((item) => (
+            <Card center key={item.ipfsImage}>
+              <Widget
+                src="mob.near/widget/Image"
+                props={{
+                  image: returnIpfsImage(item.ipfsImage),
+                  style: { width: "80px", height: "80px" },
+                }}
+              />
+              <Text size="text-xl" color="sand12" fontWeight="600">
+                {item.title}
+              </Text>
+              <Text size="text-l" color="sand12">
+                {item.content}
+              </Text>
+              <Widget
+                src="near/widget/DIG.Button"
+                props={{
+                  href: item.href,
+                  iconRight: "ph-bold ph-arrow-up-right",
+                  label: "How to use",
+                  variant: "primary",
+                  fill: "outline",
+                  size: "large",
+                  as: "a",
+                  target: "_blank",
+                }}
+              />
+            </Card>
+          ))}
+        </Flex>
+      </Section>
+
+      <Section
+        center
+        gap="24px"
+        className="mx-auto"
+        style={{ maxWidth: "1000px" }}
+      >
+        <Text size="text-3xl" color="sand12">
+          Storage
+        </Text>
+
+        <div class="row row-cols-md-3 row-cols-1 g-4">
+          {storageCards.map((item) => (
             <div class="col" key={item.ipfsImage}>
-              <Card gap="12px" direction="row" style={{ height: "100%" }}>
+              <Card center>
                 <Widget
                   src="mob.near/widget/Image"
                   props={{
@@ -1264,22 +1620,186 @@ return (
                     style: { width: "80px", height: "80px" },
                   }}
                 />
-                <Flex
-                  direction="column"
-                  gap="16px"
-                  alignItems="start"
-                  justifyContent="start"
-                >
-                  <Text
-                    size="text-l"
-                    fontWeight="600"
-                    align="left"
-                    fontWeight="600"
-                    color="sand12"
-                  >
+                <Text size="text-xl" color="sand12" fontWeight="600">
+                  {item.title}
+                </Text>
+                <Text size="text-l" color="sand12">
+                  {item.content ?? <span class="invisible">&nbsp;</span>}
+                </Text>
+                {item.internal ? (
+                  <Widget
+                    src="near/widget/DIG.Button"
+                    props={{
+                      href: item.href,
+                      iconRight: "ph-bold ph-arrow-up-right",
+                      label: item.hrefText,
+                      variant: "primary",
+                      fill: "outline",
+                      size: "large",
+                      as: "a",
+                      target: "_blank",
+                    }}
+                  />
+                ) : (
+                  <Widget
+                    src="near/widget/DIG.Button"
+                    props={{
+                      href: item.href,
+                      iconRight: "ph-bold ph-arrow-right",
+                      label: item.hrefText,
+                      variant: "primary",
+                      fill: "outline",
+                      size: "large",
+                    }}
+                  />
+                )}
+              </Card>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section
+        center
+        gap="24px"
+        className="mx-auto"
+        style={{ maxWidth: "1000px" }}
+      >
+        <Text size="text-3xl" color="sand12">
+          Oracles
+        </Text>
+        <Flex gap="24px" mobileStack="24px" style={{ width: "100%" }}>
+          {oracleCards.map((item) => (
+            <Card center key={item.ipfsImage}>
+              <Widget
+                src="mob.near/widget/Image"
+                props={{
+                  image: returnIpfsImage(item.ipfsImage),
+                  style: { width: "80px", height: "80px" },
+                }}
+              />
+              <Text size="text-xl" color="sand12" fontWeight="600">
+                {item.title}
+              </Text>
+              <Text size="text-l" color="sand12">
+                {item.content ?? <span class="invisible">&nbsp;</span>}
+              </Text>
+              <Widget
+                src="near/widget/DIG.Button"
+                props={{
+                  href: item.href,
+                  iconRight: "ph-bold ph-arrow-up-right",
+                  label: "How to integrate",
+                  variant: "primary",
+                  fill: "outline",
+                  size: "large",
+                  as: "a",
+                  target: "_blank",
+                }}
+              />
+            </Card>
+          ))}
+        </Flex>
+      </Section>
+
+      <Section
+        center
+        gap="24px"
+        className="mx-auto"
+        style={{ maxWidth: "1000px" }}
+      >
+        <Text size="text-3xl" color="sand12" fontWeight="600">
+          Institutional custodians
+        </Text>
+        <Text size="text-xl" color="sand12">
+          Safely storing the NEAR-token and other assets
+        </Text>
+        <Flex gap="24px" mobileStack="24px" style={{ width: "100%" }}>
+          {assetsCards.map((item) => (
+            <Card center key={item.ipfsImage}>
+              <Widget
+                src="mob.near/widget/Image"
+                props={{
+                  image: returnIpfsImage(item.ipfsImage),
+                  style: { width: "80px", height: "80px" },
+                }}
+              />
+              <Text size="text-xl" color="sand12" fontWeight="600">
+                {item.title}
+              </Text>
+              <Text size="text-l" color="sand12">
+                {item.content ?? <span class="invisible">&nbsp;</span>}
+              </Text>
+              <Widget
+                src="near/widget/DIG.Button"
+                props={{
+                  href: item.href,
+                  iconRight: "ph-bold ph-arrow-up-right",
+                  label: "Visit website",
+                  variant: "primary",
+                  fill: "outline",
+                  size: "large",
+                  as: "a",
+                  target: "_blank",
+                }}
+              />
+            </Card>
+          ))}
+        </Flex>
+      </Section>
+
+      <Section
+        id="anker_regional_hubs"
+        background="linear-gradient(to right, hsla(0, 0%, 100%, 0), var(--sand3), hsla(0, 0%, 100%, 0))"
+      >
+        <div class="row row-cols-md-2 row-cols-1 g-4 text-md-start text-center">
+          <div class="col order-md-0 order-1">
+            <Flex gap="16px" direction="column">
+              <Text size="text-3xl" color="sand12">
+                Local presence: Regional Hubs
+              </Text>
+              <Text size="text-xl" color="sand12">
+                Regional Hubs organize and foster a local community of builders,
+                entrepreneurs, and users.
+              </Text>
+            </Flex>
+          </div>
+          <div class="col order-md-1 order-0">
+            <Widget
+              src="mob.near/widget/Image"
+              props={{
+                image: returnIpfsImage(ipfsImages.sectionAnkerRegionalHubs),
+                className: "img-fluid",
+              }}
+            />
+          </div>
+        </div>
+
+        <Section
+          center
+          gap="24px"
+          className="mx-auto"
+          style={{ maxWidth: "1020px" }}
+        >
+          <Text size="text-3xl" color="sand12">
+            NEAR hubs around the world
+          </Text>
+
+          <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-4">
+            {nearHubsCards.map((item) => (
+              <div class="col" key={item.ipfsImage}>
+                <Card center>
+                  <Widget
+                    src="mob.near/widget/Image"
+                    props={{
+                      image: returnIpfsImage(item.ipfsImage),
+                      style: { height: "92px" },
+                    }}
+                  />
+                  <Text size="text-xl" color="sand12" fontWeight="600">
                     {item.title}
                   </Text>
-                  <Text align="left" color="sand12" size="text-m">
+                  <Text size="text-m" color="sand12">
                     {item.content}
                   </Text>
                   <Widget
@@ -1295,675 +1815,175 @@ return (
                       target: "_blank",
                     }}
                   />
-                </Flex>
-              </Card>
-            </div>
-          ))}
-        </div>
+                </Card>
+              </div>
+            ))}
+          </div>
+        </Section>
       </Section>
-    </Section>
 
-    <Section id="anker_tech_base">
-      <div class="row row-cols-md-2 row-cols-1 g-4 text-md-start text-center">
-        <div class="col order-md-0 order-1">
-          <Flex gap="16px" direction="column">
-            <Text size="text-3xl" color="sand12">
-              NEAR’s strong technical base
-            </Text>
-            <Text size="text-xl" color="sand12">
-              Everything a developer needs to build amazing dApps.
-            </Text>
-          </Flex>
-        </div>
-        <div class="col order-md-1 order-0">
-          <Widget
-            src="mob.near/widget/Image"
-            props={{
-              image: returnIpfsImage(ipfsImages.ecosystemTechnicalBase),
-              className: "img-fluid",
-            }}
-          />
-        </div>
-      </div>
-    </Section>
-
-    <Section
-      gap="24px"
-      center
-      className="mx-auto"
-      style={{ maxWidth: "1000px" }}
-    >
-      <Text size="text-3xl" color="sand12">
-        NEAR’s core platform
-      </Text>
-      <Text size="text-xl" color="sand12">
-        The simple, yet powerful base to build on
-      </Text>
-      <Flex gap="24px">
-        <Card>
-          <Text size="text-3xl" color="sand12">
-            Use familiar Programming Languages
-          </Text>
-          <Text size="text-l" color="sand12">
-            Write your smart contracts in the most used or most loved language.
-            No need to wrestle with Solidity or Vyper.
-          </Text>
-          <Section>
-            <Flex gap="48px" mobileStack="32px" justifyContent="center">
-              <Flex gap="24px" alignItems="center">
-                <Widget
-                  src="mob.near/widget/Image"
-                  props={{
-                    image: returnIpfsImage(ipfsImages.jsIcon),
-                    className: "img-fluid",
-                  }}
-                />
-                <Widget
-                  src="near/widget/DIG.Button"
-                  props={{
-                    href: "https://docs.near.org/develop/quickstart-guide",
-                    iconRight: "ph-bold ph-arrow-up-right",
-                    label: "Start building",
-                    variant: "primary",
-                    fill: "outline",
-                    size: "large",
-                    as: "a",
-                    target: "_blank",
-                  }}
-                />
-              </Flex>
-              <Flex gap="24px" alignItems="center">
-                <Widget
-                  src="mob.near/widget/Image"
-                  props={{
-                    image: returnIpfsImage(ipfsImages.rustIcon),
-                    className: "img-fluid",
-                  }}
-                />
-                <Widget
-                  src="near/widget/DIG.Button"
-                  props={{
-                    href: "https://www.near-sdk.io",
-                    iconRight: "ph-bold ph-arrow-up-right",
-                    label: "Start building",
-                    variant: "primary",
-                    fill: "outline",
-                    size: "large",
-                    as: "a",
-                    target: "_blank",
-                  }}
-                />
+      <Section id="anker_web3_career">
+        <div class="row row-cols-md-2 row-cols-1 g-4 text-md-start text-center">
+          <div class="col order-md-0 order-1">
+            <Flex gap="16px" direction="column">
+              <Text size="text-3xl" color="sand12">
+                Start your web3 сareer with NEAR
+              </Text>
+              <Text size="text-xl" color="sand12">
+                Regardless of your background or experience, there is ample
+                opportunity to participate in this rapidly evolving space.
+              </Text>
+              <Flex
+                gap="32px"
+                className="justify-content-md-start justify-content-center"
+              >
+                <NumericLabel backgroundColor="var(--sand3)">
+                  <Text size="text-3xl" color="cyan8" fontWeight="600">
+                    150<Small size="20px">+</Small>
+                  </Text>
+                  <Text size="text-l" color="sand12">
+                    Active openings
+                  </Text>
+                </NumericLabel>
               </Flex>
             </Flex>
-            <div>
-              <Widget
-                src="near/widget/DIG.Button"
-                props={{
-                  href: "https://docs.near.org",
-                  iconRight: "ph-bold ph-arrow-up-right",
-                  label: "Just take me to the docs",
-                  variant: "primary",
-                  fill: "outline",
-                  size: "large",
-                  as: "a",
-                  target: "_blank",
-                }}
-              />
-            </div>
-          </Section>
-        </Card>
-      </Flex>
-      <Flex gap="24px" mobileStack="24px">
-        <Card>
-          <SocialIcon className="ph ph-lightning" />
-          <Text size="text-xl" color="sand12" fontWeight="600">
-            Be super-productive with our dev-tools
-          </Text>
-          <Text size="text-m" color="sand12">
-            We have all you need – powerful CLI, easy-to-use SDKs, and more
-          </Text>
-          <Widget
-            src="near/widget/DIG.Button"
-            props={{
-              href: "https://near.org/developers/tools",
-              iconRight: "ph-bold ph-arrow-right",
-              label: "Get started with our dev tools",
-              variant: "primary",
-              fill: "outline",
-              size: "large",
-            }}
-          />
-        </Card>
-        <Card>
-          <SocialIcon className="ph ph-lightbulb" />
-          <Text size="text-xl" color="sand12" fontWeight="600">
-            Help yourself with excellent documentations
-          </Text>
-          <Text size="text-m" color="sand12">
-            Docs that answer almost any question. Loads of tutorials and
-            examples
-          </Text>
-          <Widget
-            src="near/widget/DIG.Button"
-            props={{
-              href: "https://near.org/developers/documentation",
-              iconRight: "ph-bold ph-arrow-right",
-              label: "Explore all documentations",
-              variant: "primary",
-              fill: "outline",
-              size: "large",
-            }}
-          />
-        </Card>
-      </Flex>
-    </Section>
-
-    <Section center className="mx-auto" style={{ maxWidth: "1000px" }}>
-      <Text size="text-3xl" color="sand12">
-        Bridges and emulators
-      </Text>
-      <Text size="text-xl" color="sand12">
-        Highly interoperable for a multi-chain world
-      </Text>
-
-      <Flex gap="24px" mobileStack="24px">
-        <Card center>
-          <Widget
-            src="mob.near/widget/Image"
-            props={{
-              image: returnIpfsImage(ipfsImages.logoAurora),
-              style: { width: "80px", height: "80px" },
-            }}
-          />
-          <Text size="text-xl" color="sand12" fontWeight="600">
-            Ethereum & EVM
-          </Text>
-          <Text size="text-m" color="sand12">
-            Easily migrate your Solidity contracts to the Aurora EVM. Use the
-            Rainbow Bridge to transfer assets between Ethereum, NEAR and Aurora
-            EVM. EVM.
-          </Text>
-          <Widget
-            src="near/widget/DIG.Button"
-            props={{
-              href: "https://aurora.dev",
-              iconRight: "ph-bold ph-arrow-up-right",
-              label: "Go to Aurora",
-              variant: "primary",
-              fill: "outline",
-              size: "large",
-              as: "a",
-              target: "_blank",
-            }}
-          />
-        </Card>
-        <Card center>
-          <Widget
-            src="mob.near/widget/Image"
-            props={{
-              image: returnIpfsImage(ipfsImages.logoOctopus),
-              style: { width: "80px", height: "80px" },
-            }}
-          />
-          <Text size="text-xl" color="sand12" fontWeight="600">
-            AppChains on Substrate
-          </Text>
-          <Text size="text-m" color="sand12">
-            Build app-specific chains with substrate on the Octopus network.
-          </Text>
-          <Widget
-            src="near/widget/DIG.Button"
-            props={{
-              href: "https://oct.network",
-              iconRight: "ph-bold ph-arrow-up-right",
-              label: "Go to Octopus",
-              variant: "primary",
-              fill: "outline",
-              size: "large",
-              as: "a",
-              target: "_blank",
-            }}
-          />
-        </Card>
-      </Flex>
-    </Section>
-
-    <Section center>
-      <Text size="text-3xl" color="sand12">
-        Infrastructure providers
-      </Text>
-      <Text size="text-xl" color="sand12">
-        Connecting NEAR to the outside world
-      </Text>
-    </Section>
-
-    <Section
-      center
-      gap="24px"
-      className="mx-auto"
-      style={{ maxWidth: "1000px" }}
-    >
-      <Text size="text-3xl" color="sand12">
-        RPC-Providers
-      </Text>
-      <Flex gap="24px" mobileStack="24px" style={{ width: "100%" }}>
-        {rpcCards.map((item) => (
-          <Card center key={item.ipfsImage}>
-            <Widget
-              src="mob.near/widget/Image"
-              props={{
-                image: returnIpfsImage(item.ipfsImage),
-                style: { width: "80px", height: "80px" },
-              }}
-            />
-            <Text size="text-xl" color="sand12" fontWeight="600">
-              {item.title}
-            </Text>
-            <Text size="text-l" color="sand12">
-              {item.content}
-            </Text>
-            <Widget
-              src="near/widget/DIG.Button"
-              props={{
-                href: item.href,
-                iconRight: "ph-bold ph-arrow-up-right",
-                label: "How to use",
-                variant: "primary",
-                fill: "outline",
-                size: "large",
-                as: "a",
-                target: "_blank",
-              }}
-            />
-          </Card>
-        ))}
-      </Flex>
-    </Section>
-
-    <Section
-      center
-      gap="24px"
-      className="mx-auto"
-      style={{ maxWidth: "1000px" }}
-    >
-      <Text size="text-3xl" color="sand12">
-        Storage
-      </Text>
-
-      <div class="row row-cols-md-3 row-cols-1 g-4">
-        {storageCards.map((item) => (
-          <div class="col" key={item.ipfsImage}>
-            <Card center>
-              <Widget
-                src="mob.near/widget/Image"
-                props={{
-                  image: returnIpfsImage(item.ipfsImage),
-                  style: { width: "80px", height: "80px" },
-                }}
-              />
-              <Text size="text-xl" color="sand12" fontWeight="600">
-                {item.title}
-              </Text>
-              <Text size="text-l" color="sand12">
-                {item.content ?? <span class="invisible">&nbsp;</span>}
-              </Text>
-              {item.internal ? (
-                <Widget
-                  src="near/widget/DIG.Button"
-                  props={{
-                    href: item.href,
-                    iconRight: "ph-bold ph-arrow-up-right",
-                    label: item.hrefText,
-                    variant: "primary",
-                    fill: "outline",
-                    size: "large",
-                    as: "a",
-                    target: "_blank",
-                  }}
-                />
-              ) : (
-                <Widget
-                  src="near/widget/DIG.Button"
-                  props={{
-                    href: item.href,
-                    iconRight: "ph-bold ph-arrow-right",
-                    label: item.hrefText,
-                    variant: "primary",
-                    fill: "outline",
-                    size: "large",
-                  }}
-                />
-              )}
-            </Card>
           </div>
-        ))}
-      </div>
-    </Section>
-
-    <Section
-      center
-      gap="24px"
-      className="mx-auto"
-      style={{ maxWidth: "1000px" }}
-    >
-      <Text size="text-3xl" color="sand12">
-        Oracles
-      </Text>
-      <Flex gap="24px" mobileStack="24px" style={{ width: "100%" }}>
-        {oracleCards.map((item) => (
-          <Card center key={item.ipfsImage}>
+          <div class="col order-md-1 order-0">
             <Widget
               src="mob.near/widget/Image"
               props={{
-                image: returnIpfsImage(item.ipfsImage),
-                style: { width: "80px", height: "80px" },
+                image: returnIpfsImage(ipfsImages.ecosystemCareer),
+                className: "img-fluid",
               }}
             />
-            <Text size="text-xl" color="sand12" fontWeight="600">
-              {item.title}
-            </Text>
-            <Text size="text-l" color="sand12">
-              {item.content ?? <span class="invisible">&nbsp;</span>}
-            </Text>
-            <Widget
-              src="near/widget/DIG.Button"
-              props={{
-                href: item.href,
-                iconRight: "ph-bold ph-arrow-up-right",
-                label: "How to integrate",
-                variant: "primary",
-                fill: "outline",
-                size: "large",
-                as: "a",
-                target: "_blank",
-              }}
-            />
-          </Card>
-        ))}
-      </Flex>
-    </Section>
-
-    <Section
-      center
-      gap="24px"
-      className="mx-auto"
-      style={{ maxWidth: "1000px" }}
-    >
-      <Text size="text-3xl" color="sand12" fontWeight="600">
-        Institutional custodians
-      </Text>
-      <Text size="text-xl" color="sand12">
-        Safely storing the NEAR-token and other assets
-      </Text>
-      <Flex gap="24px" mobileStack="24px" style={{ width: "100%" }}>
-        {assetsCards.map((item) => (
-          <Card center key={item.ipfsImage}>
-            <Widget
-              src="mob.near/widget/Image"
-              props={{
-                image: returnIpfsImage(item.ipfsImage),
-                style: { width: "80px", height: "80px" },
-              }}
-            />
-            <Text size="text-xl" color="sand12" fontWeight="600">
-              {item.title}
-            </Text>
-            <Text size="text-l" color="sand12">
-              {item.content ?? <span class="invisible">&nbsp;</span>}
-            </Text>
-            <Widget
-              src="near/widget/DIG.Button"
-              props={{
-                href: item.href,
-                iconRight: "ph-bold ph-arrow-up-right",
-                label: "Visit website",
-                variant: "primary",
-                fill: "outline",
-                size: "large",
-                as: "a",
-                target: "_blank",
-              }}
-            />
-          </Card>
-        ))}
-      </Flex>
-    </Section>
-
-    <Section
-      id="anker_regional_hubs"
-      background="linear-gradient(to right, hsla(0, 0%, 100%, 0), var(--sand3), hsla(0, 0%, 100%, 0))"
-    >
-      <div class="row row-cols-md-2 row-cols-1 g-4 text-md-start text-center">
-        <div class="col order-md-0 order-1">
-          <Flex gap="16px" direction="column">
-            <Text size="text-3xl" color="sand12">
-              Local presence: Regional Hubs
-            </Text>
-            <Text size="text-xl" color="sand12">
-              Regional Hubs organize and foster a local community of builders,
-              entrepreneurs, and users.
-            </Text>
-          </Flex>
+          </div>
         </div>
-        <div class="col order-md-1 order-0">
+      </Section>
+
+      <Section
+        gap="24px"
+        center
+        className="mx-auto"
+        style={{ maxWidth: "1000px" }}
+      >
+        <Text size="text-3xl" color="sand12">
+          Career and earning opportunities
+        </Text>
+
+        <Flex gap="24px" mobileStack="24px" style={{ width: "100%" }}>
+          <Card>
+            <SocialIcon className="ph ph-binoculars" />
+            <Text size="text-l" color="sand12" fontWeight="600">
+              Find a web3-job
+            </Text>
+            <Widget
+              src="near/widget/DIG.Button"
+              props={{
+                href: "https://careers.near.org/jobs",
+                iconRight: "ph-bold ph-arrow-up-right",
+                label: "See open positions",
+                variant: "primary",
+                fill: "outline",
+              }}
+            />
+          </Card>
+          <Card>
+            <SocialIcon className="ph ph-read-cv-logo" />
+            <Text size="text-l" color="sand12" fontWeight="600">
+              Get a grant for your project
+            </Text>
+            <Widget
+              src="near/widget/DIG.Button"
+              props={{
+                href: "https://near.org/ecosystem/get-funding",
+                iconRight: "ph-bold ph-arrow-right",
+                label: "Explore funding options",
+                variant: "primary",
+                fill: "outline",
+              }}
+            />
+          </Card>
+          <Card>
+            <SocialIcon className="ph ph-crosshair" />
+            <Text size="text-l" color="sand12" fontWeight="600">
+              Complete a bounty
+            </Text>
+            <Widget
+              src="near/widget/DIG.Button"
+              props={{
+                href: "https://gitcoin.co/near/active",
+                iconRight: "ph-bold ph-arrow-up-right",
+                label: "See active bounties",
+                variant: "primary",
+                fill: "outline",
+              }}
+            />
+          </Card>
+        </Flex>
+        <Flex gap="24px">
           <Widget
-            src="mob.near/widget/Image"
+            src="near/widget/DIG.Button"
             props={{
-              image: returnIpfsImage(ipfsImages.sectionAnkerRegionalHubs),
-              className: "img-fluid",
+              href: nearOrgLinks.workAndEarnPage,
+              iconRight: "ph-bold ph-arrow-right",
+              label: "Explore all earning opportunities",
+              variant: "affirmative",
+              size: "large",
             }}
           />
-        </div>
-      </div>
+        </Flex>
+      </Section>
 
       <Section
         center
-        gap="24px"
+        background="linear-gradient(to right, hsla(0, 0%, 100%, 0), var(--sand3), hsla(0, 0%, 100%, 0))"
         className="mx-auto"
-        style={{ maxWidth: "1020px" }}
+        style={{ maxWidth: "1000px" }}
       >
         <Text size="text-3xl" color="sand12">
-          NEAR hubs around the world
+          Need help?
+          <br />
+          There are many ways!
         </Text>
 
-        <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-4">
-          {nearHubsCards.map((item) => (
-            <div class="col" key={item.ipfsImage}>
-              <Card center>
-                <Widget
-                  src="mob.near/widget/Image"
-                  props={{
-                    image: returnIpfsImage(item.ipfsImage),
-                    style: { height: "92px" },
-                  }}
-                />
-                <Text size="text-xl" color="sand12" fontWeight="600">
-                  {item.title}
-                </Text>
-                <Text size="text-m" color="sand12">
-                  {item.content}
-                </Text>
-                <Widget
-                  src="near/widget/DIG.Button"
-                  props={{
-                    href: item.href,
-                    iconRight: "ph-bold ph-arrow-up-right",
-                    label: item.hrefText,
-                    variant: "primary",
-                    fill: "outline",
-                    size: "large",
-                    as: "a",
-                    target: "_blank",
-                  }}
-                />
-              </Card>
-            </div>
-          ))}
-        </div>
-      </Section>
-    </Section>
-
-    <Section id="anker_web3_career">
-      <div class="row row-cols-md-2 row-cols-1 g-4 text-md-start text-center">
-        <div class="col order-md-0 order-1">
-          <Flex gap="16px" direction="column">
-            <Text size="text-3xl" color="sand12">
-              Start your web3 сareer with NEAR
+        <Flex gap="24px" mobileStack="24px" style={{ width: "100%" }}>
+          <Card>
+            <SocialIcon className="ph ph-check-square-offset" />
+            <Text size="text-l" color="sand12" fontWeight="600">
+              DevRel Office Hours
             </Text>
-            <Text size="text-xl" color="sand12">
-              Regardless of your background or experience, there is ample
-              opportunity to participate in this rapidly evolving space.
+          </Card>
+          <Card>
+            <SocialIcon className="ph ph-chats" />
+            <Text size="text-l" color="sand12" fontWeight="600">
+              Active Community
             </Text>
-            <Flex
-              gap="32px"
-              className="justify-content-md-start justify-content-center"
-            >
-              <NumericLabel backgroundColor="var(--sand3)">
-                <Text size="text-3xl" color="cyan8" fontWeight="600">
-                  150<Small size="20px">+</Small>
-                </Text>
-                <Text size="text-l" color="sand12">
-                  Active openings
-                </Text>
-              </NumericLabel>
-            </Flex>
-          </Flex>
-        </div>
-        <div class="col order-md-1 order-0">
-          <Widget
-            src="mob.near/widget/Image"
-            props={{
-              image: returnIpfsImage(ipfsImages.ecosystemCareer),
-              className: "img-fluid",
-            }}
-          />
-        </div>
-      </div>
-    </Section>
-
-    <Section
-      gap="24px"
-      center
-      className="mx-auto"
-      style={{ maxWidth: "1000px" }}
-    >
-      <Text size="text-3xl" color="sand12">
-        Career and earning opportunities
-      </Text>
-
-      <Flex gap="24px" mobileStack="24px" style={{ width: "100%" }}>
-        <Card>
-          <SocialIcon className="ph ph-binoculars" />
-          <Text size="text-l" color="sand12" fontWeight="600">
-            Find a web3-job
-          </Text>
+          </Card>
+          <Card>
+            <SocialIcon className="ph ph-users-three" />
+            <Text size="text-l" color="sand12" fontWeight="600">
+              Forum & Wiki
+            </Text>
+          </Card>
+        </Flex>
+        <Flex gap="24px">
           <Widget
             src="near/widget/DIG.Button"
             props={{
-              href: "https://careers.near.org/jobs",
-              iconRight: "ph-bold ph-arrow-up-right",
-              label: "See open positions",
-              variant: "primary",
-              fill: "outline",
-            }}
-          />
-        </Card>
-        <Card>
-          <SocialIcon className="ph ph-read-cv-logo" />
-          <Text size="text-l" color="sand12" fontWeight="600">
-            Get a grant for your project
-          </Text>
-          <Widget
-            src="near/widget/DIG.Button"
-            props={{
-              href: "https://near.org/ecosystem/get-funding",
+              href: "https://near.org/developers/get-help/",
               iconRight: "ph-bold ph-arrow-right",
-              label: "Explore funding options",
-              variant: "primary",
-              fill: "outline",
+              label: "See all ways to get help",
+              variant: "affirmative",
+              size: "large",
             }}
           />
-        </Card>
-        <Card>
-          <SocialIcon className="ph ph-crosshair" />
-          <Text size="text-l" color="sand12" fontWeight="600">
-            Complete a bounty
-          </Text>
-          <Widget
-            src="near/widget/DIG.Button"
-            props={{
-              href: "https://gitcoin.co/near/active",
-              iconRight: "ph-bold ph-arrow-up-right",
-              label: "See active bounties",
-              variant: "primary",
-              fill: "outline",
-            }}
-          />
-        </Card>
-      </Flex>
-      <Flex gap="24px">
-        <Widget
-          src="near/widget/DIG.Button"
-          props={{
-            href: nearOrgLinks.workAndEarnPage,
-            iconRight: "ph-bold ph-arrow-right",
-            label: "Explore all earning opportunities",
-            variant: "affirmative",
-            size: "large",
-          }}
-        />
-      </Flex>
-    </Section>
-
-    <Section
-      center
-      background="linear-gradient(to right, hsla(0, 0%, 100%, 0), var(--sand3), hsla(0, 0%, 100%, 0))"
-      className="mx-auto"
-      style={{ maxWidth: "1000px" }}
-    >
-      <Text size="text-3xl" color="sand12">
-        Need help?
-        <br />
-        There are many ways!
-      </Text>
-
-      <Flex gap="24px" mobileStack="24px" style={{ width: "100%" }}>
-        <Card>
-          <SocialIcon className="ph ph-check-square-offset" />
-          <Text size="text-l" color="sand12" fontWeight="600">
-            DevRel Office Hours
-          </Text>
-        </Card>
-        <Card>
-          <SocialIcon className="ph ph-chats" />
-          <Text size="text-l" color="sand12" fontWeight="600">
-            Active Community
-          </Text>
-        </Card>
-        <Card>
-          <SocialIcon className="ph ph-users-three" />
-          <Text size="text-l" color="sand12" fontWeight="600">
-            Forum & Wiki
-          </Text>
-        </Card>
-      </Flex>
-      <Flex gap="24px">
-        <Widget
-          src="near/widget/DIG.Button"
-          props={{
-            href: "https://near.org/developers/get-help/",
-            iconRight: "ph-bold ph-arrow-right",
-            label: "See all ways to get help",
-            variant: "affirmative",
-            size: "large",
-          }}
-        />
-      </Flex>
-      <Section style={{ width: "100%" }}>
-        <Widget src="near/widget/NearOrg.LearningLinks" />
+        </Flex>
+        <Section style={{ width: "100%" }}>
+          <Widget src="near/widget/NearOrg.LearningLinks" />
+        </Section>
       </Section>
-    </Section>
+    </Wrapper>
 
     <Widget src="near/widget/NearOrg.Footer" />
-  </Wrapper>
+  </>
 );

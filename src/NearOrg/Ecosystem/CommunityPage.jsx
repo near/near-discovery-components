@@ -244,256 +244,257 @@ const connectChannelsLinks = [
 ];
 
 return (
-  <Wrapper>
-    <Section>
-      <Flex gap="16px" direction="column" alignItems="start">
-        <H1>Community</H1>
-        <Text size="text-xl" color="sand12" style={{ maxWidth: "662px" }}>
-          The NEAR community is a globally distributed home to innovators,
-          developers, and contributors supporting the protocol’s platform,
-          ecosystem, and applications. We’re all here to build a stronger
-          ecosystem.
+  <>
+    <Wrapper className="container-xl">
+      <Section>
+        <Flex gap="16px" direction="column" alignItems="start">
+          <H1>Community</H1>
+          <Text size="text-xl" color="sand12" style={{ maxWidth: "662px" }}>
+            The NEAR community is a globally distributed home to innovators,
+            developers, and contributors supporting the protocol’s platform,
+            ecosystem, and applications. We’re all here to build a stronger
+            ecosystem.
+          </Text>
+        </Flex>
+      </Section>
+
+      <Section background="linear-gradient(to right, hsla(0, 0%, 100%, 0), var(--sand3), hsla(0, 0%, 100%, 0))">
+        <Text size="text-3xl" color="sand12">
+          Why get involved?
         </Text>
-      </Flex>
-    </Section>
 
-    <Section background="linear-gradient(to right, hsla(0, 0%, 100%, 0), var(--sand3), hsla(0, 0%, 100%, 0))">
-      <Text size="text-3xl" color="sand12">
-        Why get involved?
-      </Text>
+        <div class="row row-cols-lg-4 row-cols-md-2 row-cols-1 g-4">
+          {involvedCards.map((item) => (
+            <div class="col">
+              <Card center>
+                <SocialIcon
+                  className={item.iconClassName}
+                  color={`var(--${item.iconColor})`}
+                />
+                <Text size="text-xl" color="sand12" fontWeight="600">
+                  {item.title}
+                </Text>
+                <Text size="text-m" color="sand12">
+                  {item.content}
+                </Text>
+              </Card>
+            </div>
+          ))}
+        </div>
+      </Section>
 
-      <div class="row row-cols-lg-4 row-cols-md-2 row-cols-1 g-4">
-        {involvedCards.map((item) => (
+      <Section>
+        <Text size="text-3xl" color="sand12">
+          Get Started
+        </Text>
+        <Text size="text-m" color="sand12">
+          The NEAR Community provides a number of ways for you to start
+          learning, earning, and growing.
+        </Text>
+
+        <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-4">
+          {getStartedCards.map((item) => (
+            <div class="col">
+              <Card center style={{ height: "100%" }}>
+                <SocialIcon
+                  className={item.iconClassName}
+                  color={`var(--${item.iconColor})`}
+                />
+                <Text size="text-xl" color="sand12" fontWeight="600">
+                  {item.title}
+                </Text>
+                <Text size="text-m" color="sand12">
+                  {item.content}
+                </Text>
+                {item.internal ? (
+                  <Widget
+                    src="near/widget/DIG.Button"
+                    props={{
+                      href: item.href,
+                      iconRight: "ph-bold ph-arrow-up-right",
+                      label: item.hrefText,
+                      variant: "primary",
+                      fill: "outline",
+                      size: "large",
+                      as: "a",
+                      target: "_blank",
+                    }}
+                  />
+                ) : (
+                  <Widget
+                    src="near/widget/DIG.Button"
+                    props={{
+                      href: item.href,
+                      iconRight: "ph-bold ph-arrow-right",
+                      label: item.hrefText,
+                      variant: "primary",
+                      fill: "outline",
+                      size: "large",
+                    }}
+                  />
+                )}
+              </Card>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section>
+        <Text size="text-3xl" color="sand12" style={{ maxWidth: "662px" }}>
+          Guilds: Opening the web through community initiatives.
+        </Text>
+        <Text size="text-m" color="sand12" style={{ maxWidth: "662px" }}>
+          Guilds are collectives that make up the greater NEAR community. Each
+          guild shares a specific vision and mission related to driving a more
+          open, interconnected, and consumer-empowered world.
+        </Text>
+        <Text size="text-l" color="sand12" style={{ maxWidth: "662px" }}>
+          Featured Guilds
+        </Text>
+
+        <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-4">
+          {featuredGuildsCards.map((item) => (
+            <div class="col">
+              <Card style={{ height: "100%" }}>
+                <Widget
+                  src="mob.near/widget/Image"
+                  props={{
+                    image: returnIpfsImage(item.ipfsImage),
+                    style: { width: "52px", height: "52px" },
+                  }}
+                />
+                <Text size="text-xl" color="sand12" fontWeight="600">
+                  {item.title}
+                </Text>
+                <Text size="text-m" color="sand12">
+                  {item.content}
+                </Text>
+              </Card>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section background="linear-gradient(to right, hsla(0, 0%, 100%, 0), var(--sand3), hsla(0, 0%, 100%, 0))">
+        <div class="row row-cols-md-3 row-cols-1 g-4">
           <div class="col">
-            <Card center>
-              <SocialIcon
-                className={item.iconClassName}
-                color={`var(--${item.iconColor})`}
-              />
+            <Card
+              background="transparent"
+              border="none"
+              padding="32px 0"
+              style={{ height: "100%" }}
+            >
+              <SocialIcon className="ph ph-video" color="var(--red7)" />
               <Text size="text-xl" color="sand12" fontWeight="600">
-                {item.title}
+                Watch
               </Text>
-              <Text size="text-m" color="sand12">
-                {item.content}
-              </Text>
-            </Card>
-          </div>
-        ))}
-      </div>
-    </Section>
-
-    <Section>
-      <Text size="text-3xl" color="sand12">
-        Get Started
-      </Text>
-      <Text size="text-m" color="sand12">
-        The NEAR Community provides a number of ways for you to start learning,
-        earning, and growing.
-      </Text>
-
-      <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-4">
-        {getStartedCards.map((item) => (
-          <div class="col">
-            <Card center style={{ height: "100%" }}>
-              <SocialIcon
-                className={item.iconClassName}
-                color={`var(--${item.iconColor})`}
-              />
-              <Text size="text-xl" color="sand12" fontWeight="600">
-                {item.title}
-              </Text>
-              <Text size="text-m" color="sand12">
-                {item.content}
-              </Text>
-              {item.internal ? (
+              <div>
                 <Widget
                   src="near/widget/DIG.Button"
                   props={{
-                    href: item.href,
+                    href: "https://www.youtube.com/channel/UCuKdIYVN8iE3fv8alyk1aMw",
                     iconRight: "ph-bold ph-arrow-up-right",
-                    label: item.hrefText,
+                    label: "NEAR YouTube Channel",
                     variant: "primary",
                     fill: "outline",
-                    size: "large",
+                    size: "small",
                     as: "a",
                     target: "_blank",
                   }}
                 />
-              ) : (
+              </div>
+            </Card>
+          </div>
+
+          <div class="col">
+            <Card
+              background="transparent"
+              border="none"
+              padding="32px 0"
+              style={{ height: "100%" }}
+            >
+              <SocialIcon className="ph ph-lightbulb" color="var(--violet7)" />
+              <Text size="text-xl" color="sand12" fontWeight="600">
+                Read
+              </Text>
+              <Flex gap="24px" direction="column" alignItems="start">
                 <Widget
                   src="near/widget/DIG.Button"
                   props={{
-                    href: item.href,
+                    href: "https://near.org/blog",
                     iconRight: "ph-bold ph-arrow-right",
-                    label: item.hrefText,
+                    label: "NEAR Blog",
                     variant: "primary",
                     fill: "outline",
-                    size: "large",
+                    size: "small",
                   }}
                 />
-              )}
+                <Widget
+                  src="near/widget/DIG.Button"
+                  props={{
+                    href: "https://medium.com/nearprotocol",
+                    iconRight: "ph-bold ph-arrow-up-right",
+                    label: "Community Blog",
+                    variant: "primary",
+                    fill: "outline",
+                    size: "small",
+                    as: "a",
+                    target: "_blank",
+                  }}
+                />
+              </Flex>
             </Card>
           </div>
-        ))}
-      </div>
-    </Section>
 
-    <Section>
-      <Text size="text-3xl" color="sand12" style={{ maxWidth: "662px" }}>
-        Guilds: Opening the web through community initiatives.
-      </Text>
-      <Text size="text-m" color="sand12" style={{ maxWidth: "662px" }}>
-        Guilds are collectives that make up the greater NEAR community. Each
-        guild shares a specific vision and mission related to driving a more
-        open, interconnected, and consumer-empowered world.
-      </Text>
-      <Text size="text-l" color="sand12" style={{ maxWidth: "662px" }}>
-        Featured Guilds
-      </Text>
-
-      <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-4">
-        {featuredGuildsCards.map((item) => (
           <div class="col">
-            <Card style={{ height: "100%" }}>
-              <Widget
-                src="mob.near/widget/Image"
-                props={{
-                  image: returnIpfsImage(item.ipfsImage),
-                  style: { width: "52px", height: "52px" },
-                }}
-              />
+            <Card
+              background="transparent"
+              border="none"
+              padding="32px 0"
+              style={{ height: "100%" }}
+            >
+              <SocialIcon className="ph ph-chats" color="var(--cyan7)" />
               <Text size="text-xl" color="sand12" fontWeight="600">
-                {item.title}
+                Connect
               </Text>
-              <Text size="text-m" color="sand12">
-                {item.content}
-              </Text>
+              <div class="row row-cols-md-2 row-cols-1 g-4">
+                {connectChannelsLinks.map((item) => (
+                  <div key={item.key} class="col">
+                    {item.internal ? (
+                      <Widget
+                        src="near/widget/DIG.Button"
+                        props={{
+                          href: item.href,
+                          iconRight: "ph-bold ph-arrow-up-right",
+                          label: item.hrefText,
+                          variant: "primary",
+                          fill: "outline",
+                          size: "small",
+                          as: "a",
+                          target: "_blank",
+                        }}
+                      />
+                    ) : (
+                      <Widget
+                        src="near/widget/DIG.Button"
+                        props={{
+                          href: item.href,
+                          iconRight: "ph-bold ph-arrow-right",
+                          label: item.hrefText,
+                          variant: "primary",
+                          fill: "outline",
+                          size: "small",
+                        }}
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
             </Card>
           </div>
-        ))}
-      </div>
-    </Section>
-
-    <Section background="linear-gradient(to right, hsla(0, 0%, 100%, 0), var(--sand3), hsla(0, 0%, 100%, 0))">
-      <div class="row row-cols-md-3 row-cols-1 g-4">
-        <div class="col">
-          <Card
-            background="transparent"
-            border="none"
-            padding="32px 0"
-            style={{ height: "100%" }}
-          >
-            <SocialIcon className="ph ph-video" color="var(--red7)" />
-            <Text size="text-xl" color="sand12" fontWeight="600">
-              Watch
-            </Text>
-            <div>
-              <Widget
-                src="near/widget/DIG.Button"
-                props={{
-                  href: "https://www.youtube.com/channel/UCuKdIYVN8iE3fv8alyk1aMw",
-                  iconRight: "ph-bold ph-arrow-up-right",
-                  label: "NEAR YouTube Channel",
-                  variant: "primary",
-                  fill: "outline",
-                  size: "small",
-                  as: "a",
-                  target: "_blank",
-                }}
-              />
-            </div>
-          </Card>
         </div>
-
-        <div class="col">
-          <Card
-            background="transparent"
-            border="none"
-            padding="32px 0"
-            style={{ height: "100%" }}
-          >
-            <SocialIcon className="ph ph-lightbulb" color="var(--violet7)" />
-            <Text size="text-xl" color="sand12" fontWeight="600">
-              Read
-            </Text>
-            <Flex gap="24px" direction="column" alignItems="start">
-              <Widget
-                src="near/widget/DIG.Button"
-                props={{
-                  href: "https://near.org/blog",
-                  iconRight: "ph-bold ph-arrow-right",
-                  label: "NEAR Blog",
-                  variant: "primary",
-                  fill: "outline",
-                  size: "small",
-                }}
-              />
-              <Widget
-                src="near/widget/DIG.Button"
-                props={{
-                  href: "https://medium.com/nearprotocol",
-                  iconRight: "ph-bold ph-arrow-up-right",
-                  label: "Community Blog",
-                  variant: "primary",
-                  fill: "outline",
-                  size: "small",
-                  as: "a",
-                  target: "_blank",
-                }}
-              />
-            </Flex>
-          </Card>
-        </div>
-
-        <div class="col">
-          <Card
-            background="transparent"
-            border="none"
-            padding="32px 0"
-            style={{ height: "100%" }}
-          >
-            <SocialIcon className="ph ph-chats" color="var(--cyan7)" />
-            <Text size="text-xl" color="sand12" fontWeight="600">
-              Connect
-            </Text>
-            <div class="row row-cols-md-2 row-cols-1 g-4">
-              {connectChannelsLinks.map((item) => (
-                <div key={item.key} class="col">
-                  {item.internal ? (
-                    <Widget
-                      src="near/widget/DIG.Button"
-                      props={{
-                        href: item.href,
-                        iconRight: "ph-bold ph-arrow-up-right",
-                        label: item.hrefText,
-                        variant: "primary",
-                        fill: "outline",
-                        size: "small",
-                        as: "a",
-                        target: "_blank",
-                      }}
-                    />
-                  ) : (
-                    <Widget
-                      src="near/widget/DIG.Button"
-                      props={{
-                        href: item.href,
-                        iconRight: "ph-bold ph-arrow-right",
-                        label: item.hrefText,
-                        variant: "primary",
-                        fill: "outline",
-                        size: "small",
-                      }}
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-          </Card>
-        </div>
-      </div>
-    </Section>
-
+      </Section>
+    </Wrapper>
     <Widget src="near/widget/NearOrg.Footer" />
-  </Wrapper>
+  </>
 );

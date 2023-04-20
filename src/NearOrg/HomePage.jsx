@@ -429,9 +429,9 @@ return (
         </H1>
 
         <Text style={{ maxWidth: "670px" }}>
-          Effortlessly create and distribute innovative decentralized apps,
-          while helping build a more open web, with the NEAR Blockchain
-          Operating System (BOS).
+          Effortlessly create and distribute innovative decentralized apps
+          across any blockchain, while helping build a more open web, with the
+          NEAR Blockchain Operating System (BOS).
         </Text>
 
         <Widget
@@ -521,8 +521,9 @@ return (
             Don’t just move the needle, create a new gauge
           </Text>
           <Text color="#00EC97">
-            The BOS makes it easy to use the tools you already know and love to
-            build apps that engage users and create a more open web
+            The Blockchain Operating System (BOS) makes it easy to use the tools
+            you already know and love to build apps that engage users, and
+            create an open web free from centralized platforms
           </Text>
         </Flex>
 
@@ -550,7 +551,7 @@ return (
                   target: "_blank",
                   label: "Read the Docs",
                   iconRight: "ph-bold ph-arrow-right",
-                  variant: "affirmative",
+                  variant: "secondary",
                 }}
               />
             </div>
@@ -578,7 +579,7 @@ return (
                   href: "/sandbox",
                   label: "Try it now",
                   iconRight: "ph-bold ph-arrow-right",
-                  variant: "affirmative",
+                  variant: "secondary",
                 }}
               />
             </div>
@@ -600,7 +601,7 @@ return (
               <Text size="13px" color="#C7F5D8">
                 Accessibility is key to a more open web, so we made it possible
                 for you to onboard to the BOS, and for your users to onboard to
-                your app, without and crypto
+                your app, without any crypto
               </Text>
               <Widget
                 src="near/widget/DIG.Button"
@@ -608,7 +609,7 @@ return (
                   href: "#todo",
                   label: "Learn about FastAuth",
                   iconRight: "ph-bold ph-arrow-right",
-                  variant: "affirmative",
+                  variant: "secondary",
                 }}
               />
             </div>
@@ -637,7 +638,7 @@ return (
                   href: "#todo",
                   label: "Learn more",
                   iconRight: "ph-bold ph-arrow-right",
-                  variant: "affirmative",
+                  variant: "secondary",
                 }}
               />
             </div>

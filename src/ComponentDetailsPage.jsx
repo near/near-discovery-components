@@ -216,6 +216,13 @@ return (
       >
         History
       </TabsButton>
+
+      <TabsButton
+        href={`${detailsUrl}&tab=discussion`}
+        selected={state.selectedTab === "discussion"}
+      >
+        Discussion
+      </TabsButton>
     </Tabs>
 
     {state.selectedTab === "about" && (
@@ -317,6 +324,15 @@ return (
           props={{ widgetPath: src }}
         />
       </HistoryContainer>
+    )}
+
+    {state.selectedTab === "discussion" && (
+      <Content>
+        <Widget
+          src="near/widget/NestedDiscussions"
+          props={{ identifier: src }}
+        />
+      </Content>
     )}
   </Wrapper>
 );

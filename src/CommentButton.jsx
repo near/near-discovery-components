@@ -4,7 +4,7 @@ if (!props.hideCount && !item) {
   return "";
 }
 
-const comments = !!props.hideCount && Social.index("comment", item);
+const comments = !props.hideCount && Social.index("comment", item);
 const dataLoading = props.hideCount ? false : comments === null;
 const totalComments = comments?.length || 0;
 

@@ -204,7 +204,7 @@ return (
           </a>
 
           <a
-            href="https://near.org/wechat"
+            href="https://pages.near.org/wechat"
             target="_blank"
             title="Official WeChat community"
           >
@@ -253,10 +253,10 @@ return (
           </Text>
           <ul>
             <li>
-              <a href="https://near.org/learn/">The basics</a>
+              <a href="/learn">The basics</a>
             </li>
             <li>
-              <a href="https://near.org/learn/learn-more/">
+              <a href="https://pages.near.org/learn/learn-more/">
                 All learning resources
               </a>
             </li>
@@ -272,16 +272,16 @@ return (
           </Text>
           <ul>
             <li>
-              <a href="/use/#set-up-account">Account Setup</a>
+              <a href="/use#set-up-account">Account Setup</a>
             </li>
             <li>
-              <a href="/use/#explore-dapps">Examples of dApps</a>
+              <a href="/use#explore-dapps">Examples of dApps</a>
             </li>
             <li>
               <a href="https://awesomenear.com/">Awesome Near</a>
             </li>
             <li>
-              <a href="/use/#why-it-matters">Why it matters</a>
+              <a href="/use#why-it-matters">Why it matters</a>
             </li>
           </ul>
         </div>
@@ -321,10 +321,10 @@ return (
           </Text>
           <ul>
             <li>
-              <a href="https://near.org/developers/">Overview</a>
+              <a href="https://pages.near.org/developers/">Overview</a>
             </li>
             <li>
-              <a href="https://near.org/developers/get-help/">Get Help</a>
+              <a href="https://pages.near.org/developers/get-help/">Get Help</a>
             </li>
             <li>
               <a href="https://docs.near.org/">Near Docs</a>
@@ -347,25 +347,27 @@ return (
           </Text>
           <ul>
             <li>
-              <a href="https://near.org/about/">Overview</a>
+              <a href="/about">Overview</a>
             </li>
             <li>
-              <a href="https://near.org/blog/">Blog</a>
+              <a href="https://pages.near.org/blog/">Blog</a>
             </li>
             <li>
-              <a href="https://near.org/about/network/">Network</a>
+              <a href="https://pages.near.org/about/network/">Network</a>
             </li>
             <li>
-              <a href="https://near.org/about/press-center/">Press Center</a>
+              <a href="https://pages.near.org/about/press-center/">
+                Press Center
+              </a>
             </li>
             <li>
-              <a href="https://near.org/about/brand/">Brand Toolkit</a>
+              <a href="https://pages.near.org/about/brand/">Brand Toolkit</a>
             </li>
             <li>
               <a href="https://careers.near.org/jobs">Careers</a>
             </li>
             <li>
-              <a href="https://near.org/about/contact-us/">Contact Us</a>
+              <a href="https://pages.near.org/about/contact-us/">Contact Us</a>
             </li>
           </ul>
         </div>
@@ -385,7 +387,9 @@ return (
               <a href="https://stats.gallery/">Stats.gallery</a>
             </li>
             <li>
-              <a href="https://near.org/bridge/">ETH {`<>`} Near Bridge</a>
+              <a href="https://pages.near.org/bridge/">
+                ETH {`<>`} Near Bridge
+              </a>
             </li>
           </ul>
 

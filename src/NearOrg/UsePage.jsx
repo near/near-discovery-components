@@ -343,7 +343,8 @@ return (
       <Widget
         src="near/widget/DIG.Button"
         props={{
-          href: "#todo",
+          href: "https://pages.near.org/use/set-up-account/",
+          target: "_blank",
           iconRight: "ph-bold ph-arrow-up-right",
           label: "Set up your account",
           variant: "affirmative",
@@ -410,7 +411,8 @@ return (
         <Widget
           src="near/widget/DIG.Button"
           props={{
-            href: "#todo",
+            href: "https://pages.near.org/use-cases/defi",
+            target: "_blank",
             iconRight: "ph-bold ph-arrow-up-right",
             label: "Learn about DeFi",
             variant: "primary",
@@ -495,7 +497,8 @@ return (
         <Widget
           src="near/widget/DIG.Button"
           props={{
-            href: "#todo",
+            href: "https://pages.near.org/use-cases/nft",
+            target: "_blank",
             iconRight: "ph-bold ph-arrow-up-right",
             label: "Learn about NFTs",
             variant: "primary",
@@ -629,7 +632,8 @@ return (
           <Widget
             src="near/widget/DIG.Button"
             props={{
-              href: "#todo",
+              href: "https://pages.near.org/blog/why-web3-is-needed-more-than-ever/",
+              target: "_blank",
               iconRight: "ph-bold ph-arrow-up-right",
               label: "Learn More",
               variant: "primary",
@@ -807,7 +811,8 @@ return (
           <Widget
             src="near/widget/DIG.Button"
             props={{
-              href: "#todo",
+              href: "https://pages.near.org/learn/tools/",
+              target: "_blank",
               iconRight: "ph-bold ph-arrow-right",
               label: "Choose a Wallet",
               variant: "primary",

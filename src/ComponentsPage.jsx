@@ -60,6 +60,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   gap: 48px;
   padding-bottom: 48px;
+  padding-top: 48px;
 `;
 
 const Header = styled.div`
@@ -216,7 +217,7 @@ const TabsButton = styled.a`
 `;
 
 return (
-  <Wrapper>
+  <Wrapper className="container-xl">
     <Header>
       <H1>{totalComponents} Components</H1>
       <H2>Discover the latest components from the NEAR community.</H2>

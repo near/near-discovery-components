@@ -3,30 +3,39 @@ const { type } = value;
 const item = value?.item || {};
 const path = item.path || "";
 
+// Build notification
 const isComment = path.indexOf("/post/comment") > 0 || type === "comment";
 const isPost = !isComment && path.indexOf("/post/main") > 0;
-const likedPost = type === "like" && isPost;
-const likedComment = type === "like" && isComment;
-let postUrl = `/#/near/widget/PostPage?accountId=${props.accountId}&${
-  isComment ? "commentBlockHeight" : "blockHeight"
-}=${props.blockHeight}`;
 
-if (type === "like") {
-  const parentAccountId = path.split("/")[0];
-  const parentBlockHeight = item.blockHeight;
-  postUrl = `/#/near/widget/PostPage?accountId=${parentAccountId}&${
-    isComment ? "commentBlockHeight" : "blockHeight"
-  }=${parentBlockHeight}`;
+const accountId = type === "like" ? path.split("/")[0] : props.accountId;
+const blockHeight = type === "like" ? item.blockHeight : props.blockHeight;
+const urlBlockHeight = isComment ? "commentBlockHeight" : "blockHeight";
+
+let postUrl = "";
+
+if (type !== "custom") {
+  postUrl = `/#/near/widget/PostPage?accountId=${accountId}&${urlBlockHeight}=${blockHeight}`;
+} else {
+  postUrl = `/#/${value.widget}?${Object.entries(value.params)
+    .map(([k, v]) => `${k}=${v}`)
+    .join("&")}`;
 }
 
-const supportedTypes = [
-  "poke",
-  "like",
-  "follow",
-  "unfollow",
-  "comment",
-  "mention",
-];
+const actionable =
+  type === "like" ||
+  type === "comment" ||
+  type === "mention" ||
+  type === "custom";
+
+let notificationMessage = {
+  follow: "Followed you",
+  unfollow: "Unfollowed you",
+  poke: "Poked you",
+  like: isPost ? "Liked your post" : isComment ? "Liked your comment" : "",
+  comment: "Commented on your post",
+  mention: "Mentioned you",
+  custom: value.message ?? "",
+};
 
 const Wrapper = styled.div`
   display: flex;
@@ -142,58 +151,54 @@ const Button = styled.a`
   }
 `;
 
+// DevGov handles their own type
 if (type && type.startsWith("devgovgigs/")) {
   return (
     <Widget src="mob.near/widget/Notification.Item.DevGov" props={props} />
   );
 }
 
-if (!supportedTypes.includes(type)) return <></>;
+// Assert is a valid type
+if (!(type in notificationMessage) || !notificationMessage[type]) return <></>;
 
 return (
-  <Wrapper>
-    <div>
-      <Widget
-        src="near/widget/AccountProfile"
-        props={{ accountId: props.accountId }}
-      />
-    </div>
-
-    <Text bold>
-      {type === "follow" && <>Followed you</>}
-      {type === "unfollow" && <>Unfollowed you</>}
-      {type === "poke" && <>Poked you</>}
-      <Text as="a" href={postUrl}>
-        {type === "like" && likedPost && <>Liked your post</>}
-        {type === "like" && likedComment && <>Liked your comment</>}
-        {type === "comment" && <>Commented on your post</>}
-        {type === "mention" && <>Mentioned you</>}
-      </Text>
-      <Widget
-        src="mob.near/widget/TimeAgo"
-        props={{ blockHeight: props.blockHeight }}
-      />{" "}
-      ago
-    </Text>
-
-    <div>
-      {(type === "follow" || type === "unfollow") && (
+  <>
+    <Wrapper>
+      <div>
         <Widget
-          src="near/widget/FollowButton"
+          src="near/widget/AccountProfile"
           props={{ accountId: props.accountId }}
         />
-      )}
+      </div>
 
-      {type === "poke" && (
+      <Text bold>
+        <Text as={actionable ? "a" : "p"} href={actionable ? postUrl : ""}>
+          {notificationMessage[type]}
+        </Text>
         <Widget
-          src="near/widget/PokeButton"
-          props={{ accountId: props.accountId, back: true, primary: true }}
+          src="mob.near/widget/TimeAgo"
+          props={{ blockHeight: props.blockHeight }}
         />
-      )}
+        ago
+      </Text>
 
-      {(type === "like" || type === "comment" || type === "mention") && (
-        <Button href={postUrl}>View {isComment ? "Comment" : "Post"}</Button>
-      )}
-    </div>
-  </Wrapper>
+      <div>
+        {(type === "follow" || type === "unfollow") && (
+          <Widget
+            src="near/widget/FollowButton"
+            props={{ accountId: props.accountId }}
+          />
+        )}
+
+        {type === "poke" && (
+          <Widget
+            src="near/widget/PokeButton"
+            props={{ accountId: props.accountId, back: true, primary: true }}
+          />
+        )}
+
+        {actionable && <Button href={postUrl}>View</Button>}
+      </div>
+    </Wrapper>
+  </>
 );

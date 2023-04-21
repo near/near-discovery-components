@@ -2,7 +2,7 @@ const requiredTag = "app";
 const limit = 5;
 let apps = [];
 let totalComponents = 0;
-const componentsUrl = `/#/near/widget/ComponentsPage`;
+const componentsUrl = `#/near/widget/ComponentsPage`;
 
 const taggedData = Social.keys(
   `*/widget/*/metadata/tags/${requiredTag}`,

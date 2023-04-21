@@ -11,7 +11,7 @@ const data = Social.get(`${accountId}/widget/${widgetName}/metadata/**`);
 const metadata = data || {};
 const tags = Object.keys(metadata.tags || {});
 const appUrl = `/#/${src}`;
-const detailsUrl = `/#/near/widget/ComponentDetailsPage?src=${src}`;
+const detailsUrl = `#/near/widget/ComponentDetailsPage?src=${src}`;
 const shareUrl = `https://alpha.near.org${detailsUrl}`;
 const size = props.size || "large";
 

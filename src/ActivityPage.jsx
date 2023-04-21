@@ -8,7 +8,7 @@ if (props.tab && props.tab !== state.selectedTab) {
   });
 }
 
-const activityUrl = `/#/near/widget/ActivityPage`;
+const activityUrl = `#/near/widget/ActivityPage`;
 
 const Wrapper = styled.div`
   margin-top: calc(var(--body-top-padding) * -1);

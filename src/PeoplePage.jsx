@@ -1,6 +1,6 @@
 const limitPerPage = 21;
 let people = [];
-const peopleUrl = "/#/near/widget/PeoplePage";
+const peopleUrl = "#/near/widget/PeoplePage";
 let followingData = null;
 let followersData = null;
 

@@ -2,7 +2,7 @@ const limitPerPage = 21;
 let components = [];
 let totalApps = 0;
 let totalComponents = 0;
-const componentsUrl = "/#/near/widget/ComponentsPage";
+const componentsUrl = "#/near/widget/ComponentsPage";
 const searchRequiredTag = state.selectedTab === "apps" ? "app" : null;
 const searchPlaceholder =
   state.selectedTab === "apps" ? "Search Apps" : "Search Components";

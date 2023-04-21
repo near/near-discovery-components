@@ -1,7 +1,7 @@
 // link without `gateway` won't work. You can pass "https://near.social/#" or "https://alpha.near.org"
 const gateway = props.gateway ?? "https://alpha.near.org";
 // passing `context.accountId` just for preview example.
-const accountId = props.accountId ?? context.accountId;
+const accountId = props.accountId || context.accountId || "near";
 const name = props.name ?? "NotRealComponentName";
 
 const Card = styled.a`

@@ -1,6 +1,4 @@
-const accountId = props.accountId || context.accountId;
-
-if (!accountId) return "Login or send accountId in the props";
+const accountId = props.accountId || context.accountId || "near";
 
 const profile = Social.getr(`${accountId}/profile`);
 

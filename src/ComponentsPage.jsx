@@ -3,6 +3,9 @@ let components = [];
 let totalApps = 0;
 let totalComponents = 0;
 const componentsUrl = "/#/near/widget/ComponentsPage";
+const searchRequiredTag = state.selectedTab === "apps" ? "app" : null;
+const searchPlaceholder =
+  state.selectedTab === "apps" ? "Search Apps" : "Search Components";
 
 State.init({
   currentPage: 0,
@@ -242,6 +245,8 @@ return (
         props={{
           limit: 21,
           onChange: onSearchChange,
+          placeholder: searchPlaceholder,
+          filterTag: searchRequiredTag,
         }}
       />
     </Search>

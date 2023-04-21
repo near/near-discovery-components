@@ -9,7 +9,22 @@ const requiredTag = props.filterTag;
 const boostedTag = props.boostedTag;
 const inputTerm = props.term;
 
-const computeResults = (term) => {
+const debounce = (func, wait) => {
+  const pause = wait || 350;
+  let timeout;
+
+  return (args) => {
+    const later = () => {
+      clearTimeout(timeout);
+      func(args);
+    };
+
+    clearTimeout(timeout);
+    timeout = setTimeout(later, pause);
+  };
+};
+
+const _search = (term) => {
   const terms = (term || "")
     .toLowerCase()
     .split(/[^\w._\/-]/)
@@ -74,13 +89,22 @@ const computeResults = (term) => {
   const result = matchedWidgets.slice(0, limit);
 
   State.update({
-    term,
     result,
   });
 
   if (props.onChange) {
     props.onChange({ term, result });
   }
+};
+
+const _searchDebounced = debounce(_search, 200);
+
+const computeResults = (term) => {
+  State.update({
+    term: term,
+  });
+
+  _searchDebounced(term);
 };
 
 if (props.term && props.term !== state.oldTerm) {
@@ -98,40 +122,41 @@ const Wrapper = styled.div`
   position: relative;
 
   .bi-search {
-      position: absolute;
-      top: 0;
-      left: 18px;
-      z-index: 100;
-      font-size: 14px;
-      line-height: 40px;
-      color: #687076;
+    position: absolute;
+    top: 0;
+    left: 18px;
+    z-index: 100;
+    font-size: 14px;
+    line-height: 40px;
+    color: #687076;
   }
 
   .input-group {
-      height: 100%;
+    height: 100%;
   }
 
   input {
-      padding: 0 14px 0 42px;
-      border: 1px solid #D0D5DD !important;
-      background: #FFFFFF;
-      border-radius: 100px;
+    padding: 0 14px 0 42px;
+    border: 1px solid #d0d5dd !important;
+    background: #ffffff;
+    border-radius: 100px;
   }
 
   button {
-      border-color: #D0D5DD !important;
-      border-radius: 0 100px 100px 0 !important;
-      border-left: none !important;
-      background: #fff !important;
-      color: #687076 !important;
+    border-color: #d0d5dd !important;
+    border-radius: 0 100px 100px 0 !important;
+    border-left: none !important;
+    background: #fff !important;
+    color: #687076 !important;
 
-      &:hover, &:focus {
-          color: #000 !important;
-      }
+    &:hover,
+    &:focus {
+      color: #000 !important;
+    }
   }
 
   @media (max-width: 500px) {
-      width: 100%;
+    width: 100%;
   }
 `;
 

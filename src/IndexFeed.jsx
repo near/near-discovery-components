@@ -38,14 +38,27 @@ const selfFlaggedPosts = context.accountId
 const shouldFilter = (item) => {
   return (
     filterUsers.includes(item.accountId) ||
-    selfFlaggedPosts.find(
-      (flagged) =>
+    selfFlaggedPosts.find((flagged) => {
+      let itemPath;
+      switch (index.action) {
+        case "comment":
+          itemPath = `${item.accountId}/post/comment`;
+          break;
+        case "post":
+          itemPath = `${item.accountId}/post/main`;
+          break;
+        case "discuss":
+          itemPath = `${item.accountId}/discuss`;
+          break;
+        default:
+          console.log("Found flagged item of unknown type: ", item);
+          break;
+      }
+      return (
         flagged?.value?.blockHeight === item.blockHeight &&
-        flagged?.value?.path ===
-          `${item.accountId}${
-            index.action === "comment" ? "/post/comment" : "/post/main"
-          }` // using ternary since post and comment indices are formed differently compared to flagged path
-    )
+        flagged?.value?.path === itemPath
+      );
+    })
   );
 };
 

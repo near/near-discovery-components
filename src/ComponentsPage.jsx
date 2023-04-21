@@ -1,5 +1,6 @@
 const limitPerPage = 21;
 let components = [];
+let totalApps = 0;
 let totalComponents = 0;
 const componentsUrl = "/#/near/widget/ComponentsPage";
 
@@ -31,6 +32,7 @@ if (data) {
         const hasAppTag =
           tagsData[accountId].widget[widgetName]?.metadata?.tags["app"] === "";
         if (!hasAppTag) return;
+        totalApps++;
       }
 
       result.push({
@@ -219,8 +221,19 @@ const TabsButton = styled.a`
 return (
   <Wrapper className="container-xl">
     <Header>
-      <H1>{totalComponents} Components</H1>
-      <H2>Discover the latest components from the NEAR community.</H2>
+      {state.selectedTab === "apps" && (
+        <>
+          <H1>{totalApps} Apps</H1>
+          <H2>Discover the latest apps from the NEAR community.</H2>
+        </>
+      )}
+
+      {state.selectedTab !== "apps" && (
+        <>
+          <H1>{totalComponents} Components</H1>
+          <H2>Discover the latest components from the NEAR community.</H2>
+        </>
+      )}
     </Header>
 
     <Search>

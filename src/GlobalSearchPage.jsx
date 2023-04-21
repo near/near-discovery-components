@@ -1,5 +1,5 @@
-const componentsUrl = `/#/near/widget/ComponentsPage`;
-const peopleUrl = `/#/near/widget/PeoplePage`;
+const componentsUrl = `#/near/widget/ComponentsPage`;
+const peopleUrl = `#/near/widget/PeoplePage`;
 
 function onSearchChange({ result, term }) {
   if (term.trim()) {

@@ -88,7 +88,7 @@ return (
       ))}
     </Items>
 
-    <ButtonLink href="/#/near/widget/PeoplePage">
+    <ButtonLink href="#/near/widget/PeoplePage">
       View All People <span>({totalAccounts})</span>
     </ButtonLink>
   </Wrapper>

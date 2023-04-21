@@ -13,7 +13,7 @@ if (!accountId) {
 // Profile Data:
 const tags = Object.keys(profile.tags || {});
 const viewingOwnAccount = accountId === context.accountId;
-const accountUrl = `/#/near/widget/ProfilePage?accountId=${accountId}`;
+const accountUrl = `#/near/widget/ProfilePage?accountId=${accountId}`;
 const shareUrl = `https://alpha.near.org${accountUrl}`;
 
 // Follower Count:
@@ -247,7 +247,7 @@ return (
         {viewingOwnAccount ? (
           <a
             className="button button--primary"
-            href="/#/near/widget/ProfileEditor"
+            href="#/near/widget/ProfileEditor"
           >
             <i className="bi bi-pencil"></i>
             Edit Profile

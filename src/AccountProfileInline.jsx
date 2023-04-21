@@ -65,7 +65,7 @@ const Avatar = styled.div`
 `;
 
 const AccountProfile = (
-  <Wrapper href={`/#/near/widget/ProfilePage?accountId=${accountId}`}>
+  <Wrapper href={`#/near/widget/ProfilePage?accountId=${accountId}`}>
     {!props.hideAvatar && (
       <Avatar>
         <Widget

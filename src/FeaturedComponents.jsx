@@ -1,4 +1,4 @@
-const componentsUrl = "/#/near/widget/ComponentsPage";
+const componentsUrl = "#/near/widget/ComponentsPage";
 //bozon.near/widget/WidgetHistory
 
 const Wrapper = styled.div`

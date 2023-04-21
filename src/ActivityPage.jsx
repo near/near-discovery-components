@@ -104,7 +104,10 @@ const TabsButton = styled.a`
 `;
 
 return (
-  <Wrapper negativeMargin={state.selectedTab === "posts"}>
+  <Wrapper
+    className="container-xl"
+    negativeMargin={state.selectedTab === "posts"}
+  >
     <Tabs
       halfMargin={state.selectedTab === "apps"}
       noMargin={state.selectedTab === "posts"}

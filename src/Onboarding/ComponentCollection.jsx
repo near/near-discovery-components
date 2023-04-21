@@ -48,7 +48,7 @@ return (
       <Items>
         {Object.keys(widgets)?.map((item, index) => (
           <Widget
-            src="dima_sheleg.near/widget/Onboarding.ComponentCard"
+            src="near/widget/Onboarding.ComponentCard"
             props={{
               name: item,
               accountId,

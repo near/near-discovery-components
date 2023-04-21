@@ -11,7 +11,6 @@ const showHeader = props.showHeader ?? true;
 const showSearchBar = props.showSearchBar ?? true;
 const showPagination = props.showPagination ?? true;
 const userId = props.accountId ?? context.accountId;
-const searchPageUrl = "/near/widget/Search.IndexPage";
 
 State.init({
   currentPage: 0,
@@ -23,6 +22,7 @@ State.init({
   searchResults: [], // Assuming search results are stored here
   allTags: [],
   activeTags: [],
+
   showFollowed: false,
   showNotFollowed: false,
 });
@@ -33,6 +33,9 @@ if (props.tab && props.tab !== state.selectedTab) {
   });
 }
 
+const componentsUrl = `/#/near/widget/ComponentsPage`;
+const peopleUrl = `/#/near/widget/PeoplePage`;
+
 // Styling Specifications
 
 const typeAheadContainer = {
@@ -41,6 +44,7 @@ const typeAheadContainer = {
   zIndex: "3",
   backgroundColor: "black",
   borderRadius: "10px",
+  transform: "translateX(50px)",
   display: "flex",
   flexDirection: "column",
   textAlign: "center",
@@ -70,6 +74,7 @@ const NoResults = styled.div`
 `;
 
 const Header = styled.div`
+
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -77,6 +82,7 @@ const Header = styled.div`
 
 const Facets = styled.div`
   overflow: auto;
+  
 `;
 
 const H1 = styled.h1`
@@ -85,12 +91,13 @@ const H1 = styled.h1`
   line-height: 39px;
   color: #11181c;
   margin: 0;
+
 `;
 
 const FixedTabs = styled.div`
-  text-align: right;
-  top: 0;
-`;
+    text-align: right;
+    top:0;
+  `;
 
 const H2 = styled.h2`
   font-weight: 400;
@@ -98,6 +105,7 @@ const H2 = styled.h2`
   line-height: 24px;
   color: #687076;
   margin: 0;
+
 `;
 
 const H3 = styled.h3`
@@ -113,7 +121,8 @@ const Group = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin: 10px;
+      margin:10px;
+
 `;
 
 const GroupHeader = styled.div`
@@ -178,18 +187,21 @@ const Tabs = styled.div`
 `;
 
 const Button = styled.button`
-  background-color: transparent;
-  border: none;
-  font-size: 14px;
-  font-weight: 600;
-  color: #9799f8;
-  cursor: pointer;
-  padding: 0;
-  text-decoration: underline;
-  text-align:right &:hover {
+    background-color: transparent;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
     color: #9799f8;
-  }
-`;
+    cursor: pointer;
+    padding: 0;
+    text-decoration: underline;
+            text-align:right
+
+
+    &:hover {
+      color: #9799f8;
+    }
+  `;
 
 const FixedFooter = styled.div`
     padding: 1rem;
@@ -236,11 +248,11 @@ const TabsButton = styled.a`
 `;
 
 const ScrollableContent = styled.div`
-  overflow: auto;
-  flex-grow: 1;
-  width: 100%;
-  height: 350px;
-`;
+    overflow-y: auto;
+    flex-grow: 1;
+    width:100%;
+    height:350px
+  `;
 
 const Item = styled.div``;
 
@@ -839,6 +851,7 @@ return (
               justifyContent: "center",
               alignItems: "center",
               position: "absolute",
+              top: "50%", // Adjust this value to position the text lower
               top: "40%", // Adjust this value to position the text lower
               width: "100%",
               fontSize: "15px",
@@ -852,13 +865,21 @@ return (
       </ScrollableContent>
 
       <FixedFooter>
-        <Button href={`${searchPageUrl}?term=${props.term}`} as="a">
-          {state.search?.totalCount
-            ? ` See ${state.search?.totalCount} Results`
-            : null}
-        </Button>
+        <a
+          href={`https://alpha.near.org/chaotictempest.near/widget/Search?term=${props.term}`}
+        >
+          <Button
+            onClick={() => {
+              console.log("redirect you");
+            }}
+          >
+            {console.log("the count", state.search?.totalCount)}
+            {state.search?.totalCount
+              ? ` See ${state.search?.totalCount} Results`
+              : null}
+          </Button>
+        </a>
       </FixedFooter>
-
       {!props.disableInsights && (
         <Widget
           src="chaotictempest.near/widget/Insights"

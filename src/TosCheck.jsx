@@ -111,6 +111,27 @@ const expand = (e) => {
   State.update({ expand: e });
 };
 
+if (
+  agreementsForUser.length === 0 ||
+  agreementsForUser[agreementsForUser.length - 1].value < latestTosVersion
+) {
+  const acceptJson = Near.view("social.near", "get", {
+    keys: [context.accountId + "/index/tosAccept"],
+  });
+
+  const latestAccept = acceptJson
+    ? JSON.parse(acceptJson[context.accountId]?.index?.tosAccept)
+    : undefined;
+
+  if (
+    latestAccept &&
+    latestAccept.key === acceptanceKey &&
+    latestAccept.value >= latestTosVersion
+  ) {
+    agreementsForUser = [...agreementsForUser, latestAccept];
+  }
+}
+
 // we check for existence of Index results because if no results are found
 // we get an empty array. This means that when the existence check fails
 // we are still loading and we do not want to potentially flash the modal

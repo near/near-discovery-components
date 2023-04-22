@@ -60,6 +60,7 @@ const Wrapper = styled.div`
   padding-right: 16px;
   width: 100%;
 `;
+
 const NoResults = styled.div`
   display: flex;
   justify-content: center;
@@ -389,7 +390,9 @@ const updateSearchHits = debounce(({ term, pageNumber, configs }) => {
     State.update({
       search: {
         profiles: profiles(results["profile"]),
-        components: components(results["widget"]),
+        components: components(results["app, widget"]).concat(
+          components(results["widget"])
+        ),
         postsAndComments: posts(results["post"], "post").concat(
           posts(results["comment, post"], "post-comment")
         ),
@@ -477,6 +480,7 @@ const onFacetClick = (facet) => {
 
   displayResultsByFacet(facet);
 };
+
 const onSearchResultClick = ({ searchPosition, objectID, eventName }) => {
   const position =
     searchPosition + state.currentPage * state.paginate.hitsPerPage;
@@ -508,6 +512,7 @@ const getComponentTags = (accountId, widgetName) => {
   const tags = Object.keys(metadata.tags || {});
   State.update({ selectedTags: tags });
 };
+
 const getAllTagsFromSearchResults = (results) => {
   const allTags = [];
   const userTags = [];
@@ -550,7 +555,7 @@ const topTwoAccounts = () => {
   return output.map((profile, i) => (
     <Item key={profile.accountId}>
       <Widget
-        src="dorgon108.near/widget/dropdownAccountCard"
+        src="near/widget/Search.DropdownAccountCard"
         props={{
           accountId: profile.accountId,
           onClick: () =>
@@ -584,7 +589,7 @@ const topTwoComponents = () => {
   return output.map((component, i) => (
     <Item key={component.accountId + component.widgetName}>
       <Widget
-        src="dorgon108.near/widget/ComponentCard"
+        src="near/widget/Search.ComponentCard"
         props={{
           src: `${component.accountId}/widget/${component.widgetName}`,
           onClick: () =>
@@ -619,7 +624,7 @@ const topTwoComments = () => {
     <Item key={`${post.accountId}/${post.postType}/${post.blockHeight}`}>
       {console.log("the content is", JSON.stringify(post.postContent))}
       <Widget
-        src="dorgon108.near/widget/SearchPost"
+        src="near/widget/Search.PostCard"
         props={{
           accountId: post.accountId,
           blockHeight: post.blockHeight,
@@ -672,7 +677,7 @@ const displayResultsByFacet = (selectedTab) => {
           return (
             <Item key={component.accountId + component.widgetName}>
               <Widget
-                src="dorgon108.near/widget/ComponentCard"
+                src="near/widget/Search.ComponentCard"
                 props={{
                   src: `${component.accountId}/widget/${component.widgetName}`,
                   onClick: () =>
@@ -822,7 +827,7 @@ return (
       {state.search && (
         <FixedTabs>
           <Widget
-            src="dorgon108.near/widget/Facets"
+            src="near/widget/Search.Facets"
             props={{
               facets,
               onFacetClick,
@@ -861,7 +866,7 @@ return (
 
       {!props.disableInsights && (
         <Widget
-          src="chaotictempest.near/widget/Insights"
+          src="near/widget/Search.Insights"
           props={{
             event: state.event,
             searchApiKey: SEARCH_API_KEY,

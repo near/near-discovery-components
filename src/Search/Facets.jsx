@@ -76,10 +76,13 @@ if (!state.initialized) {
 const FacetContainer =
   props.facetContainerStyle ??
   styled.ul`
-    padding: 5px 2px 5px 2px;
-    display: inline-flex;
+    padding: 16px 16px 0px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
     list-style-type: none;
-    overflow: auto;
+    width: 100%;
+    height: 36px;
   `;
 
 const FacetItem =

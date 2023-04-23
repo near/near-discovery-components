@@ -394,7 +394,7 @@ return (
     {showSearchBar && (
       <Search>
         <Widget
-          src="chaotictempest.near/widget/SearchPill"
+          src="near/widget/Search.Pill"
           props={{
             onChange: onSearchChange,
             term: props.term,

@@ -12,7 +12,7 @@ const showSearchBar = props.showSearchBar ?? true;
 const showPagination = props.showPagination ?? true;
 const userId = props.accountId ?? context.accountId;
 const searchPageUrl = "/near/widget/Search.IndexPage";
-const topmostCount = props.topmost ?? 3;
+const topmostCount = props.topmostCount ?? 3;
 
 State.init({
   currentPage: 0,
@@ -346,18 +346,10 @@ const debounce = (callable, timeout) => {
   };
 };
 
-const fetchSearchHits = (query, { pageNumber, configs, optionalFilters }) => {
-  configs = configs ?? configsPerFacet(state.facet);
+const fetchSearchHits = (query, { pageNumber, configs }) => {
   let body = {
     query,
     page: pageNumber ?? 0,
-    hitsPerPage: rawResp.hitsPerPage,
-    optionalFilters: optionalFilters ?? [
-      "categories:profile<score=3>",
-      "categories:widget<score=2>",
-      "categories:post<score=1>",
-      "categories:comment<score=0>",
-    ],
     clickAnalytics: true,
     ...configs,
   };
@@ -372,56 +364,68 @@ const fetchSearchHits = (query, { pageNumber, configs, optionalFilters }) => {
   });
 };
 
-const updateSearchHits = debounce(({ term, pageNumber, configs }) => {
-  fetchSearchHits(term, { pageNumber, configs }).then((resp) => {
-    const { results, hitsTotal, hitsPerPage } = categorizeSearchHits(resp.body);
-    const combinedResults = [
-      ...profiles(results["profile"]),
-      ...components(results["widget"]),
-      ...posts(results["post"], "post"),
-      ...posts(results["comment, post"], "post-comment"),
-    ];
+const updateSearchHits = debounce(({ term, pageNumber }) => {
+  const localState = {
+    counter: 0,
+    hitsTotal: 0,
+    paginate: {},
+  };
+  const updateStateAfterFetching = (facet) => {
+    return (resp) => {
+      const { results, hitsTotal, hitsPerPage } = categorizeSearchHits(
+        resp.body
+      );
 
-    State.update({
-      search: {
-        profiles: profiles(results["profile"]),
-        components: components(results["app, widget"]).concat(
-          components(results["widget"])
-        ),
-        postsAndComments: posts(results["post"], "post").concat(
-          posts(results["comment, post"], "post-comment")
-        ),
-      },
-      currentPage: pageNumber,
-      paginate: {
+      localState.counter += 1;
+      localState.hitsTotal += hitsTotal;
+      localState.paginate[facet] = {
         hitsTotal,
         hitsPerPage,
-      },
-      queryID: resp.body.queryID,
-    });
+      };
+      if (facet === "People") {
+        localState.profiles = profiles(results["profile"]);
+      } else if (facet === "Apps") {
+        localState.apps = components(results["app, widget"]);
+      } else if (facet === "components") {
+        localState.components = components(results["widget"]);
+      } else {
+        localState.postsAndComments = posts(results["post"], "post").concat(
+          posts(results["comment, post"], "post-comment")
+        );
+      }
 
-    getAllTagsFromSearchResults(combinedResults);
-  });
+      if (localState.counter === 4) {
+        console.log(`QUERYIED ${term}`, localState);
+        State.update({
+          search: {
+            profiles: localState.profiles,
+            components: localState.apps.concat(localState.components),
+            postsAndComments: localState.postsAndComments,
+          },
+          currentPage: pageNumber,
+          paginate: {
+            hitsTotal: localState.hitsTotal,
+            // TODO: rectify hitsPerPage
+            hitsPerPage,
+          },
+          // TODO: rectify queryId
+          queryID: resp.body.queryID,
+        });
+      }
+    };
+  };
+
+  for (const facet of ["People", "Apps", "Components", "Posts"]) {
+    fetchSearchHits(term, {
+      pageNumber,
+      configs: configsPerFacet(facet),
+    }).then(updateStateAfterFetching(facet));
+  }
 });
 
 const onSearchChange = ({ term }) => {
   writeStateTerm(term);
   updateSearchHits({ term, pageNumber: INITIAL_PAGE });
-};
-
-const onPageChange = (pageNumber) => {
-  const algoliaPageNumber = pageNumber - 1;
-  if (algoliaPageNumber === state.currentPage) {
-    console.log(`Selected the same page number as before: ${pageNumber}`);
-    return;
-  }
-  // Need to clear out old search data otherwise we'll get multiple entries
-  // from the previous pages as well. Seems to be cache issue on near.social.
-  State.update({
-    search: undefined,
-    currentPage: algoliaPageNumber,
-  });
-  updateSearchHits({ term: state.term, pageNumber: algoliaPageNumber });
 };
 
 const FACET_TO_CATEGORY = {
@@ -431,21 +435,19 @@ const FACET_TO_CATEGORY = {
   Posts: "post",
 };
 
+const FACET_TO_FILTER = {
+  People: "categories:profile",
+  Apps: "(categories:app OR tags:app)",
+  Components: "categories:widget",
+  Posts: "(categories:post OR categories:comment)",
+};
+
 const searchFilters = (facet) => {
-  const category = FACET_TO_CATEGORY[facet];
-  let filters = category ? `categories:${category}` : undefined;
-  if (category === "post") {
-    filters = `(${filters} OR categories:comment)`;
-  }
-  if (category === "app") {
-    filters = `(${filters} OR tags:app)`;
-  }
+  let filters = FACET_TO_FILTER[facet];
   if (filters) {
     filters = `${filters} AND `;
   }
-  filters = `${filters}NOT author:hypefairy.near AND NOT _tags:hidden`;
-
-  return filters;
+  return `${filters}NOT author:hypefairy.near AND NOT _tags:hidden`;
 };
 
 const restrictSearchable = (facet) => {
@@ -464,6 +466,7 @@ const configsPerFacet = (facet) => {
     restrictSearchableAttributes: restrictSearchable(facet),
   };
 };
+
 const onFacetClick = (facet) => {
   if (facet === state.selectedTab) {
     return;

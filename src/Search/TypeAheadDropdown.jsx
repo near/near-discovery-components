@@ -381,25 +381,42 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
 
       if (facet === "People") {
         State.update({
-          profiles: profiles(results["profile"]),
+          profiles: {
+            hitsTotal,
+            hitsPerPage,
+            hits: profiles(results["profile"]),
+          },
         });
       } else if (facet === "Apps") {
         State.update({
-          apps: components(results["app, widget"]),
+          apps: {
+            hitsTotal,
+            hitsPerPage,
+            hits: components(results["app, widget"]),
+          },
         });
       } else if (facet === "Components") {
         State.update({
-          components: components(results["widget"]),
+          components: {
+            hitsTotal,
+            hitsPerPage,
+            hits: components(results["widget"]),
+          },
         });
       } else {
         State.update({
-          postsAndComments: posts(results["post"], "post").concat(
-            posts(results["comment, post"], "post-comment")
-          ),
+          postsAndComments: {
+            hitsTotal,
+            hitsPerPage,
+            hits: posts(results["post"], "post").concat(
+              posts(results["comment, post"], "post-comment")
+            ),
+          },
         });
 
         localState.hitsTotal += hitsTotal;
         if (localState.hitsTotal >= localState.lastUpdatedHitsTotal) {
+          localState.lastUpdatedHitsTotal = localState.hitsTotal;
           State.update({
             paginate: {
               hitsPerPage,
@@ -535,12 +552,12 @@ const topmostAccounts = () => {
 
   if (state.selectedTab === "People") {
     for (let i = 0; i < 6; i++) {
-      if (i < state.profiles.length) {
-        output.push(state.profiles[i]);
+      if (i < state.profiles.hits.length) {
+        output.push(state.profiles.hits[i]);
       }
     }
   } else {
-    output = state.profiles.slice(0, topmostCount);
+    output = state.profiles.hits.slice(0, topmostCount);
   }
 
   return output.map((profile, i) => (
@@ -563,18 +580,17 @@ const topmostAccounts = () => {
 
 const topmostComponents = (apps) => {
   let output = [];
-
-  if (state.selectedTab === "Components") {
+  if (state.selectedTab === "Components" || state.selectedTab === "Apps") {
     for (let i = 0; i < 6; i++) {
-      if (i < state.components.length) {
-        output.push(state.components[i]);
+      if (i < state.components.hitsTotal) {
+        output.push(state.components.hits[i]);
       }
     }
   } else {
     if (apps) {
-      output = state.apps.slice(0, topmostCount);
+      output = state.apps.hits.slice(0, topmostCount);
     } else {
-      output = state.components.slice(0, topmostCount);
+      output = state.components.hits.slice(0, topmostCount);
     }
   }
 
@@ -601,12 +617,12 @@ const topmostPosts = () => {
 
   if (state.selectedTab === "Posts") {
     for (let i = 0; i < 6; i++) {
-      if (i < state.postsAndComments.length) {
-        output.push(state.postsAndComments[i]);
+      if (i < state.postsAndComments.hitsTotal) {
+        output.push(state.postsAndComments.hits[i]);
       }
     }
   } else {
-    output = state.postsAndComments.slice(0, topmostCount);
+    output = state.postsAndComments.hits.slice(0, topmostCount);
   }
 
   return output.map((post, i) => (
@@ -627,7 +643,7 @@ const topmostPosts = () => {
 const displayResultsByFacet = (selectedTab) => {
   switch (selectedTab) {
     case "People":
-      return state.profiles?.length > 0 ? (
+      return state.profiles.hits?.length > 0 ? (
         <Group>
           <GroupHeader>
             <H3>
@@ -637,7 +653,7 @@ const displayResultsByFacet = (selectedTab) => {
                   marginLeft: "10px",
                 }}
               >
-                {` ${state.search?.profiles.length ?? 0}`}
+                {state.profiles.hitsTotal}
               </span>{" "}
             </H3>
           </GroupHeader>
@@ -648,26 +664,7 @@ const displayResultsByFacet = (selectedTab) => {
         <div>No People Found</div>
       );
     case "Apps": {
-      const appComponents = state.apps.map((component) => {
-        return (
-          <Item key={component.accountId + component.widgetName}>
-            <Widget
-              src="near/widget/Search.ComponentCard"
-              props={{
-                src: `${component.accountId}/widget/${component.widgetName}`,
-                onClick: () =>
-                  onSearchResultClick({
-                    searchPosition: component.searchPosition,
-                    objectID: `${component.accountId}/widget/${component.widgetName}`,
-                    eventName: "Clicked Component After Search",
-                  }),
-              }}
-            />
-          </Item>
-        );
-      });
-
-      return appComponents.length > 0 ? (
+      return state.apps.hits?.length > 0 ? (
         <Group>
           <GroupHeader>
             <H3>
@@ -677,11 +674,11 @@ const displayResultsByFacet = (selectedTab) => {
                   marginLeft: "10px",
                 }}
               >
-                {` ${appComponents.length}`}
+                {state.apps.hitsTotal}
               </span>
             </H3>
           </GroupHeader>
-          <Items>{appComponents}</Items>
+          <Items>{topmostComponents(true)}</Items>
         </Group>
       ) : (
         <NoResults>No Apps Found</NoResults>
@@ -689,7 +686,7 @@ const displayResultsByFacet = (selectedTab) => {
     }
 
     case "Components":
-      return state.components?.length > 0 ? (
+      return state.components.hits?.length > 0 ? (
         <Group>
           <GroupHeader>
             <H3>
@@ -699,7 +696,7 @@ const displayResultsByFacet = (selectedTab) => {
                   marginLeft: "10px",
                 }}
               >
-                {` ${state.components.length ?? 0}`}
+                {state.components.hitsTotal}
               </span>
             </H3>
           </GroupHeader>
@@ -710,7 +707,7 @@ const displayResultsByFacet = (selectedTab) => {
         <NoResults>No Components Found</NoResults>
       );
     case "Posts":
-      return state.postsAndComments?.length > 0 ? (
+      return state.postsAndComments.hits?.length > 0 ? (
         <Group style={{ marginTop: "20px" }}>
           <GroupHeader>
             <H3>
@@ -720,8 +717,8 @@ const displayResultsByFacet = (selectedTab) => {
                   marginLeft: "10px",
                 }}
               >
-                {` ${state.postsAndComments.length ?? 0}`}
-              </span>{" "}
+                {state.postsAndComments.hitsTotal}
+              </span>
             </H3>
           </GroupHeader>
 
@@ -733,7 +730,7 @@ const displayResultsByFacet = (selectedTab) => {
     case "All":
       return (
         <>
-          {state.profiles?.length > 0 && (
+          {state.profiles.hits?.length > 0 && (
             <Group>
               <GroupHeader>
                 <H3>
@@ -743,14 +740,14 @@ const displayResultsByFacet = (selectedTab) => {
                       marginLeft: "10px",
                     }}
                   >
-                    {` ${state.profiles.length ?? 0}`}
+                    {state.profiles.hits.length}
                   </span>{" "}
                 </H3>
               </GroupHeader>
               <Items>{topmostAccounts()}</Items>
             </Group>
           )}
-          {state.apps?.length > 0 && (
+          {state.apps.hits?.length > 0 && (
             <Group>
               <GroupHeader>
                 <H3>
@@ -760,14 +757,14 @@ const displayResultsByFacet = (selectedTab) => {
                       marginLeft: "10px",
                     }}
                   >
-                    {`${state.apps.length ?? 0}`}
-                  </span>{" "}
+                    {state.apps.hits.length}
+                  </span>
                 </H3>
               </GroupHeader>
               <Items>{topmostComponents(true)}</Items>
             </Group>
           )}
-          {state.components?.length > 0 && (
+          {state.components.hits?.length > 0 && (
             <Group>
               <GroupHeader>
                 <H3>
@@ -777,14 +774,14 @@ const displayResultsByFacet = (selectedTab) => {
                       marginLeft: "10px",
                     }}
                   >
-                    {`${state.components.length ?? 0}`}
+                    {state.components.hitsTotal}
                   </span>{" "}
                 </H3>
               </GroupHeader>
               <Items>{topmostComponents(false)}</Items>
             </Group>
           )}
-          {state.postsAndComments?.length > 0 && (
+          {state.postsAndComments.hits?.length > 0 && (
             <Group style={{ marginTop: "20px" }}>
               <GroupHeader>
                 <H3>
@@ -794,8 +791,8 @@ const displayResultsByFacet = (selectedTab) => {
                       marginLeft: "10px",
                     }}
                   >
-                    {`${state.postsAndComments.length ?? 0}`}
-                  </span>{" "}
+                    {state.postsAndComments.hitsTotal}
+                  </span>
                 </H3>
               </GroupHeader>
               <Items>{topmostPosts()}</Items>
@@ -848,7 +845,7 @@ return (
 
       <FixedFooter>
         <Button href={`${searchPageUrl}?term=${props.term}`} as="a">
-          {state.paginate?.hitsTotal &&
+          {state.paginate?.hitsTotal > 0 &&
             ` See ${state.paginate.hitsTotal} Results`}
         </Button>
       </FixedFooter>

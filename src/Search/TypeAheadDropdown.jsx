@@ -25,7 +25,7 @@ State.init({
   allTags: [],
   activeTags: [],
   showFollowed: false,
-  showNotFollowed: false,ga 
+  showNotFollowed: false,
 });
 
 // Styling Specifications

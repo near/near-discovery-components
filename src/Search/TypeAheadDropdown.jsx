@@ -547,10 +547,7 @@ const topTwoAccounts = () => {
     }
   } else {
     output = state.search.profiles.slice(0, 2);
-    console.log("else called", output);
   }
-
-  console.log(output);
 
   return output.map((profile, i) => (
     <Item key={profile.accountId}>
@@ -581,13 +578,10 @@ const topTwoComponents = () => {
     }
   } else {
     output = state.search.components.slice(0, 2);
-    console.log("else called", output);
   }
 
-  console.log(output);
-
   return output.map((component, i) => (
-    <Item key={component.accountId + component.widgetName}>
+    <Item key={`${component.accountId}/widget/${component.widgetName}`}>
       <Widget
         src="near/widget/Search.ComponentCard"
         props={{
@@ -615,14 +609,10 @@ const topTwoComments = () => {
     }
   } else {
     output = state.search.postsAndComments.slice(0, 2);
-    console.log("else called", output);
   }
-
-  console.log(output);
 
   return output.map((post, i) => (
     <Item key={`${post.accountId}/${post.postType}/${post.blockHeight}`}>
-      {console.log("the content is", JSON.stringify(post.postContent))}
       <Widget
         src="near/widget/Search.PostCard"
         props={{

@@ -26,14 +26,9 @@ const onClick =
   });
 
 const highlightWordInParagraph = (paragraph, word, charLimit) => {
-  console.log("the word is ", word);
-  console.log("before:", paragraph);
-
   paragraph = paragraph.replace(/\n/g, "");
-  console.log("after:", paragraph);
   const words = paragraph.split(" ");
   const wordIndex = words.indexOf(word);
-  console.log("the word index is", wordIndex);
   if (wordIndex === -1) {
     return paragraph;
   }
@@ -136,7 +131,6 @@ return (
     </Header>
 
     <Body>
-      {console.log("the text is:", content.text)}
       {content.text && (
         <Widget
           src="near/widget/Search.Markdown"

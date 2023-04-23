@@ -62,7 +62,7 @@ const NoResults = styled.div`
   align-items: center;
   height: 100vh;
   font-size: 1.5rem;
-  color: #444;
+  color: #FFF;
 `;
 
 const Header = styled.div`
@@ -515,38 +515,6 @@ const onSearchResultClick = ({ searchPosition, objectID, eventName }) => {
   }, 100);
 };
 
-const getComponentTags = (accountId, widgetName) => {
-  const metadata = Social.get(
-    `${accountId}/widget/${widgetName}/metadata/**`,
-    "final"
-  );
-  const tags = Object.keys(metadata.tags || {});
-  State.update({ selectedTags: tags });
-};
-
-const getAllTagsFromSearchResults = (results) => {
-  const allTags = [];
-  const userTags = [];
-  const componentTags = [];
-
-  results.forEach((result) => {
-    if (result.widgetName) {
-      const metadata = Social.get(
-        `${result.accountId}/widget/${result.widgetName}/metadata/**`,
-        "final"
-      );
-      const widgetTags = Object.keys(metadata.tags || {});
-      componentTags.push(...widgetTags);
-      allTags.push(...widgetTags);
-    } else {
-      const profile = Social.get(`${result.accountId}/profile/**`, "final");
-      const profileTags = Object.keys(profile.tags || {});
-      userTags.push(...profileTags);
-      allTags.push(...profileTags);
-    }
-  });
-};
-
 const topmostAccounts = () => {
   let output = [];
 
@@ -654,14 +622,14 @@ const displayResultsByFacet = (selectedTab) => {
                 }}
               >
                 {state.profiles.hitsTotal}
-              </span>{" "}
+              </span>
             </H3>
           </GroupHeader>
 
           <Items>{topmostAccounts()}</Items>
         </Group>
       ) : (
-        <div>No People Found</div>
+        <NoResults>No People Found</NoResults>
       );
     case "Apps": {
       return state.apps.hits?.length > 0 ? (
@@ -725,7 +693,7 @@ const displayResultsByFacet = (selectedTab) => {
           <Items>{topmostPosts()}</Items>
         </Group>
       ) : (
-        <div>No People Found</div>
+        <NoResults>No People Found</NoResults>
       );
     case "All":
       return (
@@ -741,7 +709,7 @@ const displayResultsByFacet = (selectedTab) => {
                     }}
                   >
                     {state.profiles.hits.length}
-                  </span>{" "}
+                  </span>
                 </H3>
               </GroupHeader>
               <Items>{topmostAccounts()}</Items>
@@ -775,7 +743,7 @@ const displayResultsByFacet = (selectedTab) => {
                     }}
                   >
                     {state.components.hitsTotal}
-                  </span>{" "}
+                  </span>
                 </H3>
               </GroupHeader>
               <Items>{topmostComponents(false)}</Items>

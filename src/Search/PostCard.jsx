@@ -127,7 +127,7 @@ return (
   <Post href={postUrl} onPointerUp={onClick}>
     <Header>
       <Widget
-        src="near/widget/Search.AccountProfileCard"
+        src="near/widget/Search.AccountProfile"
         props={{
           accountId,
           hideAccountId: true,

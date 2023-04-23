@@ -57,12 +57,12 @@ const Wrapper = styled.div`
 `;
 
 const NoResults = styled.div`
-  display: flex;
+  padding: 16px;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
   font-size: 1.5rem;
-  color: #FFF;
+  color: #444;
 `;
 
 const Header = styled.div`
@@ -708,7 +708,7 @@ const displayResultsByFacet = (selectedTab) => {
                       marginLeft: "10px",
                     }}
                   >
-                    {state.profiles.hits.length}
+                    {state.profiles.hitsTotal}
                   </span>
                 </H3>
               </GroupHeader>
@@ -725,7 +725,7 @@ const displayResultsByFacet = (selectedTab) => {
                       marginLeft: "10px",
                     }}
                   >
-                    {state.apps.hits.length}
+                    {state.apps.hitsTotal}
                   </span>
                 </H3>
               </GroupHeader>

@@ -346,7 +346,7 @@ const debounce = (callable, timeout) => {
   return (args) => {
     clearTimeout(state.timer);
     State.update({
-      timer: setTimeout(() => callable(args), timeout ?? 50),
+      timer: setTimeout(() => callable(args), timeout ?? 250),
     });
   };
 };
@@ -501,7 +501,7 @@ const onSearchResultClick = ({ searchPosition, objectID, eventName }) => {
   setTimeout(() => {
     // This will trigger the Insights widget:
     State.update({ event });
-  }, 50);
+  }, 100);
 };
 
 const getComponentTags = (accountId, widgetName) => {

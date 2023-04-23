@@ -366,6 +366,10 @@ const fetchSearchHits = (query, { pageNumber, configs }) => {
 };
 
 const updateSearchHits = debounce(({ term, pageNumber }) => {
+  const localState = {
+    hitsTotal: 0,
+    lastUpdatedHitsTotal: 0,
+  };
   // NOTE: This puts all search results into state directly instead of categorized
   // under `search`. This is due to how many times the state is updated and reading the
   // state with current near social isn't feasible.
@@ -393,6 +397,16 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
             posts(results["comment, post"], "post-comment")
           ),
         });
+
+        localState.hitsTotal += hitsTotal;
+        if (localState.hitsTotal >= localState.lastUpdatedHitsTotal) {
+          State.update({
+            paginate: {
+              hitsPerPage,
+              hitsTotal: localState.hitsTotal,
+            },
+          });
+        }
       }
     };
   };
@@ -834,9 +848,8 @@ return (
 
       <FixedFooter>
         <Button href={`${searchPageUrl}?term=${props.term}`} as="a">
-          {state.paginate?.hitsTotal
-            ? ` See ${state.search?.hitsTotal} Results`
-            : null}
+          {state.paginate?.hitsTotal &&
+            ` See ${state.paginate.hitsTotal} Results`}
         </Button>
       </FixedFooter>
 

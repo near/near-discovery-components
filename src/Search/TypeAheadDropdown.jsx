@@ -534,7 +534,7 @@ const getAllTagsFromSearchResults = (results) => {
   });
 };
 
-const topTwoAccounts = () => {
+const topmostAccounts = () => {
   let output = [];
 
   if (state.selectedTab === "People") {
@@ -565,7 +565,7 @@ const topTwoAccounts = () => {
   ));
 };
 
-const topTwoComponents = () => {
+const topmostComponents = () => {
   let output = [];
 
   if (state.selectedTab === "Components") {
@@ -596,7 +596,7 @@ const topTwoComponents = () => {
   ));
 };
 
-const topTwoComments = () => {
+const topmostPosts = () => {
   let output = [];
 
   if (state.selectedTab === "Posts") {
@@ -642,7 +642,7 @@ const displayResultsByFacet = (selectedTab) => {
             </H3>
           </GroupHeader>
 
-          <Items>{topTwoAccounts()}</Items>
+          <Items>{topmostAccounts()}</Items>
         </Group>
       ) : (
         <div>No People Found</div>
@@ -717,7 +717,7 @@ const displayResultsByFacet = (selectedTab) => {
             </H3>
           </GroupHeader>
 
-          <Items>{topTwoComponents()}</Items>
+          <Items>{topmostComponents()}</Items>
         </Group>
       ) : (
         <NoResults>No Components Found</NoResults>
@@ -738,7 +738,7 @@ const displayResultsByFacet = (selectedTab) => {
             </H3>
           </GroupHeader>
 
-          <Items>{topTwoComments()}</Items>
+          <Items>{topmostPosts()}</Items>
         </Group>
       ) : (
         <div>No People Found</div>
@@ -760,7 +760,7 @@ const displayResultsByFacet = (selectedTab) => {
                   </span>{" "}
                 </H3>
               </GroupHeader>
-              <Items>{topTwoAccounts()}</Items>
+              <Items>{topmostAccounts()}</Items>
             </Group>
           )}
           {state.search?.components.length > 0 && (
@@ -777,7 +777,7 @@ const displayResultsByFacet = (selectedTab) => {
                   </span>{" "}
                 </H3>
               </GroupHeader>
-              <Items>{topTwoComponents()}</Items>
+              <Items>{topmostComponents()}</Items>
             </Group>
           )}
           {state.search?.postsAndComments.length > 0 && (
@@ -794,7 +794,7 @@ const displayResultsByFacet = (selectedTab) => {
                   </span>{" "}
                 </H3>
               </GroupHeader>
-              <Items>{topTwoComments()}</Items>
+              <Items>{topmostPosts()}</Items>
             </Group>
           )}
         </>

@@ -12,10 +12,11 @@ const showSearchBar = props.showSearchBar ?? true;
 const showPagination = props.showPagination ?? true;
 const userId = props.accountId ?? context.accountId;
 const searchPageUrl = "/near/widget/Search.IndexPage";
+const topmostCount = props.topmost ?? 3;
 
 State.init({
   currentPage: 0,
-  selectedTab: "All",
+  selectedTab: tab,
   facet: tab,
   isFiltersPanelVisible: false,
   numColumns: 3,
@@ -26,12 +27,6 @@ State.init({
   showFollowed: false,
   showNotFollowed: false,
 });
-
-if (props.tab && props.tab !== state.selectedTab) {
-  State.update({
-    selectedTab: props.tab,
-  });
-}
 
 // Styling Specifications
 
@@ -346,7 +341,7 @@ const debounce = (callable, timeout) => {
   return (args) => {
     clearTimeout(state.timer);
     State.update({
-      timer: setTimeout(() => callable(args), timeout ?? 250),
+      timer: setTimeout(() => callable(args), timeout ?? 150),
     });
   };
 };
@@ -546,7 +541,7 @@ const topTwoAccounts = () => {
       }
     }
   } else {
-    output = state.search.profiles.slice(0, 2);
+    output = state.search.profiles.slice(0, topmostCount);
   }
 
   return output.map((profile, i) => (
@@ -577,7 +572,7 @@ const topTwoComponents = () => {
       }
     }
   } else {
-    output = state.search.components.slice(0, 2);
+    output = state.search.components.slice(0, topmostCount);
   }
 
   return output.map((component, i) => (
@@ -608,7 +603,7 @@ const topTwoComments = () => {
       }
     }
   } else {
-    output = state.search.postsAndComments.slice(0, 2);
+    output = state.search.postsAndComments.slice(0, topmostCount);
   }
 
   return output.map((post, i) => (

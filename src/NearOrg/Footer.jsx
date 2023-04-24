@@ -256,7 +256,7 @@ return (
               <a href="/learn">The basics</a>
             </li>
             <li>
-              <a href="https://pages.near.org/learn/learn-more/">
+              <a href="https://pages.near.org/learn/learn-more">
                 All learning resources
               </a>
             </li>
@@ -278,7 +278,7 @@ return (
               <a href="/use#explore-dapps">Examples of dApps</a>
             </li>
             <li>
-              <a href="https://awesomenear.com/">Awesome Near</a>
+              <a href="https://awesomenear.com/">NEAR Projects</a>
             </li>
             <li>
               <a href="/use#why-it-matters">Why it matters</a>

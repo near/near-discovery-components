@@ -5,9 +5,8 @@ const API_URL =
   props.apiUrl ??
   `https://${APPLICATION_ID}-dsn.algolia.net/1/indexes/${INDEX}/query?`;
 const INITIAL_PAGE = props.initialPage ?? 0;
-const facets = props.facets ?? ["All", "Users", "Apps", "Components", "Posts"];
+const facets = props.facets ?? ["All", "People", "Apps", "Components", "Posts"];
 const tab = props.tab ?? "All";
-
 const renderHeader = props.renderHeader;
 const showHeader = props.showHeader ?? true;
 const showSearchBar = props.showSearchBar ?? true;

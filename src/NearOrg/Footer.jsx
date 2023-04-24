@@ -278,7 +278,7 @@ return (
               <a href="/use#explore-dapps">Examples of dApps</a>
             </li>
             <li>
-              <a href="https://awesomenear.com/">NEAR Projects</a>
+              <a href="https://near.org/contribut3.near/widget/Index">NEAR Projects</a>
             </li>
             <li>
               <a href="/use#why-it-matters">Why it matters</a>

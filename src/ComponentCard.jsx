@@ -5,7 +5,7 @@ const metadata = Social.get(
 );
 const tags = Object.keys(metadata.tags || {});
 const detailsUrl = `#/near/widget/ComponentDetailsPage?src=${accountId}/widget/${widgetName}`;
-const appUrl = `/#/${accountId}/widget/${widgetName}`;
+const appUrl = `#/${accountId}/widget/${widgetName}`;
 const accountUrl = `#/near/widget/ProfilePage?accountId=${accountId}`;
 
 const Card = styled.div`

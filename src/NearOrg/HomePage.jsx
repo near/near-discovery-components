@@ -600,7 +600,8 @@ return (
               <Widget
                 src="near/widget/DIG.Button"
                 props={{
-                  href: "#todo",
+                  href: "https://wiki.near.org/overview/BOS/fast-auth",
+                  target: "_blank",
                   label: "Learn about FastAuth",
                   iconRight: "ph-bold ph-arrow-right",
                   variant: "secondary",
@@ -627,7 +628,8 @@ return (
               <Widget
                 src="near/widget/DIG.Button"
                 props={{
-                  href: "#todo",
+                  href: "https://wiki.near.org/overview/BOS/open-source",
+                  target: "_blank",
                   label: "Learn more",
                   iconRight: "ph-bold ph-arrow-right",
                   variant: "secondary",
@@ -817,7 +819,8 @@ return (
               <Widget
                 src="near/widget/DIG.Button"
                 props={{
-                  href: "#todo",
+                  href: "https://wiki.near.org/overview/BOS/multi-chain",
+                  target: "_blank",
                   label: "Learn more",
                   iconRight: "ph-bold ph-arrow-right",
                   variant: "primary",
@@ -864,7 +867,8 @@ return (
               <Widget
                 src="near/widget/DIG.Button"
                 props={{
-                  href: "#todo",
+                  href: "https://wiki.near.org/overview/BOS/gateways",
+                  target: "_blank",
                   label: "Explore Gateways",
                   iconRight: "ph-bold ph-arrow-right",
                   variant: "primary",

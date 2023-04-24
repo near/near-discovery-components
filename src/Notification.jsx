@@ -16,7 +16,7 @@ let postUrl = "";
 if (type !== "custom") {
   postUrl = `#/near/widget/PostPage?accountId=${accountId}&${urlBlockHeight}=${blockHeight}`;
 } else {
-  postUrl = `/#/${value.widget}?${Object.entries(value.params || {})
+  postUrl = `#/${value.widget}?${Object.entries(value.params || {})
     .map(([k, v]) => `${k}=${v}`)
     .join("&")}`;
 }

@@ -246,9 +246,12 @@ const Item = styled.div``;
 const resetSearcheHits = () => {
   State.update({
     currentPage: 0,
-    search: undefined,
     paginate: undefined,
     facet: undefined,
+    profiles: undefined,
+    apps: undefined,
+    components: undefined,
+    postsAndComments: undefined,
   });
 };
 
@@ -413,17 +416,17 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
             ),
           },
         });
-
-        localState.hitsTotal += hitsTotal;
-        if (localState.hitsTotal >= localState.lastUpdatedHitsTotal) {
-          localState.lastUpdatedHitsTotal = localState.hitsTotal;
-          State.update({
-            paginate: {
-              hitsPerPage,
-              hitsTotal: localState.hitsTotal,
-            },
-          });
-        }
+      }
+      
+      localState.hitsTotal += hitsTotal;
+      if (localState.hitsTotal >= localState.lastUpdatedHitsTotal) {
+        localState.lastUpdatedHitsTotal = localState.hitsTotal;
+        State.update({
+          paginate: {
+            hitsPerPage,
+            hitsTotal: localState.hitsTotal,
+          },
+        });
       }
     };
   };

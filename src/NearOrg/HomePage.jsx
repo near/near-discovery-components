@@ -518,12 +518,10 @@ return (
           style={{ maxWidth: "440px", backgroundColor: "#096D50" }}
         >
           <Text as="h3" size="36px" lineHeight="1.2" weight="500" color="#fff">
-            Don’t just move the needle, create a new gauge
+            Don&apos;t just move the needle, create a new gauge
           </Text>
           <Text color="#00EC97">
-            The Blockchain Operating System (BOS) makes it easy to use the tools
-            you already know and love to build apps that engage users, and
-            create an open web free from centralized platforms
+            The Blockchain Operating System (BOS) makes it easy to use the tools you already know to build apps that engage users, while fostering an open web free from centralized platforms
           </Text>
         </Flex>
 
@@ -537,12 +535,10 @@ return (
             </svg>
             <div>
               <Text weight="500" color="#fff">
-                Jump right in by coding in a language you know
+                Code in a language you already know
               </Text>
               <Text size="13px" color="#C7F5D8">
-                The BOS lets you build with Javascript, Rust, or any language
-                that compiles to assembly, so you can spend time on what matters
-                instead of learning proprietary languages
+                The BOS is built on JavaScript, so you can get started creating new apps right away, without needing to learn a new language
               </Text>
               <Widget
                 src="near/widget/DIG.Button"
@@ -566,12 +562,10 @@ return (
             </svg>
             <div>
               <Text weight="500" color="#fff">
-                Build apps quickly by using existing components
+                Build quickly with existing components
               </Text>
               <Text size="13px" color="#C7F5D8">
-                You can explore, play with, and combine community built
-                components to quickly create your own innovative app, or build
-                and publish your own from the ground up
+                Explore, experiment with, and combine community built components to quickly create your own app, or build and publish your own from the ground up
               </Text>
               <Widget
                 src="near/widget/DIG.Button"
@@ -596,7 +590,7 @@ return (
             </svg>
             <div>
               <Text weight="500" color="#fff">
-                Onboard users in seconds without the need for any crypto
+                Onboard users in seconds without crypto
               </Text>
               <Text size="13px" color="#C7F5D8">
                 Accessibility is key to a more open web, so we made it possible
@@ -606,7 +600,8 @@ return (
               <Widget
                 src="near/widget/DIG.Button"
                 props={{
-                  href: "#todo",
+                  href: "https://wiki.near.org/overview/BOS/fast-auth",
+                  target: "_blank",
                   label: "Learn about FastAuth",
                   iconRight: "ph-bold ph-arrow-right",
                   variant: "secondary",
@@ -625,17 +620,16 @@ return (
 
             <div>
               <Text weight="500" color="#fff">
-                Feel good knowing it’s all open source and decentralized
+                Contribute to a more open web
               </Text>
               <Text size="13px" color="#C7F5D8">
-                Every component, even this page, is live on NEAR’s public
-                blockchain platform - the source code is available to anyone to
-                inspect, fork, modify, and reuse
+                Every component, even this page, is live on NEAR&apos;s public blockchain platform - the source code is available to anyone to inspect, fork, modify, and reuse
               </Text>
               <Widget
                 src="near/widget/DIG.Button"
                 props={{
-                  href: "#todo",
+                  href: "https://wiki.near.org/overview/BOS/open-source",
+                  target: "_blank",
                   label: "Learn more",
                   iconRight: "ph-bold ph-arrow-right",
                   variant: "secondary",
@@ -723,8 +717,7 @@ return (
             Take a direct flight, skip the layover
           </Text>
           <Text style={{ maxWidth: "414px", backgroundColor: "#17D9D4" }}>
-            The BOS let’s you cut out intermediaries and connect directly with
-            users by publishing, storing, and hosting your app directly on chain
+            The BOS lets you cut out intermediaries and connect directly with users by publishing, storing, and hosting your app directly on chain
           </Text>
         </Flex>
 
@@ -773,9 +766,7 @@ return (
             <div>
               <Text weight="500">Take control of your app distribution</Text>
               <Text size="13px">
-                It’s your app and you should be able to connect directly with
-                your user, so the BOS moves everything on chain to eliminate the
-                need for providers and intermediaries
+                The BOS moves everything on chain, eliminating the need for providers and intermediaries, and allowing you to connect directly with your users
               </Text>
               <Widget
                 src="near/widget/DIG.Button"
@@ -822,15 +813,14 @@ return (
             <div>
               <Text weight="500">Build on any (or every) chain</Text>
               <Text size="13px">
-                You can build on Ethereum, Cosmos, and more, while taking
-                advantage of NEAR protocol’s speed, low cost, and scalability,
-                while never getting stuck{" "}
+                You can build on Ethereum and more, while taking advantage of NEAR protocol&apos;s speed, low cost, and scalability, and never getting stuck{" "}
                 <span style={{ whiteSpace: "nowrap" }}>in a silo</span>
               </Text>
               <Widget
                 src="near/widget/DIG.Button"
                 props={{
-                  href: "#todo",
+                  href: "https://wiki.near.org/overview/BOS/multi-chain",
+                  target: "_blank",
                   label: "Learn more",
                   iconRight: "ph-bold ph-arrow-right",
                   variant: "primary",
@@ -872,14 +862,13 @@ return (
             <div>
               <Text weight="500">Meet your users wherever they are</Text>
               <Text size="13px">
-                Make your app available to users on any browser, app, or
-                connected device capable of running a few lines of Javascript as
-                an embedded blockchain experience
+                Make your app available as an embedded blockchain experience on any browser, app, or connected device capable of running a few lines of Javascript
               </Text>
               <Widget
                 src="near/widget/DIG.Button"
                 props={{
-                  href: "#todo",
+                  href: "https://wiki.near.org/overview/BOS/gateways",
+                  target: "_blank",
                   label: "Explore Gateways",
                   iconRight: "ph-bold ph-arrow-right",
                   variant: "primary",
@@ -974,8 +963,7 @@ return (
               Learn, connect, and collaborate
             </Text>
             <Text>
-              Join a vibrant community of builders who understand that a more
-              free and open web is better for the world as a whole.
+              Join a vibrant community of builders who understand that a more free and open web is better for developers, users, and the world as a whole.
             </Text>
             <Widget
               src="near/widget/DIG.Button"
@@ -1002,8 +990,7 @@ return (
                 }}
               />
               <Text size="13px">
-                Connect with like minded people ready to support you on your
-                journey
+                Connect with like minded people ready to support you on your journey
               </Text>
             </Flex>
 
@@ -1019,8 +1006,7 @@ return (
                 }}
               />
               <Text size="13px">
-                Come meet us at conferences, hackathons, and meetups across the
-                globe
+                Come meet us at conferences, hackathons, and meetups across the globe
               </Text>
             </Flex>
 
@@ -1036,8 +1022,7 @@ return (
                 }}
               />
               <Text size="13px">
-                Keep up to date with all things BOS and the future of an open
-                web
+                Keep up to date with all things BOS and the future of an open web
               </Text>
             </Flex>
           </Flex>
@@ -1091,18 +1076,31 @@ return (
             weight="500"
             style={{ maxWidth: "392px" }}
           >
-            Ready to build on the OS for an open web?
+            Ready to try the OS for an open web?
           </Text>
 
-          <Widget
-            src="near/widget/DIG.Button"
-            props={{
-              href: "#todo",
-              label: "Create Account",
-              variant: "primary",
-              size: "large",
-            }}
-          />
+          {!props.signedIn ? (
+            <Widget
+              src="near/widget/DIG.Button"
+              props={{
+                href: "https://wallet.near.org/create",
+                label: "Create Account",
+                variant: "primary",
+                size: "large",
+              }}
+            />
+
+          ) : (
+            <Widget
+              src="near/widget/DIG.Button"
+              props={{
+                href: "/sandbox",
+                label: "Try It Now",
+                variant: "primary",
+                size: "large",
+              }}
+            />
+          )}
         </Flex>
       </SectionContent>
     </Section>

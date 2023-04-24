@@ -1,0 +1,7 @@
+{
+  "description": "This is the example for onboarding users of how to use component with styling, icons and passing props to other components.",
+  "name": "Onboarding.ComponentCard",
+  "tags": {
+    "onboard": ""
+  }
+}

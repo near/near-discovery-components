@@ -1,0 +1,7 @@
+{
+  "description": "This is the example for onboarding users of how to use another components. This means that the component won't work until the user edits the component as stated in the comments. This is how it should look like to make it work:\n\n```\nreturn (\n  <>\n    {/* src=\"near/widget/Onboarding.ComponentCard\" to be pasted below */}\n    <Widget src=\"near/widget/Onboarding.ComponentCard\" />\n    <br />\n    {/* src=\"near/widget/Onboarding.ComponentCollection\" to be pasted below */}\n    <Widget src=\"near/widget/Onboarding.ComponentCollection\" />\n  </>\n);\n```",
+  "name": "Onboarding.Starter",
+  "tags": {
+    "onboard": ""
+  }
+}

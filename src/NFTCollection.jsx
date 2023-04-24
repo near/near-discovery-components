@@ -74,7 +74,8 @@ const Card = styled.a`
   position: relative;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0px 12px 16px rgba(16, 24, 40, 0.08), 0px 4px 6px rgba(16, 24, 40, 0.03);
+  box-shadow: 0px 12px 16px rgba(16, 24, 40, 0.08),
+    0px 4px 6px rgba(16, 24, 40, 0.03);
 
   .nft-thumbnail {
     position: absolute;
@@ -99,20 +100,20 @@ const Button = styled.button`
   width: 100%;
   padding: 8px;
   height: 32px;
-  background: #FBFCFD;
-  border: 1px solid #D7DBDF;
+  background: #fbfcfd;
+  border: 1px solid #d7dbdf;
   border-radius: 50px;
   font-weight: 600;
   font-size: 12px;
   line-height: 15px;
   text-align: center;
   cursor: pointer;
-  color: #11181C !important;
+  color: #11181c !important;
   margin: 0;
 
   &:hover,
   &:focus {
-    background: #ECEDEE;
+    background: #ecedee;
     text-decoration: none;
     outline: none;
   }
@@ -134,7 +135,7 @@ return (
       {allNfts.map((nft, i) => (
         <Card
           key={i}
-          href={`/#/mob.near/widget/NftImage?tokenId=${nft.token_id}&contractId=${nft.contractId}`}
+          href={`#/mob.near/widget/NftImage?tokenId=${nft.token_id}&contractId=${nft.contractId}`}
         >
           <Widget
             src="mob.near/widget/NftImage"

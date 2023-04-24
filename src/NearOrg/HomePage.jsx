@@ -437,7 +437,7 @@ return (
         <Widget
           src="near/widget/DIG.Button"
           props={{
-            href: "/sandbox",
+            href: "/onboarding",
             label: "Try It Now",
             variant: "affirmative",
             size: "large",
@@ -570,7 +570,7 @@ return (
               <Widget
                 src="near/widget/DIG.Button"
                 props={{
-                  href: "/sandbox",
+                  href: "/onboarding",
                   label: "Try it now",
                   iconRight: "ph-bold ph-arrow-right",
                   variant: "secondary",
@@ -771,7 +771,7 @@ return (
               <Widget
                 src="near/widget/DIG.Button"
                 props={{
-                  href: "/sandbox",
+                  href: "/onboarding",
                   label: "Try it out",
                   iconRight: "ph-bold ph-arrow-right",
                   variant: "primary",

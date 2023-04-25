@@ -14,7 +14,7 @@ if (!accountId) {
 const tags = Object.keys(profile.tags || {});
 const viewingOwnAccount = accountId === context.accountId;
 const accountUrl = `#/near/widget/ProfilePage?accountId=${accountId}`;
-const shareUrl = `https://alpha.near.org${accountUrl}`;
+const shareUrl = `https://near.org${accountUrl}`;
 
 // Follower Count:
 const following = Social.keys(`${accountId}/graph/follow/*`, "final", {

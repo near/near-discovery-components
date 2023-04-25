@@ -12,10 +12,11 @@ const showSearchBar = props.showSearchBar ?? true;
 const showPagination = props.showPagination ?? true;
 const userId = props.accountId ?? context.accountId;
 const searchPageUrl = "/near/widget/Search.IndexPage";
+const topmostCount = props.topmostCount ?? 3;
 
 State.init({
   currentPage: 0,
-  selectedTab: "All",
+  selectedTab: tab,
   facet: tab,
   isFiltersPanelVisible: false,
   numColumns: 3,
@@ -26,12 +27,6 @@ State.init({
   showFollowed: false,
   showNotFollowed: false,
 });
-
-if (props.tab && props.tab !== state.selectedTab) {
-  State.update({
-    selectedTab: props.tab,
-  });
-}
 
 // Styling Specifications
 
@@ -62,10 +57,10 @@ const Wrapper = styled.div`
 `;
 
 const NoResults = styled.div`
-  display: flex;
+  padding: 16px;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
   font-size: 1.5rem;
   color: #444;
 `;
@@ -251,9 +246,12 @@ const Item = styled.div``;
 const resetSearcheHits = () => {
   State.update({
     currentPage: 0,
-    search: undefined,
     paginate: undefined,
     facet: undefined,
+    profiles: undefined,
+    apps: undefined,
+    components: undefined,
+    postsAndComments: undefined,
   });
 };
 
@@ -308,13 +306,14 @@ const posts = (content, postType) => {
 };
 
 // creates an array of components
-const components = (records) => {
+const components = (records, app) => {
   const components = [];
   for (const [i, component] of records || []) {
     const idParts = component.objectID.split("/");
     const widgetName = idParts[idParts.length - 1];
     const accountId = component.author;
     components.push({
+      app,
       accountId,
       widgetName,
       searchPosition: i,
@@ -346,23 +345,15 @@ const debounce = (callable, timeout) => {
   return (args) => {
     clearTimeout(state.timer);
     State.update({
-      timer: setTimeout(() => callable(args), timeout ?? 50),
+      timer: setTimeout(() => callable(args), timeout ?? 150),
     });
   };
 };
 
-const fetchSearchHits = (query, { pageNumber, configs, optionalFilters }) => {
-  configs = configs ?? configsPerFacet(state.facet);
+const fetchSearchHits = (query, { pageNumber, configs }) => {
   let body = {
     query,
     page: pageNumber ?? 0,
-    hitsPerPage: rawResp.hitsPerPage,
-    optionalFilters: optionalFilters ?? [
-      "categories:profile<score=3>",
-      "categories:widget<score=2>",
-      "categories:post<score=1>",
-      "categories:comment<score=0>",
-    ],
     clickAnalytics: true,
     ...configs,
   };
@@ -377,56 +368,80 @@ const fetchSearchHits = (query, { pageNumber, configs, optionalFilters }) => {
   });
 };
 
-const updateSearchHits = debounce(({ term, pageNumber, configs }) => {
-  fetchSearchHits(term, { pageNumber, configs }).then((resp) => {
-    const { results, hitsTotal, hitsPerPage } = categorizeSearchHits(resp.body);
-    const combinedResults = [
-      ...profiles(results["profile"]),
-      ...components(results["widget"]),
-      ...posts(results["post"], "post"),
-      ...posts(results["comment, post"], "post-comment"),
-    ];
+const updateSearchHits = debounce(({ term, pageNumber }) => {
+  const localState = {
+    hitsTotal: 0,
+    lastUpdatedHitsTotal: 0,
+  };
+  // NOTE: This puts all search results into state directly instead of categorized
+  // under `search`. This is due to how many times the state is updated and reading the
+  // state with current near social isn't feasible.
+  const updateStateAfterFetching = (facet) => {
+    return (resp) => {
+      const { results, hitsTotal, hitsPerPage } = categorizeSearchHits(
+        resp.body
+      );
 
-    State.update({
-      search: {
-        profiles: profiles(results["profile"]),
-        components: components(results["app, widget"]).concat(
-          components(results["widget"])
-        ),
-        postsAndComments: posts(results["post"], "post").concat(
-          posts(results["comment, post"], "post-comment")
-        ),
-      },
-      currentPage: pageNumber,
-      paginate: {
-        hitsTotal,
-        hitsPerPage,
-      },
-      queryID: resp.body.queryID,
-    });
+      if (facet === "People") {
+        State.update({
+          profiles: {
+            hitsTotal,
+            hitsPerPage,
+            hits: profiles(results["profile"]),
+          },
+        });
+      } else if (facet === "Apps") {
+        State.update({
+          apps: {
+            hitsTotal,
+            hitsPerPage,
+            hits: components(results["app, widget"]),
+          },
+        });
+      } else if (facet === "Components") {
+        State.update({
+          components: {
+            hitsTotal,
+            hitsPerPage,
+            hits: components(results["widget"]),
+          },
+        });
+      } else {
+        State.update({
+          postsAndComments: {
+            hitsTotal,
+            hitsPerPage,
+            hits: posts(results["post"], "post").concat(
+              posts(results["comment, post"], "post-comment")
+            ),
+          },
+        });
+      }
+      
+      localState.hitsTotal += hitsTotal;
+      if (localState.hitsTotal >= localState.lastUpdatedHitsTotal) {
+        localState.lastUpdatedHitsTotal = localState.hitsTotal;
+        State.update({
+          paginate: {
+            hitsPerPage,
+            hitsTotal: localState.hitsTotal,
+          },
+        });
+      }
+    };
+  };
 
-    getAllTagsFromSearchResults(combinedResults);
-  });
+  for (const facet of ["People", "Apps", "Components", "Posts"]) {
+    fetchSearchHits(term, {
+      pageNumber,
+      configs: configsPerFacet(facet),
+    }).then(updateStateAfterFetching(facet));
+  }
 });
 
 const onSearchChange = ({ term }) => {
   writeStateTerm(term);
   updateSearchHits({ term, pageNumber: INITIAL_PAGE });
-};
-
-const onPageChange = (pageNumber) => {
-  const algoliaPageNumber = pageNumber - 1;
-  if (algoliaPageNumber === state.currentPage) {
-    console.log(`Selected the same page number as before: ${pageNumber}`);
-    return;
-  }
-  // Need to clear out old search data otherwise we'll get multiple entries
-  // from the previous pages as well. Seems to be cache issue on near.social.
-  State.update({
-    search: undefined,
-    currentPage: algoliaPageNumber,
-  });
-  updateSearchHits({ term: state.term, pageNumber: algoliaPageNumber });
 };
 
 const FACET_TO_CATEGORY = {
@@ -436,21 +451,19 @@ const FACET_TO_CATEGORY = {
   Posts: "post",
 };
 
+const FACET_TO_FILTER = {
+  People: "categories:profile",
+  Apps: "(categories:app OR tags:app)",
+  Components: "categories:widget",
+  Posts: "(categories:post OR categories:comment)",
+};
+
 const searchFilters = (facet) => {
-  const category = FACET_TO_CATEGORY[facet];
-  let filters = category ? `categories:${category}` : undefined;
-  if (category === "post") {
-    filters = `(${filters} OR categories:comment)`;
-  }
-  if (category === "app") {
-    filters = `(${filters} OR tags:app)`;
-  }
+  let filters = FACET_TO_FILTER[facet];
   if (filters) {
     filters = `${filters} AND `;
   }
-  filters = `${filters}NOT author:hypefairy.near AND NOT _tags:hidden`;
-
-  return filters;
+  return `${filters}NOT author:hypefairy.near AND NOT _tags:hidden`;
 };
 
 const restrictSearchable = (facet) => {
@@ -469,6 +482,7 @@ const configsPerFacet = (facet) => {
     restrictSearchableAttributes: restrictSearchable(facet),
   };
 };
+
 const onFacetClick = (facet) => {
   if (facet === state.selectedTab) {
     return;
@@ -501,52 +515,20 @@ const onSearchResultClick = ({ searchPosition, objectID, eventName }) => {
   setTimeout(() => {
     // This will trigger the Insights widget:
     State.update({ event });
-  }, 50);
+  }, 100);
 };
 
-const getComponentTags = (accountId, widgetName) => {
-  const metadata = Social.get(
-    `${accountId}/widget/${widgetName}/metadata/**`,
-    "final"
-  );
-  const tags = Object.keys(metadata.tags || {});
-  State.update({ selectedTags: tags });
-};
-
-const getAllTagsFromSearchResults = (results) => {
-  const allTags = [];
-  const userTags = [];
-  const componentTags = [];
-
-  results.forEach((result) => {
-    if (result.widgetName) {
-      const metadata = Social.get(
-        `${result.accountId}/widget/${result.widgetName}/metadata/**`,
-        "final"
-      );
-      const widgetTags = Object.keys(metadata.tags || {});
-      componentTags.push(...widgetTags);
-      allTags.push(...widgetTags);
-    } else {
-      const profile = Social.get(`${result.accountId}/profile/**`, "final");
-      const profileTags = Object.keys(profile.tags || {});
-      userTags.push(...profileTags);
-      allTags.push(...profileTags);
-    }
-  });
-};
-
-const topTwoAccounts = () => {
+const topmostAccounts = () => {
   let output = [];
 
   if (state.selectedTab === "People") {
     for (let i = 0; i < 6; i++) {
-      if (i < state.search.profiles.length) {
-        output.push(state.search.profiles[i]);
+      if (i < state.profiles.hits.length) {
+        output.push(state.profiles.hits[i]);
       }
     }
   } else {
-    output = state.search.profiles.slice(0, 2);
+    output = state.profiles.hits.slice(0, topmostCount);
   }
 
   return output.map((profile, i) => (
@@ -567,17 +549,20 @@ const topTwoAccounts = () => {
   ));
 };
 
-const topTwoComponents = () => {
+const topmostComponents = (apps) => {
   let output = [];
-
-  if (state.selectedTab === "Components") {
+  if (state.selectedTab === "Components" || state.selectedTab === "Apps") {
     for (let i = 0; i < 6; i++) {
-      if (i < state.search.components.length) {
-        output.push(state.search.components[i]);
+      if (i < state.components.hitsTotal) {
+        output.push(state.components.hits[i]);
       }
     }
   } else {
-    output = state.search.components.slice(0, 2);
+    if (apps) {
+      output = state.apps.hits.slice(0, topmostCount);
+    } else {
+      output = state.components.hits.slice(0, topmostCount);
+    }
   }
 
   return output.map((component, i) => (
@@ -598,17 +583,17 @@ const topTwoComponents = () => {
   ));
 };
 
-const topTwoComments = () => {
+const topmostPosts = () => {
   let output = [];
 
   if (state.selectedTab === "Posts") {
     for (let i = 0; i < 6; i++) {
-      if (i < state.search.postsAndComments.length) {
-        output.push(state.search.postsAndComments[i]);
+      if (i < state.postsAndComments.hitsTotal) {
+        output.push(state.postsAndComments.hits[i]);
       }
     }
   } else {
-    output = state.search.postsAndComments.slice(0, 2);
+    output = state.postsAndComments.hits.slice(0, topmostCount);
   }
 
   return output.map((post, i) => (
@@ -629,7 +614,7 @@ const topTwoComments = () => {
 const displayResultsByFacet = (selectedTab) => {
   switch (selectedTab) {
     case "People":
-      return state.search?.profiles.length > 0 ? (
+      return state.profiles.hits?.length > 0 ? (
         <Group>
           <GroupHeader>
             <H3>
@@ -639,64 +624,32 @@ const displayResultsByFacet = (selectedTab) => {
                   marginLeft: "10px",
                 }}
               >
-                {` ${state.search?.profiles.length ?? 0}`}
-              </span>{" "}
+                {state.profiles.hitsTotal}
+              </span>
             </H3>
           </GroupHeader>
 
-          <Items>{topTwoAccounts()}</Items>
+          <Items>{topmostAccounts()}</Items>
         </Group>
       ) : (
-        <div>No People Found</div>
+        <NoResults>No People Found</NoResults>
       );
     case "Apps": {
-      const appComponents = state.search?.components
-        .filter((component, index) => {
-          const metadata = Social.get(
-            `${component.accountId}/widget/${component.widgetName}/metadata/**`,
-            "final"
-          );
-          const tags = Object.keys(metadata.tags || {});
-          const displayCondition =
-            (state.selectedTab === "Apps" && tags.includes("Apps")) ||
-            (tags.includes("app") && index < 7);
-
-          return displayCondition;
-        })
-        .map((component, i) => {
-          return (
-            <Item key={component.accountId + component.widgetName}>
-              <Widget
-                src="near/widget/Search.ComponentCard"
-                props={{
-                  src: `${component.accountId}/widget/${component.widgetName}`,
-                  onClick: () =>
-                    onSearchResultClick({
-                      searchPosition: component.searchPosition,
-                      objectID: `${component.accountId}/widget/${component.widgetName}`,
-                      eventName: "Clicked Component After Search",
-                    }),
-                }}
-              />
-            </Item>
-          );
-        });
-
-      return appComponents.length > 0 ? (
+      return state.apps.hits?.length > 0 ? (
         <Group>
           <GroupHeader>
             <H3>
-              Apps{" "}
+              Apps
               <span
                 style={{
                   marginLeft: "10px",
                 }}
               >
-                {` ${appComponents.length}`}
-              </span>{" "}
+                {state.apps.hitsTotal}
+              </span>
             </H3>
           </GroupHeader>
-          <Items>{appComponents}</Items>
+          <Items>{topmostComponents(true)}</Items>
         </Group>
       ) : (
         <NoResults>No Apps Found</NoResults>
@@ -704,28 +657,28 @@ const displayResultsByFacet = (selectedTab) => {
     }
 
     case "Components":
-      return state.search?.components.length > 0 ? (
+      return state.components.hits?.length > 0 ? (
         <Group>
           <GroupHeader>
             <H3>
-              Components{" "}
+              Components
               <span
                 style={{
                   marginLeft: "10px",
                 }}
               >
-                {` ${state.search?.components.length ?? 0}`}
-              </span>{" "}
+                {state.components.hitsTotal}
+              </span>
             </H3>
           </GroupHeader>
 
-          <Items>{topTwoComponents()}</Items>
+          <Items>{topmostComponents(false)}</Items>
         </Group>
       ) : (
         <NoResults>No Components Found</NoResults>
       );
     case "Posts":
-      return state.search?.postsAndComments.length > 0 ? (
+      return state.postsAndComments.hits?.length > 0 ? (
         <Group style={{ marginTop: "20px" }}>
           <GroupHeader>
             <H3>
@@ -735,20 +688,20 @@ const displayResultsByFacet = (selectedTab) => {
                   marginLeft: "10px",
                 }}
               >
-                {` ${state.search?.postsAndComments.length ?? 0}`}
-              </span>{" "}
+                {state.postsAndComments.hitsTotal}
+              </span>
             </H3>
           </GroupHeader>
 
-          <Items>{topTwoComments()}</Items>
+          <Items>{topmostPosts()}</Items>
         </Group>
       ) : (
-        <div>No People Found</div>
+        <NoResults>No People Found</NoResults>
       );
     case "All":
       return (
         <>
-          {state.search?.profiles.length > 0 && (
+          {state.profiles.hits?.length > 0 && (
             <Group>
               <GroupHeader>
                 <H3>
@@ -758,31 +711,48 @@ const displayResultsByFacet = (selectedTab) => {
                       marginLeft: "10px",
                     }}
                   >
-                    {` ${state.search?.profiles.length ?? 0}`}
-                  </span>{" "}
+                    {state.profiles.hitsTotal}
+                  </span>
                 </H3>
               </GroupHeader>
-              <Items>{topTwoAccounts()}</Items>
+              <Items>{topmostAccounts()}</Items>
             </Group>
           )}
-          {state.search?.components.length > 0 && (
+          {state.apps.hits?.length > 0 && (
             <Group>
               <GroupHeader>
                 <H3>
-                  Components{" "}
+                  Apps
                   <span
                     style={{
                       marginLeft: "10px",
                     }}
                   >
-                    {` ${state.search?.components.length ?? 0}`}
-                  </span>{" "}
+                    {state.apps.hitsTotal}
+                  </span>
                 </H3>
               </GroupHeader>
-              <Items>{topTwoComponents()}</Items>
+              <Items>{topmostComponents(true)}</Items>
             </Group>
           )}
-          {state.search?.postsAndComments.length > 0 && (
+          {state.components.hits?.length > 0 && (
+            <Group>
+              <GroupHeader>
+                <H3>
+                  Components
+                  <span
+                    style={{
+                      marginLeft: "10px",
+                    }}
+                  >
+                    {state.components.hitsTotal}
+                  </span>
+                </H3>
+              </GroupHeader>
+              <Items>{topmostComponents(false)}</Items>
+            </Group>
+          )}
+          {state.postsAndComments.hits?.length > 0 && (
             <Group style={{ marginTop: "20px" }}>
               <GroupHeader>
                 <H3>
@@ -792,11 +762,11 @@ const displayResultsByFacet = (selectedTab) => {
                       marginLeft: "10px",
                     }}
                   >
-                    {` ${state.search?.postsAndComments.length ?? 0}`}
-                  </span>{" "}
+                    {state.postsAndComments.hitsTotal}
+                  </span>
                 </H3>
               </GroupHeader>
-              <Items>{topTwoComments()}</Items>
+              <Items>{topmostPosts()}</Items>
             </Group>
           )}
         </>
@@ -814,18 +784,16 @@ if (props.term !== state.lastSyncedTerm) {
 return (
   <div style={typeAheadContainer}>
     <Wrapper>
-      {state.search && (
-        <FixedTabs>
-          <Widget
-            src="near/widget/Search.Facets"
-            props={{
-              facets,
-              onFacetClick,
-              defaultFacet: facets[0],
-            }}
-          />
-        </FixedTabs>
-      )}
+      <FixedTabs>
+        <Widget
+          src="near/widget/Search.Facets"
+          props={{
+            facets,
+            onFacetClick,
+            defaultFacet: facets[0],
+          }}
+        />
+      </FixedTabs>
       <ScrollableContent>
         {state.paginate?.hitsTotal == 0 && (
           <H2
@@ -848,9 +816,8 @@ return (
 
       <FixedFooter>
         <Button href={`${searchPageUrl}?term=${props.term}`} as="a">
-          {state.search?.totalCount
-            ? ` See ${state.search?.totalCount} Results`
-            : null}
+          {state.paginate?.hitsTotal > 0 &&
+            ` See ${state.paginate.hitsTotal} Results`}
         </Button>
       </FixedFooter>
 

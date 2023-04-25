@@ -175,6 +175,7 @@ return (
         <TabsButton
           selected={state.selectedTab === facet}
           onClick={() => onFacetClick(facet)}
+          key={facet}
         >
           {facet}
         </TabsButton>

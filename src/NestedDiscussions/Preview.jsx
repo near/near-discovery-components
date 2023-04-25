@@ -20,7 +20,7 @@ const content = JSON.parse(
   Social.get(`${accountId}/${dbAction}/main`, blockHeight)
 ).content;
 
-const postUrl = `https://alpha.near.org/#/${previewWidget}?accountId=${accountId}&blockHeight=${blockHeight}&dbAction=${dbAction}`;
+const postUrl = `https://near.org/#/${previewWidget}?accountId=${accountId}&blockHeight=${blockHeight}&dbAction=${dbAction}`;
 
 State.init({ hasBeenFlagged: false });
 

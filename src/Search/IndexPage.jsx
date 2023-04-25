@@ -223,7 +223,7 @@ const debounce = (callable, timeout) => {
   return (args) => {
     clearTimeout(state.timer);
     State.update({
-      timer: setTimeout(() => callable(args), timeout ?? 50),
+      timer: setTimeout(() => callable(args), timeout ?? 250),
     });
   };
 };
@@ -394,7 +394,7 @@ return (
     {showSearchBar && (
       <Search>
         <Widget
-          src="chaotictempest.near/widget/SearchPill"
+          src="near/widget/Search.Pill"
           props={{
             onChange: onSearchChange,
             term: props.term,

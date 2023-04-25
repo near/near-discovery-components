@@ -50,7 +50,7 @@ return (
             props={{
               name: item,
               accountId,
-              gateway: "https://alpha.near.org",
+              gateway: "https://near.org",
               commits: allWidgetsHistoryChangesBlocks[accountId].widget[item],
             }}
           />

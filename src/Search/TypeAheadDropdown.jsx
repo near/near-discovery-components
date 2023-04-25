@@ -630,6 +630,7 @@ const topmostPosts = () => {
           blockHeight: post.blockHeight,
           content: post.postContent,
           term: props.term,
+          snipContent:true
         }}
       />
     </Item>
@@ -689,7 +690,7 @@ const displayResultsByFacet = (selectedTab) => {
           </GroupHeader>
           <Items>{topmostComponents(true)}</Items>
         </Group>
-      ) : (
+      ) : (<>
         <H2
         style={{
           display: "flex",
@@ -703,7 +704,20 @@ const displayResultsByFacet = (selectedTab) => {
         }}
       >
         No App matches were found for "{state.term}".
-      </H2>      );
+      </H2>  
+              <H2
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                position: "absolute",
+                top: "45%", // Adjust this value to position the text lower
+                width: "100%",
+                fontSize: "12px",
+                left: "-0%",
+              }}
+            >Trying to find a app built by an user? Try search their account id.
+            </H2> </>   );
     }
 
     case "Components":
@@ -724,7 +738,7 @@ const displayResultsByFacet = (selectedTab) => {
 
           <Items>{topmostComponents(false)}</Items>
         </Group>
-      ) : (
+      ) : (<>
         <H2
         style={{
           display: "flex",
@@ -739,6 +753,19 @@ const displayResultsByFacet = (selectedTab) => {
       >
         No Component matches were found for "{state.term}".
       </H2>
+      <H2
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        position: "absolute",
+        top: "45%", // Adjust this value to position the text lower
+        width: "100%",
+        fontSize: "12px",
+        left: "-0%",
+      }}
+    >Trying to find a app built by an user? Try search their account id.
+    </H2> </>
       );
     case "Posts":
       return state.postsAndComments.hits?.length > 0 ? (
@@ -759,6 +786,7 @@ const displayResultsByFacet = (selectedTab) => {
           <Items>{topmostPosts()}</Items>
         </Group>
       ) : (
+        
         <H2
         style={{
           display: "flex",
@@ -772,7 +800,7 @@ const displayResultsByFacet = (selectedTab) => {
         }}
       >
         No Post matches were found for "{state.term}".
-      </H2>      );
+      </H2>     );
     case "All":
       return (
         <>

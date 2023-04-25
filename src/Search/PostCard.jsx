@@ -2,9 +2,10 @@
 const accountId = props.accountId ?? context.accountId;
 const blockHeight = props.blockHeight ?? "now";
 const snipContent = props.snipContent ?? false;
-const snippetMaxWords = props.snippetMaxWords ?? 40;
+const snippetMaxWords = props.snippetMaxWords ?? 7;
 let content = props.content;
-if (content?.text && snippet) {
+console.log("snippet is ", snippet);
+if (content?.text && snipContent) {
   const text = content.text.split(" ");
   content.text = text.slice(0, snippetMaxWords);
   if (text.length >= snippetMaxWords) {
@@ -25,38 +26,39 @@ const onClick =
     }
   });
 
-const highlightWordInParagraph = (paragraph, word, charLimit) => {
-  paragraph = paragraph.replace(/\n/g, "");
-  const words = paragraph.split(" ");
-  const wordIndex = words.indexOf(word);
-  if (wordIndex === -1) {
-    return paragraph;
-  }
-
-  const startIndex = Math.max(wordIndex - 3, 0);
-  const endIndex = Math.min(wordIndex + 2, words.length - 1);
-
-  let newParagraph = "";
-  let currentLength = 0;
-
-  for (let i = startIndex; i <= endIndex; i++) {
-    const wordToAdd = i === endIndex ? words[i] + "..." : words[i] + " ";
-    const wordToAddLength = wordToAdd.length;
-
-    if (currentLength + wordToAddLength <= charLimit) {
-      newParagraph += wordToAdd;
-      currentLength += wordToAddLength;
-    } else {
-      break;
+  const highlightWordInParagraph = (paragraph, word, charLimit) => {
+    paragraph = paragraph.replace(/\n/g, "");
+    const words = paragraph.split(" ");
+    const wordIndex = words.indexOf(word);
+  
+    if (wordIndex === -1) {
+      return paragraph;
     }
-  }
-
-  return newParagraph;
-};
-
+  
+    let newParagraph = "";
+    let currentLength = 0;
+    let startIndex = wordIndex;
+    let endIndex = wordIndex;
+  
+    // Expand the selection to the left
+    while (startIndex > 0 && currentLength + words[startIndex - 1].length + 1 <= charLimit) {
+      startIndex--;
+      currentLength += words[startIndex].length + 1;
+    }
+  
+    // Expand the selection to the right
+    while (endIndex < words.length - 1 && currentLength + words[endIndex + 1].length + 1 <= charLimit) {
+      endIndex++;
+      currentLength += words[endIndex].length + 1;
+    }
+  
+    newParagraph = words.slice(startIndex, endIndex + 1).join(" ");
+  
+    return newParagraph;
+  };
+  
 const Post = styled.a`
   display: flex;
-  overflow: hidden;
   flex-direction: row;
   align-items: center;
   width: 95%;
@@ -130,12 +132,13 @@ return (
       />
     </Header>
 
-    <Body>
+    <Body ellipsis={true}>
+      {console.log(content)}
       {content.text && (
         <Widget
           src="near/widget/Search.Markdown"
           props={{
-            text: highlightWordInParagraph(content.text, props.term, 10),
+            text:highlightWordInParagraph(content.text, props.term,30)
           }}
         />
       )}

@@ -330,7 +330,13 @@ return (
       <Content>
         <Widget
           src="near/widget/NestedDiscussions"
-          props={{ identifier: src, notifyAccountId: accountId }}
+          props={{
+            identifier: src,
+            notifyAccountId: accountId,
+            parentComponent: "near/widget/ComponentDetailsPage",
+            parentParams: { tab: "discussion" },
+            highlightComment: props.highlightComment
+          }}
         />
       </Content>
     )}

@@ -1,7 +1,13 @@
-const dbAction = props.dbAction;
-const identifier = props.identifier;
+const commentId = context.accountId + Date.now();
+
 const placeholder = props.placeholder || "Join the discussion";
 const notifyAccountId = props.notifyAccountId;
+const notificationWidget = props.notificationWidget;
+const notificationParams = {
+  highlightComment: commentId,
+  ...props.notificationParams,
+};
+const indexKey = props.indexKey;
 
 if (!context.accountId) return <></>;
 
@@ -14,9 +20,9 @@ State.init({
 const profile = Social.getr(`${context.accountId}/profile`);
 
 const content = {
-  type: "md",
   image: state.image.cid ? { ipfs_cid: state.image.cid } : undefined,
   text: state.text,
+  commentId,
 };
 
 function extractMentions(text) {
@@ -45,46 +51,39 @@ function extractTagNotifications(text, item) {
       value: {
         type: "custom",
         message: "Tagged you on a discussion",
-        widget: props.previewWidget,
-        blockHeight: item.blockHeight,
-        params:
-          typeof identifier === "string"
-            ? { identifier: identifier }
-            : identifier,
+        widget: notificationWidget,
+        params: { highlightComment: commentId, ...notificationParams },
       },
     }));
 }
 
 function composeData() {
-  const data = { index: {} };
-
-  data[`${dbAction}`] = {
-    main: JSON.stringify({
-      content,
-    }),
-  };
-
-  data.index[`${dbAction}`] = JSON.stringify({
-    key: identifier,
-    value: {
-      type: "md",
+  var data = {
+    discuss: {
+      main: JSON.stringify({
+        content,
+      }),
     },
-  });
+    index: {
+      discuss: JSON.stringify({
+        key: indexKey,
+        value: {
+          type: "md",
+        },
+      }),
+    },
+  };
 
   let notifications = [];
 
-  if (notifyAccountId) {
+  if (notifyAccountId && notifyAccountId !== context.accountId) {
     notifications.push({
       key: notifyAccountId,
       value: {
         type: "custom",
         message: "Commented on a discussion",
-        widget: props.previewWidget,
-        blockHeight: item.blockHeight,
-        params:
-          typeof identifier === "string"
-            ? { identifier: identifier }
-            : identifier,
+        widget: notificationWidget,
+        params: { ...notificationParams, highlightComment: commentId },
       },
     });
   }

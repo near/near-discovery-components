@@ -16,77 +16,23 @@ const onPointerUp =
   });
 
 const Card = styled.div`
-display: flex;
-flex-direction: row;
-justify-content: space-between;
-align-items: flex-start;
-padding: 0px;
-width: 100%;
-
-
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
 `;
 
 const CardBody = styled.div`
-  display: flex;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: auto 1fr 1fr auto;
   gap: 16px;
   align-items: center;
-  width: 100%;
-  flex-direction: row;
-  min-width: 0;
 
-
-  > div {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
+  > * {
     min-width: 0;
   }
 `;
-
-
-const Thumbnail = styled.a`
-  display: block;
-  width: 40px;
-  height: 40px;
-  flex-shrink: 0;
-  border: 1px solid #eceef0;
-  border-radius: 8px;
-  overflow: hidden;
-  outline: none;
-  transition: border-color 200ms;
-  align-items:center;
-  float:center;
-  justify-content:center;
-  &:focus,
-  &:hover {
-    border-color: #d0d5dd;
-  }
-
-  img {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-  }
-`;
-
-const Row = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 -10px;
-  align-items: center;
-  gap: 10px;
-  padding-left:20px;
-  width:100%;
-`;
-
-const Col = styled.div`
-  flex: ${({ flex }) => flex || '1'};
-  justify-content: ${({ centered }) => (centered ? 'center' : 'auto')};
-  overflow: hidden;
-  text-overflow: ellipsis;
-  overflow: ${({ noOverflow }) => (noOverflow ? 'visible' : 'hidden')};
-`;
-
 
 const CardContent = styled.div`
   width: 100%;
@@ -150,7 +96,28 @@ const Text = styled.p`
   }
 `;
 
+const Thumbnail = styled.a`
+  display: block;
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  border: 1px solid #eceef0;
+  border-radius: 8px;
+  overflow: hidden;
+  outline: none;
+  transition: border-color 200ms;
 
+  &:focus,
+  &:hover {
+    border-color: #d0d5dd;
+  }
+
+  img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+`;
 
 const TagsWrapper = styled.div`
   position: relative;
@@ -158,7 +125,8 @@ const TagsWrapper = styled.div`
 `;
 
 const ButtonLink = styled.a`
-  align-items: right;
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
   padding: 0;
   background: none;
@@ -178,25 +146,9 @@ const ButtonLink = styled.a`
   }
 `;
 
-const col2 = {
-  maxWidth:'40px',
-  };
-  
-  const col3 = {
-    maxWidth: "50px",
-  };
-  
-  const col4 = {
-    textAlign: "right",
-    padding: 0,
-    justifyContent: "center",
-  };
-
 return (
   <Card>
     <CardBody>
-    <Row>
-    <Col flex={1}  style={{  float:'center',justifyContent:'center', alignItems:'center', display:'flex'}}>
       <Thumbnail href={detailsUrl} onPointerUp={onPointerUp}>
         <Widget
           src="mob.near/widget/Image"
@@ -208,8 +160,6 @@ return (
           }}
         />
       </Thumbnail>
-      </Col>
-      <Col style={{col2}} flex={2} style={{textAlign:'left'}}>
 
       <TextLink
         as="a"
@@ -220,8 +170,6 @@ return (
       >
         {metadata.name || widgetName}
       </TextLink>
-      </Col>
-      <Col flex={2} style={{textAlign:'left' }}>
 
       <TextLink
         small
@@ -232,13 +180,10 @@ return (
       >
         @{accountId}
       </TextLink>
-      </Col>
-          <Col style={{float:'right', textAlign:'right'}} flex={1}>
+
       <ButtonLink href={appUrl} onPointerUp={onPointerUp}>
         <img src="https://i.imgur.com/dIDX59g.png" alt="Open" />
       </ButtonLink>
-      </Col>
-      </Row>
     </CardBody>
 
     <CardFooter />

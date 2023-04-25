@@ -4,7 +4,6 @@ const blockHeight = props.blockHeight ?? "now";
 const snipContent = props.snipContent ?? false;
 const snippetMaxWords = props.snippetMaxWords ?? 7;
 let content = props.content;
-console.log("snippet is ", snippet);
 if (content?.text && snipContent) {
   const text = content.text.split(" ");
   content.text = text.slice(0, snippetMaxWords);

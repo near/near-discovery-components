@@ -21,7 +21,7 @@ const Card = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   padding: 0px;
-  width: 445.85px;
+  width: 100%;
 `;
 
 const CardLeft = styled.div`
@@ -43,15 +43,14 @@ const Avatar = styled.a`
   width: 50px;
   height: 50px;
   flex-shrink: 0;
-  border: 1px solid #eceef0;
   overflow: hidden;
   border-radius: 56px;
   transition: border-color 200ms;
 
   img {
     object-fit: cover;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
   }
 
@@ -88,27 +87,25 @@ const Row = styled.div`
   margin: 0 -10px;
   align-items: center;
   gap: 10px;
+  padding-left:20px;
 `;
 
 const Col = styled.div`
-  flex: 1;
-  padding: 0 10px;
+flex: ${({ flex }) => flex || '1'};
   overflow: hidden; /* turn off overflow */
   text-overflow: ellipsis;
+  overflow: ${({ noOverflow }) => (noOverflow ? "visible" : "hidden")};
+
 `;
 
-const col1 = {
-  width: "66.32px",
-  backgroundColor: "blue",
-};
+
 
 const col2 = {
-  width: "107px",
-  marginRight: 42.22,
+maxWidth:'40px'
 };
 
 const col3 = {
-  width: "300px",
+  maxWidth: "50px",
 };
 
 const col4 = {
@@ -138,18 +135,18 @@ return (
           </Avatar>
         </Col>
 
-        <Col>
+        <Col style={{col2}} flex={2} style={{textAlign:'left'}}>
           <TextLink href={profileUrl} onPointerUp={onPointerUp} ellipsis bold>
             {profile.name || accountId.split(".near")[0]}
           </TextLink>
         </Col>
-        <Col>
+        <Col flex={2} style={{textAlign:'left'}}>
           <TextLink href={profileUrl} onPointerUp={onPointerUp} ellipsis>
             @{accountId}
           </TextLink>
         </Col>
 
-        <Col>
+        <Col noOverflow style={{textAlign:'right' }}>
           {!!context.accountId && context.accountId !== props.accountId && (
             <button
               onClick={() =>
@@ -157,17 +154,18 @@ return (
               }
               style={{
                 backgroundColor: "rgba(255, 193, 7, 0)",
-                padding: "10px",
+                padding: "10px 0px 10px 10px",
                 border: "none",
                 borderRadius: "5px",
                 cursor: "pointer",
+                
               }}
             >
               <a href={profileUrl}>
                 <img
-                  src="https://i.imgur.com/dIDX59g.png"
+                 src="https://i.imgur.com/dIDX59g.png"
                   alt="Follow icon"
-                  style={{ height: "20px", marginRight: "5px" }}
+                  style={{ height: "24px", marginRight: "5px" }}
                 />
               </a>
             </button>

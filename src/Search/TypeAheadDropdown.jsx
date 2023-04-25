@@ -578,12 +578,11 @@ const topmostComponents = (apps) => {
 
   let output = [];
   if (state.selectedTab === "Components" || state.selectedTab === "Apps") {
-    for (let i = 0; i < 6; i++) {
-      if (i < state.components.hitsTotal) {
-        output.push(state.components.hits[i]);
-      }
-    }
-  } else {
+    if (state.selectedTab === "Components")
+   { output = state.components.hits.slice(0,6)}else if (state.selectedTab === "Apps"){
+    output = state.apps.hits.slice(0,6)
+   }
+  } else { console.log("else ran")
     if (apps) {
       output = state.apps.hits.slice(0, topmostCount);
     } else {

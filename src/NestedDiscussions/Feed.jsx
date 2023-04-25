@@ -1,12 +1,13 @@
-const dbAction = props.dbAction;
-const composeWidget = props.composeWidget;
-const previewWidget = props.previewWidget;
-const identifier = props.identifier;
+const indexKey = props.indexKey;
 const moderatorAccount = props.moderatorAccount;
 
+const parentComponent = props.parentComponent;
+const parentParams = props.parentParams;
+const highlightComment = props.highlightComment;
+
 const index = {
-  action: dbAction,
-  key: identifier,
+  action: "discuss",
+  key: indexKey,
   options: { subscribe: true },
 };
 
@@ -18,22 +19,21 @@ const Post = styled.div`
   }
 `;
 
-const renderItem = (a) =>
-  a.value.type === "md" && (
-    <Post className="post" key={JSON.stringify(a)}>
-      <Widget
-        src={previewWidget}
-        props={{
-          accountId: a.accountId,
-          blockHeight: a.blockHeight,
-          dbAction,
-          composeWidget,
-          previewWidget,
-          moderatorAccount,
-        }}
-      />
-    </Post>
-  );
+const renderItem = ({ accountId, blockHeight }) => (
+  <Post className="post">
+    <Widget
+      src="near/widget/NestedDiscussions.Preview"
+      props={{
+        accountId,
+        blockHeight,
+        moderatorAccount,
+        parentComponent,
+        parentParams,
+        highlightComment,
+      }}
+    />
+  </Post>
+);
 
 return (
   <>

@@ -1,3 +1,6 @@
+const notificationComponent = props.notificationComponent;
+const notificationParams = props.notificationParams;
+const notifyAccountId = props.notifyAccountId;
 const item = props.item;
 
 if (!item) {
@@ -84,15 +87,14 @@ const likeClick = () => {
     },
   };
 
-  if (!hasLike && props.notifyAccountId) {
+  if (!hasLike && notifyAccountId) {
     data.index.notify = JSON.stringify({
-      key: props.notifyAccountId,
+      key: notifyAccountId,
       value: {
         type: "custom",
-        message: "Liked your discussion comment",
-        widget: props.previewWidget,
-        blockHeight: item.blockHeight,
-        params: item,
+        message: "Liked your comment",
+        widget: notificationComponent,
+        params: notificationParams,
       },
     });
   }

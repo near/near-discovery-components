@@ -1,4 +1,5 @@
 const identifier = props.identifier;
+const notifyAccountId = props.notifyAccountId;
 const dbAction = props.dbAction || "discuss";
 const moderatorAccount = props.moderatorAccount || "bosmod.near";
 const composeWidget = props.composeWidget || "near/widget/NestedDiscussions.Compose";
@@ -40,7 +41,7 @@ return (
       <ComposeWrapper>
         <Widget
           src={composeWidget}
-          props={{ dbAction, identifier, previewWidget }}
+          props={{ dbAction, identifier, previewWidget, notifyAccountId }}
         />
       </ComposeWrapper>
     ) : (

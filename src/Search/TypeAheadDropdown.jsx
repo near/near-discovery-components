@@ -381,6 +381,8 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
         resp.body
       );
 
+      console.log(results)
+
       if (facet === "People") {
         State.update({
           profiles: {
@@ -394,7 +396,7 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
           apps: {
             hitsTotal,
             hitsPerPage,
-            hits: components(results["app, widget"]),
+            hits:components(results["app, widget"]).concat(components(results["widget"])),
           },
         });
       } else if (facet === "Components") {
@@ -572,6 +574,8 @@ const tabCount = (tab) => {
 };
 
 const topmostComponents = (apps) => {
+  console.log("the apps are", state.apps)
+
   let output = [];
   if (state.selectedTab === "Components" || state.selectedTab === "Apps") {
     for (let i = 0; i < 6; i++) {

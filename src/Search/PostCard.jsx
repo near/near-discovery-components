@@ -59,7 +59,7 @@ const Post = styled.a`
   overflow: hidden;
   flex-direction: row;
   align-items: center;
-  width: 90%;
+  width: 95%;
   height: 45px;
   overflow: hidden;
   gap: 16px;

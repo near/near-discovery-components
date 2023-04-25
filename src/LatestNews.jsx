@@ -137,7 +137,7 @@ return (
       </Items>
     )}
 
-    <ButtonLink href="https://near.org/blog/" target="_blank">
+    <ButtonLink href="https://pages.near.org/blog/" target="_blank">
       View All News
     </ButtonLink>
   </Wrapper>

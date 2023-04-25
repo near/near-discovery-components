@@ -18,7 +18,7 @@ const data = Social.get(`${accountId}/widget/${widgetName}/**`);
 const metadata = data.metadata;
 const tags = Object.keys(metadata.tags || {});
 const detailsUrl = `#/near/widget/ComponentDetailsPage?src=${src}`;
-const shareUrl = `https://alpha.near.org${detailsUrl}`;
+const shareUrl = `https://near.org${detailsUrl}`;
 
 const dependencyMatch =
   code && code.matchAll(/<Widget[\s\S]*?src=.*?"(.+)"[\s\S]*?\/>/g);

@@ -1,10 +1,12 @@
 const identifier = props.identifier;
 const notifyAccountId = props.notifyAccountId;
-const dbAction = props.dbAction || "discuss";
+const highlightComment = props.highlightComment;
 const moderatorAccount = props.moderatorAccount || "bosmod.near";
-const composeWidget = props.composeWidget || "near/widget/NestedDiscussions.Compose";
-const previewWidget = props.previewWidget || "near/widget/NestedDiscussions.Preview";
-const notLoggedMessage = props.notLoggedMessage || "Please login to join the discussion";
+const placeholder = props.placeholder || "Join the discussion";
+
+// discussions happen inside other components
+const parentComponent = props.parentComponent;
+const parentParams = { ...props.parentParams };
 
 if (!identifier) {
   return "[NestedDiscussions]: Please setup an identifier for the discussion";
@@ -35,27 +37,55 @@ const FeedWrapper = styled.div`
   }
 `;
 
+const Highlight = styled.div`
+  a {
+    position: fixed;
+    bottom: 1.2rem;
+    right: 1.2rem;
+    background: var(--bs-link-color);
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 12px;
+    z-index: 99;
+  }
+
+  a:hover {
+    color: white;
+  }
+`;
+
 return (
   <DiscussionContainer>
     {context.accountId ? (
       <ComposeWrapper>
         <Widget
-          src={composeWidget}
-          props={{ dbAction, identifier, previewWidget, notifyAccountId }}
+          src="near/widget/NestedDiscussions.Compose"
+          props={{
+            placeholder,
+            indexKey: identifier,
+            notificationWidget: parentComponent,
+            notificationParams: parentParams,
+            notifyAccountId,
+          }}
         />
       </ComposeWrapper>
     ) : (
-      <p> {notLoggedMessage} </p>
+      <p> Login to {placeholder.toLowerCase()} </p>
+    )}
+    {highlightComment && (
+      <Highlight>
+        <a href="#highlight">Jump to highlighted comment</a>
+      </Highlight>
     )}
     <FeedWrapper>
       <Widget
         src="near/widget/NestedDiscussions.Feed"
         props={{
-          dbAction,
-          composeWidget,
-          previewWidget,
-          identifier,
+          indexKey: identifier,
           moderatorAccount,
+          parentComponent,
+          parentParams,
+          highlightComment,
         }}
       />
     </FeedWrapper>

@@ -1,38 +1,40 @@
-// Base case, they called a preview on a discussion, we simply return the main widget
-if (typeof props.identifier === "string") {
-  return (
-    <Widget
-      src="near/widget/NestedDiscussions"
-      props={{ identifier: props.identifier }}
-    />
-  );
-}
-
-// Otherwise, they want to preview a specific comment
-const dbAction = props.dbAction;
 const accountId = props.accountId;
 const blockHeight = parseInt(props.blockHeight);
+const parentComponent = props.parentComponent;
+const parentParams = { ...props.parentParams };
+const highlightComment = props.highlightComment;
+const moderatorAccount = props.moderatorAccount || "bosmod.near";
 
-const composeWidget = "near/widget/NestedDiscussions.Compose";
-const previewWidget = "near/widget/NestedDiscussions.Preview";
-
-const content = JSON.parse(
-  Social.get(`${accountId}/${dbAction}/main`, blockHeight)
-).content;
-
-const postUrl = `https://near.org/#/${previewWidget}?accountId=${accountId}&blockHeight=${blockHeight}&dbAction=${dbAction}`;
+const { content } = JSON.parse(
+  Social.get(`${accountId}/discuss/main`, blockHeight)
+);
 
 State.init({ hasBeenFlagged: false });
 
+const notificationParams = {
+  ...parentParams,
+  highlightComment: content.commentId,
+};
+
+// URL to share
+var postUrl = `https://near.org/#/${parentComponent}?`;
+postUrl += Object.entries(notificationParams)
+  .map(([k, v]) => `${k}=${v}`)
+  .join("&");
+
 // all children comments will be identified by this object
-const item = {
+const indexKey = {
   accountId,
   blockHeight,
-  dbAction,
 };
 
 const Post = styled.div`
   position: relative;
+  ${
+    content.commentId == highlightComment
+      ? "border-left: 4px solid aqua; padding-left: 1rem;"
+      : ""
+  }
 
   &::before {
     content: "";
@@ -97,7 +99,7 @@ if (state.hasBeenFlagged) {
 }
 
 return (
-  <Post>
+  <Post id={content.commentId == highlightComment ? "highlight" : ""}>
     <Header>
       <Widget
         src="calebjacob.near/widget/AccountProfile"
@@ -116,7 +118,6 @@ return (
         }}
       />
     </Header>
-
     <Body>
       <Content>
         {content.text && (
@@ -141,16 +142,16 @@ return (
           <Widget
             src="near/widget/NestedDiscussions.Preview.LikeButton"
             props={{
-              item,
-              previewWidget,
+              item: content.commentId,
+              notificationComponent: parentComponent,
+              notificationParams,
               notifyAccountId: accountId,
             }}
           />
           <Widget
             src="near/widget/NestedDiscussions.Preview.CommentButton"
             props={{
-              dbAction,
-              item,
+              item: indexKey,
               onClick: () => State.update({ showReply: !state.showReply }),
             }}
           />
@@ -179,12 +180,12 @@ return (
       {state.showReply && (
         <div className="mb-2">
           <Widget
-            src={composeWidget}
+            src="near/widget/NestedDiscussions.Compose"
             props={{
-              dbAction,
+              indexKey,
               notifyAccountId: accountId,
-              previewWidget,
-              identifier: item,
+              notificationWidget: parentComponent,
+              notificationParams,
               onComment: () => State.update({ showReply: false }),
             }}
           />
@@ -195,11 +196,11 @@ return (
         <Widget
           src="near/widget/NestedDiscussions.Feed"
           props={{
-            dbAction,
-            identifier: item,
-            composeWidget,
-            previewWidget,
+            indexKey,
             moderatorAccount,
+            parentComponent,
+            parentParams,
+            highlightComment,
           }}
         />
       </Comments>

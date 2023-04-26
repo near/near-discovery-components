@@ -25,37 +25,50 @@ const onClick =
     }
   });
 
-  const highlightWordInParagraph = (paragraph, word, charLimit) => {
-    paragraph = paragraph.replace(/\n/g, "");
-    const words = paragraph.split(" ");
-    const wordIndex = words.indexOf(word);
-  
-    if (wordIndex === -1) {
-      return paragraph;
+const highlightWordInParagraph = (paragraph, word, charLimit) => {
+  paragraph = paragraph.replace(/\n/g, "");
+  const words = paragraph.split(" ");
+  const wordIndex = words.indexOf(word);
+  console.log(highlightWordInParagraph("term",props.term))
+console.log(highlightWordInParagraph("pragraph",content.text))
+
+console.log(highlightWordInParagraph(content.text, props.term,30))
+
+
+  if (wordIndex === -1) {
+    return paragraph;
+  }
+
+  let newParagraph = "";
+  let currentLength = 0;
+  let startIndex = wordIndex;
+  let endIndex = wordIndex;
+
+  // Expand the selection to the left
+  while (startIndex > 0 && currentLength + words[startIndex - 1].length + 1 <= charLimit) {
+    startIndex--;
+    currentLength += words[startIndex].length + 1;
+  }
+
+  // Expand the selection to the right
+  while (endIndex < words.length - 1 && currentLength + words[endIndex + 1].length + 1 <= charLimit) {
+    endIndex++;
+    currentLength += words[endIndex].length + 1;
+  }
+
+  const highlightedWords = words.slice(startIndex, endIndex + 1);
+  const highlightedParagraph = highlightedWords.map((w, index) => {
+    if (w.toLowerCase() === word.toLowerCase()) {
+      return  "**"+w+"**"
     }
-  
-    let newParagraph = "";
-    let currentLength = 0;
-    let startIndex = wordIndex;
-    let endIndex = wordIndex;
-  
-    // Expand the selection to the left
-    while (startIndex > 0 && currentLength + words[startIndex - 1].length + 1 <= charLimit) {
-      startIndex--;
-      currentLength += words[startIndex].length + 1;
-    }
-  
-    // Expand the selection to the right
-    while (endIndex < words.length - 1 && currentLength + words[endIndex + 1].length + 1 <= charLimit) {
-      endIndex++;
-      currentLength += words[endIndex].length + 1;
-    }
-  
-    newParagraph = words.slice(startIndex, endIndex + 1).join(" ");
-  
-    return newParagraph;
-  };
-  
+    return w;
+  }).join(" ");
+
+  newParagraph = highlightedParagraph;
+
+  return newParagraph;
+};
+
 const Post = styled.a`
   display: flex;
   flex-direction: row;
@@ -119,6 +132,8 @@ const Text = styled.p`
   white-space: nowrap;
 `;
 
+
+
 return (
   <Post href={postUrl} onPointerUp={onClick}>
     <Header>
@@ -132,7 +147,6 @@ return (
     </Header>
 
     <Body ellipsis={true}>
-      {console.log(content)}
       {content.text && (
         <Widget
           src="near/widget/Search.Markdown"
@@ -140,7 +154,9 @@ return (
             text:highlightWordInParagraph(content.text, props.term,30)
           }}
         />
+
       )}
+
       {content.image && (
         <Widget
           src="mob.near/widget/Image"

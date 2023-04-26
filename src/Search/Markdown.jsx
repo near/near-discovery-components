@@ -5,6 +5,10 @@ const Wrapper = styled.div`
   color: #606d7a;
   word-break: break-word;
   justify-content: center;
+  height:100%;
+  width:100%;
+  overflow:hidden:
+  
 
   > * {
     margin-bottom: 12px;
@@ -68,7 +72,7 @@ const renderMention =
 const word = () => {};
 
 return (
-  <Wrapper style={{ fontSize: "12px" }}>
+  <Wrapper style={{ fontSize: "12px", color:'#606D7A'}}>
     <Markdown text={props.text} onMention={renderMention} />
   </Wrapper>
 );

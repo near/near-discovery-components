@@ -381,6 +381,8 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
         resp.body
       );
 
+      console.log(results)
+
       if (facet === "People") {
         State.update({
           profiles: {
@@ -394,7 +396,7 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
           apps: {
             hitsTotal,
             hitsPerPage,
-            hits: components(results["app, widget"]),
+            hits:components(results["app, widget"]).concat(components(results["widget"])),
           },
         });
       } else if (facet === "Components") {
@@ -572,14 +574,15 @@ const tabCount = (tab) => {
 };
 
 const topmostComponents = (apps) => {
+  console.log("the apps are", state.apps)
+
   let output = [];
   if (state.selectedTab === "Components" || state.selectedTab === "Apps") {
-    for (let i = 0; i < 6; i++) {
-      if (i < state.components.hitsTotal) {
-        output.push(state.components.hits[i]);
-      }
-    }
-  } else {
+    if (state.selectedTab === "Components")
+   { output = state.components.hits.slice(0,6)}else if (state.selectedTab === "Apps"){
+    output = state.apps.hits.slice(0,6)
+   }
+  } else { console.log("else ran")
     if (apps) {
       output = state.apps.hits.slice(0, topmostCount);
     } else {
@@ -627,6 +630,7 @@ const topmostPosts = () => {
           blockHeight: post.blockHeight,
           content: post.postContent,
           term: props.term,
+          snipContent:true
         }}
       />
     </Item>
@@ -686,7 +690,7 @@ const displayResultsByFacet = (selectedTab) => {
           </GroupHeader>
           <Items>{topmostComponents(true)}</Items>
         </Group>
-      ) : (
+      ) : (<>
         <H2
         style={{
           display: "flex",
@@ -700,7 +704,20 @@ const displayResultsByFacet = (selectedTab) => {
         }}
       >
         No App matches were found for "{state.term}".
-      </H2>      );
+      </H2>  
+              <H2
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                position: "absolute",
+                top: "45%", // Adjust this value to position the text lower
+                width: "100%",
+                fontSize: "12px",
+                left: "-0%",
+              }}
+            >Trying to find a app built by an user? Try search their account id.
+            </H2> </>   );
     }
 
     case "Components":
@@ -721,7 +738,7 @@ const displayResultsByFacet = (selectedTab) => {
 
           <Items>{topmostComponents(false)}</Items>
         </Group>
-      ) : (
+      ) : (<>
         <H2
         style={{
           display: "flex",
@@ -736,6 +753,19 @@ const displayResultsByFacet = (selectedTab) => {
       >
         No Component matches were found for "{state.term}".
       </H2>
+      <H2
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        position: "absolute",
+        top: "45%", // Adjust this value to position the text lower
+        width: "100%",
+        fontSize: "12px",
+        left: "-0%",
+      }}
+    >Trying to find a app built by an user? Try search their account id.
+    </H2> </>
       );
     case "Posts":
       return state.postsAndComments.hits?.length > 0 ? (
@@ -756,6 +786,7 @@ const displayResultsByFacet = (selectedTab) => {
           <Items>{topmostPosts()}</Items>
         </Group>
       ) : (
+        
         <H2
         style={{
           display: "flex",
@@ -769,7 +800,7 @@ const displayResultsByFacet = (selectedTab) => {
         }}
       >
         No Post matches were found for "{state.term}".
-      </H2>      );
+      </H2>     );
     case "All":
       return (
         <>

@@ -283,12 +283,10 @@ const posts = (content, postType) => {
   for (const [i, post] of content || []) {
     const accountId = post.author;
     const blockHeight = post.objectID.split("/").slice(-1)[0];
-    console.log("rw content is",post.content)
     const postContent = {
       type: "md",
       text: post.content,
     };
-    console.log(`${props.term} is it??`,post.content)
     const headerStyling =
       postType === "post"
         ? "border rounded-4 p-3 pb-1"
@@ -383,8 +381,6 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
         resp.body
       );
 
-      console.log(results)
-
       if (facet === "People") {
         State.update({
           profiles: {
@@ -398,7 +394,9 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
           apps: {
             hitsTotal,
             hitsPerPage,
-            hits:components(results["app, widget"]).concat(components(results["widget"])),
+            hits: components(results["app, widget"]).concat(
+              components(results["widget"])
+            ),
           },
         });
       } else if (facet === "Components") {
@@ -420,7 +418,7 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
           },
         });
       }
-      
+
       localState.hitsTotal += hitsTotal;
       if (localState.hitsTotal >= localState.lastUpdatedHitsTotal) {
         localState.lastUpdatedHitsTotal = localState.hitsTotal;
@@ -559,16 +557,16 @@ const tabCount = (tab) => {
       return state.paginate?.hitsTotal;
     case "People":
       // Return the count for People
-      return state.profiles.hitsTotal??0;
+      return state.profiles.hitsTotal ?? 0;
     case "Apps":
       // Return the count for Apps
-      return state.apps.hitsTotal??0;
+      return state.apps.hitsTotal ?? 0;
     case "Components":
       // Return the count for Components
-      return state.components.hitsTotal??0;
+      return state.components.hitsTotal ?? 0;
     case "Posts":
       // Return the count for Posts
-      return state.postsAndComments.hitsTotal??0;
+      return state.postsAndComments.hitsTotal ?? 0;
     default:
       // Return 0 if the tab name is not in the list
       return 0;
@@ -576,15 +574,14 @@ const tabCount = (tab) => {
 };
 
 const topmostComponents = (apps) => {
-  console.log("the apps are", state.apps)
-
   let output = [];
   if (state.selectedTab === "Components" || state.selectedTab === "Apps") {
-    if (state.selectedTab === "Components")
-   { output = state.components.hits.slice(0,6)}else if (state.selectedTab === "Apps"){
-    output = state.apps.hits.slice(0,6)
-   }
-  } else { console.log("else ran")
+    if (state.selectedTab === "Components") {
+      output = state.components.hits.slice(0, 6);
+    } else if (state.selectedTab === "Apps") {
+      output = state.apps.hits.slice(0, 6);
+    }
+  } else {
     if (apps) {
       output = state.apps.hits.slice(0, topmostCount);
     } else {
@@ -610,7 +607,6 @@ const topmostComponents = (apps) => {
   ));
 };
 
-
 const topmostPosts = () => {
   let output = [];
 
@@ -626,7 +622,6 @@ const topmostPosts = () => {
 
   return output.map((post, i) => (
     <Item key={`${post.accountId}/${post.postType}/${post.blockHeight}`}>
-      
       <Widget
         src="near/widget/Search.PostCard"
         props={{
@@ -634,9 +629,8 @@ const topmostPosts = () => {
           blockHeight: post.blockHeight,
           content: post.postContent,
           term: props.term,
-          snipContent:false
+          snipContent: false,
         }}
-        
       />
     </Item>
   ));
@@ -664,19 +658,19 @@ const displayResultsByFacet = (selectedTab) => {
         </Group>
       ) : (
         <H2
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          position: "absolute",
-          top: "40%", // Adjust this value to position the text lower
-          width: "100%",
-          fontSize: "15px",
-          left: "-0%",
-        }}
-      >
-        No People matches were found for "{state.term}".
-      </H2>
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            position: "absolute",
+            top: "40%", // Adjust this value to position the text lower
+            width: "100%",
+            fontSize: "15px",
+            left: "-0%",
+          }}
+        >
+          No People matches were found for "{state.term}".
+        </H2>
       );
     case "Apps": {
       return state.apps.hits?.length > 0 ? (
@@ -695,34 +689,38 @@ const displayResultsByFacet = (selectedTab) => {
           </GroupHeader>
           <Items>{topmostComponents(true)}</Items>
         </Group>
-      ) : (<>
-        <H2
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          position: "absolute",
-          top: "40%", // Adjust this value to position the text lower
-          width: "100%",
-          fontSize: "15px",
-          left: "-0%",
-        }}
-      >
-        No App matches were found for "{state.term}".
-      </H2>  
-              <H2
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                position: "absolute",
-                top: "45%", // Adjust this value to position the text lower
-                width: "100%",
-                fontSize: "12px",
-                left: "-0%",
-              }}
-            >Trying to find a app built by an user? Try search their account id.
-            </H2> </>   );
+      ) : (
+        <>
+          <H2
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              position: "absolute",
+              top: "40%", // Adjust this value to position the text lower
+              width: "100%",
+              fontSize: "15px",
+              left: "-0%",
+            }}
+          >
+            No App matches were found for "{state.term}".
+          </H2>
+          <H2
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              position: "absolute",
+              top: "45%", // Adjust this value to position the text lower
+              width: "100%",
+              fontSize: "12px",
+              left: "-0%",
+            }}
+          >
+            Trying to find a app built by an user? Try search their account id.
+          </H2>{" "}
+        </>
+      );
     }
 
     case "Components":
@@ -743,34 +741,37 @@ const displayResultsByFacet = (selectedTab) => {
 
           <Items>{topmostComponents(false)}</Items>
         </Group>
-      ) : (<>
-        <H2
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          position: "absolute",
-          top: "40%", // Adjust this value to position the text lower
-          width: "100%",
-          fontSize: "15px",
-          left: "-0%",
-        }}
-      >
-        No Component matches were found for "{state.term}".
-      </H2>
-      <H2
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        position: "absolute",
-        top: "45%", // Adjust this value to position the text lower
-        width: "100%",
-        fontSize: "12px",
-        left: "-0%",
-      }}
-    >Trying to find a app built by an user? Try search their account id.
-    </H2> </>
+      ) : (
+        <>
+          <H2
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              position: "absolute",
+              top: "40%", // Adjust this value to position the text lower
+              width: "100%",
+              fontSize: "15px",
+              left: "-0%",
+            }}
+          >
+            No Component matches were found for "{state.term}".
+          </H2>
+          <H2
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              position: "absolute",
+              top: "45%", // Adjust this value to position the text lower
+              width: "100%",
+              fontSize: "12px",
+              left: "-0%",
+            }}
+          >
+            Trying to find a app built by an user? Try search their account id.
+          </H2>{" "}
+        </>
       );
     case "Posts":
       return state.postsAndComments.hits?.length > 0 ? (
@@ -791,21 +792,21 @@ const displayResultsByFacet = (selectedTab) => {
           <Items>{topmostPosts()}</Items>
         </Group>
       ) : (
-        
         <H2
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          position: "absolute",
-          top: "40%", // Adjust this value to position the text lower
-          width: "100%",
-          fontSize: "15px",
-          left: "-0%",
-        }}
-      >
-        No Post matches were found for "{state.term}".
-      </H2>     );
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            position: "absolute",
+            top: "40%", // Adjust this value to position the text lower
+            width: "100%",
+            fontSize: "15px",
+            left: "-0%",
+          }}
+        >
+          No Post matches were found for "{state.term}".
+        </H2>
+      );
     case "All":
       return (
         <>
@@ -891,7 +892,6 @@ if (props.term !== state.lastSyncedTerm) {
 
 return (
   <div style={typeAheadContainer}>
-    
     <Wrapper>
       <FixedTabs>
         <Widget
@@ -904,7 +904,7 @@ return (
         />
       </FixedTabs>
       <ScrollableContent>
-        {state.paginate?.hitsTotal == 0 && state.selectedTab=="All" && (
+        {state.paginate?.hitsTotal == 0 && state.selectedTab == "All" && (
           <H2
             style={{
               display: "flex",
@@ -923,11 +923,13 @@ return (
         {displayResultsByFacet(state.selectedTab)}
       </ScrollableContent>
 
-      <FixedFooter >
-        <Button href={`${searchPageUrl}?term=${props.term}&tab=${state.selectedTab}`} as="a">
+      <FixedFooter>
+        <Button
+          href={`${searchPageUrl}?term=${props.term}&tab=${state.selectedTab}`}
+          as="a"
+        >
           {state.paginate?.hitsTotal > 0 &&
             ` See ${tabCount(state.selectedTab)} Results`}
-
         </Button>
       </FixedFooter>
 

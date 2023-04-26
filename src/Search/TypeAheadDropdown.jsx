@@ -283,10 +283,12 @@ const posts = (content, postType) => {
   for (const [i, post] of content || []) {
     const accountId = post.author;
     const blockHeight = post.objectID.split("/").slice(-1)[0];
+    console.log("rw content is",post.content)
     const postContent = {
       type: "md",
       text: post.content,
     };
+    console.log(`${props.term} is it??`,post.content)
     const headerStyling =
       postType === "post"
         ? "border rounded-4 p-3 pb-1"
@@ -608,6 +610,7 @@ const topmostComponents = (apps) => {
   ));
 };
 
+
 const topmostPosts = () => {
   let output = [];
 
@@ -623,6 +626,7 @@ const topmostPosts = () => {
 
   return output.map((post, i) => (
     <Item key={`${post.accountId}/${post.postType}/${post.blockHeight}`}>
+      
       <Widget
         src="near/widget/Search.PostCard"
         props={{
@@ -630,8 +634,9 @@ const topmostPosts = () => {
           blockHeight: post.blockHeight,
           content: post.postContent,
           term: props.term,
-          snipContent:true
+          snipContent:false
         }}
+        
       />
     </Item>
   ));
@@ -886,6 +891,7 @@ if (props.term !== state.lastSyncedTerm) {
 
 return (
   <div style={typeAheadContainer}>
+    
     <Wrapper>
       <FixedTabs>
         <Widget

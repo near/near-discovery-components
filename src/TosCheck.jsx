@@ -9,10 +9,10 @@ State.init({
 });
 
 // find all instances of the user agreeing to some version of the desired TOS
-const agreementsForUser = Social.index("tosAccept", acceptanceKey, {
+const agreementsForUser = context.accountId ? Social.index("tosAccept", acceptanceKey, {
   accountId: context.accountId, // make sure it was written by the user in question
   subscribe: true,
-});
+}) : null;
 
 const tosVersions = Social.keys(tosName, "final", {
   return_type: "BlockHeight",

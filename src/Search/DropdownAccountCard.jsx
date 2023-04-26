@@ -87,21 +87,18 @@ const Row = styled.div`
   margin: 0 -10px;
   align-items: center;
   gap: 10px;
-  padding-left:20px;
+  padding-left: 20px;
 `;
 
 const Col = styled.div`
-flex: ${({ flex }) => flex || '1'};
+  flex: ${({ flex }) => flex || "1"};
   overflow: hidden; /* turn off overflow */
   text-overflow: ellipsis;
   overflow: ${({ noOverflow }) => (noOverflow ? "visible" : "hidden")};
-
 `;
 
-
-
 const col2 = {
-maxWidth:'40px'
+  maxWidth: "40px",
 };
 
 const col3 = {
@@ -115,6 +112,22 @@ const col4 = {
 };
 const TagsWrapper = styled.div`
   padding-top: 4px;
+`;
+
+const Text = styled.p`
+  margin: 0;
+  font-size: 10px;
+  line-height: 14px;
+  color: #687076;
+  font-weight: 400;
+  flex-shrink: 0;
+  white-space: nowrap;
+  text-align: center;
+  overflow: hidden;
+
+  i {
+    font-size: 16px;
+  }
 `;
 
 return (
@@ -135,18 +148,18 @@ return (
           </Avatar>
         </Col>
 
-        <Col style={{col2}} flex={2} style={{textAlign:'left'}}>
+        <Col style={{ col2 }} flex={2} style={{ textAlign: "left" }}>
           <TextLink href={profileUrl} onPointerUp={onPointerUp} ellipsis bold>
             {profile.name || accountId.split(".near")[0]}
           </TextLink>
         </Col>
-        <Col flex={2} style={{textAlign:'left'}}>
+        <Col flex={2} style={{ textAlign: "left" }}>
           <TextLink href={profileUrl} onPointerUp={onPointerUp} ellipsis>
             @{accountId}
           </TextLink>
         </Col>
 
-        <Col noOverflow style={{textAlign:'right' }}>
+        <Col noOverflow style={{ textAlign: "right" }}>
           {!!context.accountId && context.accountId !== props.accountId && (
             <button
               onClick={() =>
@@ -158,15 +171,12 @@ return (
                 border: "none",
                 borderRadius: "5px",
                 cursor: "pointer",
-                
               }}
             >
               <a href={profileUrl}>
-                <img
-                 src="https://i.imgur.com/dIDX59g.png"
-                  alt="Follow icon"
-                  style={{ height: "24px", marginRight: "5px" }}
-                />
+                <Text small bold>
+                  <i className="bi bi-arrow-right"></i>
+                </Text>
               </a>
             </button>
           )}

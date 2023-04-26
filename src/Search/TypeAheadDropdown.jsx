@@ -193,7 +193,7 @@ const FixedFooter = styled.div`
     left: 16px;
     right: 16px;
     text-align:right
-    width: 100%; 
+    width: 100%;
     justify-content:center;
     padding: 16px 16px 16px 16px;
 `;
@@ -629,7 +629,7 @@ const topmostPosts = () => {
           blockHeight: post.blockHeight,
           content: post.postContent,
           term: props.term,
-          snipContent: false,
+          snipContent: true,
         }}
       />
     </Item>

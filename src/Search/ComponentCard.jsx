@@ -75,7 +75,7 @@ const Row = styled.div`
   margin: 0 -10px;
   align-items: center;
   gap: 10px;
-  padding-left:20px;
+  padding-left:5px;
   width:100%;
 `;
 
@@ -236,6 +236,7 @@ return (
           <Col style={{float:'right', textAlign:'right'}} flex={1}>
       <ButtonLink href={appUrl} onPointerUp={onPointerUp}>
         <img src="https://i.imgur.com/dIDX59g.png" alt="Open" />
+        
       </ButtonLink>
       </Col>
       </Row>

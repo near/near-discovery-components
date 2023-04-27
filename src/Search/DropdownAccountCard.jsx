@@ -87,7 +87,7 @@ const Row = styled.div`
   margin: 0 -10px;
   align-items: center;
   gap: 10px;
-  padding-left: 20px;
+  padding-left: 5px;
 `;
 
 const Col = styled.div`

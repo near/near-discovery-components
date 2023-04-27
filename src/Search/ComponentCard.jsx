@@ -16,14 +16,12 @@ const onPointerUp =
   });
 
 const Card = styled.div`
-display: flex;
-flex-direction: row;
-justify-content: space-between;
-align-items: flex-start;
-padding: 0px;
-width: 100%;
-
-
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0px;
+  width: 100%;
 `;
 
 const CardBody = styled.div`
@@ -34,7 +32,6 @@ const CardBody = styled.div`
   flex-direction: row;
   min-width: 0;
 
-
   > div {
     display: flex;
     flex-direction: row;
@@ -42,7 +39,6 @@ const CardBody = styled.div`
     min-width: 0;
   }
 `;
-
 
 const Thumbnail = styled.a`
   display: block;
@@ -54,13 +50,14 @@ const Thumbnail = styled.a`
   overflow: hidden;
   outline: none;
   transition: border-color 200ms;
-  align-items:center;
-  float:center;
-  justify-content:center;
+  align-items: center;
+  float: center;
+  justify-content: center;
   &:focus,
   &:hover {
     border-color: #d0d5dd;
   }
+  margin-left: 10px;
 
   img {
     object-fit: cover;
@@ -72,47 +69,31 @@ const Thumbnail = styled.a`
 const Row = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin: 0 -10px;
   align-items: center;
   gap: 10px;
-  padding-left:20px;
-  width:100%;
+  width: 95%;
+`;
+
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  flex: 1;
+`;
+
+const Body = styled.div`
+  align-items: center;
+  flex: 1;
+  font-size: 12px;
+  overflow: ${(p) => (p.ellipsis ? "hidden" : "")};
+  text-overflow: ${(p) => (p.ellipsis ? "ellipsis" : "")};
 `;
 
 const Col = styled.div`
-  flex: ${({ flex }) => flex || '1'};
-  justify-content: ${({ centered }) => (centered ? 'center' : 'auto')};
+  flex: ${({ flex }) => flex || "1"};
+  justify-content: ${({ centered }) => (centered ? "center" : "auto")};
   overflow: hidden;
   text-overflow: ellipsis;
-  overflow: ${({ noOverflow }) => (noOverflow ? 'visible' : 'hidden')};
-`;
-
-
-const CardContent = styled.div`
-  width: 100%;
-`;
-
-const CardFooter = styled.div`
-  display: none;
-`;
-
-const CardTag = styled.p`
-  margin: 0;
-  font-size: 9px;
-  line-height: 14px;
-  background: #eceef0;
-  color: #687076;
-  font-weight: 400;
-  white-space: nowrap;
-  position: absolute;
-  top: 0;
-  right: 0;
-  border-bottom-left-radius: 3px;
-  padding: 0 4px;
-
-  i {
-    margin-right: 3px;
-  }
+  overflow: ${({ noOverflow }) => (noOverflow ? "visible" : "hidden")};
 `;
 
 const TextLink = styled.a`
@@ -135,26 +116,16 @@ const TextLink = styled.a`
 `;
 
 const Text = styled.p`
-  margin: 0;
-  font-size: 14px;
+  display: block;
+  font-size: 12px;
   line-height: 20px;
-  color: ${(p) => (p.bold ? "#11181C" : "#687076")};
-  font-weight: ${(p) => (p.bold ? "600" : "400")};
-  font-size: ${(p) => (p.small ? "12px" : "14px")};
-  overflow: ${(p) => (p.ellipsis ? "hidden" : "")};
-  text-overflow: ${(p) => (p.ellipsis ? "ellipsis" : "")};
+  font-weight: 400;
+  color: #687076;
   white-space: nowrap;
 
   i {
-    margin-right: 3px;
+    font-size: 16px;
   }
-`;
-
-
-
-const TagsWrapper = styled.div`
-  position: relative;
-  margin-top: 4px;
 `;
 
 const ButtonLink = styled.a`
@@ -178,69 +149,68 @@ const ButtonLink = styled.a`
   }
 `;
 
-const col2 = {
-  maxWidth:'40px',
-  };
-  
-  const col3 = {
-    maxWidth: "50px",
-  };
-  
-  const col4 = {
-    textAlign: "right",
-    padding: 0,
-    justifyContent: "center",
-  };
-
 return (
   <Card>
     <CardBody>
-    <Row>
-    <Col flex={1}  style={{  float:'center',justifyContent:'center', alignItems:'center', display:'flex'}}>
-      <Thumbnail href={detailsUrl} onPointerUp={onPointerUp}>
-        <Widget
-          src="mob.near/widget/Image"
-          props={{
-            image: metadata.image,
-            fallbackUrl:
-              "https://ipfs.near.social/ipfs/bafkreifc4burlk35hxom3klq4mysmslfirj7slueenbj7ddwg7pc6ixomu",
-            alt: metadata.name,
-          }}
-        />
-      </Thumbnail>
-      </Col>
-      <Col style={{col2}} flex={2} style={{textAlign:'left'}}>
+      <Row>
+        <Col flex={1}>
+          <Header>
+            <Thumbnail href={detailsUrl} onPointerUp={onPointerUp}>
+              <Widget
+                src="mob.near/widget/Image"
+                props={{
+                  image: metadata.image,
+                  fallbackUrl:
+                    "https://ipfs.near.social/ipfs/bafkreifc4burlk35hxom3klq4mysmslfirj7slueenbj7ddwg7pc6ixomu",
+                  alt: metadata.name,
+                }}
+              />
+            </Thumbnail>
 
-      <TextLink
-        as="a"
-        href={detailsUrl}
-        onPointerUp={onPointerUp}
-        bold
-        ellipsis
-      >
-        {metadata.name || widgetName}
-      </TextLink>
-      </Col>
-      <Col flex={2} style={{textAlign:'left' }}>
-
-      <TextLink
-        small
-        as="a"
-        href={accountUrl}
-        onPointerUp={onPointerUp}
-        ellipsis
-      >
-        @{accountId}
-      </TextLink>
-      </Col>
-          <Col style={{float:'right', textAlign:'right'}} flex={1}>
-      <ButtonLink href={appUrl} onPointerUp={onPointerUp}>
-        <img src="https://i.imgur.com/dIDX59g.png" alt="Open" />
-      </ButtonLink>
-      </Col>
+            <TextLink
+              as="a"
+              style={{ marginLeft: "10px" }}
+              href={detailsUrl}
+              onPointerUp={onPointerUp}
+              bold
+              ellipsis
+            >
+              {metadata.name || widgetName}
+            </TextLink>
+          </Header>
+        </Col>
+        <Col style={{ alignItems: "center", textAlign: "left" }}>
+          <Body>
+            <TextLink
+              small
+              as="a"
+              href={accountUrl}
+              onPointerUp={onPointerUp}
+              ellipsis
+            >
+              @{accountId}
+            </TextLink>
+          </Body>
+        </Col>
+        <Col style={{ float: "right", textAlign: "right" }} flex={1}>
+          <ButtonLink href={appUrl} onPointerUp={onPointerUp}>
+            <button
+              style={{
+                backgroundColor: "rgba(255, 193, 7, 0)",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+              }}
+            >
+              <a href={appUrl}>
+                <Text small bold>
+                  <i className="bi bi-arrow-right"></i>
+                </Text>
+              </a>
+            </button>
+          </ButtonLink>
+        </Col>
       </Row>
     </CardBody>
-
-    <CardFooter />
   </Card>
 );

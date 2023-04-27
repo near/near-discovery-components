@@ -133,6 +133,10 @@ const Text = styled.p`
   font-weight: 400;
   color: #687076;
   white-space: nowrap;
+
+  i {
+    font-size: 16px;
+  }
 `;
 
 return (
@@ -152,22 +156,27 @@ return (
         <Widget
           src="near/widget/Search.Markdown"
           props={{
-            text: highlightWordInParagraph(content.text, props.term, 30),
-          }}
-        />
-      )}
-
-      {content.image && (
-        <Widget
-          src="mob.near/widget/Image"
-          props={{
-            image: content.image,
+            text: highlightWordInParagraph(content.text, props.term, 24),
           }}
         />
       )}
     </Body>
     <ButtonLink href={postUrl} onPointerUp={onClick}>
-      <img src="https://i.imgur.com/dIDX59g.png" alt="Open" />
+      <button
+        style={{
+          backgroundColor: "rgba(255, 193, 7, 0)",
+          padding: "10px 0px 10px 10px",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+        }}
+      >
+        <a href={postUrl}>
+          <Text small bold>
+            <i className="bi bi-arrow-right"></i>
+          </Text>
+        </a>
+      </button>
     </ButtonLink>
   </Post>
 );

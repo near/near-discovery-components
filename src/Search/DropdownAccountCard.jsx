@@ -1,7 +1,5 @@
+const profile_name = props.profile_name;
 const accountId = props.accountId;
-const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
-// const tags = Object.keys(profile.tags || {});
-const tags = Object.keys(profile.tags || { users: "dog", animals: "zoo" });
 const profileUrl = `/near/widget/ProfilePage?accountId=${accountId}`;
 const onPointerUp =
   props.onClick ??
@@ -11,52 +9,55 @@ const onPointerUp =
     }
   });
 
-State.init({
-  show: false,
-});
-
-const Card = styled.div`
+const Profile = styled.a`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
+  width: 95%;
+  height: 45px;
+  overflow: hidden;
+  gap: 16px;
+  margin-left: 10px;
   padding: 0px;
-  width: 100%;
 `;
 
-const CardLeft = styled.div`
+const Header = styled.div`
   display: flex;
-  gap: 16px;
   align-items: center;
-  width: 100%;
-  min-width: 0;
+  flex: 1;
 
-  > div {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    min-width: 0;
+  img {
+    height: 24px;
   }
 `;
 
-const Avatar = styled.a`
-  width: 50px;
-  height: 50px;
-  flex-shrink: 0;
-  overflow: hidden;
-  border-radius: 56px;
-  transition: border-color 200ms;
+const Body = styled.div`
+  align-items: center;
+  flex: 1;
+  font-size: 12px;
+  overflow: ${(p) => (p.ellipsis ? "hidden" : "")};
+  text-overflow: ${(p) => (p.ellipsis ? "ellipsis" : "")};
+`;
+
+const ButtonLink = styled.a`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
 
   img {
-    object-fit: cover;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+    width: 24px;
+    height: 24px;
   }
 
   &:hover,
   &:focus {
-    border-color: #d0d5dd;
+    text-decoration: none;
+    outline: none;
   }
 `;
 
@@ -71,6 +72,7 @@ const TextLink = styled.a`
   font-size: ${(p) => (p.small ? "12px" : "14px")};
   font-style: normal;
   overflow: ${(p) => (p.ellipsis ? "hidden" : "visible")};
+  text-align: left;
   text-overflow: ${(p) => (p.ellipsis ? "ellipsis" : "unset")};
   white-space: nowrap;
   outline: none;
@@ -81,49 +83,13 @@ const TextLink = styled.a`
   }
 `;
 
-const Row = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 -10px;
-  align-items: center;
-  gap: 10px;
-  padding-left: 20px;
-`;
-
-const Col = styled.div`
-  flex: ${({ flex }) => flex || "1"};
-  overflow: hidden; /* turn off overflow */
-  text-overflow: ellipsis;
-  overflow: ${({ noOverflow }) => (noOverflow ? "visible" : "hidden")};
-`;
-
-const col2 = {
-  maxWidth: "40px",
-};
-
-const col3 = {
-  maxWidth: "50px",
-};
-
-const col4 = {
-  textAlign: "right",
-  padding: 0,
-  justifyContent: "center",
-};
-const TagsWrapper = styled.div`
-  padding-top: 4px;
-`;
-
 const Text = styled.p`
-  margin: 0;
-  font-size: 10px;
-  line-height: 14px;
-  color: #687076;
+  display: block;
+  font-size: 12px;
+  line-height: 20px;
   font-weight: 400;
-  flex-shrink: 0;
+  color: #687076;
   white-space: nowrap;
-  text-align: center;
-  overflow: hidden;
 
   i {
     font-size: 16px;
@@ -131,57 +97,39 @@ const Text = styled.p`
 `;
 
 return (
-  <Card>
-    <CardLeft>
-      <Row>
-        <Col>
-          <Avatar href={profileUrl} onPointerUp={onPointerUp}>
-            <Widget
-              src="mob.near/widget/Image"
-              props={{
-                image: profile.image,
-                alt: profile.name,
-                fallbackUrl:
-                  "https://ipfs.near.social/ipfs/bafkreibiyqabm3kl24gcb2oegb7pmwdi6wwrpui62iwb44l7uomnn3lhbi",
-              }}
-            />
-          </Avatar>
-        </Col>
+  <Profile href={profileUrl} onPointerUp={onClick}>
+    <Header>
+      <Widget
+        src="near/widget/Search.AccountProfile"
+        props={{
+          accountId,
+          hideAccountId: true,
+        }}
+      />
+    </Header>
 
-        <Col style={{ col2 }} flex={2} style={{ textAlign: "left" }}>
-          <TextLink href={profileUrl} onPointerUp={onPointerUp} ellipsis bold>
-            {profile.name || accountId.split(".near")[0]}
-          </TextLink>
-        </Col>
-        <Col flex={2} style={{ textAlign: "left" }}>
-          <TextLink href={profileUrl} onPointerUp={onPointerUp} ellipsis>
-            @{accountId}
-          </TextLink>
-        </Col>
+    <Body ellipsis={true}>
+      <TextLink href={profileUrl} onPointerUp={onPointerUp} ellipsis>
+        @{accountId}
+      </TextLink>
+    </Body>
 
-        <Col noOverflow style={{ textAlign: "right" }}>
-          {!!context.accountId && context.accountId !== props.accountId && (
-            <button
-              onClick={() =>
-                console.log(`redirecting you to the profile`, profileUrl)
-              }
-              style={{
-                backgroundColor: "rgba(255, 193, 7, 0)",
-                padding: "10px 0px 10px 10px",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-              }}
-            >
-              <a href={profileUrl}>
-                <Text small bold>
-                  <i className="bi bi-arrow-right"></i>
-                </Text>
-              </a>
-            </button>
-          )}
-        </Col>
-      </Row>
-    </CardLeft>
-  </Card>
+    <ButtonLink href={postUrl} onPointerUp={onClick}>
+      <button
+        style={{
+          backgroundColor: "rgba(255, 193, 7, 0)",
+          padding: "10px 0px 10px 10px",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+        }}
+      >
+        <a href={profileUrl}>
+          <Text small bold>
+            <i className="bi bi-arrow-right"></i>
+          </Text>
+        </a>
+      </button>
+    </ButtonLink>
+  </Profile>
 );

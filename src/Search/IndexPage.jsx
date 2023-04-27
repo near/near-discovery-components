@@ -146,6 +146,7 @@ const profiles = (records) => {
   for (const [i, record] of records ?? []) {
     profiles.push({
       accountId: record.author,
+      profile_name: record.profile_name,
       searchPosition: i,
     });
   }

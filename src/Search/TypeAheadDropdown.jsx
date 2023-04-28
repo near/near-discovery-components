@@ -271,6 +271,7 @@ const profiles = (records) => {
   for (const [i, record] of records ?? []) {
     profiles.push({
       accountId: record.author,
+      profile_name: record.profile_name,
       searchPosition: i,
     });
   }
@@ -538,6 +539,7 @@ const topmostAccounts = () => {
         src="near/widget/Search.DropdownAccountCard"
         props={{
           accountId: profile.accountId,
+          profile_name: profile.profile_name,
           onClick: () =>
             onSearchResultClick({
               searchPosition: profile.searchPosition,

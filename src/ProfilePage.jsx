@@ -13,7 +13,6 @@ if (props.tab && props.tab !== state.selectedTab) {
   });
 }
 
-const disableExplorerTab = true;
 const profile = props.profile ?? Social.getr(`${accountId}/profile`);
 const accountUrl = `#/near/widget/ProfilePage?accountId=${accountId}`;
 
@@ -215,14 +214,12 @@ return (
             Followers
           </TabsButton>
 
-          {!disableExplorerTab && (
-            <TabsButton
-              href={`${accountUrl}&tab=explorer`}
-              selected={state.selectedTab === "explorer"}
-            >
-              Explorer
-            </TabsButton>
-          )}
+          <TabsButton
+            href={`${accountUrl}&tab=explorer`}
+            selected={state.selectedTab === "explorer"}
+          >
+            Explorer
+          </TabsButton>
         </Tabs>
 
         {state.selectedTab === "overview" && (

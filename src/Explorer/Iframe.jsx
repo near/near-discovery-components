@@ -1,3 +1,4 @@
+State.init({ isLoaded: false });
 const baseUrls = {
   mainnet: "https://explorer.near.org",
   testnet: "https://explorer.testnet.near.org",
@@ -10,10 +11,24 @@ const queryString = `?${Object.entries(query)
   .map(([key, value]) => `${key}=${value}`)
   .join("&")}`;
 return (
-  <iframe
-    className="w-100"
-    style={style}
-    iframeResizer
-    src={`${baseUrl}/${props.url || ""}${queryString}`}
-  />
+  <>
+    <div className={state.isLoaded ? "d-none" : undefined}>
+      <span
+        className="spinner-grow spinner-grow-sm me-1"
+        role="status"
+        aria-hidden="true"
+      />
+      Loading ...
+    </div>
+    <iframe
+      className={["w-100", state.isLoaded ? undefined : "d-none"]
+        .filter((x) => !!x)
+        .join(" ")}
+      style={style}
+      src={`${baseUrl}/${props.url || ""}${queryString}`}
+      iframeResizer={{
+        onResized: () => State.update({ isLoaded: true }),
+      }}
+    />
+  </>
 );

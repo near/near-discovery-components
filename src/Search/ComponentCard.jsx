@@ -54,10 +54,6 @@ const HeaderAbove = styled.div`
   display: flex;
   align-items: center;
   flex: 1;
-
-  img {
-    height: 24px;
-  }
 `;
 
 const Header = styled.div`

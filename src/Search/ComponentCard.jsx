@@ -3,7 +3,6 @@ const metadata = Social.get(
   `${accountId}/widget/${widgetName}/metadata/**`,
   "final"
 );
-const tags = Object.keys(metadata.tags || {});
 const detailsUrl = `/near/widget/ComponentDetailsPage?src=${accountId}/widget/${widgetName}`;
 const appUrl = `/${accountId}/widget/${widgetName}`;
 const accountUrl = `/near/widget/ProfilePage?accountId=${accountId}`;
@@ -15,29 +14,15 @@ const onPointerUp =
     }
   });
 
-const Card = styled.div`
+const Card = styled.a`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 0px;
-  width: 100%;
-`;
-
-const CardBody = styled.div`
-  display: flex;
-  gap: 16px;
   align-items: center;
-  width: 100%;
-  flex-direction: row;
-  min-width: 0;
-
-  > div {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    min-width: 0;
-  }
+  width: 95%;
+  height: 45px;
+  overflow: hidden;
+  gap: 16px;
+  margin-left: 10px;
 `;
 
 const Thumbnail = styled.a`
@@ -57,7 +42,6 @@ const Thumbnail = styled.a`
   &:hover {
     border-color: #d0d5dd;
   }
-  margin-left: 10px;
 
   img {
     object-fit: cover;
@@ -66,21 +50,45 @@ const Thumbnail = styled.a`
   }
 `;
 
-const Row = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  width: 95%;
-`;
-
-const Header = styled.div`
+const HeaderAbove = styled.div`
   display: flex;
   align-items: center;
   flex: 1;
+
+  img {
+    height: 24px;
+  }
+`;
+
+const Header = styled.div`
+  display: inline-grid;
+  width: 100%;
+  align-items: center;
+  gap: 12px;
+  grid-template-columns: auto 1fr;
+  cursor: pointer;
+  margin: 0;
+  color: #687076 !important;
+  outline: none;
+  text-decoration: none !important;
+  background: none !important;
+  border: none;
+  text-align: left;
+  padding: 0;
+
+  > * {
+    min-width: 0;
+  }
+`;
+
+const WidgetName = styled.div`
+  display: flex;
+  gap: 6px;
+  align-items: center;
 `;
 
 const Body = styled.div`
+  margin: 0;
   align-items: center;
   flex: 1;
   font-size: 12px;
@@ -88,22 +96,15 @@ const Body = styled.div`
   text-overflow: ${(p) => (p.ellipsis ? "ellipsis" : "")};
 `;
 
-const Col = styled.div`
-  flex: ${({ flex }) => flex || "1"};
-  justify-content: ${({ centered }) => (centered ? "center" : "auto")};
-  overflow: hidden;
-  text-overflow: ellipsis;
-  overflow: ${({ noOverflow }) => (noOverflow ? "visible" : "hidden")};
-`;
-
 const TextLink = styled.a`
   display: block;
   margin: 0;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 18px;
   color: ${(p) => (p.bold ? "#FFFFFF !important" : "#606D7A !important")};
   font-weight: ${(p) => (p.bold ? "600" : "400")};
   font-size: ${(p) => (p.small ? "14px" : "14px")};
+  text-align: left;
   overflow: ${(p) => (p.ellipsis ? "hidden" : "visible")};
   text-overflow: ${(p) => (p.ellipsis ? "ellipsis" : "unset")};
   white-space: nowrap;
@@ -129,6 +130,7 @@ const Text = styled.p`
 `;
 
 const ButtonLink = styled.a`
+  display: inline-flex;
   align-items: right;
   justify-content: center;
   padding: 0;
@@ -151,66 +153,54 @@ const ButtonLink = styled.a`
 
 return (
   <Card>
-    <CardBody>
-      <Row>
-        <Col flex={1}>
-          <Header>
-            <Thumbnail href={detailsUrl} onPointerUp={onPointerUp}>
-              <Widget
-                src="mob.near/widget/Image"
-                props={{
-                  image: metadata.image,
-                  fallbackUrl:
-                    "https://ipfs.near.social/ipfs/bafkreifc4burlk35hxom3klq4mysmslfirj7slueenbj7ddwg7pc6ixomu",
-                  alt: metadata.name,
-                }}
-              />
-            </Thumbnail>
+    <HeaderAbove>
+      <Header>
+        <Thumbnail href={detailsUrl} onPointerUp={onPointerUp}>
+          <Widget
+            src="mob.near/widget/Image"
+            props={{
+              image: metadata.image,
+              fallbackUrl:
+                "https://ipfs.near.social/ipfs/bafkreifc4burlk35hxom3klq4mysmslfirj7slueenbj7ddwg7pc6ixomu",
+              alt: metadata.name,
+            }}
+          />
+        </Thumbnail>
+        <WidgetName>
+          <TextLink
+            as="a"
+            href={detailsUrl}
+            onPointerUp={onPointerUp}
+            bold
+            ellipsis
+          >
+            {metadata.name ?? widgetName}
+          </TextLink>
+        </WidgetName>
+      </Header>
+    </HeaderAbove>
 
-            <TextLink
-              as="a"
-              style={{ marginLeft: "10px" }}
-              href={detailsUrl}
-              onPointerUp={onPointerUp}
-              bold
-              ellipsis
-            >
-              {metadata.name || widgetName}
-            </TextLink>
-          </Header>
-        </Col>
-        <Col style={{ alignItems: "center", textAlign: "left" }}>
-          <Body>
-            <TextLink
-              small
-              as="a"
-              href={accountUrl}
-              onPointerUp={onPointerUp}
-              ellipsis
-            >
-              @{accountId}
-            </TextLink>
-          </Body>
-        </Col>
-        <Col style={{ float: "right", textAlign: "right" }} flex={1}>
-          <ButtonLink href={appUrl} onPointerUp={onPointerUp}>
-            <button
-              style={{
-                backgroundColor: "rgba(255, 193, 7, 0)",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-              }}
-            >
-              <a href={appUrl}>
-                <Text small bold>
-                  <i className="bi bi-arrow-right"></i>
-                </Text>
-              </a>
-            </button>
-          </ButtonLink>
-        </Col>
-      </Row>
-    </CardBody>
+    <Body ellipsis={true}>
+      <TextLink as="a" href={accountUrl} onPointerUp={onPointerUp}>
+        @{accountId}
+      </TextLink>
+    </Body>
+    <ButtonLink href={appUrl} onPointerUp={onPointerUp}>
+      <button
+        style={{
+          padding: "10px 0px 10px 10px",
+          backgroundColor: "rgba(255, 193, 7, 0)",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+        }}
+      >
+        <a href={appUrl}>
+          <Text small bold>
+            <i className="bi bi-arrow-right"></i>
+          </Text>
+        </a>
+      </button>
+    </ButtonLink>
   </Card>
 );

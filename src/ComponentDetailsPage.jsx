@@ -334,7 +334,7 @@ return (
             identifier: src,
             notifyAccountId: accountId,
             parentComponent: "near/widget/ComponentDetailsPage",
-            parentParams: { tab: "discussion" },
+            parentParams: { tab: "discussion", src },
             highlightComment: props.highlightComment
           }}
         />

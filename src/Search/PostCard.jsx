@@ -26,6 +26,7 @@ const onClick =
   });
 
 const highlightWordInParagraph = (paragraph, word, charLimit) => {
+  paragraph = paragraph.replace("#", " ");
   paragraph = paragraph.replace(/\n/g, "");
   const words = paragraph.split(" ");
   const wordIndex = words.indexOf(word);
@@ -82,6 +83,7 @@ const Post = styled.a`
   gap: 16px;
   margin: 10px;
 `;
+
 const Header = styled.div`
   display: flex;
   align-items: center;
@@ -91,17 +93,13 @@ const Header = styled.div`
     height: 24px;
   }
 `;
+
 const Body = styled.div`
   align-items: center;
   flex: 1;
   font-size: 12px;
   overflow: ${(p) => (p.ellipsis ? "hidden" : "")};
   text-overflow: ${(p) => (p.ellipsis ? "ellipsis" : "")};
-`;
-const Content = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 2px;
 `;
 
 const ButtonLink = styled.a`

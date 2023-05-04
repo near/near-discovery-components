@@ -521,7 +521,9 @@ return (
             Don&apos;t just move the needle, create a new gauge
           </Text>
           <Text color="#00EC97">
-            The Blockchain Operating System (BOS) makes it easy to use the tools you already know to build apps that engage users, while fostering an open web free from centralized platforms
+            The Blockchain Operating System (BOS) makes it easy to use the tools
+            you already know to build apps that engage users, while fostering an
+            open web free from centralized platforms
           </Text>
         </Flex>
 
@@ -538,7 +540,8 @@ return (
                 Code in a language you already know
               </Text>
               <Text size="13px" color="#C7F5D8">
-                The BOS is built on JavaScript, so you can get started creating new apps right away, without needing to learn a new language
+                The BOS is built on JavaScript, so you can get started creating
+                new apps right away, without needing to learn a new language
               </Text>
               <Widget
                 src="near/widget/DIG.Button"
@@ -565,7 +568,9 @@ return (
                 Build quickly with existing components
               </Text>
               <Text size="13px" color="#C7F5D8">
-                Explore, experiment with, and combine community built components to quickly create your own app, or build and publish your own from the ground up
+                Explore, experiment with, and combine community built components
+                to quickly create your own app, or build and publish your own
+                from the ground up
               </Text>
               <Widget
                 src="near/widget/DIG.Button"
@@ -623,7 +628,9 @@ return (
                 Contribute to a more open web
               </Text>
               <Text size="13px" color="#C7F5D8">
-                Every component, even this page, is live on NEAR&apos;s public blockchain platform - the source code is available to anyone to inspect, fork, modify, and reuse
+                Every component, even this page, is live on NEAR&apos;s public
+                blockchain platform - the source code is available to anyone to
+                inspect, fork, modify, and reuse
               </Text>
               <Widget
                 src="near/widget/DIG.Button"
@@ -717,7 +724,8 @@ return (
             Take a direct flight, skip the layover
           </Text>
           <Text style={{ maxWidth: "414px", backgroundColor: "#17D9D4" }}>
-            The BOS lets you cut out intermediaries and connect directly with users by publishing, storing, and hosting your app directly on chain
+            The BOS lets you cut out intermediaries and connect directly with
+            users by publishing, storing, and hosting your app directly on chain
           </Text>
         </Flex>
 
@@ -766,7 +774,9 @@ return (
             <div>
               <Text weight="500">Take control of your app distribution</Text>
               <Text size="13px">
-                The BOS moves everything on chain, eliminating the need for providers and intermediaries, and allowing you to connect directly with your users
+                The BOS moves everything on chain, eliminating the need for
+                providers and intermediaries, and allowing you to connect
+                directly with your users
               </Text>
               <Widget
                 src="near/widget/DIG.Button"
@@ -813,7 +823,9 @@ return (
             <div>
               <Text weight="500">Build on any (or every) chain</Text>
               <Text size="13px">
-                You can build on Ethereum and more, while taking advantage of NEAR protocol&apos;s speed, low cost, and scalability, and never getting stuck{" "}
+                You can build on Ethereum and more, while taking advantage of
+                NEAR protocol&apos;s speed, low cost, and scalability, and never
+                getting stuck{" "}
                 <span style={{ whiteSpace: "nowrap" }}>in a silo</span>
               </Text>
               <Widget
@@ -862,7 +874,9 @@ return (
             <div>
               <Text weight="500">Meet your users wherever they are</Text>
               <Text size="13px">
-                Make your app available as an embedded blockchain experience on any browser, app, or connected device capable of running a few lines of Javascript
+                Make your app available as an embedded blockchain experience on
+                any browser, app, or connected device capable of running a few
+                lines of Javascript
               </Text>
               <Widget
                 src="near/widget/DIG.Button"
@@ -963,7 +977,9 @@ return (
               Learn, connect, and collaborate
             </Text>
             <Text>
-              Join a vibrant community of builders who understand that a more free and open web is better for developers, users, and the world as a whole.
+              Join a vibrant community of builders who understand that a more
+              free and open web is better for developers, users, and the world
+              as a whole.
             </Text>
             <Widget
               src="near/widget/DIG.Button"
@@ -990,7 +1006,8 @@ return (
                 }}
               />
               <Text size="13px">
-                Connect with like minded people ready to support you on your journey
+                Connect with like minded people ready to support you on your
+                journey
               </Text>
             </Flex>
 
@@ -1006,7 +1023,8 @@ return (
                 }}
               />
               <Text size="13px">
-                Come meet us at conferences, hackathons, and meetups across the globe
+                Come meet us at conferences, hackathons, and meetups across the
+                globe
               </Text>
             </Flex>
 
@@ -1022,7 +1040,8 @@ return (
                 }}
               />
               <Text size="13px">
-                Keep up to date with all things BOS and the future of an open web
+                Keep up to date with all things BOS and the future of an open
+                web
               </Text>
             </Flex>
           </Flex>
@@ -1083,13 +1102,12 @@ return (
             <Widget
               src="near/widget/DIG.Button"
               props={{
-                href: "https://wallet.near.org/create",
+                href: "/signup",
                 label: "Create Account",
                 variant: "primary",
                 size: "large",
               }}
             />
-
           ) : (
             <Widget
               src="near/widget/DIG.Button"

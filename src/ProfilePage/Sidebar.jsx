@@ -156,9 +156,7 @@ const Text = styled.p`
 `;
 
 const TextLink = styled.a`
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+  display: block;
   margin: 0;
   font-size: 14px;
   line-height: 20px;
@@ -167,6 +165,8 @@ const TextLink = styled.a`
   font-size: 14px;
   white-space: nowrap;
   outline: none;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 
   &:focus,
   &:hover {
@@ -175,6 +175,7 @@ const TextLink = styled.a`
 
   i {
     color: #7e868c;
+    margin-right: 8px;
   }
 `;
 
@@ -207,13 +208,13 @@ const SocialLinks = styled.div`
 `;
 
 const FollowButtonWrapper = styled.div`
-  width: 100%;
+  flex: 1 0 auto;
   div,
   button {
     width: 100%;
   }
   @media (max-width: 1200px) {
-    width: auto;
+    flex: 0 0 auto;
     div,
     button {
       width: auto;

@@ -7,13 +7,13 @@ const postUrl = `https://near.org#/near/widget/PostPage?accountId=${accountId}&b
 
 State.init({ hasBeenFlagged: false });
 
-const edits = Social.index('edit', {accountId, blockHeight}, {subscribe: true, limit: 1, order: "desc", accountId})
+const edits = Social.index('edit', { accountId, blockHeight }, { limit: 1, order: "desc", accountId })
 
 const content =
   props.content ??
   JSON.parse(
-    edits? Social.get(`${accountId}/edit/main`, edits.blockHeight)
-         : Social.get(`${accountId}/post/main`, blockHeight) ?? "null"
+    edits.length ? Social.get(`${accountId}/edit/main`, edits.blockHeight)
+      : Social.get(`${accountId}/post/main`, blockHeight)
   );
 
 const item = {
@@ -23,7 +23,7 @@ const item = {
 };
 
 const toggleEdit = () => {
-  State.update({editPost: !state.editPost});
+  State.update({ editPost: !state.editPost });
 }
 
 const Post = styled.div`
@@ -117,6 +117,7 @@ return (
                       </>
                     )}
                   </Text>
+                  {edits.length > 0 && <Text as="span">･ Edited</Text>}
                 </>
               ),
             }}
@@ -128,8 +129,8 @@ return (
               props={{
                 elements: [
                   <button
-                  className={`btn`}
-                  onClick={toggleEdit} >
+                    className={`btn`}
+                    onClick={toggleEdit} >
                     <i class="bi bi-pencil me-1" />
                     <span>Edit</span>
                   </button>
@@ -151,17 +152,17 @@ return (
         )}
 
         {state.editPost && (
-        <div className="mb-2">
-          <Widget
-            src="near/widget/Posts.Edit"
-            props={{
-              item: {accountId, blockHeight},
-              content,
-              onEdit: toggleEdit
-            }}
-          />
-        </div>
-      )}
+          <div className="mb-2">
+            <Widget
+              src="near/widget/Posts.Edit"
+              props={{
+                item: { accountId, blockHeight },
+                content,
+                onEdit: toggleEdit
+              }}
+            />
+          </div>
+        )}
 
         {content.image && (
           <Widget

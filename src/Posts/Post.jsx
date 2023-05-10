@@ -7,15 +7,24 @@ const postUrl = `https://near.org#/near/widget/PostPage?accountId=${accountId}&b
 
 State.init({ hasBeenFlagged: false });
 
+const edits = Social.index('edit', { accountId, blockHeight }, { limit: 1, order: "desc", accountId })
+
 const content =
   props.content ??
-  JSON.parse(Social.get(`${accountId}/post/main`, blockHeight) ?? "null");
+  JSON.parse(
+    edits.length ? Social.get(`${accountId}/edit/main`, edits.blockHeight)
+      : Social.get(`${accountId}/post/main`, blockHeight)
+  );
 
 const item = {
   type: "social",
   path: `${accountId}/post/main`,
   blockHeight,
 };
+
+const toggleEdit = () => {
+  State.update({ editPost: !state.editPost });
+}
 
 const Post = styled.div`
   position: relative;
@@ -85,40 +94,74 @@ if (state.hasBeenFlagged) {
 return (
   <Post>
     <Header>
-      <Widget
-        src="near/widget/AccountProfile"
-        props={{
-          accountId,
-          hideAccountId: true,
-          inlineContent: (
-            <>
-              <Text as="span">･</Text>
-              <Text>
-                {blockHeight === "now" ? (
-                  "now"
-                ) : (
-                  <>
-                    <Widget
-                      src="mob.near/widget/TimeAgo"
-                      props={{ blockHeight }}
-                    />{" "}
-                    ago
-                  </>
-                )}
-              </Text>
-            </>
-          ),
-        }}
-      />
+      <div class="row">
+        <div class="col-auto">
+          <Widget
+            src="near/widget/AccountProfile"
+            props={{
+              accountId,
+              hideAccountId: true,
+              inlineContent: (
+                <>
+                  <Text as="span">･</Text>
+                  <Text>
+                    {blockHeight === "now" ? (
+                      "now"
+                    ) : (
+                      <>
+                        <Widget
+                          src="mob.near/widget/TimeAgo"
+                          props={{ blockHeight }}
+                        />{" "}
+                        ago
+                      </>
+                    )}
+                  </Text>
+                  {edits.length > 0 && <Text as="span">･ Edited</Text>}
+                </>
+              ),
+            }}
+          />
+        </div>
+        <div class="col-1">
+          {accountId == context.accountId &&
+            <Widget src="near/widget/Posts.Menu"
+              props={{
+                elements: [
+                  <button
+                    className={`btn`}
+                    onClick={toggleEdit} >
+                    <i class="bi bi-pencil me-1" />
+                    <span>Edit</span>
+                  </button>
+                ]
+              }}
+            />
+          }
+        </div>
+      </div>
     </Header>
 
     <Body>
       <Content>
-        {content.text && (
+        {content.text && !state.editPost && (
           <Widget
             src="near/widget/SocialMarkdown"
             props={{ text: content.text }}
           />
+        )}
+
+        {state.editPost && (
+          <div className="mb-2">
+            <Widget
+              src="near/widget/Posts.Edit"
+              props={{
+                item: { accountId, blockHeight },
+                content,
+                onEdit: toggleEdit
+              }}
+            />
+          </div>
         )}
 
         {content.image && (

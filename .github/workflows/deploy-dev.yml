@@ -1,7 +1,7 @@
 name: Deploy Widgets to Testnet
 on:
   push:
-    branches: [develop]
+    branches: [develop, testnet-deployment]
 jobs:
   deploy-widgets:
     runs-on: ubuntu-latest
@@ -15,12 +15,31 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install near-social CLI
-        run: |
-          curl --proto '=https' --tlsv1.2 -LsSf https://github.com/FroVolod/near-social/releases/download/v0.2.5/near-social-v0.2.5-installer.sh | sh
+      - name: 'Setup jq'
+        uses: dcarbone/install-jq-action@v1.0.1
+        with:
+          version: 1.6
+
+      - name: Set replacements
+        run: echo "REPLACEMENTS=$(jq -r '.[] | [ .find = .placeholder | .replace = .testnet | del(.placeholder, .testnet, .mainnet)]' replacements.json)" >> $GITHUB_ENV
+
+      - name: TEST
+        run: echo $REPLACEMENTS
+
+      - name: Replace placeholders
+        uses: flcdrg/replace-multiple-action@v1
+        with:
+          files: '.src/**'
+          find: $REPLACEMENTS
       
-      - name: Deploy widgets
-        run: |
-          which near-social
-          echo $PATH
-          ~/.cargo/bin/near-social deploy "$NEAR_SOCIAL_ACCOUNT_ID" sign-as "$NEAR_SOCIAL_ACCOUNT_ID" network-config testnet sign-with-plaintext-private-key --signer-public-key "$NEAR_SOCIAL_ACCOUNT_PUBLIC_KEY" --signer-private-key "$NEAR_SOCIAL_ACCOUNT_PRIVATE_KEY" send
+
+
+      # - name: Install near-social CLI
+      #   run: |
+      #     curl --proto '=https' --tlsv1.2 -LsSf https://github.com/FroVolod/near-social/releases/download/v0.2.5/near-social-v0.2.5-installer.sh | sh
+      
+      # - name: Deploy widgets
+      #   run: |
+      #     which near-social
+      #     echo $PATH
+      #     ~/.cargo/bin/near-social deploy "$NEAR_SOCIAL_ACCOUNT_ID" sign-as "$NEAR_SOCIAL_ACCOUNT_ID" network-config testnet sign-with-plaintext-private-key --signer-public-key "$NEAR_SOCIAL_ACCOUNT_PUBLIC_KEY" --signer-private-key "$NEAR_SOCIAL_ACCOUNT_PRIVATE_KEY" send

@@ -15,13 +15,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: 'Setup jq'
-        uses: dcarbone/install-jq-action@v1.0.1
-        with:
-          version: 1.6
+      # - name: 'Setup jq'
+      #   uses: dcarbone/install-jq-action@v1.0.1
+      #   with:
+      #     version: 1.6
 
       - name: Set replacements
-        run: echo "REPLACEMENTS=$(jq -r '.[] | [ .find = .placeholder | .replace = .testnet | del(.placeholder, .testnet, .mainnet)]' replacements.json)" >> $GITHUB_ENV
+        run: echo "REPLACEMENTS=$(jq -r '.[] | [ .["find"] = .placeholder | .["replace"] = .testnet | del(.placeholder, .testnet, .mainnet) | @json]'  replacements.json)" >> $GITHUB_ENV
 
       - name: TEST
         run: echo $REPLACEMENTS
@@ -30,7 +30,7 @@ jobs:
         uses: flcdrg/replace-multiple-action@v1
         with:
           files: '.src/**'
-          find: $REPLACEMENTS
+          find: fromJson($REPLACEMENTS)
       
 
 

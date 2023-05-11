@@ -22,7 +22,7 @@ jobs:
 
       - name: Set replacements
         id: set_replacements
-        run: jq -r '[.[] | .["find"] = .placeholder | .["replace"] = .testnet | del(.placeholder, .testnet, .mainnet)]' replacements.json
+        run: jq -r '[.[] | .["find"] = .placeholder | .["replace"] = .testnet | del(.placeholder, .testnet, .mainnet) | tostring]' replacements.json
 
       - name: TEST
         run: echo ${{steps.set_replacements.outputs.stdout}}

@@ -7,7 +7,7 @@ const postUrl = `https://near.org#/near/widget/PostPage?accountId=${accountId}&b
 
 State.init({ hasBeenFlagged: false });
 
-const edits = Social.index('edit', { accountId, blockHeight }, { limit: 1, order: "desc", accountId })
+const edits = [] // Social.index('edit', { accountId, blockHeight }, { limit: 1, order: "desc", accountId })
 
 const content =
   props.content ??
@@ -117,14 +117,14 @@ return (
                       </>
                     )}
                   </Text>
-                  {edits.length > 0 && <Text as="span">･ Edited</Text>}
+                  {false && edits.length > 0 && <Text as="span">･ Edited</Text>}
                 </>
               ),
             }}
           />
         </div>
         <div class="col-1">
-          {accountId == context.accountId &&
+          {false &&
             <Widget src="near/widget/Posts.Menu"
               props={{
                 elements: [

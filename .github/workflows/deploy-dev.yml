@@ -22,16 +22,16 @@ jobs:
 
       - name: Set replacements
         id: set_replacements
-        run: jq -r '[.[] | .["find"] = .placeholder | .["replace"] = .testnet | del(.placeholder, .testnet, .mainnet) | tostring]' replacements.json
+        run: echo "replacements=$(jq -r '[.[] | .["find"] = .placeholder | .["replace"] = .testnet | del(.placeholder, .testnet, .mainnet) | @json]' replacements.json)" >> $GITHUB_OUTPUT
 
       - name: TEST
-        run: echo ${{steps.set_replacements.outputs.stdout}}
+        run: echo ${{steps.set_replacements.outputs.replacements}}
 
       - name: Replace placeholders
         uses: flcdrg/replace-multiple-action@v1
         with:
           files: '.src/**'
-          find: '${{steps.set_replacements.outputs.stdout}}'
+          find: '${{steps.set_replacements.outputs.replacements}}'
       
 
 

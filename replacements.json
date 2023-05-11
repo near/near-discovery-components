@@ -1,0 +1,12 @@
+[
+    {
+        "placeholder": "ACCOUNT",
+        "testnet": "discom.testnet",
+        "mainnet": "near"
+    },
+    {
+        "placeholder": "NEAR_URL",
+        "testnet": "test.near.org",
+        "mainnet": "near.org"
+    }
+]

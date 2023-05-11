@@ -31,7 +31,7 @@ jobs:
         uses: flcdrg/replace-multiple-action@v1
         with:
           files: '.src/**'
-          find: fromJson($REPLACEMENTS)
+          find: fromJson(${{steps.set_replacements.outputs.stdout}})
       
 
 

@@ -21,10 +21,11 @@ jobs:
       #     version: 1.6
 
       - name: Set replacements
-        run: echo "REPLACEMENTS=$(jq -r '.[] | [ .["find"] = .placeholder | .["replace"] = .testnet | del(.placeholder, .testnet, .mainnet) | @json]'  replacements.json)" >> $GITHUB_ENV
+        id: set_replacements
+        run: echo "replacements=$(jq -r '.[] | [ .["find"] = .placeholder | .["replace"] = .testnet | del(.placeholder, .testnet, .mainnet) | @json]' replacements.json)" >> $GITHUB_OUTPUT
 
       - name: TEST
-        run: echo $REPLACEMENTS
+        run: echo ${{steps.set_replacements.outputs.replacements}}
 
       - name: Replace placeholders
         uses: flcdrg/replace-multiple-action@v1

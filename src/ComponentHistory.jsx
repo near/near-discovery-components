@@ -199,8 +199,8 @@ const Badge = styled.span`
   min-width: 2em;
   text-align: center;
   padding: 2px 4px;
-  background: var(--${(p) => p.backgroundColor ?? "sand10"});
-  color: #fff;
+  background: var(--${(p) => p.backgroundColor ?? "sand2"});
+  color: var(--${(p) => p.textColor ?? "sand12"});
   border-radius: 5px;
   vertical-align: middle;
 `;
@@ -232,10 +232,10 @@ return (
                 State.update({ blockHeight });
               }}
             >
-              <Text as="span" size="text-xs" weight="500" color="sand12">
+              <Text as="span" size="text-s" weight="500" color="sand12">
                 #{blockHeight}
               </Text>
-              <Text as="span" size="text-xs">
+              <Text as="span" size="text-s">
                 {getTimestampFromBlockHeight(blockHeight)}
               </Text>
             </button>
@@ -269,11 +269,15 @@ return (
         </Text>
 
         <Badges>
-          <Badge backgroundColor="green10">+{state.lineCountInserted}</Badge>
-          <Badge backgroundColor="red10">-{state.lineCountDeleted}</Badge>
+          <Badge backgroundColor="green4" textColor="green11">
+            +{state.lineCountInserted}
+          </Badge>
+          <Badge backgroundColor="red3" textColor="red11">
+            -{state.lineCountDeleted}
+          </Badge>
         </Badges>
 
-        <Text size="text-xs" style={{ marginRight: "auto" }}>
+        <Text size="text-s" style={{ marginRight: "auto" }}>
           {getTimestampFromBlockHeight(state.blockHeight)}
         </Text>
 

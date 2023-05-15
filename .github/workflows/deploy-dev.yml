@@ -32,7 +32,7 @@ jobs:
         id: set_replacements
         run: |
           echo "replacements=$(jq -r '[.[] | .["find"] = .placeholder | .["replace"] = .testnet | del(.placeholder, .testnet, .mainnet) | @json]' replacements.json)"
-          echo "replacements=$(jq -r '[.[] | .["find"] = .placeholder | .["replace"] = .testnet | del(.placeholder, .testnet, .mainnet)]' replacements.json | tr -d "\n\r")" >> $GITHUB_OUTPUT
+          echo "replacements=$(jq -r '[.[] | .["find"] = .placeholder | .["replace"] = .testnet | del(.placeholder, .testnet, .mainnet) | tostring]' replacements.json | tr -d "\n\r")" >> $GITHUB_OUTPUT
 
       - name: TEST
         run: echo ${{ steps.set_replacements.outputs.replacements }}
@@ -40,7 +40,7 @@ jobs:
       - name: Replace placeholders
         uses: flcdrg/replace-multiple-action@v1
         with:
-          files: '.src/**'
+          files: '.src/*.jsx'
           find: '${{ steps.set_replacements.outputs.replacements }}'
       
       - name: OUTPUT

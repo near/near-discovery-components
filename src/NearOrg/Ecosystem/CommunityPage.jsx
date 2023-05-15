@@ -262,9 +262,9 @@ return (
           Why get involved?
         </Text>
 
-        <div class="row row-cols-lg-4 row-cols-md-2 row-cols-1 g-4">
+        <div className="row row-cols-lg-4 row-cols-md-2 row-cols-1 g-4">
           {involvedCards.map((item) => (
-            <div class="col">
+            <div className="col">
               <Card center>
                 <SocialIcon
                   className={item.iconClassName}
@@ -291,9 +291,9 @@ return (
           learning, earning, and growing.
         </Text>
 
-        <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-4">
+        <div className="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-4">
           {getStartedCards.map((item) => (
-            <div class="col">
+            <div className="col">
               <Card center style={{ height: "100%" }}>
                 <SocialIcon
                   className={item.iconClassName}
@@ -351,9 +351,9 @@ return (
           Featured Guilds
         </Text>
 
-        <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-4">
+        <div className="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-4">
           {featuredGuildsCards.map((item) => (
-            <div class="col">
+            <div className="col">
               <Card style={{ height: "100%" }}>
                 <Widget
                   src="mob.near/widget/Image"
@@ -375,8 +375,8 @@ return (
       </Section>
 
       <Section background="linear-gradient(to right, hsla(0, 0%, 100%, 0), var(--sand3), hsla(0, 0%, 100%, 0))">
-        <div class="row row-cols-md-3 row-cols-1 g-4">
-          <div class="col">
+        <div className="row row-cols-md-3 row-cols-1 g-4">
+          <div className="col">
             <Card
               background="transparent"
               border="none"
@@ -405,7 +405,7 @@ return (
             </Card>
           </div>
 
-          <div class="col">
+          <div className="col">
             <Card
               background="transparent"
               border="none"
@@ -445,7 +445,7 @@ return (
             </Card>
           </div>
 
-          <div class="col">
+          <div className="col">
             <Card
               background="transparent"
               border="none"
@@ -456,9 +456,9 @@ return (
               <Text size="text-xl" color="sand12" fontWeight="600">
                 Connect
               </Text>
-              <div class="row row-cols-md-2 row-cols-1 g-4">
+              <div className="row row-cols-md-2 row-cols-1 g-4">
                 {connectChannelsLinks.map((item) => (
-                  <div key={item.key} class="col">
+                  <div key={item.key} className="col">
                     {item.internal ? (
                       <Widget
                         src="near/widget/DIG.Button"

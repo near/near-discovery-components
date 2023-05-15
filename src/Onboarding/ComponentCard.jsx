@@ -49,19 +49,19 @@ return (
         className="d-flex align-items-center"
         title={`${props.commits.length || 0} commits`}
       >
-        <i class="ph ph-git-commit" style={{ fontSize: "20px" }} />
+        <i className="ph ph-git-commit" style={{ fontSize: "20px" }} />
         <span>{props.commits.length || 0}</span>
       </Text>
 
       <Text as="div" className="d-flex align-items-center">
         <i
-          class="ph ph-dot"
+          className="ph ph-dot"
           style={{ fontSize: "20px", marginRight: 0, fontWeight: 600 }}
         />
       </Text>
 
       <Text as="div" className="d-flex align-items-center">
-        <i class="ph ph-clock" style={{ fontSize: "20px" }} />
+        <i className="ph ph-clock" style={{ fontSize: "20px" }} />
         <Widget
           src={`mob.near/widget/TimeAgo`}
           props={{

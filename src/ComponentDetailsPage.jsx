@@ -96,7 +96,8 @@ const TabsButton = styled.a`
 
 const Content = styled.div`
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 336px;
+  grid-template-columns: ${(p) =>
+    p.noSidebar ? "1fr" : "minmax(0, 1fr) 336px"};
   gap: 64px;
 
   @media (max-width: 995px) {
@@ -163,13 +164,6 @@ const Text = styled.p`
 
 const Dependency = styled.div`
   margin-bottom: 24px;
-`;
-
-const HistoryContainer = styled.div`
-  > div > h1,
-  > div > .input-group.mb-3 {
-    display: none;
-  }
 `;
 
 if (!exists) {
@@ -318,12 +312,12 @@ return (
     )}
 
     {state.selectedTab === "history" && (
-      <HistoryContainer>
+      <Content noSidebar>
         <Widget
-          src="bozon.near/widget/WidgetHistory"
+          src="near/widget/ComponentHistory"
           props={{ widgetPath: src }}
         />
-      </HistoryContainer>
+      </Content>
     )}
 
     {state.selectedTab === "discussion" && (
@@ -335,7 +329,7 @@ return (
             notifyAccountId: accountId,
             parentComponent: "near/widget/ComponentDetailsPage",
             parentParams: { tab: "discussion", src },
-            highlightComment: props.highlightComment
+            highlightComment: props.highlightComment,
           }}
         />
       </Content>

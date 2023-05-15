@@ -113,7 +113,7 @@ const computeFetchFrom = (items, limit, previouslyFoundItems) => {
 
 const mergeItems = (newItems) => {
   const items = [
-    ...new Set([...newItems, ...state.items].map((i) => JSON.stringify(i))),
+    ...new Set([...newItems, ...(state.items || [])].map((i) => JSON.stringify(i))),
   ].map((i) => JSON.parse(i));
   items.sort((a, b) => a.blockHeight - b.blockHeight);
   if (index.options.order === "desc") {

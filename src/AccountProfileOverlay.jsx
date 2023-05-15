@@ -71,13 +71,13 @@ return (
     placement={props.placement || "auto"}
     overlay={overlay}
   >
-    <div
-      className={props.inline ? "d-inline-flex" : ""}
+    <span
+      className={props.inline ? "d-inline-flex" : "d-block"}
       style={{ verticalAlign: props.inline ? "baseline" : "" }}
       onMouseEnter={handleOnMouseEnter}
       onMouseLeave={handleOnMouseLeave}
     >
       {props.children || "Hover Me"}
-    </div>
+    </span>
   </OverlayTrigger>
 );

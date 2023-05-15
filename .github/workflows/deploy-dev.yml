@@ -21,27 +21,30 @@ jobs:
       #     version: 1.6
 
 
-      - name: Set replacements
-        uses: sergeysova/jq-action@v2
-        id: set-replacements
-        with:
-          cmd: 'jq -r [.[] | .["find"] = .placeholder | .["replace"] = .testnet | del(.placeholder, .testnet, .mainnet) | @json]'
-          multiline: true
-
       # - name: Set replacements
-      #   id: set_replacements
-      #   run: echo "replacements=$(jq -r '[.[] | .["find"] = .placeholder | .["replace"] = .testnet | del(.placeholder, .testnet, .mainnet) | @json]' replacements.json)" >> $GITHUB_OUTPUT
+      #   uses: sergeysova/jq-action@v2
+      #   id: set-replacements
+      #   with:
+      #     cmd: 'jq -r [.[] | .["find"] = .placeholder | .["replace"] = .testnet | del(.placeholder, .testnet, .mainnet) | @json]'
+      #     multiline: true
+
+      - name: Set replacements
+        id: set_replacements
+        run: |
+          echo "replacements=$(jq -r '[.[] | .["find"] = .placeholder | .["replace"] = .testnet | del(.placeholder, .testnet, .mainnet) | @json]' replacements.json)"
+          echo "replacements=$(jq -r '[.[] | .["find"] = .placeholder | .["replace"] = .testnet | del(.placeholder, .testnet, .mainnet)]' replacements.json | tr -d "\n\r")" >> $GITHUB_OUTPUT
 
       - name: TEST
-        run: echo ${{ steps.set_replacements.outputs.value }}
+        run: echo ${{ steps.set_replacements.outputs.replacements }}
 
       - name: Replace placeholders
         uses: flcdrg/replace-multiple-action@v1
         with:
           files: '.src/**'
-          find: '${{ steps.set_replacements.outputs.value }}'
+          find: '${{ steps.set_replacements.outputs.replacements }}'
       
-
+      - name: OUTPUT
+        run: cat src/HomePage.jsx
 
       # - name: Install near-social CLI
       #   run: |

@@ -22,16 +22,16 @@ const Item = styled.div`
 `;
 
 return (
-  <div class="dropdown ms-auto">
+  <div className="dropdown ms-auto">
     <button
-      class="btn border-0 p-0"
+      className="btn border-0 p-0"
       type="button"
       data-bs-toggle="dropdown"
       aria-expanded="false"
     >
-      <i class="bi bi-three-dots" />
+      <i className="bi bi-three-dots" />
     </button>
-    <ul class="dropdown-menu">
+    <ul className="dropdown-menu">
 
       {props.elements.map(e => {
         return (<li>

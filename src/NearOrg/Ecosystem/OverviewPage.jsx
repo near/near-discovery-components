@@ -472,8 +472,8 @@ return (
         </Flex>
       </Section>
       <Section background="linear-gradient(to right, hsla(0, 0%, 100%, 0), var(--sand3), hsla(0, 0%, 100%, 0))">
-        <div class="row row-cols-md-2 row-cols-1 g-4 text-md-start text-center">
-          <div class="col order-md-0 order-1">
+        <div className="row row-cols-md-2 row-cols-1 g-4 text-md-start text-center">
+          <div className="col order-md-0 order-1">
             <Flex gap="16px" direction="column">
               <Text size="text-3xl" color="sand12">
                 Hundreds of Projects and DAOs
@@ -504,7 +504,7 @@ return (
               </Flex>
             </Flex>
           </div>
-          <div class="col order-md-1 order-0">
+          <div className="col order-md-1 order-0">
             <Widget
               src="mob.near/widget/Image"
               props={{
@@ -772,8 +772,8 @@ return (
       </Section>
 
       <Section gap="32px" id="anker_community">
-        <div class="row row-cols-md-2 row-cols-1 g-4 text-md-start text-center">
-          <div class="col order-md-0 order-1">
+        <div className="row row-cols-md-2 row-cols-1 g-4 text-md-start text-center">
+          <div className="col order-md-0 order-1">
             <Flex gap="16px" direction="column">
               <Text size="text-3xl" color="sand12">
                 A vibrant, welcoming community
@@ -815,7 +815,7 @@ return (
               </Flex>
             </Flex>
           </div>
-          <div class="col order-md-1 order-0">
+          <div className="col order-md-1 order-0">
             <Widget
               src="mob.near/widget/Image"
               props={{
@@ -850,8 +850,8 @@ return (
           background="var(--violet3)"
           style={{ overflow: "hidden" }}
         >
-          <div class="row">
-            <div class="col-12 col-sm-6">
+          <div className="row">
+            <div className="col-12 col-sm-6">
               <Widget
                 src="mob.near/widget/Image"
                 props={{
@@ -865,7 +865,7 @@ return (
                 }}
               />
             </div>
-            <div class="col-12 col-sm-6 p-4">
+            <div className="col-12 col-sm-6 p-4">
               <Flex gap="24px" direction="column">
                 <Text size="text-2xl" color="sand12">
                   Join the NEAR Governance Forum
@@ -901,8 +901,8 @@ return (
           background="var(--red3)"
           style={{ overflow: "hidden" }}
         >
-          <div class="row">
-            <div class="col-12 col-sm-6">
+          <div className="row">
+            <div className="col-12 col-sm-6">
               <Widget
                 src="mob.near/widget/Image"
                 props={{
@@ -916,7 +916,7 @@ return (
                 }}
               />
             </div>
-            <div class="col-12 col-sm-6 p-4">
+            <div className="col-12 col-sm-6 p-4">
               <Flex gap="24px" direction="column">
                 <Text size="text-2xl" color="sand12">
                   Explore the NEAR Community Blog
@@ -992,8 +992,8 @@ return (
         background="linear-gradient(to right, hsla(0, 0%, 100%, 0), var(--sand3), hsla(0, 0%, 100%, 0))"
         gap="32px"
       >
-        <div class="row row-cols-md-2 row-cols-1 g-4 text-md-start text-center">
-          <div class="col order-md-0 order-1">
+        <div className="row row-cols-md-2 row-cols-1 g-4 text-md-start text-center">
+          <div className="col order-md-0 order-1">
             <Flex gap="16px" direction="column">
               <Text size="text-3xl" color="sand12">
                 Strong venture support
@@ -1025,7 +1025,7 @@ return (
               </Flex>
             </Flex>
           </div>
-          <div class="col order-md-1 order-0">
+          <div className="col order-md-1 order-0">
             <Widget
               src="mob.near/widget/Image"
               props={{
@@ -1070,8 +1070,8 @@ return (
             }}
           />
         </Flex>
-        <div class="row justify-content-center text-center">
-          <div class="col-md-3 col-12 align-items-center">
+        <div className="row justify-content-center text-center">
+          <div className="col-md-3 col-12 align-items-center">
             <SocialIcon
               className="ph ph-circles-three-plus"
               color="var(--red7)"
@@ -1080,19 +1080,19 @@ return (
               Ecosystem Grants
             </Text>
           </div>
-          <div class="col-md-3 col-12">
+          <div className="col-md-3 col-12">
             <SocialIcon className="ph ph-trend-up" color="var(--red7)" />
             <Text size="text-m" color="sand12">
               Accelerators & Incubators
             </Text>
           </div>
-          <div class="col-md-3 col-12">
+          <div className="col-md-3 col-12">
             <SocialIcon className="ph ph-users-four" color="var(--red7)" />
             <Text size="text-m" color="sand12">
               Community-led DAOs
             </Text>
           </div>
-          <div class="col-md-3 col-12">
+          <div className="col-md-3 col-12">
             <SocialIcon className="ph ph-planet" color="var(--red7)" />
             <Text size="text-m" color="sand12">
               Regional hubs
@@ -1271,9 +1271,9 @@ return (
             Many VCs are investing in projects building on NEAR. Recent examples
             include:
           </Text>
-          <div class="row row-cols-lg-2 row-cols-1 g-4">
+          <div className="row row-cols-lg-2 row-cols-1 g-4">
             {ventureCards.map((item) => (
-              <div class="col" key={item.ipfsImage}>
+              <div className="col" key={item.ipfsImage}>
                 <Card gap="12px" direction="row" style={{ height: "100%" }}>
                   <Widget
                     src="mob.near/widget/Image"
@@ -1322,8 +1322,8 @@ return (
       </Section>
 
       <Section id="anker_tech_base">
-        <div class="row row-cols-md-2 row-cols-1 g-4 text-md-start text-center">
-          <div class="col order-md-0 order-1">
+        <div className="row row-cols-md-2 row-cols-1 g-4 text-md-start text-center">
+          <div className="col order-md-0 order-1">
             <Flex gap="16px" direction="column">
               <Text size="text-3xl" color="sand12">
                 NEAR’s strong technical base
@@ -1333,7 +1333,7 @@ return (
               </Text>
             </Flex>
           </div>
-          <div class="col order-md-1 order-0">
+          <div className="col order-md-1 order-0">
             <Widget
               src="mob.near/widget/Image"
               props={{
@@ -1608,9 +1608,9 @@ return (
           Storage
         </Text>
 
-        <div class="row row-cols-md-3 row-cols-1 g-4">
+        <div className="row row-cols-md-3 row-cols-1 g-4">
           {storageCards.map((item) => (
-            <div class="col" key={item.ipfsImage}>
+            <div className="col" key={item.ipfsImage}>
               <Card center>
                 <Widget
                   src="mob.near/widget/Image"
@@ -1623,7 +1623,7 @@ return (
                   {item.title}
                 </Text>
                 <Text size="text-l" color="sand12">
-                  {item.content ?? <span class="invisible">&nbsp;</span>}
+                  {item.content ?? <span className="invisible">&nbsp;</span>}
                 </Text>
                 {item.internal ? (
                   <Widget
@@ -1681,7 +1681,7 @@ return (
                 {item.title}
               </Text>
               <Text size="text-l" color="sand12">
-                {item.content ?? <span class="invisible">&nbsp;</span>}
+                {item.content ?? <span className="invisible">&nbsp;</span>}
               </Text>
               <Widget
                 src="near/widget/DIG.Button"
@@ -1727,7 +1727,7 @@ return (
                 {item.title}
               </Text>
               <Text size="text-l" color="sand12">
-                {item.content ?? <span class="invisible">&nbsp;</span>}
+                {item.content ?? <span className="invisible">&nbsp;</span>}
               </Text>
               <Widget
                 src="near/widget/DIG.Button"
@@ -1751,8 +1751,8 @@ return (
         id="anker_regional_hubs"
         background="linear-gradient(to right, hsla(0, 0%, 100%, 0), var(--sand3), hsla(0, 0%, 100%, 0))"
       >
-        <div class="row row-cols-md-2 row-cols-1 g-4 text-md-start text-center">
-          <div class="col order-md-0 order-1">
+        <div className="row row-cols-md-2 row-cols-1 g-4 text-md-start text-center">
+          <div className="col order-md-0 order-1">
             <Flex gap="16px" direction="column">
               <Text size="text-3xl" color="sand12">
                 Local presence: Regional Hubs
@@ -1763,7 +1763,7 @@ return (
               </Text>
             </Flex>
           </div>
-          <div class="col order-md-1 order-0">
+          <div className="col order-md-1 order-0">
             <Widget
               src="mob.near/widget/Image"
               props={{
@@ -1784,9 +1784,9 @@ return (
             NEAR hubs around the world
           </Text>
 
-          <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-4">
+          <div className="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-4">
             {nearHubsCards.map((item) => (
-              <div class="col" key={item.ipfsImage}>
+              <div className="col" key={item.ipfsImage}>
                 <Card center>
                   <Widget
                     src="mob.near/widget/Image"
@@ -1822,8 +1822,8 @@ return (
       </Section>
 
       <Section id="anker_web3_career">
-        <div class="row row-cols-md-2 row-cols-1 g-4 text-md-start text-center">
-          <div class="col order-md-0 order-1">
+        <div className="row row-cols-md-2 row-cols-1 g-4 text-md-start text-center">
+          <div className="col order-md-0 order-1">
             <Flex gap="16px" direction="column">
               <Text size="text-3xl" color="sand12">
                 Start your web3 сareer with NEAR
@@ -1847,7 +1847,7 @@ return (
               </Flex>
             </Flex>
           </div>
-          <div class="col order-md-1 order-0">
+          <div className="col order-md-1 order-0">
             <Widget
               src="mob.near/widget/Image"
               props={{

@@ -94,8 +94,8 @@ if (state.hasBeenFlagged) {
 return (
   <Post>
     <Header>
-      <div class="row">
-        <div class="col-auto">
+      <div className="row">
+        <div className="col-auto">
           <Widget
             src="near/widget/AccountProfile"
             props={{
@@ -123,7 +123,7 @@ return (
             }}
           />
         </div>
-        <div class="col-1">
+        <div className="col-1">
           {false &&
             <Widget src="near/widget/Posts.Menu"
               props={{
@@ -131,7 +131,7 @@ return (
                   <button
                     className={`btn`}
                     onClick={toggleEdit} >
-                    <i class="bi bi-pencil me-1" />
+                    <i className="bi bi-pencil me-1" />
                     <span>Edit</span>
                   </button>
                 ]

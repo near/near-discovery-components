@@ -72,7 +72,7 @@ return (
     overlay={overlay}
   >
     <span
-      className={props.inline ? "d-inline-flex" : ""}
+      className={props.inline ? "d-inline-flex" : "d-block"}
       style={{ verticalAlign: props.inline ? "baseline" : "" }}
       onMouseEnter={handleOnMouseEnter}
       onMouseLeave={handleOnMouseLeave}

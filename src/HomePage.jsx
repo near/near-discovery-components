@@ -7,5 +7,5 @@ const homepage = accountId
 if (homepage === null) {
   return "Loading";
 }
-
+ACCOUNT
 return <Widget src={homepage ?? "ACCOUNT/widget/ActivityPage"} />;

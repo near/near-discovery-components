@@ -27,16 +27,13 @@ jobs:
           find: '${{ steps.set_replacements.outputs.replacements }}'
           prefix: '(^|.*)'
           suffix: '($|.*)'
-      
-      - name: OUTPUT
-        run: cat src/HomePage.jsx
 
-      # - name: Install near-social CLI
-      #   run: |
-      #     curl --proto '=https' --tlsv1.2 -LsSf https://github.com/FroVolod/near-social/releases/download/v0.2.5/near-social-v0.2.5-installer.sh | sh
+      - name: Install near-social CLI
+        run: |
+          curl --proto '=https' --tlsv1.2 -LsSf https://github.com/FroVolod/near-social/releases/download/v0.2.5/near-social-v0.2.5-installer.sh | sh
       
-      # - name: Deploy widgets
-      #   run: |
-      #     which near-social
-      #     echo $PATH
-      #     ~/.cargo/bin/near-social deploy "$NEAR_SOCIAL_ACCOUNT_ID" sign-as "$NEAR_SOCIAL_ACCOUNT_ID" network-config testnet sign-with-plaintext-private-key --signer-public-key "$NEAR_SOCIAL_ACCOUNT_PUBLIC_KEY" --signer-private-key "$NEAR_SOCIAL_ACCOUNT_PRIVATE_KEY" send
+      - name: Deploy widgets
+        run: |
+          which near-social
+          echo $PATH
+          ~/.cargo/bin/near-social deploy "$NEAR_SOCIAL_ACCOUNT_ID" sign-as "$NEAR_SOCIAL_ACCOUNT_ID" network-config testnet sign-with-plaintext-private-key --signer-public-key "$NEAR_SOCIAL_ACCOUNT_PUBLIC_KEY" --signer-private-key "$NEAR_SOCIAL_ACCOUNT_PRIVATE_KEY" send

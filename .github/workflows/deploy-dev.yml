@@ -1,7 +1,7 @@
 name: Deploy Widgets to Testnet
 on:
   push:
-    branches: [develop, testnet-deployment]
+    branches: [develop]
 jobs:
   deploy-widgets:
     runs-on: ubuntu-latest
@@ -14,22 +14,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Set replacements
-        id: set_replacements
-        run: |
-          echo "replacements=$(jq -r '[.[] | .["find"] = .placeholder | .["replace"] = .testnet | del(.placeholder, .testnet, .mainnet)]' replacements.json | tr -d "\n\r")" >> $GITHUB_OUTPUT
-
-      - name: Replace placeholders
-        uses: flcdrg/replace-multiple-action@v1
-        with:
-          files: '**/*.jsx'
-          find: '${{ steps.set_replacements.outputs.replacements }}'
-          prefix: '(^|.*)'
-          suffix: '($|.*)'
-      
-      - name: OUTPUT
-        run: cat src/HomePage.jsx
 
       - name: Install near-social CLI
         run: |

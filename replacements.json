@@ -8,5 +8,10 @@
         "placeholder": "REPL_NEAR_URL",
         "testnet": "test.near.org",
         "mainnet": "near.org"
+    },
+    {
+        "placeholder": "REPL_NEAR_SOCIAL_ACCOUNT",
+        "testnet": "v1.social08.testnet",
+        "mainnet": "social.near"
     }
 ]

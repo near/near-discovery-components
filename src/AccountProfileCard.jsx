@@ -1,7 +1,7 @@
 const accountId = props.accountId;
 const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
 const tags = Object.keys(profile.tags || {});
-const profileUrl = `#/near/widget/ProfilePage?accountId=${accountId}`;
+const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 
 State.init({
   show: false,
@@ -107,7 +107,7 @@ return (
 
         {tags.length > 0 && (
           <TagsWrapper>
-            <Widget src="near/widget/Tags" props={{ tags, scroll: true }} />
+            <Widget src="${REPL_ACCOUNT}/widget/Tags" props={{ tags, scroll: true }} />
           </TagsWrapper>
         )}
       </div>
@@ -115,7 +115,7 @@ return (
 
     {!!context.accountId && context.accountId !== props.accountId && (
       <Widget
-        src="near/widget/FollowButton"
+        src="${REPL_ACCOUNT}/widget/FollowButton"
         props={{ accountId: props.accountId }}
       />
     )}

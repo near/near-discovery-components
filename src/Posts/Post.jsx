@@ -97,7 +97,7 @@ return (
       <div className="row">
         <div className="col-auto">
           <Widget
-            src="near/widget/AccountProfile"
+            src="${REPL_ACCOUNT}/widget/AccountProfile"
             props={{
               accountId,
               hideAccountId: true,
@@ -125,7 +125,7 @@ return (
         </div>
         <div className="col-1">
           {false &&
-            <Widget src="near/widget/Posts.Menu"
+            <Widget src="${REPL_ACCOUNT}/widget/Posts.Menu"
               props={{
                 elements: [
                   <button

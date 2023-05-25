@@ -10,7 +10,7 @@
         "mainnet": "near.org"
     },
     {
-        "placeholder": "REPL_NEAR_SOCIAL_ACCOUNT",
+        "placeholder": "REPL_SOCIALDB_CONTRACT",
         "testnet": "v1.social08.testnet",
         "mainnet": "social.near"
     }

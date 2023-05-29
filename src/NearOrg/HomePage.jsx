@@ -387,6 +387,24 @@ const LineSpacer = styled.div`
   }
 `;
 
+const TryItNow = styled.span`
+  & > :nth-child(1) {
+    display: inline-flex;
+  }
+  & > :nth-child(2) {
+    display: none;
+  }
+
+  @media (max-width: 900px) {
+    & > :nth-child(1) {
+      display: none;
+    }
+    & > :nth-child(2) {
+      display: inline-flex;
+    }
+  }
+`;
+
 const LineRoundedCorners = (props) => {
   return (
     <svg
@@ -434,15 +452,26 @@ return (
           NEAR Blockchain Operating System (BOS).
         </Text>
 
-        <Widget
-          src="near/widget/DIG.Button"
-          props={{
-            href: "/onboarding",
-            label: "Try It Now",
-            variant: "affirmative",
-            size: "large",
-          }}
-        />
+        <TryItNow>
+          <Widget
+            src="near/widget/DIG.Button"
+            props={{
+              href: "/onboarding",
+              label: "Try It Now",
+              variant: "affirmative",
+              size: "large",
+            }}
+          />
+          <Widget
+            src="near/widget/DIG.Button"
+            props={{
+              href: "/signup",
+              label: "Create Account",
+              variant: "affirmative",
+              size: "large",
+            }}
+          />
+        </TryItNow>
       </Flex>
 
       <Text

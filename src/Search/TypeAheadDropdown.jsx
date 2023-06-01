@@ -388,6 +388,7 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
             hitsTotal,
             hitsPerPage,
             hits: profiles(results["profile"]),
+            queryID: resp.body.queryID,
           },
         });
       } else if (facet === "Apps") {
@@ -398,6 +399,7 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
             hits: components(results["app, widget"]).concat(
               components(results["widget"])
             ),
+            queryID: resp.body.queryID,
           },
         });
       } else if (facet === "Components") {
@@ -406,6 +408,7 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
             hitsTotal,
             hitsPerPage,
             hits: components(results["widget"]),
+            queryID: resp.body.queryID,
           },
         });
       } else {
@@ -416,6 +419,7 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
             hits: posts(results["post"], "post").concat(
               posts(results["comment, post"], "post-comment")
             ),
+            queryID: resp.body.queryID,
           },
         });
       }
@@ -497,15 +501,20 @@ const onFacetClick = (facet) => {
   displayResultsByFacet(facet);
 };
 
-const onSearchResultClick = ({ searchPosition, objectID, eventName }) => {
+const onSearchResultClick = ({
+  searchPosition,
+  queryID,
+  objectID,
+  eventName,
+}) => {
   const position =
     searchPosition + state.currentPage * state.paginate.hitsPerPage;
   const event = {
     type: "clickedObjectIDsAfterSearch",
     data: {
       eventName,
+      queryID,
       userToken: userId.replace(".", "+"),
-      queryID: state.queryID,
       objectIDs: [objectID],
       positions: [position],
       timestamp: Date.now(),
@@ -533,7 +542,7 @@ const topmostAccounts = () => {
     output = state.profiles.hits.slice(0, topmostCount);
   }
 
-  return output.map((profile, i) => (
+  return output.map((profile) => (
     <Item key={profile.accountId}>
       <Widget
         src="near/widget/Search.DropdownAccountCard"
@@ -542,6 +551,7 @@ const topmostAccounts = () => {
           profile_name: profile.profile_name,
           onClick: () =>
             onSearchResultClick({
+              queryID: state.profiles.queryID,
               searchPosition: profile.searchPosition,
               objectID: `${profile.accountId}/profile`,
               eventName: "Clicked Profile After Search",
@@ -591,6 +601,8 @@ const topmostComponents = (apps) => {
     }
   }
 
+  const queryID = apps ? state.apps.queryID : state.components.queryID;
+  const eventName = apps ? "App" : "Component";
   return output.map((component, i) => (
     <Item key={`${component.accountId}/widget/${component.widgetName}`}>
       <Widget
@@ -599,9 +611,10 @@ const topmostComponents = (apps) => {
           src: `${component.accountId}/widget/${component.widgetName}`,
           onClick: () =>
             onSearchResultClick({
+              queryID,
               searchPosition: component.searchPosition,
               objectID: `${component.accountId}/widget/${component.widgetName}`,
-              eventName: "Clicked Component After Search",
+              eventName: `Clicked ${eventName} After Search`,
             }),
         }}
       />
@@ -632,6 +645,13 @@ const topmostPosts = () => {
           content: post.postContent,
           term: props.term,
           snipContent: true,
+          onClick: () =>
+            onSearchResultClick({
+              queryID: state.postsAndComments.queryID,
+              searchPosition: post.searchPosition,
+              objectID: `${post.accountId}/${post.postType}/${post.blockHeight}`,
+              eventName: "Clicked Post After Search",
+            }),
         }}
       />
     </Item>

@@ -232,7 +232,10 @@ return (
         <Sidebar>
           {(tags.includes("Coming Soon") || tags.includes("coming-soon")) && (
             <div>
-              <Widget src="near/widget/waitList" />
+              <Widget
+                src="near/widget/WaitList"
+                props={{ formUrl: "http://eepurl.com/hXyUnf" }}
+              />
             </div>
           )}
 

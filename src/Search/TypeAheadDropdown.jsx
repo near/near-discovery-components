@@ -912,6 +912,35 @@ if (props.term !== state.lastSyncedTerm) {
   onSearchChange({ term: props.term });
 }
 
+const encodeURIComponent = (text) => {
+  const hexDigits = "0123456789ABCDEF";
+  const result = [];
+  for (var i = 0; i < text.length; i++) {
+    const c = text.charCodeAt(i);
+    if (
+      (c >= 48 /*0*/ && c <= 57) /*9*/ ||
+      (c >= 97 /*a*/ && c <= 122) /*z*/ ||
+      (c >= 65 /*A*/ && c <= 90) /*Z*/ ||
+      c == 45 /*-*/ ||
+      c == 95 /*_*/ ||
+      c == 46 /*.*/ ||
+      c == 33 /*!*/ ||
+      c == 126 /*~*/ ||
+      c == 42 /***/ ||
+      c == 92 /*\\*/ ||
+      c == 40 /*(*/ ||
+      c == 41 /*)*/
+    ) {
+      result += text[i];
+    } else {
+      const firstHexDigit = hexDigits.charAt((c & 0xf0) / 16);
+      const secondHexDigit = hexDigits.charAt(c & 0x0f);
+      result = `${result}%${firstHexDigit}${secondHexDigit}`;
+    }
+  }
+  return result;
+};
+
 return (
   <div style={typeAheadContainer}>
     <Wrapper>
@@ -947,7 +976,9 @@ return (
 
       <FixedFooter>
         <Button
-          href={`${searchPageUrl}?term=${props.term}&tab=${state.selectedTab}`}
+          href={`${searchPageUrl}?term=${encodeURIComponent(props.term)}&tab=${
+            state.selectedTab
+          }`}
           as="a"
         >
           {state.paginate?.hitsTotal > 0 &&

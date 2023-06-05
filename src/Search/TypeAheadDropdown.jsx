@@ -931,14 +931,14 @@ const encodeURIComponent = (text) => {
       c == 40 /*(*/ ||
       c == 41 /*)*/
     ) {
-      result += text[i];
+      result.push(text[i]);
     } else {
       const firstHexDigit = hexDigits.charAt((c & 0xf0) / 16);
       const secondHexDigit = hexDigits.charAt(c & 0x0f);
-      result = `${result}%${firstHexDigit}${secondHexDigit}`;
+      result.push(`%${firstHexDigit}${secondHexDigit}`);
     }
   }
-  return result;
+  return result.join("");
 };
 
 return (

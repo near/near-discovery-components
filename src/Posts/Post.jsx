@@ -3,16 +3,17 @@ const blockHeight =
   props.blockHeight === "now" ? "now" : parseInt(props.blockHeight);
 const subscribe = !!props.subscribe;
 const notifyAccountId = accountId;
-const postUrl = `https://near.org#/near/widget/PostPage?accountId=${accountId}&blockHeight=${blockHeight}`;
+const postUrl = `https://near.org/near/widget/PostPage?accountId=${accountId}&blockHeight=${blockHeight}`;
 
 State.init({ hasBeenFlagged: false });
 
-const edits = [] // Social.index('edit', { accountId, blockHeight }, { limit: 1, order: "desc", accountId })
+const edits = []; // Social.index('edit', { accountId, blockHeight }, { limit: 1, order: "desc", accountId })
 
 const content =
   props.content ??
   JSON.parse(
-    edits.length ? Social.get(`${accountId}/edit/main`, edits.blockHeight)
+    edits.length
+      ? Social.get(`${accountId}/edit/main`, edits.blockHeight)
       : Social.get(`${accountId}/post/main`, blockHeight)
   );
 
@@ -24,7 +25,7 @@ const item = {
 
 const toggleEdit = () => {
   State.update({ editPost: !state.editPost });
-}
+};
 
 const Post = styled.div`
   position: relative;
@@ -124,20 +125,19 @@ return (
           />
         </div>
         <div className="col-1">
-          {false &&
-            <Widget src="near/widget/Posts.Menu"
+          {false && (
+            <Widget
+              src="near/widget/Posts.Menu"
               props={{
                 elements: [
-                  <button
-                    className={`btn`}
-                    onClick={toggleEdit} >
+                  <button className={`btn`} onClick={toggleEdit}>
                     <i className="bi bi-pencil me-1" />
                     <span>Edit</span>
-                  </button>
-                ]
+                  </button>,
+                ],
               }}
             />
-          }
+          )}
         </div>
       </div>
     </Header>
@@ -158,7 +158,7 @@ return (
               props={{
                 item: { accountId, blockHeight },
                 content,
-                onEdit: toggleEdit
+                onEdit: toggleEdit,
               }}
             />
           </div>
@@ -193,6 +193,13 @@ return (
           <Widget
             src="near/widget/CopyUrlButton"
             props={{
+              url: postUrl,
+            }}
+          />
+          <Widget
+            src="near/widget/ShareButton"
+            props={{
+              postType: "post",
               url: postUrl,
             }}
           />

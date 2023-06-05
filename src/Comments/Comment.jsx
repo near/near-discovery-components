@@ -18,7 +18,7 @@ const extractNotifyAccountId = (parentItem) => {
   return `${accountId}/post/main` === parentItem.path ? accountId : undefined;
 };
 
-const commentUrl = `https://near.org#/near/widget/PostPage?accountId=${accountId}&commentBlockHeight=${blockHeight}`;
+const commentUrl = `https://near.org/near/widget/PostPage?accountId=${accountId}&commentBlockHeight=${blockHeight}`;
 
 const Comment = styled.div`
   position: relative;
@@ -150,6 +150,13 @@ return (
           <Widget
             src="near/widget/CopyUrlButton"
             props={{
+              url: commentUrl,
+            }}
+          />
+          <Widget
+            src="near/widget/ShareButton"
+            props={{
+              postType: "comment",
               url: commentUrl,
             }}
           />

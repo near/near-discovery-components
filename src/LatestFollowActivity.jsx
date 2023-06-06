@@ -59,7 +59,7 @@ return (
       {follows.map((item, i) => (
         <Item key={i}>
           <Widget
-            src="near/widget/AccountProfile"
+            src="${REPL_ACCOUNT}/widget/AccountProfile"
             props={{ accountId: item.accountId, hideAccountId: true }}
           />
 
@@ -73,7 +73,7 @@ return (
           </Text>
 
           <Widget
-            src="near/widget/AccountProfile"
+            src="${REPL_ACCOUNT}/widget/AccountProfile"
             props={{ accountId: item.value.accountId, hideAccountId: true }}
           />
         </Item>

@@ -39,7 +39,7 @@ return (
       <Items>
         {Object.keys(widgets)?.map((item, index) => (
           <Widget
-            src="near/widget/Onboarding.ComponentCard"
+            src="${REPL_ACCOUNT}/widget/Onboarding.ComponentCard"
             props={{
               name: item,
               accountId,

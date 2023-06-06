@@ -35,7 +35,7 @@ const renderItem = (a) =>
   a.value.type === "md" && (
     <div key={JSON.stringify(a)}>
       <Widget
-        src="near/widget/Comments.Comment"
+        src="${REPL_ACCOUNT}/widget/Comments.Comment"
         props={{
           accountId: a.accountId,
           blockHeight: a.blockHeight,
@@ -51,7 +51,7 @@ const renderItem = (a) =>
 return (
   <Wrapper>
     <Widget
-      src="near/widget/IndexFeed"
+      src="${REPL_ACCOUNT}/widget/IndexFeed"
       props={{
         index,
         manual: true,

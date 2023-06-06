@@ -154,7 +154,7 @@ return (
         {state.editPost && (
           <div className="mb-2">
             <Widget
-              src="near/widget/Posts.Edit"
+              src="${REPL_ACCOUNT}/widget/Posts.Edit"
               props={{
                 item: { accountId, blockHeight },
                 content,

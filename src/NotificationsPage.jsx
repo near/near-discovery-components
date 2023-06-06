@@ -39,14 +39,14 @@ const renderItem = (item, i) => {
   if (i === 0) {
     Storage.set("lastBlockHeight", item.blockHeight);
   }
-  return <Widget src="near/widget/Notification" key={i} props={item} />;
+  return <Widget src="${REPL_ACCOUNT}/widget/Notification" key={i} props={item} />;
 };
 
 return (
   <Wrapper>
     <H1>Your Notifications</H1>
     <Widget
-      src="near/widget/IndexFeed"
+      src="${REPL_ACCOUNT}/widget/IndexFeed"
       props={{ index, renderItem, moderatorAccount: "bosmod.near" }}
     />
   </Wrapper>

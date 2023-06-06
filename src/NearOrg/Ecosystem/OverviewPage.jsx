@@ -1,7 +1,7 @@
 const nearOrgLinks = {
-  getFundingPage: "/near/widget/NearOrg.Ecosystem.GetFundingPage",
-  communityPage: "/near/widget/NearOrg.Ecosystem.CommunityPage",
-  workAndEarnPage: "/near/widget/NearOrg.Ecosystem.WorkAndEarnPage",
+  getFundingPage: "/${REPL_ACCOUNT}/widget/NearOrg.Ecosystem.GetFundingPage",
+  communityPage: "/${REPL_ACCOUNT}/widget/NearOrg.Ecosystem.CommunityPage",
+  workAndEarnPage: "/${REPL_ACCOUNT}/widget/NearOrg.Ecosystem.WorkAndEarnPage",
 };
 
 const Wrapper = styled.div`
@@ -530,7 +530,7 @@ return (
             Explore hundreds of dApps already built on NEAR
           </Text>
           <Widget
-            src="near/widget/DIG.Button"
+            src="${REPL_ACCOUNT}/widget/DIG.Button"
             props={{
               href: "https://awesomenear.com/",
               iconRight: "ph-bold ph-arrow-up-right",
@@ -580,7 +580,7 @@ return (
                 </Text>
               </Flex>
               <Widget
-                src="near/widget/DIG.Button"
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
                   href: "https://nearweek.com/",
                   iconRight: "ph-bold ph-arrow-up-right",
@@ -613,7 +613,7 @@ return (
                 </Text>
               </Flex>
               <Widget
-                src="near/widget/DIG.Button"
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
                   href: "https://humanguild.io/",
                   iconRight: "ph-bold ph-arrow-up-right",
@@ -646,7 +646,7 @@ return (
                 </Text>
               </Flex>
               <Widget
-                src="near/widget/DIG.Button"
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
                   href: "https://tenk.dev/",
                   iconRight: "ph-bold ph-arrow-up-right",
@@ -687,7 +687,7 @@ return (
                   ETH, Harmony, NEAR, and Polygon.
                 </Text>
                 <Widget
-                  src="near/widget/DIG.Button"
+                  src="${REPL_ACCOUNT}/widget/DIG.Button"
                   props={{
                     href: "https://unchain.fund/",
                     iconRight: "ph-bold ph-arrow-up-right",
@@ -704,7 +704,7 @@ return (
           </Flex>
           <Flex gap="32px">
             <Widget
-              src="near/widget/DIG.Button"
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
                 href: "https://astrodao.com/",
                 iconRight: "ph-bold ph-arrow-up-right",
@@ -729,7 +729,7 @@ return (
             </Text>
             <div>
               <Widget
-                src="near/widget/DIG.Button"
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
                   href: nearOrgLinks.getFundingPage,
                   iconRight: "ph-bold ph-arrow-right",
@@ -755,7 +755,7 @@ return (
             </Text>
             <div>
               <Widget
-                src="near/widget/DIG.Button"
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
                   href: "https://app.astrodao.com/all/daos",
                   iconRight: "ph-bold ph-arrow-up-right",
@@ -827,7 +827,7 @@ return (
         </div>
         <Flex className="justify-content-md-start justify-content-center">
           <Widget
-            src="near/widget/DIG.Button"
+            src="${REPL_ACCOUNT}/widget/DIG.Button"
             props={{
               href: nearOrgLinks.communityPage,
               iconRight: "ph-bold ph-arrow-right",
@@ -877,7 +877,7 @@ return (
                 </Text>
                 <div>
                   <Widget
-                    src="near/widget/DIG.Button"
+                    src="${REPL_ACCOUNT}/widget/DIG.Button"
                     props={{
                       href: "https://gov.near.org/",
                       iconRight: "ph-bold ph-arrow-up-right",
@@ -927,7 +927,7 @@ return (
                 </Text>
                 <div>
                   <Widget
-                    src="near/widget/DIG.Button"
+                    src="${REPL_ACCOUNT}/widget/DIG.Button"
                     props={{
                       href: "https://medium.com/nearprotocol",
                       iconRight: "ph-bold ph-arrow-up-right",
@@ -975,7 +975,7 @@ return (
         </Flex>
         <Flex justifyContent="center">
           <Widget
-            src="near/widget/DIG.Button"
+            src="${REPL_ACCOUNT}/widget/DIG.Button"
             props={{
               href: nearOrgLinks.communityPage,
               iconRight: "ph-bold ph-arrow-right",
@@ -1037,7 +1037,7 @@ return (
         </div>
         <Flex className="justify-content-md-start justify-content-center">
           <Widget
-            src="near/widget/DIG.Button"
+            src="${REPL_ACCOUNT}/widget/DIG.Button"
             props={{
               href: nearOrgLinks.getFundingPage,
               iconRight: "ph-bold ph-arrow-right",
@@ -1130,7 +1130,7 @@ return (
                   {item.content}
                 </Text>
                 <Widget
-                  src="near/widget/DIG.Button"
+                  src="${REPL_ACCOUNT}/widget/DIG.Button"
                   props={{
                     href: item.href,
                     iconRight: "ph-bold ph-arrow-up-right",
@@ -1175,7 +1175,7 @@ return (
                   {item.content}
                 </Text>
                 <Widget
-                  src="near/widget/DIG.Button"
+                  src="${REPL_ACCOUNT}/widget/DIG.Button"
                   props={{
                     href: item.href,
                     iconRight: "ph-bold ph-arrow-up-right",
@@ -1193,7 +1193,7 @@ return (
         </Flex>
         <Flex justifyContent="center">
           <Widget
-            src="near/widget/DIG.Button"
+            src="${REPL_ACCOUNT}/widget/DIG.Button"
             props={{
               href: nearOrgLinks.getFundingPage,
               iconRight: "ph-bold ph-arrow-right",
@@ -1247,7 +1247,7 @@ return (
                 founders de-risk, accelerate, and advance Web 3.0.
               </Text>
               <Widget
-                src="near/widget/DIG.Button"
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
                   href: "https://www.openwebcollective.com/",
                   iconRight: "ph-bold ph-arrow-up-right",
@@ -1301,7 +1301,7 @@ return (
                       {item.content}
                     </Text>
                     <Widget
-                      src="near/widget/DIG.Button"
+                      src="${REPL_ACCOUNT}/widget/DIG.Button"
                       props={{
                         href: item.href,
                         iconRight: "ph-bold ph-arrow-up-right",
@@ -1377,7 +1377,7 @@ return (
                     }}
                   />
                   <Widget
-                    src="near/widget/DIG.Button"
+                    src="${REPL_ACCOUNT}/widget/DIG.Button"
                     props={{
                       href: "https://docs.near.org/develop/quickstart-guide",
                       iconRight: "ph-bold ph-arrow-up-right",
@@ -1399,7 +1399,7 @@ return (
                     }}
                   />
                   <Widget
-                    src="near/widget/DIG.Button"
+                    src="${REPL_ACCOUNT}/widget/DIG.Button"
                     props={{
                       href: "https://www.near-sdk.io",
                       iconRight: "ph-bold ph-arrow-up-right",
@@ -1415,7 +1415,7 @@ return (
               </Flex>
               <div>
                 <Widget
-                  src="near/widget/DIG.Button"
+                  src="${REPL_ACCOUNT}/widget/DIG.Button"
                   props={{
                     href: "https://docs.near.org",
                     iconRight: "ph-bold ph-arrow-up-right",
@@ -1441,7 +1441,7 @@ return (
               We have all you need – powerful CLI, easy-to-use SDKs, and more
             </Text>
             <Widget
-              src="near/widget/DIG.Button"
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
                 href: "https://near.org/developers/tools",
                 iconRight: "ph-bold ph-arrow-right",
@@ -1462,7 +1462,7 @@ return (
               examples
             </Text>
             <Widget
-              src="near/widget/DIG.Button"
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
                 href: "https://near.org/developers/documentation",
                 iconRight: "ph-bold ph-arrow-right",
@@ -1502,7 +1502,7 @@ return (
               Aurora EVM. EVM.
             </Text>
             <Widget
-              src="near/widget/DIG.Button"
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
                 href: "https://aurora.dev",
                 iconRight: "ph-bold ph-arrow-up-right",
@@ -1530,7 +1530,7 @@ return (
               Build app-specific chains with substrate on the Octopus network.
             </Text>
             <Widget
-              src="near/widget/DIG.Button"
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
                 href: "https://oct.network",
                 iconRight: "ph-bold ph-arrow-up-right",
@@ -1581,7 +1581,7 @@ return (
                 {item.content}
               </Text>
               <Widget
-                src="near/widget/DIG.Button"
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
                   href: item.href,
                   iconRight: "ph-bold ph-arrow-up-right",
@@ -1627,7 +1627,7 @@ return (
                 </Text>
                 {item.internal ? (
                   <Widget
-                    src="near/widget/DIG.Button"
+                    src="${REPL_ACCOUNT}/widget/DIG.Button"
                     props={{
                       href: item.href,
                       iconRight: "ph-bold ph-arrow-up-right",
@@ -1641,7 +1641,7 @@ return (
                   />
                 ) : (
                   <Widget
-                    src="near/widget/DIG.Button"
+                    src="${REPL_ACCOUNT}/widget/DIG.Button"
                     props={{
                       href: item.href,
                       iconRight: "ph-bold ph-arrow-right",
@@ -1684,7 +1684,7 @@ return (
                 {item.content ?? <span className="invisible">&nbsp;</span>}
               </Text>
               <Widget
-                src="near/widget/DIG.Button"
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
                   href: item.href,
                   iconRight: "ph-bold ph-arrow-up-right",
@@ -1730,7 +1730,7 @@ return (
                 {item.content ?? <span className="invisible">&nbsp;</span>}
               </Text>
               <Widget
-                src="near/widget/DIG.Button"
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
                   href: item.href,
                   iconRight: "ph-bold ph-arrow-up-right",
@@ -1802,7 +1802,7 @@ return (
                     {item.content}
                   </Text>
                   <Widget
-                    src="near/widget/DIG.Button"
+                    src="${REPL_ACCOUNT}/widget/DIG.Button"
                     props={{
                       href: item.href,
                       iconRight: "ph-bold ph-arrow-up-right",
@@ -1876,7 +1876,7 @@ return (
               Find a web3-job
             </Text>
             <Widget
-              src="near/widget/DIG.Button"
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
                 href: "https://careers.near.org/jobs",
                 iconRight: "ph-bold ph-arrow-up-right",
@@ -1892,7 +1892,7 @@ return (
               Get a grant for your project
             </Text>
             <Widget
-              src="near/widget/DIG.Button"
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
                 href: "https://near.org/ecosystem/get-funding",
                 iconRight: "ph-bold ph-arrow-right",
@@ -1908,7 +1908,7 @@ return (
               Complete a bounty
             </Text>
             <Widget
-              src="near/widget/DIG.Button"
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
                 href: "https://gitcoin.co/near/active",
                 iconRight: "ph-bold ph-arrow-up-right",
@@ -1921,7 +1921,7 @@ return (
         </Flex>
         <Flex gap="24px">
           <Widget
-            src="near/widget/DIG.Button"
+            src="${REPL_ACCOUNT}/widget/DIG.Button"
             props={{
               href: nearOrgLinks.workAndEarnPage,
               iconRight: "ph-bold ph-arrow-right",
@@ -1967,7 +1967,7 @@ return (
         </Flex>
         <Flex gap="24px">
           <Widget
-            src="near/widget/DIG.Button"
+            src="${REPL_ACCOUNT}/widget/DIG.Button"
             props={{
               href: "https://near.org/developers/get-help/",
               iconRight: "ph-bold ph-arrow-right",
@@ -1978,11 +1978,11 @@ return (
           />
         </Flex>
         <Section style={{ width: "100%" }}>
-          <Widget src="near/widget/NearOrg.LearningLinks" />
+          <Widget src="${REPL_ACCOUNT}/widget/NearOrg.LearningLinks" />
         </Section>
       </Section>
     </Wrapper>
 
-    <Widget src="near/widget/NearOrg.Footer" />
+    <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Footer" />
   </>
 );

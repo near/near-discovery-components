@@ -1,6 +1,6 @@
 const limitPerPage = 21;
 let people = [];
-const peopleUrl = "#/near/widget/PeoplePage";
+const peopleUrl = "#/${REPL_ACCOUNT}/widget/PeoplePage";
 let followingData = null;
 let followersData = null;
 
@@ -241,7 +241,7 @@ return (
 
     <Search>
       <Widget
-        src="near/widget/ProfileSearch"
+        src="${REPL_ACCOUNT}/widget/ProfileSearch"
         props={{
           limit: 21,
           onChange: onSearchChange,
@@ -287,7 +287,7 @@ return (
         {items.map((person, i) => (
           <Item key={person.accountId}>
             <Widget
-              src="near/widget/AccountProfileCard"
+              src="${REPL_ACCOUNT}/widget/AccountProfileCard"
               props={{
                 accountId: person.accountId,
                 blockHeight: person.blockHeight,

@@ -140,7 +140,7 @@ return (
       {blockHeight !== "now" && (
         <Actions>
           <Widget
-            src="near/widget/NestedDiscussions.Preview.LikeButton"
+            src="${REPL_ACCOUNT}/widget/NestedDiscussions.Preview.LikeButton"
             props={{
               item: content.commentId,
               notificationComponent: parentComponent,
@@ -149,7 +149,7 @@ return (
             }}
           />
           <Widget
-            src="near/widget/NestedDiscussions.Preview.CommentButton"
+            src="${REPL_ACCOUNT}/widget/NestedDiscussions.Preview.CommentButton"
             props={{
               item: indexKey,
               onClick: () => State.update({ showReply: !state.showReply }),
@@ -162,7 +162,7 @@ return (
             }}
           />
           <Widget
-            src="near/widget/FlagButton"
+            src="${REPL_ACCOUNT}/widget/FlagButton"
             props={{
               item: {
                 type: "social",
@@ -180,7 +180,7 @@ return (
       {state.showReply && (
         <div className="mb-2">
           <Widget
-            src="near/widget/NestedDiscussions.Compose"
+            src="${REPL_ACCOUNT}/widget/NestedDiscussions.Compose"
             props={{
               indexKey,
               notifyAccountId: accountId,
@@ -194,7 +194,7 @@ return (
 
       <Comments>
         <Widget
-          src="near/widget/NestedDiscussions.Feed"
+          src="${REPL_ACCOUNT}/widget/NestedDiscussions.Feed"
           props={{
             indexKey,
             moderatorAccount,

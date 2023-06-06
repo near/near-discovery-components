@@ -418,7 +418,7 @@ return (
                       {item.href ? (
                         <div>
                           <Widget
-                            src="near/widget/DIG.Button"
+                            src="${REPL_ACCOUNT}/widget/DIG.Button"
                             props={{
                               href: item.href,
                               iconRight: "ph-bold ph-arrow-up-right",
@@ -472,7 +472,7 @@ return (
         />
         <div>
           <Widget
-            src="near/widget/DIG.Button"
+            src="${REPL_ACCOUNT}/widget/DIG.Button"
             props={{
               href: `#ecosystem_grants`,
               label: "Explore programs",
@@ -484,6 +484,6 @@ return (
       </Section>
     </Wrapper>
 
-    <Widget src="near/widget/NearOrg.Footer" />
+    <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Footer" />
   </>
 );

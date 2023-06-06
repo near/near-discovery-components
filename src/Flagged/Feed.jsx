@@ -19,7 +19,7 @@ const renderItem = (a) => {
     case `${accountId}/post/main`:
       renderWidget = (
         <Widget
-          src="near/widget/Posts.Post"
+          src="${REPL_ACCOUNT}/widget/Posts.Post"
           props={{ accountId, blockHeight: item.blockHeight }}
         />
       );
@@ -27,7 +27,7 @@ const renderItem = (a) => {
     case `${accountId}/post/comment`:
       renderWidget = (
         <Widget
-          src="near/widget/Comments.Comment"
+          src="${REPL_ACCOUNT}/widget/Comments.Comment"
           props={{ accountId, blockHeight: item.blockHeight }}
         />
       );
@@ -35,7 +35,7 @@ const renderItem = (a) => {
     case `${accountId}/discuss`:
       renderWidget = (
         <Widget
-          src="near/widget/NestedDiscussions.Preview"
+          src="${REPL_ACCOUNT}/widget/NestedDiscussions.Preview"
           props={{
             accountId,
             blockHeight: item.blockHeight,

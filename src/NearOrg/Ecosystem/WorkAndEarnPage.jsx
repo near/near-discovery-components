@@ -1,5 +1,5 @@
 const nearOrgLinks = {
-  getFundingPage: "/near/widget/NearOrg.Ecosystem.GetFundingPage",
+  getFundingPage: "/${REPL_ACCOUNT}/widget/NearOrg.Ecosystem.GetFundingPage",
 };
 
 const Wrapper = styled.div`
@@ -144,7 +144,7 @@ return (
               </Text>
               <Flex gap="24px" alignItems="start" direction="column">
                 <Widget
-                  src="near/widget/DIG.Button"
+                  src="${REPL_ACCOUNT}/widget/DIG.Button"
                   props={{
                     href: "https://careers.near.org/jobs",
                     iconRight: "ph-bold ph-arrow-up-right",
@@ -156,7 +156,7 @@ return (
                   }}
                 />
                 <Widget
-                  src="near/widget/DIG.Button"
+                  src="${REPL_ACCOUNT}/widget/DIG.Button"
                   props={{
                     href: "https://www.near.university/#earn",
                     iconRight: "ph-bold ph-arrow-up-right",
@@ -182,7 +182,7 @@ return (
               </Text>
               <Flex gap="24px" alignItems="start" direction="column">
                 <Widget
-                  src="near/widget/DIG.Button"
+                  src="${REPL_ACCOUNT}/widget/DIG.Button"
                   props={{
                     href: nearOrgLinks.getFundingPage,
                     iconRight: "ph-bold ph-arrow-right",
@@ -210,7 +210,7 @@ return (
               </Text>
               <Flex gap="24px" alignItems="start" direction="column">
                 <Widget
-                  src="near/widget/DIG.Button"
+                  src="${REPL_ACCOUNT}/widget/DIG.Button"
                   props={{
                     href: "https://gitcoin.co/near/active",
                     iconRight: "ph-bold ph-arrow-up-right",
@@ -228,6 +228,6 @@ return (
       </Section>
     </Wrapper>
 
-    <Widget src="near/widget/NearOrg.Footer" />
+    <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Footer" />
   </>
 );

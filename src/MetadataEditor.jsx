@@ -136,7 +136,7 @@ return (
       <div className="mb-2">
         {options.tags.label ?? "Tags"}
         <Widget
-          src="mob.near/widget/TagsEditor"
+          src="${REPL_MOB}/widget/TagsEditor"
           props={{
             initialTagsObject: metadata.tags,
             tagsPattern: options.tags.pattern,

@@ -53,7 +53,7 @@ const renderItem = (a) => {
         <div className="flex-grow-1 text-truncate">
           Reported by{" "}
           <Widget
-            src="mob.near/widget/ProfileLine"
+            src="${REPL_MOB}/widget/ProfileLine"
             props={{ accountId: a.accountId, hideAccountId: true }}
           />
         </div>
@@ -75,6 +75,6 @@ return (
       We continute to use the mob.near IndexFeed since it doesnt have moderation built in
       and we want this feed to show banned content
     */}
-    <Widget src="mob.near/widget/IndexFeed" props={{ index, renderItem }} />
+    <Widget src="${REPL_MOB_2}/widget/IndexFeed" props={{ index, renderItem }} />
   </div>
 );

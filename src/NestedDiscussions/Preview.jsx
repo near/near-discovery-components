@@ -110,7 +110,7 @@ return (
             <>
               <Text as="span">･</Text>
               <Text>
-                <Widget src="mob.near/widget/TimeAgo" props={{ blockHeight }} />{" "}
+                <Widget src="${REPL_MOB_2}/widget/TimeAgo" props={{ blockHeight }} />{" "}
                 ago
               </Text>
             </>

@@ -155,7 +155,7 @@ return (
     <BackgroundImage>
       {profile.backgroundImage && (
         <Widget
-          src="mob.near/widget/Image"
+          src="${REPL_MOB}/widget/Image"
           props={{
             image: profile.backgroundImage,
             alt: "profile background image",

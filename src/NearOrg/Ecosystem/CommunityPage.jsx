@@ -356,7 +356,7 @@ return (
             <div className="col">
               <Card style={{ height: "100%" }}>
                 <Widget
-                  src="mob.near/widget/Image"
+                  src="${REPL_MOB}/widget/Image"
                   props={{
                     image: returnIpfsImage(item.ipfsImage),
                     style: { width: "52px", height: "52px" },

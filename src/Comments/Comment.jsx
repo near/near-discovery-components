@@ -119,7 +119,7 @@ return (
 
         {content.image && (
           <Widget
-            src="mob.near/widget/Image"
+            src="${REPL_MOB}/widget/Image"
             props={{
               image: content.image,
             }}

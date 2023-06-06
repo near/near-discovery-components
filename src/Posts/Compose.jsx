@@ -337,7 +337,7 @@ return (
       <>
         <Avatar>
           <Widget
-            src="mob.near/widget/Image"
+            src="${REPL_MOB}/widget/Image"
             props={{
               image: profile.image,
               alt: profile.name,

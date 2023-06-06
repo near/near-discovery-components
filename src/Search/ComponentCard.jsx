@@ -153,7 +153,7 @@ return (
       <Header>
         <Thumbnail href={detailsUrl} onPointerUp={onPointerUp}>
           <Widget
-            src="mob.near/widget/Image"
+            src="${REPL_MOB}/widget/Image"
             props={{
               image: metadata.image,
               fallbackUrl:

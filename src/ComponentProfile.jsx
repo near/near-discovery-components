@@ -59,7 +59,7 @@ return (
   <Wrapper href={`#/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${props.src}`}>
     <Thumbnail>
       <Widget
-        src="mob.near/widget/Image"
+        src="${REPL_MOB}/widget/Image"
         props={{
           image: metadata.image,
           fallbackUrl:

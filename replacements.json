@@ -13,5 +13,10 @@
         "placeholder": "REPL_SOCIALDB_CONTRACT",
         "testnet": "v1.social08.testnet",
         "mainnet": "social.near"
+    },
+    {
+        "placeholder": "REPL_MOB",
+        "testnet": "eugenethedream",
+        "mainnet": "mob.near"
     }
 ]

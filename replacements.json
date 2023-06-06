@@ -1,7 +1,7 @@
 [
     {
         "placeholder": "REPL_ACCOUNT",
-        "testnet": "discom.testnet",
+        "testnet": "discom-dev.testnet",
         "mainnet": "near"
     },
     {

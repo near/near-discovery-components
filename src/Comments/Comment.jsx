@@ -18,7 +18,7 @@ const extractNotifyAccountId = (parentItem) => {
   return `${accountId}/post/main` === parentItem.path ? accountId : undefined;
 };
 
-const commentUrl = `https://near.org#/near/widget/PostPage?accountId=${accountId}&commentBlockHeight=${blockHeight}`;
+const commentUrl = `https://${REPL_NEAR_URL}#/${REPL_ACCOUNT}/widget/PostPage?accountId=${accountId}&commentBlockHeight=${blockHeight}`;
 
 const Comment = styled.div`
   position: relative;
@@ -83,7 +83,7 @@ return (
   <Comment>
     <Header>
       <Widget
-        src="near/widget/AccountProfile"
+        src="${REPL_ACCOUNT}/widget/AccountProfile"
         props={{
           accountId,
           avatarSize: "32px",
@@ -112,7 +112,7 @@ return (
       <Content>
         {content.text && (
           <Widget
-            src="near/widget/SocialMarkdown"
+            src="${REPL_ACCOUNT}/widget/SocialMarkdown"
             props={{ text: content.text }}
           />
         )}
@@ -130,7 +130,7 @@ return (
       {blockHeight !== "now" && (
         <Actions>
           <Widget
-            src="near/widget/LikeButton"
+            src="${REPL_ACCOUNT}/widget/LikeButton"
             props={{
               item: {
                 type: "social",
@@ -141,20 +141,20 @@ return (
             }}
           />
           <Widget
-            src="near/widget/CommentButton"
+            src="${REPL_ACCOUNT}/widget/CommentButton"
             props={{
               hideCount: true,
               onClick: () => State.update({ showReply: !state.showReply }),
             }}
           />
           <Widget
-            src="near/widget/CopyUrlButton"
+            src="${REPL_ACCOUNT}/widget/CopyUrlButton"
             props={{
               url: commentUrl,
             }}
           />
           <Widget
-            src="near/widget/FlagButton"
+            src="${REPL_ACCOUNT}/widget/FlagButton"
             props={{
               item: {
                 type: "social",
@@ -172,7 +172,7 @@ return (
       {state.showReply && (
         <div className="mb-2">
           <Widget
-            src="near/widget/Comments.Compose"
+            src="${REPL_ACCOUNT}/widget/Comments.Compose"
             props={{
               initialText: `@${accountId}, `,
               notifyAccountId: extractNotifyAccountId(parentItem),

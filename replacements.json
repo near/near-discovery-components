@@ -18,5 +18,10 @@
         "placeholder": "REPL_MOB",
         "testnet": "eugenethedream",
         "mainnet": "mob.near"
+    },
+    {
+        "placeholder": "REPL_MOB_2",
+        "testnet": "one.testnet",
+        "mainnet": "mob.near"
     }
 ]

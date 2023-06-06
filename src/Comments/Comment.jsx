@@ -96,7 +96,7 @@ return (
               ) : (
                 <Text>
                   <Widget
-                    src="mob.near/widget/TimeAgo"
+                    src="${REPL_MOB_2}/widget/TimeAgo"
                     props={{ blockHeight }}
                   />{" "}
                   ago

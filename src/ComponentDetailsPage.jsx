@@ -279,7 +279,7 @@ return (
               <i className="bi bi-clock"></i>
               Last updated
               <Widget
-                src="mob.near/widget/TimeAgo"
+                src="${REPL_MOB_2}/widget/TimeAgo"
                 props={{ keyPath: `${accountId}/widget/${widgetName}` }}
               />{" "}
               ago.

@@ -11,7 +11,7 @@ const data = Social.get(`${accountId}/widget/${widgetName}/metadata/**`);
 const metadata = data || {};
 const tags = Object.keys(metadata.tags || {});
 const appUrl = `#/${src}`;
-const detailsUrl = `#/near/widget/ComponentDetailsPage?src=${src}`;
+const detailsUrl = `#/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${src}`;
 const shareUrl = `https://near.org${detailsUrl}`;
 const size = props.size || "large";
 
@@ -194,7 +194,7 @@ return (
     {props.showTags && tags.length > 0 && (
       <TagsWrapper>
         <Widget
-          src="near/widget/Tags"
+          src="${REPL_ACCOUNT}/widget/Tags"
           props={{
             tags,
           }}

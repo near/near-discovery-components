@@ -59,7 +59,7 @@ return (
     {context.accountId ? (
       <ComposeWrapper>
         <Widget
-          src="near/widget/NestedDiscussions.Compose"
+          src="${REPL_ACCOUNT}/widget/NestedDiscussions.Compose"
           props={{
             placeholder,
             indexKey: identifier,
@@ -79,7 +79,7 @@ return (
     )}
     <FeedWrapper>
       <Widget
-        src="near/widget/NestedDiscussions.Feed"
+        src="${REPL_ACCOUNT}/widget/NestedDiscussions.Feed"
         props={{
           indexKey: identifier,
           moderatorAccount,

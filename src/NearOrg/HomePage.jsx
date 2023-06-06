@@ -435,7 +435,7 @@ return (
         </Text>
 
         <Widget
-          src="near/widget/DIG.Button"
+          src="${REPL_ACCOUNT}/widget/DIG.Button"
           props={{
             href: "/onboarding",
             label: "Try It Now",
@@ -544,7 +544,7 @@ return (
                 new apps right away, without needing to learn a new language
               </Text>
               <Widget
-                src="near/widget/DIG.Button"
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
                   href: "https://docs.near.org/discovery",
                   target: "_blank",
@@ -573,7 +573,7 @@ return (
                 from the ground up
               </Text>
               <Widget
-                src="near/widget/DIG.Button"
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
                   href: "/onboarding",
                   label: "Try it now",
@@ -603,7 +603,7 @@ return (
                 your app, without any crypto
               </Text>
               <Widget
-                src="near/widget/DIG.Button"
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
                   href: "https://wiki.near.org/overview/BOS/fast-auth",
                   target: "_blank",
@@ -633,7 +633,7 @@ return (
                 inspect, fork, modify, and reuse
               </Text>
               <Widget
-                src="near/widget/DIG.Button"
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
                   href: "https://wiki.near.org/overview/BOS/open-source",
                   target: "_blank",
@@ -779,7 +779,7 @@ return (
                 directly with your users
               </Text>
               <Widget
-                src="near/widget/DIG.Button"
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
                   href: "/onboarding",
                   label: "Try it out",
@@ -829,7 +829,7 @@ return (
                 <span style={{ whiteSpace: "nowrap" }}>in a silo</span>
               </Text>
               <Widget
-                src="near/widget/DIG.Button"
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
                   href: "https://wiki.near.org/overview/BOS/multi-chain",
                   target: "_blank",
@@ -879,7 +879,7 @@ return (
                 lines of Javascript
               </Text>
               <Widget
-                src="near/widget/DIG.Button"
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
                   href: "https://wiki.near.org/overview/BOS/gateways",
                   target: "_blank",
@@ -982,7 +982,7 @@ return (
               as a whole.
             </Text>
             <Widget
-              src="near/widget/DIG.Button"
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
                 href: "/sandbox",
                 label: "Get Started",
@@ -996,7 +996,7 @@ return (
           <Flex direction="column" gap="68px">
             <Flex direction="column" gap="16px">
               <Widget
-                src="near/widget/DIG.Button"
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
                   href: "/people",
                   label: "Community",
@@ -1013,7 +1013,7 @@ return (
 
             <Flex direction="column" gap="16px">
               <Widget
-                src="near/widget/DIG.Button"
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
                   href: "/events",
                   label: "Events",
@@ -1030,7 +1030,7 @@ return (
 
             <Flex direction="column" gap="16px">
               <Widget
-                src="near/widget/DIG.Button"
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
                   href: "/news",
                   label: "News",
@@ -1100,7 +1100,7 @@ return (
 
           {!props.signedIn ? (
             <Widget
-              src="near/widget/DIG.Button"
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
                 href: "/signup",
                 label: "Create Account",
@@ -1110,7 +1110,7 @@ return (
             />
           ) : (
             <Widget
-              src="near/widget/DIG.Button"
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
                 href: "/sandbox",
                 label: "Try It Now",
@@ -1123,6 +1123,6 @@ return (
       </SectionContent>
     </Section>
 
-    <Widget src="near/widget/NearOrg.Footer" />
+    <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Footer" />
   </Wrapper>
 );

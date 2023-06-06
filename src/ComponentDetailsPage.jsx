@@ -17,7 +17,7 @@ const code = Social.get(`${accountId}/widget/${widgetName}`);
 const data = Social.get(`${accountId}/widget/${widgetName}/**`);
 const metadata = data.metadata;
 const tags = Object.keys(metadata.tags || {});
-const detailsUrl = `#/near/widget/ComponentDetailsPage?src=${src}`;
+const detailsUrl = `#/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${src}`;
 const shareUrl = `https://near.org${detailsUrl}`;
 
 const dependencyMatch =
@@ -179,7 +179,7 @@ return (
   <Wrapper>
     <SummaryWrapper>
       <Widget
-        src="near/widget/ComponentSummary"
+        src="${REPL_ACCOUNT}/widget/ComponentSummary"
         props={{
           primaryAction: "open",
           size: "large",
@@ -232,14 +232,14 @@ return (
         <Sidebar>
           {(tags.includes("Coming Soon") || tags.includes("coming-soon")) && (
             <div>
-              <Widget src="near/widget/waitList" />
+              <Widget src="${REPL_ACCOUNT}/widget/waitList" />
             </div>
           )}
 
           <div>
             <SmallTitle>Developer</SmallTitle>
             <Widget
-              src="near/widget/AccountProfile"
+              src="${REPL_ACCOUNT}/widget/AccountProfile"
               props={{
                 accountId: accountId,
               }}
@@ -250,7 +250,7 @@ return (
             <div>
               <SmallTitle>Tags</SmallTitle>
               <Widget
-                src="near/widget/Tags"
+                src="${REPL_ACCOUNT}/widget/Tags"
                 props={{
                   tags,
                 }}
@@ -301,7 +301,7 @@ return (
             {dependencySources.map((source) => (
               <Dependency key={source}>
                 <Widget
-                  src="near/widget/ComponentProfile"
+                  src="${REPL_ACCOUNT}/widget/ComponentProfile"
                   props={{ src: source }}
                 />
               </Dependency>
@@ -314,7 +314,7 @@ return (
     {state.selectedTab === "history" && (
       <Content noSidebar>
         <Widget
-          src="near/widget/ComponentHistory"
+          src="${REPL_ACCOUNT}/widget/ComponentHistory"
           props={{ widgetPath: src }}
         />
       </Content>
@@ -323,11 +323,11 @@ return (
     {state.selectedTab === "discussion" && (
       <Content>
         <Widget
-          src="near/widget/NestedDiscussions"
+          src="${REPL_ACCOUNT}/widget/NestedDiscussions"
           props={{
             identifier: src,
             notifyAccountId: accountId,
-            parentComponent: "near/widget/ComponentDetailsPage",
+            parentComponent: "${REPL_ACCOUNT}/widget/ComponentDetailsPage",
             parentParams: { tab: "discussion", src },
             highlightComment: props.highlightComment,
           }}

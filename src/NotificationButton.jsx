@@ -17,7 +17,7 @@ if (filterUsers === null) {
 }
 
 const filterUsers = filterUsersRaw ? JSON.parse(filterUsersRaw) : [];
-const notificationFeedSrc = "near/widget/NotificationsPage";
+const notificationFeedSrc = "${REPL_ACCOUNT}/widget/NotificationsPage";
 const lastBlockHeight = Storage.get("lastBlockHeight", notificationFeedSrc);
 let notifications =
   Social.index("notify", accountId, {

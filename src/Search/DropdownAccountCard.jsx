@@ -1,6 +1,6 @@
 const profile_name = props.profile_name;
 const accountId = props.accountId;
-const profileUrl = `/near/widget/ProfilePage?accountId=${accountId}`;
+const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 const onPointerUp =
   props.onClick ??
   ((event) => {
@@ -100,7 +100,7 @@ return (
   <Profile href={profileUrl} onPointerUp={onClick}>
     <Header>
       <Widget
-        src="near/widget/Search.AccountProfile"
+        src="${REPL_ACCOUNT}/widget/Search.AccountProfile"
         props={{
           accountId,
           hideAccountId: true,

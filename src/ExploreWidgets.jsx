@@ -8,16 +8,16 @@ if (customWidgets === null) {
 
 const defaultWidgets = [
   {
-    src: "near/widget/LatestNews",
+    src: "${REPL_ACCOUNT}/widget/LatestNews",
   },
   {
-    src: "near/widget/LatestPeople",
+    src: "${REPL_ACCOUNT}/widget/LatestPeople",
   },
   {
-    src: "near/widget/LatestFollowActivity",
+    src: "${REPL_ACCOUNT}/widget/LatestFollowActivity",
   },
   {
-    src: "near/widget/RootIconLinks",
+    src: "${REPL_ACCOUNT}/widget/RootIconLinks",
   },
 ];
 

@@ -56,7 +56,7 @@ const renderMention =
   ((accountId) => (
     <Widget
       key={accountId}
-      src="near/widget/AccountProfileInline"
+      src="${REPL_ACCOUNT}/widget/AccountProfileInline"
       props={{
         accountId,
         hideAvatar: true,

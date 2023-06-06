@@ -395,7 +395,7 @@ return (
     {showSearchBar && (
       <Search>
         <Widget
-          src="near/widget/Search.Pill"
+          src="${REPL_ACCOUNT}/widget/Search.Pill"
           props={{
             onChange: onSearchChange,
             term: props.term,

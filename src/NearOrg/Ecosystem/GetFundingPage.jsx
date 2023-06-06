@@ -346,7 +346,7 @@ return (
             bring them to market.
           </Text>
           <Widget
-            src="mob.near/widget/Image"
+            src="${REPL_MOB}/widget/Image"
             props={{
               image: returnIpfsImage(ipfsImages.arrows),
               className: "img-fluid d-none d-lg-block mx-auto",
@@ -390,7 +390,7 @@ return (
                 <div className="col" key={item.ipfsImage}>
                   <Card background="transparent" border="none" direction="row">
                     <Widget
-                      src="mob.near/widget/Image"
+                      src="${REPL_MOB}/widget/Image"
                       props={{
                         image: returnIpfsImage(item.ipfsImage),
                         className: "img-fluid",
@@ -460,7 +460,7 @@ return (
           or getting venture support through our Ecosystem partners.
         </Text>
         <Widget
-          src="mob.near/widget/Image"
+          src="${REPL_MOB}/widget/Image"
           props={{
             image: returnIpfsImage(ipfsImages.longImage),
             className: "img-fluid",

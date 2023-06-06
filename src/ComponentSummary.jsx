@@ -175,7 +175,7 @@ return (
     <Header size={size}>
       <Thumbnail size={size}>
         <Widget
-          src="mob.near/widget/Image"
+          src="${REPL_MOB}/widget/Image"
           props={{
             image: metadata.image,
             fallbackUrl:

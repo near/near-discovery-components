@@ -458,7 +458,7 @@ return (
           return (
             <a href={team.url} target="_blank" title={team.name}>
               <Widget
-                src="mob.near/widget/Image"
+                src="${REPL_MOB}/widget/Image"
                 props={{
                   image: returnIpfsImage(team.ipfsImage),
                   alt: team.name,

@@ -463,7 +463,7 @@ return (
       <Section center>
         <Flex gap="var(--large-gap)" wrap="wrap" justifyContent="center">
           <Widget
-            src="mob.near/widget/Image"
+            src="${REPL_MOB}/widget/Image"
             props={{
               image: returnIpfsImage(ipfsImages.headerImage),
               className: "img-fluid",
@@ -506,7 +506,7 @@ return (
           </div>
           <div className="col order-md-1 order-0">
             <Widget
-              src="mob.near/widget/Image"
+              src="${REPL_MOB}/widget/Image"
               props={{
                 image: returnIpfsImage(ipfsImages.projectDAOs),
                 className: "img-fluid",
@@ -520,7 +520,7 @@ return (
             Projects: Building the future on NEAR
           </Text>
           <Widget
-            src="mob.near/widget/Image"
+            src="${REPL_MOB}/widget/Image"
             props={{
               image: returnIpfsImage(ipfsImages.homepageApps),
               className: "img-fluid px-5",
@@ -563,7 +563,7 @@ return (
           <Flex gap="24px" mobileStack="24px">
             <Card center>
               <Widget
-                src="mob.near/widget/Image"
+                src="${REPL_MOB}/widget/Image"
                 props={{
                   image: returnIpfsImage(ipfsImages.nearWeek),
                   className: "img-fluid",
@@ -596,7 +596,7 @@ return (
 
             <Card center>
               <Widget
-                src="mob.near/widget/Image"
+                src="${REPL_MOB}/widget/Image"
                 props={{
                   image: returnIpfsImage(ipfsImages.humanGuild),
                   className: "img-fluid",
@@ -629,7 +629,7 @@ return (
 
             <Card center>
               <Widget
-                src="mob.near/widget/Image"
+                src="${REPL_MOB}/widget/Image"
                 props={{
                   image: returnIpfsImage(ipfsImages.tenkDao),
                   className: "img-fluid",
@@ -663,7 +663,7 @@ return (
           <Flex gap="32px" mobileStack="32px">
             <Card center direction="row" className="flex-md-nowrap flex-wrap">
               <Widget
-                src="mob.near/widget/Image"
+                src="${REPL_MOB}/widget/Image"
                 props={{
                   image: returnIpfsImage(ipfsImages.unchainLogo),
                   className: "img-fluid me-4",
@@ -817,7 +817,7 @@ return (
           </div>
           <div className="col order-md-1 order-0">
             <Widget
-              src="mob.near/widget/Image"
+              src="${REPL_MOB}/widget/Image"
               props={{
                 image: returnIpfsImage(ipfsImages.ecosystemCommunity),
                 className: "img-fluid mx-auto",
@@ -853,7 +853,7 @@ return (
           <div className="row">
             <div className="col-12 col-sm-6">
               <Widget
-                src="mob.near/widget/Image"
+                src="${REPL_MOB}/widget/Image"
                 props={{
                   image: returnIpfsImage(ipfsImages.ecosystemBanner),
                   className: "img-fluid",
@@ -904,7 +904,7 @@ return (
           <div className="row">
             <div className="col-12 col-sm-6">
               <Widget
-                src="mob.near/widget/Image"
+                src="${REPL_MOB}/widget/Image"
                 props={{
                   image: returnIpfsImage(ipfsImages.ecosystemBlog),
                   className: "img-fluid",
@@ -1027,7 +1027,7 @@ return (
           </div>
           <div className="col order-md-1 order-0">
             <Widget
-              src="mob.near/widget/Image"
+              src="${REPL_MOB}/widget/Image"
               props={{
                 image: returnIpfsImage(ipfsImages.ecosystemVenue),
                 className: "img-fluid",
@@ -1062,7 +1062,7 @@ return (
           className="d-none d-md-flex"
         >
           <Widget
-            src="mob.near/widget/Image"
+            src="${REPL_MOB}/widget/Image"
             props={{
               image: returnIpfsImage(ipfsImages.fundingArrows),
               className: "img-fluid",
@@ -1111,7 +1111,7 @@ return (
               border="none"
             >
               <Widget
-                src="mob.near/widget/Image"
+                src="${REPL_MOB}/widget/Image"
                 props={{
                   image: returnIpfsImage(item.ipfsImage),
                   style: { width: "80px", height: "80px" },
@@ -1156,7 +1156,7 @@ return (
               border="none"
             >
               <Widget
-                src="mob.near/widget/Image"
+                src="${REPL_MOB}/widget/Image"
                 props={{
                   image: returnIpfsImage(item.ipfsImage),
                   style: { width: "80px", height: "80px" },
@@ -1221,7 +1221,7 @@ return (
             className="flex-md-nowrap flex-wrap"
           >
             <Widget
-              src="mob.near/widget/Image"
+              src="${REPL_MOB}/widget/Image"
               props={{
                 image: returnIpfsImage(ipfsImages.ecosystemOwcLogo),
                 className: "img-fluid me-4",
@@ -1276,7 +1276,7 @@ return (
               <div className="col" key={item.ipfsImage}>
                 <Card gap="12px" direction="row" style={{ height: "100%" }}>
                   <Widget
-                    src="mob.near/widget/Image"
+                    src="${REPL_MOB}/widget/Image"
                     props={{
                       image: returnIpfsImage(item.ipfsImage),
                       style: { width: "80px", height: "80px" },
@@ -1335,7 +1335,7 @@ return (
           </div>
           <div className="col order-md-1 order-0">
             <Widget
-              src="mob.near/widget/Image"
+              src="${REPL_MOB}/widget/Image"
               props={{
                 image: returnIpfsImage(ipfsImages.ecosystemTechnicalBase),
                 className: "img-fluid",
@@ -1370,7 +1370,7 @@ return (
               <Flex gap="48px" mobileStack="32px" justifyContent="center">
                 <Flex gap="24px" alignItems="center">
                   <Widget
-                    src="mob.near/widget/Image"
+                    src="${REPL_MOB}/widget/Image"
                     props={{
                       image: returnIpfsImage(ipfsImages.jsIcon),
                       className: "img-fluid",
@@ -1392,7 +1392,7 @@ return (
                 </Flex>
                 <Flex gap="24px" alignItems="center">
                   <Widget
-                    src="mob.near/widget/Image"
+                    src="${REPL_MOB}/widget/Image"
                     props={{
                       image: returnIpfsImage(ipfsImages.rustIcon),
                       className: "img-fluid",
@@ -1487,7 +1487,7 @@ return (
         <Flex gap="24px" mobileStack="24px">
           <Card center>
             <Widget
-              src="mob.near/widget/Image"
+              src="${REPL_MOB}/widget/Image"
               props={{
                 image: returnIpfsImage(ipfsImages.logoAurora),
                 style: { width: "80px", height: "80px" },
@@ -1517,7 +1517,7 @@ return (
           </Card>
           <Card center>
             <Widget
-              src="mob.near/widget/Image"
+              src="${REPL_MOB}/widget/Image"
               props={{
                 image: returnIpfsImage(ipfsImages.logoOctopus),
                 style: { width: "80px", height: "80px" },
@@ -1568,7 +1568,7 @@ return (
           {rpcCards.map((item) => (
             <Card center key={item.ipfsImage}>
               <Widget
-                src="mob.near/widget/Image"
+                src="${REPL_MOB}/widget/Image"
                 props={{
                   image: returnIpfsImage(item.ipfsImage),
                   style: { width: "80px", height: "80px" },
@@ -1613,7 +1613,7 @@ return (
             <div className="col" key={item.ipfsImage}>
               <Card center>
                 <Widget
-                  src="mob.near/widget/Image"
+                  src="${REPL_MOB}/widget/Image"
                   props={{
                     image: returnIpfsImage(item.ipfsImage),
                     style: { width: "80px", height: "80px" },
@@ -1671,7 +1671,7 @@ return (
           {oracleCards.map((item) => (
             <Card center key={item.ipfsImage}>
               <Widget
-                src="mob.near/widget/Image"
+                src="${REPL_MOB}/widget/Image"
                 props={{
                   image: returnIpfsImage(item.ipfsImage),
                   style: { width: "80px", height: "80px" },
@@ -1717,7 +1717,7 @@ return (
           {assetsCards.map((item) => (
             <Card center key={item.ipfsImage}>
               <Widget
-                src="mob.near/widget/Image"
+                src="${REPL_MOB}/widget/Image"
                 props={{
                   image: returnIpfsImage(item.ipfsImage),
                   style: { width: "80px", height: "80px" },
@@ -1765,7 +1765,7 @@ return (
           </div>
           <div className="col order-md-1 order-0">
             <Widget
-              src="mob.near/widget/Image"
+              src="${REPL_MOB}/widget/Image"
               props={{
                 image: returnIpfsImage(ipfsImages.sectionAnkerRegionalHubs),
                 className: "img-fluid",
@@ -1789,7 +1789,7 @@ return (
               <div className="col" key={item.ipfsImage}>
                 <Card center>
                   <Widget
-                    src="mob.near/widget/Image"
+                    src="${REPL_MOB}/widget/Image"
                     props={{
                       image: returnIpfsImage(item.ipfsImage),
                       style: { height: "92px" },
@@ -1849,7 +1849,7 @@ return (
           </div>
           <div className="col order-md-1 order-0">
             <Widget
-              src="mob.near/widget/Image"
+              src="${REPL_MOB}/widget/Image"
               props={{
                 image: returnIpfsImage(ipfsImages.ecosystemCareer),
                 className: "img-fluid",

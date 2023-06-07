@@ -18,7 +18,7 @@ const extractNotifyAccountId = (parentItem) => {
   return `${accountId}/post/main` === parentItem.path ? accountId : undefined;
 };
 
-const commentUrl = `https://near.org/near/widget/PostPage?accountId=${accountId}&commentBlockHeight=${blockHeight}`;
+const commentUrl = `https://near.org/s/c?a=${accountId}&b=${blockHeight}`;
 
 const Comment = styled.div`
   position: relative;

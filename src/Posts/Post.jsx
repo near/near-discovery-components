@@ -3,7 +3,7 @@ const blockHeight =
   props.blockHeight === "now" ? "now" : parseInt(props.blockHeight);
 const subscribe = !!props.subscribe;
 const notifyAccountId = accountId;
-const postUrl = `https://near.org/near/widget/PostPage?accountId=${accountId}&blockHeight=${blockHeight}`;
+const postUrl = `https://near.org/s/p?a=${accountId}&b=${blockHeight}`;
 
 State.init({ hasBeenFlagged: false });
 

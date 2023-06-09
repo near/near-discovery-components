@@ -3,16 +3,13 @@ const externalLink = props.url;
 
 const clickbaitPrompt =
   props.clickbaitPrompt ??
-  `Check out this ${postType} on @NearSocial_\n#NearSocial #NEAR #BOS\n${externalLink}`;
+  `Check out this ${postType} on @NEARProtocol\n#NEAR #BOS\n${externalLink}`;
 
 const twitterUrl = new URL("https://twitter.com/intent/tweet");
 twitterUrl.searchParams.set("text", clickbaitPrompt);
 
 const mailtoUrl = new URL("mailto:");
-mailtoUrl.searchParams.set(
-  "subject",
-  `Check out this ${postType} on Near Social`
-);
+mailtoUrl.searchParams.set("subject", `Check out this ${postType} on NEAR`);
 mailtoUrl.searchParams.set(
   "body",
   `Take a look this ${postType}.

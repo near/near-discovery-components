@@ -24,6 +24,6 @@ const renderItem = (a) =>
 
 return (
   <div>
-    <Widget src="mob.near/widget/IndexFeed" props={{ index, renderItem }} />
+    <Widget src="${REPL_MOB_2}/widget/IndexFeed" props={{ index, renderItem }} />
   </div>
 );

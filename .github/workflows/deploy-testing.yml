@@ -18,7 +18,7 @@ jobs:
       - name: Set replacements
         id: set_replacements
         run: |
-          echo "replacements=$(jq -r '[.[] | .["find"] = "${" + .placeholder + "}" | .["replace"] = .testnet | del(.placeholder, .testnet, .mainnet)]' replacements.json | tr -d "\n\r")" >> $GITHUB_OUTPUT
+          echo "replacements=$(jq -r '[to_entries[] | .["find"] = "${" + .key + "}" | .["replace"] = .value | del(.key, .value)]' replacements.dev.json | tr -d "\n\r")" >> $GITHUB_OUTPUT
 
       - name: Replace placeholders
         uses: flcdrg/replace-multiple-action@v1

@@ -54,6 +54,12 @@ return (
       <Item>
         <Widget
           src="near/widget/ComponentCard"
+          props={{ src: "nearhorizon.near/widget/Index" }}
+        />
+      </Item>
+      <Item>
+        <Widget
+          src="near/widget/ComponentCard"
           props={{ src: "devgovgigs.near/widget/Ideas" }}
         />
       </Item>

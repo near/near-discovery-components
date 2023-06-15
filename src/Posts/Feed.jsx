@@ -30,6 +30,6 @@ const renderItem = (a) =>
 return (
   <Widget
     src="${REPL_ACCOUNT}/widget/IndexFeed"
-    props={{ index, renderItem, moderatorAccount: "bosmod.near" }}
+    props={{ index, renderItem, moderatorAccount: "${REPL_MODERATOR}" }}
   />
 );

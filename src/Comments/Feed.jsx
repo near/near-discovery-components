@@ -59,7 +59,7 @@ return (
         renderItem,
         nextLimit: 10,
         loadMoreText: "Show earlier comments...",
-        moderatorAccount: "bosmod.near",
+        moderatorAccount: "${REPL_MODERATOR}",
       }}
     />
   </Wrapper>

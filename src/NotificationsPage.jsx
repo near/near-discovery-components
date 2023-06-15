@@ -47,7 +47,7 @@ return (
     <H1>Your Notifications</H1>
     <Widget
       src="${REPL_ACCOUNT}/widget/IndexFeed"
-      props={{ index, renderItem, moderatorAccount: "bosmod.near" }}
+      props={{ index, renderItem, moderatorAccount: "${REPL_MODERATOR}" }}
     />
   </Wrapper>
 );

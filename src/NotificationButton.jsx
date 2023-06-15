@@ -1,5 +1,5 @@
 const accountId = context.accountId;
-const moderatorAccount = props?.moderatorAccount || "bosmod.near";
+const moderatorAccount = props?.moderatorAccount || "${REPL_MODERATOR}";
 
 if (context.loading || !accountId) return <></>;
 

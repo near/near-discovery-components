@@ -1,7 +1,7 @@
 const identifier = props.identifier;
 const notifyAccountId = props.notifyAccountId;
 const highlightComment = props.highlightComment;
-const moderatorAccount = props.moderatorAccount || "bosmod.near";
+const moderatorAccount = props.moderatorAccount || "${REPL_MODERATOR}";
 const placeholder = props.placeholder || "Join the discussion";
 
 // discussions happen inside other components

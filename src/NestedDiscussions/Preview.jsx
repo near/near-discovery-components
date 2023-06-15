@@ -3,7 +3,7 @@ const blockHeight = parseInt(props.blockHeight);
 const parentComponent = props.parentComponent;
 const parentParams = { ...props.parentParams };
 const highlightComment = props.highlightComment;
-const moderatorAccount = props.moderatorAccount || "bosmod.near";
+const moderatorAccount = props.moderatorAccount || "${REPL_MODERATOR}";
 
 const { content } = JSON.parse(
   Social.get(`${accountId}/discuss/main`, blockHeight)

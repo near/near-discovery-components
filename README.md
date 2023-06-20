@@ -1,6 +1,6 @@
 # Near Discovery Widgets
 
-This is a repository that holds the source code of all NEAR discovery widgets that the team maintains for [alpha.near.org]().
+This is a repository that holds the source code of all NEAR discovery widgets that the team maintains for [near.org]().
 
 Widgets will be deployed to production automatically as they are merged into the main branch.
 
@@ -10,7 +10,7 @@ Keep in mind that folders under `src` will be prepended to the widget name when 
 
 Please create feature branches off of develop. 
 
-TODO: PRs merged into develop should deploy to a testnet environment as widgets are updated. 
+Use [bos-loader](https://github.com/near/near-discovery#local-component-development) to faciliate testing the appearance and behavior of your components from a locally running viewer, or near.org. 
 
 When a production deployment is ready, develop should be merged into main which will automatically deploy widgets to production.
 

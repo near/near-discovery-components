@@ -226,7 +226,6 @@ function dateToDays(date) {
   return timeAgo(Date.now() - d.getTime());
 }
 
-console.log(news);
 
 return (
   <Theme>

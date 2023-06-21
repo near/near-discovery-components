@@ -17,7 +17,7 @@ const notificationParams = {
 };
 
 // URL to share
-var postUrl = `https://near.org/#/${parentComponent}?`;
+var postUrl = `https://${REPL_NEAR_URL}/#/${parentComponent}?`;
 postUrl += Object.entries(notificationParams)
   .map(([k, v]) => `${k}=${v}`)
   .join("&");

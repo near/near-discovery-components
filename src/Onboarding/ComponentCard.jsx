@@ -1,5 +1,5 @@
 // link without `gateway` won't work. You can pass "https://near.social/#" or "https://near.org"
-const gateway = props.gateway ?? "https://near.org";
+const gateway = props.gateway ?? "https://${REPL_NEAR_URL}";
 // passing `context.accountId` just for preview example.
 const accountId = props.accountId || context.accountId || "near";
 const name = props.name ?? "NotRealComponentName";

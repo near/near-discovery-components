@@ -57,10 +57,15 @@ const data = fetch(
   }
 );
 
+const cssFont = fetch("https://fonts.cdnfonts.com/css/hubot-sans").body;
+
+if (!cssFont) return "";
+
 if (!state.theme) {
   State.update({
     theme: styled.div`
-    font-family: "Mona Sans", sans-serif;
+    font-family: 'Mona Sans', sans-serif;
+    ${cssFont}
 `,
   });
 }
@@ -77,6 +82,7 @@ const H2 = styled.h2`
   font-weight: 700;
   line-height: 22px;
   color: #11181C;
+  letter-spacing: -0.02em;
   margin: 0;
 `;
 
@@ -124,7 +130,7 @@ const CardContent = styled.div`
 const CardTitle = styled.div`
     font-style: normal;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 16px;
     letter-spacing: -0.02em;
     color: #000000;
@@ -140,7 +146,6 @@ const CardTitle = styled.div`
 const CardImage = styled.img`
     border-radius: var(--bs-border-radius);
     border: 0.5px solid hsla(210, 12%, 93%, 1);
-    min-width: 78px;
 `;
 
 const CardFooter = styled.div`
@@ -202,7 +207,7 @@ const ButtonLink = styled.a`
   }
 `;
 
-const news = [...(data?.body.data ?? []), ...posts]
+const news = [...data.body.data, ...posts]
   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
   .slice(0, limit);
 const nwSite = "https://nearweek.com";
@@ -221,6 +226,8 @@ function dateToDays(date) {
   return timeAgo(Date.now() - d.getTime());
 }
 
+console.log(news);
+
 return (
   <Theme>
     {data !== null ? (
@@ -233,7 +240,11 @@ return (
                 <CardImage width="78" height="78" src={item.thumbnail} alt="" />
                 <CardContent>
                   <CardTitle>
-                    <a href={article.url} target="_blank">
+                    <a
+                      href={item.url}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
                       {item.title}
                     </a>
                   </CardTitle>
@@ -265,3 +276,4 @@ return (
     )}
   </Theme>
 );
+

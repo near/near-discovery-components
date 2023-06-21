@@ -43,7 +43,7 @@ return (
             props={{
               name: item,
               accountId,
-              gateway: "https://near.org",
+              gateway: "https://${REPL_NEAR_URL}",
               commits: allWidgetsHistoryChangesBlocks[accountId].widget[item],
             }}
           />

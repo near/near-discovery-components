@@ -12,7 +12,16 @@ This repository is not compatible with the [VS Code Extension](https://docs.near
 
 Please create feature branches off of develop.
 
-When referencing another widget or any parameter that depends on the network, please use the placeholders defined in `replacements.json`. Placeholders should be encapsulated in the `${}` expression. Here is an example of a placeholder usage:
+When referencing another widget or any parameter that depends on the network, please use the placeholders defined in `replacements.*.json`. There are three such files that correspond to different environments:
+
+* `replacements.dev.json` - dev testnet
+
+* `replacements.testnet.json` - prod testnet
+
+* `replacements.mainnet.json` - prod mainnet
+
+
+Placeholders should be encapsulated in the `${}` expression. Here is an example of a placeholder usage:
 
 `<Widget src={homepage ?? "${REPL_ACCOUNT}/widget/ActivityPage"} />;`
 
@@ -21,6 +30,8 @@ Placeholders are replaced with the target values specified in replacements.json 
 Feel free to specify a new placeholder if needed. The placeholder should have a `REPL` prefix, for example:
 
 `REPL_SOME_URL`
+
+A new placeholder should be defined for all three environments: dev-testnet, prod-testnet and prod-mainnet.
 
 PRs merged into develop are deployed to a testnet environment as widgets are updated. 
 

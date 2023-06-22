@@ -35,7 +35,7 @@ return (
     <h3>{title}</h3>
     <p>{description}</p>
     <Widget
-      src="near/widget/DIG.Button"
+      src="${REPL_ACCOUNT}/widget/DIG.Button"
       props={{
         label: "Register for Early Access",
         variant: "affirmative",

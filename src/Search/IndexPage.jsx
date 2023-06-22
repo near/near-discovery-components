@@ -14,8 +14,8 @@ const showFacets = props.showFacets ?? true;
 const showPagination = props.showPagination ?? true;
 const userId = props.accountId ?? context.accountId;
 
-const componentsUrl = `near/widget/ComponentsPage`;
-const peopleUrl = `near/widget/PeoplePage`;
+const componentsUrl = `${REPL_ACCOUNT}/widget/ComponentsPage`;
+const peopleUrl = `${REPL_ACCOUNT}/widget/PeoplePage`;
 
 State.init({
   facet: tab,

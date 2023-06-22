@@ -154,7 +154,7 @@ const Button = styled.a`
 // DevGov handles their own type
 if (type && type.startsWith("devgovgigs/")) {
   return (
-    <Widget src="mob.near/widget/Notification.Item.DevGov" props={props} />
+    <Widget src="${REPL_MOB_2}/widget/Notification.Item.DevGov" props={props} />
   );
 }
 

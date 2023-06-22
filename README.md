@@ -37,7 +37,7 @@ PRs merged into develop are deployed to a testnet environment as widgets are upd
 
 When a production deployment is ready, develop should be merged into main which will automatically deploy widgets to production.
 
-Use [bos-loader](https://github.com/near/near-discovery#local-component-development) to faciliate testing the appearance and behavior of your components from a locally running viewer, or near.org. 
+Use [bos-loader >0.7.0](https://github.com/near/near-discovery#local-component-development) to faciliate testing the appearance and behavior of your components from a locally running viewer, or near.org. 
 
 # Troubleshooting Deployments
 

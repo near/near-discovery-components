@@ -99,7 +99,7 @@ return (
       <div className="mb-2">
         {options.image.label ?? "Image"}
         <Widget
-          src="near/widget/ImageEditorTabs"
+          src="${REPL_ACCOUNT}/widget/ImageEditorTabs"
           props={{
             image: state.image,
             onChange: (image) => State.update({ image }),
@@ -111,7 +111,7 @@ return (
       <div className="mb-2">
         {options.backgroundImage.label ?? "Background image"}
         <Widget
-          src="near/widget/ImageEditorTabs"
+          src="${REPL_ACCOUNT}/widget/ImageEditorTabs"
           props={{
             image: state.backgroundImage,
             onChange: (backgroundImage) => State.update({ backgroundImage }),
@@ -136,7 +136,7 @@ return (
       <div className="mb-2">
         {options.tags.label ?? "Tags"}
         <Widget
-          src="mob.near/widget/TagsEditor"
+          src="${REPL_MOB}/widget/TagsEditor"
           props={{
             initialTagsObject: metadata.tags,
             tagsPattern: options.tags.pattern,

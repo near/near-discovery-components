@@ -2,7 +2,7 @@ const requiredTag = "app";
 const limit = 5;
 let apps = [];
 let totalComponents = 0;
-const componentsUrl = `#/near/widget/ComponentsPage`;
+const componentsUrl = `#/${REPL_ACCOUNT}/widget/ComponentsPage`;
 
 const taggedData = Social.keys(
   `*/widget/*/metadata/tags/${requiredTag}`,
@@ -119,7 +119,7 @@ return (
       {apps.map((app, i) => (
         <Item key={i}>
           <Widget
-            src="near/widget/ComponentCard"
+            src="${REPL_ACCOUNT}/widget/ComponentCard"
             props={{
               src: `${app.accountId}/widget/${app.widgetName}`,
               blockHeight: app.blockHeight,

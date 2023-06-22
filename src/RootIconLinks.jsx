@@ -28,7 +28,7 @@ const IconButtons = styled.div`
 return (
   <>
     <IconButtons>
-      <IconButtonLink href="#/near/widget/ProfilePage?accountId=self.social.near">
+      <IconButtonLink href="#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=self.social.near">
         <i className="bi bi-person-circle"></i>
       </IconButtonLink>
       <IconButtonLink href="https://t.me/NearSocial">

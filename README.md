@@ -6,13 +6,27 @@ Widgets will be deployed to production automatically as they are merged into the
 
 Keep in mind that folders under `src` will be prepended to the widget name when it's deployed. E.g. `src/post/comment.jsx` will be deployed as `post.comment`.
 
+This repository is not compatible with the [VS Code Extension](https://docs.near.org/bos/dev/vscode) due to the replacements strategy featured in this repository.
+
 # Contributing
 
-Please create feature branches off of develop. 
+Please create feature branches off of develop.
 
-Use [bos-loader](https://github.com/near/near-discovery#local-component-development) to faciliate testing the appearance and behavior of your components from a locally running viewer, or near.org. 
+When referencing another widget or any parameter that depends on the network, please use the placeholders defined in `replacements.json`. Placeholders should be encapsulated in the `${}` expression. Here is an example of a placeholder usage:
+
+`<Widget src={homepage ?? "${REPL_ACCOUNT}/widget/ActivityPage"} />;`
+
+Placeholders are replaced with the target values specified in replacements.json during the deployment of widgets.
+
+Feel free to specify a new placeholder if needed. The placeholder should have a `REPL` prefix, for example:
+
+`REPL_SOME_URL`
+
+PRs merged into develop are deployed to a testnet environment as widgets are updated. 
 
 When a production deployment is ready, develop should be merged into main which will automatically deploy widgets to production.
+
+Use [bos-loader](https://github.com/near/near-discovery#local-component-development) to faciliate testing the appearance and behavior of your components from a locally running viewer, or near.org. 
 
 # Troubleshooting Deployments
 

@@ -30,7 +30,7 @@ return (
         </div>
         <div className="mb-2">
           <Widget
-            src="near/widget/MetadataEditor"
+            src="${REPL_ACCOUNT}/widget/MetadataEditor"
             props={{
               initialMetadata: profile,
               onChange: (profile) => State.update({ profile }),
@@ -79,7 +79,7 @@ return (
           </CommitButton>
           <a
             className="btn btn-outline-primary ms-2"
-            href={`#/near/widget/ProfilePage?accountId=${accountId}`}
+            href={`#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`}
           >
             View profile
           </a>
@@ -88,7 +88,7 @@ return (
       <div className="col-lg-6">
         <div>
           <Widget
-            src="mob.near/widget/ProfilePage"
+            src="${REPL_MOB_2}/widget/ProfilePage"
             props={{ accountId, profile: state.profile }}
           />
         </div>

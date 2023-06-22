@@ -1,4 +1,4 @@
-const componentsUrl = "#/near/widget/ComponentsPage";
+const componentsUrl = "#/${REPL_ACCOUNT}/widget/ComponentsPage";
 //bozon.near/widget/WidgetHistory
 
 const Wrapper = styled.div`
@@ -53,49 +53,49 @@ return (
     <Items>
       <Item>
         <Widget
-          src="near/widget/ComponentCard"
+          src="${REPL_ACCOUNT}/widget/ComponentCard"
           props={{ src: "nearhorizon.near/widget/Index" }}
         />
       </Item>
       <Item>
         <Widget
-          src="near/widget/ComponentCard"
+          src="${REPL_ACCOUNT}/widget/ComponentCard"
           props={{ src: "devgovgigs.near/widget/Ideas" }}
         />
       </Item>
       <Item>
         <Widget
-          src="near/widget/ComponentCard"
+          src="${REPL_ACCOUNT}/widget/ComponentCard"
           props={{ src: "let45fc.near/widget/LaserChess3D" }}
         />
       </Item>
       <Item>
         <Widget
-          src="near/widget/ComponentCard"
+          src="${REPL_ACCOUNT}/widget/ComponentCard"
           props={{ src: "zavodil.near/widget/social-avatar-editor" }}
         />
       </Item>
       <Item>
         <Widget
-          src="near/widget/ComponentCard"
+          src="${REPL_ACCOUNT}/widget/ComponentCard"
           props={{ src: "frichard2.near/widget/most-active-contracts" }}
         />
       </Item>
       <Item>
         <Widget
-          src="near/widget/ComponentCard"
+          src="${REPL_ACCOUNT}/widget/ComponentCard"
           props={{ src: "mob.near/widget/Explorer" }}
         />
       </Item>
       <Item>
         <Widget
-          src="near/widget/ComponentCard"
+          src="${REPL_ACCOUNT}/widget/ComponentCard"
           props={{ src: "microchipgnu.near/widget/Game.FlappyBOS" }}
         />
       </Item>
       <Item>
         <Widget
-          src="near/widget/ComponentCard"
+          src="${REPL_ACCOUNT}/widget/ComponentCard"
           props={{ src: "mintbase.near/widget/nft-marketplace" }}
         />
       </Item>

@@ -1,6 +1,6 @@
 const accountId = props.accountId || context.accountId;
 const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
-const profileUrl = `#/near/widget/ProfilePage?accountId=${accountId}`;
+const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 
 const Wrapper = styled.a`
   display: inline-grid;
@@ -72,7 +72,7 @@ const AccountProfile = (
   >
     <Avatar>
       <Widget
-        src="mob.near/widget/Image"
+        src="${REPL_MOB}/widget/Image"
         props={{
           image: profile.image,
           alt: profile.name,
@@ -94,7 +94,7 @@ const AccountProfile = (
           <Text small style={{ marginLeft: "auto" }}>
             Joined{" "}
             <Widget
-              src="mob.near/widget/TimeAgo"
+              src="${REPL_MOB_2}/widget/TimeAgo"
               props={{ blockHeight: props.blockHeight }}
             />{" "}
             ago
@@ -111,7 +111,7 @@ if (props.noOverlay) return AccountProfile;
 
 return (
   <Widget
-    src="near/widget/AccountProfileOverlay"
+    src="${REPL_ACCOUNT}/widget/AccountProfileOverlay"
     props={{
       accountId: props.accountId,
       profile,

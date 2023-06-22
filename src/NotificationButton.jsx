@@ -1,5 +1,5 @@
 const accountId = context.accountId;
-const moderatorAccount = props?.moderatorAccount || "bosmod.near";
+const moderatorAccount = props?.moderatorAccount || "${REPL_MODERATOR}";
 
 if (context.loading || !accountId) return <></>;
 
@@ -17,7 +17,7 @@ if (filterUsers === null) {
 }
 
 const filterUsers = filterUsersRaw ? JSON.parse(filterUsersRaw) : [];
-const notificationFeedSrc = "near/widget/NotificationsPage";
+const notificationFeedSrc = "${REPL_ACCOUNT}/widget/NotificationsPage";
 const lastBlockHeight = Storage.get("lastBlockHeight", notificationFeedSrc);
 let notifications =
   Social.index("notify", accountId, {

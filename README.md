@@ -6,6 +6,8 @@ Widgets will be deployed to production automatically as they are merged into the
 
 Keep in mind that folders under `src` will be prepended to the widget name when it's deployed. E.g. `src/post/comment.jsx` will be deployed as `post.comment`.
 
+This repository is not compatible with the [VS Code Extension](https://docs.near.org/bos/dev/vscode) due to the replacements strategy featured in this repository.
+
 # Contributing
 
 Please create feature branches off of develop.

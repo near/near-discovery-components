@@ -8,7 +8,7 @@ if (customWidgets === null) {
 
 const defaultWidgets = [
   {
-    src: "${REPL_ACCOUNT}/widget/LatestNews",
+    src: "nearweekapp.near/widget/nearweek-newsletter",
   },
   {
     src: "${REPL_ACCOUNT}/widget/LatestPeople",

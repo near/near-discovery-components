@@ -307,7 +307,7 @@ return (
                 </Text>
                 {item.internal ? (
                   <Widget
-                    src="near/widget/DIG.Button"
+                    src="${REPL_ACCOUNT}/widget/DIG.Button"
                     props={{
                       href: item.href,
                       iconRight: "ph-bold ph-arrow-up-right",
@@ -321,7 +321,7 @@ return (
                   />
                 ) : (
                   <Widget
-                    src="near/widget/DIG.Button"
+                    src="${REPL_ACCOUNT}/widget/DIG.Button"
                     props={{
                       href: item.href,
                       iconRight: "ph-bold ph-arrow-right",
@@ -356,7 +356,7 @@ return (
             <div className="col">
               <Card style={{ height: "100%" }}>
                 <Widget
-                  src="mob.near/widget/Image"
+                  src="${REPL_MOB}/widget/Image"
                   props={{
                     image: returnIpfsImage(item.ipfsImage),
                     style: { width: "52px", height: "52px" },
@@ -389,7 +389,7 @@ return (
               </Text>
               <div>
                 <Widget
-                  src="near/widget/DIG.Button"
+                  src="${REPL_ACCOUNT}/widget/DIG.Button"
                   props={{
                     href: "https://www.youtube.com/channel/UCuKdIYVN8iE3fv8alyk1aMw",
                     iconRight: "ph-bold ph-arrow-up-right",
@@ -418,7 +418,7 @@ return (
               </Text>
               <Flex gap="24px" direction="column" alignItems="start">
                 <Widget
-                  src="near/widget/DIG.Button"
+                  src="${REPL_ACCOUNT}/widget/DIG.Button"
                   props={{
                     href: "https://near.org/blog",
                     iconRight: "ph-bold ph-arrow-right",
@@ -429,7 +429,7 @@ return (
                   }}
                 />
                 <Widget
-                  src="near/widget/DIG.Button"
+                  src="${REPL_ACCOUNT}/widget/DIG.Button"
                   props={{
                     href: "https://medium.com/nearprotocol",
                     iconRight: "ph-bold ph-arrow-up-right",
@@ -461,7 +461,7 @@ return (
                   <div key={item.key} className="col">
                     {item.internal ? (
                       <Widget
-                        src="near/widget/DIG.Button"
+                        src="${REPL_ACCOUNT}/widget/DIG.Button"
                         props={{
                           href: item.href,
                           iconRight: "ph-bold ph-arrow-up-right",
@@ -475,7 +475,7 @@ return (
                       />
                     ) : (
                       <Widget
-                        src="near/widget/DIG.Button"
+                        src="${REPL_ACCOUNT}/widget/DIG.Button"
                         props={{
                           href: item.href,
                           iconRight: "ph-bold ph-arrow-right",
@@ -494,6 +494,6 @@ return (
         </div>
       </Section>
     </Wrapper>
-    <Widget src="near/widget/NearOrg.Footer" />
+    <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Footer" />
   </>
 );

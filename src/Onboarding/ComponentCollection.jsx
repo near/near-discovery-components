@@ -1,6 +1,7 @@
 const accountId = props.accountId || context.accountId || "near";
 
 const profile = Social.getr(`${accountId}/profile`);
+const widgets = Social.getr(`${accountId}/widget`) ?? {};
 
 const allWidgetsHistoryChangesBlocks = Social.keys(
   `${accountId}/widget/*`,
@@ -11,14 +12,6 @@ const allWidgetsHistoryChangesBlocks = Social.keys(
 );
 
 if (allWidgetsHistoryChangesBlocks === null) return "Loading...";
-
-const widget = allWidgetsHistoryChangesBlocks[accountId].widget;
-
-const totalCommits = Object.keys(widget)
-  .map((key) => widget[key])
-  .flat();
-
-const widgets = Social.getr(`${accountId}/widget`) ?? {};
 
 const Wrapper = styled.div`
   display: flex;
@@ -46,11 +39,11 @@ return (
       <Items>
         {Object.keys(widgets)?.map((item, index) => (
           <Widget
-            src="near/widget/Onboarding.ComponentCard"
+            src="${REPL_ACCOUNT}/widget/Onboarding.ComponentCard"
             props={{
               name: item,
               accountId,
-              gateway: "https://near.org",
+              gateway: "https://${REPL_NEAR_URL}",
               commits: allWidgetsHistoryChangesBlocks[accountId].widget[item],
             }}
           />

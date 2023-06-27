@@ -19,7 +19,7 @@ const renderItem = (a) => {
     case `${accountId}/post/main`:
       renderWidget = (
         <Widget
-          src="near/widget/Posts.Post"
+          src="${REPL_ACCOUNT}/widget/Posts.Post"
           props={{ accountId, blockHeight: item.blockHeight }}
         />
       );
@@ -27,7 +27,7 @@ const renderItem = (a) => {
     case `${accountId}/post/comment`:
       renderWidget = (
         <Widget
-          src="near/widget/Comments.Comment"
+          src="${REPL_ACCOUNT}/widget/Comments.Comment"
           props={{ accountId, blockHeight: item.blockHeight }}
         />
       );
@@ -35,7 +35,7 @@ const renderItem = (a) => {
     case `${accountId}/discuss`:
       renderWidget = (
         <Widget
-          src="near/widget/NestedDiscussions.Preview"
+          src="${REPL_ACCOUNT}/widget/NestedDiscussions.Preview"
           props={{
             accountId,
             blockHeight: item.blockHeight,
@@ -53,13 +53,13 @@ const renderItem = (a) => {
         <div className="flex-grow-1 text-truncate">
           Reported by{" "}
           <Widget
-            src="mob.near/widget/ProfileLine"
+            src="${REPL_MOB}/widget/ProfileLine"
             props={{ accountId: a.accountId, hideAccountId: true }}
           />
         </div>
         <div>
           <Widget
-            src="mob.near/widget/TimeAgo"
+            src="${REPL_MOB_2}/widget/TimeAgo"
             props={{ blockHeight: a.blockHeight }}
           />
         </div>
@@ -75,6 +75,6 @@ return (
       We continute to use the mob.near IndexFeed since it doesnt have moderation built in
       and we want this feed to show banned content
     */}
-    <Widget src="mob.near/widget/IndexFeed" props={{ index, renderItem }} />
+    <Widget src="${REPL_MOB_2}/widget/IndexFeed" props={{ index, renderItem }} />
   </div>
 );

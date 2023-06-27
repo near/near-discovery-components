@@ -3,7 +3,7 @@ const blockHeight = parseInt(props.blockHeight);
 const parentComponent = props.parentComponent;
 const parentParams = { ...props.parentParams };
 const highlightComment = props.highlightComment;
-const moderatorAccount = props.moderatorAccount || "bosmod.near";
+const moderatorAccount = props.moderatorAccount || "${REPL_MODERATOR}";
 
 const { content } = JSON.parse(
   Social.get(`${accountId}/discuss/main`, blockHeight)
@@ -17,7 +17,7 @@ const notificationParams = {
 };
 
 // URL to share
-var postUrl = `https://near.org/#/${parentComponent}?`;
+var postUrl = `https://${REPL_NEAR_URL}/#/${parentComponent}?`;
 postUrl += Object.entries(notificationParams)
   .map(([k, v]) => `${k}=${v}`)
   .join("&");
@@ -110,7 +110,7 @@ return (
             <>
               <Text as="span">･</Text>
               <Text>
-                <Widget src="mob.near/widget/TimeAgo" props={{ blockHeight }} />{" "}
+                <Widget src="${REPL_MOB_2}/widget/TimeAgo" props={{ blockHeight }} />{" "}
                 ago
               </Text>
             </>
@@ -129,7 +129,7 @@ return (
 
         {content.image && (
           <Widget
-            src="mob.near/widget/Image"
+            src="${REPL_MOB}/widget/Image"
             props={{
               image: content.image,
             }}
@@ -140,7 +140,7 @@ return (
       {blockHeight !== "now" && (
         <Actions>
           <Widget
-            src="near/widget/NestedDiscussions.Preview.LikeButton"
+            src="${REPL_ACCOUNT}/widget/NestedDiscussions.Preview.LikeButton"
             props={{
               item: content.commentId,
               notificationComponent: parentComponent,
@@ -149,7 +149,7 @@ return (
             }}
           />
           <Widget
-            src="near/widget/NestedDiscussions.Preview.CommentButton"
+            src="${REPL_ACCOUNT}/widget/NestedDiscussions.Preview.CommentButton"
             props={{
               item: indexKey,
               onClick: () => State.update({ showReply: !state.showReply }),
@@ -162,7 +162,7 @@ return (
             }}
           />
           <Widget
-            src="near/widget/FlagButton"
+            src="${REPL_ACCOUNT}/widget/FlagButton"
             props={{
               item: {
                 type: "social",
@@ -180,7 +180,7 @@ return (
       {state.showReply && (
         <div className="mb-2">
           <Widget
-            src="near/widget/NestedDiscussions.Compose"
+            src="${REPL_ACCOUNT}/widget/NestedDiscussions.Compose"
             props={{
               indexKey,
               notifyAccountId: accountId,
@@ -194,7 +194,7 @@ return (
 
       <Comments>
         <Widget
-          src="near/widget/NestedDiscussions.Feed"
+          src="${REPL_ACCOUNT}/widget/NestedDiscussions.Feed"
           props={{
             indexKey,
             moderatorAccount,

@@ -16,7 +16,7 @@ const key = props.key ?? JSON.stringify(content);
 const postType = props.postType ?? "post";
 const postBlockHeight =
   postType === "post" ? "blockHeight" : "commentBlockHeight";
-const postUrl = `/near/widget/PostPage?accountId=${accountId}&${postBlockHeight}=${blockHeight}`;
+const postUrl = `/${REPL_ACCOUNT}/widget/PostPage?accountId=${accountId}&${postBlockHeight}=${blockHeight}`;
 const onClick =
   props.onClick ??
   (() => {
@@ -141,7 +141,7 @@ return (
   <Post href={postUrl} onPointerUp={onClick}>
     <Header>
       <Widget
-        src="near/widget/Search.AccountProfile"
+        src="${REPL_ACCOUNT}/widget/Search.AccountProfile"
         props={{
           accountId,
           hideAccountId: true,
@@ -152,7 +152,7 @@ return (
     <Body ellipsis={true}>
       {content.text && (
         <Widget
-          src="near/widget/Search.Markdown"
+          src="${REPL_ACCOUNT}/widget/Search.Markdown"
           props={{
             text: highlightWordInParagraph(content.text, props.term, 24),
           }}

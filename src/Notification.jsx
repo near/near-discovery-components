@@ -14,7 +14,7 @@ const urlBlockHeight = isComment ? "commentBlockHeight" : "blockHeight";
 let postUrl = "";
 
 if (type !== "custom") {
-  postUrl = `#/near/widget/PostPage?accountId=${accountId}&${urlBlockHeight}=${blockHeight}`;
+  postUrl = `#/${REPL_ACCOUNT}/widget/PostPage?accountId=${accountId}&${urlBlockHeight}=${blockHeight}`;
 } else {
   postUrl = `#/${value.widget}?${Object.entries(value.params || {})
     .map(([k, v]) => `${k}=${v}`)
@@ -154,7 +154,7 @@ const Button = styled.a`
 // DevGov handles their own type
 if (type && type.startsWith("devgovgigs/")) {
   return (
-    <Widget src="mob.near/widget/Notification.Item.DevGov" props={props} />
+    <Widget src="${REPL_MOB_2}/widget/Notification.Item.DevGov" props={props} />
   );
 }
 
@@ -166,7 +166,7 @@ return (
     <Wrapper>
       <div>
         <Widget
-          src="near/widget/AccountProfile"
+          src="${REPL_ACCOUNT}/widget/AccountProfile"
           props={{ accountId: props.accountId }}
         />
       </div>
@@ -176,7 +176,7 @@ return (
           {notificationMessage[type]}
         </Text>
         <Widget
-          src="mob.near/widget/TimeAgo"
+          src="${REPL_MOB_2}/widget/TimeAgo"
           props={{ blockHeight: props.blockHeight }}
         />
         ago
@@ -185,14 +185,14 @@ return (
       <div>
         {(type === "follow" || type === "unfollow") && (
           <Widget
-            src="near/widget/FollowButton"
+            src="${REPL_ACCOUNT}/widget/FollowButton"
             props={{ accountId: props.accountId }}
           />
         )}
 
         {type === "poke" && (
           <Widget
-            src="near/widget/PokeButton"
+            src="${REPL_ACCOUNT}/widget/PokeButton"
             props={{ accountId: props.accountId, back: true, primary: true }}
           />
         )}

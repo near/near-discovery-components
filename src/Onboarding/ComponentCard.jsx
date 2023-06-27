@@ -1,5 +1,5 @@
 // link without `gateway` won't work. You can pass "https://near.social/#" or "https://near.org"
-const gateway = props.gateway ?? "https://near.org";
+const gateway = props.gateway ?? "https://${REPL_NEAR_URL}";
 // passing `context.accountId` just for preview example.
 const accountId = props.accountId || context.accountId || "near";
 const name = props.name ?? "NotRealComponentName";
@@ -63,7 +63,7 @@ return (
       <Text as="div" className="d-flex align-items-center">
         <i className="ph ph-clock" style={{ fontSize: "20px" }} />
         <Widget
-          src={`mob.near/widget/TimeAgo`}
+          src={`${REPL_MOB_2}/widget/TimeAgo`}
           props={{
             blockHeight: props.commits[props.commits.length - 1],
             className: "description",

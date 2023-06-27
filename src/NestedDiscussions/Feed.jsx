@@ -22,7 +22,7 @@ const Post = styled.div`
 const renderItem = ({ accountId, blockHeight }) => (
   <Post className="post">
     <Widget
-      src="near/widget/NestedDiscussions.Preview"
+      src="${REPL_ACCOUNT}/widget/NestedDiscussions.Preview"
       props={{
         accountId,
         blockHeight,
@@ -38,7 +38,7 @@ const renderItem = ({ accountId, blockHeight }) => (
 return (
   <>
     <Widget
-      src="near/widget/IndexFeed"
+      src="${REPL_ACCOUNT}/widget/IndexFeed"
       props={{ index, renderItem, moderatorAccount, reverse: true }}
     />
   </>

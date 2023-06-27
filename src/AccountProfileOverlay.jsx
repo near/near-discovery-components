@@ -49,7 +49,10 @@ const overlay = (
         props={{ accountId: props.accountId, profile, noOverlay: true }}
       />
 
-      <Widget src="${REPL_ACCOUNT}/widget/Tags" props={{ tags, scroll: true }} />
+      <Widget
+        src="${REPL_ACCOUNT}/widget/Tags"
+        props={{ tags, scroll: true }}
+      />
 
       {!!context.accountId && context.accountId !== props.accountId && (
         <FollowButtonWrapper>
@@ -73,7 +76,10 @@ return (
   >
     <span
       className={props.inline ? "d-inline-flex" : "d-block"}
-      style={{ verticalAlign: props.inline ? "baseline" : "" }}
+      style={{
+        verticalAlign: props.inline ? "baseline" : "",
+        maxWidth: "100%",
+      }}
       onMouseEnter={handleOnMouseEnter}
       onMouseLeave={handleOnMouseLeave}
     >

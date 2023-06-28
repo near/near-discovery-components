@@ -247,19 +247,31 @@ return (
         )}
 
         {state.selectedTab === "nfts" && (
-          <Widget src="ne${REPL_ACCOUNT}ar/widget/NFTCollection" props={{ accountId }} />
+          <Widget
+            src="${REPL_ACCOUNT}/widget/NFTCollection"
+            props={{ accountId }}
+          />
         )}
 
         {state.selectedTab === "apps" && (
-          <Widget src="${REPL_ACCOUNT}/widget/ComponentCollection" props={{ accountId }} />
+          <Widget
+            src="${REPL_ACCOUNT}/widget/ComponentCollection"
+            props={{ accountId }}
+          />
         )}
 
         {state.selectedTab === "followers" && (
-          <Widget src="${REPL_ACCOUNT}/widget/FollowersList" props={{ accountId }} />
+          <Widget
+            src="${REPL_ACCOUNT}/widget/FollowersList"
+            props={{ accountId }}
+          />
         )}
 
         {state.selectedTab === "following" && (
-          <Widget src="${REPL_ACCOUNT}/widget/FollowingList" props={{ accountId }} />
+          <Widget
+            src="${REPL_ACCOUNT}/widget/FollowingList"
+            props={{ accountId }}
+          />
         )}
 
         {state.selectedTab === "explorer" && (

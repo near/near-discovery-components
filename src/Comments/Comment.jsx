@@ -7,6 +7,7 @@ const content =
 const parentItem = content.item;
 const highlight = !!props.highlight;
 const raw = !!props.raw;
+const commentUrl = `https://${REPL_NEAR_URL}/s/c?a=${accountId}&b=${blockHeight}`;
 
 State.init({ hasBeenFlagged: false });
 
@@ -17,8 +18,6 @@ const extractNotifyAccountId = (parentItem) => {
   const accountId = parentItem.path.split("/")[0];
   return `${accountId}/post/main` === parentItem.path ? accountId : undefined;
 };
-
-const commentUrl = `https://${REPL_NEAR_URL}#/${REPL_ACCOUNT}/widget/PostPage?accountId=${accountId}&commentBlockHeight=${blockHeight}`;
 
 const Comment = styled.div`
   position: relative;
@@ -40,7 +39,7 @@ const Header = styled.div`
   margin-bottom: 0;
 `;
 
-const Body = styled.div`
+const Main = styled.div`
   padding-left: 44px;
   padding-bottom: 1px;
 `;
@@ -108,7 +107,7 @@ return (
       />
     </Header>
 
-    <Body>
+    <Main>
       <Content>
         {content.text && (
           <Widget
@@ -154,6 +153,13 @@ return (
             }}
           />
           <Widget
+            src="${REPL_ACCOUNT}/widget/ShareButton"
+            props={{
+              postType: "comment",
+              url: commentUrl,
+            }}
+          />
+          <Widget
             src="${REPL_ACCOUNT}/widget/FlagButton"
             props={{
               item: {
@@ -182,6 +188,6 @@ return (
           />
         </div>
       )}
-    </Body>
+    </Main>
   </Comment>
 );

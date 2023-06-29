@@ -12,7 +12,7 @@ const Post = styled.div`
   border-bottom: 1px solid #eceef0;
   padding: 24px 0 12px;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     padding: 12px 0 0;
   }
 `;

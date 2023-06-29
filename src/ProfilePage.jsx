@@ -26,7 +26,7 @@ const Main = styled.div`
   grid-template-columns: 352px minmax(0, 1fr);
   align-items: start;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     grid-template-columns: minmax(0, 1fr);
   }
 `;
@@ -44,12 +44,12 @@ const BackgroundImage = styled.div`
     height: 100%;
   }
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     margin: calc(var(--body-top-padding) * -1) -12px 0;
     border-radius: 0;
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 1024px) {
     height: 100px;
   }
 `;
@@ -59,7 +59,7 @@ const SidebarWrapper = styled.div`
   z-index: 5;
   margin-top: -55px;
 
-  @media (max-width: 900px) {
+  @media (max-width: 1024px) {
     margin-top: -40px;
   }
 `;
@@ -88,7 +88,7 @@ const Tabs = styled.div`
   overflow: auto;
   scroll-behavior: smooth;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     background: #f8f9fa;
     border-top: 1px solid #eceef0;
     margin: 0 -12px 48px;

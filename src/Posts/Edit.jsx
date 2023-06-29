@@ -1,21 +1,21 @@
 if (!context.accountId) {
     return <></>;
   }
-  
+
   State.init({
     ...props.content,
     showPreview: false,
   });
-  
+
   const profile = Social.getr(`${context.accountId}/profile`);
   const autocompleteEnabled = true;
-  
+
   const content = {
     type: "md",
     image: state.image.cid ? { ipfs_cid: state.image.cid } : undefined,
     text: state.text,
   };
-  
+
   function extractMentions(text) {
     const mentionRegex =
       /@((?:(?:[a-z\d]+[-_])*[a-z\d]+\.)*(?:[a-z\d]+[-_])*[a-z\d]+)/gi;
@@ -33,7 +33,7 @@ if (!context.accountId) {
     }
     return [...accountIds];
   }
-  
+
   function extractTagNotifications(text, item) {
     return extractMentions(text || "")
       .filter((accountId) => accountId !== context.accountId)
@@ -45,7 +45,7 @@ if (!context.accountId) {
         },
       }));
   }
-  
+
   function composeData() {
     const data = {
       edit: {
@@ -60,10 +60,10 @@ if (!context.accountId) {
         }),
       },
     };
-  
+
     return data;
   }
-  
+
   function onCommit() {
     State.update({
       image: {},
@@ -71,27 +71,27 @@ if (!context.accountId) {
     });
     props.onEdit();
   }
-  
+
   function textareaInputHandler(value) {
     const showAccountAutocomplete = /@[\w][^\s]*$/.test(value);
     State.update({ text: value, showAccountAutocomplete });
   }
-  
+
   function autoCompleteAccountId(id) {
     let text = state.text.replace(/[\s]{0,1}@[^\s]*$/, "");
     text = `${text} @${id}`.trim() + " ";
     State.update({ text, showAccountAutocomplete: false });
   }
-  
+
   const Wrapper = styled.div`
     --padding: 24px;
     position: relative;
-  
-    @media (max-width: 1200px) {
+
+    @media (max-width: 1024px) {
       --padding: 12px;
     }
   `;
-  
+
   const Avatar = styled.div`
     width: 40px;
     height: 40px;
@@ -99,26 +99,26 @@ if (!context.accountId) {
     position: absolute;
     top: var(--padding);
     left: var(--padding);
-  
+
     img {
       object-fit: cover;
       border-radius: 40px;
       width: 100%;
       height: 100%;
     }
-  
+
     @media (max-width: 992px) {
       display: none;
     }
   `;
-  
+
   const Textarea = styled.div`
     display: grid;
     vertical-align: top;
     align-items: center;
     position: relative;
     align-items: stretch;
-  
+
     &::after,
     textarea {
       width: 100%;
@@ -136,40 +136,40 @@ if (!context.accountId) {
       grid-area: 1 / 1;
       overflow: hidden;
       outline: none;
-  
-      @media (max-width: 1200px) {
+
+      @media (max-width: 1024px) {
         min-height: 124px;
       }
-  
+
       @media (max-width: 992px) {
         padding-left: var(--padding);
       }
     }
-  
+
     &::after {
       content: attr(data-value) " ";
       visibility: hidden;
       white-space: pre-wrap;
     }
-  
+
     textarea {
       transition: all 200ms;
-  
+
       &::placeholder {
         opacity: 1;
         color: #687076;
       }
-  
+
       &:empty + p {
         display: block;
       }
-  
+
       &:focus {
         box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.05);
       }
     }
   `;
-  
+
   const TextareaDescription = styled.p`
     position: absolute;
     top: calc(var(--padding) + 24px);
@@ -181,32 +181,32 @@ if (!context.accountId) {
     color: #687076;
     pointer-events: none;
     display: none;
-  
+
     a {
       color: #000;
       outline: none;
       font-weight: 600;
       pointer-events: auto;
-  
+
       &:hover,
       &:focus {
         color: #000;
         text-decoration: underline;
       }
     }
-  
+
     @media (max-width: 992px) {
       left: var(--padding);
     }
   `;
-  
+
   const Actions = styled.div`
     display: inline-flex;
     gap: 12px;
     position: absolute;
     bottom: var(--padding);
     right: var(--padding);
-  
+
     .commit-post-button,
     .preview-post-button {
       background: #59e692;
@@ -219,32 +219,32 @@ if (!context.accountId) {
       border: none;
       cursor: pointer;
       transition: background 200ms, opacity 200ms;
-  
+
       &:hover,
       &:focus {
         background: rgb(112 242 164);
         outline: none;
       }
-  
+
       &:disabled {
         opacity: 0.5;
         pointer-events: none;
       }
     }
-  
+
     .preview-post-button {
       color: #11181c;
       background: #f1f3f5;
       padding: 0;
       width: 40px;
-  
+
       &:hover,
       &:focus {
         background: #d7dbde;
         outline: none;
       }
     }
-  
+
     .upload-image-button {
       display: flex;
       align-items: center;
@@ -258,57 +258,57 @@ if (!context.accountId) {
       border: none;
       cursor: pointer;
       transition: background 200ms, opacity 200ms;
-  
+
       &::before {
         font-size: 16px;
       }
-  
+
       &:hover,
       &:focus {
         background: #d7dbde;
         outline: none;
       }
-  
+
       &:disabled {
         opacity: 0.5;
         pointer-events: none;
       }
-  
+
       span {
         margin-left: 12px;
       }
     }
-  
+
     .d-inline-block {
       display: flex !important;
       gap: 12px;
       margin: 0 !important;
-  
+
       .overflow-hidden {
         width: 40px !important;
         height: 40px !important;
       }
     }
   `;
-  
+
   const PreviewWrapper = styled.div`
     position: relative;
     padding: var(--padding);
     padding-bottom: calc(40px + (var(--padding) * 2));
   `;
-  
+
   const AutoComplete = styled.div`
     position: absolute;
     z-index: 5;
     bottom: 0;
     left: 0;
     right: 0;
-  
+
     > div > div {
       padding: calc(var(--padding) / 2);
     }
   `;
-  
+
   return (
     <Wrapper>
       {state.showPreview ? (
@@ -335,7 +335,7 @@ if (!context.accountId) {
               }}
             />
           </Avatar>
-  
+
           <Textarea data-value={state.text}>
             <textarea
               placeholder="What's happening?"
@@ -347,7 +347,7 @@ if (!context.accountId) {
               }}
               value={state.text}
             />
-  
+
             <TextareaDescription>
               <a
                 href="https://www.markdownguide.org/basic-syntax/"
@@ -360,7 +360,7 @@ if (!context.accountId) {
           </Textarea>
         </>
       )}
-  
+
       {autocompleteEnabled && state.showAccountAutocomplete && (
         <AutoComplete>
           <Widget
@@ -373,7 +373,7 @@ if (!context.accountId) {
           />
         </AutoComplete>
       )}
-  
+
       <Actions>
         {!state.showPreview && (
           <IpfsImageUpload
@@ -381,7 +381,7 @@ if (!context.accountId) {
             className="upload-image-button bi bi-image"
           />
         )}
-  
+
         <button
           type="button"
           disabled={!state.text}
@@ -395,7 +395,7 @@ if (!context.accountId) {
             <i className="bi bi-eye-fill" />
           )}
         </button>
-  
+
         <CommitButton
           disabled={!state.text}
           force
@@ -408,4 +408,3 @@ if (!context.accountId) {
       </Actions>
     </Wrapper>
   );
-  

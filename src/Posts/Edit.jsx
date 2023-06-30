@@ -314,7 +314,7 @@ if (!context.accountId) {
       {state.showPreview ? (
         <PreviewWrapper>
           <Widget
-            src="near/widget/Posts.Post"
+            src="${REPL_ACCOUNT}/widget/Posts.Post"
             props={{
               accountId: context.accountId,
               blockHeight: "now",
@@ -326,7 +326,7 @@ if (!context.accountId) {
         <>
           <Avatar>
             <Widget
-              src="mob.near/widget/Image"
+              src="${REPL_MOB}/widget/Image"
               props={{
                 image: profile.image,
                 alt: profile.name,
@@ -364,7 +364,7 @@ if (!context.accountId) {
       {autocompleteEnabled && state.showAccountAutocomplete && (
         <AutoComplete>
           <Widget
-            src="near/widget/AccountAutocomplete"
+            src="${REPL_ACCOUNT}/widget/AccountAutocomplete"
             props={{
               term: state.text.split("@").pop(),
               onSelect: autoCompleteAccountId,

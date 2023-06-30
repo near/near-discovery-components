@@ -11,7 +11,7 @@ const showHeader = props.showHeader ?? true;
 const showSearchBar = props.showSearchBar ?? true;
 const showPagination = props.showPagination ?? true;
 const userId = props.accountId ?? context.accountId;
-const searchPageUrl = "/near/widget/Search.IndexPage";
+const searchPageUrl = "/${REPL_ACCOUNT}/widget/Search.IndexPage";
 const topmostCount = props.topmostCount ?? 3;
 
 State.init({
@@ -388,6 +388,7 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
             hitsTotal,
             hitsPerPage,
             hits: profiles(results["profile"]),
+            queryID: resp.body.queryID,
           },
         });
       } else if (facet === "Apps") {
@@ -398,6 +399,7 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
             hits: components(results["app, widget"]).concat(
               components(results["widget"])
             ),
+            queryID: resp.body.queryID,
           },
         });
       } else if (facet === "Components") {
@@ -406,6 +408,7 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
             hitsTotal,
             hitsPerPage,
             hits: components(results["widget"]),
+            queryID: resp.body.queryID,
           },
         });
       } else {
@@ -416,6 +419,7 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
             hits: posts(results["post"], "post").concat(
               posts(results["comment, post"], "post-comment")
             ),
+            queryID: resp.body.queryID,
           },
         });
       }
@@ -497,15 +501,20 @@ const onFacetClick = (facet) => {
   displayResultsByFacet(facet);
 };
 
-const onSearchResultClick = ({ searchPosition, objectID, eventName }) => {
+const onSearchResultClick = ({
+  searchPosition,
+  queryID,
+  objectID,
+  eventName,
+}) => {
   const position =
     searchPosition + state.currentPage * state.paginate.hitsPerPage;
   const event = {
     type: "clickedObjectIDsAfterSearch",
     data: {
       eventName,
+      queryID,
       userToken: userId.replace(".", "+"),
-      queryID: state.queryID,
       objectIDs: [objectID],
       positions: [position],
       timestamp: Date.now(),
@@ -533,15 +542,16 @@ const topmostAccounts = () => {
     output = state.profiles.hits.slice(0, topmostCount);
   }
 
-  return output.map((profile, i) => (
+  return output.map((profile) => (
     <Item key={profile.accountId}>
       <Widget
-        src="near/widget/Search.DropdownAccountCard"
+        src="${REPL_ACCOUNT}/widget/Search.DropdownAccountCard"
         props={{
           accountId: profile.accountId,
           profile_name: profile.profile_name,
           onClick: () =>
             onSearchResultClick({
+              queryID: state.profiles.queryID,
               searchPosition: profile.searchPosition,
               objectID: `${profile.accountId}/profile`,
               eventName: "Clicked Profile After Search",
@@ -591,17 +601,20 @@ const topmostComponents = (apps) => {
     }
   }
 
+  const queryID = apps ? state.apps.queryID : state.components.queryID;
+  const eventName = apps ? "App" : "Component";
   return output.map((component, i) => (
     <Item key={`${component.accountId}/widget/${component.widgetName}`}>
       <Widget
-        src="near/widget/Search.ComponentCard"
+        src="${REPL_ACCOUNT}/widget/Search.ComponentCard"
         props={{
           src: `${component.accountId}/widget/${component.widgetName}`,
           onClick: () =>
             onSearchResultClick({
+              queryID,
               searchPosition: component.searchPosition,
               objectID: `${component.accountId}/widget/${component.widgetName}`,
-              eventName: "Clicked Component After Search",
+              eventName: `Clicked ${eventName} After Search`,
             }),
         }}
       />
@@ -625,13 +638,20 @@ const topmostPosts = () => {
   return output.map((post, i) => (
     <Item key={`${post.accountId}/${post.postType}/${post.blockHeight}`}>
       <Widget
-        src="near/widget/Search.PostCard"
+        src="${REPL_ACCOUNT}/widget/Search.PostCard"
         props={{
           accountId: post.accountId,
           blockHeight: post.blockHeight,
           content: post.postContent,
           term: props.term,
           snipContent: true,
+          onClick: () =>
+            onSearchResultClick({
+              queryID: state.postsAndComments.queryID,
+              searchPosition: post.searchPosition,
+              objectID: `${post.accountId}/${post.postType}/${post.blockHeight}`,
+              eventName: "Clicked Post After Search",
+            }),
         }}
       />
     </Item>
@@ -892,12 +912,41 @@ if (props.term !== state.lastSyncedTerm) {
   onSearchChange({ term: props.term });
 }
 
+const encodeURIComponent = (text) => {
+  const hexDigits = "0123456789ABCDEF";
+  const result = [];
+  for (var i = 0; i < text.length; i++) {
+    const c = text.charCodeAt(i);
+    if (
+      (c >= 48 /*0*/ && c <= 57) /*9*/ ||
+      (c >= 97 /*a*/ && c <= 122) /*z*/ ||
+      (c >= 65 /*A*/ && c <= 90) /*Z*/ ||
+      c == 45 /*-*/ ||
+      c == 95 /*_*/ ||
+      c == 46 /*.*/ ||
+      c == 33 /*!*/ ||
+      c == 126 /*~*/ ||
+      c == 42 /***/ ||
+      c == 92 /*\\*/ ||
+      c == 40 /*(*/ ||
+      c == 41 /*)*/
+    ) {
+      result.push(text[i]);
+    } else {
+      const firstHexDigit = hexDigits.charAt((c & 0xf0) / 16);
+      const secondHexDigit = hexDigits.charAt(c & 0x0f);
+      result.push(`%${firstHexDigit}${secondHexDigit}`);
+    }
+  }
+  return result.join("");
+};
+
 return (
   <div style={typeAheadContainer}>
     <Wrapper>
       <FixedTabs>
         <Widget
-          src="near/widget/Search.Facets"
+          src="${REPL_ACCOUNT}/widget/Search.Facets"
           props={{
             facets,
             onFacetClick,
@@ -927,7 +976,9 @@ return (
 
       <FixedFooter>
         <Button
-          href={`${searchPageUrl}?term=${props.term}&tab=${state.selectedTab}`}
+          href={`${searchPageUrl}?term=${encodeURIComponent(props.term)}&tab=${
+            state.selectedTab
+          }`}
           as="a"
         >
           {state.paginate?.hitsTotal > 0 &&
@@ -937,7 +988,7 @@ return (
 
       {!props.disableInsights && (
         <Widget
-          src="near/widget/Search.Insights"
+          src="${REPL_ACCOUNT}/widget/Search.Insights"
           props={{
             event: state.event,
             searchApiKey: SEARCH_API_KEY,

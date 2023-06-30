@@ -135,10 +135,10 @@ return (
       {allNfts.map((nft, i) => (
         <Card
           key={i}
-          href={`#/mob.near/widget/NftImage?tokenId=${nft.token_id}&contractId=${nft.contractId}`}
+          href={`#/${REPL_MOB_2}/widget/NftImage?tokenId=${nft.token_id}&contractId=${nft.contractId}`}
         >
           <Widget
-            src="mob.near/widget/NftImage"
+            src="${REPL_MOB_2}/widget/NftImage"
             props={{
               nft: { tokenId: nft.token_id, contractId: nft.contractId },
               className: "nft-thumbnail",

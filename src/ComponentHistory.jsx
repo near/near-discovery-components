@@ -244,7 +244,7 @@ return (
 
       {!state.showAllCommits && blocksChanges.length > COMMIT_DISPLAY_LIMIT && (
         <Widget
-          src="near/widget/DIG.Button"
+          src="${REPL_ACCOUNT}/widget/DIG.Button"
           props={{
             fill: "outline",
             variant: "secondary",

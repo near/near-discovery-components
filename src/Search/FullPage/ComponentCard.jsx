@@ -4,9 +4,9 @@ const metadata = Social.get(
   "final"
 );
 const tags = Object.keys(metadata.tags || {});
-const detailsUrl = `/near/widget/ComponentDetailsPage?src=${accountId}/widget/${widgetName}`;
+const detailsUrl = `/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${accountId}/widget/${widgetName}`;
 const appUrl = `/${accountId}/widget/${widgetName}`;
-const accountUrl = `/near/widget/ProfilePage?accountId=${accountId}`;
+const accountUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 const onPointerUp =
   props.onClick ??
   ((event) => {
@@ -159,7 +159,7 @@ return (
       <CardTag>
         <i className="bi bi-clock"></i>{" "}
         <Widget
-          src="mob.near/widget/TimeAgo"
+          src="${REPL_MOB}/widget/TimeAgo"
           props={{
             blockHeight: props.blockHeight,
             keyPath: `${accountId}/widget/${widgetName}`,
@@ -172,7 +172,7 @@ return (
     <CardBody>
       <Thumbnail href={detailsUrl} onPointerUp={onPointerUp}>
         <Widget
-          src="mob.near/widget/Image"
+          src="${REPL_MOB}/widget/Image"
           props={{
             image: metadata.image,
             fallbackUrl:
@@ -206,7 +206,7 @@ return (
         {tags.length > 0 && (
           <TagsWrapper>
             <Widget
-              src="near/widget/Tags"
+              src="${REPL_ACCOUNT}/widget/Tags"
               props={{
                 tags,
                 scroll: true,

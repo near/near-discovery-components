@@ -407,7 +407,7 @@ return (
     {showFacets && state.search && (
       <Facets>
         <Widget
-          src="near/widget/Search.FullPage.Facets"
+          src="${REPL_ACCOUNT}/widget/Search.FullPage.Facets"
           props={{
             facets,
             onFacetClick,
@@ -435,7 +435,7 @@ return (
           {state.search.profiles.map((profile, i) => (
             <Item key={profile.accountId}>
               <Widget
-                src="near/widget/Search.FullPage.AccountProfileCard"
+                src="${REPL_ACCOUNT}/widget/Search.FullPage.AccountProfileCard"
                 props={{
                   accountId: profile.accountId,
                   onClick: () =>
@@ -465,7 +465,7 @@ return (
           {state.search.components.map((component, i) => (
             <Item key={component.accountId + component.widgetName}>
               <Widget
-                src="near/widget/Search.FullPage.ComponentCard"
+                src="${REPL_ACCOUNT}/widget/Search.FullPage.ComponentCard"
                 props={{
                   src: `${component.accountId}/widget/${component.widgetName}`,
                   onClick: () =>
@@ -494,7 +494,7 @@ return (
               key={`${post.accountId}/${post.postType}/${post.blockHeight}`}
             >
               <Widget
-                src="near/widget/Search.FullPage.PostCard"
+                src="${REPL_ACCOUNT}/widget/Search.FullPage.PostCard"
                 props={{
                   accountId: post.accountId,
                   blockHeight: post.blockHeight,
@@ -519,7 +519,7 @@ return (
       state.paginate &&
       state.paginate.hitsTotal > state.paginate.hitsPerPage && (
         <Widget
-          src="near/widget/Search.Paginate"
+          src="${REPL_ACCOUNT}/widget/Search.Paginate"
           props={{
             totalCount: state.paginate.hitsTotal,
             pageSize: state.paginate.hitsPerPage,
@@ -530,7 +530,7 @@ return (
 
     {!props.disableInsights && (
       <Widget
-        src="near/widget/Search.Insights"
+        src="${REPL_ACCOUNT}/widget/Search.Insights"
         props={{
           event: state.event,
           searchApiKey: SEARCH_API_KEY,

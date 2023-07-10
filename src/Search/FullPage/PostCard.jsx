@@ -1,4 +1,3 @@
-// Original widget: https://alpha.near.org/#/calebjacob.near/widget/Posts.Post
 const accountId = props.accountId ?? context.accountId;
 const blockHeight = props.blockHeight ?? "now";
 const snipContent = props.snipContent ?? false;
@@ -16,7 +15,7 @@ const key = props.key ?? JSON.stringify(content);
 const postType = props.postType ?? "post";
 const postBlockHeight =
   postType === "post" ? "blockHeight" : "commentBlockHeight";
-const postUrl = `/near/widget/PostPage?accountId=${accountId}&${postBlockHeight}=${blockHeight}`;
+const postUrl = `/${REPL_ACCOUNT}/widget/PostPage?accountId=${accountId}&${postBlockHeight}=${blockHeight}`;
 const onClick =
   props.onClick ??
   (() => {
@@ -83,7 +82,7 @@ return (
   <Post href={postUrl} onPointerUp={onClick}>
     <Header>
       <Widget
-        src="near/widget/AccountProfile"
+        src="${REPL_ACCOUNT}/widget/AccountProfile"
         props={{
           accountId,
           hideAccountId: true,
@@ -96,7 +95,7 @@ return (
                 ) : (
                   <>
                     <Widget
-                      src="mob.near/widget/TimeAgo"
+                      src="${REPL_MOB}/widget/TimeAgo"
                       props={{ blockHeight }}
                     />{" "}
                     ago
@@ -113,14 +112,14 @@ return (
       <Content>
         {content.text && (
           <Widget
-            src="near/widget/SocialMarkdown"
+            src="${REPL_ACCOUNT}/widget/SocialMarkdown"
             props={{ text: content.text }}
           />
         )}
 
         {content.image && (
           <Widget
-            src="mob.near/widget/Image"
+            src="${REPL_MOB}/widget/Image"
             props={{
               image: content.image,
             }}

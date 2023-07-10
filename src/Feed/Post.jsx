@@ -19,7 +19,7 @@ const link = `#/${REPL_MOB_2}/widget/MainPage.Post.Page?accountId=${accountId}&b
 const Post = styled.div`
   padding: 24px;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     padding: 24px 12px;
   }
 `;

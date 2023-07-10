@@ -66,7 +66,7 @@ const Wrapper = styled.div`
       width: 100%;
       color: #006adc !important;
 
-      @media (max-width: 1200px) {
+      @media (max-width: 1024px) {
         width: auto;
       }
     }
@@ -213,7 +213,7 @@ const FollowButtonWrapper = styled.div`
   button {
     width: 100%;
   }
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     flex: 0 0 auto;
     div,
     button {

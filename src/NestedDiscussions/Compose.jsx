@@ -123,7 +123,7 @@ const Wrapper = styled.div`
   --padding: 24px;
   position: relative;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     --padding: 12px;
   }
 `;
@@ -154,7 +154,7 @@ const Textarea = styled.div`
   align-items: center;
   position: relative;
   align-items: stretch;
-  
+
   &::after,
   textarea {
     width: 100%;
@@ -172,7 +172,7 @@ const Textarea = styled.div`
     overflow: hidden;
     outline: none;
 
-    @media (max-width: 1200px) {
+    @media (max-width: 1024px) {
       min-height: 124px;
     }
 
@@ -180,7 +180,7 @@ const Textarea = styled.div`
       padding-left: var(--padding);
     }
   }
-  
+
   &::after {
     content: attr(data-value) ' ';
     visibility: hidden;

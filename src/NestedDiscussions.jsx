@@ -13,7 +13,7 @@ if (!identifier) {
 }
 
 const DiscussionContainer = styled.div`
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     > div:first-child {
       border-top: none;
     }
@@ -30,7 +30,7 @@ const FeedWrapper = styled.div`
     padding-left: 24px;
     padding-right: 24px;
 
-    @media (max-width: 1200px) {
+    @media (max-width: 1024px) {
       padding-left: 12px;
       padding-right: 12px;
     }

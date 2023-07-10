@@ -130,7 +130,7 @@ const Button = styled.a`
     width: 100%;
     color: #006adc !important;
 
-    @media (max-width: 1200px) {
+    @media (max-width: 1024px) {
       width: auto;
     }
   }

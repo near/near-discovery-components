@@ -20,7 +20,7 @@ const Main = styled.div`
   grid-template-columns: 290px minmax(0, 1fr) 290px;
   grid-gap: 16px;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     display: block;
   }
 `;
@@ -42,7 +42,7 @@ const Section = styled.div`
     }
   }
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     padding-top: 0px;
     border-left: none;
     border-right: none;
@@ -60,7 +60,7 @@ const Tabs = styled.div`
   overflow: auto;
   scroll-behavior: smooth;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     display: flex;
     margin-left: -12px;
     margin-right: -12px;

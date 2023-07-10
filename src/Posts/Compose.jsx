@@ -98,7 +98,7 @@ const Wrapper = styled.div`
   --padding: 24px;
   position: relative;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     --padding: 12px;
   }
 `;
@@ -148,7 +148,7 @@ const Textarea = styled.div`
     overflow: hidden;
     outline: none;
 
-    @media (max-width: 1200px) {
+    @media (max-width: 1024px) {
       min-height: 124px;
     }
 

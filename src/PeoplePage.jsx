@@ -141,7 +141,7 @@ const Items = styled.div`
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -188,7 +188,7 @@ const Tabs = styled.div`
   overflow: auto;
   scroll-behavior: smooth;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     background: #f8f9fa;
     border-top: 1px solid #eceef0;
     margin-left: -12px;

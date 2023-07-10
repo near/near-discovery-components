@@ -11,7 +11,7 @@ const showHeader = props.showHeader ?? true;
 const showSearchBar = props.showSearchBar ?? true;
 const showPagination = props.showPagination ?? true;
 const userId = props.accountId ?? context.accountId;
-const searchPageUrl = "/near/widget/Search.IndexPage";
+const searchPageUrl = "/${REPL_ACCOUNT}/widget/Search.IndexPage";
 const topmostCount = props.topmostCount ?? 3;
 
 State.init({
@@ -159,7 +159,7 @@ const Tabs = styled.div`
   overflow: auto;
   scroll-behavior: smooth;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     background: #f8f9fa;
     border-top: 1px solid #eceef0;
     margin-left: -12px;
@@ -545,7 +545,7 @@ const topmostAccounts = () => {
   return output.map((profile) => (
     <Item key={profile.accountId}>
       <Widget
-        src="near/widget/Search.DropdownAccountCard"
+        src="${REPL_ACCOUNT}/widget/Search.DropdownAccountCard"
         props={{
           accountId: profile.accountId,
           profile_name: profile.profile_name,
@@ -606,7 +606,7 @@ const topmostComponents = (apps) => {
   return output.map((component, i) => (
     <Item key={`${component.accountId}/widget/${component.widgetName}`}>
       <Widget
-        src="near/widget/Search.ComponentCard"
+        src="${REPL_ACCOUNT}/widget/Search.ComponentCard"
         props={{
           src: `${component.accountId}/widget/${component.widgetName}`,
           onClick: () =>
@@ -638,7 +638,7 @@ const topmostPosts = () => {
   return output.map((post, i) => (
     <Item key={`${post.accountId}/${post.postType}/${post.blockHeight}`}>
       <Widget
-        src="near/widget/Search.PostCard"
+        src="${REPL_ACCOUNT}/widget/Search.PostCard"
         props={{
           accountId: post.accountId,
           blockHeight: post.blockHeight,
@@ -946,7 +946,7 @@ return (
     <Wrapper>
       <FixedTabs>
         <Widget
-          src="near/widget/Search.Facets"
+          src="${REPL_ACCOUNT}/widget/Search.Facets"
           props={{
             facets,
             onFacetClick,
@@ -988,7 +988,7 @@ return (
 
       {!props.disableInsights && (
         <Widget
-          src="near/widget/Search.Insights"
+          src="${REPL_ACCOUNT}/widget/Search.Insights"
           props={{
             event: state.event,
             searchApiKey: SEARCH_API_KEY,

@@ -36,13 +36,13 @@ const H2 = styled.h2`
   margin: 0 0 24px;
   padding: 0 24px;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     display: none;
   }
 `;
 
 const Content = styled.div`
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     > div:first-child {
       border-top: none;
     }
@@ -57,7 +57,7 @@ const FilterWrapper = styled.div`
   border-top: 1px solid #eceef0;
   padding: 24px 24px 0;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     padding: 12px;
   }
 `;
@@ -115,7 +115,7 @@ const FeedWrapper = styled.div`
     padding-left: 24px;
     padding-right: 24px;
 
-    @media (max-width: 1200px) {
+    @media (max-width: 1024px) {
       padding-left: 12px;
       padding-right: 12px;
     }
@@ -130,7 +130,7 @@ return (
       {context.accountId && (
         <>
           <ComposeWrapper>
-            <Widget src="near/widget/Posts.Compose" />
+            <Widget src="${REPL_ACCOUNT}/widget/Posts.Compose" />
           </ComposeWrapper>
 
           <FilterWrapper>
@@ -156,7 +156,7 @@ return (
       )}
 
       <FeedWrapper>
-        <Widget src="near/widget/Posts.Feed" props={{ accounts }} />
+        <Widget src="${REPL_ACCOUNT}/widget/Posts.Feed" props={{ accounts }} />
       </FeedWrapper>
     </Content>
   </>

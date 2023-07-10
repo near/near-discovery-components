@@ -1,5 +1,5 @@
-const componentsUrl = `#/near/widget/ComponentsPage`;
-const peopleUrl = `#/near/widget/PeoplePage`;
+const componentsUrl = `#/${REPL_ACCOUNT}/widget/ComponentsPage`;
+const peopleUrl = `#/${REPL_ACCOUNT}/widget/PeoplePage`;
 
 function onSearchChange({ result, term }) {
   if (term.trim()) {
@@ -111,7 +111,7 @@ return (
 
     <Search>
       <Widget
-        src="near/widget/GlobalSearch"
+        src="${REPL_ACCOUNT}/widget/GlobalSearch"
         props={{
           limitPerGroup: 3,
           onChange: onSearchChange,
@@ -138,7 +138,7 @@ return (
           {state.searchResults.people.map((person, i) => (
             <Item key={person.accountId}>
               <Widget
-                src="near/widget/AccountProfileCard"
+                src="${REPL_ACCOUNT}/widget/AccountProfileCard"
                 props={{
                   accountId: person.accountId,
                 }}
@@ -162,7 +162,7 @@ return (
           {state.searchResults.components.map((component, i) => (
             <Item key={component.accountId + component.widgetName}>
               <Widget
-                src="near/widget/ComponentCard"
+                src="${REPL_ACCOUNT}/widget/ComponentCard"
                 props={{
                   src: `${component.accountId}/widget/${component.widgetName}`,
                 }}

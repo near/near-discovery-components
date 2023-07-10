@@ -1,7 +1,7 @@
 const identifier = props.identifier;
 const notifyAccountId = props.notifyAccountId;
 const highlightComment = props.highlightComment;
-const moderatorAccount = props.moderatorAccount || "bosmod.near";
+const moderatorAccount = props.moderatorAccount || "${REPL_MODERATOR}";
 const placeholder = props.placeholder || "Join the discussion";
 
 // discussions happen inside other components
@@ -13,7 +13,7 @@ if (!identifier) {
 }
 
 const DiscussionContainer = styled.div`
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     > div:first-child {
       border-top: none;
     }
@@ -30,7 +30,7 @@ const FeedWrapper = styled.div`
     padding-left: 24px;
     padding-right: 24px;
 
-    @media (max-width: 1200px) {
+    @media (max-width: 1024px) {
       padding-left: 12px;
       padding-right: 12px;
     }
@@ -59,7 +59,7 @@ return (
     {context.accountId ? (
       <ComposeWrapper>
         <Widget
-          src="near/widget/NestedDiscussions.Compose"
+          src="${REPL_ACCOUNT}/widget/NestedDiscussions.Compose"
           props={{
             placeholder,
             indexKey: identifier,
@@ -79,7 +79,7 @@ return (
     )}
     <FeedWrapper>
       <Widget
-        src="near/widget/NestedDiscussions.Feed"
+        src="${REPL_ACCOUNT}/widget/NestedDiscussions.Feed"
         props={{
           indexKey: identifier,
           moderatorAccount,

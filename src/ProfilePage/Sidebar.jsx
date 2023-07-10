@@ -13,8 +13,8 @@ if (!accountId) {
 // Profile Data:
 const tags = Object.keys(profile.tags || {});
 const viewingOwnAccount = accountId === context.accountId;
-const accountUrl = `#/near/widget/ProfilePage?accountId=${accountId}`;
-const shareUrl = `https://near.org${accountUrl}`;
+const accountUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
+const shareUrl = `https://${REPL_NEAR_URL}${accountUrl}`;
 
 // Follower Count:
 const following = Social.keys(`${accountId}/graph/follow/*`, "final", {
@@ -66,7 +66,7 @@ const Wrapper = styled.div`
       width: 100%;
       color: #006adc !important;
 
-      @media (max-width: 1200px) {
+      @media (max-width: 1024px) {
         width: auto;
       }
     }
@@ -213,7 +213,7 @@ const FollowButtonWrapper = styled.div`
   button {
     width: 100%;
   }
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     flex: 0 0 auto;
     div,
     button {
@@ -226,7 +226,7 @@ return (
   <Wrapper>
     <Avatar>
       <Widget
-        src="mob.near/widget/Image"
+        src="${REPL_MOB}/widget/Image"
         props={{
           image: profile.image,
           alt: profile.name,
@@ -248,7 +248,7 @@ return (
         {viewingOwnAccount ? (
           <a
             className="button button--primary"
-            href="#/near/widget/ProfileEditor"
+            href="#/${REPL_ACCOUNT}/widget/ProfileEditor"
           >
             <i className="bi bi-pencil"></i>
             Edit Profile
@@ -257,7 +257,7 @@ return (
           <>
             <FollowButtonWrapper>
               <Widget
-                src="near/widget/FollowButton"
+                src="${REPL_ACCOUNT}/widget/FollowButton"
                 props={{
                   accountId,
                 }}
@@ -265,7 +265,7 @@ return (
             </FollowButtonWrapper>
 
             <Widget
-              src="near/widget/PokeButton"
+              src="${REPL_ACCOUNT}/widget/PokeButton"
               props={{
                 accountId,
               }}
@@ -305,7 +305,7 @@ return (
     {tags.length > 0 && (
       <Section>
         <Widget
-          src="near/widget/Tags"
+          src="${REPL_ACCOUNT}/widget/Tags"
           props={{
             tags,
           }}

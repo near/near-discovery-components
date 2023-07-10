@@ -14,7 +14,7 @@ if (props.tab && props.tab !== state.selectedTab) {
 }
 
 const profile = props.profile ?? Social.getr(`${accountId}/profile`);
-const accountUrl = `#/near/widget/ProfilePage?accountId=${accountId}`;
+const accountUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 
 const Wrapper = styled.div`
   padding-bottom: 48px;
@@ -26,7 +26,7 @@ const Main = styled.div`
   grid-template-columns: 352px minmax(0, 1fr);
   align-items: start;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     grid-template-columns: minmax(0, 1fr);
   }
 `;
@@ -44,12 +44,12 @@ const BackgroundImage = styled.div`
     height: 100%;
   }
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     margin: calc(var(--body-top-padding) * -1) -12px 0;
     border-radius: 0;
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 1024px) {
     height: 100px;
   }
 `;
@@ -59,7 +59,7 @@ const SidebarWrapper = styled.div`
   z-index: 5;
   margin-top: -55px;
 
-  @media (max-width: 900px) {
+  @media (max-width: 1024px) {
     margin-top: -40px;
   }
 `;
@@ -88,7 +88,7 @@ const Tabs = styled.div`
   overflow: auto;
   scroll-behavior: smooth;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     background: #f8f9fa;
     border-top: 1px solid #eceef0;
     margin: 0 -12px 48px;
@@ -155,7 +155,7 @@ return (
     <BackgroundImage>
       {profile.backgroundImage && (
         <Widget
-          src="mob.near/widget/Image"
+          src="${REPL_MOB}/widget/Image"
           props={{
             image: profile.backgroundImage,
             alt: "profile background image",
@@ -169,7 +169,7 @@ return (
     <Main>
       <SidebarWrapper>
         <Widget
-          src="near/widget/ProfilePage.Sidebar"
+          src="${REPL_ACCOUNT}/widget/ProfilePage.Sidebar"
           props={{
             accountId,
             profile,
@@ -232,7 +232,7 @@ return (
 
                 <Bio>
                   <Widget
-                    src="near/widget/SocialMarkdown"
+                    src="${REPL_ACCOUNT}/widget/SocialMarkdown"
                     props={{ text: profile.description }}
                   />
                 </Bio>
@@ -240,31 +240,43 @@ return (
             )}
 
             <Widget
-              src="near/widget/Posts.Feed"
+              src="${REPL_ACCOUNT}/widget/Posts.Feed"
               props={{ accounts: [accountId] }}
             />
           </>
         )}
 
         {state.selectedTab === "nfts" && (
-          <Widget src="near/widget/NFTCollection" props={{ accountId }} />
+          <Widget
+            src="${REPL_ACCOUNT}/widget/NFTCollection"
+            props={{ accountId }}
+          />
         )}
 
         {state.selectedTab === "apps" && (
-          <Widget src="near/widget/ComponentCollection" props={{ accountId }} />
+          <Widget
+            src="${REPL_ACCOUNT}/widget/ComponentCollection"
+            props={{ accountId }}
+          />
         )}
 
         {state.selectedTab === "followers" && (
-          <Widget src="near/widget/FollowersList" props={{ accountId }} />
+          <Widget
+            src="${REPL_ACCOUNT}/widget/FollowersList"
+            props={{ accountId }}
+          />
         )}
 
         {state.selectedTab === "following" && (
-          <Widget src="near/widget/FollowingList" props={{ accountId }} />
+          <Widget
+            src="${REPL_ACCOUNT}/widget/FollowingList"
+            props={{ accountId }}
+          />
         )}
 
         {state.selectedTab === "explorer" && (
           <Widget
-            src="near/widget/Explorer.Account"
+            src="${REPL_ACCOUNT}/widget/Explorer.Account"
             props={{
               accountId,
               network: context.networkId,

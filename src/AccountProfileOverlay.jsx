@@ -45,16 +45,19 @@ const overlay = (
   <CardWrapper>
     <Card onMouseEnter={handleOnMouseEnter} onMouseLeave={handleOnMouseLeave}>
       <Widget
-        src="near/widget/AccountProfile"
+        src="${REPL_ACCOUNT}/widget/AccountProfile"
         props={{ accountId: props.accountId, profile, noOverlay: true }}
       />
 
-      <Widget src="near/widget/Tags" props={{ tags, scroll: true }} />
+      <Widget
+        src="${REPL_ACCOUNT}/widget/Tags"
+        props={{ tags, scroll: true }}
+      />
 
       {!!context.accountId && context.accountId !== props.accountId && (
         <FollowButtonWrapper>
           <Widget
-            src="near/widget/FollowButton"
+            src="${REPL_ACCOUNT}/widget/FollowButton"
             props={{ accountId: props.accountId }}
           />
         </FollowButtonWrapper>
@@ -73,7 +76,10 @@ return (
   >
     <span
       className={props.inline ? "d-inline-flex" : "d-block"}
-      style={{ verticalAlign: props.inline ? "baseline" : "" }}
+      style={{
+        verticalAlign: props.inline ? "baseline" : "",
+        maxWidth: "100%",
+      }}
       onMouseEnter={handleOnMouseEnter}
       onMouseLeave={handleOnMouseLeave}
     >

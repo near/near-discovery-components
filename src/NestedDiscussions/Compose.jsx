@@ -123,7 +123,7 @@ const Wrapper = styled.div`
   --padding: 24px;
   position: relative;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     --padding: 12px;
   }
 `;
@@ -154,7 +154,7 @@ const Textarea = styled.div`
   align-items: center;
   position: relative;
   align-items: stretch;
-  
+
   &::after,
   textarea {
     width: 100%;
@@ -172,7 +172,7 @@ const Textarea = styled.div`
     overflow: hidden;
     outline: none;
 
-    @media (max-width: 1200px) {
+    @media (max-width: 1024px) {
       min-height: 124px;
     }
 
@@ -180,7 +180,7 @@ const Textarea = styled.div`
       padding-left: var(--padding);
     }
   }
-  
+
   &::after {
     content: attr(data-value) ' ';
     visibility: hidden;
@@ -349,7 +349,7 @@ return (
     {state.showPreview ? (
       <PreviewWrapper>
         <Widget
-          src="near/widget/Posts.Post"
+          src="${REPL_ACCOUNT}/widget/Posts.Post"
           props={{
             accountId: context.accountId,
             blockHeight: "now",
@@ -361,7 +361,7 @@ return (
       <>
         <Avatar>
           <Widget
-            src="mob.near/widget/Image"
+            src="${REPL_MOB}/widget/Image"
             props={{
               image: profile.image,
               alt: profile.name,

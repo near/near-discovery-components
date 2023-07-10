@@ -3,16 +3,17 @@ const blockHeight =
   props.blockHeight === "now" ? "now" : parseInt(props.blockHeight);
 const subscribe = !!props.subscribe;
 const notifyAccountId = accountId;
-const postUrl = `https://near.org#/near/widget/PostPage?accountId=${accountId}&blockHeight=${blockHeight}`;
+const postUrl = `https://${REPL_NEAR_URL}/s/p?a=${accountId}&b=${blockHeight}`;
 
 State.init({ hasBeenFlagged: false });
 
-const edits = [] // Social.index('edit', { accountId, blockHeight }, { limit: 1, order: "desc", accountId })
+const edits = []; // Social.index('edit', { accountId, blockHeight }, { limit: 1, order: "desc", accountId })
 
 const content =
   props.content ??
   JSON.parse(
-    edits.length ? Social.get(`${accountId}/edit/main`, edits.blockHeight)
+    edits.length
+      ? Social.get(`${accountId}/edit/main`, edits.blockHeight)
       : Social.get(`${accountId}/post/main`, blockHeight)
   );
 
@@ -24,7 +25,7 @@ const item = {
 
 const toggleEdit = () => {
   State.update({ editPost: !state.editPost });
-}
+};
 
 const Post = styled.div`
   position: relative;
@@ -97,7 +98,7 @@ return (
       <div className="row">
         <div className="col-auto">
           <Widget
-            src="near/widget/AccountProfile"
+            src="${REPL_ACCOUNT}/widget/AccountProfile"
             props={{
               accountId,
               hideAccountId: true,
@@ -110,7 +111,7 @@ return (
                     ) : (
                       <>
                         <Widget
-                          src="mob.near/widget/TimeAgo"
+                          src="${REPL_MOB_2}/widget/TimeAgo"
                           props={{ blockHeight }}
                         />{" "}
                         ago
@@ -124,20 +125,19 @@ return (
           />
         </div>
         <div className="col-1">
-          {false &&
-            <Widget src="near/widget/Posts.Menu"
+          {false && (
+            <Widget
+              src="${REPL_ACCOUNT}/widget/Posts.Menu"
               props={{
                 elements: [
-                  <button
-                    className={`btn`}
-                    onClick={toggleEdit} >
+                  <button className={`btn`} onClick={toggleEdit}>
                     <i className="bi bi-pencil me-1" />
                     <span>Edit</span>
-                  </button>
-                ]
+                  </button>,
+                ],
               }}
             />
-          }
+          )}
         </div>
       </div>
     </Header>
@@ -146,7 +146,7 @@ return (
       <Content>
         {content.text && !state.editPost && (
           <Widget
-            src="near/widget/SocialMarkdown"
+            src="${REPL_ACCOUNT}/widget/SocialMarkdown"
             props={{ text: content.text }}
           />
         )}
@@ -154,11 +154,11 @@ return (
         {state.editPost && (
           <div className="mb-2">
             <Widget
-              src="near/widget/Posts.Edit"
+              src="${REPL_ACCOUNT}/widget/Posts.Edit"
               props={{
                 item: { accountId, blockHeight },
                 content,
-                onEdit: toggleEdit
+                onEdit: toggleEdit,
               }}
             />
           </div>
@@ -166,7 +166,7 @@ return (
 
         {content.image && (
           <Widget
-            src="mob.near/widget/Image"
+            src="${REPL_MOB}/widget/Image"
             props={{
               image: content.image,
             }}
@@ -177,27 +177,34 @@ return (
       {blockHeight !== "now" && (
         <Actions>
           <Widget
-            src="near/widget/LikeButton"
+            src="${REPL_ACCOUNT}/widget/LikeButton"
             props={{
               item,
               notifyAccountId,
             }}
           />
           <Widget
-            src="near/widget/CommentButton"
+            src="${REPL_ACCOUNT}/widget/CommentButton"
             props={{
               item,
               onClick: () => State.update({ showReply: !state.showReply }),
             }}
           />
           <Widget
-            src="near/widget/CopyUrlButton"
+            src="${REPL_ACCOUNT}/widget/CopyUrlButton"
             props={{
               url: postUrl,
             }}
           />
           <Widget
-            src="near/widget/FlagButton"
+            src="${REPL_ACCOUNT}/widget/ShareButton"
+            props={{
+              postType: "post",
+              url: postUrl,
+            }}
+          />
+          <Widget
+            src="${REPL_ACCOUNT}/widget/FlagButton"
             props={{
               item,
               onFlag: () => {
@@ -211,7 +218,7 @@ return (
       {state.showReply && (
         <div className="mb-2">
           <Widget
-            src="near/widget/Comments.Compose"
+            src="${REPL_ACCOUNT}/widget/Comments.Compose"
             props={{
               notifyAccountId,
               item,
@@ -223,7 +230,7 @@ return (
 
       <Comments>
         <Widget
-          src="near/widget/Comments.Feed"
+          src="${REPL_ACCOUNT}/widget/Comments.Feed"
           props={{
             item,
             highlightComment: props.highlightComment,

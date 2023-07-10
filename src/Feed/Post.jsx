@@ -14,12 +14,12 @@ const item = {
   blockHeight,
 };
 
-const link = `#/mob.near/widget/MainPage.Post.Page?accountId=${accountId}&blockHeight=${blockHeight}`;
+const link = `#/${REPL_MOB_2}/widget/MainPage.Post.Page?accountId=${accountId}&blockHeight=${blockHeight}`;
 
 const Post = styled.div`
   padding: 24px;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     padding: 24px 12px;
   }
 `;
@@ -27,26 +27,26 @@ const Post = styled.div`
 return (
   <Post className="post">
     <Widget
-      src="mob.near/widget/MainPage.Post.Header"
+      src="${REPL_MOB_2}/widget/MainPage.Post.Header"
       props={{ accountId, blockHeight, link, postType: "post" }}
     />
     <div className="mt-3 text-break">
       <Widget
-        src="mob.near/widget/MainPage.Post.Content"
+        src="${REPL_MOB_2}/widget/MainPage.Post.Content"
         props={{ content, raw }}
       />
     </div>
     {blockHeight !== "now" && (
       <div className="mt-1 d-flex justify-content-between">
         <Widget
-          src="mob.near/widget/LikeButton"
+          src="${REPL_MOB_2}/widget/LikeButton"
           props={{
             notifyAccountId,
             item,
           }}
         />
         <Widget
-          src="mob.near/widget/CommentButton"
+          src="${REPL_MOB_2}/widget/CommentButton"
           props={{
             onClick: () =>
               !state.showReply && State.update({ showReply: true }),
@@ -58,7 +58,7 @@ return (
       {state.showReply && (
         <div className="mb-2">
           <Widget
-            src="mob.near/widget/MainPage.Comment.Compose"
+            src="${REPL_MOB_2}/widget/MainPage.Comment.Compose"
             props={{
               notifyAccountId,
               item,
@@ -68,7 +68,7 @@ return (
         </div>
       )}
       <Widget
-        src="mob.near/widget/MainPage.Comment.Feed"
+        src="${REPL_MOB_2}/widget/MainPage.Comment.Feed"
         props={{
           item,
           highlightComment: props.highlightComment,

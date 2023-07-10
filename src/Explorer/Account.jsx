@@ -5,7 +5,7 @@ if (!accountId) {
 const isBeta = props.beta === undefined ? true : props.beta;
 return (
   <Widget
-    src="near/widget/Explorer.Iframe"
+    src="${REPL_ACCOUNT}/widget/Explorer.Iframe"
     props={{
       url: `${isBeta ? "beta/" : ""}accounts/${accountId}`,
       query: { language: props.language, embedded: true },

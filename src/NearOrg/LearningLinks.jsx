@@ -88,7 +88,7 @@ return (
               Learn about Web3 and NEAR
             </Text>
             <Widget
-              src="near/widget/DIG.Button"
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
                 href: "#todo",
                 target: "_blank",
@@ -112,7 +112,7 @@ return (
               Watch NEAR on YouTube
             </Text>
             <Widget
-              src="near/widget/DIG.Button"
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
                 href: "https://www.youtube.com/c/NEARProtocol",
                 target: "_blank",
@@ -136,7 +136,7 @@ return (
               Dive deeper
             </Text>
             <Widget
-              src="near/widget/DIG.Button"
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
                 href: "#todo",
                 target: "_blank",
@@ -170,7 +170,7 @@ return (
               Understand why to build on NEAR
             </Text>
             <Widget
-              src="near/widget/DIG.Button"
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
                 href: "#todo",
                 target: "_blank",
@@ -194,7 +194,7 @@ return (
               Get an example running in minutes
             </Text>
             <Widget
-              src="near/widget/DIG.Button"
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
                 href: "https://docs.near.org/develop/quickstart-guide",
                 target: "_blank",
@@ -218,7 +218,7 @@ return (
               Learn to code on NEAR
             </Text>
             <Widget
-              src="near/widget/DIG.Button"
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
                 href: "https://docs.near.org/develop/welcome",
                 target: "_blank",

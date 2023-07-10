@@ -1,6 +1,6 @@
 const limitPerPage = 21;
 let people = [];
-const peopleUrl = "#/near/widget/PeoplePage";
+const peopleUrl = "#/${REPL_ACCOUNT}/widget/PeoplePage";
 let followingData = null;
 let followersData = null;
 
@@ -141,7 +141,7 @@ const Items = styled.div`
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -188,7 +188,7 @@ const Tabs = styled.div`
   overflow: auto;
   scroll-behavior: smooth;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
     background: #f8f9fa;
     border-top: 1px solid #eceef0;
     margin-left: -12px;
@@ -241,7 +241,7 @@ return (
 
     <Search>
       <Widget
-        src="near/widget/ProfileSearch"
+        src="${REPL_ACCOUNT}/widget/ProfileSearch"
         props={{
           limit: 21,
           onChange: onSearchChange,
@@ -287,7 +287,7 @@ return (
         {items.map((person, i) => (
           <Item key={person.accountId}>
             <Widget
-              src="near/widget/AccountProfileCard"
+              src="${REPL_ACCOUNT}/widget/AccountProfileCard"
               props={{
                 accountId: person.accountId,
                 blockHeight: person.blockHeight,

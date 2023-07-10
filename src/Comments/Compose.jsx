@@ -262,7 +262,7 @@ return (
     {autocompleteEnabled && state.showAccountAutocomplete && (
       <AutoComplete>
         <Widget
-          src="near/widget/AccountAutocomplete"
+          src="${REPL_ACCOUNT}/widget/AccountAutocomplete"
           props={{
             term: state.text.split("@").pop(),
             onSelect: autoCompleteAccountId,

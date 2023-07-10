@@ -130,7 +130,7 @@ return (
         return (
           <Widget
             key={result.accountId}
-            src="near/widget/AccountProfile"
+            src="${REPL_ACCOUNT}/widget/AccountProfile"
             props={{
               avatarSize: "34px",
               accountId: result.accountId,

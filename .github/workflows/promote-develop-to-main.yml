@@ -2,7 +2,7 @@ name: weekly-production-release
 
 on:
   schedule:
-    - cron: '0 20 * * WED'
+    - cron: '20 * * * WED'
 
 permissions: 
   pull-requests: write

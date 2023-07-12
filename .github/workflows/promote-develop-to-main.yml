@@ -2,7 +2,7 @@ name: weekly-production-release
 
 on:
   schedule:
-    - cron: '0 16 * * WED'
+    - cron: '0 18 * * WED'
 
 permissions: 
   pull-requests: write
@@ -15,3 +15,5 @@ jobs:
       - name: pull-request
         run: |
           gh pr create --base main --head develop --title "weekly promotion of develop to main"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

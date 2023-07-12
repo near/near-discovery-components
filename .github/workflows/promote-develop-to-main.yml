@@ -1,0 +1,17 @@
+name: weekly-production-release
+
+on:
+  schedule:
+    - cron: '0 0 3 * WED'
+
+permissions: 
+  pull-request: write
+
+jobs:
+  pull-request:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: pull-request
+        run: |
+          gh pr create --base main --head develop --title "weekly promotion of develop to main"

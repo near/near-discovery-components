@@ -8,6 +8,9 @@ if (customWidgets === null) {
 
 const defaultWidgets = [
   {
+    src: "${REPL_NEARWEEK}/widget/NEARWEEKNews",
+  },
+  {
     src: "${REPL_NEARWEEK}/widget/nearweek-newsletter",
   },
   {

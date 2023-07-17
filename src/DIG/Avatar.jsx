@@ -1,4 +1,4 @@
-let { alt, image, size } = props;
+let { alt, image, size, ...forwardedProps } = props;
 
 alt = alt ?? "User avatar";
 size = size ?? "small";
@@ -30,7 +30,7 @@ const Avatar = styled.div`
 `;
 
 return (
-  <Avatar>
+  <Avatar {...forwardedProps}>
     <Widget
       src="${REPL_MOB}/widget/Image"
       props={{

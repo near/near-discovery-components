@@ -1,0 +1,7 @@
+{
+  "description": "This component renders a badge. Badges are not meant to be clickable. Refer to `DIG.Button` or `DIG.Chip` for clickable alternatives.\n\n### Example\n\n```jsx\nreturn (\n  <Widget\n    src=\"near/widget/DIG.Badge\"\n    props={{\n      label: \"Hello\",\n      iconLeft: \"ph-bold ph-pizza\",\n      variant: \"warning\",\n    }}\n  />\n);\n```\n\n### Props\n\n`iconLeft`\n- type: string (CSS Class)\n- optional\n- example: `\"ph-bold ph-anchor-simple\"`\n- https://phosphoricons.com\n- Adds an icon to the left of the `label`\n\n`iconRight`\n- type: string (CSS Class)\n- optional\n- example: `\"ph-bold ph-anchor-simple\"`\n- https://phosphoricons.com\n- Adds an icon to the right of the `label`\n\n`label`\n- type: string\n- required\n- The text displayed inside the badge\n\n`variant`\n- type: string\n- optional\n- Values: `primary` (default), `neutral`, `success`, `alert`, `warning`\n\nAll other props will be forwarded through to the wrapping `<div>` element. EG: `id`, `className`, `aria-*`.",
+  "name": "DIG.Badge",
+  "tags": {
+    "dig": ""
+  }
+}

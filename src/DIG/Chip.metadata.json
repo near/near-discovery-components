@@ -1,0 +1,7 @@
+{
+  "description": "A fully featured chip component that can act as a <button> or <a> tag.\n\n### Props\n\n`active`\n- type: bool\n- default: `false`\n- Uses the active style variant if true.\n\n`disabled`\n- type: bool\n\n`href`\n- type: string\n- If a value is passed, the component will render an <a> tag instead of a <button>\n- All valid HTML props for <a> tags will be forwarded along to the element.\n\n`iconLeft`\n- type: string (CSS Class)\n- example: \"ph-bold ph-anchor-simple\"\n- https://phosphoricons.com/\n- Adds an icon to the left of the label\n\n`iconRight`\n- type: string (CSS Class)\n- example: \"ph-bold ph-anchor-simple\"\n- https://phosphoricons.com/\n- Adds an icon to the right of the label\n\n`label`\n- type: string\n- required\n- Adds visible text to chip.\n\n`onClick`\n- type: function\n- Other DOM events like `onMouseDown` are also supported.\n\n`type`\n- type: string\n- values: native HTML button type values (\"button\", \"submit\")\n- Ignored if href prop is passed\n\n### HTML Attributes\n\nAll other props will be forwarded through to the <a> or <button> element. EG: id, target, aria-*.",
+  "name": "DIG.Chip",
+  "tags": {
+    "dig": ""
+  }
+}

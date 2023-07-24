@@ -1,4 +1,3 @@
-// Original widget: https://alpha.near.org/#/calebjacob.near/widget/Posts.Post
 const accountId = props.accountId ?? context.accountId;
 const blockHeight = props.blockHeight ?? "now";
 const snipContent = props.snipContent ?? false;

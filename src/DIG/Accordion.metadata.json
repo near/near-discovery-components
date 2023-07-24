@@ -1,0 +1,7 @@
+{
+  "description": "An accordion built with the Radix primitive: https://www.radix-ui.com/docs/primitives/components/accordion\n\n### Example\n\n```jsx\n<Widget\n  src=\"near/widget/DIG.Accordion\"\n  props={{\n    type: \"multiple\",\n    defaultValue: [\"1\"],\n    items: [\n      {\n        value: \"1\",\n        header: \"Header 1\",\n        content: (\n          <>\n            <p>My JSX context 1.</p>\n            <p>Here's another paragraph.</p>\n          </>\n        ),\n      },\n      {\n        value: \"2\",\n        header: \"Header 2\",\n        content: (\n          <>\n            <p>My JSX context 2.</p>\n            <p>Here's another paragraph.</p>\n          </>\n        ),\n      },\n    ],\n  }}\n/>\n```\n\n### Props\n\n`items`\n- type: array of objects defining each accordion section\n- Each object requires a `value` (unique string), `header` (string or JSX), and `content` (string or JSX)\n\nThis component also accepts all `Accordion.Root` props as outlined in the Radix documentation.",
+  "name": "DIG.Accordion",
+  "tags": {
+    "dig": ""
+  }
+}

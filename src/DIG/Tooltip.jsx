@@ -10,6 +10,7 @@ const Content = styled("Tooltip.Content")`
   font: var(--text-xs);
   background: var(--white);
   border: 1px solid var(--sand6);
+  box-shadow: 0 1px 2px hsla(0, 0%, 0%, 0.06);
 
   &[data-state="delayed-open"] {
     animation: show 200ms;

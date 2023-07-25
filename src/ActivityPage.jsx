@@ -140,7 +140,7 @@ return (
         <Widget src="${REPL_ACCOUNT}/widget/LatestComponents" />
       </Section>
       <Section negativeMargin primary active={state.selectedTab === "posts"}>
-        <Widget src="${REPL_ACCOUNT}/widget/Posts" />
+        <Widget src="dataplatform.near/widget/QueryApi.Feed" />
       </Section>
       <Section active={state.selectedTab === "explore"}>
         <Widget src="${REPL_ACCOUNT}/widget/ExploreWidgets" />

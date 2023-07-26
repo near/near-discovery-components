@@ -1,0 +1,7 @@
+{
+  "description": "A tooltip built with the Radix primitive: https://www.radix-ui.com/docs/primitives/components/tooltip\n\n### Example\n\n```jsx\nreturn (\n  <Widget\n    src=\"near/widget/DIG.Tooltip\"\n    props={{\n      content: \"This is my tooltip content.\",\n      trigger: (\n        <Widget src=\"near/widget/DIG.Button\" props={{ label: \"Hover Me\" }} />\n      ),\n    }}\n  />\n);\n```\n\n### Props\n\n`content`\n- type: string or JSX\n- required\n- Content displayed inside the tooltip\n\n`contentProps`\n- type: object\n- optional\n- Radix `Content` props: https://www.radix-ui.com/docs/primitives/components/tooltip#content \n\n`rootProps`\n- type: object\n- optional\n- Radix `Root` props: https://www.radix-ui.com/docs/primitives/components/tooltip#root\n\n`trigger`\n- type: JSX\n- required\n- Renders the element that will display the tooltip when hovered. This element will be wrapped with a `<span>` styled with `display: inline-block;`.\n\n`wrapperStyle`\n- type: object\n- optional\n- Override styles for the `<span>` element wrapping the `trigger`.",
+  "name": "DIG.Tooltip",
+  "tags": {
+    "dig": ""
+  }
+}

@@ -1,6 +1,7 @@
 const accountId = props.accountId;
 const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
 const tags = Object.keys(profile.tags || {});
+const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 
 const handleOnMouseEnter = () => {
   State.update({ show: true });
@@ -11,6 +12,7 @@ const handleOnMouseLeave = () => {
 
 State.init({
   show: false,
+  hasBeenFlagged: false,
 });
 
 const CardWrapper = styled.div`
@@ -41,19 +43,38 @@ const FollowButtonWrapper = styled.div`
   }
 `;
 
+const contentModerationItem = {
+  type: "social",
+  path: profileUrl,
+  reportedBy: context.accountId,
+};
+
 const overlay = (
   <CardWrapper>
     <Card onMouseEnter={handleOnMouseEnter} onMouseLeave={handleOnMouseLeave}>
-      <Widget
-        src="${REPL_ACCOUNT}/widget/AccountProfile"
-        props={{ accountId: props.accountId, profile, noOverlay: true }}
-      />
+      <div className="d-flex align-items-center">
+        <Widget
+          src="${REPL_ACCOUNT}/widget/AccountProfile"
+          props={{ accountId: props.accountId, profile, noOverlay: true }}
+        />
 
-      <Widget
-        src="${REPL_ACCOUNT}/widget/Tags"
-        props={{ tags, scroll: true }}
-      />
-
+        <Widget
+          src="${REPL_ACCOUNT}/widget/Tags"
+          props={{ tags, scroll: true }}
+        />
+        {!!context.accountId && context.accountId !== props.accountId && (
+          <Widget
+            src="${REPL_ACCOUNT}/widget/FlagButton"
+            props={{
+              item: contentModerationItem,
+              onFlag: () => {
+                console.log("Flagged: ", contentModerationItem);
+                State.update({ hasBeenFlagged: true });
+              },
+            }}
+          />
+        )}
+      </div>
       {!!context.accountId && context.accountId !== props.accountId && (
         <FollowButtonWrapper>
           <Widget
@@ -61,6 +82,12 @@ const overlay = (
             props={{ accountId: props.accountId }}
           />
         </FollowButtonWrapper>
+      )}
+
+      {state.hasBeenFlagged && (
+        <div className="alert alert-secondary">
+          <i className="bi bi-flag" /> This account has been flagged for moderation
+        </div>
       )}
     </Card>
   </CardWrapper>

@@ -1,10 +1,12 @@
 State.init({
   copiedShareUrl: false,
+  hasBeenFlagged: false,
 });
 
 const accountId = props.accountId;
 const profile =
   props.profile || Social.get(`${accountId}/profile/**`, "final") || {};
+const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 
 if (!accountId) {
   return "";
@@ -39,6 +41,12 @@ const accountFollowsYouData = Social.keys(
   }
 );
 const accountFollowsYou = Object.keys(accountFollowsYouData || {}).length > 0;
+
+const contentModerationItem = {
+  type: "social",
+  path: profileUrl,
+  reportedBy: context.accountId,
+};
 
 const Wrapper = styled.div`
   display: grid;
@@ -237,11 +245,25 @@ return (
     </Avatar>
 
     <Section>
-      <div>
-        <Title>{profile.name || accountId}</Title>
-        <Text>@{accountId}</Text>
+      <div className="d-flex align-items-start justify-content-between">
+        <div>
+          <Title>{profile.name || accountId}</Title>
+          <Text>@{accountId}</Text>
 
-        {accountFollowsYou && <TextBadge>Follows You</TextBadge>}
+          {accountFollowsYou && <TextBadge>Follows You</TextBadge>}
+        </div>
+        {accountId !== context.accountId && (
+          <Widget
+            src="${REPL_ACCOUNT}/widget/FlagButton"
+            props={{
+              item: contentModerationItem,
+              onFlag: () => {
+                console.log("Flagged: ", contentModerationItem);
+                State.update({ hasBeenFlagged: true });
+              },
+            }}
+          />
+        )}
       </div>
 
       <Actions>

@@ -4,5 +4,6 @@
     "REPL_MOB_2": "mob.near",
     "REPL_MODERATOR": "bosmod.near",
     "REPL_NEAR_URL": "near.org",
-    "REPL_NEARWEEK": "nearweekapp.near"
+    "REPL_NEARWEEK": "nearweekapp.near",
+    "REPL_QUERYAPI_FEED": "dataplatform.near/widget/QueryApi.Feed"
 }

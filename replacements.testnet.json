@@ -4,5 +4,6 @@
     "REPL_MOB_2": "one.testnet",
     "REPL_MODERATOR": "bosmod.testnet",
     "REPL_NEAR_URL": "test.near.org",
-    "REPL_NEARWEEK": "discom-dev.testnet"
+    "REPL_NEARWEEK": "discom-dev.testnet",
+    "REPL_QUERYAPI_FEED": "${REPL_ACCOUNT}/widget/Posts"
 }

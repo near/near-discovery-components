@@ -37,8 +37,7 @@ const Card = styled.div`
 const FollowButtonWrapper = styled.div`
   width: 100%;
 
-  div,
-  button {
+  div, button {
     width: 100%;
   }
 `;
@@ -57,24 +56,23 @@ const overlay = (
           src="${REPL_ACCOUNT}/widget/AccountProfile"
           props={{ accountId: props.accountId, profile, noOverlay: true }}
         />
-
-        <Widget
-          src="${REPL_ACCOUNT}/widget/Tags"
-          props={{ tags, scroll: true }}
-        />
         {!!context.accountId && context.accountId !== props.accountId && (
           <Widget
             src="${REPL_ACCOUNT}/widget/FlagButton"
             props={{
               item: contentModerationItem,
               onFlag: () => {
-                console.log("Flagged: ", contentModerationItem);
                 State.update({ hasBeenFlagged: true });
               },
             }}
           />
         )}
       </div>
+
+      <Widget
+        src="${REPL_ACCOUNT}/widget/Tags"
+        props={{ tags, scroll: true }}
+      />
       {!!context.accountId && context.accountId !== props.accountId && (
         <FollowButtonWrapper>
           <Widget
@@ -101,8 +99,8 @@ return (
     placement={props.placement || "auto"}
     overlay={overlay}
   >
-    <span
-      className={props.inline ? "d-inline-flex" : "d-block"}
+    <div
+      className={props.inline ? "d-inline-flex" : ""}
       style={{
         verticalAlign: props.inline ? "baseline" : "",
         maxWidth: "100%",
@@ -111,6 +109,6 @@ return (
       onMouseLeave={handleOnMouseLeave}
     >
       {props.children || "Hover Me"}
-    </span>
+    </div>
   </OverlayTrigger>
 );

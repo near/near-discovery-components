@@ -258,7 +258,6 @@ return (
             props={{
               item: contentModerationItem,
               onFlag: () => {
-                console.log("Flagged: ", contentModerationItem);
                 State.update({ hasBeenFlagged: true });
               },
             }}

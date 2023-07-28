@@ -102,7 +102,7 @@ return (
   <Post id={content.commentId == highlightComment ? "highlight" : ""}>
     <Header>
       <Widget
-        src="calebjacob.near/widget/AccountProfile"
+        src="${REPL_ACCOUNT}/widget/AccountProfile"
         props={{
           accountId,
           hideAccountId: true,
@@ -122,7 +122,7 @@ return (
       <Content>
         {content.text && (
           <Widget
-            src="calebjacob.near/widget/SocialMarkdown"
+            src="${REPL_ACCOUNT}/widget/SocialMarkdown"
             props={{ text: content.text }}
           />
         )}
@@ -156,7 +156,7 @@ return (
             }}
           />
           <Widget
-            src="calebjacob.near/widget/CopyUrlButton"
+            src="${REPL_ACCOUNT}/widget/CopyUrlButton"
             props={{
               url: postUrl,
             }}

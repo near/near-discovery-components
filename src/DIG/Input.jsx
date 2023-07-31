@@ -5,6 +5,7 @@ let {
   iconRight,
   invalid,
   label,
+  textarea,
   valid,
   ...forwardedProps
 } = props;
@@ -32,7 +33,8 @@ const InputWrapper = styled.div`
   border-radius: 6px;
   border: 1px solid var(--sand6);
   background: var(--sand1);
-  transition: all 200ms;
+  transition: background-color 200ms, border-color 200ms, color 200ms,
+    box-shadow 200ms;
 
   i {
     font-size: 16px;
@@ -96,6 +98,11 @@ const InputWrapper = styled.div`
       color: var(--sand8);
     }
   }
+
+  [data-textarea] & {
+    padding: 0;
+    overflow: hidden;
+  }
 `;
 
 const Input = styled.input`
@@ -110,7 +117,14 @@ const Input = styled.input`
   color: var(--violet12);
   font: var(--text-base);
   outline: none !important;
-  transition: all 200ms;
+  transition: color 200ms, opacity 200ms;
+
+  [data-textarea] & {
+    line-height: 1.5;
+    padding: 8px 12px;
+    height: unset;
+    min-height: 5.5rem;
+  }
 
   &::placeholder {
     color: var(--sand10);
@@ -157,16 +171,34 @@ const AssistiveText = styled.span`
 `;
 
 return (
-  <Wrapper data-invalid={invalid} data-valid={valid} data-disabled={disabled}>
+  <Wrapper
+    data-invalid={invalid}
+    data-valid={valid}
+    data-disabled={disabled}
+    data-textarea={textarea}
+  >
     {label && <Label>{label}</Label>}
     <InputWrapper>
-      {iconLeft && <i className={iconLeft} />}
-      <Input
-        disabled={disabled}
-        aria-invalid={invalid === true}
-        {...forwardedProps}
-      />
-      {iconRight && <i className={iconRight} />}
+      {textarea ? (
+        <Input
+          as="textarea"
+          disabled={disabled}
+          aria-invalid={invalid === true}
+          {...forwardedProps}
+        >
+          {forwardedProps.value}
+        </Input>
+      ) : (
+        <>
+          {iconLeft && <i className={iconLeft} />}
+          <Input
+            disabled={disabled}
+            aria-invalid={invalid === true}
+            {...forwardedProps}
+          />
+          {iconRight && <i className={iconRight} />}
+        </>
+      )}
     </InputWrapper>
     {assistiveText && (
       <AssistiveText>

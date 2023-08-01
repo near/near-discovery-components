@@ -1,15 +1,15 @@
-let { minHeight, ...forwardedProps } = props;
+let { minHeight, style, ...forwardedProps } = props;
 
 return (
   <Widget
     src="near/widget/DIG.Input"
     props={{
       style: {
-        minHeight: props.minHeight,
-        ...props.style,
+        minHeight,
+        ...style,
       },
       textarea: true,
-      ...props,
+      ...forwardedProps,
     }}
   />
 );

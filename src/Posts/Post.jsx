@@ -6,6 +6,7 @@ const blockHeight =
   props.blockHeight === "now" ? "now" : parseInt(props.blockHeight);
 const notifyAccountId = accountId;
 const postUrl = `https://${REPL_NEAR_URL}/s/p?a=${accountId}&b=${blockHeight}`;
+const activityFeed = props.activityFeed ?? false;
 
 State.init({
   hasBeenFlagged: false,
@@ -210,6 +211,8 @@ if (state.hasBeenFlagged) {
 
 const renderedComments = state.comments.map(renderComment);
 
+console.log("Posts.Feed.Post props: ", props);
+
 return (
   <Post>
     <Header>
@@ -240,6 +243,7 @@ return (
                   {false && edits.length > 0 && <Text as="span">･ Edited</Text>}
                 </>
               ),
+              activityFeed,
             }}
           />
         </div>

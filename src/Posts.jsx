@@ -404,6 +404,7 @@ const SortContainer = styled.div`
     padding: 12px;
   }
 `;
+console.log("Posts props: ", props);
 
 return (
   <>
@@ -472,6 +473,7 @@ return (
             hasMore,
             loadMorePosts,
             posts: state.posts,
+            activityFeed: props.activityFeed ?? false
           }}
         />
       </FeedWrapper>

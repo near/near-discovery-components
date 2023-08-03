@@ -27,7 +27,8 @@ const renderItem = (item) => {
           comments: item.comments,
           likes: item.accounts_liked,
           GRAPHQL_ENDPOINT,
-          verifications: item.verifications
+          verifications: item.verifications,
+          activityFeed: props.activityFeed ?? false,
         }}
       />
     </Post>

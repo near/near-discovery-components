@@ -15,6 +15,7 @@ const handleOnMouseLeave = () => {
 State.init({
   show: false,
   hasBeenFlagged: false,
+  showConfirmModal: false,
 });
 
 const CardWrapper = styled.div`
@@ -67,7 +68,25 @@ const overlay = (
           src="${REPL_ACCOUNT}/widget/AccountProfile"
           props={{ accountId: props.accountId, profile, noOverlay: true }}
         />
-        {!!context.accountId && context.accountId !== props.accountId && (
+        {props.activityFeed && !!context.accountId && context.accountId !== props.accountId && (
+          <Widget
+            src="${REPL_ACCOUNT}/widget/Flagged.Trigger"
+            props={{
+              onClick: () => {
+                State.update({ showConfirmModal: true });
+              },
+            }}
+          />
+        )}
+        {state.showConfirmModal && (
+          <Widget
+            src="${REPL_ACCOUNT}/widget/Flagged.Modal"
+            props={{
+              showModal: state.showConfirmModal,
+            }}
+          />
+        )}
+        {!props.activityFeed && !!context.accountId && context.accountId !== props.accountId && (
           <Widget
             src="${REPL_ACCOUNT}/widget/FlagButton"
             props={{

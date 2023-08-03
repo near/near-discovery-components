@@ -2,7 +2,7 @@ let { minHeight, style, ...forwardedProps } = props;
 
 return (
   <Widget
-    src="near/widget/DIG.Input"
+    src="${REPL_ACCOUNT}/widget/DIG.Input"
     props={{
       style: {
         minHeight,

@@ -112,7 +112,7 @@ return (
   <Select.Root value={value} {...rootProps} onValueChange={onValueChange}>
     <Select.Trigger asChild>
       <Widget
-        src="near/widget/DIG.Input"
+        src="${REPL_ACCOUNT}/widget/DIG.Input"
         props={{
           iconRight: "ph-bold ph-caret-up-down",
           type: "button",

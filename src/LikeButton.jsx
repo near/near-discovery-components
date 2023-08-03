@@ -4,13 +4,15 @@ if (!item) {
   return "";
 }
 
-const likes = Social.index("like", item);
+const likes = JSON.parse(props.likes?.length ? props.likes : "[]") ?? [];
+
+State.init({ likes: props.likes });
 
 const dataLoading = likes === null;
 
 const likesByUsers = {};
 
-(likes || []).forEach((like) => {
+(state.likes || []).forEach((like) => {
   if (like.value.type === "like") {
     likesByUsers[like.accountId] = like;
   } else if (like.value.type === "unlike") {

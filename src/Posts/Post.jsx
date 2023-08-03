@@ -1,21 +1,20 @@
+const GRAPHQL_ENDPOINT =
+  props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 const accountId = props.accountId;
 const blockHeight =
   props.blockHeight === "now" ? "now" : parseInt(props.blockHeight);
-const subscribe = !!props.subscribe;
 const notifyAccountId = accountId;
 const postUrl = `https://${REPL_NEAR_URL}/s/p?a=${accountId}&b=${blockHeight}`;
 
-State.init({ hasBeenFlagged: false });
+State.init({
+  hasBeenFlagged: false,
+  postExists: true,
+  comments: props.comments ?? undefined,
+  content: JSON.parse(props.content) ?? undefined,
+  likes: props.likes ?? undefined,
+});
 
 const edits = []; // Social.index('edit', { accountId, blockHeight }, { limit: 1, order: "desc", accountId })
-
-const content =
-  props.content ??
-  JSON.parse(
-    edits.length
-      ? Social.get(`${accountId}/edit/main`, edits.blockHeight)
-      : Social.get(`${accountId}/post/main`, blockHeight)
-  );
 
 const item = {
   type: "social",
@@ -26,6 +25,73 @@ const item = {
 const toggleEdit = () => {
   State.update({ editPost: !state.editPost });
 };
+
+// Load post if contents and comments are not passed in
+if (!state.content || !state.comments || !state.likes) {
+  const postsQuery = `
+query IndexerQuery {
+  dataplatform_near_social_feed_posts(
+    order_by: {block_height: desc}
+    where: {_and: {block_height: {_eq: ${blockHeight}}, account_id: {_eq: "${accountId}"}}}
+  ) {
+    account_id
+    block_height
+    block_timestamp
+    content
+    receipt_id
+    accounts_liked
+    comments(order_by: {block_height: asc}) {
+      account_id
+      block_height
+      block_timestamp
+      content
+    }
+  }
+}
+`;
+
+  function fetchGraphQL(operationsDoc, operationName, variables) {
+    return asyncFetch(`${GRAPHQL_ENDPOINT}/v1/graphql`, {
+      method: "POST",
+      headers: { "x-hasura-role": "dataplatform_near" },
+      body: JSON.stringify({
+        query: operationsDoc,
+        variables: variables,
+        operationName: operationName,
+      }),
+    });
+  }
+
+  fetchGraphQL(postsQuery, "IndexerQuery", {}).then((result) => {
+    if (result.status === 200) {
+      if (result.body.data) {
+        const posts = result.body.data.dataplatform_near_social_feed_posts;
+        if (posts.length > 0) {
+          const post = posts[0];
+          let content = JSON.parse(post.content);
+          if (post.accounts_liked.length !== 0) {
+            post.accounts_liked = JSON.parse(post.accounts_liked);
+          }
+          const comments = post.comments;
+          State.update({
+            content: content,
+            comments: comments,
+            likes: post.accounts_liked,
+          });
+        } else {
+          State.update({
+            postExists: false,
+          });
+        }
+      }
+    }
+  });
+
+  if (state.postExists == false) {
+    return "Post does not exist";
+  }
+  return "loading...";
+}
 
 const Post = styled.div`
   position: relative;
@@ -83,6 +149,44 @@ const Comments = styled.div`
     padding-top: 12px;
   }
 `;
+const CommentWrapper = styled.div`
+  > div:first-child {
+    > a:first-child {
+      display: inline-flex;
+      margin-bottom: 24px;
+      font-size: 14px;
+      line-height: 20px;
+      color: #687076;
+      outline: none;
+      font-weight: 600;
+
+      &:hover,
+      &:focus {
+        color: #687076;
+        text-decoration: underline;
+      }
+    }
+  }
+`;
+
+const renderComment = (a) => {
+  return (
+    <div key={JSON.stringify(a)}>
+      <Widget
+        src={`${REPL_ACCOUNT}/widget/Comments.Comment`}
+        props={{
+          accountId: a.account_id,
+          blockHeight: a.block_height,
+          content: a.content,
+          highlight:
+            a.account_id === props.highlightComment?.accountId &&
+            a.block_height === props.highlightComment?.blockHeight,
+          GRAPHQL_ENDPOINT,
+        }}
+      />
+    </div>
+  );
+};
 
 if (state.hasBeenFlagged) {
   return (
@@ -91,6 +195,8 @@ if (state.hasBeenFlagged) {
     </div>
   );
 }
+
+const renderedComments = state.comments.map(renderComment);
 
 return (
   <Post>
@@ -143,36 +249,38 @@ return (
     </Header>
 
     <Body>
-      <Content>
-        {content.text && !state.editPost && (
-          <Widget
-            src="${REPL_ACCOUNT}/widget/SocialMarkdown"
-            props={{ text: content.text }}
-          />
-        )}
-
-        {state.editPost && (
-          <div className="mb-2">
+      {state.content && (
+        <Content>
+          {state.content.text && !state.editPost && (
             <Widget
-              src="${REPL_ACCOUNT}/widget/Posts.Edit"
+              src="${REPL_ACCOUNT}/widget/SocialMarkdown"
+              props={{ text: state.content.text }}
+            />
+          )}
+
+          {state.editPost && (
+            <div className="mb-2">
+              <Widget
+                src="${REPL_ACCOUNT}/widget/Posts.Edit"
+                props={{
+                  item: { accountId, blockHeight },
+                  content: state.content,
+                  onEdit: toggleEdit,
+                }}
+              />
+            </div>
+          )}
+
+          {state.content.image && (
+            <Widget
+              src="${REPL_MOB}/widget/Image"
               props={{
-                item: { accountId, blockHeight },
-                content,
-                onEdit: toggleEdit,
+                image: state.content.image,
               }}
             />
-          </div>
-        )}
-
-        {content.image && (
-          <Widget
-            src="${REPL_MOB}/widget/Image"
-            props={{
-              image: content.image,
-            }}
-          />
-        )}
-      </Content>
+          )}
+        </Content>
+      )}
 
       {blockHeight !== "now" && (
         <Actions>
@@ -181,6 +289,8 @@ return (
             props={{
               item,
               notifyAccountId,
+              likes: state.likes,
+              GRAPHQL_ENDPOINT,
             }}
           />
           <Widget
@@ -214,7 +324,6 @@ return (
           />
         </Actions>
       )}
-
       {state.showReply && (
         <div className="mb-2">
           <Widget
@@ -227,19 +336,11 @@ return (
           />
         </div>
       )}
-
-      <Comments>
-        <Widget
-          src="${REPL_ACCOUNT}/widget/Comments.Feed"
-          props={{
-            item,
-            highlightComment: props.highlightComment,
-            limit: props.commentsLimit,
-            subscribe,
-            raw,
-          }}
-        />
-      </Comments>
+      {renderedComments && (
+        <Comments>
+          <CommentWrapper>{renderedComments}</CommentWrapper>
+        </Comments>
+      )}
     </Body>
   </Post>
 );

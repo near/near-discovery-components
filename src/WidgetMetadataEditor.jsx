@@ -10,7 +10,7 @@ if (metadata === null) {
 return (
   <Widget
     key={widgetPath}
-    src="${REPL_MOB}/widget/MetadataEditor"
+    src="${REPL_ACCOUNT}/widget/MetadataEditor"
     props={{
       initialMetadata: metadata,
       onChange,

@@ -5,16 +5,24 @@ let {
   iconRight,
   invalid,
   label,
+  select,
   textarea,
   valid,
+  value,
   ...forwardedProps
 } = props;
+
+const hasNoValue = !value;
 
 const Wrapper = styled.label`
   display: flex;
   width: 100%;
   flex-direction: column;
   gap: 4px;
+
+  &[data-disabled="true"] {
+    pointer-events: none;
+  }
 `;
 
 const Label = styled.span`
@@ -40,6 +48,7 @@ const InputWrapper = styled.div`
     font-size: 16px;
     color: var(--sand10);
     transition: all 200ms;
+    pointer-events: none;
   }
 
   &:hover {
@@ -47,7 +56,7 @@ const InputWrapper = styled.div`
     background: var(--sand2);
   }
 
-  [data-invalid] & {
+  [data-invalid="true"] & {
     background: var(--red1);
     border-color: var(--red9);
     i {
@@ -62,7 +71,7 @@ const InputWrapper = styled.div`
     }
   }
 
-  [data-valid] & {
+  [data-valid="true"] & {
     background: var(--green1);
     border-color: var(--green9);
     i {
@@ -90,18 +99,41 @@ const InputWrapper = styled.div`
     }
   }
 
-  [data-disabled] & {
+  [data-textarea="true"] & {
+    padding: 0;
+    overflow: hidden;
+  }
+
+  [data-select="true"] & {
+    padding: 0;
+
+    input {
+      padding: 0 40px 0 12px;
+    }
+
+    i {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      line-height: 40px;
+      padding: 0 12px;
+    }
+  }
+
+  [data-no-value="true"][data-select="true"] & {
+    input {
+      color: var(--sand10);
+    }
+  }
+
+  [data-disabled="true"] & {
     pointer-events: none;
     background: var(--sand3);
     border-color: var(--sand3);
     i {
       color: var(--sand8);
     }
-  }
-
-  [data-textarea] & {
-    padding: 0;
-    overflow: hidden;
   }
 `;
 
@@ -114,12 +146,13 @@ const Input = styled.input`
   height: 40px;
   line-height: 40px;
   padding: 0;
-  color: var(--violet12);
+  color: var(--sand12);
   font: var(--text-base);
   outline: none !important;
+  text-align: left;
   transition: color 200ms, opacity 200ms;
 
-  [data-textarea] & {
+  [data-textarea="true"] & {
     line-height: 1.5;
     padding: 8px 12px;
     height: unset;
@@ -132,7 +165,7 @@ const Input = styled.input`
     opacity: 1;
   }
 
-  &:disabled {
+  [data-disabled="true"] & {
     opacity: 1;
     color: var(--sand9);
 
@@ -155,14 +188,14 @@ const AssistiveText = styled.span`
     font-size: 14px;
   }
 
-  [data-invalid] & {
+  [data-invalid="true"] & {
     color: var(--red11);
     i {
       color: var(--red8);
     }
   }
 
-  [data-valid] & {
+  [data-valid="true"] & {
     color: var(--green11);
     i {
       color: var(--green8);
@@ -176,6 +209,8 @@ return (
     data-valid={valid}
     data-disabled={disabled}
     data-textarea={textarea}
+    data-select={select}
+    data-no-value={hasNoValue}
   >
     {label && <Label>{label}</Label>}
     <InputWrapper>
@@ -184,9 +219,10 @@ return (
           as="textarea"
           disabled={disabled}
           aria-invalid={invalid === true}
+          ref="forwardedRef"
           {...forwardedProps}
         >
-          {forwardedProps.value}
+          {value}
         </Input>
       ) : (
         <>
@@ -194,6 +230,9 @@ return (
           <Input
             disabled={disabled}
             aria-invalid={invalid === true}
+            ref="forwardedRef"
+            value={value || (select ? forwardedProps.placeholder : "")}
+            tabIndex={disabled ? -1 : forwardedProps.tabIndex}
             {...forwardedProps}
           />
           {iconRight && <i className={iconRight} />}

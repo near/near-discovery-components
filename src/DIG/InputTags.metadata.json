@@ -1,0 +1,7 @@
+{
+  "description": "An input component that handles adding and removing tags.\n\n### Example\n\n```jsx\nState.init({\n  myTags: [\"food\", \"watermelon\"],\n});\n\nreturn (\n  <Widget\n    src=\"near/widget/DIG.InputTags\"\n    props={{\n      assistiveText: \"My assistive text\",\n      label: \"My Label\",\n      placeholder: \"Placeholder...\",\n      tags: state.myTags,\n      onTagsChange: (value) => State.update({ myTags: value }),\n    }}\n  />\n);\n```\n\n### Props\n\n`assistiveText`\n- type: string\n- Adds assistive text to the bottom of the input. Useful for info, success, and error messages.\n\n`disabled`\n- type: boolean\n- Disables the input\n\n`invalid`\n- type: boolean\n- Renders input with error variant\n\n`label`\n- type: string\n- Renders label above input\n\n`onTagsChange`\n- type: function\n- Returns updated array of strings whenever a tag is added or removed\n\n`tags`\n- type: array of strings\n- All string values should be unique\n\n`valid`\n- type: boolean\n- Renders input with success variant\n\n### HTML Attributes\n\nAll other props will be forwarded through to the `<input>` element. EG: `placeholder`.",
+  "name": "DIG.InputTags",
+  "tags": {
+    "dig": ""
+  }
+}

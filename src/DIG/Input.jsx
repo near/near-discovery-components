@@ -3,6 +3,7 @@ let {
   disabled,
   iconLeft,
   iconRight,
+  inputNodeLeft,
   invalid,
   label,
   select,
@@ -36,13 +37,14 @@ const InputWrapper = styled.div`
   display: flex;
   align-items: center;
   padding: 0 12px;
-  gap: 10px;
+  column-gap: 10px;
   position: relative;
   border-radius: 6px;
   border: 1px solid var(--sand6);
   background: var(--sand1);
   transition: background-color 200ms, border-color 200ms, color 200ms,
     box-shadow 200ms;
+  flex-wrap: wrap;
 
   i {
     font-size: 16px;
@@ -86,19 +88,6 @@ const InputWrapper = styled.div`
     }
   }
 
-  &:focus-within {
-    outline: none;
-    border-color: var(--violet8) !important;
-    background: var(--white) !important;
-    box-shadow: 0 0 0 4px var(--violet4);
-    i {
-      color: var(--violet7) !important;
-    }
-    input {
-      color: var(--violet12) !important;
-    }
-  }
-
   [data-textarea="true"] & {
     padding: 0;
     overflow: hidden;
@@ -135,6 +124,19 @@ const InputWrapper = styled.div`
       color: var(--sand8);
     }
   }
+
+  &:focus-within {
+    outline: none;
+    border-color: var(--violet8) !important;
+    background: var(--white) !important;
+    box-shadow: 0 0 0 4px var(--violet4);
+    i {
+      color: var(--violet7);
+    }
+    input {
+      color: var(--violet12);
+    }
+  }
 `;
 
 const Input = styled.input`
@@ -143,6 +145,7 @@ const Input = styled.input`
   border: none;
   background: none;
   margin: 0;
+  min-width: 150px;
   height: 40px;
   line-height: 40px;
   padding: 0;
@@ -213,6 +216,7 @@ return (
     data-no-value={hasNoValue}
   >
     {label && <Label>{label}</Label>}
+
     <InputWrapper>
       {textarea ? (
         <Input
@@ -220,25 +224,29 @@ return (
           disabled={disabled}
           aria-invalid={invalid === true}
           ref="forwardedRef"
+          value={value}
           {...forwardedProps}
-        >
-          {value}
-        </Input>
+        />
       ) : (
         <>
           {iconLeft && <i className={iconLeft} />}
+
+          {inputNodeLeft}
+
           <Input
             disabled={disabled}
             aria-invalid={invalid === true}
             ref="forwardedRef"
-            value={value || (select ? forwardedProps.placeholder : "")}
+            value={value ?? (select ? forwardedProps.placeholder : undefined)}
             tabIndex={disabled ? -1 : forwardedProps.tabIndex}
             {...forwardedProps}
           />
+
           {iconRight && <i className={iconRight} />}
         </>
       )}
     </InputWrapper>
+
     {assistiveText && (
       <AssistiveText>
         {valid && <i className="ph-bold ph-check-circle" />}

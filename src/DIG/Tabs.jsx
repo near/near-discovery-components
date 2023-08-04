@@ -1,7 +1,32 @@
 let { items, variant, size, ...forwardedProps } = props;
 
+// this prop is just for preview
+const previewItems = [
+  {
+    name: "Label with icon",
+    value: 1,
+    content: "Your content here for tab 1",
+    count: "00",
+    icon: "ph ph-browser",
+  },
+  {
+    name: "Label with counter only",
+    value: 2,
+    content: "Your content here for tab 2",
+    count: "111",
+  },
+  {
+    name: "Disabled Label",
+    value: 3,
+    content: "Your content here for tab 3",
+    disabled: true,
+    count: "5",
+  },
+];
+
 variant = variant ?? "line";
 size = size ?? "default";
+items = items ?? previewItems;
 
 State.init({
   activeTab: 1,
@@ -193,6 +218,10 @@ const TabContent = styled("Tabs.Content")``;
 const onValueChange = (value) => {
   State.update({ activeTab: value });
 };
+
+if (items.length === 0) {
+  return "No data provided";
+}
 
 return (
   <TabGroup

@@ -85,7 +85,7 @@ const initialRenderLimit =
 const addDisplayCount = props.nextLimit ?? initialRenderLimit;
 
 index.options.limit = Math.min(
-  Math.max(initialRenderLimit + addDisplayCount * 2, index.options.limit),
+  Math.max(initialRenderLimit + addDisplayCount * 2, index.options.limit ?? 0),
   100
 );
 const reverse = !!props.reverse;

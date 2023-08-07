@@ -289,8 +289,7 @@ return (
             props={{
               item,
               notifyAccountId,
-              likes: state.likes,
-              GRAPHQL_ENDPOINT,
+              likes: state.likes
             }}
           />
           <Widget

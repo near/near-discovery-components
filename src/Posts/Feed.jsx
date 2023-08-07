@@ -12,7 +12,7 @@ const Post = styled.div`
   }
 `;
 
-const renderItem = (item, i) => {
+const renderItem = (item) => {
   if (item.accounts_liked.length !== 0) {
     item.accounts_liked = JSON.parse(item.accounts_liked);
   }

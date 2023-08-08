@@ -33,6 +33,10 @@ Feel free to specify a new placeholder if needed. The placeholder should have a 
 
 A new placeholder should be defined for all three environments: dev-testnet, prod-testnet and prod-mainnet.
 
+### Heads-up
+One trick is to using bos-loader with this `near-discovery-components` repo is that you have to modify your local copy of the replacements.*.json file, deleting the REPL_ACCOUNT line, because you need to specify a REPL_ACCOUNT value when launching bos-loader, e.g.
+`bos-loader myaccount.near --path src/ -r replacements.mainnet.json`
+
 PRs merged into develop are deployed to a testnet environment as widgets are updated. 
 
 When a production deployment is ready, develop should be merged into main which will automatically deploy widgets to production.

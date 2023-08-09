@@ -245,7 +245,7 @@ const DropdownItems = (menu, isSection, noDivider) => (
 
 trigger = trigger ?? (
   <Widget
-    src="discom.testnet/widget/DIG.Chip"
+    src="${REPL_ACCOUNT}/widget/DIG.Chip"
     props={{
       label: "Trigger",
       iconRight: "ph ph-caret-down",

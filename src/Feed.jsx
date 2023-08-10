@@ -19,7 +19,7 @@ let filterUsersRaw = Social.get(
   }
 );
 
-if (filterUsers === null) {
+if (filterUsersRaw === null) {
   // haven't loaded filter list yet, return early
   return "";
 }

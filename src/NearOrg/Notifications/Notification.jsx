@@ -79,7 +79,7 @@ return (
       </Icon>
       <Content>
         <Widget
-          src="near/widget/DIG.Avatar"
+          src="${REPL_ACCOUNT}/widget/DIG.Avatar"
           props={{
             alt: accountId,
             image: profile.image,

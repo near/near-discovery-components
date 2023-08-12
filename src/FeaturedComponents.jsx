@@ -63,6 +63,12 @@ return (
           props={{ src: "devgovgigs.near/widget/Ideas" }}
         />
       </Item>
+            <Item>
+        <Widget
+          src="${REPL_ACCOUNT}/widget/ComponentCard"
+          props={{ src: "nomination.ndctools.near/widget/NDC.Nomination.Page" }}
+        />
+      </Item>
       <Item>
         <Widget
           src="${REPL_ACCOUNT}/widget/ComponentCard"

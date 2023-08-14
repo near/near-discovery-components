@@ -1,53 +1,23 @@
-# Near Discovery Widgets
+## Near Discovery Components
 
-This is a repository that holds the source code of all NEAR discovery widgets that the team maintains for [near.org]().
+This is a repository that holds the source code of all NEAR discovery components that the team maintains for [near.org]().
 
-Widgets will be deployed to production automatically as they are merged into the main branch.
+Components will be deployed to production automatically as they are merged into the main branch. This occurs weekly, on Thursdays.
 
-Keep in mind that folders under `src` will be prepended to the widget name when it's deployed. E.g. `src/post/comment.jsx` will be deployed as `post.comment`.
+Keep in mind that folders under `src` will be prepended to the component name when it's deployed. E.g. `src/post/comment.jsx` will be deployed as `post.comment`.
 
 This repository is not compatible with the [VS Code Extension](https://docs.near.org/bos/dev/vscode) due to the replacements strategy featured in this repository.
 
-# Contributing
+### Contributing
 
-Please create feature branches off of develop.
-
-When referencing another widget or any parameter that depends on the network, please use the placeholders defined in `replacements.*.json`. There are three such files that correspond to different environments:
-
-* `replacements.dev.json` - dev testnet
-
-* `replacements.testnet.json` - prod testnet
-
-* `replacements.mainnet.json` - prod mainnet
+Please review the [contribution guide](https://github.com/near/near-discovery-components/blob/develop/CONTRIBUTING.md)
 
 
-Placeholders should be encapsulated in the `${}` expression. Here is an example of a placeholder usage:
+### Troubleshooting Deployments
 
-`<Widget src={homepage ?? "${REPL_ACCOUNT}/widget/ActivityPage"} />;`
+`near-social` cli tool will attempt to deploy any updated components with 1 NEAR of deposit and 100 Tgas.
 
-Placeholders are replaced with the target values specified in replacements.json during the deployment of widgets.
-
-Feel free to specify a new placeholder if needed. The placeholder should have a `REPL` prefix, for example:
-
-`REPL_SOME_URL`
-
-A new placeholder should be defined for all three environments: dev-testnet, prod-testnet and prod-mainnet.
-
-### Heads-up
-One trick is to using bos-loader with this `near-discovery-components` repo is that you have to modify your local copy of the replacements.*.json file, deleting the REPL_ACCOUNT line, because you need to specify a REPL_ACCOUNT value when launching bos-loader, e.g.
-`bos-loader myaccount.near --path src/ -r replacements.mainnet.json`
-
-PRs merged into develop are deployed to a testnet environment as widgets are updated. 
-
-When a production deployment is ready, develop should be merged into main which will automatically deploy widgets to production.
-
-Use [bos-loader >0.7.0](https://github.com/near/near-discovery#local-component-development) to faciliate testing the appearance and behavior of your components from a locally running viewer, or near.org. 
-
-# Troubleshooting Deployments
-
-`near-social` cli tool will attempt to deploy any updated widgets with 1 NEAR of deposit and 100 Tgas.
-
-The deployment may fail if too many changes are present. There are several solutions for this. You can either plan releases more often or release widgets in batches from your local using `near-social`.
+The deployment may fail if too many changes are present. There are several solutions for this. You can either plan releases more often or release components in batches from your local using `near-social`.
 
 If you get a `Not enough storage balance` error, you will need to make sure that the NEAR account has enough storage staked on the `social.near` contract. You can view the current storage and available storage for any account using `near-cli-rs`:
 

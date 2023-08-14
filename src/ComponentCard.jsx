@@ -1,12 +1,14 @@
-const [accountId, widget, widgetName] = props.src.split("/");
-const metadata = Social.get(
-  `${accountId}/widget/${widgetName}/metadata/**`,
-  "final"
-);
-const tags = Object.keys(metadata.tags || {});
+const [accountId, unused, widgetName] = props.src.split("/");
 const detailsUrl = `#/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${accountId}/widget/${widgetName}`;
 const appUrl = `#/${accountId}/widget/${widgetName}`;
 const accountUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
+const metadata =
+  props.metadata ??
+  Social.get(`${accountId}/widget/${widgetName}/metadata/**`, "final") ??
+  {};
+const tags = props.metadata
+  ? props.metadata.tags
+  : Object.keys(metadata.tags || {});
 
 const Card = styled.div`
   position: relative;

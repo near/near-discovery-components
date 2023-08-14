@@ -1,4 +1,4 @@
-let { trigger, ...menuProps } = props;
+let { trigger, header, subHeader, items, ...rootProps } = props;
 
 const Root = styled("DropdownMenu.Root")``;
 
@@ -338,15 +338,15 @@ const previewProps = {
   ],
 };
 
-menuProps = Object.keys(menuProps).length > 0 ? menuProps : previewProps;
+items = items?.length > 0 ? items : previewProps.items;
 
 return (
-  <DropdownMenu.Root>
+  <DropdownMenu.Root {...rootProps}>
     <DropdownMenu.Trigger asChild>
       <TriggerWrapper>{trigger}</TriggerWrapper>
     </DropdownMenu.Trigger>
     <Content sideOffset={20} alignOffset={20}>
-      <DropdownItems {...menuProps} />
+      <DropdownItems {...{ trigger, header, subHeader, items }} />
     </Content>
   </DropdownMenu.Root>
 );

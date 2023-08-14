@@ -54,7 +54,7 @@ return (
       <Item>
         <Widget
             src="${REPL_ACCOUNT}/widget/ComponentCard"
-            props={{ src: "meta-pool-official.near/widget/MetaPoolStakeEth" }}
+            props={{ src: "${REPL_METAPOOL}/widget/MetaPoolStakeEth" }}
           />
       </Item>
       <Item>

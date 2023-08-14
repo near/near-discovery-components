@@ -5,5 +5,6 @@
     "REPL_MODERATOR": "bosmod.testnet",
     "REPL_NEAR_URL": "test.near.org",
     "REPL_NEARWEEK": "discom-dev.testnet",
+    "REPL_METAPOOL": "meta-pool-official.testnet",
     "REPL_QUERYAPI_FEED": "discom.testnet/widget/Posts"
 }

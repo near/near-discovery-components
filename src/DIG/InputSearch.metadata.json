@@ -1,0 +1,7 @@
+{
+  "description": "An input component for typing a search query.\n\n### Example\n\n```jsx\nreturn (\n  <Widget\n    src=\"near/widget/DIG.InputSearch\"\n    props={{\n      onQueryChange: (query) => console.log(query),\n    }}\n  />\n);\n```\n\n### Props\n\n`assistiveText`\n\n- type: string\n- Adds assistive text to the bottom of the input. Useful for info, success, and error messages.\n\n`disabled`\n\n- type: boolean\n- Disables the input\n\n`invalid`\n\n- type: boolean\n- Renders input with error variant\n\n`label`\n\n- type: string\n- Renders label above input\n\n`onQueryChange`\n\n- type: function\n- Returns search query whenever input changes\n\n### HTML Attributes\n\nAll other props will be forwarded through to the `<input>` element. EG: `placeholder`.",
+  "name": "DIG.InputSearch",
+  "tags": {
+    "dig": ""
+  }
+}

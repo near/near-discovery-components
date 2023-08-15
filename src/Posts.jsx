@@ -1,32 +1,235 @@
+const GRAPHQL_ENDPOINT =
+  props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
+const LIMIT = 25;
+const sortOption = props.postsOrderOption || "blockHeight"; // following, blockHeight
+let accountsFollowing = props.accountsFollowing;
+const moderatorAccount = props?.moderatorAccount || "bosmod.near";
+
 State.init({
   selectedTab: Storage.privateGet("selectedTab") || "all",
+  posts: [],
+  postsCountLeft: 0,
+  initLoadPosts: false,
+  initLoadPostsAll: false,
 });
 
 const previousSelectedTab = Storage.privateGet("selectedTab");
-
 if (previousSelectedTab && previousSelectedTab !== state.selectedTab) {
   State.update({
     selectedTab: previousSelectedTab,
   });
 }
 
-let accounts = undefined;
-
-if (state.selectedTab === "following" && context.accountId) {
+// TODO port to QueryAPI
+if (
+  state.selectedTab === "following" &&
+  context.accountId &&
+  !accountsFollowing
+) {
   const graph = Social.keys(`${context.accountId}/graph/follow/*`, "final");
   if (graph !== null) {
-    accounts = Object.keys(graph[context.accountId].graph.follow || {});
-    accounts.push(context.accountId);
-  } else {
-    accounts = [];
+    accountsFollowing = Object.keys(
+      graph[context.accountId].graph.follow || {}
+    );
   }
-} else {
-  accounts = undefined;
 }
 
 function selectTab(selectedTab) {
   Storage.privateSet("selectedTab", selectedTab);
-  State.update({ selectedTab });
+  State.update({
+    posts: [],
+    postsCountLeft: 0,
+    selectedTab,
+  });
+  loadMorePosts();
+}
+
+let filterUsersRaw = Social.get(
+  `${moderatorAccount}/moderate/users`,
+  "optimistic",
+  {
+    subscribe: true,
+  }
+);
+
+const selfFlaggedPosts = context.accountId
+  ? Social.index("flag", "main", {
+      accountId: context.accountId,
+    })
+  : [];
+
+if (filterUsersRaw === null) {
+  // haven't loaded filter list yet, return early
+  return "";
+}
+
+const filterUsers = filterUsersRaw ? JSON.parse(filterUsersRaw) : [];
+
+// get the full list of posts that the current user has flagged so
+// they can be hidden
+
+const shouldFilter = (item) => {
+  return (
+    filterUsers.includes(item.account_id) ||
+    selfFlaggedPosts.find((flagged) => {
+      return (
+        flagged?.value?.blockHeight === item.block_height &&
+        flagged?.value?.path.includes(item.account_id)
+      );
+    })
+  );
+};
+function fetchGraphQL(operationsDoc, operationName, variables) {
+  return asyncFetch(`${GRAPHQL_ENDPOINT}/v1/graphql`, {
+    method: "POST",
+    headers: { "x-hasura-role": "dataplatform_near" },
+    body: JSON.stringify({
+      query: operationsDoc,
+      variables: variables,
+      operationName: operationName,
+    }),
+  });
+}
+
+const createQuery = (sortOption, type) => {
+  let querySortOption = "";
+  switch (sortOption) {
+    case "recentComments":
+      querySortOption = `{ last_comment_timestamp: desc_nulls_last },`;
+      break;
+    // More options...
+    default:
+      querySortOption = "";
+  }
+
+  let queryFilter = "";
+  switch (type) {
+    case "following":
+      let queryAccountsString = accountsFollowing
+        .map((account) => `"${account}"`)
+        .join(", ");
+      queryFilter = `account_id: { _in: [${queryAccountsString}]}`;
+      break;
+    // More options...
+    default:
+      queryFilter = "";
+  }
+
+  const indexerQueries = `
+query GetPostsQuery($offset: Int, $limit: Int) {
+  dataplatform_near_social_feed_posts(order_by: [${querySortOption} { block_height: desc }], offset: $offset, limit: $limit) {
+    account_id
+    block_height
+    block_timestamp
+    content
+    receipt_id
+    accounts_liked
+    last_comment_timestamp
+    comments(order_by: {block_height: asc}) {
+      account_id
+      block_height
+      block_timestamp
+      content
+    }
+  }
+  dataplatform_near_social_feed_posts_aggregate(order_by: [${querySortOption} { block_height: desc }], offset: $offset){
+    aggregate {
+      count
+    }
+  }
+}
+query GetFollowingPosts($offset: Int, $limit: Int) {
+  dataplatform_near_social_feed_posts(where: {${queryFilter}}, order_by: [${querySortOption} { block_height: desc }], offset: $offset, limit: $limit) {
+    account_id
+    block_height
+    block_timestamp
+    content
+    receipt_id
+    accounts_liked
+    last_comment_timestamp
+    comments(order_by: {block_height: asc}) {
+      account_id
+      block_height
+      block_timestamp
+      content
+    }
+  }
+  dataplatform_near_social_feed_posts_aggregate(where: {${queryFilter}}, order_by: [${querySortOption} { block_height: desc }], offset: $offset) {
+    aggregate {
+      count
+    }
+  }
+}
+`;
+  return indexerQueries;
+};
+
+const loadMorePosts = () => {
+  const queryName =
+    state.selectedTab == "following" && accountsFollowing
+      ? "GetFollowingPosts"
+      : "GetPostsQuery";
+  const type =
+    state.selectedTab == "following" && accountsFollowing ? "following" : "all";
+
+  if (
+    state.selectedTab == "following" &&
+    accountsSelected &&
+    accountsSelected.length == 0
+  ) {
+    return;
+  }
+  fetchGraphQL(createQuery(sortOption, type), queryName, {
+    offset: state.posts.length,
+    limit: LIMIT,
+  }).then((result) => {
+    if (result.status === 200 && result.body) {
+      if (result.body.errors) {
+        console.log("error:", result.body.errors);
+        return;
+      }
+      let data = result.body.data;
+      if (data) {
+        const newPosts = data.dataplatform_near_social_feed_posts;
+        const postsCountLeft =
+          data.dataplatform_near_social_feed_posts_aggregate.aggregate.count;
+        if (newPosts.length > 0) {
+          let filteredPosts = newPosts.filter((i) => !shouldFilter(i));
+          filteredPosts = filteredPosts.map((post) => {
+            const prevComments = post.comments;
+            const filteredComments = post.comments.filter(
+              (comment) => !shouldFilter(comment)
+            );
+            post.comments = filteredComments;
+            return post;
+          });
+
+          State.update({
+            posts: [...state.posts, ...filteredPosts],
+            postsCountLeft,
+          });
+        }
+      }
+    }
+  });
+};
+
+const hasMore = state.postsCountLeft != state.posts.length;
+
+if (!state.initLoadPostsAll && selfFlaggedPosts && filterUsers) {
+  loadMorePosts();
+  State.update({ initLoadPostsAll: true });
+}
+
+if (
+  state.initLoadPostsAll == true &&
+  !state.initLoadPosts &&
+  accountsFollowing
+) {
+  if (accountsFollowing.length > 0 && state.selectedTab == "following") {
+    selectTab("following");
+  }
+  State.update({ initLoadPosts: true });
 }
 
 const H2 = styled.h2`
@@ -52,7 +255,6 @@ const Content = styled.div`
 const ComposeWrapper = styled.div`
   border-top: 1px solid #eceef0;
 `;
-
 const FilterWrapper = styled.div`
   border-top: 1px solid #eceef0;
   padding: 24px 24px 0;
@@ -156,7 +358,14 @@ return (
       )}
 
       <FeedWrapper>
-        <Widget src="${REPL_ACCOUNT}/widget/Posts.Feed" props={{ accounts }} />
+        <Widget
+          src="${REPL_ACCOUNT}/widget/Posts.Feed"
+          props={{
+            hasMore,
+            loadMorePosts,
+            posts: state.posts,
+          }}
+        />
       </FeedWrapper>
     </Content>
   </>

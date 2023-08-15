@@ -53,6 +53,12 @@ return (
     <Items>
       <Item>
         <Widget
+            src="${REPL_ACCOUNT}/widget/ComponentCard"
+            props={{ src: "${REPL_METAPOOL}/widget/MetaPoolStakeEth" }}
+          />
+      </Item>
+      <Item>
+        <Widget
           src="${REPL_ACCOUNT}/widget/ComponentCard"
           props={{ src: "nearhorizon.near/widget/Index" }}
         />

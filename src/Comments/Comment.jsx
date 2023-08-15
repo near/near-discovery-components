@@ -1,15 +1,16 @@
+const GRAPHQL_ENDPOINT =
+  props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 const accountId = props.accountId;
 const blockHeight =
   props.blockHeight === "now" ? "now" : parseInt(props.blockHeight);
-const content =
-  props.content ??
-  JSON.parse(Social.get(`${accountId}/post/comment`, blockHeight) ?? "null");
-const parentItem = content.item;
 const highlight = !!props.highlight;
-const raw = !!props.raw;
 const commentUrl = `https://${REPL_NEAR_URL}/s/c?a=${accountId}&b=${blockHeight}`;
 
-State.init({ hasBeenFlagged: false });
+State.init({
+  hasBeenFlagged: false,
+  content: JSON.parse(props.content) ?? undefined,
+  notifyAccountId: undefined,
+});
 
 const extractNotifyAccountId = (parentItem) => {
   if (!parentItem || parentItem.type !== "social" || !parentItem.path) {
@@ -18,6 +19,52 @@ const extractNotifyAccountId = (parentItem) => {
   const accountId = parentItem.path.split("/")[0];
   return `${accountId}/post/main` === parentItem.path ? accountId : undefined;
 };
+
+if (!state.content && accountId && blockHeight !== "now") {
+  const commentQuery = `
+query CommentQuery {
+  dataplatform_near_social_feed_comments(
+    where: {_and: {account_id: {_eq: "${accountId}"}, block_height: {_eq: ${blockHeight}}}}
+  ) {
+    content
+    block_timestamp
+    receipt_id
+    post {
+      account_id
+    }
+  }
+}
+`;
+
+  function fetchGraphQL(operationsDoc, operationName, variables) {
+    return asyncFetch(`${GRAPHQL_ENDPOINT}/v1/graphql`, {
+      method: "POST",
+      headers: { "x-hasura-role": "dataplatform_near" },
+      body: JSON.stringify({
+        query: operationsDoc,
+        variables: variables,
+        operationName: operationName,
+      }),
+    });
+  }
+
+  fetchGraphQL(commentQuery, "CommentQuery", {}).then((result) => {
+    if (result.status === 200) {
+      if (result.body.data) {
+        const comments =
+          result.body.data.dataplatform_near_social_feed_comments;
+        if (comments.length > 0) {
+          const comment = comments[0];
+          let content = JSON.parse(comment.content);
+          State.update({
+            content: content,
+            notifyAccountId: comment.post.accountId,
+          });
+        }
+      }
+    }
+  });
+}
 
 const Comment = styled.div`
   position: relative;
@@ -72,9 +119,24 @@ const Actions = styled.div`
 
 if (state.hasBeenFlagged) {
   return (
-    <div className="alert alert-secondary">
-      <i className="bi bi-flag" /> This content has been flagged for moderation
-    </div>
+    <>
+      <div className="alert alert-secondary">
+        <i className="bi bi-flag" /> This content has been flagged for moderation
+      </div>
+      <Widget
+        src={`${REPL_ACCOUNT}/widget/DIG.Toast`}
+        props={{
+          type: "info",
+          title: "Flagged for moderation",
+          description: "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
+          open: state.hasBeenFlagged,
+          onOpenChange: (open) => {
+            State.update({ hasBeenFlagged: open });
+          },
+          duration: 10000
+        }}
+      />
+    </>
   );
 }
 
@@ -109,18 +171,18 @@ return (
 
     <Main>
       <Content>
-        {content.text && (
+        {state.content.text && (
           <Widget
             src="${REPL_ACCOUNT}/widget/SocialMarkdown"
-            props={{ text: content.text }}
+            props={{ text: state.content.text }}
           />
         )}
 
-        {content.image && (
+        {state.content.image && (
           <Widget
             src="${REPL_MOB}/widget/Image"
             props={{
-              image: content.image,
+              image: state.content.image,
             }}
           />
         )}
@@ -136,7 +198,7 @@ return (
                 path: `${accountId}/post/comment`,
                 blockHeight,
               },
-              notifyAccountId,
+              notifyAccountId: state.notifyAccountId,
             }}
           />
           <Widget

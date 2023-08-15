@@ -1,10 +1,9 @@
 {
-    "REPL_ACCOUNT": "discom-dev.testnet",
-    "REPL_MOB": "eugenethedream",
-    "REPL_MOB_2": "one.testnet",
-    "REPL_MODERATOR": "bosmod.testnet",
-    "REPL_NEAR_URL": "test.near.org",
-    "REPL_NEARWEEK": "discom-dev.testnet",
-    "REPL_METAPOOL": "meta-pool-official.testnet",
-    "REPL_QUERYAPI_FEED": "discom-dev.testnet/widget/Posts"
+  "REPL_ACCOUNT": "discom-dev.testnet",
+  "REPL_MOB": "eugenethedream",
+  "REPL_MOB_2": "one.testnet",
+  "REPL_MODERATOR": "bosmod.testnet",
+  "REPL_NEAR_URL": "test.near.org",
+  "REPL_NEARWEEK": "discom-dev.testnet",
+  "REPL_QUERYAPI_FEED": "discom-dev.testnet/widget/Posts"
 }

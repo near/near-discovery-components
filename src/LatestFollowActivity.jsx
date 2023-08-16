@@ -67,7 +67,7 @@ return (
             <i className="bi bi-arrow-right"></i>
             <br />
             <Widget
-              src="${REPL_MOB_2}/widget/TimeAgo"
+              src="${REPL_MOB_2}/widget/TimeAgo@97556750"
               props={{ blockHeight: item.blockHeight }}
             />
           </Text>

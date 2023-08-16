@@ -63,7 +63,7 @@ return (
       <Text as="div" className="d-flex align-items-center">
         <i className="ph ph-clock" style={{ fontSize: "20px" }} />
         <Widget
-          src={`${REPL_MOB_2}/widget/TimeAgo`}
+          src={`${REPL_MOB_2}/widget/TimeAgo@97556750`}
           props={{
             blockHeight: props.commits[props.commits.length - 1],
             className: "description",

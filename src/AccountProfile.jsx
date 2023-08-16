@@ -94,7 +94,7 @@ const AccountProfile = (
           <Text small style={{ marginLeft: "auto" }}>
             Joined{" "}
             <Widget
-              src="${REPL_MOB_2}/widget/TimeAgo"
+              src="${REPL_MOB_2}/widget/TimeAgo@97556750"
               props={{ blockHeight: props.blockHeight }}
             />{" "}
             ago

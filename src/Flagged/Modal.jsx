@@ -1,9 +1,42 @@
-let { onCancel, onConfirm, showModal } = props;
+let { onCancel, onConfirm, open, reportedAccountId } = props;
+
+const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${reportedAccountId}`;
 
 State.init({
-  show: showModal ?? false,
+  show: open ?? false,
   agreeIsChecked: false,
 });
+
+// copied from Moderate.jsx so maybe it's wrong
+const getFlaggedAccountsList = Social.get(
+  `${context.accountId}/moderate/users`,
+  "optimistic",
+  {
+    subscribe: true,
+  }
+);
+
+console.log("getFlaggedAccountsList: ", getFlaggedAccountsList);
+
+const flaggedAccountsList = getFlaggedAccountsList ? JSON.parse(getFlaggedAccountsList) : [];
+const flaggedAccountsListSet = new Set(flaggedAccountsList);
+const filterFlaggedAccounts = [...flaggedAccountsListSet.add(reportedAccountId)];
+
+const data = {
+  index: {
+    moderate: {
+      accounts: filterFlaggedAccounts
+    },
+  },
+}
+
+const contentModerationItem = {
+  type: "social",
+  path: profileUrl,
+  reportedBy: context.accountId,
+};
+
+console.log("data: ", data);
 
 const Backdrop = styled.div`
   height: 100vh;
@@ -73,6 +106,21 @@ const AcceptSection = styled.div`
 `;
 
 const hide = () => {
+  Social.set(
+    {
+      index: {
+        flag: JSON.stringify({
+          key: "main",
+          value: contentModerationItem,
+        }),
+      },
+    },
+    {
+      onCommit: () => {
+        props.onCancel && props.onCancel();
+      },
+    }
+  );
   State.update({ show: false });
 };
 
@@ -98,7 +146,7 @@ return (
               borderRadius: "1.25rem",
             }}
             onClick={() => {
-              hide() && onCancel && onCancel();
+              hide();
             }}
           >
             No
@@ -110,6 +158,8 @@ return (
               borderRadius: "1.25rem",
             }}
             className="continue-button"
+            data={data}
+            onCommit={onConfirm}
           >
             Yes
           </CommitButton>

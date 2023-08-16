@@ -11,6 +11,9 @@ const handleOnMouseEnter = () => {
 const handleOnMouseLeave = () => {
   State.update({ show: false });
 };
+const handleModalOpen = (value) => {
+  State.update({ showConfirmModal: value })
+};
 
 State.init({
   show: false,
@@ -68,36 +71,32 @@ const overlay = (
           src="${REPL_ACCOUNT}/widget/AccountProfile"
           props={{ accountId: props.accountId, profile, noOverlay: true }}
         />
-        {props.activityFeed && !!context.accountId && context.accountId !== props.accountId && (
-          <Widget
-            src="${REPL_ACCOUNT}/widget/Flagged.Trigger"
-            props={{
-              onClick: () => {
-                State.update({ showConfirmModal: true });
-              },
-            }}
-          />
-        )}
-        {state.showConfirmModal && (
-          <Widget
-            src="${REPL_ACCOUNT}/widget/Flagged.Modal"
-            props={{
-              showModal: state.showConfirmModal,
-            }}
-          />
-        )}
-        {!props.activityFeed && !!context.accountId && context.accountId !== props.accountId && (
-          <Widget
-            src="${REPL_ACCOUNT}/widget/FlagButton"
-            props={{
-              item: contentModerationItem,
-              disabled: !context.accountId || context.accountId === accountId,
-              onFlag: () => {
-                State.update({ hasBeenFlagged: true });
-              },
-            }}
-          />
-        )}
+        {!props.activityFeed &&
+          !!context.accountId &&
+          context.accountId !== props.accountId && (
+            <Widget
+              src="${REPL_ACCOUNT}/widget/FlagButton"
+              props={{
+                item: contentModerationItem,
+                onFlag: () => {
+                  State.update({ hasBeenFlagged: true });
+                },
+              }}
+            />
+          )}
+        {props.activityFeed &&
+          !!context.accountId &&
+          context.accountId !== props.accountId && (
+            <Widget
+              src="${REPL_ACCOUNT}/widget/Flagged.Trigger"
+              props={{
+                onClick: () => {
+                  handleOnMouseLeave();
+                  handleModalOpen(true);
+                },
+              }}
+            />
+          )}
       </div>
 
       {verifications && (<div style={{}}>
@@ -149,40 +148,56 @@ const overlay = (
 );
 
 return (
-  <OverlayTrigger
-    show={state.show}
-    trigger={["hover", "focus"]}
-    delay={{ show: 250, hide: 300 }}
-    placement={props.placement || "auto"}
-    overlay={overlay}
-  >
-    <div
-      className={props.inline ? "d-inline-flex" : ""}
-      style={{
-        verticalAlign: props.inline ? "baseline" : "",
-        maxWidth: "100%",
-      }}
-      onMouseEnter={handleOnMouseEnter}
-      onMouseLeave={handleOnMouseLeave}
+  <>
+    <OverlayTrigger
+      show={state.show}
+      trigger={["hover", "focus"]}
+      delay={{ show: 250, hide: 300 }}
+      placement={props.placement || "auto"}
+      overlay={overlay}
     >
-      {props.children || "Hover Me"}
+      <div
+        className={props.inline ? "d-inline-flex" : ""}
+        style={{
+          verticalAlign: props.inline ? "baseline" : "",
+          maxWidth: "100%",
+        }}
+        onMouseEnter={handleOnMouseEnter}
+        onMouseLeave={handleOnMouseLeave}
+      >
+        {props.children || "Hover Me"}
+      </div>
+    </OverlayTrigger>
+    {state.hasBeenFlagged && (
+      <Widget
+        src="${REPL_ACCOUNT}/widget/DIG.Toast"
+        props={{
+          type: "info",
+          title: "Flagged for moderation",
+          description:
+            "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
+          open: state.hasBeenFlagged,
+          onOpenChange: () => {
+            State.update({ hasBeenFlagged: false });
+          },
+          duration: 10000,
+        }}
+      />
+    )}
 
-      {state.hasBeenFlagged && (
-        <Widget
-          src={`${REPL_ACCOUNT}/widget/DIG.Toast`}
-          props={{
-            type: "info",
-            title: "Flagged for moderation",
-            description:
-              "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
-            open: state.hasBeenFlagged,
-            onOpenChange: () => {
-              State.update({ hasBeenFlagged: false });
-            },
-            duration: 5000
-          }}
-        />
-      )}
-    </div>
-  </OverlayTrigger>
+    {state.showConfirmModal && (
+      <Widget
+        src="${REPL_ACCOUNT}/widget/Flagged.Modal"
+        props={{
+          open: state.showConfirmModal,
+          onOpenChange: handleModalOpen,
+          reportedAccountId: props.accountId,
+          onReport: () => {
+            handleModalOpen(false);
+            State.update({ hasBeenFlagged: true });
+          },
+        }}
+      />
+    )}
+  </>
 );

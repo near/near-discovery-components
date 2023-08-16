@@ -1,5 +1,4 @@
 let { onClick } = props;
-State.init({ hasBeenFlagged: false });
 
 const Button = styled.button`
   border: 0;
@@ -35,7 +34,6 @@ return (
     <Button
       type="button"
       aria-label="Flag for moderation"
-      disabled={!context.accountId}
       onClick={onClick}
     >
       <i className="bi bi-flag"></i>

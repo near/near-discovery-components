@@ -402,7 +402,7 @@ return (
               <Sort>
                 <span className="label">Sort by:</span>
                 <Widget
-                  src={`${REPL_ACCOUNT}/widget/Inputs.Select`}
+                  src={`${REPL_ACCOUNT}/widget/Select`}
                   props={{
                     noLabel: true,
                     value: { text: optionsMap[sort], value: state.sort },

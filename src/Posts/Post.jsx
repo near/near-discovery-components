@@ -192,19 +192,21 @@ if (state.hasBeenFlagged) {
   return (
     <>
       <div className="alert alert-secondary">
-        <i className="bi bi-flag" /> This content has been flagged for moderation
+        <i className="bi bi-flag" /> This content has been flagged for
+        moderation
       </div>
       <Widget
         src={`${REPL_ACCOUNT}/widget/DIG.Toast`}
         props={{
           type: "info",
           title: "Flagged for moderation",
-          description: "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
+          description:
+            "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
           open: state.hasBeenFlagged,
           onOpenChange: (open) => {
             State.update({ hasBeenFlagged: open });
           },
-          duration: 10000
+          duration: 10000,
         }}
       />
     </>
@@ -232,7 +234,7 @@ return (
                     ) : (
                       <>
                         <Widget
-                          src="${REPL_MOB_2}/widget/TimeAgo"
+                          src="${REPL_MOB_2}/widget/TimeAgo@97556750"
                           props={{ blockHeight }}
                         />{" "}
                         ago
@@ -304,7 +306,7 @@ return (
             props={{
               item,
               notifyAccountId,
-              likes: state.likes
+              likes: state.likes,
             }}
           />
           <Widget

@@ -46,7 +46,7 @@ const Wrapper = styled.div`
 const H2 = styled.h2`
   font-size: 19px;
   line-height: 22px;
-  color: #11181C;
+  color: #11181c;
   margin: 0;
 `;
 
@@ -66,7 +66,7 @@ const Item = styled.li`
   }
 
   > * {
-    min-width: 0
+    min-width: 0;
   }
 `;
 
@@ -93,20 +93,20 @@ const ButtonLink = styled.a`
   width: 100%;
   padding: 8px;
   height: 32px;
-  background: #FBFCFD;
-  border: 1px solid #D7DBDF;
+  background: #fbfcfd;
+  border: 1px solid #d7dbdf;
   border-radius: 50px;
   font-weight: 600;
   font-size: 12px;
   line-height: 15px;
   text-align: center;
   cursor: pointer;
-  color: #11181C !important;
+  color: #11181c !important;
   margin: 0;
 
   &:hover,
   &:focus {
-    background: #ECEDEE;
+    background: #ecedee;
     text-decoration: none;
     outline: none;
   }
@@ -127,7 +127,7 @@ return (
             </Text>
             <Text small>
               <Widget
-                src="${REPL_MOB_2}/widget/TimeAgo"
+                src="${REPL_MOB_2}/widget/TimeAgo@97556750"
                 props={{ blockHeight: item.blockHeight }}
               />{" "}
               ago

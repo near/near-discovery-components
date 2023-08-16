@@ -1,9 +1,31 @@
+State.init({
+  selectedTab: props.tab ?? "discover",
+});
+
+if (props.tab && props.tab !== state.selectedTab) {
+  State.update({
+    selectedTab: props.tab,
+  });
+}
+
+const appStoreIndexUrl = "#/${REPL_ACCOUNT}/widget/AppStore.IndexPage";
+
 const Wrapper = styled.div`
   padding: 100px 0;
   background: url("https://ipfs.near.social/ipfs/bafkreie5t75jirebnuyozmsc5hxzhxpoqivaxmc4rypaaogab6qh7asb2i");
   background-position: right top;
   background-size: 1440px auto;
   background-repeat: no-repeat;
+  margin-top: calc(var(--body-top-padding) * -1);
+
+  @media (max-width: 1024px) {
+    padding: 50px 0;
+  }
+
+  @media (max-width: 800px) {
+    background-image: none;
+    padding: 2rem 0;
+  }
 `;
 
 const Container = styled.div`
@@ -12,14 +34,78 @@ const Container = styled.div`
   padding: 0 16px;
 `;
 
-const Section = styled.div`
-  margin-top: 3rem;
+const Main = styled.div`
+  display: flex;
+  gap: 6.5rem;
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  @media (max-width: 800px) {
+    gap: 2rem;
+  }
 `;
+
+const Menu = styled.div`
+  width: 7.5rem;
+  flex-shrink: 0;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow: auto;
+  scroll-behavior: smooth;
+
+  @media (max-width: 1024px) {
+    width: 100%;
+    text-align: left;
+    flex-direction: row;
+  }
+`;
+
+const MenuLink = styled.a`
+  display: block;
+  font: var(--text-s);
+  font-weight: 600;
+  color: var(--sand12);
+  outline: none;
+
+  &:hover,
+  &:focus {
+    color: var(--sand12);
+    text-decoration: underline;
+  }
+
+  &[data-active="true"] {
+    color: var(--violet7);
+  }
+`;
+
+const Sections = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+`;
+
+const Section = styled.div``;
 
 const H1 = styled.h1`
   font: var(--text-hero);
   color: var(--sand12);
   margin: 0 0 3rem;
+  padding-left: 14rem;
+
+  @media (max-width: 1024px) {
+    padding-left: 0;
+  }
+
+  @media (max-width: 800px) {
+    font: var(--text-3xl);
+    font-weight: 600;
+    margin: 0 0 2rem;
+  }
 `;
 
 const H2 = styled.h2`
@@ -40,147 +126,24 @@ const ThumbnailGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 1.5rem;
+
+  @media (max-width: 850px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  @media (max-width: 550px) {
+    gap: 0.5rem;
+    grid-template-columns: 1fr 1fr;
+  }
 `;
 
 const ContentGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2.5rem;
-`;
+  gap: 2rem;
 
-const OverlayCard = styled.a`
-  display: block;
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
-  border-radius: 1.25rem;
-  border: 1px solid var(--sand6);
-  position: relative;
-  cursor: pointer;
-  text-decoration: none !important;
-  outline: none;
-  transition: all 200ms;
-
-  img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border: none;
-  }
-
-  &:hover,
-  &:focus {
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
-  }
-`;
-
-const OverlayCardContent = styled.span`
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 1.25rem;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
-  font: var(--text-xs);
-  color: var(--white);
-
-  b {
-    font-weight: 600;
-  }
-`;
-
-const OverlayCardTag = styled.span`
-  display: inline-flex;
-  border-bottom-right-radius: 1.25rem;
-  background: var(--violet7);
-  color: #fff;
-  font: var(--text-xs);
-  font-weight: 700;
-  padding: 0.25rem 0.75rem;
-  position: absolute;
-  top: 0;
-  left: 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  border-right: 1px solid rgba(0, 0, 0, 0.1);
-`;
-
-const AppImage = styled.div`
-  width: 5rem;
-  height: 5rem;
-  border-radius: 1rem;
-  border: 1px solid var(--sand6);
-  overflow: hidden;
-  transition: all 200ms;
-
-  img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border: none;
-  }
-`;
-
-const AppContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-`;
-
-const App = styled.a`
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
-  cursor: pointer;
-  text-decoration: none !important;
-
-  &:hover,
-  &:focus {
-    ${AppImage} {
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
-    }
-  }
-`;
-
-const ArticleImage = styled.div`
-  width: 100%;
-  aspect-ratio: 26 / 15;
-  border-radius: 1rem;
-  border: 1px solid var(--sand6);
-  overflow: hidden;
-  transition: all 200ms;
-
-  img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border: none;
-  }
-`;
-
-const ArticleContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-`;
-
-const Article = styled.a`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  align-items: row;
-  cursor: pointer;
-  text-decoration: none !important;
-
-  &:hover,
-  &:focus {
-    ${ArticleImage} {
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
-    }
+  @media (max-width: 650px) {
+    grid-template-columns: 1fr;
   }
 `;
 
@@ -189,109 +152,110 @@ return (
     <Container>
       <H1>d.Apps</H1>
 
-      <Section>
-        <ThumbnailGrid>
-          <OverlayCard href="/">
-            <OverlayCardTag>Featured</OverlayCardTag>
-            <img src="https://images.unsplash.com/photo-1691250993170-4c9919194aa4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3794&q=80" />
-            <OverlayCardContent>
-              <span>
-                <b>App Name</b>
-              </span>
-              <span>Creator</span>
-            </OverlayCardContent>
-          </OverlayCard>
+      <Main>
+        <Menu>
+          <MenuLink
+            href={`${appStoreIndexUrl}?tab=discover`}
+            data-active={state.selectedTab === "discover"}
+          >
+            Discover
+          </MenuLink>
+          <MenuLink
+            href={`${appStoreIndexUrl}?tab=earn`}
+            data-active={state.selectedTab === "earn"}
+          >
+            Earn
+          </MenuLink>
+          <MenuLink
+            href={`${appStoreIndexUrl}?tab=play`}
+            data-active={state.selectedTab === "play"}
+          >
+            Play
+          </MenuLink>
+          <MenuLink
+            href={`${appStoreIndexUrl}?tab=develop`}
+            data-active={state.selectedTab === "develop"}
+          >
+            Develop
+          </MenuLink>
+          <MenuLink
+            href={`${appStoreIndexUrl}?tab=engage`}
+            data-active={state.selectedTab === "engage"}
+          >
+            Engage
+          </MenuLink>
+          <MenuLink
+            href={`${appStoreIndexUrl}?tab=search`}
+            data-active={state.selectedTab === "search"}
+          >
+            Search
+          </MenuLink>
+        </Menu>
 
-          <OverlayCard>
-            <OverlayCardTag>Featured</OverlayCardTag>
-            <img src="https://images.unsplash.com/photo-1691250993170-4c9919194aa4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3794&q=80" />
-            <OverlayCardContent>
-              <span>
-                <b>App Name</b>
-              </span>
-              <span>Creator</span>
-            </OverlayCardContent>
-          </OverlayCard>
+        {state.selectedTab === "search" ? (
+          <Widget src="${REPL_ACCOUNT}/widget/AppStore.Search" />
+        ) : (
+          <Sections>
+            <Section>
+              <ThumbnailGrid>
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/AppStore.AppThumbnail"
+                  props={{
+                    author: "calebjacob.near",
+                    image: {
+                      ipfs_cid:
+                        "bafkreibhm4kokjpetrr7ztaixyanzbn5djvj4h4ryjshsfh2hgpi3v7uqu",
+                    },
+                    name: "My App",
+                    widgetName: "MyApp",
+                  }}
+                />
+              </ThumbnailGrid>
+            </Section>
 
-          <OverlayCard>
-            <img src="https://images.unsplash.com/photo-1691250993170-4c9919194aa4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3794&q=80" />
-            <OverlayCardContent>
-              <span>
-                <b>App Name</b>
-              </span>
-              <span>Creator</span>
-            </OverlayCardContent>
-          </OverlayCard>
+            <Section>
+              <H2>Subheader</H2>
 
-          <OverlayCard>
-            <img src="https://images.unsplash.com/photo-1691250993170-4c9919194aa4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3794&q=80" />
-            <OverlayCardContent>
-              <span>
-                <b>App Name</b>
-              </span>
-              <span>Creator</span>
-            </OverlayCardContent>
-          </OverlayCard>
-        </ThumbnailGrid>
-      </Section>
+              <ContentGrid>
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/ComponentCard"
+                  props={{
+                    src: `calebjacob.near/widget/MyApp`,
+                    tags: ["foo", "bar"],
+                    metadata: {
+                      image: {
+                        ipfs_cid:
+                          "bafkreibhm4kokjpetrr7ztaixyanzbn5djvj4h4ryjshsfh2hgpi3v7uqu",
+                      },
+                      name: "My App",
+                    },
+                    blockHeight: undefined,
+                  }}
+                />
+              </ContentGrid>
+            </Section>
 
-      <Section>
-        <H2>Subheader</H2>
+            <Section>
+              <H2>Subheader</H2>
 
-        <ContentGrid>
-          <App>
-            <AppImage>
-              <img src="https://images.unsplash.com/photo-1691250993170-4c9919194aa4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3794&q=80" />
-            </AppImage>
-            <AppContent>
-              <Text size="text-s" fontWeight={600}>
-                App Name
-              </Text>
-              <Text size="text-xs">Creator</Text>
-            </AppContent>
-          </App>
-          <App>
-            <AppImage>
-              <img src="https://images.unsplash.com/photo-1691250993170-4c9919194aa4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3794&q=80" />
-            </AppImage>
-            <AppContent>
-              <Text size="text-s" fontWeight={600}>
-                App Name
-              </Text>
-              <Text size="text-xs">Creator</Text>
-            </AppContent>
-          </App>
-        </ContentGrid>
-      </Section>
-
-      <Section>
-        <H2>Subheader</H2>
-
-        <ContentGrid>
-          <Article>
-            <ArticleImage>
-              <img src="https://images.unsplash.com/photo-1691250993170-4c9919194aa4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3794&q=80" />
-            </ArticleImage>
-            <ArticleContent>
-              <Text size="text-base" fontWeight={600}>
-                Article Name
-              </Text>
-              <Text size="text-xs">Creator</Text>
-            </ArticleContent>
-          </Article>
-          <Article>
-            <ArticleImage>
-              <img src="https://images.unsplash.com/photo-1691250993170-4c9919194aa4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3794&q=80" />
-            </ArticleImage>
-            <ArticleContent>
-              <Text size="text-base" fontWeight={600}>
-                Article Name
-              </Text>
-              <Text size="text-xs">Creator</Text>
-            </ArticleContent>
-          </Article>
-        </ContentGrid>
-      </Section>
+              <ContentGrid>
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/AppStore.ArticleSummary"
+                  props={{
+                    author: "calebjacob.near",
+                    image: {
+                      ipfs_cid:
+                        "bafkreibhm4kokjpetrr7ztaixyanzbn5djvj4h4ryjshsfh2hgpi3v7uqu",
+                    },
+                    title: "My Article",
+                    url: "https://google.com",
+                  }}
+                />
+              </ContentGrid>
+            </Section>
+          </Sections>
+        )}
+      </Main>
     </Container>
   </Wrapper>
 );

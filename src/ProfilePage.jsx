@@ -240,7 +240,7 @@ return (
             )}
 
             <Widget
-              src="${REPL_ACCOUNT}/widget/Posts.Feed"
+              src="${REPL_ACCOUNT}/widget/v1.Posts.Feed"
               props={{ accounts: [accountId] }}
             />
           </>

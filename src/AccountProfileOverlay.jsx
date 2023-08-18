@@ -12,7 +12,7 @@ const handleOnMouseLeave = () => {
   State.update({ show: false });
 };
 const handleModalOpen = (value) => {
-  State.update({ showConfirmModal: value })
+  State.update({ showConfirmModal: value });
 };
 
 State.init({

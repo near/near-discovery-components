@@ -404,7 +404,6 @@ const SortContainer = styled.div`
     padding: 12px;
   }
 `;
-console.log("Posts props: ", props);
 
 return (
   <>

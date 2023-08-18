@@ -30,7 +30,6 @@ const Button = styled.button`
     cursor: initial;
   }
 `;
-console.log("FlagButton props: ", props);
 
 const FlagButton = () => (
   <Button

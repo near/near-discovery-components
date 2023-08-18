@@ -211,8 +211,6 @@ if (state.hasBeenFlagged) {
 
 const renderedComments = state.comments.map(renderComment);
 
-console.log("Posts.Feed.Post props: ", props);
-
 return (
   <Post>
     <Header>

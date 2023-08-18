@@ -160,6 +160,8 @@ const TabsButton = styled.a`
   }
 `;
 
+Storage.privateSet("activityPage", "true");
+
 return (
   <Wrapper
     className="container-xl"
@@ -198,14 +200,14 @@ return (
       </Section>
       <Section negativeMargin primary active={state.selectedTab === "posts"}>
         {state.shouldFallback == true ? (
-          <Widget src={`${REPL_ACCOUNT}/widget/v1.Posts`} props={{ activityFeed: true }} />
+          <Widget src={`${REPL_ACCOUNT}/widget/v1.Posts`} props={{ activityFeed: Storage.privateGet("activityPage") }} />
         ) : (
           <Widget
             src={`${REPL_ACCOUNT}/widget/Posts`}
             props={{
               GRAPHQL_ENDPOINT,
               accountsFollowing,
-              activityFeed: true
+              activityFeed: Storage.privateGet("activityPage")
             }}
           />
         )}

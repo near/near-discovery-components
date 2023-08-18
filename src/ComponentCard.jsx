@@ -152,7 +152,7 @@ return (
       <CardTag>
         <i className="bi bi-clock"></i>{" "}
         <Widget
-          src="${REPL_MOB_2}/widget/TimeAgo@${REPL_TIME_AGO_VERSION}"
+          src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
           props={{
             blockHeight: props.blockHeight,
             keyPath: `${accountId}/widget/${widgetName}`,

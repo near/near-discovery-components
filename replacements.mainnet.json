@@ -7,5 +7,5 @@
   "REPL_NEARWEEK": "nearweekapp.near",
   "REPL_QUERYAPI_FEED": "dataplatform.near/widget/QueryApi.Feed",
   "REPL_FEATURED_COMP_MANAGER": "bosfeaturedmanager.near",
-  "REPL_TIME_AGO_VERSION": "97556750"
+  "REPL_TIME_AGO_VERSION": "@97556750"
 }

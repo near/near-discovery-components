@@ -7,5 +7,5 @@
   "REPL_NEARWEEK": "discom-dev.testnet",
   "REPL_QUERYAPI_FEED": "discom-dev.testnet/widget/Posts",
   "REPL_FEATURED_COMP_MANAGER": "discom.testnet",
-  "REPL_TIME_AGO_VERSION": "120199200"
+  "REPL_TIME_AGO_VERSION": ""
 }

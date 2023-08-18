@@ -4,9 +4,17 @@ const peopleUrl = "#/${REPL_ACCOUNT}/widget/PeoplePage";
 let followingData = null;
 let followersData = null;
 
+// trending Users const
+const totalPages = 28;
+const STORE = "storage.googleapis.com";
+const BUCKET = "databricks-near-query-runner";
+const BASE_URL = `https://${STORE}/${BUCKET}/output`;
+
 State.init({
   currentPage: 0,
+  isLoading: true,
   selectedTab: props.tab || "everyone",
+  trendingUserData: [],
 });
 
 if (props.tab && props.tab !== state.selectedTab) {
@@ -71,6 +79,45 @@ const items = state.searchResults || people;
 const showLoadMoreButton =
   !state.searchResults && people.length % limitPerPage === 0;
 
+const updateTrendingUsers = (data) => {
+  State.update({
+    trendingUserData: [...state.trendingUserData, ...data],
+  });
+};
+
+const getTrendingUsers = (page) => {
+  try {
+    const url = `${BASE_URL}/trending_users_page_${page}.json`;
+    asyncFetch(url).then((res) => {
+      if (res.ok) {
+        const parsedResults = JSON.parse(res.body);
+        updateTrendingUsers(parsedResults.data);
+      } else {
+        console.log("Error fetching data. Try reloading the page.");
+      }
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const loadMoreTrendingUsers = () => {
+  const nextPage = state.currentPage + 1;
+  if (nextPage <= totalPages) {
+    State.update({ currentPage: nextPage });
+    getTrendingUsers(nextPage);
+  }
+};
+
+if (state.selectedTab == "trending" && state.isLoading) {
+  State.update({ currentPage: 1, isLoading: false });
+  getTrendingUsers(state.currentPage);
+}
+
+if (state.selectedTab !== "trending") {
+  State.update({ trendingUserData: [], isLoading: true });
+}
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -134,6 +181,13 @@ const Text = styled.p`
       text-decoration: underline;
     }
   }
+`;
+
+const TrendingUsers = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 96px;
+  padding-bottom: 48px;
 `;
 
 const Items = styled.div`
@@ -275,6 +329,13 @@ return (
             Followers
           </TabsButton>
         )}
+
+		<TabsButton
+          href={`${peopleUrl}?tab=trending`}
+          selected={state.selectedTab === "trending"}
+        >
+          Trending
+        </TabsButton>
       </Tabs>
     )}
 
@@ -298,7 +359,59 @@ return (
       </Items>
     )}
 
-    {showLoadMoreButton && (
+	{!context.accountId && state.trendingUserData && (
+      <TrendingUsers>
+        <Items>
+          {state.trendingUserData.map((user, index) => (
+            <Item key={index}>
+              <Widget
+                src="${REPL_ACCOUNT}/widget/AccountProfileCard"
+                props={{
+                  accountId: user.signer_id,
+                }}
+              />
+            </Item>
+          ))}
+        </Items>
+        {state.selectedTab == "trending" && state.currentPage < totalPages ? (
+          <Button type="button" onClick={() => loadMoreTrendingUsers()}>
+            Load More
+          </Button>
+        ) : null}
+      </TrendingUsers>
+    )}
+
+    {context.accountId && state.trendingUserData && (
+      <TrendingUsers>
+        <Items>
+          {state.trendingUserData.map((user, index) => (
+            <Item key={index}>
+              <Widget
+                src="${REPL_ACCOUNT}/widget/AccountProfileCardLeaderboard"
+                props={{
+                  accountId: user.signer_id,
+                  showTags: true,
+                  showFollowerStats: true,
+                  showFollowButton: state.multiSelectMode === false,
+                  likers: user.likers,
+                  followers: user.followers,
+                  following: user.following,
+                  profileImage: user.profileImage,
+                  profileName: user.profileName,
+                }}
+              />
+            </Item>
+          ))}
+        </Items>
+        {state.selectedTab == "trending" && state.currentPage < totalPages ? (
+          <Button type="button" onClick={() => loadMoreTrendingUsers()}>
+            Load More
+          </Button>
+        ) : null}
+      </TrendingUsers>
+    )}
+
+    {showLoadMoreButton && !state.selectedTab == "trending" && (
       <Button
         type="button"
         onClick={() => State.update({ currentPage: state.currentPage + 1 })}

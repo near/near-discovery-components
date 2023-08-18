@@ -53,7 +53,7 @@ const Profiles = styled.div`
 
 `;
 
-const Wrapper = styled.div`
+const TrendingUsers = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -82,26 +82,15 @@ const updateState = (data) => {
 
 const getTrendingUsers = (page) => {
   try {
-    if (page === 1) {
-      const url = `${BASE_URL}/trending_users_page_${page}.json`;
-      const res = fetch(url);
+    const url = `${BASE_URL}/trending_users_page_${page}.json`;
+    asyncFetch(url).then((res) => {
       if (res.ok) {
         const parsedResults = JSON.parse(res.body);
         updateState(parsedResults.data);
       } else {
-        console.log("Error fetching data simple.");
+        console.log("Error fetching data. Try reloading the page.");
       }
-    } else {
-      const url = `${BASE_URL}/trending_users_page_${page}.json`;
-      asyncFetch(url).then((res) => {
-        if (res.ok) {
-          const parsedResults = JSON.parse(res.body);
-          updateState(parsedResults.data);
-        } else {
-          console.log("Error fetching data async.", res);
-        }
-      });
-    }
+    });
   } catch (error) {
     console.log(error.message);
   }
@@ -130,36 +119,34 @@ if (state.error) {
   return <p>Error: {state.error}</p>;
 }
 
-if (state.userData) {
-  const trendingUsersList = state.userData.map((user, index) => (
-    <Profile key={index}>
-      <Widget
-        src="scopalaffairs.near/widget/AccountProfileCardLeaderboard"
-        props={{
-          accountId: user.signer_id,
-          showTags: true,
-          showFollowerStats: true,
-          showFollowButton: state.multiSelectMode === false,
-          likers: user.likers,
-          followers: user.followers,
-          following: user.following,
-          profileImage: user.profileImage,
-          profileName: user.profileName,
-        }}
-      />
-    </Profile>
-  ));
-
-  return (
-    <Wrapper>
-      <H1>Trending Users</H1>
-      <Profiles>{trendingUsersList}</Profiles>
-      {state.currentPage < totalPages ? (
-        <Button type="button" onClick={() => loadMore()}>
-          Load More
-        </Button>
-      ) : null}
-    </Wrapper>
-  );
-}
+return (
+  <TrendingUsers>
+    <H1>Trending Users</H1>
+    <Profiles>
+      {state.userData.map((user, index) => (
+        <Profile key={index}>
+          <Widget
+            src="${REPL_ACCOUNT}/widget/AccountProfileCardLeaderboard"
+            props={{
+              accountId: user.signer_id,
+              showTags: true,
+              showFollowerStats: true,
+              showFollowButton: state.multiSelectMode === false,
+              likers: user.likers,
+              followers: user.followers,
+              following: user.following,
+              profileImage: user.profileImage,
+              profileName: user.profileName,
+            }}
+          />
+        </Profile>
+      ))}
+    </Profiles>
+    {state.currentPage < totalPages ? (
+      <Button type="button" onClick={() => loadMore()}>
+        Load More
+      </Button>
+    ) : null}
+  </TrendingUsers>
+);
 

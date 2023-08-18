@@ -98,13 +98,13 @@ const TextLink = styled.a`
 const accountId = props.accountId;
 const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
 const tags = Object.keys(profile.tags || {});
-const profileUrl = `#/near/widget/ProfilePage?accountId=${accountId}`;
+const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 
 return (
   <Card>
     <Avatar href={profileUrl}>
       <Widget
-        src="mob.near/widget/Image"
+        src="${REPL_ACCOUNT}/widget/Image"
         props={{
           image: props.profileImage || profile.image,
           alt: props.profileName || profile.name,
@@ -125,7 +125,7 @@ return (
 
     {tags.length > 0 ? (
       <TagsWrapper>
-        <Widget src="near/widget/Tags" props={{ tags, scroll: true }} />
+        <Widget src="${REPL_ACCOUNT}/widget/Tags" props={{ tags, scroll: true }} />
       </TagsWrapper>
     ) : (
       <TagsWrapper>
@@ -146,7 +146,7 @@ return (
     {context.accountId && context.accountId !== props.accountId ? (
       <Button>
         <Widget
-          src="near/widget/FollowButton"
+          src="${REPL_ACCOUNT}/widget/FollowButton"
           props={{ accountId: props.accountId }}
         />
       </Button>

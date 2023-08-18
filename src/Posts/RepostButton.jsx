@@ -23,27 +23,6 @@ if (state.hasRepost === true) {
 const accountsWithReposts = Object.keys(repostsByUsers);
 const hasRepost = context.accountId && !!repostsByUsers[context.accountId];
 
-// const RepostButton = styled.button`
-//   border: 0 !important;
-//   display: inline-flex;
-//   align-items: center;
-//   justify-content: center;
-//   border-radius: 50%;
-//   width: 2.5em;
-//   height: 2.5em;
-//   fill: currentColor;
-//   svg {
-//     margin-top: -0.2em;
-//   }
-//   &:hover {
-//     color: rgb(0, 184, 124);
-//     background: rgb(0, 184, 124, 0.1);
-//   }
-//   .reposted {
-//     color: rgb(0, 184, 124);
-//   }
-// `;
-
 const repostClick = () => {
   if (state.loading) {
     return;

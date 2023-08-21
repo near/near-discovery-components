@@ -26,6 +26,7 @@ const Overlay = styled(`${variant}.Overlay`)`
   position: fixed;
   inset: 0;
   animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 2147483648;
 
   @keyframes overlayShow {
     from {
@@ -113,6 +114,7 @@ cancelButton = cancelButton ?? (
     props={{
       label: cancelButtonText ?? "Cancel",
       variant: "secondary",
+      onClick: onCancel,
     }}
   />
 );
@@ -123,6 +125,7 @@ confirmButton = confirmButton ?? (
     props={{
       label: confirmButtonText ?? "Confirm",
       variant: "primary",
+      onClick: onConfirm,
     }}
   />
 );
@@ -140,24 +143,18 @@ return (
       {description && <Description>{description}</Description>}
       <ActionWrapper>
         {type === "alert" ? (
-          <AlertDialog.Cancel
-            asChild
-            onClick={!cancelButton ? () => {} : onCancel}
-          >
-            {cancelButton}
+          <AlertDialog.Cancel asChild>
+            <div className="d-inline-block">{cancelButton}</div>
           </AlertDialog.Cancel>
         ) : (
-          <Dialog.Close asChild onClick={!confirmButton ? () => {} : onConfirm}>
-            {confirmButton}
+          <Dialog.Close asChild>
+            <div className="d-inline-block">{confirmButton}</div>
           </Dialog.Close>
         )}
 
         {type === "alert" && (
-          <AlertDialog.Action
-            asChild
-            onClick={!confirmButton ? () => {} : onConfirm}
-          >
-            {confirmButton}
+          <AlertDialog.Action asChild>
+            <div className="d-inline-block">{confirmButton}</div>
           </AlertDialog.Action>
         )}
       </ActionWrapper>

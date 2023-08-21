@@ -160,8 +160,6 @@ const TabsButton = styled.a`
   }
 `;
 
-Storage.privateSet("activityPage", "true");
-
 return (
   <Wrapper
     className="container-xl"
@@ -202,7 +200,7 @@ return (
         {state.shouldFallback == true ? (
           <Widget
             src={`${REPL_ACCOUNT}/widget/v1.Posts`}
-            props={{ activityFeed: Storage.privateGet("activityPage") }}
+            props={{ activityFeed: true }}
           />
         ) : (
           <Widget
@@ -210,7 +208,7 @@ return (
             props={{
               GRAPHQL_ENDPOINT,
               accountsFollowing,
-              activityFeed: Storage.privateGet("activityPage"),
+              activityFeed: true,
             }}
           />
         )}

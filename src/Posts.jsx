@@ -472,7 +472,7 @@ return (
             hasMore,
             loadMorePosts,
             posts: state.posts,
-            activityFeed: props.activityFeed ?? false
+            activityFeed: props.activityFeed
           }}
         />
       </FeedWrapper>

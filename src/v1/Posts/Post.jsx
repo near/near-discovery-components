@@ -5,6 +5,7 @@ const blockHeight =
 const subscribe = !!props.subscribe;
 const notifyAccountId = accountId;
 const postUrl = `https://${REPL_NEAR_URL}/s/p?a=${accountId}&b=${blockHeight}`;
+const activityFeed = props.activityFeed;
 
 State.init({ hasBeenFlagged: false });
 
@@ -122,6 +123,7 @@ return (
                   {false && edits.length > 0 && <Text as="span">･ Edited</Text>}
                 </>
               ),
+              activityFeed,
             }}
           />
         </div>

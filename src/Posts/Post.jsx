@@ -6,7 +6,7 @@ const blockHeight =
   props.blockHeight === "now" ? "now" : parseInt(props.blockHeight);
 const notifyAccountId = accountId;
 const postUrl = `https://${REPL_NEAR_URL}/s/p?a=${accountId}&b=${blockHeight}`;
-const activityFeed = props.activityFeed ?? false;
+const activityFeed = props.activityFeed;
 
 State.init({
   hasBeenFlagged: false,

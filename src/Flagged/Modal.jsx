@@ -28,14 +28,12 @@ const reportAccount = () => {
       onCommit: () => {
         onReport && onReport();
       },
-      force: true,
+      onCancel: () => onOpenChange(false),
     }
   );
 };
 
 const reportAccountWithPosts = () => {
-  console.log("getFlaggedAccountsList: ", getFlaggedAccountsList);
-
   const flaggedAccountsList = getFlaggedAccountsList
     ? JSON.parse(getFlaggedAccountsList)
     : [];
@@ -56,10 +54,32 @@ const reportAccountWithPosts = () => {
       onCommit: () => {
         onReport && onReport();
       },
-      force: true,
+      onCancel: () => onOpenChange(false),
     }
   );
 };
+
+const Cancel = () => (
+  <Widget
+    src="${REPL_ACCOUNT}/widget/DIG.Button"
+    props={{
+      label: "No",
+      variant: "secondary",
+      onClick: reportAccount,
+    }}
+  />
+);
+
+const Confirm = () => (
+  <Widget
+    src="${REPL_ACCOUNT}/widget/DIG.Button"
+    props={{
+      label: "Yes",
+      variant: "primary",
+      onClick: reportAccountWithPosts,
+    }}
+  />
+);
 
 return (
   <Widget
@@ -67,12 +87,9 @@ return (
     props={{
       type: "alert",
       title: "Do you want to hide all posts of this account?",
-      onCancel: () => reportAccount(),
-      cancelButtonText: "No",
-      onConfirm: () => reportAccountWithPosts(),
-      confirmButtonText: "Yes",
+      cancelButton: <Cancel />,
+      confirmButton: <Confirm />,
       open,
-      onOpenChange,
     }}
   />
 );

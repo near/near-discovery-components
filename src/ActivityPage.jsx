@@ -200,14 +200,17 @@ return (
       </Section>
       <Section negativeMargin primary active={state.selectedTab === "posts"}>
         {state.shouldFallback == true ? (
-          <Widget src={`${REPL_ACCOUNT}/widget/v1.Posts`} props={{ activityFeed: Storage.privateGet("activityPage") }} />
+          <Widget
+            src={`${REPL_ACCOUNT}/widget/v1.Posts`}
+            props={{ activityFeed: Storage.privateGet("activityPage") }}
+          />
         ) : (
           <Widget
             src={`${REPL_ACCOUNT}/widget/Posts`}
             props={{
               GRAPHQL_ENDPOINT,
               accountsFollowing,
-              activityFeed: Storage.privateGet("activityPage")
+              activityFeed: Storage.privateGet("activityPage"),
             }}
           />
         )}

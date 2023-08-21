@@ -28,7 +28,7 @@ const reportAccount = () => {
       onCommit: () => {
         onReport && onReport();
       },
-      force: true
+      force: true,
     }
   );
 };
@@ -36,15 +36,19 @@ const reportAccount = () => {
 const reportAccountWithPosts = () => {
   console.log("getFlaggedAccountsList: ", getFlaggedAccountsList);
 
-  const flaggedAccountsList = getFlaggedAccountsList ? JSON.parse(getFlaggedAccountsList) : [];
+  const flaggedAccountsList = getFlaggedAccountsList
+    ? JSON.parse(getFlaggedAccountsList)
+    : [];
   const flaggedAccountsListSet = new Set(flaggedAccountsList);
-  const filterFlaggedAccounts = [...flaggedAccountsListSet.add(reportedAccountId)];
+  const filterFlaggedAccounts = [
+    ...flaggedAccountsListSet.add(reportedAccountId),
+  ];
 
   Social.set(
     {
       index: {
         moderate: {
-          accounts: filterFlaggedAccounts
+          accounts: filterFlaggedAccounts,
         },
       },
     },
@@ -52,7 +56,7 @@ const reportAccountWithPosts = () => {
       onCommit: () => {
         onReport && onReport();
       },
-      force: true
+      force: true,
     }
   );
 };
@@ -68,7 +72,7 @@ return (
       onConfirm: () => reportAccountWithPosts(),
       confirmButtonText: "Yes",
       open,
-      onOpenChange
+      onOpenChange,
     }}
   />
 );

@@ -220,6 +220,13 @@ return (
           >
             Explorer
           </TabsButton>
+
+          <TabsButton
+            href={`${accountUrl}&tab=quests`}
+            selected={state.selectedTab === "quests"}
+          >
+            Quests
+          </TabsButton>
         </Tabs>
 
         {state.selectedTab === "overview" && (
@@ -277,6 +284,18 @@ return (
         {state.selectedTab === "explorer" && (
           <Widget
             src="${REPL_ACCOUNT}/widget/Explorer.Account"
+            props={{
+              accountId,
+              network: context.networkId,
+              language: "en",
+              baseUrl: props.baseUrl,
+            }}
+          />
+        )}
+
+        {state.selectedTab === "quests" && (
+          <Widget
+            src="${REPL_ACCOUNT}/widget/Quests"
             props={{
               accountId,
               network: context.networkId,

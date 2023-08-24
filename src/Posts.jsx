@@ -11,6 +11,7 @@ State.init({
   postsCountLeft: 0,
   initLoadPosts: false,
   initLoadPostsAll: false,
+  isVisible: true,
   sort
 });
 
@@ -367,10 +368,39 @@ const SortContainer = styled.div`
   }
 `;
 
+const Banner = () => {
+  const accountId = props.accountId || context.accountId;
+
+  return (
+    <div style={{ 
+        backgroundColor: 'white', 
+        color: 'black', 
+        padding: '10px',
+        textAlign: 'center'
+      }}>
+      You have quests!
+      <Link to={`https://near.org/${accountId}/widget/ProfilePage?accountId=${accountId}&tab=quests`}>Start!</Link>
+      <button
+        style={{ 
+          backgroundColor: 'transparent', 
+          color: 'black',
+          border: '1px solid black',
+          borderRadius: '10%', // Optional: if you want a rounded button
+        }}
+        onClick={() => state.isVisible = false}
+      >
+        X
+      </button>
+    </div>
+  );
+};
+
 return (
   <>
+    <div>
+     {state.isVisible && <Banner/>}
+    </div>
     <H2>Posts</H2>
-
     <Content>
       {context.accountId && (
         <>

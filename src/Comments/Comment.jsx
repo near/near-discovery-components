@@ -193,7 +193,7 @@ return (
       {blockHeight !== "now" && (
         <Actions>
           <Widget
-            src="${REPL_ACCOUNT}/widget/LikeButton"
+            src="${REPL_ACCOUNT}/widget/v1.LikeButton"
             props={{
               item: {
                 type: "social",
@@ -231,6 +231,7 @@ return (
                 path: `${accountId}/post/comment`,
                 blockHeight,
               },
+              disabled: !context.accountId || context.accountId === accountId,
               onFlag: () => {
                 State.update({ hasBeenFlagged: true });
               },

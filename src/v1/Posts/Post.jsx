@@ -178,7 +178,7 @@ return (
       {blockHeight !== "now" && (
         <Actions>
           <Widget
-            src="${REPL_ACCOUNT}/widget/LikeButton"
+            src="${REPL_ACCOUNT}/widget/v1.LikeButton"
             props={{
               item,
               notifyAccountId,
@@ -208,6 +208,7 @@ return (
             src="${REPL_ACCOUNT}/widget/FlagButton"
             props={{
               item,
+              disabled: !context.accountId || context.accountId === accountId,
               onFlag: () => {
                 State.update({ hasBeenFlagged: true });
               },

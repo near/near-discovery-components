@@ -187,6 +187,7 @@ return (
                 path: `${accountId}/discuss`,
                 blockHeight,
               },
+              disabled: !context.accountId || context.accountId === accountId,
               onFlag: () => {
                 State.update({ hasBeenFlagged: true });
               },

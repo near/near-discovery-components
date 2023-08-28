@@ -231,6 +231,7 @@ return (
                 path: `${accountId}/post/comment`,
                 blockHeight,
               },
+              disabled: !context.accountId || context.accountId === accountId,
               onFlag: () => {
                 State.update({ hasBeenFlagged: true });
               },

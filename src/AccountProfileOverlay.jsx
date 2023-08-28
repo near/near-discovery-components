@@ -37,7 +37,8 @@ const Card = styled.div`
 const FollowButtonWrapper = styled.div`
   width: 100%;
 
-  div, button {
+  div,
+  button {
     width: 100%;
   }
 `;
@@ -61,6 +62,7 @@ const overlay = (
             src="${REPL_ACCOUNT}/widget/FlagButton"
             props={{
               item: contentModerationItem,
+              disabled: !context.accountId || context.accountId === accountId,
               onFlag: () => {
                 State.update({ hasBeenFlagged: true });
               },
@@ -110,12 +112,13 @@ return (
           props={{
             type: "info",
             title: "Flagged for moderation",
-            description: "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
+            description:
+              "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
             open: state.hasBeenFlagged,
             onOpenChange: (open) => {
               State.update({ hasBeenFlagged: open });
             },
-            duration: 10000
+            duration: 10000,
           }}
         />
       )}

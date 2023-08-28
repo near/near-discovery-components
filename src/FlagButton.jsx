@@ -1,4 +1,4 @@
-const { item } = props;
+const { item, disabled } = props;
 
 const Button = styled.button`
   border: 0;
@@ -24,36 +24,51 @@ const Button = styled.button`
     outline: none;
     color: #11181c;
   }
+
+  &[disabled] {
+    color: var(--sand8);
+    cursor: initial;
+  }
 `;
+
+const FlagButton = () => (
+  <Button
+    type="button"
+    aria-label="Flag for moderation"
+    disabled={disabled}
+    onClick={() => {
+      Social.set(
+        {
+          index: {
+            flag: JSON.stringify({
+              key: "main",
+              value: item,
+            }),
+          },
+        },
+        {
+          onCommit: () => {
+            props.onFlag && props.onFlag();
+          },
+        }
+      );
+    }}
+  >
+    <i className="bi bi-flag"></i>
+  </Button>
+);
+
+if (disabled) {
+  return (
+    <FlagButton />
+  );
+}
 
 return (
   <OverlayTrigger
     placement="top"
     overlay={<Tooltip>Flag for moderation</Tooltip>}
   >
-    <Button
-      type="button"
-      aria-label="Flag for moderation"
-      disabled={!context.accountId}
-      onClick={() => {
-        Social.set(
-          {
-            index: {
-              flag: JSON.stringify({
-                key: "main",
-                value: item,
-              }),
-            },
-          },
-          {
-            onCommit: () => {
-              props.onFlag && props.onFlag();
-            },
-          }
-        );
-      }}
-    >
-      <i className="bi bi-flag"></i>
-    </Button>
+    <FlagButton />
   </OverlayTrigger>
 );

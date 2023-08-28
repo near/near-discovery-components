@@ -37,7 +37,8 @@ const Card = styled.div`
 const FollowButtonWrapper = styled.div`
   width: 100%;
 
-  div, button {
+  div,
+  button {
     width: 100%;
   }
 `;
@@ -61,6 +62,7 @@ const overlay = (
             src="${REPL_ACCOUNT}/widget/FlagButton"
             props={{
               item: contentModerationItem,
+              disabled: !context.accountId || context.accountId === accountId,
               onFlag: () => {
                 State.update({ hasBeenFlagged: true });
               },
@@ -80,12 +82,6 @@ const overlay = (
             props={{ accountId: props.accountId }}
           />
         </FollowButtonWrapper>
-      )}
-
-      {state.hasBeenFlagged && (
-        <div className="alert alert-secondary">
-          <i className="bi bi-flag" /> This account has been flagged for moderation
-        </div>
       )}
     </Card>
   </CardWrapper>
@@ -109,6 +105,23 @@ return (
       onMouseLeave={handleOnMouseLeave}
     >
       {props.children || "Hover Me"}
+
+      {state.hasBeenFlagged && (
+        <Widget
+          src={`${REPL_ACCOUNT}/widget/DIG.Toast`}
+          props={{
+            type: "info",
+            title: "Flagged for moderation",
+            description:
+              "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
+            open: state.hasBeenFlagged,
+            onOpenChange: (open) => {
+              State.update({ hasBeenFlagged: open });
+            },
+            duration: 10000,
+          }}
+        />
+      )}
     </div>
   </OverlayTrigger>
 );

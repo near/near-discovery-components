@@ -39,7 +39,7 @@ return (
     {blockHeight !== "now" && (
       <div className="mt-1 d-flex justify-content-between">
         <Widget
-          src="${REPL_MOB_2}/widget/LikeButton"
+          src="${REPL_ACCOUNT}/widget/v1.LikeButton"
           props={{
             notifyAccountId,
             item,

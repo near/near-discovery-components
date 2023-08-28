@@ -4,15 +4,13 @@ if (!item) {
   return "";
 }
 
-const likes = JSON.parse(props.likes?.length ? props.likes : "[]") ?? [];
-
-State.init({ likes: props.likes });
+const likes = Social.index("like", item);
 
 const dataLoading = likes === null;
 
 const likesByUsers = {};
 
-(state.likes || []).forEach((like) => {
+(likes || []).forEach((like) => {
   if (like.value.type === "like") {
     likesByUsers[like.accountId] = like;
   } else if (like.value.type === "unlike") {
@@ -29,39 +27,22 @@ if (state.hasLike === true) {
 
 const accountsWithLikes = Object.keys(likesByUsers);
 const hasLike = context.accountId && !!likesByUsers[context.accountId];
-const hasLikeOptimistic =
-  state.hasLikeOptimistic === undefined ? hasLike : state.hasLikeOptimistic;
-const totalLikes =
-  accountsWithLikes.length +
-  (hasLike === false && state.hasLikeOptimistic === true ? 1 : 0) -
-  (hasLike === true && state.hasLikeOptimistic === false ? 1 : 0);
+const totalLikes = accountsWithLikes.length;
 
 const LikeButton = styled.button`
-  border: 0;
+  border: 0 !important;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  color: #687076;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 17px;
-  cursor: pointer;
-  background: none;
-  padding: 6px;
-  transition: color 200ms;
-
-  i {
-    font-size: 16px;
-    transition: color 200ms;
-
-    &.bi-heart-fill {
-      color: #E5484D !important;
-    }
+  justify-content: center;
+  border-radius: 50%;
+  width: 2.5em;
+  height: 2.5em;
+  &:hover {
+    color: red;
+    background: pink;
   }
-
-  &:hover, &:focus {
-    outline: none;
-    color: #11181C;
+  .bi-heart-fill {
+    color: red;
   }
 `;
 
@@ -69,12 +50,9 @@ const likeClick = () => {
   if (state.loading) {
     return;
   }
-
   State.update({
     loading: true,
-    hasLikeOptimistic: !hasLike,
   });
-
   const data = {
     index: {
       like: JSON.stringify({
@@ -97,23 +75,34 @@ const likeClick = () => {
   }
   Social.set(data, {
     onCommit: () => State.update({ loading: false, hasLike: !hasLike }),
-    onCancel: () =>
-      State.update({
-        loading: false,
-        hasLikeOptimistic: !state.hasLikeOptimistic,
-      }),
+    onCancel: () => State.update({ loading: false }),
   });
 };
 
 const title = hasLike ? "Unlike" : "Like";
 
 return (
-  <LikeButton
-    disabled={state.loading || dataLoading || !context.accountId}
-    title={title}
-    onClick={likeClick}
-  >
-    <i className={`${hasLikeOptimistic ? "bi-heart-fill" : "bi-heart"}`} />
-    {totalLikes}
-  </LikeButton>
+  <div className="d-inline-flex align-items-center">
+    <LikeButton
+      disabled={state.loading || dataLoading || !context.accountId}
+      className="btn me-1"
+      title={title}
+      onClick={likeClick}
+    >
+      {state.loading || dataLoading ? (
+        <span
+          className="spinner-grow spinner-grow-sm p-2"
+          role="status"
+          aria-hidden="true"
+        />
+      ) : (
+        <i className={`bi ${hasLike ? "bi-heart-fill" : "bi-heart"}`} />
+      )}
+    </LikeButton>
+    {totalLikes == 0 ? (
+      "0"
+    ) : (
+      <Widget src="mob.near/widget/LikeButton.Faces" props={{ likesByUsers }} />
+    )}
+  </div>
 );

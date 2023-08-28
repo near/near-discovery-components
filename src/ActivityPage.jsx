@@ -1,6 +1,63 @@
+const GRAPHQL_ENDPOINT = "https://near-queryapi.api.pagoda.co";
+
+let lastPostSocialApi = Social.index("post", "main", {
+  limit: 1,
+  order: "desc",
+});
+
 State.init({
+  // If QueryAPI Feed is lagging behind Social API, fallback to old widget.
+  shouldFallback: props.shouldFallback ?? false,
   selectedTab: props.tab || "posts",
 });
+
+function fetchGraphQL(operationsDoc, operationName, variables) {
+  return asyncFetch(`${GRAPHQL_ENDPOINT}/v1/graphql`, {
+    method: "POST",
+    headers: { "x-hasura-role": "dataplatform_near" },
+    body: JSON.stringify({
+      query: operationsDoc,
+      variables: variables,
+      operationName: operationName,
+    }),
+  });
+}
+
+const lastPostQuery = `
+query IndexerQuery {
+  dataplatform_near_social_feed_posts( limit: 1, order_by: { block_height: desc }) {
+      block_height 
+  }
+}
+`;
+
+fetchGraphQL(lastPostQuery, "IndexerQuery", {})
+  .then((feedIndexerResponse) => {
+    if (
+      feedIndexerResponse &&
+      feedIndexerResponse.body.data.dataplatform_near_social_feed_posts.length >
+        0
+    ) {
+      const nearSocialBlockHeight = lastPostSocialApi[0].blockHeight;
+      const feedIndexerBlockHeight =
+        feedIndexerResponse.body.data.dataplatform_near_social_feed_posts[0]
+          .block_height;
+
+      const lag = nearSocialBlockHeight - feedIndexerBlockHeight;
+      let shouldFallback = lag > 2 || !feedIndexerBlockHeight;
+      State.update({ shouldFallback });
+    } else {
+      console.log("Falling back to old widget.");
+      State.update({ shouldFallback: true });
+    }
+  })
+  .catch((error) => {
+    console.log(
+      "Error while fetching GraphQL(falling back to old widget): ",
+      error
+    );
+    State.update({ shouldFallback: true });
+  });
 
 if (props.tab && props.tab !== state.selectedTab) {
   State.update({
@@ -140,7 +197,17 @@ return (
         <Widget src="${REPL_ACCOUNT}/widget/LatestComponents" />
       </Section>
       <Section negativeMargin primary active={state.selectedTab === "posts"}>
-        <Widget src="${REPL_QUERYAPI_FEED}" />
+        {state.shouldFallback == true ? (
+          <Widget src={`${REPL_ACCOUNT}/widget/v1.Posts`} />
+        ) : (
+          <Widget
+            src={`${REPL_ACCOUNT}/widget/Posts`}
+            props={{
+              GRAPHQL_ENDPOINT,
+              accountsFollowing,
+            }}
+          />
+        )}
       </Section>
       <Section active={state.selectedTab === "explore"}>
         <Widget src="${REPL_ACCOUNT}/widget/ExploreWidgets" />

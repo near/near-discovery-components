@@ -254,12 +254,29 @@ return (
         </div>
         {accountId !== context.accountId && (
           <Widget
-            src="${REPL_ACCOUNT}/widget/FlagButton"
+            src={`${REPL_ACCOUNT}/widget/DIG.Toast`}
             props={{
-              item: contentModerationItem,
-              onFlag: () => {
-                State.update({ hasBeenFlagged: true });
+              type: "info",
+              title: "Flagged for moderation",
+              description: "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
+              open: state.hasBeenFlagged,
+              onOpenChange: (open) => {
+                State.update({ hasBeenFlagged: open });
               },
+              duration: 10000,
+              trigger: (
+                <div className="d-inline-block ms-auto">
+                  <Widget
+                    src="${REPL_ACCOUNT}/widget/FlagButton"
+                    props={{
+                      item: contentModerationItem,
+                      onFlag: () => {
+                        State.update({ hasBeenFlagged: true });
+                      },
+                    }}
+                  />
+                </div>
+              )
             }}
           />
         )}

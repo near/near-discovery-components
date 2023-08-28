@@ -43,6 +43,13 @@ const TextLink = styled.a`
   }
 `;
 
+const featuredComponentListRes = Social.get(
+  "${REPL_FEATURED_COMP_MANAGER}/listManager/FeaturedComponents"
+);
+const featuredComponents = featuredComponentListRes
+  ? JSON.parse(featuredComponentListRes)
+  : [];
+
 return (
   <Wrapper>
     <Header>
@@ -51,54 +58,14 @@ return (
     </Header>
 
     <Items>
-      <Item>
-        <Widget
-          src="${REPL_ACCOUNT}/widget/ComponentCard"
-          props={{ src: "nearhorizon.near/widget/Index" }}
-        />
-      </Item>
-      <Item>
-        <Widget
-          src="${REPL_ACCOUNT}/widget/ComponentCard"
-          props={{ src: "devgovgigs.near/widget/Ideas" }}
-        />
-      </Item>
-      <Item>
-        <Widget
-          src="${REPL_ACCOUNT}/widget/ComponentCard"
-          props={{ src: "let45fc.near/widget/LaserChess3D" }}
-        />
-      </Item>
-      <Item>
-        <Widget
-          src="${REPL_ACCOUNT}/widget/ComponentCard"
-          props={{ src: "zavodil.near/widget/social-avatar-editor" }}
-        />
-      </Item>
-      <Item>
-        <Widget
-          src="${REPL_ACCOUNT}/widget/ComponentCard"
-          props={{ src: "frichard2.near/widget/most-active-contracts" }}
-        />
-      </Item>
-      <Item>
-        <Widget
-          src="${REPL_ACCOUNT}/widget/ComponentCard"
-          props={{ src: "mob.near/widget/Explorer" }}
-        />
-      </Item>
-      <Item>
-        <Widget
-          src="${REPL_ACCOUNT}/widget/ComponentCard"
-          props={{ src: "microchipgnu.near/widget/Game.FlappyBOS" }}
-        />
-      </Item>
-      <Item>
-        <Widget
-          src="${REPL_ACCOUNT}/widget/ComponentCard"
-          props={{ src: "mintbase.near/widget/nft-marketplace" }}
-        />
-      </Item>
+      {featuredComponents.map((featuredComp) => (
+        <Item key={featuredComp}>
+          <Widget
+            src="${REPL_ACCOUNT}/widget/ComponentCard"
+            props={{ src: featuredComp }}
+          />
+        </Item>
+      ))}
     </Items>
   </Wrapper>
 );

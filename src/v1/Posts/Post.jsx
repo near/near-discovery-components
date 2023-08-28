@@ -178,7 +178,7 @@ return (
       {blockHeight !== "now" && (
         <Actions>
           <Widget
-            src="${REPL_ACCOUNT}/widget/LikeButton"
+            src="${REPL_ACCOUNT}/widget/v1.LikeButton"
             props={{
               item,
               notifyAccountId,

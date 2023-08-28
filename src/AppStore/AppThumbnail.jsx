@@ -35,9 +35,15 @@ const ThumbnailContent = styled.span`
   left: 0;
   right: 0;
   padding: 1.25rem;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+  padding-top: 3.5rem;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.85) 20%,
+    rgba(0, 0, 0, 0)
+  );
   font: var(--text-xs);
   color: var(--white);
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.75);
 
   b {
     font-weight: 600;

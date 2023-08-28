@@ -1,5 +1,7 @@
 State.init({
-  selectedTab: props.tab ?? "discover",
+  categories: [],
+  isLoading: true,
+  selectedTab: props.tab,
 });
 
 if (props.tab && props.tab !== state.selectedTab) {
@@ -9,6 +11,32 @@ if (props.tab && props.tab !== state.selectedTab) {
 }
 
 const appStoreIndexUrl = "#/${REPL_ACCOUNT}/widget/AppStore.IndexPage";
+const selectedCategory = state.categories.find(
+  (category) => category.label === state.selectedTab
+);
+
+function loadData() {
+  if (state.categories.length > 0) return;
+
+  asyncFetch(
+    "https://storage.googleapis.com/databricks-near-query-runner/output/app-store.json"
+  )
+    .then((res) => {
+      State.update({
+        categories: res.body.categories,
+        isLoading: false,
+        selectedTab: state.selectedTab ?? res.body.categories[0].label,
+      });
+    })
+    .catch((error) => {
+      State.update({
+        isLoading: false,
+      });
+      console.log(error);
+    });
+}
+
+loadData();
 
 const Wrapper = styled.div`
   padding: 100px 0;
@@ -87,6 +115,7 @@ const Sections = styled.div`
   display: flex;
   flex-direction: column;
   gap: 3rem;
+  flex-grow: 1;
 `;
 
 const Section = styled.div``;
@@ -150,111 +179,120 @@ const ContentGrid = styled.div`
 return (
   <Wrapper>
     <Container>
-      <H1>d.Apps</H1>
+      <H1>{selectedCategory?.title}</H1>
 
       <Main>
         <Menu>
+          {state.categories.map((category) => {
+            return (
+              <MenuLink
+                href={`${appStoreIndexUrl}?tab=${category.label}`}
+                data-active={state.selectedTab === category.label}
+                key={category.label}
+              >
+                {category.label}
+              </MenuLink>
+            );
+          })}
+
           <MenuLink
-            href={`${appStoreIndexUrl}?tab=discover`}
-            data-active={state.selectedTab === "discover"}
-          >
-            Discover
-          </MenuLink>
-          <MenuLink
-            href={`${appStoreIndexUrl}?tab=earn`}
-            data-active={state.selectedTab === "earn"}
-          >
-            Earn
-          </MenuLink>
-          <MenuLink
-            href={`${appStoreIndexUrl}?tab=play`}
-            data-active={state.selectedTab === "play"}
-          >
-            Play
-          </MenuLink>
-          <MenuLink
-            href={`${appStoreIndexUrl}?tab=develop`}
-            data-active={state.selectedTab === "develop"}
-          >
-            Develop
-          </MenuLink>
-          <MenuLink
-            href={`${appStoreIndexUrl}?tab=engage`}
-            data-active={state.selectedTab === "engage"}
-          >
-            Engage
-          </MenuLink>
-          <MenuLink
-            href={`${appStoreIndexUrl}?tab=search`}
-            data-active={state.selectedTab === "search"}
+            href={`${appStoreIndexUrl}?tab=Search`}
+            data-active={state.selectedTab === "Search"}
           >
             Search
           </MenuLink>
         </Menu>
 
-        {state.selectedTab === "search" ? (
-          <Widget src="${REPL_ACCOUNT}/widget/AppStore.Search" />
-        ) : (
-          <Sections>
-            <Section>
-              <ThumbnailGrid>
-                <Widget
-                  src="${REPL_ACCOUNT}/widget/AppStore.AppThumbnail"
-                  props={{
-                    author: "calebjacob.near",
-                    image: {
-                      ipfs_cid:
-                        "bafkreibhm4kokjpetrr7ztaixyanzbn5djvj4h4ryjshsfh2hgpi3v7uqu",
-                    },
-                    name: "My App",
-                    widgetName: "MyApp",
-                  }}
-                />
-              </ThumbnailGrid>
-            </Section>
+        <Sections>
+          {state.selectedTab === "Search" && (
+            <Widget src="${REPL_ACCOUNT}/widget/AppStore.Search" />
+          )}
 
-            <Section>
-              <H2>Subheader</H2>
+          {state.selectedTab !== "Search" && selectedCategory && (
+            <>
+              {selectedCategory.sections.map((section) => {
+                switch (section.format) {
+                  case "MEDIUM":
+                    return (
+                      <Section key={section.title}>
+                        {section.title && <H2>{section.title}</H2>}
+                        <ThumbnailGrid>
+                          {section.items.map((item) => {
+                            return (
+                              <Widget
+                                src="${REPL_ACCOUNT}/widget/AppStore.AppThumbnail"
+                                key={item.author + item.widget_name}
+                                props={{
+                                  author: item.author,
+                                  image: item.image,
+                                  name: item.name,
+                                  widgetName: item.widget_name,
+                                }}
+                              />
+                            );
+                          })}
+                        </ThumbnailGrid>
+                      </Section>
+                    );
 
-              <ContentGrid>
-                <Widget
-                  src="${REPL_ACCOUNT}/widget/ComponentCard"
-                  props={{
-                    src: `calebjacob.near/widget/MyApp`,
-                    tags: ["foo", "bar"],
-                    metadata: {
-                      image: {
-                        ipfs_cid:
-                          "bafkreibhm4kokjpetrr7ztaixyanzbn5djvj4h4ryjshsfh2hgpi3v7uqu",
-                      },
-                      name: "My App",
-                    },
-                    blockHeight: undefined,
-                  }}
-                />
-              </ContentGrid>
-            </Section>
+                  case "SMALL":
+                    return (
+                      <Section key={section.title}>
+                        {section.title && <H2>{section.title}</H2>}
 
-            <Section>
-              <H2>Subheader</H2>
+                        <ContentGrid>
+                          {section.items.map((item) => {
+                            return (
+                              <Widget
+                                src="${REPL_ACCOUNT}/widget/ComponentCard"
+                                key={item.author + item.widget_name}
+                                props={{
+                                  src: `${item.author}/widget/${item.widget_name}`,
+                                  tags: item.tags,
+                                  metadata: {
+                                    image: item.image,
+                                    name: item.name,
+                                  },
+                                  blockHeight: item.receipt_block_height,
+                                }}
+                              />
+                            );
+                          })}
+                        </ContentGrid>
+                      </Section>
+                    );
 
-              <ContentGrid>
-                <Widget
-                  src="${REPL_ACCOUNT}/widget/AppStore.ArticleSummary"
-                  props={{
-                    author: "calebjacob.near",
-                    image: {
-                      ipfs_cid:
-                        "bafkreibhm4kokjpetrr7ztaixyanzbn5djvj4h4ryjshsfh2hgpi3v7uqu",
-                    },
-                    title: "My Article",
-                    url: "https://google.com",
-                  }}
-                />
-              </ContentGrid>
-            </Section>
-          </Sections>
-        )}
+                  case "ARTICLE":
+                    return (
+                      <Section key={section.title}>
+                        {section.title && <H2>{section.title}</H2>}
+
+                        <ContentGrid>
+                          {section.items.map((item) => {
+                            return (
+                              <Widget
+                                src="${REPL_ACCOUNT}/widget/AppStore.ArticleSummary"
+                                key={item.url}
+                                props={{
+                                  author: item.author,
+                                  image: item.image,
+                                  title: item.title,
+                                  url: item.url,
+                                }}
+                              />
+                            );
+                          })}
+                        </ContentGrid>
+                      </Section>
+                    );
+
+                  default:
+                    return null;
+                }
+              })}
+            </>
+          )}
+        </Sections>
       </Main>
     </Container>
   </Wrapper>

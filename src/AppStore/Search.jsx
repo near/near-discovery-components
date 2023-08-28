@@ -25,6 +25,10 @@ function search(query) {
     return;
   }
 
+  State.update({
+    isLoading: true,
+  });
+
   const body = {
     query,
     page: 0,
@@ -40,10 +44,16 @@ function search(query) {
   })
     .then((res) => {
       State.update({
+        isLoading: false,
         results: res.body.hits ?? [],
       });
     })
-    .catch((error) => console.log(error));
+    .catch((error) => {
+      State.update({
+        isLoading: false,
+      });
+      console.log(error);
+    });
 }
 
 function handleQueryChange(query) {
@@ -51,9 +61,10 @@ function handleQueryChange(query) {
 }
 
 State.init({
+  isLoading: false,
   query: "",
   results: [],
-  searchDebounced: debounce(search, 200),
+  searchDebounced: debounce(search, 300),
 });
 
 const Wrapper = styled.div`
@@ -97,7 +108,7 @@ return (
       }}
     />
 
-    {state.query && state.results.length === 0 && (
+    {state.query && state.results.length === 0 && !state.isLoading && (
       <Text>No apps matched your search: "{state.query}"</Text>
     )}
 

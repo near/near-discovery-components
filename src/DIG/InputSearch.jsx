@@ -1,14 +1,35 @@
-let { onQueryChange, placeholder, ...forwardedProps } = props;
+let { debounceDelay, onInput, onQueryChange, placeholder, ...forwardedProps } =
+  props;
 
-State.init({
-  value: "",
-});
+debounceDelay = debounceDelay ?? 300;
+
+function debounce(func, delay) {
+  let timeout;
+
+  return (args) => {
+    const later = () => {
+      clearTimeout(timeout);
+      func(args);
+    };
+
+    clearTimeout(timeout);
+
+    timeout = setTimeout(later, delay);
+  };
+}
 
 function handleOnInput(e) {
   const value = e.target.value;
-
   State.update({ value });
 
+  if (onInput) {
+    onInput(e);
+  }
+
+  state.handleOnQueryChangeDebounced(value);
+}
+
+function handleOnQueryChange(value) {
   if (onQueryChange) {
     onQueryChange(value);
   }
@@ -18,6 +39,11 @@ function reset() {
   State.update({ value: "" });
   onQueryChange("");
 }
+
+State.init({
+  value: "",
+  handleOnQueryChangeDebounced: debounce(handleOnQueryChange, debounceDelay),
+});
 
 const ResetButton = styled.button`
   all: unset;

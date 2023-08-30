@@ -1,37 +1,15 @@
-function debounce(func, wait) {
-  const pause = wait || 350;
-  let timeout;
-
-  return (args) => {
-    const later = () => {
-      clearTimeout(timeout);
-      func(args);
-    };
-
-    clearTimeout(timeout);
-    timeout = setTimeout(later, pause);
-  };
-}
-
 function search(query) {
-  State.update({
-    query,
-  });
-
   if (!query) {
     State.update({
+      isLoading: false,
       results: [],
     });
     return;
   }
 
-  State.update({
-    isLoading: true,
-  });
-
   const body = {
     query,
-    page: 0,
+    page: state.currentPage,
     filters: "categories:widget AND tags:app AND NOT _tags:hidden",
   };
 
@@ -45,7 +23,8 @@ function search(query) {
     .then((res) => {
       State.update({
         isLoading: false,
-        results: res.body.hits ?? [],
+        results: [...state.results, ...res.body.hits],
+        totalPages: res.body.nbPages,
       });
     })
     .catch((error) => {
@@ -56,15 +35,37 @@ function search(query) {
     });
 }
 
-function handleQueryChange(query) {
-  state.searchDebounced(query);
+function handleOnInput() {
+  State.update({
+    currentPage: 0,
+    totalPages: 0,
+    isLoading: true,
+    results: [],
+  });
+}
+
+function handleOnQueryChange(query) {
+  State.update({
+    query,
+  });
+  search(query);
+}
+
+function loadMore() {
+  State.update({
+    currentPage: state.currentPage + 1,
+    isLoading: true,
+  });
+
+  search(state.query);
 }
 
 State.init({
+  currentPage: 0,
+  totalPages: 0,
   isLoading: false,
   query: "",
   results: [],
-  searchDebounced: debounce(search, 300),
 });
 
 const Wrapper = styled.div`
@@ -103,7 +104,8 @@ return (
     <Widget
       src="${REPL_ACCOUNT}/widget/DIG.InputSearch"
       props={{
-        onQueryChange: handleQueryChange,
+        onInput: handleOnInput,
+        onQueryChange: handleOnQueryChange,
         placeholder: "Search...",
       }}
     />
@@ -136,6 +138,19 @@ return (
           })}
         </ContentGrid>
       </>
+    )}
+
+    {state.currentPage + 1 < state.totalPages && (
+      <Widget
+        src="${REPL_ACCOUNT}/widget/DIG.Button"
+        props={{
+          label: "Load More",
+          fill: "outline",
+          variant: "secondary",
+          loading: state.isLoading,
+          onClick: loadMore,
+        }}
+      />
     )}
   </Wrapper>
 );

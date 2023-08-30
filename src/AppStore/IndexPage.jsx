@@ -179,7 +179,9 @@ const ContentGrid = styled.div`
 return (
   <Wrapper>
     <Container>
-      <H1>{selectedCategory?.title}</H1>
+      <H1>
+        {state.selectedTab === "Search" ? "Search" : selectedCategory?.title}
+      </H1>
 
       <Main>
         <Menu>

@@ -258,12 +258,13 @@ return (
             props={{
               type: "info",
               title: "Flagged for moderation",
-              description: "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
+              description:
+                "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
               open: state.hasBeenFlagged,
-              onOpenChange: (open) => {
-                State.update({ hasBeenFlagged: open });
+              onOpenChange: () => {
+                State.update({ hasBeenFlagged: false });
               },
-              duration: 10000,
+              duration: 5000,
               trigger: (
                 <div className="d-inline-block ms-auto">
                   <Widget
@@ -276,7 +277,7 @@ return (
                     }}
                   />
                 </div>
-              )
+              ),
             }}
           />
         )}

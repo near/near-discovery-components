@@ -115,10 +115,10 @@ return (
             description:
               "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
             open: state.hasBeenFlagged,
-            onOpenChange: (open) => {
-              State.update({ hasBeenFlagged: open });
+            onOpenChange: () => {
+              State.update({ hasBeenFlagged: false });
             },
-            duration: 10000,
+            duration: 5000
           }}
         />
       )}

@@ -29,20 +29,38 @@ const accountsWithLikes = Object.keys(likesByUsers);
 const hasLike = context.accountId && !!likesByUsers[context.accountId];
 const totalLikes = accountsWithLikes.length;
 
-const LikeButton = styled.button`
-  border: 0 !important;
+const Wrapper = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  width: 2.5em;
-  height: 2.5em;
-  &:hover {
-    color: red;
-    background: pink;
+  gap: 6px;
+  color: #687076;
+  font-size: 14px;
+  line-height: 17px;
+  cursor: pointer;
+  transition: color 200ms;
+
+  &:hover, &:focus {
+    outline: none;
+    color: #11181C;
   }
-  .bi-heart-fill {
-    color: red;
+`;
+
+  const LikeButton = styled.button`
+  border: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  padding: 6px;
+  color: inherit;
+
+  i {
+    font-size: 16px;
+
+    &.bi-heart-fill {
+      color: #E5484D !important;
+    }
   }
 `;
 
@@ -82,10 +100,9 @@ const likeClick = () => {
 const title = hasLike ? "Unlike" : "Like";
 
 return (
-  <div className="d-inline-flex align-items-center">
+  <Wrapper>
     <LikeButton
       disabled={state.loading || dataLoading || !context.accountId}
-      className="btn me-1"
       title={title}
       onClick={likeClick}
     >
@@ -104,5 +121,5 @@ return (
     ) : (
       <Widget src="mob.near/widget/LikeButton.Faces" props={{ likesByUsers }} />
     )}
-  </div>
+  </Wrapper>
 );

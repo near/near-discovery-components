@@ -4,20 +4,20 @@ let { items, variant, size, ...forwardedProps } = props;
 const previewItems = [
   {
     name: "Label with icon",
-    value: 1,
+    value: "1",
     content: "Your content here for tab 1",
     count: "00",
     icon: "ph ph-browser",
   },
   {
     name: "Label with counter only",
-    value: 2,
+    value: "2",
     content: "Your content here for tab 2",
     count: "111",
   },
   {
     name: "Disabled Label",
-    value: 3,
+    value: "3",
     content: "Your content here for tab 3",
     disabled: true,
     count: "5",
@@ -29,7 +29,7 @@ size = size ?? "default";
 items = items ?? previewItems;
 
 State.init({
-  activeTab: 1,
+  activeTab: items[0].value,
 });
 
 const TabGroup = styled("Tabs.Root")``;
@@ -40,15 +40,13 @@ const TabList = styled("Tabs.List")`
   margin-bottom: 1rem;
   transition: inherit;
   gap: ${(p) => (p.size === "small" ? ".375rem" : ".5rem")};
-  ${
-    variant === "toggle" &&
-    `
+  ${variant === "toggle" &&
+  `
     border-radius: 6px;
     background-color: hsla(0, 0%, 10%, 0.05);
     gap: 2px !important;
     padding: 2px;
-  `
-  }
+  `}
 `;
 
 const Tab = styled("Tabs.Trigger")`
@@ -72,7 +70,8 @@ const Tab = styled("Tabs.Trigger")`
     color: var(--sand12);
   }
 
-  &:focus-within, &[data-state="active"] {
+  &:focus-within,
+  &[data-state="active"] {
     color: var(--violet11);
   }
 
@@ -81,9 +80,8 @@ const Tab = styled("Tabs.Trigger")`
     pointer-events: none;
   }
 
-  ${
-    variant === "pill" &&
-    `
+  ${variant === "pill" &&
+  `
     border-radius: 50px;
 
     &:hover {
@@ -106,12 +104,10 @@ const Tab = styled("Tabs.Trigger")`
       padding: 7px 16px;
     `
     }
-  `
-  }
+  `}
 
-  ${
-    variant === "line" &&
-    `
+  ${variant === "line" &&
+  `
     border-bottom: 2px solid transparent;
 
     &:hover {
@@ -134,12 +130,10 @@ const Tab = styled("Tabs.Trigger")`
       padding: 10px 16px;
     `
     }
-  `
-  }
+  `}
 
-  ${
-    variant === "toggle" &&
-    `
+  ${variant === "toggle" &&
+  `
     border-radius: 5px;
 
     &:hover {
@@ -165,8 +159,7 @@ const Tab = styled("Tabs.Trigger")`
       padding: 10px 16px;
     `
     }
-  `
-  }
+  `}
 `;
 
 const TabIcon = styled.i`
@@ -180,12 +173,10 @@ const TabIcon = styled.i`
 
   ${Tab}:focus-within, [data-state="active"] & {
     color: var(--violet10);
-    ${
-      variant === "toggle" &&
-      `
-      color: var(--sand12);
+    ${variant === "toggle" &&
     `
-    }
+      color: var(--sand12);
+    `}
   }
 
   ${Tab}[disabled] & {
@@ -245,8 +236,9 @@ return (
         </Tab>
       ))}
     </TabList>
-    <TabContent value={items[state.activeTab - 1].value}>
-      {items[state.activeTab - 1].content}
-    </TabContent>
+
+    {items.map((item) => (
+      <TabContent value={item.value}>{item.content}</TabContent>
+    ))}
   </TabGroup>
 );

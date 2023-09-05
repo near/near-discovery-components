@@ -15,7 +15,7 @@ const Item = styled("Accordion.Item")`
 `;
 
 const Header = styled("Accordion.Header")`
-  margin: 0;
+  margin: 0 !important;
 `;
 
 const Trigger = styled("Accordion.Trigger")`

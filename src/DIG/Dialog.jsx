@@ -8,6 +8,7 @@ let {
   confirmButtonText,
   cancelButton,
   confirmButton,
+  trigger,
   ...forwardedProps
 } = props;
 
@@ -26,7 +27,7 @@ const Overlay = styled(`${variant}.Overlay`)`
   position: fixed;
   inset: 0;
   animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: 2147483648;
+  z-index: 10000;
 
   @keyframes overlayShow {
     from {
@@ -51,6 +52,7 @@ const Content = styled(`${variant}.Content`)`
   max-height: 85vh;
   padding: 24px;
   animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 10005;
 
   @keyframes contentShow {
     from {
@@ -132,10 +134,14 @@ confirmButton = confirmButton ?? (
 
 return (
   <Root {...forwardedProps}>
-    {type === "alert" ? (
-      <AlertDialog.Trigger asChild>{trigger}</AlertDialog.Trigger>
-    ) : (
-      <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
+    {trigger && (
+      <>
+        {type === "alert" ? (
+          <AlertDialog.Trigger asChild>{trigger}</AlertDialog.Trigger>
+        ) : (
+          <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
+        )}
+      </>
     )}
     <Overlay />
     <Content>
@@ -161,7 +167,7 @@ return (
       {type === "dialog" && (
         <Dialog.Close asChild>
           <Close>
-            <i class="ph ph-x" />
+            <i className="ph ph-x" />
           </Close>
         </Dialog.Close>
       )}

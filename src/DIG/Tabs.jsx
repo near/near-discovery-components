@@ -29,7 +29,7 @@ size = size ?? "default";
 items = items ?? previewItems;
 
 State.init({
-  activeTab: items[0].value,
+  activeTab: items.length > 0 ? items[0].value : "",
 });
 
 const TabGroup = styled("Tabs.Root")``;

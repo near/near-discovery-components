@@ -1,6 +1,6 @@
 State.init({
   copiedShareUrl: false,
-  selectedTab: props.tab ?? "source",
+  selectedTab: props.tab ?? "about",
 });
 
 if (props.tab && props.tab !== state.selectedTab) {

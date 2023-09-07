@@ -9,6 +9,8 @@ let {
   cancelButton,
   confirmButton,
   trigger,
+  actionStyles,
+  contentStyles,
   ...forwardedProps
 } = props;
 

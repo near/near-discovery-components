@@ -144,10 +144,10 @@ return (
       </>
     )}
     <Overlay />
-    <Content>
+    <Content {...contentStyles}>
       {title && <Title>{title}</Title>}
       {description && <Description>{description}</Description>}
-      <ActionWrapper>
+      <ActionWrapper {...actionStyles}>
         {type === "alert" ? (
           <AlertDialog.Cancel asChild>
             <div className="d-inline-block">{cancelButton}</div>

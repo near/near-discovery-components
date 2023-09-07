@@ -10,7 +10,7 @@ if (props.tab && props.tab !== state.selectedTab) {
   });
 }
 
-const appStoreIndexUrl = "#/${REPL_ACCOUNT}/widget/AppStore.IndexPage";
+const appLibraryIndexUrl = "#/${REPL_ACCOUNT}/widget/AppLibrary.IndexPage";
 const selectedCategory = state.categories.find(
   (category) => category.label === state.selectedTab
 );
@@ -188,7 +188,7 @@ return (
           {state.categories.map((category) => {
             return (
               <MenuLink
-                href={`${appStoreIndexUrl}?tab=${category.label}`}
+                href={`${appLibraryIndexUrl}?tab=${category.label}`}
                 data-active={state.selectedTab === category.label}
                 key={category.label}
               >
@@ -198,7 +198,7 @@ return (
           })}
 
           <MenuLink
-            href={`${appStoreIndexUrl}?tab=Search`}
+            href={`${appLibraryIndexUrl}?tab=Search`}
             data-active={state.selectedTab === "Search"}
           >
             Search
@@ -207,7 +207,7 @@ return (
 
         <Sections>
           {state.selectedTab === "Search" && (
-            <Widget src="${REPL_ACCOUNT}/widget/AppStore.Search" />
+            <Widget src="${REPL_ACCOUNT}/widget/AppLibrary.Search" />
           )}
 
           {state.selectedTab !== "Search" && selectedCategory && (
@@ -222,7 +222,7 @@ return (
                           {section.items.map((item) => {
                             return (
                               <Widget
-                                src="${REPL_ACCOUNT}/widget/AppStore.AppThumbnail"
+                                src="${REPL_ACCOUNT}/widget/AppLibrary.AppThumbnail"
                                 key={item.author + item.widget_name}
                                 props={{
                                   author: item.author,
@@ -273,7 +273,7 @@ return (
                           {section.items.map((item) => {
                             return (
                               <Widget
-                                src="${REPL_ACCOUNT}/widget/AppStore.ArticleSummary"
+                                src="${REPL_ACCOUNT}/widget/AppLibrary.ArticleSummary"
                                 key={item.url}
                                 props={{
                                   author: item.author,

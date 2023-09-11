@@ -12,16 +12,9 @@ const tags = props.metadata
 const Card = styled.div`
   position: relative;
   width: 100%;
-  border-radius: 12px;
-  background: #fff;
-  border: 1px solid #eceef0;
-  box-shadow: 0px 1px 3px rgba(16, 24, 40, 0.1),
-    0px 1px 2px rgba(16, 24, 40, 0.06);
-  overflow: hidden;
 `;
 
 const CardBody = styled.div`
-  padding: 16px;
   display: flex;
   gap: 16px;
   align-items: center;

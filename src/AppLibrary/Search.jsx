@@ -106,7 +106,7 @@ return (
       props={{
         onInput: handleOnInput,
         onQueryChange: handleOnQueryChange,
-        placeholder: "Search...",
+        placeholder: "Type keywords to search all apps...",
       }}
     />
 
@@ -116,7 +116,7 @@ return (
 
     {state.results.length > 0 && (
       <>
-        <H2>All apps</H2>
+        <Text>Showing {state.results.length} results</Text>
 
         <ContentGrid>
           {state.results.map((result) => {
@@ -132,6 +132,8 @@ return (
                     name: result.name,
                   },
                   blockHeight: result.receipt_block_height,
+                  hideBlockHeightTimestamp: true,
+                  hideButtons: true,
                 }}
               />
             );

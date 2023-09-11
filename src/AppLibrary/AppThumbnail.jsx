@@ -6,6 +6,7 @@ const Thumbnail = styled.a`
   overflow: hidden;
   border-radius: 1.25rem;
   border: 1px solid var(--sand6);
+  background: #fff;
   position: relative;
   cursor: pointer;
   text-decoration: none !important;

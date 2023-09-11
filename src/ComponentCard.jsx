@@ -150,7 +150,7 @@ const ButtonLink = styled.a`
 
 return (
   <Card>
-    {
+    {!props.hideBlockHeightTimestamp && (
       <CardTag>
         <i className="bi bi-clock"></i>{" "}
         <Widget
@@ -162,7 +162,7 @@ return (
         />{" "}
         ago
       </CardTag>
-    }
+    )}
 
     <CardBody>
       <Thumbnail href={detailsUrl}>
@@ -200,11 +200,13 @@ return (
       </CardContent>
     </CardBody>
 
-    <CardFooter>
-      <ButtonLink href={detailsUrl}>View Details</ButtonLink>
-      <ButtonLink href={appUrl} primary>
-        Open
-      </ButtonLink>
-    </CardFooter>
+    {!props.hideButtons && (
+      <CardFooter>
+        <ButtonLink href={detailsUrl}>View Details</ButtonLink>
+        <ButtonLink href={appUrl} primary>
+          Open
+        </ButtonLink>
+      </CardFooter>
+    )}
   </Card>
 );

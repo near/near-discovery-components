@@ -256,6 +256,8 @@ return (
                                     name: item.name,
                                   },
                                   blockHeight: item.receipt_block_height,
+                                  hideBlockHeightTimestamp: true,
+                                  hideButtons: true,
                                 }}
                               />
                             );

@@ -246,18 +246,16 @@ return (
                           {section.items.map((item) => {
                             return (
                               <Widget
-                                src="${REPL_ACCOUNT}/widget/ComponentCard"
+                                src="${REPL_ACCOUNT}/widget/AppLibrary.AppCard"
                                 key={item.author + item.widget_name}
                                 props={{
                                   src: `${item.author}/widget/${item.widget_name}`,
-                                  tags: item.tags,
                                   metadata: {
                                     image: item.image,
                                     name: item.name,
+                                    tags: item.tags,
                                   },
                                   blockHeight: item.receipt_block_height,
-                                  hideBlockHeightTimestamp: true,
-                                  hideButtons: true,
                                 }}
                               />
                             );

@@ -123,17 +123,15 @@ return (
             return (
               <Widget
                 key={`${result.author}/widget/${result.widget_name}`}
-                src="${REPL_ACCOUNT}/widget/ComponentCard"
+                src="${REPL_ACCOUNT}/widget/AppLibrary.AppCard"
                 props={{
                   src: `${result.author}/widget/${result.widget_name}`,
-                  tags: result.tags,
                   metadata: {
                     image: result.image,
                     name: result.name,
+                    tags: result.tags,
                   },
                   blockHeight: result.receipt_block_height,
-                  hideBlockHeightTimestamp: true,
-                  hideButtons: true,
                 }}
               />
             );

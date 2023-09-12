@@ -1,4 +1,12 @@
-let { open, onConfirm, onCancel, onOpenChange } = props;
+let {
+  open,
+  onConfirm,
+  onCancel,
+  onOpenChange,
+  cancelProps,
+  confirmProps,
+  ...forwardedProps
+} = props;
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -48,7 +56,7 @@ const actionStyles = {
   },
 };
 
-const CancelButton = () => (
+const CancelButton = ({ cancelProps }) => (
   <Widget
     src="${REPL_ACCOUNT}/widget/DIG.Button"
     props={{
@@ -57,11 +65,12 @@ const CancelButton = () => (
       fill: "ghost",
       onClick: onCancel,
       style: { width: "100%" },
+      ...cancelProps,
     }}
   />
 );
 
-const ConfirmButton = () => (
+const ConfirmButton = ({ confirmProps }) => (
   <Widget
     src="${REPL_ACCOUNT}/widget/DIG.Button"
     props={{
@@ -69,6 +78,7 @@ const ConfirmButton = () => (
       variant: "primary",
       onClick: onConfirm,
       style: { width: "100%" },
+      ...confirmProps,
     }}
   />
 );
@@ -80,11 +90,13 @@ return (
       type: "alert",
       title: <Header />,
       description: <Description />,
-      cancelButton: <CancelButton />,
-      confirmButton: <ConfirmButton />,
+      cancelButton: <CancelButton cancelProps={cancelProps} />,
+      confirmButton: <ConfirmButton confirmProps={confirmProps} />,
       open,
       onOpenChange,
       actionStyles,
+      overlayColor: "var(--blackA11)",
+      overlayBlur: "blur(4px)",
     }}
   />
 );

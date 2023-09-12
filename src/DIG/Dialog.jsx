@@ -11,6 +11,8 @@ let {
   trigger,
   actionStyles,
   contentStyles,
+  overlayColor,
+  overlayBlur,
   ...forwardedProps
 } = props;
 
@@ -25,7 +27,8 @@ const variant = type === "alert" ? "AlertDialog" : "Dialog";
 const Root = styled(`${variant}.Root`)``;
 
 const Overlay = styled(`${variant}.Overlay`)`
-  background-color: var(--blackA3);
+  background-color: ${(p) => p.background ?? "var(--blackA3)"};
+  backdrop-filter: ${(p) => p.blur ?? ""};
   position: fixed;
   inset: 0;
   animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -55,6 +58,7 @@ const Content = styled(`${variant}.Content`)`
   padding: 24px;
   animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 10005;
+  outline: none;
 
   @keyframes contentShow {
     from {
@@ -145,7 +149,7 @@ return (
         )}
       </>
     )}
-    <Overlay />
+    <Overlay background={overlayColor} blur={overlayBlur} />
     <Content {...contentStyles}>
       {title && <Title>{title}</Title>}
       {description && <Description>{description}</Description>}

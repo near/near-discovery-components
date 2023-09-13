@@ -1,11 +1,11 @@
 let {
   open,
-  onConfirm,
-  onCancel,
-  onOpenChange,
-  cancelProps,
-  confirmProps,
-  ...forwardedProps
+  handleTurnOn,
+  handleOnCancel,
+  isNotificationSupported,
+  isPermisionGranted,
+  isPushManagerSupported,
+  setNotificationsSessionStorage,
 } = props;
 
 const HeaderWrapper = styled.div`
@@ -56,29 +56,27 @@ const actionStyles = {
   },
 };
 
-const CancelButton = ({ cancelProps }) => (
+const CancelButton = ({ handleOnCancel }) => (
   <Widget
     src="${REPL_ACCOUNT}/widget/DIG.Button"
     props={{
       label: "Not Now",
       variant: "secondary",
       fill: "ghost",
-      onClick: onCancel,
+      onClick: handleOnCancel,
       style: { width: "100%" },
-      ...cancelProps,
     }}
   />
 );
 
-const ConfirmButton = ({ confirmProps }) => (
+const ConfirmButton = ({ handleTurnOn }) => (
   <Widget
     src="${REPL_ACCOUNT}/widget/DIG.Button"
     props={{
       label: "Turn On",
       variant: "primary",
-      onClick: onConfirm,
+      onClick: handleTurnOn,
       style: { width: "100%" },
-      ...confirmProps,
     }}
   />
 );
@@ -90,10 +88,9 @@ return (
       type: "alert",
       title: <Header />,
       description: <Description />,
-      cancelButton: <CancelButton cancelProps={cancelProps} />,
-      confirmButton: <ConfirmButton confirmProps={confirmProps} />,
+      cancelButton: <CancelButton handleOnCancel={handleOnCancel} />,
+      confirmButton: <ConfirmButton handleTurnOn={handleTurnOn} />,
       open,
-      onOpenChange,
       actionStyles,
       overlayColor: "var(--blackA11)",
       overlayBlur: "blur(4px)",

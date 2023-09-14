@@ -137,6 +137,11 @@ query GetPostsQuery($offset: Int, $limit: Int) {
       block_timestamp
       content
     }
+    verifications {
+      human_provider
+      human_valid_until
+      human_verification_level
+    }
   }
   dataplatform_near_social_feed_posts_aggregate(order_by: [${querySortOption} { block_height: desc }], offset: $offset){
     aggregate {
@@ -159,6 +164,12 @@ query GetFollowingPosts($offset: Int, $limit: Int) {
       block_timestamp
       content
     }
+    verifications {
+      human_provider
+      human_valid_until
+      human_verification_level
+    }
+
   }
   dataplatform_near_social_feed_posts_aggregate(where: {${queryFilter}}, order_by: [{ block_height: desc }], offset: $offset) {
     aggregate {

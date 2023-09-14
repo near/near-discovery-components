@@ -97,7 +97,7 @@ function matchesModeration(moderated, item) {
     return true;
   }
   // match posts
-  return accountFound[item.block_height] !== "undefined";
+  return typeof accountFound[item.block_height] !== "undefined";
 }
 
 const shouldFilter = (item) => {

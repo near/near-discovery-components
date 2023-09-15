@@ -8,6 +8,14 @@ const getFlaggedAccountsList = Social.get(
   "optimistic"
 );
 
+const socialSet = (index) =>
+  Social.set(index, {
+    onCommit: () => {
+      onReport && onReport();
+    },
+    onCancel: () => onOpenChange(false),
+  });
+
 const reportAccount = () => {
   const contentModerationItem = {
     type: "social",
@@ -15,22 +23,14 @@ const reportAccount = () => {
     reportedBy: context.accountId,
   };
 
-  Social.set(
-    {
-      index: {
-        flag: JSON.stringify({
-          key: "main",
-          value: contentModerationItem,
-        }),
-      },
+  socialSet({
+    index: {
+      flag: JSON.stringify({
+        key: "main",
+        value: contentModerationItem,
+      }),
     },
-    {
-      onCommit: () => {
-        onReport && onReport();
-      },
-      onCancel: () => onOpenChange(false),
-    }
-  );
+  });
 };
 
 const reportAccountWithPosts = () => {
@@ -42,21 +42,13 @@ const reportAccountWithPosts = () => {
     ...flaggedAccountsListSet.add(reportedAccountId),
   ];
 
-  Social.set(
-    {
-      index: {
-        moderate: {
-          [filterFlaggedAccounts]: "",
-        },
+  socialSet({
+    index: {
+      moderate: {
+        [filterFlaggedAccounts]: "",
       },
     },
-    {
-      onCommit: () => {
-        onReport && onReport();
-      },
-      onCancel: () => onOpenChange(false),
-    }
-  );
+  });
 };
 
 const Cancel = () => (

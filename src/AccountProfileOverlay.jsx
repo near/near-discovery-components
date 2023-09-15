@@ -180,7 +180,7 @@ return (
           onOpenChange: () => {
             State.update({ hasBeenFlagged: false });
           },
-          duration: 10000,
+          duration: 5000,
         }}
       />
     )}

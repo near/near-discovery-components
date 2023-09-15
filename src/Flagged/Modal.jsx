@@ -46,9 +46,7 @@ const reportAccountWithPosts = () => {
     {
       index: {
         moderate: {
-          hide: {
-            accounts: filterFlaggedAccounts,
-          },
+          [filterFlaggedAccounts]: "",
         },
       },
     },

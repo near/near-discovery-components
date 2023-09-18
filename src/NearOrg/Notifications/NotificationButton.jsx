@@ -1,6 +1,14 @@
 const accountId = context.accountId;
-let { moderatorAccount, preview, href, previewItems, showMoreButton } = props;
+let {
+  moderatorAccount,
+  preview,
+  notificationFeedSrc,
+  previewItems,
+  showMoreButton,
+} = props;
 moderatorAccount = moderatorAccount ?? "${REPL_MODERATOR}";
+notificationFeedSrc =
+  notificationFeedSrc ?? "${REPL_ACCOUNT}/widget/NotificationsPage";
 
 State.init({
   open: false,
@@ -22,7 +30,6 @@ if (filterUsers === null) {
 }
 
 const filterUsers = filterUsersRaw ? JSON.parse(filterUsersRaw) : [];
-const notificationFeedSrc = "${REPL_ACCOUNT}/widget/NotificationsPage";
 const lastBlockHeight = Storage.get("lastBlockHeight", notificationFeedSrc);
 let notifications =
   Social.index("notify", accountId, {
@@ -78,7 +85,7 @@ const PreviewWrapper = styled.div`
     visibility: visible;
     animation: fadeIn 200ms ease;
   }
-  [data-state='false'] {
+  [data-state="false"] {
     animation: fadeOut 200ms ease;
   }
 

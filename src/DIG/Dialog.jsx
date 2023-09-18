@@ -8,6 +8,11 @@ let {
   confirmButtonText,
   cancelButton,
   confirmButton,
+  trigger,
+  actionStyles,
+  contentStyles,
+  overlayColor,
+  overlayBlur,
   ...forwardedProps
 } = props;
 
@@ -22,11 +27,12 @@ const variant = type === "alert" ? "AlertDialog" : "Dialog";
 const Root = styled(`${variant}.Root`)``;
 
 const Overlay = styled(`${variant}.Overlay`)`
-  background-color: var(--blackA3);
+  background-color: ${(p) => p.background ?? "var(--blackA3)"};
+  backdrop-filter: ${(p) => p.blur ?? ""};
   position: fixed;
   inset: 0;
   animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: 2147483648;
+  z-index: 10000;
 
   @keyframes overlayShow {
     from {
@@ -51,6 +57,8 @@ const Content = styled(`${variant}.Content`)`
   max-height: 85vh;
   padding: 24px;
   animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 10005;
+  outline: none;
 
   @keyframes contentShow {
     from {
@@ -132,16 +140,20 @@ confirmButton = confirmButton ?? (
 
 return (
   <Root {...forwardedProps}>
-    {type === "alert" ? (
-      <AlertDialog.Trigger asChild>{trigger}</AlertDialog.Trigger>
-    ) : (
-      <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
+    {trigger && (
+      <>
+        {type === "alert" ? (
+          <AlertDialog.Trigger asChild>{trigger}</AlertDialog.Trigger>
+        ) : (
+          <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
+        )}
+      </>
     )}
-    <Overlay />
-    <Content>
+    <Overlay background={overlayColor} blur={overlayBlur} />
+    <Content {...contentStyles}>
       {title && <Title>{title}</Title>}
       {description && <Description>{description}</Description>}
-      <ActionWrapper>
+      <ActionWrapper {...actionStyles}>
         {type === "alert" ? (
           <AlertDialog.Cancel asChild>
             <div className="d-inline-block">{cancelButton}</div>
@@ -161,7 +173,7 @@ return (
       {type === "dialog" && (
         <Dialog.Close asChild>
           <Close>
-            <i class="ph ph-x" />
+            <i className="ph ph-x" />
           </Close>
         </Dialog.Close>
       )}

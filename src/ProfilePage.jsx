@@ -10,7 +10,8 @@ if (Social.getr(`${accountId}/widget/ProfilePage`)) {
       src={`${accountId}/widget/ProfilePage`}
       props={{
         accountId,
-      }}/>
+      }}
+    />
   );
 }
 State.init({

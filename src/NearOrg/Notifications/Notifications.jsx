@@ -89,6 +89,9 @@ return (
       />
     )}
 
-    <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsList" />
+    <Widget
+      src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsList"
+      props={{ showLimit, showInBox }}
+    />
   </Card>
 );

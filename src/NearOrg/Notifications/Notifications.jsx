@@ -56,7 +56,7 @@ return (
   <Card>
     <Header>
       <Title>Notifications</Title>
-      <Settings href="#/${REPL_ACCOUNT}/widget/NearOrg.Notifications.Settings">
+      <Settings href="#/notifications-settings">
         <svg
           width="18"
           height="18"

@@ -118,6 +118,10 @@ const PreviewContent = styled.div`
   flex-direction: column;
 `;
 
+const SeeAll = styled.div`
+  padding: 16px;
+`;
+
 const Counter = ({ count }) => {
   if (!count) return;
   return <Count>{count}</Count>;
@@ -170,6 +174,19 @@ return (
             showInBox: true,
           }}
         />
+        <SeeAll>
+          <Widget
+            src="${REPL_ACCOUNT}/widget/DIG.Button"
+            props={{
+              href: "#/notifications",
+              fill: "outline",
+              variant: "secondary",
+              label: "See all",
+              size: "small",
+              style: { width: "100%" },
+            }}
+          />
+        </SeeAll>
       </PreviewContent>
     </PreviewWrapper>
   </Wrapper>

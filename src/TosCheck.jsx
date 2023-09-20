@@ -145,7 +145,7 @@ const showTos =
   (!agreementsForUser.length ||
     agreementsForUser[agreementsForUser.length - 1].value < latestTosVersion);
 
-if (agreementsForUser) {
+if (agreementsForUser && recordToC) {
   recordToC({
     showTos,
     agreementsForUser,

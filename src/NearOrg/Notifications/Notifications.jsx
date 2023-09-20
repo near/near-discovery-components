@@ -1,3 +1,13 @@
+const isLocalStorageSupported = props?.isLocalStorageSupported;
+const isNotificationSupported = props?.isNotificationSupported;
+const isPermisionGranted = props?.isPermisionGranted;
+const isPushManagerSupported = props?.isPushManagerSupported;
+const handleTurnOn = props?.handleTurnOn;
+const handleOnCancel = props?.handleOnCancel;
+const getNotificationLocalStorage = props?.getNotificationLocalStorage;
+const handleOnCancelBanner = props?.handleOnCancelBanner;
+const accountId = props?.accountId;
+
 const Header = styled.div`
   display: flex;
   padding: 48px 16px 24px 16px;

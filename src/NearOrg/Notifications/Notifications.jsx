@@ -7,10 +7,13 @@ const handleOnCancel = props?.handleOnCancel;
 const getNotificationLocalStorage = props?.getNotificationLocalStorage;
 const handleOnCancelBanner = props?.handleOnCancelBanner;
 const accountId = props?.accountId;
+const showLimit = props?.showLimit;
+const showInBox = props?.showInBox || false;
 
 const Header = styled.div`
   display: flex;
-  padding: 48px 16px 24px 16px;
+  padding: ${(props) =>
+    props.showInBox ? "16px 16px 16px 24px" : "48px 16px 24px 16px"};
   align-items: center;
   align-self: stretch;
 `;
@@ -36,7 +39,7 @@ const Settings = styled.a`
 
 const Card = styled.div`
   max-width: 592px;
-  margin: 0 auto;
+  margin: ${(props) => (props.showInBox ? "" : "0 auto")};
 `;
 
 const bannerNotNowTS = getNotificationLocalStorage()?.bannerNotNowTS;
@@ -53,8 +56,8 @@ const checkShowBanner = () => {
 };
 
 return (
-  <Card>
-    <Header>
+  <Card showInBox={showInBox}>
+    <Header showInBox={showInBox}>
       <Title>Notifications</Title>
       <Settings href="#/notifications-settings">
         <svg
@@ -86,6 +89,9 @@ return (
       />
     )}
 
-    <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsList" />
+    <Widget
+      src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsList"
+      props={{ showLimit, showInBox }}
+    />
   </Card>
 );

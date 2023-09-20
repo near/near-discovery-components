@@ -7,6 +7,8 @@ const handleOnCancel = props?.handleOnCancel;
 const getNotificationLocalStorage = props?.getNotificationLocalStorage;
 const handleOnCancelBanner = props?.handleOnCancelBanner;
 const accountId = props?.accountId;
+const showLimit = props?.showLimit;
+const showInBox = props?.showInBox || false;
 
 const Header = styled.div`
   display: flex;

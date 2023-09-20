@@ -1,8 +1,5 @@
 // This component will be shown to users who have enabled notifications in browser settings
 
-const label = props?.label;
-const handleOnClick = props?.handleOnClick;
-
 const Card = styled.div`
   display: flex;
   padding: 32px 0px;
@@ -98,10 +95,10 @@ return (
       <Widget
         src="${REPL_ACCOUNT}/widget/DIG.Button"
         props={{
-          label,
+          label: "Turn On",
           variant: "primary",
           // fill: "",
-          onClick: handleOnClick,
+          onClick: showTurnOnModal,
           style: { width: "100%" },
         }}
       />

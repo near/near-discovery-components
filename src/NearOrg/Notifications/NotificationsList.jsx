@@ -1,6 +1,4 @@
 const accountId = context.accountId;
-const showLimit = props?.showLimit;
-const showInBox = props?.showInBox;
 
 if (!accountId) {
   return <></>;
@@ -100,9 +98,6 @@ const shouldFilter = (item) => {
 //     </div>
 //   ));
 const cachedRenderItem = (item, i) => {
-  if (showLimit && i >= showLimit) {
-    return;
-  }
   const key = JSON.stringify(item);
 
   if (!(key in state.cachedItems)) {

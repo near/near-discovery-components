@@ -168,11 +168,11 @@ const ThumbnailGrid = styled.div`
 
 const ContentGrid = styled.div`
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: 1fr 1fr;
   gap: 2rem;
 
   @media (max-width: 650px) {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: 1fr;
   }
 `;
 
@@ -246,14 +246,14 @@ return (
                           {section.items.map((item) => {
                             return (
                               <Widget
-                                src="${REPL_ACCOUNT}/widget/AppLibrary.AppCard"
+                                src="${REPL_ACCOUNT}/widget/ComponentCard"
                                 key={item.author + item.widget_name}
                                 props={{
                                   src: `${item.author}/widget/${item.widget_name}`,
+                                  tags: item.tags,
                                   metadata: {
                                     image: item.image,
                                     name: item.name,
-                                    tags: item.tags,
                                   },
                                   blockHeight: item.receipt_block_height,
                                 }}

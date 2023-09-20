@@ -106,7 +106,7 @@ return (
       props={{
         onInput: handleOnInput,
         onQueryChange: handleOnQueryChange,
-        placeholder: "Type keywords to search all apps...",
+        placeholder: "Search...",
       }}
     />
 
@@ -116,20 +116,20 @@ return (
 
     {state.results.length > 0 && (
       <>
-        <Text>Showing {state.results.length} results</Text>
+        <H2>All apps</H2>
 
         <ContentGrid>
           {state.results.map((result) => {
             return (
               <Widget
                 key={`${result.author}/widget/${result.widget_name}`}
-                src="${REPL_ACCOUNT}/widget/AppLibrary.AppCard"
+                src="${REPL_ACCOUNT}/widget/ComponentCard"
                 props={{
                   src: `${result.author}/widget/${result.widget_name}`,
+                  tags: result.tags,
                   metadata: {
                     image: result.image,
                     name: result.name,
-                    tags: result.tags,
                   },
                   blockHeight: result.receipt_block_height,
                 }}

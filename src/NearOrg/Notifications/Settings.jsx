@@ -26,6 +26,14 @@ State.init({
   showTurnOff: isPermisionGranted() && !!permission,
 });
 
+const checkShow = () => {
+  const permission = getNotificationLocalStorage()?.permission;
+  State.update({
+    showTurnOn: !isPermisionGranted() || (isPermisionGranted() && !permission),
+    showTurnOff: isPermisionGranted() && !!permission,
+  });
+};
+
 return (
   <Card>
     <Widget

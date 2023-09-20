@@ -1,38 +1,14 @@
-const isLocalStorageSupported = props?.isLocalStorageSupported;
-const isNotificationSupported = props?.isNotificationSupported;
-const isPermisionGranted = props?.isPermisionGranted;
-const isPushManagerSupported = props?.isPushManagerSupported;
-const handleTurnOn = props?.handleTurnOn;
-const handleOnCancel = props?.handleOnCancel;
-const getNotificationLocalStorage = props?.getNotificationLocalStorage;
-const handleOnCancelBanner = props?.handleOnCancelBanner;
-const accountId = props?.accountId;
-const handlePushManagerUnsubscribe = props?.handlePushManagerUnsubscribe;
-
 const Card = styled.div`
   max-width: 592px;
   margin: 0 auto;
 `;
 
+// const isNotificationSupported = true;
+// handleOnClick = () => {}
 // TODO: solution to pass data to this component
 // at this moment we don't have a simple solution to pass data to this component
 // we are not able to detect if notifications are supported,
 // and we are not able to handle Turn On button
-
-const permission = getNotificationLocalStorage()?.permission;
-
-State.init({
-  showTurnOn: !isPermisionGranted() || (isPermisionGranted() && !permission),
-  showTurnOff: isPermisionGranted() && !!permission,
-});
-
-const checkShow = () => {
-  const permission = getNotificationLocalStorage()?.permission;
-  State.update({
-    showTurnOn: !isPermisionGranted() || (isPermisionGranted() && !permission),
-    showTurnOff: isPermisionGranted() && !!permission,
-  });
-};
 
 return (
   <Card>
@@ -44,30 +20,16 @@ return (
       }}
     />
 
-    {state.showTurnOn && (
-      <Widget
-        src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.SettingsListItem"
-        props={{
-          handleOnClick: () => {
-            handleTurnOn(accountId, checkShow);
-          },
-          label: "Turn On",
-        }}
-      />
-    )}
-    {state.showTurnOff && (
-      <Widget
-        src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.SettingsListItem"
-        props={{
-          handleOnClick: () => {
-            handlePushManagerUnsubscribe(checkShow);
-          },
-          label: "Turn Off",
-        }}
-      />
-    )}
-    {isNotificationSupported || (
-      <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.SettingsTurnOn" />
-    )}
+    {/* {isNotificationSupported && ( */}
+    <Widget
+      src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.SettingsListItem"
+      props={{
+        handleOnClick,
+      }}
+    />
+    {/* )} */}
+    {/* {isNotificationSupported || ( */}
+    <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.SettingsTurnOn" />
+    {/* )} */}
   </Card>
 );

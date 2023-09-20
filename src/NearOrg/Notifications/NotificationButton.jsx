@@ -154,8 +154,22 @@ return (
     <Button />
     <PreviewWrapper data-state={state.open}>
       <PreviewContent>
-        {previewItems}
-        {showMoreButton}
+        <Widget
+          src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.Notifications"
+          props={{
+            isLocalStorageSupported,
+            isNotificationSupported,
+            isPermisionGranted,
+            isPushManagerSupported,
+            handleOnCancel,
+            getNotificationLocalStorage,
+            handleOnCancelBanner,
+            accountId,
+            handleTurnOn,
+            showLimit: 6,
+            showInBox: true,
+          }}
+        />
       </PreviewContent>
     </PreviewWrapper>
   </Wrapper>

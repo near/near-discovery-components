@@ -50,7 +50,7 @@ function selectTab(selectedTab) {
   loadMorePosts();
 }
 
-let filterUsersRaw = Social.get(
+let gatewayModeratedUsersRaw = Social.get(
   `${moderatorAccount}/moderate/users`,
   "optimistic",
   {
@@ -64,25 +64,52 @@ const selfFlaggedPosts = context.accountId
     })
   : [];
 
-if (filterUsersRaw === null) {
+const selfModeration = context.accountId
+    ? Social.index("moderate", "main", {
+      accountId: context.accountId,
+    })
+    : [];
+
+if (gatewayModeratedUsersRaw === null) {
   // haven't loaded filter list yet, return early
   return "";
 }
 
-const filterUsers = filterUsersRaw ? JSON.parse(filterUsersRaw) : [];
+const gatewayModeratedUsers = gatewayModeratedUsersRaw ? JSON.parse(gatewayModeratedUsersRaw) : [];
 
 // get the full list of posts that the current user has flagged so
 // they can be hidden
 
+// expecting moderation structure for accounts and posts like
+// { moderate: {
+//     "account1.near": "block",
+//     "account2.near": {
+//         "100000123": "spam",
+//     },
+//   }
+// }
+function matchesModeration(moderated, item) {
+  let accountFound = moderated[accountId];
+  if (typeof accountFound === "undefined") {
+    return false;
+  }
+  if (typeof accountFound === "string") {
+    return true;
+  }
+  // match posts
+  return typeof accountFound[item.block_height] !== "undefined";
+}
+
 const shouldFilter = (item) => {
   return (
-    filterUsers.includes(item.account_id) ||
+    gatewayModeratedUsers.includes(item.account_id) ||
     selfFlaggedPosts.find((flagged) => {
       return (
         flagged?.value?.blockHeight === item.block_height &&
         flagged?.value?.path.includes(item.account_id)
       );
-    })
+    }) ||
+    matchesModeration(selfModeration, item)
   );
 };
 function fetchGraphQL(operationsDoc, operationName, variables) {
@@ -137,6 +164,11 @@ query GetPostsQuery($offset: Int, $limit: Int) {
       block_timestamp
       content
     }
+    verifications {
+      human_provider
+      human_valid_until
+      human_verification_level
+    }
   }
   dataplatform_near_social_feed_posts_aggregate(order_by: [${querySortOption} { block_height: desc }], offset: $offset){
     aggregate {
@@ -159,6 +191,12 @@ query GetFollowingPosts($offset: Int, $limit: Int) {
       block_timestamp
       content
     }
+    verifications {
+      human_provider
+      human_valid_until
+      human_verification_level
+    }
+
   }
   dataplatform_near_social_feed_posts_aggregate(where: {${queryFilter}}, order_by: [{ block_height: desc }], offset: $offset) {
     aggregate {
@@ -222,7 +260,7 @@ const loadMorePosts = () => {
 
 const hasMore = state.postsCountLeft != state.posts.length;
 
-if (!state.initLoadPostsAll && selfFlaggedPosts && filterUsers) {
+if (!state.initLoadPostsAll && selfFlaggedPosts && selfModeration && gatewayModeratedUsers) {
   loadMorePosts();
   State.update({ initLoadPostsAll: true });
 }

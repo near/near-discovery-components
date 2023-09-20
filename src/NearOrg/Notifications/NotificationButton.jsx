@@ -76,8 +76,7 @@ const PreviewWrapper = styled.div`
     0px 0px 0px 1px rgba(0, 0, 0, 0.06);
   top: 55px;
   right: 75%;
-  max-width: 490px;
-  width: 100%;
+  width: 460px;
   visibility: hidden;
   overflow: hidden;
   transition: visibility 300ms ease;

@@ -46,6 +46,12 @@ State.init({
   showBanner: !bannerNotNowTS && !permission,
 });
 
+const checkShowBanner = () => {
+  const bannerNotNowTS = getNotificationLocalStorage()?.bannerNotNowTS;
+  const permission = getNotificationLocalStorage()?.permission;
+  State.update({ showBanner: !bannerNotNowTS && !permission });
+};
+
 return (
   <Card>
     <Header>

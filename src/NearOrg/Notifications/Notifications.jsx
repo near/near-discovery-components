@@ -71,7 +71,21 @@ return (
         </svg>
       </Settings>
     </Header>
-    <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.Banner" />
+    {state.showBanner && (
+      <Widget
+        src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.Banner"
+        props={{
+          handleTurnOn: async () => {
+            handleTurnOn(accountId, checkShowBanner);
+          },
+          handleOnCancel: () => {
+            handleOnCancelBanner();
+            checkShowBanner();
+          },
+        }}
+      />
+    )}
+
     <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsList" />
   </Card>
 );

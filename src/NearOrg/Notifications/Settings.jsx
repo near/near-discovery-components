@@ -19,6 +19,13 @@ const Card = styled.div`
 // we are not able to detect if notifications are supported,
 // and we are not able to handle Turn On button
 
+const permission = getNotificationLocalStorage()?.permission;
+
+State.init({
+  showTurnOn: !isPermisionGranted() || (isPermisionGranted() && !permission),
+  showTurnOff: isPermisionGranted() && !!permission,
+});
+
 return (
   <Card>
     <Widget

@@ -1,4 +1,4 @@
-const appDetailsUrl = `#/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${props.author}/widget/${props.widgetName}`;
+const appUrl = `#/${props.author}/widget/${props.widgetName}`;
 
 const Thumbnail = styled.a`
   display: block;
@@ -6,6 +6,7 @@ const Thumbnail = styled.a`
   overflow: hidden;
   border-radius: 1.25rem;
   border: 1px solid var(--sand6);
+  background: #fff;
   position: relative;
   cursor: pointer;
   text-decoration: none !important;
@@ -70,7 +71,7 @@ const ThumbnailTag = styled.span`
 `;
 
 return (
-  <Thumbnail href={appDetailsUrl}>
+  <Thumbnail href={appUrl}>
     <Widget
       src="${REPL_MOB}/widget/Image"
       props={{

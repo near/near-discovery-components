@@ -39,6 +39,13 @@ const Card = styled.div`
   margin: 0 auto;
 `;
 
+const bannerNotNowTS = getNotificationLocalStorage()?.bannerNotNowTS;
+const permission = getNotificationLocalStorage()?.permission;
+
+State.init({
+  showBanner: !bannerNotNowTS && !permission,
+});
+
 return (
   <Card>
     <Header>

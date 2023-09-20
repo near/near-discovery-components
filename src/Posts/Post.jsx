@@ -1,6 +1,7 @@
 const GRAPHQL_ENDPOINT =
   props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 const accountId = props.accountId;
+const verifications = props.verifications;
 const blockHeight =
   props.blockHeight === "now" ? "now" : parseInt(props.blockHeight);
 const notifyAccountId = accountId;
@@ -217,6 +218,7 @@ return (
           <Widget
             src="${REPL_ACCOUNT}/widget/AccountProfile"
             props={{
+              verifications,
               accountId,
               hideAccountId: true,
               inlineContent: (

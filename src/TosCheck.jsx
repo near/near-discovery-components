@@ -1,4 +1,4 @@
-const { tosName, targetComponent, logOut } = props;
+const { tosName, targetComponent, logOut, recordToC } = props;
 const targetProps = props?.targetProps || {};
 const acceptanceKey = tosName; // may change
 

@@ -56,6 +56,16 @@ return (
       />
     )}
     {state.showTurnOff && (
+      <Widget
+        src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.SettingsListItem"
+        props={{
+          handleOnClick: () => {
+            handlePushManagerUnsubscribe(checkShow);
+          },
+          label: "Turn Off",
+        }}
+      />
+    )}
     {isNotificationSupported || (
       <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.SettingsTurnOn" />
     )}

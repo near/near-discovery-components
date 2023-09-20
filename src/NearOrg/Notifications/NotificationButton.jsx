@@ -137,7 +137,7 @@ const Button = () => {
           icon,
           variant: "secondary",
           style: { width: "45px", height: "45px" },
-          href: !preview ? notificationFeedSrc : undefined,
+          href: "#/notifications",
           onClick: () => State.update({ open: !!state.open }),
         }}
       />

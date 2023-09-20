@@ -1,3 +1,6 @@
+const handleTurnOn = props?.handleTurnOn;
+const handleOnCancel = props?.handleOnCancel;
+
 const Card = styled.div`
   display: flex;
   padding: 24px 16px;
@@ -28,6 +31,7 @@ const Close = styled.div`
   & > i {
     font-size: 24px;
     color: white;
+    cursor: pointer;
   }
 `;
 
@@ -54,25 +58,25 @@ return (
         <Widget
           src="${REPL_ACCOUNT}/widget/DIG.Button"
           props={{
-            href: "",
             label: "Turn on",
             variant: "primary",
             size: "default",
+            onClick: handleTurnOn,
           }}
         />
         <Widget
           src="${REPL_ACCOUNT}/widget/DIG.Button"
           props={{
-            href: "",
             label: "No thanks",
             variant: "secondary",
             size: "default",
+            onClick: handleOnCancel,
           }}
         />
       </Buttons>
     </Component>
     <Close>
-      <i class="ph ph-x" />
+      <i class="ph ph-x" onClick={handleOnCancel} />
     </Close>
   </Card>
 );

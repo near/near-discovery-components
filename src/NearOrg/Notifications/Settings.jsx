@@ -44,16 +44,11 @@ return (
       }}
     />
 
-    {/* {isNotificationSupported && ( */}
-    <Widget
-      src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.SettingsListItem"
-      props={{
-        handleOnClick,
-      }}
-    />
-    {/* )} */}
-    {/* {isNotificationSupported || ( */}
-    <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.SettingsTurnOn" />
-    {/* )} */}
+    {state.showTurnOn && (
+    )}
+    {state.showTurnOff && (
+    {isNotificationSupported || (
+      <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.SettingsTurnOn" />
+    )}
   </Card>
 );

@@ -1,3 +1,13 @@
+const isLocalStorageSupported = props?.isLocalStorageSupported;
+const isNotificationSupported = props?.isNotificationSupported;
+const isPermisionGranted = props?.isPermisionGranted;
+const isPushManagerSupported = props?.isPushManagerSupported;
+const handleTurnOn = props?.handleTurnOn;
+const handleOnCancel = props?.handleOnCancel;
+const getNotificationLocalStorage = props?.getNotificationLocalStorage;
+const handleOnCancelBanner = props?.handleOnCancelBanner;
+const accountId = props?.accountId;
+
 const Header = styled.div`
   display: flex;
   padding: 48px 16px 24px 16px;
@@ -29,11 +39,24 @@ const Card = styled.div`
   margin: 0 auto;
 `;
 
+const bannerNotNowTS = getNotificationLocalStorage()?.bannerNotNowTS;
+const permission = getNotificationLocalStorage()?.permission;
+
+State.init({
+  showBanner: !bannerNotNowTS && !permission,
+});
+
+const checkShowBanner = () => {
+  const bannerNotNowTS = getNotificationLocalStorage()?.bannerNotNowTS;
+  const permission = getNotificationLocalStorage()?.permission;
+  State.update({ showBanner: !bannerNotNowTS && !permission });
+};
+
 return (
   <Card>
     <Header>
       <Title>Notifications</Title>
-      <Settings href="#/${REPL_ACCOUNT}/widget/NearOrg.Notifications.Settings">
+      <Settings href="#/notifications-settings">
         <svg
           width="18"
           height="18"
@@ -48,7 +71,21 @@ return (
         </svg>
       </Settings>
     </Header>
-    <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.Banner" />
+    {state.showBanner && (
+      <Widget
+        src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.Banner"
+        props={{
+          handleTurnOn: async () => {
+            handleTurnOn(accountId, checkShowBanner);
+          },
+          handleOnCancel: () => {
+            handleOnCancelBanner();
+            checkShowBanner();
+          },
+        }}
+      />
+    )}
+
     <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsList" />
   </Card>
 );

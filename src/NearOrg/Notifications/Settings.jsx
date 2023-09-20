@@ -45,6 +45,15 @@ return (
     />
 
     {state.showTurnOn && (
+      <Widget
+        src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.SettingsListItem"
+        props={{
+          handleOnClick: () => {
+            handleTurnOn(accountId, checkShow);
+          },
+          label: "Turn On",
+        }}
+      />
     )}
     {state.showTurnOff && (
     {isNotificationSupported || (

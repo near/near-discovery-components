@@ -1,14 +1,14 @@
 const accountId = context.accountId;
-let {
-  moderatorAccount,
-  preview,
-  notificationFeedSrc,
-  previewItems,
-  showMoreButton,
-} = props;
-moderatorAccount = moderatorAccount ?? "${REPL_MODERATOR}";
-notificationFeedSrc =
-  notificationFeedSrc ?? "${REPL_ACCOUNT}/widget/NotificationsPage";
+const moderatorAccount = props?.moderatorAccount || "${REPL_MODERATOR}";
+
+const isLocalStorageSupported = props?.isLocalStorageSupported;
+const isNotificationSupported = props?.isNotificationSupported;
+const isPermisionGranted = props?.isPermisionGranted;
+const isPushManagerSupported = props?.isPushManagerSupported;
+const handleTurnOn = props?.handleTurnOn;
+const handleOnCancel = props?.handleOnCancel;
+const getNotificationLocalStorage = props?.getNotificationLocalStorage;
+const handleOnCancelBanner = props?.handleOnCancelBanner;
 
 State.init({
   open: false,
@@ -30,6 +30,8 @@ if (filterUsers === null) {
 }
 
 const filterUsers = filterUsersRaw ? JSON.parse(filterUsersRaw) : [];
+const notificationFeedSrc =
+  "${REPL_ACCOUNT}/widget/NearOrg.Notifications.Notifications";
 const lastBlockHeight = Storage.get("lastBlockHeight", notificationFeedSrc);
 let notifications =
   Social.index("notify", accountId, {

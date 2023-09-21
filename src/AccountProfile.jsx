@@ -2,7 +2,7 @@ const accountId = props.accountId || context.accountId;
 const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
 const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 const verifications = props.verifications;
-const activityFeed = props.activityFeed ?? false;
+const showFlagAccountFeature = props.showFlagAccountFeature ?? false;
 
 const Wrapper = styled.a`
   display: inline-grid;
@@ -133,7 +133,7 @@ return (
       children: AccountProfile,
       placement: props.overlayPlacement,
       verifications,
-      activityFeed,
+      showFlagAccountFeature,
     }}
   />
 );

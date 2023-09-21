@@ -1,12 +1,21 @@
-let { onReport, open, reportedAccountId, onOpenChange } = props;
+let {
+  onReport,
+  reportedAccountId,
+  contentModerationFlagValue,
+  ...forwardedProps
+} = props;
 
 const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${reportedAccountId}`;
 
+let getFlaggedAccountsList;
+
 // copied from Moderate.jsx so maybe it's wrong
-const getFlaggedAccountsList = Social.get(
-  `${context.accountId}/moderate/users`,
-  "optimistic"
-);
+if (forwardedProps.open) {
+  getFlaggedAccountsList = Social.get(
+    `${context.accountId}/moderate/users`,
+    "optimistic"
+  );
+}
 
 const socialSet = (index) =>
   Social.set(index, {
@@ -17,17 +26,11 @@ const socialSet = (index) =>
   });
 
 const reportAccount = () => {
-  const contentModerationItem = {
-    type: "social",
-    path: profileUrl,
-    reportedBy: context.accountId,
-  };
-
   socialSet({
     index: {
       flag: JSON.stringify({
         key: "main",
-        value: contentModerationItem,
+        value: contentModerationFlagValue,
       }),
     },
   });
@@ -51,37 +54,17 @@ const reportAccountWithPosts = () => {
   });
 };
 
-const Cancel = () => (
-  <Widget
-    src="${REPL_ACCOUNT}/widget/DIG.Button"
-    props={{
-      label: "No",
-      variant: "secondary",
-      onClick: reportAccount,
-    }}
-  />
-);
-
-const Confirm = () => (
-  <Widget
-    src="${REPL_ACCOUNT}/widget/DIG.Button"
-    props={{
-      label: "Yes",
-      variant: "primary",
-      onClick: reportAccountWithPosts,
-    }}
-  />
-);
-
 return (
   <Widget
     src="${REPL_ACCOUNT}/widget/DIG.Dialog"
     props={{
       type: "alert",
       title: "Do you want to hide all posts of this account?",
-      cancelButton: <Cancel />,
-      confirmButton: <Confirm />,
-      open,
+      cancelButtonText: "No",
+      confirmButtonText: "Yes",
+      onCancel: reportAccount,
+      onConfirm: reportAccountWithPosts,
+      ...forwardedProps,
     }}
   />
 );

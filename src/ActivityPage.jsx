@@ -200,7 +200,7 @@ return (
         {state.shouldFallback == true ? (
           <Widget
             src={`${REPL_ACCOUNT}/widget/v1.Posts`}
-            props={{ activityFeed: true }}
+            props={{ showFlagAccountFeature: true }}
           />
         ) : (
           <Widget
@@ -208,7 +208,7 @@ return (
             props={{
               GRAPHQL_ENDPOINT,
               accountsFollowing,
-              activityFeed: true,
+              showFlagAccountFeature: true,
             }}
           />
         )}

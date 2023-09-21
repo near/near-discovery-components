@@ -26,7 +26,7 @@ const renderItem = (a) =>
         props={{
           accountId: a.accountId,
           blockHeight: a.blockHeight,
-          activityFeed: props.activityFeed,
+          showFlagAccountFeature: props.showFlagAccountFeature,
         }}
       />
     </Post>

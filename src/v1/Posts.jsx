@@ -159,7 +159,7 @@ return (
       <FeedWrapper>
         <Widget
           src="${REPL_ACCOUNT}/widget/v1.Posts.Feed"
-          props={{ accounts, activityFeed: props.activityFeed }}
+          props={{ accounts, showFlagAccountFeature: props.showFlagAccountFeature }}
         />
       </FeedWrapper>
     </Content>

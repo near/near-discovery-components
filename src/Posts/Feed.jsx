@@ -28,7 +28,7 @@ const renderItem = (item) => {
           likes: item.accounts_liked,
           GRAPHQL_ENDPOINT,
           verifications: item.verifications,
-          activityFeed: props.activityFeed ?? false,
+          showFlagAccountFeature: props.showFlagAccountFeature ?? false,
         }}
       />
     </Post>

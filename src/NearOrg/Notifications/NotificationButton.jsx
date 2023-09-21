@@ -146,10 +146,6 @@ const Button = () => {
   );
 };
 
-if (!preview) {
-  return <Button />;
-}
-
 return (
   <Wrapper
     onMouseEnter={() => State.update({ open: true })}

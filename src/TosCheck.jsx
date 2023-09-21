@@ -1,4 +1,4 @@
-const { tosName, targetComponent, logOut } = props;
+const { tosName, targetComponent, logOut, recordToC } = props;
 const targetProps = props?.targetProps || {};
 const acceptanceKey = tosName; // may change
 
@@ -9,10 +9,12 @@ State.init({
 });
 
 // find all instances of the user agreeing to some version of the desired TOS
-const agreementsForUser = context.accountId ? Social.index("tosAccept", acceptanceKey, {
-  accountId: context.accountId, // make sure it was written by the user in question
-  subscribe: true,
-}) : null;
+const agreementsForUser = context.accountId
+  ? Social.index("tosAccept", acceptanceKey, {
+      accountId: context.accountId, // make sure it was written by the user in question
+      subscribe: true,
+    })
+  : null;
 
 const tosVersions = Social.keys(tosName, "final", {
   return_type: "BlockHeight",
@@ -49,11 +51,10 @@ const Modal = styled.div`
 `;
 
 const ModalContent = styled.div`
-display: flex;
-flex-direction: column;
-flex-grow:1
-min-height 0;
-overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1 min-height 0;
+  overflow-y: auto;
 `;
 
 const ModalFooter = styled.div`
@@ -68,8 +69,8 @@ const AcceptSection = styled.div`
   column-gap: 1rem;
 
   .continue-button {
-    background: #59E692;
-    color: #09342E;
+    background: #59e692;
+    color: #09342e;
     border-radius: 40px;
     height: 40px;
     padding: 0 35px;
@@ -93,10 +94,10 @@ const AcceptSection = styled.div`
 `;
 
 const CheckWrapper = styled.div`
-display: flex;
-flex-direction: row;
-align-items: center;
-color: ${state.agreeIsChecked ? "#26A65A" : "inherit"}
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: ${state.agreeIsChecked ? "#26A65A" : "inherit"};
 `;
 
 const CheckButton = styled.button`
@@ -143,6 +144,14 @@ const showTos =
   agreementsForUser &&
   (!agreementsForUser.length ||
     agreementsForUser[agreementsForUser.length - 1].value < latestTosVersion);
+
+if (agreementsForUser && recordToC) {
+  recordToC({
+    showTos,
+    agreementsForUser,
+    latestTosVersion,
+  });
+}
 
 return (
   <div>

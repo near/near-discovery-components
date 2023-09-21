@@ -1,5 +1,4 @@
 const [accountId, unused, widgetName] = props.src.split("/");
-const detailsUrl = `#/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${accountId}/widget/${widgetName}`;
 const appUrl = `#/${accountId}/widget/${widgetName}`;
 const accountUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 const metadata =
@@ -13,16 +12,9 @@ const tags = props.metadata
 const Card = styled.div`
   position: relative;
   width: 100%;
-  border-radius: 12px;
-  background: #fff;
-  border: 1px solid #eceef0;
-  box-shadow: 0px 1px 3px rgba(16, 24, 40, 0.1),
-    0px 1px 2px rgba(16, 24, 40, 0.06);
-  overflow: hidden;
 `;
 
 const CardBody = styled.div`
-  padding: 16px;
   display: flex;
   gap: 16px;
   align-items: center;
@@ -34,33 +26,6 @@ const CardBody = styled.div`
 
 const CardContent = styled.div`
   width: 100%;
-`;
-
-const CardFooter = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  padding: 16px;
-  border-top: 1px solid #eceef0;
-`;
-
-const CardTag = styled.p`
-  margin: 0;
-  font-size: 9px;
-  line-height: 14px;
-  background: #eceef0;
-  color: #687076;
-  font-weight: 400;
-  white-space: nowrap;
-  position: absolute;
-  top: 0;
-  right: 0;
-  border-bottom-left-radius: 3px;
-  padding: 0 4px;
-
-  i {
-    margin-right: 3px;
-  }
 `;
 
 const TextLink = styled.a`
@@ -150,22 +115,8 @@ const ButtonLink = styled.a`
 
 return (
   <Card>
-    {!props.hideBlockHeightTimestamp && (
-      <CardTag>
-        <i className="bi bi-clock"></i>{" "}
-        <Widget
-          src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
-          props={{
-            blockHeight: props.blockHeight,
-            keyPath: `${accountId}/widget/${widgetName}`,
-          }}
-        />{" "}
-        ago
-      </CardTag>
-    )}
-
     <CardBody>
-      <Thumbnail href={detailsUrl}>
+      <Thumbnail href={appUrl}>
         <Widget
           src="${REPL_MOB}/widget/Image"
           props={{
@@ -178,7 +129,7 @@ return (
       </Thumbnail>
 
       <CardContent>
-        <TextLink as="a" href={detailsUrl} bold ellipsis>
+        <TextLink as="a" href={appUrl} bold ellipsis>
           {metadata.name || widgetName}
         </TextLink>
 
@@ -199,14 +150,5 @@ return (
         )}
       </CardContent>
     </CardBody>
-
-    {!props.hideButtons && (
-      <CardFooter>
-        <ButtonLink href={detailsUrl}>View Details</ButtonLink>
-        <ButtonLink href={appUrl} primary>
-          Open
-        </ButtonLink>
-      </CardFooter>
-    )}
   </Card>
 );

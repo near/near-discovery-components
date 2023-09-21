@@ -6,6 +6,7 @@ let {
   isPermisionGranted,
   isPushManagerSupported,
   setNotificationsSessionStorage,
+  onOpenChange,
 } = props;
 
 const HeaderWrapper = styled.div`
@@ -94,6 +95,7 @@ return (
       actionStyles,
       overlayColor: "var(--blackA11)",
       overlayBlur: "blur(4px)",
+      onOpenChange,
     }}
   />
 );

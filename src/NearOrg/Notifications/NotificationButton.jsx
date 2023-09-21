@@ -166,7 +166,7 @@ return (
             handleOnCancelBanner,
             accountId,
             handleTurnOn,
-            showLimit: 6,
+            showLimit: 5,
             showInBox: true,
           }}
         />

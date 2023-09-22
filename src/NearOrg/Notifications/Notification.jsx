@@ -134,12 +134,12 @@ const blockHeight = type === "like" ? item.blockHeight : props.blockHeight;
 const urlBlockHeight = isComment ? "commentBlockHeight" : "blockHeight";
 
 const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
-const profileUrl = `#/near/widget/ProfilePage?accountId=${accountId}`;
+const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 
 let postUrl = "";
 
 if (type !== "custom") {
-  postUrl = `#/near/widget/PostPage?accountId=${accountId}&${urlBlockHeight}=${blockHeight}`;
+  postUrl = `#/${REPL_ACCOUNT}/widget/PostPage?accountId=${accountId}&${urlBlockHeight}=${blockHeight}`;
 } else {
   postUrl = `#/${value.widget}?${Object.entries(value.params || {})
     .map(([k, v]) => `${k}=${v}`)
@@ -166,7 +166,7 @@ let notificationMessage = {
 // DevGov handles their own type
 if (type && type.startsWith("devgovgigs/")) {
   return (
-    <Widget src="mob.near/widget/Notification.Item.DevGov" props={props} />
+    <Widget src="${REPL_MOB}/widget/Notification.Item.DevGov" props={props} />
   );
 }
 
@@ -181,6 +181,7 @@ const ProfileOverlay = ({ children }) => (
       profile,
       children,
       placement: props.overlayPlacement,
+      overlayStyles: { zIndex: 1069 },
     }}
   />
 );
@@ -205,7 +206,7 @@ return (
           <a href={!props.onClick && profileUrl}>
             <ProfileOverlay>
               <Widget
-                src="near/widget/DIG.Avatar"
+                src="${REPL_ACCOUNT}/widget/DIG.Avatar"
                 props={{
                   alt: accountId,
                   image: profile.image,
@@ -229,7 +230,7 @@ return (
               <Dot>·</Dot>
               {/* TODO: add title tag to show full time on hover */}
               <Widget
-                src="mob.near/widget/TimeAgo@97556750"
+                src="${REPL_MOB}/widget/TimeAgo@97556750"
                 props={{ blockHeight: props.blockHeight }}
               />
             </Timestamp>

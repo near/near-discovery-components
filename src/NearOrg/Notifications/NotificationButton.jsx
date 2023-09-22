@@ -9,6 +9,7 @@ const handleTurnOn = props?.handleTurnOn;
 const handleOnCancel = props?.handleOnCancel;
 const getNotificationLocalStorage = props?.getNotificationLocalStorage;
 const handleOnCancelBanner = props?.handleOnCancelBanner;
+const mobileView = props?.mobileView;
 
 State.init({
   open: false,
@@ -74,8 +75,8 @@ const PreviewWrapper = styled.div`
   background: var(--white);
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.06),
     0px 0px 0px 1px rgba(0, 0, 0, 0.06);
-  top: 55px;
-  right: 75%;
+  top: 70px;
+  right: 68%;
   width: 460px;
   visibility: hidden;
   overflow: hidden;
@@ -146,10 +147,13 @@ const Button = () => {
   );
 };
 
+if (mobileView) return <Button />;
+
 return (
   <Wrapper
     onMouseEnter={() => State.update({ open: true })}
     onMouseLeave={() => State.update({ open: false })}
+    onClick={() => State.update({ open: false })}
   >
     <Button />
     <PreviewWrapper data-state={state.open}>

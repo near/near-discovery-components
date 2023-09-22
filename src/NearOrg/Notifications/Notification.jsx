@@ -181,6 +181,7 @@ const ProfileOverlay = ({ children }) => (
       profile,
       children,
       placement: props.overlayPlacement,
+      overlayStyles: { zIndex: 1069 },
     }}
   />
 );

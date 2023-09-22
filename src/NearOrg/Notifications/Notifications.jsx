@@ -59,7 +59,7 @@ return (
   <Card showInBox={showInBox}>
     <Header showInBox={showInBox}>
       <Title>Notifications</Title>
-      <Settings href="#/notifications-settings">
+      <Settings href="/notifications-settings">
         <svg
           width="18"
           height="18"

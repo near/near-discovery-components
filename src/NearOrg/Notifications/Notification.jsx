@@ -134,14 +134,14 @@ const blockHeight = type === "like" ? item.blockHeight : props.blockHeight;
 const urlBlockHeight = isComment ? "commentBlockHeight" : "blockHeight";
 
 const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
-const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
+const profileUrl = `${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 
 let postUrl = "";
 
 if (type !== "custom") {
-  postUrl = `#/${REPL_ACCOUNT}/widget/PostPage?accountId=${accountId}&${urlBlockHeight}=${blockHeight}`;
+  postUrl = `${REPL_ACCOUNT}/widget/PostPage?accountId=${accountId}&${urlBlockHeight}=${blockHeight}`;
 } else {
-  postUrl = `#/${value.widget}?${Object.entries(value.params || {})
+  postUrl = `${value.widget}?${Object.entries(value.params || {})
     .map(([k, v]) => `${k}=${v}`)
     .join("&")}`;
 }

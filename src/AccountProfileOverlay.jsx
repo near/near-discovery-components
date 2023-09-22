@@ -3,6 +3,7 @@ const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
 const tags = Object.keys(profile.tags || {});
 const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 const verifications = props.verifications;
+const overlayStyles = props.overlayStyles;
 
 const handleOnMouseEnter = () => {
   State.update({ show: true });
@@ -59,7 +60,7 @@ const contentModerationItem = {
 };
 
 const overlay = (
-  <CardWrapper>
+  <CardWrapper style={overlayStyles}>
     <Card onMouseEnter={handleOnMouseEnter} onMouseLeave={handleOnMouseLeave}>
       <div className="d-flex align-items-center">
         <Widget

@@ -133,7 +133,10 @@ return (
 						src={`${REPL_ACCOUNT}/widget/Recommender.AccountProfileCard`}
 						props={{
 							rank: index,
-							accountId: user.recommended_profile || user.signer_id,
+							accountId:
+								user.recommended_profile ||
+								user.similar_profile ||
+								user.signer_id,
 							showTags: true,
 							showFollowerStats: true,
 							showFollowButton: state.multiSelectMode === false,

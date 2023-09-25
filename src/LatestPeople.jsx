@@ -37,6 +37,12 @@ const options = [
 	{ text: "Recommended", value: "recommended" },
 ];
 
+const FlexContainer = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+`;
+
 const Wrapper = styled.div`
 	display: grid;
 	gap: 24px;
@@ -84,20 +90,26 @@ const ButtonLink = styled.a`
 	}
 `;
 
-const SelectButton = styled.select``;
+const Select = styled.div`
+	max-width: 100%;
+`;
 
 return (
 	<Wrapper>
-		<H2>People</H2>
-		<Widget
-			src="${REPL_ACCOUNT}/widget/Select"
-			props={{
-				noLabel: true,
-				value: state.selectedView,
-				options: options,
-				onChange: handleViewChange,
-			}}
-		/>
+		<FlexContainer>
+			<H2>People</H2>
+			<Select>
+				<Widget
+					src="${REPL_ACCOUNT}/widget/Select"
+					props={{
+						noLabel: true,
+						value: state.selectedView,
+						options: options,
+						onChange: handleViewChange,
+					}}
+				/>
+			</Select>
+		</FlexContainer>
 		{state.selectedView.value === "latest" && (
 			<>
 				<LatestPeople>

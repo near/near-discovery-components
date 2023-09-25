@@ -6,12 +6,12 @@ let followersData = null;
 
 State.init({
 	currentPage: 0,
-	selectedTab: props.tab || "everyone",
+	selected: props.tab || "everyone",
 });
 
-if (props.tab && props.tab !== state.selectedTab) {
+if (props.tab && props.tab !== state.selected) {
 	State.update({
-		selectedTab: props.tab,
+		selected: props.tab,
 	});
 }
 
@@ -44,11 +44,11 @@ if (data) {
 			followersData[accountId]?.graph?.follow[context.accountId] === true;
 
 		if (
-			state.selectedTab === "everyone" ||
-			(state.selectedTab === "following" && isFollowing) ||
-			(state.selectedTab === "followers" && isFollower) ||
-			state.selectedTab === "trending" ||
-			state.selectedTab === "recommended"
+			state.selected === "everyone" ||
+			(state.selected === "following" && isFollowing) ||
+			(state.selected === "followers" && isFollower) ||
+			state.selected === "trending" ||
+			state.selected === "recommended"
 		) {
 			result.push({
 				accountId,
@@ -182,7 +182,7 @@ const Button = styled.button`
 	}
 `;
 
-const Tabs = styled.div`
+const s = styled.div`
 	display: flex;
 	height: 48px;
 	border-bottom: 1px solid #eceef0;
@@ -202,7 +202,7 @@ const Tabs = styled.div`
 	}
 `;
 
-const TabsButton = styled.a`
+const sButton = styled.a`
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -252,53 +252,53 @@ return (
 		</Search>
 
 		{!state.searchResults && (
-			<Tabs>
-				<TabsButton
+			<s>
+				<sButton
 					href={`${peopleUrl}?tab=everyone`}
-					selected={state.selectedTab === "everyone"}
+					selected={state.selected === "everyone"}
 				>
 					Everyone
-				</TabsButton>
+				</sButton>
 				{context.accountId && (
-					<TabsButton
+					<sButton
 						href={`${peopleUrl}?tab=following`}
-						selected={state.selectedTab === "following"}
+						selected={state.selected === "following"}
 					>
 						Following
-					</TabsButton>
+					</sButton>
 				)}
 				{context.accountId && (
-					<TabsButton
+					<sButton
 						href={`${peopleUrl}?tab=followers`}
-						selected={state.selectedTab === "followers"}
+						selected={state.selected === "followers"}
 					>
 						Followers
-					</TabsButton>
+					</sButton>
 				)}
-				<TabsButton
+				<sButton
 					href={`${peopleUrl}?tab=trending`}
-					selected={state.selectedTab === "trending"}
+					selected={state.selected === "trending"}
 				>
 					Trending
-				</TabsButton>
+				</sButton>
 				{context.accountId && (
-					<TabsButton
+					<sButton
 						href={`${peopleUrl}?tab=recommended`}
-						selected={state.selectedTab === "recommended"}
+						selected={state.selected === "recommended"}
 					>
 						Recommended
-					</TabsButton>
+					</sButton>
 				)}{" "}
-			</Tabs>
+			</s>
 		)}
 
 		{state.searchResults?.length === 0 && (
 			<Text>No people matched your search.</Text>
 		)}
 
-		{(state.selectedTab == "everyone" ||
-			state.selectedTab == "following" ||
-			state.selectedTab == "followers") &&
+		{(state.selected == "everyone" ||
+			state.selected == "following" ||
+			state.selected == "followers") &&
 			items.length > 0 && (
 				<Items>
 					{items.map((person, i) => (
@@ -315,27 +315,27 @@ return (
 				</Items>
 			)}
 
-		{!context.accountId && state.selectedTab == "trending" && (
-			<Widget src={`${REPL_ACCOUNT}/widget/Recommender.TrendingUsersTabView`} />
+		{!context.accountId && state.selected == "trending" && (
+			<Widget src="${REPL_ACCOUNT}/widget/Recommender.TrendingUsersView" />
 		)}
 
-		{context.accountId && state.selectedTab == "trending" && (
+		{context.accountId && state.selected == "trending" && (
 			<Widget
-				src={`${REPL_ACCOUNT}/widget/Recommender.TrendingUsersTabView`}
+				src="${REPL_ACCOUNT}/widget/Recommender.TrendingUsersView"
 				props={{ currentPage: state.currentPage }}
 			/>
 		)}
 
-		{context.accountId && state.selectedTab == "recommended" && (
+		{context.accountId && state.selected == "recommended" && (
 			<Widget
-				src={`${REPL_ACCOUNT}/widget/Recommender.RecommendationsTabView`}
+				src="${REPL_ACCOUNT}/widget/Recommender.FriendsOfFriendsView"
 				props={{ currentPage: state.currentPage }}
 			/>
 		)}
 
-		{(state.selectedTab == "everyone" ||
-			state.selectedTab == "following" ||
-			state.selectedTab == "followers") &&
+		{(state.selected == "everyone" ||
+			state.selected == "following" ||
+			state.selected == "followers") &&
 			showLoadMoreButton && (
 				<Button
 					type="button"

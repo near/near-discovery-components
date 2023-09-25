@@ -25,7 +25,7 @@ const Button = styled.div`
 	}
 `;
 
-const Card = styled.div`
+const LargeCard = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -206,92 +206,113 @@ const abbreviateNumber = (value) => {
 };
 
 return (
-	<Card>
-		<Avatar
-			onClick={() => {
-				trackEngagement({
-					targetSigner: props.accountId,
-					rank: props.rank,
-					eventType: "people page avatar profile entry",
-				});
-			}}
-			href={profileUrl}
-		>
-			<Widget
-				src="${REPL_MOB}/widget/Image"
-				props={{
-					image: props.profileImage || profile.image,
-					alt: props.profileName || profile.name,
-					fallbackUrl:
-						"https://ipfs.near.social/ipfs/bafkreibiyqabm3kl24gcb2oegb7pmwdi6wwrpui62iwb44l7uomnn3lhbi",
-				}}
-			/>
-		</Avatar>
-		<CenteredLinksWrapper
-			onClick={() => {
-				trackEngagement({
-					targetSigner: props.accountId,
-					rank: props.rank,
-					eventType: "people page profile entry",
-				});
-			}}
-		>
-			<TextLink href={profileUrl} ellipsis bold>
-				{props.profileName || profile.name || accountId.split(".near")[0]}
-			</TextLink>
-			<TextLink href={profileUrl} ellipsis>
-				@{accountId}
-			</TextLink>
-		</CenteredLinksWrapper>
-		{tags.length > 0 ? (
-			<TagsWrapper>
-				<Widget src="near/widget/Tags" props={{ tags, scroll: true }} />
-			</TagsWrapper>
-		) : (
-			<TagsWrapper>
-				<NoTags></NoTags>
-			</TagsWrapper>
-		)}
-
-		{following !== null && followers !== null && likers !== null && (
-			<Scores>
-				<Score>
-					{abbreviateNumber(followers)}
-					<i class="bi bi-person"></i>
-				</Score>
-				<Score>
-					{abbreviateNumber(following)}
-					<i class="bi bi-list"></i>
-				</Score>
-				<Score>
-					{abbreviateNumber(likers)}
-					<i class="bi bi-heart"></i>
-				</Score>
-			</Scores>
-		)}
-
-		{context.accountId && context.accountId !== props.accountId ? (
-			<Button
-				onClick={() => {
-					trackEngagement({
-						targetSigner: props.accountId,
-						rank: props.rank,
-						eventType: "people page follow click engagement",
-					});
-				}}
-			>
+	<>
+		{props.sidebar ? (
+			<>
 				<Widget
-					src="${REPL_ACCOUNT}/widget/Recommender.FollowButtonTracker"
+					src="${REPL_ACCOUNT}/widget/Recommender.AccountProfile"
 					props={{
 						accountId: props.accountId,
-						rank: props.rank,
+						sidebar: props.sidebar || null,
+						followsYou: props.followsYou || null,
+						becauseYouFollow: props.becauseYouFollow || null,
+						likers: props.likers || null,
+						followers: props.followers || null,
+						following: props.following || null,
+						profileImage: props.profileImage || null,
+						profileName: props.profileName || null,
 					}}
 				/>
-			</Button>
+			</>
 		) : (
-			<Button>
-				<CurrentUserProfile></CurrentUserProfile>
-			</Button>
+			<LargeCard>
+				<Avatar
+					onClick={() => {
+						trackEngagement({
+							targetSigner: props.accountId,
+							rank: props.rank,
+							eventType: "people page avatar profile entry",
+						});
+					}}
+					href={profileUrl}
+				>
+					<Widget
+						src="${REPL_MOB}/widget/Image"
+						props={{
+							image: props.profileImage || profile.image,
+							alt: props.profileName || profile.name,
+							fallbackUrl:
+								"https://ipfs.near.social/ipfs/bafkreibiyqabm3kl24gcb2oegb7pmwdi6wwrpui62iwb44l7uomnn3lhbi",
+						}}
+					/>
+				</Avatar>
+				<CenteredLinksWrapper
+					onClick={() => {
+						trackEngagement({
+							targetSigner: props.accountId,
+							rank: props.rank,
+							eventType: "people page profile entry",
+						});
+					}}
+				>
+					<TextLink href={profileUrl} ellipsis bold>
+						{props.profileName || profile.name || accountId.split(".near")[0]}
+					</TextLink>
+					<TextLink href={profileUrl} ellipsis>
+						@{accountId}
+					</TextLink>
+				</CenteredLinksWrapper>
+				{tags.length > 0 ? (
+					<TagsWrapper>
+						<Widget src="near/widget/Tags" props={{ tags, scroll: true }} />
+					</TagsWrapper>
+				) : (
+					<TagsWrapper>
+						<NoTags></NoTags>
+					</TagsWrapper>
+				)}
+
+				{following !== null && followers !== null && likers !== null && (
+					<Scores>
+						<Score>
+							{abbreviateNumber(followers)}
+							<i class="bi bi-person"></i>
+						</Score>
+						<Score>
+							{abbreviateNumber(following)}
+							<i class="bi bi-list"></i>
+						</Score>
+						<Score>
+							{abbreviateNumber(likers)}
+							<i class="bi bi-heart"></i>
+						</Score>
+					</Scores>
+				)}
+
+				{context.accountId && context.accountId !== props.accountId ? (
+					<Button
+						onClick={() => {
+							trackEngagement({
+								targetSigner: props.accountId,
+								rank: props.rank,
+								eventType: "people page follow click engagement",
+							});
+						}}
+					>
+						<Widget
+							src="${REPL_ACCOUNT}/widget/Recommender.FollowButtonTracker"
+							props={{
+								accountId: props.accountId,
+								rank: props.rank,
+							}}
+						/>
+					</Button>
+				) : (
+					<Button>
+						<CurrentUserProfile></CurrentUserProfile>
+					</Button>
+				)}
+			</LargeCard>
 		)}
-	</Card>
+	</>
 );

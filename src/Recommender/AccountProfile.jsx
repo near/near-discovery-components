@@ -71,7 +71,7 @@ const AccountProfile = (
 	>
 		<Avatar>
 			<Widget
-				src={`${REPL_MOB}/widget/Image`}
+				src="${REPL_MOB}/widget/Image"
 				props={{
 					image: profile.image,
 					alt: profile.name,
@@ -93,7 +93,7 @@ const AccountProfile = (
 					<Text small style={{ marginLeft: "auto" }}>
 						Joined{" "}
 						<Widget
-							src="mob/widget/TimeAgo@97556750"
+							src="${REPL_MOB_2}/widget/TimeAgo@97556750"
 							props={{ blockHeight: props.blockHeight }}
 						/>{" "}
 						ago
@@ -102,6 +102,13 @@ const AccountProfile = (
 			</Name>
 
 			{!props.hideAccountId && <Text ellipsis>@{accountId}</Text>}
+
+			{props.becauseYouFollow.length > 0 && (
+				<Widget
+					src="${REPL_ACCOUNT}/widget/Recommender.RecommendedAvatars"
+					props={{ avatarSize: "20px" }}
+				/>
+			)}
 		</div>
 	</Wrapper>
 );
@@ -110,7 +117,7 @@ if (props.noOverlay) return AccountProfile;
 
 return (
 	<Widget
-		src="${REPL_ACCOUNT}/widget/AccountProfileOverlay"
+		src="${REPL_ACCOUNT}/widget/Recommender.AccountProfileOverlay"
 		props={{
 			accountId: props.accountId,
 			profile,

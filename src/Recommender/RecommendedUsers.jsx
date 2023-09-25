@@ -80,7 +80,7 @@ const getRecommendedUsers = (page) => {
 			const res = fetch(url);
 			if (res.ok) {
 				const parsedResults = JSON.parse(res.body);
-				const totalPageNum = parsedResults.total_pages;
+				const totalPageNum = parsedResults.total_pages || 10;
 				updateState(parsedResults.data, totalPageNum);
 			} else {
 				console.log(
@@ -91,7 +91,7 @@ const getRecommendedUsers = (page) => {
 			asyncFetch(url).then((res) => {
 				if (res.ok) {
 					const parsedResults = JSON.parse(res.body);
-					const totalPageNum = parsedResults.total_pages;
+					const totalPageNum = parsedResults.total_pages || 10;
 					updateState(parsedResults.data, totalPageNum);
 				} else {
 					console.log("Error fetching data. Try reloading the page.");
@@ -104,6 +104,7 @@ const getRecommendedUsers = (page) => {
 };
 
 const loadMore = () => {
+	console.log(state.currentPage);
 	const nextPage = state.currentPage + 1;
 	if (nextPage <= state.totalPages) {
 		State.update({ currentPage: nextPage });
@@ -112,6 +113,7 @@ const loadMore = () => {
 };
 
 if (state.isLoading) {
+	console.log(state.isLoading);
 	getRecommendedUsers(state.currentPage);
 }
 
@@ -119,15 +121,6 @@ const returnElements = props.returnElements;
 const displayedUsers = returnElements
 	? state.userData.slice(0, returnElements)
 	: state.userData;
-
-const follows_you = "" || props.follows_you;
-const because_you_follow = "" || props.because_you_follow;
-const likers = "" || props.likers;
-const followers = "" || props.followers;
-const following = "" || props.following;
-const profileImage = "" || props.profileImage;
-const profileName = "" || props.profileName;
-const rank = "" || props.rank;
 
 return (
 	<RecommendedUsers>
@@ -140,17 +133,18 @@ return (
 						src={`${REPL_ACCOUNT}/widget/Recommender.AccountProfileCard`}
 						props={{
 							rank: index,
-							accountId: user.recommended_profile,
+							accountId: user.recommended_profile || user.signer_id,
 							showTags: true,
 							showFollowerStats: true,
 							showFollowButton: state.multiSelectMode === false,
-							follows_you: user.follows_you,
-							because_you_follow: user.because_you_follow,
-							likers: user.likers,
-							followers: user.followers,
-							following: user.following,
-							profileImage: user.profileImage,
-							profileName: user.profileName,
+							followsYou: user.follows_you || null,
+							becauseYouFollow: user.because_you_follow || null,
+							likers: user.likers || null,
+							followers: user.followers || null,
+							following: user.following || null,
+							profileImage: user.profileImage || null,
+							profileName: user.profileName || null,
+							sidebar: props.sidebar || null,
 						}}
 					/>
 				</Profile>

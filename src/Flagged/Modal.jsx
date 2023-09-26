@@ -58,13 +58,14 @@ return (
   <Widget
     src="${REPL_ACCOUNT}/widget/DIG.Dialog"
     props={{
+      ...forwardedProps,
       type: "alert",
       title: "Do you want to hide all posts of this account?",
       cancelButtonText: "No",
       confirmButtonText: "Yes",
       onCancel: reportAccount,
       onConfirm: reportAccountWithPosts,
-      ...forwardedProps,
+      enableCloseButton: true,
     }}
   />
 );

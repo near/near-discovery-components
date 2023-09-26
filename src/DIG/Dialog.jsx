@@ -2,6 +2,7 @@ let {
   type,
   title,
   description,
+  content,
   onCancel,
   onConfirm,
   cancelButtonText,
@@ -13,10 +14,13 @@ let {
   contentStyles,
   overlayColor,
   overlayBlur,
+  enableCloseButton,
+  actionButtons,
   ...forwardedProps
 } = props;
 
 type = type ?? "dialog";
+enableCloseButton = enableCloseButton ?? false;
 
 if (["alert", "dialog"].indexOf(type) < 0) {
   return "Unsupported type of component. `type` could be only 'alert' or 'dialog'";
@@ -24,11 +28,13 @@ if (["alert", "dialog"].indexOf(type) < 0) {
 
 const variant = type === "alert" ? "AlertDialog" : "Dialog";
 
+const btnCloseVariant = type === "alert" ? "Cancel" : "Close";
+
 const Root = styled(`${variant}.Root`)``;
 
 const Overlay = styled(`${variant}.Overlay`)`
   background-color: ${(p) => p.background ?? "var(--blackA3)"};
-  backdrop-filter: ${(p) => p.blur ?? ""};
+  backdrop-filter: ${(p) => p.blur ?? "blur(4px)"};
   position: fixed;
   inset: 0;
   animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -70,6 +76,8 @@ const Content = styled(`${variant}.Content`)`
       transform: translate(-50%, -50%) scale(1);
     }
   }
+
+  ${contentStyles}
 `;
 
 const Title = styled(`${variant}.Title`)`
@@ -87,6 +95,14 @@ const ActionWrapper = styled.div`
   display: flex;
   gap: 12px;
   justify-content: flex-end;
+
+  ${actionButtons &&
+  `
+    flex-wrap: wrap;
+    justify-content: center;
+  `}
+
+  ${actionStyles}
 `;
 
 const Close = styled.button`
@@ -114,6 +130,13 @@ const Close = styled.button`
   &:focus-within {
     box-shadow: 0 0 0 4px var(--violet4);
   }
+`;
+
+const CloseButtonWrapper = styled(`${variant}.${btnCloseVariant}`)`
+  all: unset;
+  position: absolute;
+  top: 0;
+  right: 0;
 `;
 
 cancelButton = cancelButton ?? (
@@ -150,32 +173,36 @@ return (
       </>
     )}
     <Overlay background={overlayColor} blur={overlayBlur} />
-    <Content {...contentStyles}>
+    <Content>
       {title && <Title>{title}</Title>}
       {description && <Description>{description}</Description>}
-      <ActionWrapper {...actionStyles}>
-        {type === "alert" ? (
-          <AlertDialog.Cancel asChild>
-            <div className="d-inline-block">{cancelButton}</div>
-          </AlertDialog.Cancel>
-        ) : (
-          <Dialog.Close asChild>
-            <div className="d-inline-block">{confirmButton}</div>
-          </Dialog.Close>
-        )}
-
-        {type === "alert" && (
-          <AlertDialog.Action asChild>
-            <div className="d-inline-block">{confirmButton}</div>
-          </AlertDialog.Action>
+      {content}
+      <ActionWrapper>
+        {actionButtons ?? (
+          <>
+            {type === "alert" ? (
+              <>
+                <AlertDialog.Cancel asChild>
+                  <div className="d-inline-block">{cancelButton}</div>
+                </AlertDialog.Cancel>
+                <AlertDialog.Action asChild>
+                  <div className="d-inline-block">{confirmButton}</div>
+                </AlertDialog.Action>
+              </>
+            ) : (
+              <Dialog.Close asChild>
+                <div className="d-inline-block">{confirmButton}</div>
+              </Dialog.Close>
+            )}
+          </>
         )}
       </ActionWrapper>
-      {type === "dialog" && (
-        <Dialog.Close asChild>
+      {(type === "dialog" || enableCloseButton) && (
+        <CloseButtonWrapper>
           <Close>
             <i className="ph ph-x" />
           </Close>
-        </Dialog.Close>
+        </CloseButtonWrapper>
       )}
     </Content>
   </Root>

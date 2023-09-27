@@ -10,11 +10,13 @@ const Avatar = styled.div`
     object-fit: cover;
     width: 100%;
     height: 100%;
-  }
+  }uu
 `;
 
 const AvatarContainer = styled.div`
   display: flex;
+  padding-right: 7px;
+
   & > div {
     margin-right: -8px;
     border: 2px solid white;

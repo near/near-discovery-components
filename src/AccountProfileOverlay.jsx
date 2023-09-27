@@ -20,6 +20,24 @@ const CardWrapper = styled.div`
   padding: 6px;
 `;
 
+const OverlayTagsWrapper = styled.div`
+  margin-left: 50px;
+`;
+
+const AvatarCount = styled.div`
+  color: rgb(104, 112, 118);
+  font-size: 14px;
+  font-weight: 300;
+  padding-left: 12px;
+`;
+
+const RecommendedAvatars = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 12px 0 0;
+`;
+
 const Card = styled.div`
   display: flex;
   flex-direction: column;
@@ -32,12 +50,16 @@ const Card = styled.div`
   border: 1px solid #eceef0;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   padding: 12px;
+
+  div.layout {
+    margin-left: 63px;
+  }
 `;
 
 const FollowButtonWrapper = styled.div`
   width: 100%;
-
-  div, button {
+  div,
+  button {
     width: 100%;
   }
 `;
@@ -46,6 +68,12 @@ const contentModerationItem = {
   type: "social",
   path: profileUrl,
   reportedBy: context.accountId,
+};
+
+const handleFollow = (userId) => {
+  console.log("remove from list, because followed:", userId);
+  // callback function
+  // removeListProfileOnFollow(userId);
 };
 
 const overlay = (
@@ -69,15 +97,41 @@ const overlay = (
         )}
       </div>
 
-      <Widget
-        src="${REPL_ACCOUNT}/widget/Tags"
-        props={{ tags, scroll: true }}
-      />
+      {props.scope === "friends" ? (
+        <OverlayTagsWrapper>
+          <Widget
+            className="layout"
+            src="${REPL_ACCOUNT}/widget/Tags"
+            props={{ tags, scroll: true }}
+          />
+          <RecommendedAvatars>
+            <Widget
+              src="${REPL_ACCOUNT}/widget/Recommender.Views.RecommendedAvatars"
+              props={{
+                avatarSize: "25px",
+                becauseYouFollow: props.becauseYouFollow,
+              }}
+            />
+            <AvatarCount>
+              {props.becauseYouFollow.length} friends following
+            </AvatarCount>
+          </RecommendedAvatars>
+        </OverlayTagsWrapper>
+      ) : (
+        <Widget
+          src="${REPL_ACCOUNT}/widget/Tags"
+          props={{ tags, scroll: true }}
+        />
+      )}
+
       {!!context.accountId && context.accountId !== props.accountId && (
         <FollowButtonWrapper>
           <Widget
             src="${REPL_ACCOUNT}/widget/FollowButton"
-            props={{ accountId: props.accountId }}
+            props={{
+              accountId: props.accountId,
+              onClick: handleFollow(props.accountId),
+            }}
           />
         </FollowButtonWrapper>
       )}
@@ -110,12 +164,13 @@ return (
           props={{
             type: "info",
             title: "Flagged for moderation",
-            description: "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
+            description:
+              "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
             open: state.hasBeenFlagged,
             onOpenChange: (open) => {
               State.update({ hasBeenFlagged: open });
             },
-            duration: 10000
+            duration: 10000,
           }}
         />
       )}

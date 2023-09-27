@@ -46,7 +46,9 @@ if (data) {
     if (
       state.selectedTab === "everyone" ||
       (state.selectedTab === "following" && isFollowing) ||
-      (state.selectedTab === "followers" && isFollower)
+      (state.selectedTab === "followers" && isFollower) ||
+      state.selectedTab === "trending" ||
+      state.selectedTab === "recommended"
     ) {
       result.push({
         accountId,
@@ -275,6 +277,20 @@ return (
             Followers
           </TabsButton>
         )}
+        <TabsButton
+          href={`${peopleUrl}?tab=trending`}
+          selected={state.selectedTab === "trending"}
+        >
+          Trending
+        </TabsButton>
+        {context.accountId && (
+          <TabsButton
+            href={`${peopleUrl}?tab=recommended`}
+            selected={state.selectedTab === "recommended"}
+          >
+            Recommended
+          </TabsButton>
+        )}
       </Tabs>
     )}
 
@@ -282,29 +298,53 @@ return (
       <Text>No people matched your search.</Text>
     )}
 
-    {items.length > 0 && (
-      <Items>
-        {items.map((person, i) => (
-          <Item key={person.accountId}>
-            <Widget
-              src="${REPL_ACCOUNT}/widget/AccountProfileCard"
-              props={{
-                accountId: person.accountId,
-                blockHeight: person.blockHeight,
-              }}
-            />
-          </Item>
-        ))}
-      </Items>
+    {(state.selectedTab == "everyone" ||
+      state.selectedTab == "following" ||
+      state.selectedTab == "followers") &&
+      items.length > 0 && (
+        <Items>
+          {items.map((person, i) => (
+            <Item key={person.accountId}>
+              <Widget
+                src="near/widget/AccountProfileCard"
+                props={{
+                  accountId: person.accountId,
+                  blockHeight: person.blockHeight,
+                }}
+              />
+            </Item>
+          ))}
+        </Items>
+      )}
+
+    {!context.accountId && state.selectedTab == "trending" && (
+      <Widget src="${REPL_ACCOUNT}/widget/Recommender.Views.TrendingUsersView" />
     )}
 
-    {showLoadMoreButton && (
-      <Button
-        type="button"
-        onClick={() => State.update({ currentPage: state.currentPage + 1 })}
-      >
-        Load More
-      </Button>
+    {context.accountId && state.selectedTab == "trending" && (
+      <Widget
+        src="${REPL_ACCOUNT}/widget/Recommender.Views.TrendingUsersView"
+        props={{ currentPage: state.currentPage }}
+      />
     )}
+
+    {context.accountId && state.selectedTab == "recommended" && (
+      <Widget
+        src="${REPL_ACCOUNT}/widget/Recommender.Views.FriendsOfFriendsView"
+        props={{ currentPage: state.currentPage }}
+      />
+    )}
+
+    {(state.selectedTab == "everyone" ||
+      state.selectedTab == "following" ||
+      state.selectedTab == "followers") &&
+      showLoadMoreButton && (
+        <Button
+          type="button"
+          onClick={() => State.update({ currentPage: state.currentPage + 1 })}
+        >
+          Load More
+        </Button>
+      )}
   </Wrapper>
 );

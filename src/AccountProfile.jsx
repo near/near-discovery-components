@@ -22,12 +22,37 @@ const Wrapper = styled.a`
     min-width: 0;
   }
 
+  .hover-state1 {
+    opacity: 0;
+  }
+
+  .hover-state2 {
+    opacity: 1;
+  }
+
   &:hover,
   &:focus {
-    div:first-child {
+    div.hover {
       border-color: #d0d5dd;
     }
+    .hover-state1 {
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+    .hover-state2 {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
   }
+`;
+
+const AvatarCount = styled.div`
+  color: rgb(104, 112, 118);
+  font-size: 14px;
+  font-weight: 300;
+  position: absolute;
+  right: 0px;
+  padding-right: 20px;
 `;
 
 const Text = styled.p`
@@ -70,7 +95,7 @@ const AccountProfile = (
     href={!props.onClick && profileUrl}
     onClick={props.onClick && (() => props.onClick(accountId))}
   >
-    <Avatar>
+    <Avatar className="hover">
       <Widget
         src="${REPL_MOB}/widget/Image"
         props={{
@@ -94,11 +119,32 @@ const AccountProfile = (
           <Text small style={{ marginLeft: "auto" }}>
             Joined{" "}
             <Widget
-              src="${REPL_MOB_2}/widget/TimeAgo@97556750"
+              src="${REPL_MOB_2}/widget/TimeAgo"
               props={{ blockHeight: props.blockHeight }}
             />{" "}
             ago
           </Text>
+        )}
+
+        {props.scope == "friends" && props.becauseYouFollow.length > 0 && (
+          <>
+            <AvatarCount className="hover-state1">
+              <Widget
+                src="${REPL_ACCOUNT}/widget/Recommender.Views.RecommendedAvatars"
+                props={{
+                  avatarSize: "25px",
+                  becauseYouFollow: props.becauseYouFollow,
+                }}
+              />
+            </AvatarCount>
+            <AvatarCount className="hover-state2">
+              {props.becauseYouFollow.length} friends follow
+            </AvatarCount>
+          </>
+        )}
+
+        {props.scope == "similar" && (
+          <AvatarCount>Shared interests</AvatarCount>
         )}
       </Name>
 
@@ -110,13 +156,19 @@ const AccountProfile = (
 if (props.noOverlay) return AccountProfile;
 
 return (
-  <Widget
-    src="${REPL_ACCOUNT}/widget/AccountProfileOverlay"
-    props={{
-      accountId: props.accountId,
-      profile,
-      children: AccountProfile,
-      placement: props.overlayPlacement,
-    }}
-  />
+  <>
+    <Widget
+      src="${REPL_ACCOUNT}/widget/AccountProfileOverlay"
+      props={{
+        accountId: props.accountId,
+        profile,
+        children: AccountProfile,
+        placement: props.overlayPlacement,
+        becauseYouFollow:
+          props.scope === "friends" ? props.becauseYouFollow : null,
+        scope: props.scope,
+        onFollow: { removeListProfileOnFollow },
+      }}
+    />
+  </>
 );

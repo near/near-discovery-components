@@ -15,11 +15,6 @@ State.init({
   open: false,
 });
 
-const handleDropdownOpen = () => {
-  if (notificationsCount === 0) return;
-  State.update({ open: true });
-}
-
 if (context.loading || !accountId) return <></>;
 
 const filterUsersRaw = Social.get(
@@ -157,7 +152,7 @@ if (mobileView) return <Button />;
 
 return (
   <Wrapper
-    onMouseEnter={handleDropdownOpen}
+    onMouseEnter={() => State.update({ open: true })}
     onMouseLeave={() => State.update({ open: false })}
     onClick={() => State.update({ open: false })}
   >

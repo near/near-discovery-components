@@ -52,9 +52,7 @@ const Description = () => (
 );
 
 const actionStyles = {
-  style: {
-    flexDirection: "column-reverse",
-  },
+  flexDirection: "column-reverse",
 };
 
 const CancelButton = ({ handleOnCancel }) => (

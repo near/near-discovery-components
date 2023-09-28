@@ -34,6 +34,14 @@ const renderItem = (item) => {
   );
 };
 
+if (posts.length === 0) {
+  return (
+    <div class="alert alert-info mx-3" role="alert">
+      There is no any posts yet.
+    </div>
+  );
+}
+
 const renderedItems = posts.map(renderItem);
 
 return (

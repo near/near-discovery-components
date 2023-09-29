@@ -111,13 +111,7 @@ const loadMore = () => {
   }
 };
 
-const removeListProfileOnFollow = (rank) => {
-  const updatedUserData = userData.filter((rank) => rank !== rank);
-  State.update({ userData: [updatedUserData] });
-};
-
 if (state.isLoading) {
-  console.log("state:", state.isLoading);
   getRecommendedUsers(state.currentPage);
 }
 
@@ -164,7 +158,6 @@ return (
               profileName: user.profileName || null,
               sidebar: props.sidebar || null,
               scope: props.scope || null,
-              onFollow: { removeListProfileOnFollow },
             }}
           />
         </Profile>

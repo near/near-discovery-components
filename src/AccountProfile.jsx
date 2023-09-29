@@ -166,7 +166,6 @@ return (
         becauseYouFollow:
           props.scope === "friends" ? props.becauseYouFollow : null,
         scope: props.scope,
-        onFollow: { removeListProfileOnFollow },
       }}
     />
 );

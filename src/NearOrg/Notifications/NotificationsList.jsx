@@ -20,12 +20,12 @@ const renderItem = (item, i) => {
   if (i === 0) {
     Storage.set("lastBlockHeight", item.blockHeight);
   }
-  const { accountId:initiator } = item;
+  const { accountId: initiator } = item;
   return (
     <Widget
       src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.Notification"
       key={i}
-      props={{initiator, ...item}}
+      props={{ initiator, ...item }}
     />
   );
 };
@@ -41,7 +41,7 @@ const filterUsersRaw = Social.get(
   "optimistic",
   {
     subscribe: true,
-  }
+  },
 );
 if (filterUsers === null) {
   // haven't loaded filter list yet, return early
@@ -120,7 +120,7 @@ const addDisplayCount = props.nextLimit ?? initialRenderLimit;
 
 index.options.limit = Math.min(
   Math.max(initialRenderLimit + addDisplayCount * 2, index.options.limit ?? 0),
-  100
+  100,
 );
 const reverse = !!props.reverse;
 
@@ -149,7 +149,7 @@ const computeFetchFrom = (items, limit, previouslyFoundItems) => {
 const mergeItems = (newItems) => {
   const items = [
     ...new Set(
-      [...newItems, ...(state.items || [])].map((i) => JSON.stringify(i))
+      [...newItems, ...(state.items || [])].map((i) => JSON.stringify(i)),
     ),
   ].map((i) => JSON.parse(i));
   items.sort((a, b) => a.blockHeight - b.blockHeight);
@@ -171,7 +171,7 @@ if (state.jInitialItems !== jInitialItems) {
       nextFetchFrom: computeFetchFrom(
         initialItems,
         index.options.limit,
-        initialFoundItems
+        initialFoundItems,
       ),
       displayCount: initialRenderLimit,
       cachedItems: {},
@@ -193,7 +193,7 @@ if (state.fetchFrom) {
       from: state.fetchFrom,
       subscribe: undefined,
       limit,
-    })
+    }),
   );
   if (newItems !== null) {
     const newFoundItems = !!newItems.length;

@@ -20,11 +20,12 @@ const renderItem = (item, i) => {
   if (i === 0) {
     Storage.set("lastBlockHeight", item.blockHeight);
   }
+  const { accountId:initiator } = item;
   return (
     <Widget
       src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.Notification"
       key={i}
-      props={item}
+      props={{initiator, ...item}}
     />
   );
 };

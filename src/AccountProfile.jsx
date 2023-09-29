@@ -156,7 +156,6 @@ const AccountProfile = (
 if (props.noOverlay) return AccountProfile;
 
 return (
-  <>
     <Widget
       src="${REPL_ACCOUNT}/widget/AccountProfileOverlay"
       props={{
@@ -170,5 +169,4 @@ return (
         onFollow: { removeListProfileOnFollow },
       }}
     />
-  </>
 );

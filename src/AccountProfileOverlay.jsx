@@ -70,12 +70,6 @@ const contentModerationItem = {
   reportedBy: context.accountId,
 };
 
-const handleFollow = (userId) => {
-  console.log("remove from list, because followed:", userId);
-  // callback function
-  // removeListProfileOnFollow(userId);
-};
-
 const overlay = (
   <CardWrapper>
     <Card onMouseEnter={handleOnMouseEnter} onMouseLeave={handleOnMouseLeave}>
@@ -130,7 +124,6 @@ const overlay = (
             src="${REPL_ACCOUNT}/widget/FollowButton"
             props={{
               accountId: props.accountId,
-              onClick: handleFollow(props.accountId),
             }}
           />
         </FollowButtonWrapper>

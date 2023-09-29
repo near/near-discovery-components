@@ -19,8 +19,7 @@ return (
           profileImage: props.profileImage || null,
           profileName: props.profileName || null,
           scope: props.scope || null,
-          overlayPlacement: "auto", //"left",
-          onFollow: { removeListProfileOnFollow },
+          overlayPlacement: "left",
         }}
       />
     ) : (

@@ -18,22 +18,6 @@ const H3 = styled.h3`
   margin: 1.8rem 0 1.5rem 0;
 `;
 
-const Profile = styled.div``;
-
-const Profiles = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 24px;
-
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  @media (max-width: 800px) {
-    grid-template-columns: minmax(0, 1fr);
-  }
-`;
-
 const RetroLinkButton = styled.button`
   background: none;
   border: none;
@@ -55,11 +39,6 @@ const RetroLinkButton = styled.button`
 `;
 
 State.init({
-  currentPage: 1,
-  userData: [],
-  isLoading: true,
-  error: null,
-  totalPages: 1,
   expandedList: "",
 });
 
@@ -74,7 +53,7 @@ const handleToggleList = (listId) => {
 const STORE = "storage.googleapis.com";
 const BUCKET = "databricks-near-query-runner";
 const BASE_URL = `https://${STORE}/${BUCKET}/output/recommendations`;
-const recommendedProfiles = "second_degree_following";
+const recommendedProfiles = "friends_of_friends";
 const similarProfiles = "similarity_estimation";
 
 const recommendedProfilesURL = `${BASE_URL}/${recommendedProfiles}_${context.accountId}`;
@@ -129,7 +108,6 @@ return (
             returnElements: state.expandedList === "list2" ? null : 4,
             sidebar: props.sidebar || null,
             scope: "similar",
-            onFollow: { removeListProfileOnFollow },
           }}
         />
       </>

@@ -4,8 +4,10 @@ let {
   iconLeft,
   iconRight,
   inputNodeLeft,
+  inputNodeRight,
   invalid,
   label,
+  search,
   select,
   textarea,
   valid,
@@ -56,6 +58,10 @@ const InputWrapper = styled.div`
   &:hover {
     border-color: var(--sand7);
     background: var(--sand2);
+  }
+
+  [data-search="true"] & {
+    border-radius: 100px;
   }
 
   [data-invalid="true"] & {
@@ -212,6 +218,7 @@ return (
     data-valid={valid}
     data-disabled={disabled}
     data-textarea={textarea}
+    data-search={search}
     data-select={select}
     data-no-value={hasNoValue}
   >
@@ -241,6 +248,8 @@ return (
             tabIndex={disabled ? -1 : forwardedProps.tabIndex}
             {...forwardedProps}
           />
+
+          {inputNodeRight}
 
           {iconRight && <i className={iconRight} />}
         </>

@@ -1,6 +1,6 @@
 State.init({
   copiedShareUrl: false,
-  selectedTab: props.tab ?? "source",
+  selectedTab: props.tab ?? "about",
 });
 
 if (props.tab && props.tab !== state.selectedTab) {
@@ -279,7 +279,7 @@ return (
               <i className="bi bi-clock"></i>
               Last updated
               <Widget
-                src="${REPL_MOB_2}/widget/TimeAgo@97556750"
+                src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
                 props={{ keyPath: `${accountId}/widget/${widgetName}` }}
               />{" "}
               ago.

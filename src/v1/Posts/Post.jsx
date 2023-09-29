@@ -112,7 +112,7 @@ return (
                     ) : (
                       <>
                         <Widget
-                          src="${REPL_MOB_2}/widget/TimeAgo@97556750"
+                          src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
                           props={{ blockHeight }}
                         />{" "}
                         ago
@@ -178,7 +178,7 @@ return (
       {blockHeight !== "now" && (
         <Actions>
           <Widget
-            src="${REPL_ACCOUNT}/widget/LikeButton"
+            src="${REPL_ACCOUNT}/widget/v1.LikeButton"
             props={{
               item,
               notifyAccountId,
@@ -208,6 +208,7 @@ return (
             src="${REPL_ACCOUNT}/widget/FlagButton"
             props={{
               item,
+              disabled: !context.accountId || context.accountId === accountId,
               onFlag: () => {
                 State.update({ hasBeenFlagged: true });
               },

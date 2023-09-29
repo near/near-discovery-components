@@ -1,5 +1,5 @@
 {
-  "description": "This checkbox build with the Radix primitive: https://www.radix-ui.com/docs/primitives/components/checkbox.\nExample:\n```jsx\n<Widget src=\"near/widget/DIG.Checkbox\" props={{ id: \"checkbox-item\", label: \"Accept terms and conditions\" }}\n```\n### Props\n`id` - associates checkbox with label (`string`).\n\n`label` - text for checkbox (`string`).\n\nThis component also accepts all `Checkbox.Root` props as outlined in the Radix documentation.",
+  "description": "A checkbox built with the Radix primitive: https://www.radix-ui.com/docs/primitives/components/checkbox\n\n### Example\n\n```jsx\n<Widget\n  src=\"near/widget/DIG.Checkbox\"\n  props={{ id: \"checkbox-item\", label: \"Accept terms and conditions\" }}\n/>\n```\n\n### Props\n\n`id` - associates checkbox with label (`string`).\n\n`label` - text for checkbox (`string`).\n\nThis component also accepts all `Checkbox.Root` props as outlined in the Radix documentation.\n",
   "name": "DIG.Checkbox",
   "tags": {
     "dig": ""

@@ -4,8 +4,6 @@ const Root = styled("DropdownMenu.Root")``;
 
 const TriggerWrapper = styled.span`
   display: inline-block;
-  margin-left: 5rem;
-  margin-top: 1rem;
 `;
 
 const Content = styled("DropdownMenu.Content")`
@@ -18,7 +16,7 @@ const Content = styled("DropdownMenu.Content")`
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
 
-  &[data-side='bottom'] {
+  &[data-side="bottom"] {
     animation-name: slideUpAndFade;
   }
 
@@ -86,7 +84,7 @@ const SubMenuTrigger = styled("DropdownMenu.SubTrigger")`
   gap: 8px;
   cursor: pointer;
 
-  &[data-state='open'] {
+  &[data-state="open"] {
     background-color: var(--sand4);
     color: var(--sand12);
   }
@@ -112,20 +110,20 @@ const SubMenuContent = styled("DropdownMenu.SubContent")`
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
 
-  &[data-side='right'] {
+  &[data-side="right"] {
     animation-name: slideLeftAndFade;
   }
 
   @keyframes slideLeftAndFade {
-  from {
-    opacity: 0;
-    transform: translateX(2px);
+    from {
+      opacity: 0;
+      transform: translateX(2px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
 `;
 
 const Label = styled("DropdownMenu.Label")`

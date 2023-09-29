@@ -2,6 +2,8 @@ const accountId = props.accountId;
 const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
 const tags = Object.keys(profile.tags || {});
 const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
+const verifications = props.verifications;
+const overlayStyles = props.overlayStyles;
 
 const handleOnMouseEnter = () => {
   State.update({ show: true });
@@ -65,6 +67,14 @@ const FollowButtonWrapper = styled.div`
   }
 `;
 
+const VerificationText = styled.div`
+  display: inline;
+  position: relative;
+  top: 1px;
+  font-size: 14px;
+  color: ${props => props.secondary ? '#717069' : 'black'};
+`;
+
 const contentModerationItem = {
   type: "social",
   path: profileUrl,
@@ -72,7 +82,7 @@ const contentModerationItem = {
 };
 
 const overlay = (
-  <CardWrapper>
+  <CardWrapper style={overlayStyles}>
     <Card onMouseEnter={handleOnMouseEnter} onMouseLeave={handleOnMouseLeave}>
       <div className="d-flex align-items-center">
         <Widget
@@ -84,6 +94,7 @@ const overlay = (
             src="${REPL_ACCOUNT}/widget/FlagButton"
             props={{
               item: contentModerationItem,
+              disabled: !context.accountId || context.accountId === accountId,
               onFlag: () => {
                 State.update({ hasBeenFlagged: true });
               },
@@ -150,7 +161,7 @@ const overlay = (
           props={{ tags, scroll: true }}
         />
       )}
-
+      
       {!!context.accountId && context.accountId !== props.accountId && (
         <FollowButtonWrapper>
           <Widget
@@ -193,10 +204,10 @@ return (
             description:
               "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
             open: state.hasBeenFlagged,
-            onOpenChange: (open) => {
-              State.update({ hasBeenFlagged: open });
+            onOpenChange: () => {
+              State.update({ hasBeenFlagged: false });
             },
-            duration: 5000,
+            duration: 5000
           }}
         />
       )}

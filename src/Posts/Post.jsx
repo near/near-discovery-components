@@ -1,6 +1,7 @@
 const GRAPHQL_ENDPOINT =
   props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 const accountId = props.accountId;
+const verifications = props.verifications;
 const blockHeight =
   props.blockHeight === "now" ? "now" : parseInt(props.blockHeight);
 const notifyAccountId = accountId;
@@ -190,26 +191,20 @@ const renderComment = (a) => {
 
 if (state.hasBeenFlagged) {
   return (
-    <>
-      <div className="alert alert-secondary">
-        <i className="bi bi-flag" /> This content has been flagged for
-        moderation
-      </div>
-      <Widget
-        src={`${REPL_ACCOUNT}/widget/DIG.Toast`}
-        props={{
-          type: "info",
-          title: "Flagged for moderation",
-          description:
-            "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
-          open: state.hasBeenFlagged,
-          onOpenChange: (open) => {
-            State.update({ hasBeenFlagged: open });
-          },
-          duration: 10000,
-        }}
-      />
-    </>
+    <Widget
+      src={`${REPL_ACCOUNT}/widget/DIG.Toast`}
+      props={{
+        type: "info",
+        title: "Flagged for moderation",
+        description:
+          "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
+        open: state.hasBeenFlagged,
+        onOpenChange: () => {
+          State.update({ hasBeenFlagged: false });
+        },
+        duration: 5000,
+      }}
+    />
   );
 }
 
@@ -223,6 +218,7 @@ return (
           <Widget
             src="${REPL_ACCOUNT}/widget/AccountProfile"
             props={{
+              verifications,
               accountId,
               hideAccountId: true,
               inlineContent: (
@@ -234,7 +230,7 @@ return (
                     ) : (
                       <>
                         <Widget
-                          src="${REPL_MOB_2}/widget/TimeAgo@97556750"
+                          src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
                           props={{ blockHeight }}
                         />{" "}
                         ago
@@ -302,7 +298,7 @@ return (
       {blockHeight !== "now" && (
         <Actions>
           <Widget
-            src="${REPL_ACCOUNT}/widget/LikeButton"
+            src="${REPL_ACCOUNT}/widget/v1.LikeButton"
             props={{
               item,
               notifyAccountId,
@@ -333,6 +329,7 @@ return (
             src="${REPL_ACCOUNT}/widget/FlagButton"
             props={{
               item,
+              disabled: !context.accountId || context.accountId === accountId,
               onFlag: () => {
                 State.update({ hasBeenFlagged: true });
               },

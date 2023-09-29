@@ -248,7 +248,14 @@ return (
             <ul>
               {section.links.map((link) => (
                 <li key={link.title}>
-                  <a href={link.url}>{link.title}</a>
+                  <a
+                    href={link.url}
+                    target={
+                      link.url.indexOf("http") === 0 ? "_blank" : undefined
+                    }
+                  >
+                    {link.title}
+                  </a>
                 </li>
               ))}
             </ul>

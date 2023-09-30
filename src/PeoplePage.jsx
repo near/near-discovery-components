@@ -3,6 +3,7 @@ let people = [];
 const peopleUrl = "#/${REPL_ACCOUNT}/widget/PeoplePage";
 let followingData = null;
 let followersData = null;
+const fromContext = props;
 
 State.init({
   currentPage: 0,
@@ -318,20 +319,23 @@ return (
       )}
 
     {!context.accountId && state.selectedTab == "trending" && (
-      <Widget src="${REPL_ACCOUNT}/widget/Recommender.Views.TrendingUsersView" />
+      <Widget
+        src="${REPL_ACCOUNT}/widget/Recommender.Views.TrendingUsersView"
+        props={{ currentPage: state.currentPage, fromContext: fromContext }}
+      />
     )}
 
     {context.accountId && state.selectedTab == "trending" && (
       <Widget
         src="${REPL_ACCOUNT}/widget/Recommender.Views.TrendingUsersView"
-        props={{ currentPage: state.currentPage }}
+        props={{ currentPage: state.currentPage, fromContext: fromContext }}
       />
     )}
 
     {context.accountId && state.selectedTab == "recommended" && (
       <Widget
         src="${REPL_ACCOUNT}/widget/Recommender.Views.FriendsOfFriendsView"
-        props={{ currentPage: state.currentPage }}
+        props={{ currentPage: state.currentPage, fromContext: fromContext }}
       />
     )}
 

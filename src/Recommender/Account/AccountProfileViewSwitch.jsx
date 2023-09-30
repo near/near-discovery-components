@@ -10,6 +10,7 @@ return (
         src="${REPL_ACCOUNT}/widget/AccountProfile"
         props={{
           accountId: props.accountId,
+          accountIdRank: props.accountIdRank || null,
           sidebar: props.sidebar || null,
           followsYou: props.followsYou || null,
           becauseYouFollow: props.becauseYouFollow || null,
@@ -20,6 +21,7 @@ return (
           profileName: props.profileName || null,
           scope: props.scope || null,
           overlayPlacement: "left",
+          fromContext: props.fromContext,
         }}
       />
     ) : (
@@ -27,6 +29,7 @@ return (
         src="${REPL_ACCOUNT}/widget/Recommender.Account.AccountProfileLargeCard"
         props={{
           accountId: props.accountId,
+          accountIdRank: props.accountIdRank || null,
           sidebar: props.sidebar || null,
           followsYou: props.followsYou || null,
           becauseYouFollow: props.becauseYouFollow || null,
@@ -36,6 +39,7 @@ return (
           profileImage: props.profileImage || null,
           profileName: props.profileName || null,
           scope: props.scope || null,
+          fromContext: props.fromContext,
         }}
       />
     )}

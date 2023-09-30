@@ -37,6 +37,8 @@ const options = [
   { text: "Recommended", value: "recommended" },
 ];
 
+const fromContext = props;
+
 const FlexContainer = styled.div`
   display: flex;
   align-items: center;
@@ -135,7 +137,7 @@ return (
       <>
         <Widget
           src="${REPL_ACCOUNT}/widget/Recommender.Views.TrendingUsersView"
-          props={{ sidebar: true }}
+          props={{ sidebar: true, fromContext: fromContext }}
         />
       </>
     )}
@@ -143,7 +145,7 @@ return (
       <>
         <Widget
           src="${REPL_ACCOUNT}/widget/Recommender.Views.FriendsOfFriendsView"
-          props={{ sidebar: true }}
+          props={{ sidebar: true, fromContext: fromContext }}
         />
       </>
     )}

@@ -73,6 +73,9 @@ const updateState = (data, totalPageNum) => {
   });
 };
 
+const passedContext = props.fromContext;
+const fromContext = { ...passedContext, scope: props.scope || null };
+
 const getRecommendedUsers = (page) => {
   try {
     const url = `${props.dataset}_${page}.json`;
@@ -141,11 +144,11 @@ return (
           <Widget
             src="${REPL_ACCOUNT}/widget/Recommender.Account.AccountProfileViewSwitch"
             props={{
-              rank: index,
               accountId:
                 user.recommended_profile ||
                 user.similar_profile ||
                 user.signer_id,
+              accountIdRank: index + 1,
               showTags: true,
               showFollowerStats: true,
               showFollowButton: state.multiSelectMode === false,
@@ -158,6 +161,7 @@ return (
               profileName: user.profileName || null,
               sidebar: props.sidebar || null,
               scope: props.scope || null,
+              fromContext: fromContext,
             }}
           />
         </Profile>

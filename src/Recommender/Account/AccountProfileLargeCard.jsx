@@ -83,25 +83,7 @@ const TagsWrapper = styled.div`
   margin-top: -5px;
 `;
 
-const TextLink = styled.a`
-  display: block;
-  margin: 0;
-  font-size: 14px;
-  line-height: 18px;
-  color: ${(p) => (p.bold ? "#11181C !important" : "#687076 !important")};
-  font-weight: ${(p) => (p.bold ? "600" : "400")};
-  font-size: ${(p) => (p.small ? "12px" : "14px")};
-  overflow: ${(p) => (p.ellipsis ? "hidden" : "visible")};
-  text-overflow: ${(p) => (p.ellipsis ? "ellipsis" : "unset")};
-  white-space: nowrap;
-  outline: none;
-  max-width: 230px;
 
-  &:focus,
-  &:hover {
-    text-decoration: underline;
-  }
-`;
 
 const ProfileListContainer = styled.div`
   width: auto;
@@ -153,33 +135,31 @@ const LargeCard = styled.div`
   padding: 24px 0px 13px;
 `;
 
-const CenteredLinksWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 14px;
-`;
 return (
   <LargeCard>
     <Avatar href={profileUrl}>
       <Widget
-        src="${REPL_MOB}/widget/Image"
+        src="${REPL_ACCOUNT}/widget/Recommender.Engagement.ImageTracked"
         props={{
-          image: props.profileImage || profile.image,
-          alt: props.profileName || profile.name,
-          fallbackUrl:
-            "https://ipfs.near.social/ipfs/bafkreibiyqabm3kl24gcb2oegb7pmwdi6wwrpui62iwb44l7uomnn3lhbi",
+          accountId: props.accountId,
+          accountIdRank: props.accountIdRank,
+          fromContext: props.fromContext,
+          profileImage: props.profileImage || profile.image,
+          profileImageAlt: props.profileName || profile.name,
         }}
       />
     </Avatar>
-    <CenteredLinksWrapper>
-      <TextLink href={profileUrl} ellipsis bold>
-        {props.profileName || profile.name || accountId.split(".near")[0]}
-      </TextLink>
-      <TextLink href={profileUrl} ellipsis>
-        @{accountId}
-      </TextLink>
-    </CenteredLinksWrapper>
+    <Widget
+        src="${REPL_ACCOUNT}/widget/Recommender.Engagement.CenteredLinksWrapperTracked"
+        props={{
+          accountId: props.accountId,
+          accountIdRank: props.accountIdRank,
+          fromContext: props.fromContext,
+          profileName: props.profileName || profile.name || accountId.split(".near")[0],
+          profileUrl: profileUrl,
+        }}
+      />
+
     {tags.length > 0 ? (
       <TagsWrapper>
         <Widget src="near/widget/Tags" props={{ tags, scroll: true }} />
@@ -246,9 +226,11 @@ return (
     {context.accountId && context.accountId !== props.accountId ? (
       <Button>
         <Widget
-          src="${REPL_ACCOUNT}/widget/FollowButton"
+          src="${REPL_ACCOUNT}/widget/Recommender.Engagement.FollowButtonTracked"
           props={{
-            accountId: props.accountId,
+            accountIdRank: props.accountIdRank || null,
+            accountId: accountId || props.accountId,
+            fromContext: props.fromContext,
           }}
         />
       </Button>

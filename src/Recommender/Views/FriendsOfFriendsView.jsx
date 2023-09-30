@@ -82,6 +82,7 @@ return (
             returnElements: state.expandedList === "list1" ? null : 4,
             sidebar: props.sidebar || null,
             scope: "friends",
+            fromContext: props.fromContext,
           }}
         />
       </>
@@ -108,6 +109,7 @@ return (
             returnElements: state.expandedList === "list2" ? null : 4,
             sidebar: props.sidebar || null,
             scope: "similar",
+            fromContext: props.fromContext,
           }}
         />
       </>

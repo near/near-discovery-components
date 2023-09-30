@@ -17,6 +17,7 @@ return (
       props={{
         dataset: trendingProfilesURL,
         sidebar: props.sidebar,
+        fromContext: props.fromContext,
       }}
     />
   </TrendingUsersView>

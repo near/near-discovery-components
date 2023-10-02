@@ -5,18 +5,6 @@ let {
   ...forwardedProps
 } = props;
 
-const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${reportedAccountId}`;
-
-let getFlaggedAccountsList;
-
-// copied from Moderate.jsx so maybe it's wrong
-if (forwardedProps.open) {
-  getFlaggedAccountsList = Social.get(
-    `${context.accountId}/moderate/users`,
-    "optimistic"
-  );
-}
-
 const socialSet = (index) =>
   Social.set(index, {
     onCommit: () => {
@@ -37,18 +25,10 @@ const reportAccount = () => {
 };
 
 const reportAccountWithPosts = () => {
-  const flaggedAccountsList = getFlaggedAccountsList
-    ? JSON.parse(getFlaggedAccountsList)
-    : [];
-  const flaggedAccountsListSet = new Set(flaggedAccountsList);
-  const filterFlaggedAccounts = [
-    ...flaggedAccountsListSet.add(reportedAccountId),
-  ];
-
   socialSet({
     index: {
       moderate: {
-        [filterFlaggedAccounts]: "",
+        [reportedAccountId]: "report",
       },
     },
   });

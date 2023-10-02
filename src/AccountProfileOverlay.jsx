@@ -19,7 +19,7 @@ const handleOnMouseLeave = () => {
   State.update({ show: false });
 };
 
-const handleModalOpen = (value) => {
+const handleModalClose = (value) => {
   State.update({ showConfirmModal: value });
 };
 
@@ -101,7 +101,7 @@ const overlay = (
               props={{
                 onClick: () => {
                   handleOnMouseLeave();
-                  handleModalOpen(true);
+                  State.update({ showConfirmModal: true });
                 },
               }}
             />
@@ -268,7 +268,7 @@ return (
       src="${REPL_ACCOUNT}/widget/Flagged.Modal"
       props={{
         open: state.showConfirmModal,
-        onOpenChange: handleModalOpen,
+        onOpenChange: handleModalClose,
         reportedAccountId: props.accountId,
         contentModerationFlagValue: contentModerationItem,
         onReport,

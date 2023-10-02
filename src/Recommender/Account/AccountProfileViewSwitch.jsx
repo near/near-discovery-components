@@ -7,7 +7,7 @@ return (
   <>
     {props.sidebar ? (
       <Widget
-        src="${REPL_ACCOUNT}/widget/AccountProfile"
+        src="${REPL_ACCOUNT}/widget/Recommender.Account.AccountProfileSidebar"
         props={{
           accountId: props.accountId,
           accountIdRank: props.accountIdRank || null,
@@ -22,6 +22,7 @@ return (
           scope: props.scope || null,
           overlayPlacement: "left",
           fromContext: props.fromContext,
+          hideAccountId: true,
         }}
       />
     ) : (

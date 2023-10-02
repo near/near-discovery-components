@@ -7,7 +7,6 @@ const auth = "Basic MlVub3dMd2lXRnc3YzM1QU11RUVkREVJa2RvOg=="; //prod
 const currentTimeStamp = new Date().toISOString();
 
 const trackEngagement = () => {
-  console.log("trackEngagement", props);
   const payload = {
     event: eventType,
     properties: {
@@ -34,6 +33,5 @@ const trackEngagement = () => {
 };
 
 props.onClick ? trackEngagement(props) : null;
-console.log(props);
 
 return <>{props.children}</>;

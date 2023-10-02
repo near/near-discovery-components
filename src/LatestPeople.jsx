@@ -137,7 +137,12 @@ return (
       <>
         <Widget
           src="${REPL_ACCOUNT}/widget/Recommender.Views.TrendingUsersView"
-          props={{ sidebar: true, fromContext: fromContext }}
+          props={{
+            sidebar: true,
+            fromContext: fromContext,
+            gridCols: "repeat(1, minmax(0, 1fr))",
+            returnElements: 5,
+          }}
         />
       </>
     )}
@@ -145,7 +150,12 @@ return (
       <>
         <Widget
           src="${REPL_ACCOUNT}/widget/Recommender.Views.FriendsOfFriendsView"
-          props={{ sidebar: true, fromContext: fromContext }}
+          props={{
+            sidebar: true,
+            fromContext: fromContext,
+            gridCols: "repeat(1, minmax(0, 1fr))",
+            returnElements: 10,
+          }}
         />
       </>
     )}

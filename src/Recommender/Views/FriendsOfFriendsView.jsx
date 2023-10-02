@@ -1,3 +1,31 @@
+const ButtonLink = styled.a`
+  display: block;
+  width: 100%;
+  padding: 8px;
+  height: 32px;
+  background: #fbfcfd;
+  border: 1px solid #d7dbdf;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 15px;
+  text-align: center;
+  cursor: pointer;
+  color: #11181c !important;
+  margin: 0;
+
+  &:hover,
+  &:focus {
+    background: #ecedee;
+    text-decoration: none;
+    outline: none;
+  }
+
+  span {
+    color: #687076 !important;
+  }
+`;
+
 const CategoryHeader = styled.div`
   display: flex;
   justify-content: space-between;
@@ -83,6 +111,7 @@ return (
             sidebar: props.sidebar || null,
             scope: "friends",
             fromContext: props.fromContext,
+            gridCols: props.gridCols,
           }}
         />
       </>
@@ -110,9 +139,20 @@ return (
             sidebar: props.sidebar || null,
             scope: "similar",
             fromContext: props.fromContext,
+            gridCols: props.gridCols,
           }}
         />
       </>
+    )}
+
+    {props.sidebar ? (
+      <>
+        <ButtonLink href="#/${REPL_ACCOUNT}/widget/PeoplePage?tab=recommended">
+          View Recommended Profiles
+        </ButtonLink>
+      </>
+    ) : (
+      <></>
     )}
   </RecommendationsView>
 );

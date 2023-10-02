@@ -38,7 +38,7 @@ const Profile = styled.div``;
 
 const Profiles = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: ${props.gridCols ? props.gridCols : "repeat(4, minmax(0, 1fr))"};
   gap: 24px;
 
   @media (max-width: 1024px) {

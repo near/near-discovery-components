@@ -32,7 +32,7 @@ if (filterUsers === null) {
 
 const filterUsers = filterUsersRaw ? JSON.parse(filterUsersRaw) : [];
 const notificationFeedSrc =
-  "${REPL_ACCOUNT}/widget/NearOrg.Notifications.Notifications";
+  "${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsList";
 const lastBlockHeight = Storage.get("lastBlockHeight", notificationFeedSrc);
 let notifications =
   Social.index("notify", accountId, {
@@ -78,8 +78,9 @@ const PreviewWrapper = styled.div`
   top: 70px;
   right: 68%;
   width: 460px;
+  max-height: 80vh;
   visibility: hidden;
-  overflow: hidden;
+  overflow: hidden auto;
   transition: visibility 300ms ease;
   transform-origin: right top;
 

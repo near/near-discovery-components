@@ -307,7 +307,7 @@ return (
           {items.map((person, i) => (
             <Item key={person.accountId}>
               <Widget
-                src="near/widget/AccountProfileCard"
+                src="${REPL_ACCOUNT}/widget/AccountProfileCard"
                 props={{
                   accountId: person.accountId,
                   blockHeight: person.blockHeight,

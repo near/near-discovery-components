@@ -129,7 +129,7 @@ const path = item.path || "";
 const isComment = path.indexOf("/post/comment") > 0 || type === "comment";
 const isPost = !isComment && path.indexOf("/post/main") > 0;
 
-const accountId = type === "like" ? path.split("/")[0] : props.accountId;
+const accountId = type === "like" ? props.initiator : props.accountId;
 const blockHeight = type === "like" ? item.blockHeight : props.blockHeight;
 const urlBlockHeight = isComment ? "commentBlockHeight" : "blockHeight";
 

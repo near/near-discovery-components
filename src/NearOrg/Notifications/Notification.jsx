@@ -139,7 +139,8 @@ const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`
 let postUrl = "";
 
 if (type !== "custom") {
-  postUrl = `#/${REPL_ACCOUNT}/widget/PostPage?accountId=${accountId}&${urlBlockHeight}=${blockHeight}`;
+  const pathAccount =  path.split('/')[0];
+  postUrl = `#/${REPL_ACCOUNT}/widget/PostPage?accountId=${pathAccount}&${urlBlockHeight}=${blockHeight}`;
 } else {
   postUrl = `#/${value.widget}?${Object.entries(value.params || {})
     .map(([k, v]) => `${k}=${v}`)

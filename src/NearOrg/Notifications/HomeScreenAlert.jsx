@@ -60,6 +60,7 @@ const Content = () => (
 
 const dialogStyles = {
   top: "calc(100% - 170px)",
+  height: "50vh",
 };
 
 return (

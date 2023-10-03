@@ -51,7 +51,7 @@ const CurrentUserProfile = styled.div`
 `;
 
 const NoTags = styled.div`
-  height: 20px;
+  height: 13px;
 `;
 
 const Score = styled.li`
@@ -82,8 +82,6 @@ const TagsWrapper = styled.div`
   max-width: 80%;
   margin-top: -5px;
 `;
-
-
 
 const ProfileListContainer = styled.div`
   width: auto;
@@ -150,21 +148,25 @@ return (
       />
     </Avatar>
     <Widget
-        src="${REPL_ACCOUNT}/widget/Recommender.Engagement.CenteredLinksWrapperTracked"
-        props={{
-          accountId: props.accountId,
-          accountIdRank: props.accountIdRank,
-          fromContext: props.fromContext,
-          profileName: props.profileName || profile.name || accountId.split(".near")[0],
-          profileUrl: profileUrl,
-        }}
-      />
+      src="${REPL_ACCOUNT}/widget/Recommender.Engagement.CenteredLinksWrapperTracked"
+      props={{
+        accountId: props.accountId,
+        accountIdRank: props.accountIdRank,
+        fromContext: props.fromContext,
+        profileName:
+          props.profileName || profile.name || accountId.split(".near")[0],
+        profileUrl: profileUrl,
+      }}
+    />
 
-    {tags.length > 0 ? (
-      <TagsWrapper>
-        <Widget src="${REPL_ACCOUNT}/widget/Tags" props={{ tags, scroll: true }} />
-      </TagsWrapper>
-    ) : (
+    <TagsWrapper>
+      <Widget
+        src="${REPL_ACCOUNT}/widget/Tags"
+        props={{ tags, scroll: true }}
+      />
+    </TagsWrapper>
+
+    {tags.length == 0 && (
       <TagsWrapper>
         <NoTags></NoTags>
       </TagsWrapper>

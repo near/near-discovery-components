@@ -124,10 +124,9 @@ return(
             }
 
             {state.selectedTab === "moderated_comments" && (
-                <>
-                    <h2>Moderated Comments</h2>
-                    <h3>todo</h3>
-                </>
+                <Widget
+                    src={`${REPL_ACCOUNT}/widget/Moderation.ModerateComments`}
+                    props={{ moderatorAccount, moderationStream, }}/>
             )}
 
         </Content>

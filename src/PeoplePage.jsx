@@ -334,8 +334,12 @@ return (
 
     {context.accountId && state.selectedTab == "recommended" && (
       <Widget
-        src="${REPL_ACCOUNT}/widget/Recommender.Views.FriendsOfFriendsView"
-        props={{ currentPage: state.currentPage, fromContext: fromContext }}
+        src="${REPL_ACCOUNT}/widget/Recommender.Views.RecommendedUsersView"
+        props={{
+          currentPage: state.currentPage,
+          fromContext: fromContext,
+          accountId: context.accountId,
+        }}
       />
     )}
 

@@ -12,7 +12,7 @@ const Button = styled.button`
   text-align: center;
   cursor: pointer;
   color: #11181c !important;
-  margin: 36px 0;
+  margin: 0;
 
   &:hover,
   &:focus {
@@ -26,25 +26,15 @@ const Button = styled.button`
   }
 `;
 
-const H1 = styled.h1`
-  font-weight: 600;
-  font-size: 64px;
-  line-height: normal;
-  color: #11181c;
-  margin: 4rem 0;
-`;
-
 const Profile = styled.div``;
 
 const Profiles = styled.div`
   display: grid;
-  grid-template-columns: ${props.gridCols
-    ? props.gridCols
-    : "repeat(4, minmax(0, 1fr))"};
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 24px;
 
   @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   @media (max-width: 800px) {
@@ -56,7 +46,7 @@ const RecommendedUsers = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding-bottom: ${props.sidebar ? "12px" : "50px"};
+  padding-bottom: 100px;
 `;
 
 State.init({
@@ -85,11 +75,12 @@ const fromContext = { ...passedContext, scope: props.scope || null };
 const STORE = "storage.googleapis.com";
 const BUCKET = "databricks-near-query-runner";
 const BASE_URL = `https://${STORE}/${BUCKET}/output/recommendations`;
-
+const algorithm = "similarity_estimation";
+const dataset = `${BASE_URL}/${algorithm}_${props.accountId}`;
 
 const getRecommendedUsers = (page) => {
   try {
-    const url = `${props.dataset}_${page}.json`;
+    const url = `${dataset}_${page}.json`;
     if (state.currentPage == 1) {
       const res = fetch(url);
       if (res.ok) {
@@ -139,7 +130,7 @@ return (
       (props.scope == "friends" || props.scope === "similar") && (
         <p>
           Follow More Users to Unlock More Personalized Recommendations, See
-          Who’s{" "}
+          Who’s
           <a href="https://near.org/${REPL_ACCOUNT}/widget/PeoplePage?tab=trending">
             Trending
           </a>
@@ -149,7 +140,7 @@ return (
       {displayedUsers.map((user, index) => (
         <Profile key={index}>
           <Widget
-            src="${REPL_ACCOUNT}/widget/Recommender.Account.AccountProfileViewSwitch"
+            src="scopalaffairs.near/widget/Recommender.Account.AccountProfileLargeCard"
             props={{
               accountId:
                 user.recommended_profile ||

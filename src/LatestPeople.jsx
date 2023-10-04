@@ -136,7 +136,7 @@ return (
     {state.selectedView.value === "trending" && (
       <>
         <Widget
-          src="${REPL_ACCOUNT}/widget/Recommender.Views.TrendingUsersView"
+          src="${REPL_ACCOUNT}/widget/Recommender.Views.TrendingUsersSidebar"
           props={{
             sidebar: true,
             fromContext: fromContext,
@@ -149,7 +149,7 @@ return (
     {state.selectedView.value === "recommended" && (
       <>
         <Widget
-          src="${REPL_ACCOUNT}/widget/Recommender.Views.FriendsOfFriendsView"
+          src="${REPL_ACCOUNT}/widget/Recommender.Views.RecommendedUsersSidebar"
           props={{
             sidebar: true,
             fromContext: fromContext,

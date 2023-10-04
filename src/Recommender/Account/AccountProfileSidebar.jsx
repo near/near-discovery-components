@@ -172,7 +172,7 @@ return (
       accountIdRank: props.accountIdRank || null,
       profile,
       children: AccountProfile,
-      placement: "left",
+      placement: props.overlayPlacement,
       verifications,
       becauseYouFollow:
         props.scope === "friends" ? props.becauseYouFollow : null,

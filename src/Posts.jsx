@@ -1,6 +1,6 @@
 const GRAPHQL_ENDPOINT =
   props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
-const LIMIT = 10;
+const LIMIT = 25;
 const accountsFollowing = props.accountsFollowing;
 const moderatorAccount = props?.moderatorAccount || "bosmod.near";
 const sort = Storage.get(`queryapi:feed-sort`) ?? "timedesc";

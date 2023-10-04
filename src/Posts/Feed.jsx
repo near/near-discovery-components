@@ -12,6 +12,10 @@ const Post = styled.div`
   }
 `;
 
+const TextLink = styled.a`
+  font-weight: 600;
+`;
+
 const renderItem = (item) => {
   if (item.accounts_liked.length !== 0) {
     item.accounts_liked = JSON.parse(item.accounts_liked);
@@ -37,7 +41,13 @@ const renderItem = (item) => {
 if (posts.length === 0) {
   return (
     <div class="alert alert-info mx-3" role="alert">
-      There is no any posts yet.
+      Build your feed by finding
+      <TextLink
+        className="alert-link"
+        href="${REPL_ACCOUNT}/widget/PeoplePage"
+      >
+        people to follow
+      </TextLink>
     </div>
   );
 }

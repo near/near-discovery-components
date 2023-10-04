@@ -9,13 +9,13 @@ const Header = styled.div`
 
 const Title = styled.div`
   font: var(--text-xl);
-  color: var(--sand-light-12, #1b1b18);
+  color: var(--sand12);
   font-weight: 500;
 `;
 
 const Text = styled.div`
   font: var(--text-base);
-  color: var(--sand-light-11, #706f6c);
+  color: var(--sand11);
   font-weight: 450;
 `;
 

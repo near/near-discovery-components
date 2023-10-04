@@ -139,7 +139,7 @@ const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`
 let postUrl = "";
 
 if (type !== "custom") {
-  const pathAccount =  path.split('/')[0];
+  const pathAccount = path.split("/")[0];
   postUrl = `#/${REPL_ACCOUNT}/widget/PostPage?accountId=${pathAccount}&${urlBlockHeight}=${blockHeight}`;
 } else {
   postUrl = `#/${value.widget}?${Object.entries(value.params || {})
@@ -199,67 +199,63 @@ const iconType = {
 };
 
 return (
-  <>
-    <Notification>
-      <Icon>{iconType[type]}</Icon>
-      <Content>
-        <Left>
-          <a href={!props.onClick && profileUrl}>
-            <ProfileOverlay>
-              <Widget
-                src="${REPL_ACCOUNT}/widget/DIG.Avatar"
-                props={{
-                  alt: accountId,
-                  image: profile.image,
-                  size: "small",
-                }}
-              />
-            </ProfileOverlay>
-          </a>
-          <Text>
-            <ProfileOverlay>
-              <a href={!props.onClick && profileUrl}>
-                <Username>
-                  {profile.name || accountId.split(".near")[0]}
-                </Username>
-              </a>
-              <Action>{notificationMessage[type]}</Action>
-            </ProfileOverlay>
-            {/*<ComponentName>{componentName}</ComponentName>*/}
-
-            <Timestamp>
-              <Dot>·</Dot>
-              {/* TODO: add title tag to show full time on hover */}
-              <Widget
-                src="${REPL_MOB}/widget/TimeAgo@97556750"
-                props={{ blockHeight: props.blockHeight }}
-              />
-            </Timestamp>
-          </Text>
-          {/* <Desc>{desc}</Desc> */}
-        </Left>
-        <Right>
-          {(type === "follow" || type === "unfollow") && (
+  <Notification className="notification-item">
+    <Icon>{iconType[type]}</Icon>
+    <Content>
+      <Left>
+        <a href={!props.onClick && profileUrl}>
+          <ProfileOverlay>
             <Widget
-              src="${REPL_ACCOUNT}/widget/FollowButton"
-              props={{ accountId: props.accountId }}
-            />
-          )}
-
-          {type === "poke" && (
-            <Widget
-              src="${REPL_ACCOUNT}/widget/PokeButton"
+              src="${REPL_ACCOUNT}/widget/DIG.Avatar"
               props={{
-                accountId: props.accountId,
-                back: true,
-                primary: true,
+                alt: accountId,
+                image: profile.image,
+                size: "small",
               }}
             />
-          )}
+          </ProfileOverlay>
+        </a>
+        <Text>
+          <ProfileOverlay>
+            <a href={!props.onClick && profileUrl}>
+              <Username>{profile.name || accountId.split(".near")[0]}</Username>
+            </a>
+            <Action>{notificationMessage[type]}</Action>
+          </ProfileOverlay>
+          {/*<ComponentName>{componentName}</ComponentName>*/}
 
-          {actionable && <Button href={postUrl}>View</Button>}
-        </Right>
-      </Content>
-    </Notification>
-  </>
+          <Timestamp>
+            <Dot>·</Dot>
+            {/* TODO: add title tag to show full time on hover */}
+            <Widget
+              src="${REPL_MOB}/widget/TimeAgo@97556750"
+              props={{ blockHeight: props.blockHeight }}
+            />
+          </Timestamp>
+        </Text>
+        {/* <Desc>{desc}</Desc> */}
+      </Left>
+      <Right>
+        {(type === "follow" || type === "unfollow") && (
+          <Widget
+            src="${REPL_ACCOUNT}/widget/FollowButton"
+            props={{ accountId: props.accountId }}
+          />
+        )}
+
+        {type === "poke" && (
+          <Widget
+            src="${REPL_ACCOUNT}/widget/PokeButton"
+            props={{
+              accountId: props.accountId,
+              back: true,
+              primary: true,
+            }}
+          />
+        )}
+
+        {actionable && <Button href={postUrl}>View</Button>}
+      </Right>
+    </Content>
+  </Notification>
 );

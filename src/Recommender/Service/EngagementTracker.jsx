@@ -1,10 +1,7 @@
-const dataplane = "https://neardanieossax.dataplane.rudderstack.com"; //test
-// const dataplane = "https://near.dataplane.rudderstack.com"; //prod
+const dataplane = "https://near.dataplane.rudderstack.com"; //prod
 const uri = "/v1/track";
 const api_url = `${dataplane}${uri}`;
-// const auth = "Basic MlVvMlBYSE9UdzJjUWRucThJUWJQTG9DOG5mOg=="; //test
-const auth = "Basic MldJT1o0aFAwV3FKUnJKbUNsejFDek1RVVBqOg=="; //test2
-// const auth = "Basic MlVub3dMd2lXRnc3YzM1QU11RUVkREVJa2RvOg=="; //prod
+const auth = "Basic MlVub3dMd2lXRnc3YzM1QU11RUVkREVJa2RvOg=="; //prod
 
 const generateAnonId = (length) => {
   const characters =
@@ -21,7 +18,6 @@ const generateAnonId = (length) => {
 const trackEngagement = () => {
   const payload = {
     anonymousId: generateAnonId(24),
-    userId: "",
     channel: "web",
     context: props.fromContext,
     type: "track",
@@ -29,15 +25,16 @@ const trackEngagement = () => {
     sentAt: new Date().toISOString(),
     event: props.event,
     properties: {
+      accountId: props.accountId,
       accountIdRank: props.accountIdRank,
     },
   };
 
   asyncFetch(api_url, {
-    body: JSON.stringify({ payload }),
+    body: JSON.stringify(payload),
     headers: {
       "Content-Type": "application/json",
-      Authorization: auth,
+      "Authorization": auth,
     },
     method: "POST",
   })

@@ -133,37 +133,40 @@ const Notification = ({ count, disabled }) => {
     >
       <Button count={count} />
       <PreviewWrapper data-state={state.open}>
-        <PreviewContent>
-          <Widget
-            src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.Notifications"
-            props={{
-              isLocalStorageSupported,
-              isNotificationSupported,
-              isPermisionGranted,
-              isPushManagerSupported,
-              handleOnCancel,
-              getNotificationLocalStorage,
-              handleOnCancelBanner,
-              accountId,
-              handleTurnOn,
-              showLimit: 5,
-              showInBox: true,
-            }}
-          />
-          <SeeAll>
+        {state.open && (
+          <PreviewContent>
             <Widget
-              src="${REPL_ACCOUNT}/widget/DIG.Button"
+              src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.Notifications"
               props={{
-                href: "#/notifications",
-                fill: "outline",
-                variant: "secondary",
-                label: "See all",
-                size: "small",
-                style: { width: "100%" },
+                isLocalStorageSupported,
+                isNotificationSupported,
+                isPermisionGranted,
+                isPushManagerSupported,
+                handleOnCancel,
+                getNotificationLocalStorage,
+                handleOnCancelBanner,
+                accountId,
+                handleTurnOn,
+                showLimit: 5,
+                showInBox: true,
+                bannerBorderRadius: "0",
               }}
             />
-          </SeeAll>
-        </PreviewContent>
+            <SeeAll>
+              <Widget
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
+                props={{
+                  href: "#/notifications",
+                  fill: "outline",
+                  variant: "secondary",
+                  label: "See all",
+                  size: "small",
+                  style: { width: "100%" },
+                }}
+              />
+            </SeeAll>
+          </PreviewContent>
+        )}
       </PreviewWrapper>
     </Wrapper>
   );
@@ -210,9 +213,4 @@ if (mobileView) {
   return <Notification count={notificationsCount} disabled={true} />;
 }
 
-return (
-  <Notification
-    count={notificationsCount}
-    disabled={false}
-  />
-);
+return <Notification count={notificationsCount} disabled={false} />;

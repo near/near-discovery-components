@@ -155,6 +155,24 @@ const Wrapper = styled.div`
   --section-gap: 120px;
   margin-top: calc(var(--body-top-padding) * -1);
 
+  .darkButton {
+    color: #fff !important;
+    background: transparent !important;
+    border-color: #00ec97 !important;
+    &:focus {
+      border-color: var(--violet9) !important;
+    }
+    &:hover {
+      color: #000 !important;
+      background: #00ec97 !important;
+    }
+    &:active {
+      color: #000 !important;
+      background: var(--sand3) !important;
+      border-color: var(--sand3) !important;
+    }
+  }
+
   @media (max-width: 900px) {
     --section-gap: 80px;
   }
@@ -454,6 +472,7 @@ return (
                     target: "_blank",
                     label: "Read Docs",
                     variant: "secondary",
+                    fill: "outline",
                     size: "large",
                   }}
                 />
@@ -560,7 +579,8 @@ return (
                   props={{
                     href: "/signup",
                     label: "Create an Account",
-                    variant: "primary",
+                    variant: "secondary",
+                    fill: "outline",
                     size: "large",
                   }}
                 />
@@ -584,7 +604,8 @@ return (
                   props={{
                     href: "/onboarding",
                     label: "Get Started",
-                    variant: "primary",
+                    variant: "secondary",
+                    fill: "outline",
                     size: "large",
                   }}
                 />
@@ -615,7 +636,8 @@ return (
                 props={{
                   href: "/applications",
                   label: "Explore Applications",
-                  variant: "primary",
+                  variant: "secondary",
+                  fill: "outline",
                   size: "large",
                 }}
               />
@@ -704,7 +726,9 @@ return (
                       target: "_blank",
                       label: "Explore Docs",
                       variant: "affirmative",
+                      fill: "outline",
                       size: "large",
+                      className: "darkButton",
                     }}
                   />
                 </div>
@@ -753,6 +777,7 @@ return (
                       label: "Explore Components",
                       variant: "affirmative",
                       size: "large",
+                      className: "darkButton",
                     }}
                   />
                 </div>
@@ -790,6 +815,7 @@ return (
                       label: "Explore Applications",
                       variant: "affirmative",
                       size: "large",
+                      className: "darkButton",
                     }}
                   />
                 </div>
@@ -836,7 +862,8 @@ return (
                     props={{
                       href: "/gateways",
                       label: "Explore Gateways",
-                      variant: "primary",
+                      variant: "secondary",
+                      fill: "outline",
                       size: "large",
                     }}
                   />
@@ -867,7 +894,8 @@ return (
                     props={{
                       href: "/signup",
                       label: "Try FastAuth",
-                      variant: "primary",
+                      variant: "secondary",
+                      fill: "outline",
                       size: "large",
                     }}
                   />
@@ -1020,6 +1048,7 @@ return (
                 label: "Explore the Ecosystem",
                 variant: "affirmative",
                 size: "large",
+                className: "darkButton",
               }}
             />
           </Flex>
@@ -1094,6 +1123,7 @@ return (
                 label: "All News",
                 variant: "affirmative",
                 size: "large",
+                className: "darkButton",
               }}
             />
           </Flex>
@@ -1165,6 +1195,7 @@ return (
                 label: "All Events",
                 variant: "affirmative",
                 size: "large",
+                className: "darkButton",
               }}
             />
           </Flex>

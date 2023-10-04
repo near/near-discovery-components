@@ -4,19 +4,32 @@ const uri = "/v1/track";
 const api_url = `${dataplane}${uri}`;
 // const auth = "Basic MlVvMlBYSE9UdzJjUWRucThJUWJQTG9DOG5mOg=="; //test
 const auth = "Basic MlVub3dMd2lXRnc3YzM1QU11RUVkREVJa2RvOg=="; //prod
-const currentTimeStamp = new Date().toISOString();
+
+const generateAnonId = (length) => {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    result += characters.charAt(randomIndex);
+  }
+  return result;
+};
 
 const trackEngagement = () => {
   const payload = {
-    event: eventType,
+    anonymousId: generateAnonId(24),
+    userId: "",
+    channel: "sources",
+    context: props.fromContext,
+    type: "track",
+    originalTimestamp: new Date().toISOString(),
+    sentAt: new Date().toISOString(),
+    event: props.event,
     properties: {
-      accountId: props.accountId,
       accountIdRank: props.accountIdRank,
-      event: props.event,
-      component: props.context,
-      fromContext: props.fromContext,
     },
-    timestamp: new Date().toISOString(),
   };
 
   asyncFetch(api_url, {

@@ -66,18 +66,6 @@ const RetroLinkButton = styled.button`
   }
 `;
 
-State.init({
-  expandedList: "",
-});
-
-const handleToggleList = (listId) => {
-  if (state.expandedList === listId) {
-    State.update({ expandedList: "" });
-  } else {
-    State.update({ expandedList: listId });
-  }
-};
-
 const STORE = "storage.googleapis.com";
 const BUCKET = "databricks-near-query-runner";
 const BASE_URL = `https://${STORE}/${BUCKET}/output/recommendations`;
@@ -89,70 +77,31 @@ const similarProfilesURL = `${BASE_URL}/${similarProfiles}_${context.accountId}`
 
 return (
   <RecommendationsView>
-    {state.expandedList !== "list2" && (
-      <>
-        {props.sidebar ? (
-          <></>
-        ) : (
-          <CategoryHeader>
-            <H3>Friends of Friends</H3>
-            <RetroLinkButton onClick={() => handleToggleList("list1")}>
-              {state.expandedList === "list1"
-                ? "Back to categories"
-                : "View all"}
-            </RetroLinkButton>
-          </CategoryHeader>
-        )}
-        <Widget
-          src={`${REPL_ACCOUNT}/widget/Recommender.Service.RecommendedUsers`}
-          props={{
-            dataset: recommendedProfilesURL,
-            returnElements: state.expandedList === "list1" ? null : 4,
-            sidebar: props.sidebar || null,
-            scope: "friends",
-            fromContext: props.fromContext,
-            gridCols: props.gridCols,
-          }}
-        />
-      </>
-    )}
+    <Widget
+      src="${REPL_ACCOUNT}/widget/Recommender.Service.RecommendedUsers"
+      props={{
+        dataset: recommendedProfilesURL,
+        returnElements: 4,
+        sidebar: props.sidebar || null,
+        scope: "friends",
+        fromContext: props.fromContext,
+        gridCols: props.gridCols,
+      }}
+    />
+    <Widget
+      src="${REPL_ACCOUNT}/widget/Recommender.Service.RecommendedUsers"
+      props={{
+        dataset: similarProfilesURL,
+        returnElements: 4,
+        sidebar: props.sidebar || null,
+        scope: "similar",
+        fromContext: props.fromContext,
+        gridCols: props.gridCols,
+      }}
+    />
 
-    {state.expandedList !== "list1" && (
-      <>
-        {props.sidebar ? (
-          <></>
-        ) : (
-          <CategoryHeader>
-            <H3>Similar to you</H3>
-            <RetroLinkButton onClick={() => handleToggleList("list2")}>
-              {state.expandedList === "list2"
-                ? "Back to categories"
-                : "View all"}
-            </RetroLinkButton>
-          </CategoryHeader>
-        )}
-        <Widget
-          src={`${REPL_ACCOUNT}/widget/Recommender.Service.RecommendedUsers`}
-          props={{
-            dataset: similarProfilesURL,
-            returnElements: state.expandedList === "list2" ? null : 4,
-            sidebar: props.sidebar || null,
-            scope: "similar",
-            fromContext: props.fromContext,
-            gridCols: props.gridCols,
-          }}
-        />
-      </>
-    )}
-
-    {props.sidebar ? (
-      <>
-        <ButtonLink href="#/${REPL_ACCOUNT}/widget/PeoplePage?tab=recommended">
-          View Recommended Profiles
-        </ButtonLink>
-      </>
-    ) : (
-      <></>
-    )}
+    <ButtonLink href="#/${REPL_ACCOUNT}/widget/PeoplePage?tab=recommended">
+      View Recommended Profiles
+    </ButtonLink>
   </RecommendationsView>
 );

@@ -66,7 +66,7 @@ if (props.tab && props.tab !== state.selectedTab) {
     });
 }
 
-const baseUrl = `#/${REPL_ACCOUNT}/widget/Moderation.Moderator?`;
+const baseUrl = `#/${REPL_ACCOUNT}/widget/Moderation.Moderator`;
 const moderatorAccount = props?.moderatorAccount || "${REPL_MODERATOR}";
 const moderationStream = props.moderationStream || moderatorAccount;
 
@@ -76,28 +76,28 @@ return(
         <Content>
             <Tabs>
                 <TabsButton
-                    href={`${baseUrl}&tab=reported`}
+                    href={`${baseUrl}?&tab=reported`}
                     selected={state.selectedTab === "reported"}
                 >
                     Reported and needs moderation
                 </TabsButton>
 
                 <TabsButton
-                    href={`${baseUrl}&tab=moderated_accounts`}
+                    href={`${baseUrl}?&tab=moderated_accounts`}
                     selected={state.selectedTab === "moderated_accounts"}
                 >
                     Moderated Accounts
                 </TabsButton>
 
                 <TabsButton
-                    href={`${baseUrl}&tab=moderated_posts`}
+                    href={`${baseUrl}?&tab=moderated_posts`}
                     selected={state.selectedTab === "moderated_posts"}
                 >
                     Moderated Posts
                 </TabsButton>
 
                 <TabsButton
-                    href={`${baseUrl}&tab=moderated_comments`}
+                    href={`${baseUrl}?&tab=moderated_comments`}
                     selected={state.selectedTab === "moderated_comments"}
                 >
                     Moderated Comments
@@ -113,19 +113,19 @@ return(
 
             {state.selectedTab === "moderated_accounts" &&
                 <Widget
-                    src={`${REPL_ACCOUNT}/widget/Moderation.ModerateAccounts`}
+                    src="${REPL_ACCOUNT}/widget/Moderation.ModerateAccounts"
                     props={{ moderatorAccount, moderationStream, }}/>
             }
 
             {state.selectedTab === "moderated_posts" &&
                 <Widget
-                    src={`${REPL_ACCOUNT}/widget/Moderation.ModeratePosts`}
+                    src="${REPL_ACCOUNT}/widget/Moderation.ModeratePosts"
                     props={{ moderatorAccount, moderationStream, }}/>
             }
 
             {state.selectedTab === "moderated_comments" && (
                 <Widget
-                    src={`${REPL_ACCOUNT}/widget/Moderation.ModerateComments`}
+                    src="${REPL_ACCOUNT}/widget/Moderation.ModerateComments"
                     props={{ moderatorAccount, moderationStream, }}/>
             )}
 

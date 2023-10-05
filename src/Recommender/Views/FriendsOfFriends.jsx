@@ -89,7 +89,6 @@ const getRecommendedUsers = (page) => {
         updateState(parsedResults.data, totalPageNum);
       } else {
         console.log(
-          res,
           "Error fetching data. Try reloading the page, or no data available."
         );
       }
@@ -100,7 +99,9 @@ const getRecommendedUsers = (page) => {
           const totalPageNum = parsedResults.total_pages || 10;
           updateState(parsedResults.data, totalPageNum);
         } else {
-          console.log(res, "Error fetching data. Try reloading the page.");
+          console.log(
+            "Error fetching data. Try reloading the page, or no data available."
+          );
         }
       });
     }
@@ -123,47 +124,50 @@ if (state.isLoading) {
 
 return (
   <RecommendedUsers>
-    {state.isLoading && displayedUsers.length == null && <p>Loading...</p>}
+    {state.isLoading && <p>Loading...</p>}
     {state.error && <p>Error: {state.error}</p>}
-    {(displayedUsers.length < 4 || displayedUsers == null) &&
-      state.isLoading &&
-      (props.scope == "friends" || props.scope === "similar") && (
-        <p>
-          Follow More Users to Unlock More Personalized Recommendations, See
-          Who’s
-          <a href="https://near.org/${REPL_ACCOUNT}/widget/PeoplePage?tab=trending">
-            Trending
-          </a>
-        </p>
-      )}
     <Profiles>
-      {displayedUsers.map((user, index) => (
-        <Profile key={index}>
-          <Widget
-            src="scopalaffairs.near/widget/Recommender.Account.AccountProfileLargeCard"
-            props={{
-              accountId:
-                user.recommended_profile ||
-                user.similar_profile ||
-                user.signer_id,
-              accountIdRank: index + 1,
-              showTags: true,
-              showFollowerStats: true,
-              showFollowButton: state.multiSelectMode === false,
-              followsYou: user.follows_you || null,
-              becauseYouFollow: user.because_you_follow || null,
-              likers: user.likers || null,
-              followers: user.followers || null,
-              following: user.following || null,
-              profileImage: user.profileImage || null,
-              profileName: user.profileName || null,
-              sidebar: props.sidebar || null,
-              scope: props.scope || null,
-              fromContext: fromContext,
-            }}
-          />
-        </Profile>
-      ))}
+      {!state.isLoading && displayedUsers.length > 2 ? (
+        displayedUsers.map((user, index) => (
+          <Profile key={index}>
+            <Widget
+              src="scopalaffairs.near/widget/Recommender.Account.AccountProfileLargeCard"
+              props={{
+                accountId:
+                  user.recommended_profile ||
+                  user.similar_profile ||
+                  user.signer_id,
+                accountIdRank: index + 1,
+                showTags: true,
+                showFollowerStats: true,
+                showFollowButton: state.multiSelectMode === false,
+                followsYou: user.follows_you || null,
+                becauseYouFollow: user.because_you_follow || null,
+                likers: user.likers || null,
+                followers: user.followers || null,
+                following: user.following || null,
+                profileImage: user.profileImage || null,
+                profileName: user.profileName || null,
+                sidebar: props.sidebar || null,
+                scope: props.scope || null,
+                fromContext: fromContext,
+              }}
+            />
+          </Profile>
+        ))
+        ) : (
+          <>
+            {!state.isLoading && (
+              <div style={{ width: "100vw" }}>
+                Follow More Users to Unlock More Personalized Recommendations, See
+                Who’s
+                <a href="https://near.org/${REPL_ACCOUNT}/widget/PeoplePage?tab=trending">
+                  Trending
+                </a>
+              </div>
+            )}
+          </>
+        )}
     </Profiles>
     {!props.returnElements && state.currentPage < state.totalPages ? (
       <Button type="button" onClick={() => loadMore()}>

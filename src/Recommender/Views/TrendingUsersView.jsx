@@ -89,7 +89,6 @@ const getRecommendedUsers = (page) => {
         updateState(parsedResults.data, totalPageNum);
       } else {
         console.log(
-          res,
           "Error fetching data. Try reloading the page, or no data available."
         );
       }
@@ -100,7 +99,9 @@ const getRecommendedUsers = (page) => {
           const totalPageNum = parsedResults.total_pages || 10;
           updateState(parsedResults.data, totalPageNum);
         } else {
-          console.log(res, "Error fetching data. Try reloading the page.");
+          console.log(
+            "Error fetching data. Try reloading the page, or no data available."
+          );
         }
       });
     }

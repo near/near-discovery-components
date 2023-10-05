@@ -67,7 +67,7 @@ if (props.tab && props.tab !== state.selectedTab) {
 }
 
 const baseUrl = `#/${REPL_ACCOUNT}/widget/Moderation.Moderator?`;
-const moderatorAccount = 'buildnear.testnet'; // testing // props?.moderatorAccount || "${REPL_MODERATOR}";
+const moderatorAccount = props?.moderatorAccount || "${REPL_MODERATOR}";
 const moderationStream = props.moderationStream || moderatorAccount;
 
 return(

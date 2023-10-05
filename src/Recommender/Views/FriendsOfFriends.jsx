@@ -32,6 +32,7 @@ const Profiles = styled.div`
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 24px;
+  padding-bottom: 24px;
 
   @media (max-width: 1024px) {
     grid-template-columns: repeat(3, minmax(0, 1fr));

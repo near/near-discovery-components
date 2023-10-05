@@ -7,6 +7,7 @@ let {
   isPushManagerSupported,
   setNotificationsSessionStorage,
   onOpenChange,
+  iOSDevice,
 } = props;
 
 const HeaderWrapper = styled.div`
@@ -55,6 +56,11 @@ const actionStyles = {
   flexDirection: "column-reverse",
 };
 
+const iOSContentStyles = iOSDevice ? {
+  top: "calc(100% - 225px)",
+  height: "50vh",
+} : {};
+
 const CancelButton = ({ handleOnCancel }) => (
   <Widget
     src="${REPL_ACCOUNT}/widget/DIG.Button"
@@ -94,6 +100,7 @@ return (
       overlayColor: "var(--blackA11)",
       overlayBlur: "blur(4px)",
       onOpenChange,
+      contentStyles: iOSContentStyles,
     }}
   />
 );

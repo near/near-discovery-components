@@ -1,25 +1,20 @@
 const GRAPHQL_ENDPOINT =
   props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 const LIMIT = 25;
-let accountsFollowing = props.accountsFollowing;
+const accountsFollowing = props.accountsFollowing;
 const moderatorAccount = props?.moderatorAccount || "bosmod.near";
 const sort = Storage.get(`queryapi:feed-sort`) ?? "timedesc";
+const initialSelectedTab = Storage.privateGet("selectedTab") ?? "all";
 
 State.init({
-  selectedTab: Storage.privateGet("selectedTab") || "all",
+  selectedTab: initialSelectedTab,
   posts: [],
   postsCountLeft: 0,
   initLoadPosts: false,
   initLoadPostsAll: false,
-  sort
+  sort,
+  accountsFollowing,
 });
-
-const previousSelectedTab = Storage.privateGet("selectedTab");
-if (previousSelectedTab && previousSelectedTab !== state.selectedTab) {
-  State.update({
-    selectedTab: previousSelectedTab,
-  });
-}
 
 const optionsMap = {
   timedesc: "Most Recent",
@@ -27,28 +22,28 @@ const optionsMap = {
 };
 
 // TODO port to QueryAPI
-if (
-  state.selectedTab === "following" &&
-  context.accountId &&
-  !accountsFollowing
-) {
+const queryFollowedAccountsList = () => {
   const graph = Social.keys(`${context.accountId}/graph/follow/*`, "final");
   if (graph !== null) {
-    accountsFollowing = Object.keys(
+    const followedAccounts = Object.keys(
       graph[context.accountId].graph.follow || {}
     );
+    State.update({ accountsFollowing: followedAccounts });
   }
-}
+};
 
-function selectTab(selectedTab) {
+const selectTab = (selectedTab) => {
   Storage.privateSet("selectedTab", selectedTab);
   State.update({
     posts: [],
     postsCountLeft: 0,
     selectedTab,
   });
+  if (!state.accountsFollowing) {
+    queryFollowedAccountsList();
+  }
   loadMorePosts();
-}
+};
 
 let gatewayModeratedUsersRaw = Social.get(
   `${moderatorAccount}/moderate/users`,
@@ -65,17 +60,19 @@ const selfFlaggedPosts = context.accountId
   : [];
 
 const selfModeration = context.accountId
-    ? Social.index("moderate", "main", {
+  ? Social.index("moderate", "main", {
       accountId: context.accountId,
     })
-    : [];
+  : [];
 
 if (gatewayModeratedUsersRaw === null) {
   // haven't loaded filter list yet, return early
   return "";
 }
 
-const gatewayModeratedUsers = gatewayModeratedUsersRaw ? JSON.parse(gatewayModeratedUsersRaw) : [];
+const gatewayModeratedUsers = gatewayModeratedUsersRaw
+  ? JSON.parse(gatewayModeratedUsersRaw)
+  : [];
 
 // get the full list of posts that the current user has flagged so
 // they can be hidden
@@ -138,7 +135,7 @@ const createQuery = (type) => {
   let queryFilter = "";
   switch (type) {
     case "following":
-      let queryAccountsString = accountsFollowing
+      let queryAccountsString = state.accountsFollowing
         .map((account) => `"${account}"`)
         .join(", ");
       queryFilter = `account_id: { _in: [${queryAccountsString}]}`;
@@ -210,16 +207,12 @@ query GetFollowingPosts($offset: Int, $limit: Int) {
 
 const loadMorePosts = () => {
   const queryName =
-    state.selectedTab == "following" && accountsFollowing
-      ? "GetFollowingPosts"
-      : "GetPostsQuery";
-  const type =
-    state.selectedTab == "following" && accountsFollowing ? "following" : "all";
+    state.selectedTab == "following" ? "GetFollowingPosts" : "GetPostsQuery";
+  const type = state.selectedTab;
 
   if (
     state.selectedTab == "following" &&
-    accountsSelected &&
-    accountsSelected.length == 0
+    !state.accountsFollowing
   ) {
     return;
   }
@@ -241,7 +234,7 @@ const loadMorePosts = () => {
           let filteredPosts = newPosts.filter((i) => !shouldFilter(i));
           filteredPosts = filteredPosts.map((post) => {
             const prevComments = post.comments;
-            const filteredComments = post.comments.filter(
+            const filteredComments = prevComments.filter(
               (comment) => !shouldFilter(comment)
             );
             post.comments = filteredComments;
@@ -260,7 +253,24 @@ const loadMorePosts = () => {
 
 const hasMore = state.postsCountLeft != state.posts.length;
 
-if (!state.initLoadPostsAll && selfFlaggedPosts && selfModeration && gatewayModeratedUsers) {
+if (initialSelectedTab && initialSelectedTab !== state.selectedTab) {
+  selectTab(initialSelectedTab);
+}
+
+if (
+  state.selectedTab === "following" &&
+  context.accountId &&
+  !state.accountsFollowing
+) {
+  queryFollowedAccountsList();
+}
+
+if (
+  !state.initLoadPostsAll &&
+  selfFlaggedPosts &&
+  selfModeration &&
+  gatewayModeratedUsers
+) {
   loadMorePosts();
   State.update({ initLoadPostsAll: true });
 }
@@ -268,10 +278,10 @@ if (!state.initLoadPostsAll && selfFlaggedPosts && selfModeration && gatewayMode
 if (
   state.initLoadPostsAll == true &&
   !state.initLoadPosts &&
-  accountsFollowing
+  state.accountsFollowing
 ) {
-  if (accountsFollowing.length > 0 && state.selectedTab == "following") {
-    selectTab("following");
+  if (state.accountsFollowing.length > 0 && state.selectedTab === "following") {
+    loadMorePosts();
   }
   State.update({ initLoadPosts: true });
 }

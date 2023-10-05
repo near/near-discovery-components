@@ -59,7 +59,7 @@ const Card = styled.div`
 `;
 
 const FollowButtonWrapper = styled.div`
-  width: 100px;
+  width: 100%;
 
   div,
   button {
@@ -236,7 +236,7 @@ const overlay = (
           props={{ tags, scroll: true }}
         />
       )}
-
+      
       {!!context.accountId && context.accountId !== props.accountId && (
         <FollowButtonWrapper>
           <Widget
@@ -245,6 +245,7 @@ const overlay = (
               accountIdRank: props.accountIdRank || null,
               accountId: accountId || props.accountId,
               fromContext: props.fromContext,
+              onFollowed: props.onFollowed,
             }}
           />
         </FollowButtonWrapper>

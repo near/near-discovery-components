@@ -61,31 +61,37 @@ const RecommendedUsers = styled.div`
 
 State.init({
   currentPage: 1,
-  userData: [],
   isLoading: true,
   error: null,
   totalPages: 1,
+  displayedUsers: [],
 });
 
 const updateState = (data, totalPageNum) => {
   State.update({
     isLoading: false,
-    userData: [...state.userData, ...data],
+    displayedUsers: [...state.displayedUsers, ...data],
     totalPages: totalPageNum,
   });
 };
 
-const displayedUsers = props.returnElements
-  ? state.userData.slice(0, props.returnElements)
-  : state.userData;
+State.update({
+  displayedUsers: props.returnElements
+    ? state.displayedUsers.slice(0, props.returnElements)
+    : state.displayedUsers,
+});
 
 const passedContext = props.fromContext;
-const fromContext = { ...passedContext, scope: props.scope || null };
+const fromContext = { ...passedContext, scope: props.scope };
 
 const STORE = "storage.googleapis.com";
 const BUCKET = "databricks-near-query-runner";
 const BASE_URL = `https://${STORE}/${BUCKET}/output/recommendations`;
 
+const accountId = props.accountId;
+const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
+const tags = Object.keys(profile.tags || {});
+const profileUrl = `#/near/widget/ProfilePage?accountId=${accountId}`;
 
 const getRecommendedUsers = (page) => {
   try {
@@ -130,31 +136,26 @@ if (state.isLoading) {
   getRecommendedUsers(state.currentPage);
 }
 
+const handleFollowed = (accountId) => {
+  const updatedUsers = state.displayedUsers.filter(
+    (user) => (user.recommended_profile || user.similar_profile) !== accountId
+  );
+  State.update({
+    displayedUsers: updatedUsers,
+  });
+};
+
 return (
   <RecommendedUsers>
-    {state.isLoading && displayedUsers.length == null && <p>Loading...</p>}
+    {state.isLoading && <p>Loading...</p>}
     {state.error && <p>Error: {state.error}</p>}
-    {(displayedUsers.length < 4 || displayedUsers == null) &&
-      state.isLoading &&
-      (props.scope == "friends" || props.scope === "similar") && (
-        <p>
-          Follow More Users to Unlock More Personalized Recommendations, See
-          Who’s{" "}
-          <a href="https://near.org/${REPL_ACCOUNT}/widget/PeoplePage?tab=trending">
-            Trending
-          </a>
-        </p>
-      )}
     <Profiles>
-      {displayedUsers.map((user, index) => (
+      {state.displayedUsers.map((user, index) => (
         <Profile key={index}>
           <Widget
-            src="${REPL_ACCOUNT}/widget/Recommender.Account.AccountProfileViewSwitch"
+            src="${REPL_ACCOUNT}/widget/Recommender.Account.AccountProfileSidebar"
             props={{
-              accountId:
-                user.recommended_profile ||
-                user.similar_profile ||
-                user.signer_id,
+              accountId: user.recommended_profile || user.similar_profile,
               accountIdRank: index + 1,
               showTags: true,
               showFollowerStats: true,
@@ -169,6 +170,10 @@ return (
               sidebar: props.sidebar || null,
               scope: props.scope || null,
               fromContext: fromContext,
+              onFollowed: () =>
+                handleFollowed(
+                  user.recommended_profile || user.similar_profile
+                ),
             }}
           />
         </Profile>

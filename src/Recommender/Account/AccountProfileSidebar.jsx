@@ -65,7 +65,7 @@ const Text = styled.p`
   font-size: ${(p) => (p.small ? "10px" : "14px")};
   overflow: ${(p) => (p.ellipsis ? "hidden" : "")};
   text-overflow: ${(p) => (p.ellipsis ? "ellipsis" : "")};
-  white-space: nowrap; 
+  white-space: nowrap;
 `;
 
 const Avatar = styled.div`
@@ -94,7 +94,6 @@ const Name = styled.div`
   gap: 6px;
   align-items: center;
 `;
-
 const AccountProfile = (
   <Wrapper
     as={props.onClick ? "button" : "a"}
@@ -178,6 +177,7 @@ return (
         props.scope === "friends" ? props.becauseYouFollow : null,
       scope: props.scope || null,
       fromContext: props.fromContext,
+      onFollowed: props.onFollowed,
     }}
   />
 );

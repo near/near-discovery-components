@@ -1,13 +1,9 @@
-const handleClick = () => {
-  State.update({ clicked: true });
-};
-
 State.init({
   clicked: false,
 });
 
 return (
-  <div onClick={handleClick}>
+  <div>
     <Widget
       src="${REPL_ACCOUNT}/widget/Recommender.Service.EngagementTracker"
       props={{
@@ -22,6 +18,12 @@ return (
       src={"${REPL_ACCOUNT}/widget/FollowButton"}
       props={{
         accountId: props.accountId,
+        onCommit: () => {
+          props.onFollowed();
+        },
+        onClick: () => {
+          State.update({ clicked: true });
+        },
       }}
     />
   </div>

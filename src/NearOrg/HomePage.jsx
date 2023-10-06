@@ -381,6 +381,8 @@ const Stats = styled.div`
   gap: 80px;
 
   div {
+    text-align: center;
+
     p:first-child {
       font-size: 100px;
       font-weight: 500;

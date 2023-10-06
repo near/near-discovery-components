@@ -46,6 +46,8 @@ const Settings = styled.a`
 `;
 
 const Card = styled.div`
+  display: flex;
+  flex-direction: column;
   max-width: 592px;
   margin: ${(props) => (props.showInBox ? "" : "0 auto")};
 
@@ -70,7 +72,7 @@ const checkShowBanner = () => {
 };
 
 return (
-  <Card showInBox={showInBox}>
+  <Card className={showInBox ? "" : "container-xl"} showInBox={showInBox}>
     <Header showInBox={showInBox}>
       <Title>Notifications</Title>
       <Widget

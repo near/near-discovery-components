@@ -12,7 +12,12 @@ let {
   iOSDevice,
 } = props;
 
-const Card = styled.div`
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 48px;
+  padding-top: 48px;
   max-width: 592px;
   margin: 0 auto;
 `;
@@ -58,7 +63,7 @@ const checkShow = () => {
 };
 
 return (
-  <Card>
+  <Wrapper className="container-xl">
     <Widget
       src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.SettingsHeader"
       props={{
@@ -93,5 +98,5 @@ return (
     {isNotificationSupported || (
       <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.SettingsTurnOn" />
     )}
-  </Card>
+  </Wrapper>
 );

@@ -2,9 +2,9 @@ let { title, text, content } = props;
 
 const Header = styled.div`
   display: flex;
-  padding: 56px 0px 48px 0px;
   flex-direction: column;
   justify-content: center;
+  padding-bottom: 48px;
   align-items: flex-start;
   gap: 24px;
 `;

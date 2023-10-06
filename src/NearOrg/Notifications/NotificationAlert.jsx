@@ -65,7 +65,7 @@ const Description = () => (
     {showIosNoteText && (
       <NoteText>
         <i class="ph-bold ph-info" />
-        Mobile browser push notifications are only supported on iOS {recomendedIOSVersion} or
+        Mobile browser push notifications are only supported on iOS "{recomendedIOSVersion}" or
         greater.
       </NoteText>
     )}

@@ -1,6 +1,6 @@
 return (
   <Widget
-    src="near/widget/DIG.Accordion"
+    src="${REPL_ACCOUNT}/widget/DIG.Accordion"
     props={{
       type: "multiple",
       defaultValue: ["0", "1"],

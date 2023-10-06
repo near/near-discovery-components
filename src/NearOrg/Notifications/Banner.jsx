@@ -1,4 +1,6 @@
-let { handleTurnOn, handleOnCancel, radius } = props;
+let { handleTurnOn, handleOnCancel, radius, iOSDevice, iOSVersion, recomendedIOSVersion } = props;
+const showIosNoteText =
+  (iOSDevice && !iOSVersion) || (iOSDevice && iOSVersion && iOSVersion < recomendedIOSVersion);
 
 const Card = styled.div`
   display: flex;
@@ -31,7 +33,7 @@ const Close = styled.i`
 
 const Text = styled.div`
   color: var(--white);
-  font: var(--text-base);
+  font: ${(p) => `var(--${p.small ? "text-s" : "text-base"})`};
   font-weight: 600;
 `;
 
@@ -46,6 +48,13 @@ return (
     <Component>
       <Icon className="ph ph-bell-ringing" />
       <Text>Don't miss out on updates, turn on desktop notifications.</Text>
+      {showIosNoteText && (
+        <Text small>
+          <i class="ph-bold ph-info" />
+          Mobile browser push notifications are only supported on iOS {recomendedIOSVersion} or
+          greater.
+        </Text>
+      )}
       <Buttons>
         <Widget
           src="${REPL_ACCOUNT}/widget/DIG.Button"

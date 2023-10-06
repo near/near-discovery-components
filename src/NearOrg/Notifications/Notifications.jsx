@@ -1,15 +1,22 @@
-const isLocalStorageSupported = props?.isLocalStorageSupported;
-const isNotificationSupported = props?.isNotificationSupported;
-const isPermisionGranted = props?.isPermisionGranted;
-const isPushManagerSupported = props?.isPushManagerSupported;
-const handleTurnOn = props?.handleTurnOn;
-const handleOnCancel = props?.handleOnCancel;
-const getNotificationLocalStorage = props?.getNotificationLocalStorage;
-const handleOnCancelBanner = props?.handleOnCancelBanner;
-const accountId = props?.accountId;
-const showLimit = props?.showLimit;
-const showInBox = props?.showInBox || false;
-const bannerBorderRadius = props?.bannerBorderRadius;
+let {
+  isLocalStorageSupported,
+  isNotificationSupported,
+  isPermisionGranted,
+  isPushManagerSupported,
+  handleTurnOn,
+  handleOnCancel,
+  getNotificationLocalStorage,
+  handleOnCancelBanner,
+  accountId,
+  showLimit,
+  showInBox,
+  bannerBorderRadius,
+  iOSDevice,
+  iOSVersion,
+  recomendedIOSVersion,
+} = props;
+
+showInBox = showInBox ?? false;
 
 const Header = styled.div`
   display: flex;
@@ -39,6 +46,8 @@ const Settings = styled.a`
 `;
 
 const Card = styled.div`
+  display: flex;
+  flex-direction: column;
   max-width: 592px;
   margin: ${(props) => (props.showInBox ? "" : "0 auto")};
 
@@ -63,7 +72,7 @@ const checkShowBanner = () => {
 };
 
 return (
-  <Card showInBox={showInBox}>
+  <Card className={showInBox ? "" : "container-xl"} showInBox={showInBox}>
     <Header showInBox={showInBox}>
       <Title>Notifications</Title>
       <Widget
@@ -88,6 +97,9 @@ return (
             checkShowBanner();
           },
           radius: bannerBorderRadius,
+          iOSDevice,
+          iOSVersion,
+          recomendedIOSVersion,
         }}
       />
     )}

@@ -1,8 +1,10 @@
+let { title, text, content } = props;
+
 const Header = styled.div`
   display: flex;
-  padding: 56px 0px 48px 0px;
   flex-direction: column;
   justify-content: center;
+  padding-bottom: 36px;
   align-items: flex-start;
   gap: 24px;
 `;
@@ -21,7 +23,8 @@ const Text = styled.div`
 
 return (
   <Header>
-    <Title>{props.title}</Title>
-    <Text>{props.text}</Text>
+    <Title>{title}</Title>
+    <Text>{text}</Text>
+    {content}
   </Header>
 );

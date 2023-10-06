@@ -28,18 +28,29 @@ const Text = styled.div`
   font-weight: 450;
 `;
 
+const TextLink = styled.a`
+  font-weight: 600;
+`;
+
+const IosNotification = () => (
+  <Text>
+    <i class="ph-bold ph-info" />
+    In order to enable Mobile Browser notifications on iOS, you will also need
+    to add near.org as a icon to your home screen. Click on the share icon,
+    and then tap on <b>"Add to Home Screen"</b>
+  </Text>
+);
+
 const SettingHeaderContent = () => {
-  if (iOSDevice) {
-    return (
+  return (
+    <>
+      {iOSDevice && <IosNotification />}
       <Text>
-        <i class="ph-bold ph-info" />
-        In order to enable Mobile Browser notifications on iOS, you will also need
-        to add near.org as a icon to your home screen. Click on the share icon,
-        and then tap on <b>"Add to Home Screen"</b>
+        Learn more about notifications
+        <TextLink href="https://near.org/blog/announcing-web-push-notifications-on-b-o-s">here</TextLink>
       </Text>
-    );
-  }
-  return null;
+    </>
+  );
 };
 
 // TODO: solution to pass data to this component

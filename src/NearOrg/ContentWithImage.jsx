@@ -1,4 +1,4 @@
-let { image, imageSide, content, ...props } = props;
+let { alt, image, imageSide, content, ...props } = props;
 imageSide = imageSide ?? "left";
 
 const Wrapper = styled.div`
@@ -45,6 +45,7 @@ return (
       <Widget
         src="${REPL_MOB}/widget/Image"
         props={{
+          alt,
           image,
         }}
       />

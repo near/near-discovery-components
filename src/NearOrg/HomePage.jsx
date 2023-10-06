@@ -12,6 +12,11 @@ const ipfsImages = {
   illustrations: {
     betterWayToBuild:
       "bafkreib6sp7aoovferwg4zfvekhxxmp6hdp4u7f2bgxupebntrfgrmjhbe",
+    code: "bafkreihftdjefcrp2ctuyxt2wah6trlb4n56xts66th5xie7k2q7znlgqy",
+    components: "bafkreiecfsfxzubbayv27se2pr2xcz4rugp5a5kscsfz5lvjykiomt3a4u",
+    dapps: "bafkreihhuffoky3qywxmnnr7z7r2gdtjfab6tbx7f7ml2xvwldx76ggrni",
+    fastAuth: "bafkreib5rowa6ujusqvk6xr4qo2bnoazwvraozrl56taejqypemd5mc75y",
+    gateways: "bafkreibvfggs2ea6e7fp4apfeaccjlcnpovzr73fwnxxkuvcnmpkkzqiwm",
     placeholder: "bafkreid7abzwnzk3qrniq7mnnl4blhka7k5nk62m3u7afqnqdxowmrkdu4",
   },
   logos: {
@@ -153,6 +158,7 @@ function returnIpfsImage(cfid) {
 
 const Wrapper = styled.div`
   --section-gap: 120px;
+  --text-hero: 500 72px/1 "FK Grotesk", "Mona Sans", sans-serif;
   margin-top: calc(var(--body-top-padding) * -1);
 
   .darkButton {
@@ -734,8 +740,9 @@ return (
                 </div>
               </>
             ),
-            image: returnIpfsImage(ipfsImages.illustrations.placeholder),
+            image: returnIpfsImage(ipfsImages.illustrations.code),
             imageSide: "left",
+            alt: "Illustration of a console with javascript code above the Javascript and Rust logos, surrounded by brackets",
           }}
         />
 
@@ -783,8 +790,9 @@ return (
                 </div>
               </>
             ),
-            image: returnIpfsImage(ipfsImages.illustrations.placeholder),
+            image: returnIpfsImage(ipfsImages.illustrations.components),
             imageSide: "right",
+            alt: "Illustration of the UI listing of a component with buttons to view details or open. Below it are images of checkboxes",
           }}
         />
 
@@ -821,8 +829,9 @@ return (
                 </div>
               </>
             ),
-            image: returnIpfsImage(ipfsImages.illustrations.placeholder),
+            image: returnIpfsImage(ipfsImages.illustrations.dapps),
             imageSide: "left",
+            alt: "Illustration of the UI listing of an application with buttons to open, fork, view source, or discuss. Behind it there are images of code brackets and a git-fork icon. ",
           }}
         />
       </Container>
@@ -870,8 +879,9 @@ return (
                 </div>
               </>
             ),
-            image: returnIpfsImage(ipfsImages.illustrations.placeholder),
+            image: returnIpfsImage(ipfsImages.illustrations.gateways),
             imageSide: "right",
+            alt: "Illustration of a search bar above two buttons for GitHub and Deploy",
           }}
         />
 
@@ -902,8 +912,9 @@ return (
                 </div>
               </>
             ),
-            image: returnIpfsImage(ipfsImages.illustrations.placeholder),
+            image: returnIpfsImage(ipfsImages.illustrations.fastAuth),
             imageSide: "left",
+            alt: "Illustration of the FastAuth UI showing the stage allowing user to connect their account to a dApp.",
           }}
         />
       </Container>

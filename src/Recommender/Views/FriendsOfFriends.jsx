@@ -88,10 +88,6 @@ const getRecommendedUsers = (page) => {
         const parsedResults = JSON.parse(res.body);
         const totalPageNum = parsedResults.total_pages || 10;
         updateState(parsedResults.data, totalPageNum);
-      } else {
-        console.log(
-          "Error fetching data. Try reloading the page, or no data available."
-        );
       }
     } else {
       asyncFetch(url).then((res) => {
@@ -99,10 +95,6 @@ const getRecommendedUsers = (page) => {
           const parsedResults = JSON.parse(res.body);
           const totalPageNum = parsedResults.total_pages || 10;
           updateState(parsedResults.data, totalPageNum);
-        } else {
-          console.log(
-            "Error fetching data. Try reloading the page, or no data available."
-          );
         }
       });
     }
@@ -128,7 +120,19 @@ return (
     {state.isLoading && <p>Loading...</p>}
     {state.error && <p>Error: {state.error}</p>}
     <Profiles>
-      {!state.isLoading && displayedUsers.length > 2 ? (
+      {!state.isLoading && displayedUsers.length < 4 ? (
+        <>
+          {!state.isLoading && (
+            <div style={{ width: "100vw" }}>
+              Follow More Users to Unlock More Personalized Recommendations, See
+              Who’s
+              <a href="https://near.org/${REPL_ACCOUNT}/widget/PeoplePage?tab=trending">
+                Trending
+              </a>
+            </div>
+          )}
+        </>
+      ) : (
         displayedUsers.map((user, index) => (
           <Profile key={index}>
             <Widget
@@ -156,19 +160,7 @@ return (
             />
           </Profile>
         ))
-        ) : (
-          <>
-            {!state.isLoading && (
-              <div style={{ width: "100vw" }}>
-                Follow More Users to Unlock More Personalized Recommendations, See
-                Who’s
-                <a href="https://near.org/${REPL_ACCOUNT}/widget/PeoplePage?tab=trending">
-                  Trending
-                </a>
-              </div>
-            )}
-          </>
-        )}
+      )}
     </Profiles>
     {!props.returnElements && state.currentPage < state.totalPages ? (
       <Button type="button" onClick={() => loadMore()}>

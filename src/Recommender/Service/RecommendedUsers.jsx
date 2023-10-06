@@ -102,21 +102,14 @@ const getRecommendedUsers = (page) => {
         const parsedResults = JSON.parse(res.body);
         const totalPageNum = parsedResults.total_pages || 10;
         updateState(parsedResults.data, totalPageNum);
-      } else {
-        console.log(
-          res,
-          "Error fetching data. Try reloading the page, or no data available."
-        );
-      }
+      } 
     } else {
       asyncFetch(url).then((res) => {
         if (res.ok) {
           const parsedResults = JSON.parse(res.body);
           const totalPageNum = parsedResults.total_pages || 10;
           updateState(parsedResults.data, totalPageNum);
-        } else {
-          console.log(res, "Error fetching data. Try reloading the page.");
-        }
+        } 
       });
     }
   } catch (error) {

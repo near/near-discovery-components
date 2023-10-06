@@ -1,15 +1,22 @@
-const isLocalStorageSupported = props?.isLocalStorageSupported;
-const isNotificationSupported = props?.isNotificationSupported;
-const isPermisionGranted = props?.isPermisionGranted;
-const isPushManagerSupported = props?.isPushManagerSupported;
-const handleTurnOn = props?.handleTurnOn;
-const handleOnCancel = props?.handleOnCancel;
-const getNotificationLocalStorage = props?.getNotificationLocalStorage;
-const handleOnCancelBanner = props?.handleOnCancelBanner;
-const accountId = props?.accountId;
-const showLimit = props?.showLimit;
-const showInBox = props?.showInBox || false;
-const bannerBorderRadius = props?.bannerBorderRadius;
+let {
+  isLocalStorageSupported,
+  isNotificationSupported,
+  isPermisionGranted,
+  isPushManagerSupported,
+  handleTurnOn,
+  handleOnCancel,
+  getNotificationLocalStorage,
+  handleOnCancelBanner,
+  accountId,
+  showLimit,
+  showInBox,
+  bannerBorderRadius,
+  iOSDevice,
+  iOSVersion,
+  recomendedIOSVersion,
+} = props;
+
+showInBox = showInBox ?? false;
 
 const Header = styled.div`
   display: flex;
@@ -88,6 +95,9 @@ return (
             checkShowBanner();
           },
           radius: bannerBorderRadius,
+          iOSDevice,
+          iOSVersion,
+          recomendedIOSVersion,
         }}
       />
     )}

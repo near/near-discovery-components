@@ -1,18 +1,41 @@
-const isLocalStorageSupported = props?.isLocalStorageSupported;
-const isNotificationSupported = props?.isNotificationSupported;
-const isPermisionGranted = props?.isPermisionGranted;
-const isPushManagerSupported = props?.isPushManagerSupported;
-const handleTurnOn = props?.handleTurnOn;
-const handleOnCancel = props?.handleOnCancel;
-const getNotificationLocalStorage = props?.getNotificationLocalStorage;
-const handleOnCancelBanner = props?.handleOnCancelBanner;
-const accountId = props?.accountId;
-const handlePushManagerUnsubscribe = props?.handlePushManagerUnsubscribe;
+let {
+  isLocalStorageSupported,
+  isNotificationSupported,
+  isPermisionGranted,
+  isPushManagerSupported,
+  handleTurnOn,
+  handleOnCancel,
+  getNotificationLocalStorage,
+  handleOnCancelBanner,
+  accountId,
+  handlePushManagerUnsubscribe,
+  iOSDevice,
+} = props;
 
 const Card = styled.div`
   max-width: 592px;
   margin: 0 auto;
 `;
+
+const Text = styled.div`
+  font: var(--text-s);
+  color: var(--sand11);
+  font-weight: 450;
+`;
+
+const SettingHeaderContent = () => {
+  if (iOSDevice) {
+    return (
+      <Text>
+        <i class="ph-bold ph-info" />
+        In order to enable Mobile Browser notifications on iOS, you will also need
+        to add near.org as a icon to your home screen. Click on the share icon,
+        and then tap on <b>"Add to Home Screen"</b>
+      </Text>
+    );
+  }
+  return null;
+};
 
 // TODO: solution to pass data to this component
 // at this moment we don't have a simple solution to pass data to this component
@@ -41,6 +64,7 @@ return (
       props={{
         title: "Notification Settings",
         text: "Configure your notifications for activity on near.org",
+        content: <SettingHeaderContent />
       }}
     />
 

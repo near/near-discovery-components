@@ -47,14 +47,6 @@ const Text = styled.p`
       outline: none;
     }
   }
-
-  ${(p) =>
-    p.flex &&
-    `
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  `}
 `;
 const Flex = styled.div`
   display: flex;
@@ -64,15 +56,15 @@ const Flex = styled.div`
   flex-direction: ${(p) => p.direction ?? "row"};
   flex-wrap: ${(p) => p.wrap ?? "nowrap"};
 
-  ${(p) =>
-    p.mobileStack &&
-    `
-    @media (max-width: 900px) {
-      flex-direction: column;
-      gap: ${(p) =>
-        p.mobileStack === true ? "var(--section-gap)" : p.mobileStack};
-    }
-  `}
+  @media (max-width: 900px) {
+    flex-direction: ${(p) => (p.mobileStack ? "column" : p.direction ?? "row")};
+    gap: ${(p) =>
+      p.mobileStack === true
+        ? "var(--section-gap)"
+        : p.mobileStack
+        ? p.mobileStack
+        : p.gap};
+  }
 `;
 const Section = styled.div`
   display: flex;

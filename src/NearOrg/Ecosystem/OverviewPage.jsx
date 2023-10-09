@@ -49,14 +49,6 @@ const Text = styled.p`
       outline: none;
     }
   }
-
-  ${(p) =>
-    p.flex &&
-    `
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  `}
 `;
 const Small = styled.span`
   font: inherit;
@@ -72,15 +64,15 @@ const Flex = styled.div`
   flex-direction: ${(p) => p.direction ?? "row"};
   flex-wrap: ${(p) => p.wrap ?? "nowrap"};
 
-  ${(p) =>
-    p.mobileStack &&
-    `
-    @media (max-width: 900px) {
-      flex-direction: column;
-      gap: ${(p) =>
-        p.mobileStack === true ? "var(--section-gap)" : p.mobileStack};
-    }
-  `}
+  @media (max-width: 900px) {
+    flex-direction: ${(p) => (p.mobileStack ? "column" : p.direction ?? "row")};
+    gap: ${(p) =>
+      p.mobileStack === true
+        ? "var(--section-gap)"
+        : p.mobileStack
+        ? p.mobileStack
+        : p.gap};
+  }
 `;
 const Section = styled.div`
   display: flex;
@@ -156,10 +148,6 @@ const navLinks = [
   {
     name: "Regional hubs",
     href: "anker_regional_hubs",
-  },
-  {
-    name: "Web3 career",
-    href: "anker_web3_career",
   },
   {
     name: "Web3 career",

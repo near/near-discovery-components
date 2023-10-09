@@ -6,6 +6,7 @@ const blockHeight =
   props.blockHeight === "now" ? "now" : parseInt(props.blockHeight);
 const notifyAccountId = accountId;
 const postUrl = `https://${REPL_NEAR_URL}/s/p?a=${accountId}&b=${blockHeight}`;
+const showFlagAccountFeature = props.showFlagAccountFeature;
 
 State.init({
   hasBeenFlagged: false,
@@ -240,6 +241,7 @@ return (
                   {false && edits.length > 0 && <Text as="span">･ Edited</Text>}
                 </>
               ),
+              showFlagAccountFeature,
             }}
           />
         </div>

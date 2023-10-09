@@ -482,6 +482,7 @@ return (
             hasMore,
             loadMorePosts,
             posts: state.posts,
+            showFlagAccountFeature: props.showFlagAccountFeature
           }}
         />
       </FeedWrapper>

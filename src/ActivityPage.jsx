@@ -26,7 +26,7 @@ function fetchGraphQL(operationsDoc, operationName, variables) {
 const lastPostQuery = `
 query IndexerQuery {
   dataplatform_near_social_feed_posts( limit: 1, order_by: { block_height: desc }) {
-      block_height 
+      block_height
   }
 }
 `;
@@ -198,13 +198,17 @@ return (
       </Section>
       <Section negativeMargin primary active={state.selectedTab === "posts"}>
         {state.shouldFallback == true ? (
-          <Widget src={`${REPL_ACCOUNT}/widget/v1.Posts`} />
+          <Widget
+            src={`${REPL_ACCOUNT}/widget/v1.Posts`}
+            props={{ showFlagAccountFeature: true }}
+          />
         ) : (
           <Widget
             src={`${REPL_ACCOUNT}/widget/Posts`}
             props={{
               GRAPHQL_ENDPOINT,
               accountsFollowing,
+              showFlagAccountFeature: true,
             }}
           />
         )}

@@ -28,7 +28,11 @@ const reportAccountWithPosts = () => {
   socialSet({
     index: {
       moderation: JSON.stringify({
-        [reportedAccountId]: "report",
+        key: "reported",
+        value: {
+          path: reportedAccountId,
+          label: "report",
+        },
       }),
     },
     moderation: {

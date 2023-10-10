@@ -167,7 +167,7 @@ const sections = [
       },
       {
         title: "News",
-        url: "https://near.org/nearweekapp.near/widget/nearweek-news",
+        url: "/nearweekapp.near/widget/NEARWEEKNews",
       },
       {
         title: "Events",

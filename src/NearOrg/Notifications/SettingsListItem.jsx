@@ -1,5 +1,5 @@
 // This component will be shown to users who have enabled notifications in browser settings
-let { label, handleOnClick, loading } = props;
+let { label, handleOnClick, loading, disabled } = props;
 
 const Card = styled.div`
   display: flex;
@@ -75,6 +75,7 @@ return (
         variant: "primary",
         onClick: handleOnClick,
         loading,
+        disabled,
       }}
     />
   </Card>

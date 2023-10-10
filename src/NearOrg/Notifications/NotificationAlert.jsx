@@ -10,10 +10,12 @@ let {
   iOSDevice,
   iOSVersion,
   recomendedIOSVersion,
+  loading,
 } = props;
 
 const showIosNoteText =
-  (iOSDevice && !iOSVersion) || (iOSDevice && iOSVersion && iOSVersion < recomendedIOSVersion);
+  (iOSDevice && !iOSVersion) ||
+  (iOSDevice && iOSVersion && iOSVersion < recomendedIOSVersion);
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -65,8 +67,8 @@ const Description = () => (
     {showIosNoteText && (
       <NoteText>
         <i class="ph-bold ph-info" />
-        Mobile browser push notifications are only supported on iOS "{recomendedIOSVersion}" or
-        greater.
+        Mobile browser push notifications are only supported on iOS "
+        {recomendedIOSVersion}" or greater.
       </NoteText>
     )}
   </>
@@ -76,10 +78,12 @@ const actionStyles = {
   flexDirection: "column-reverse",
 };
 
-const iOSContentStyles = iOSDevice ? {
-  top: "calc(100% - 225px)",
-  height: "65vh",
-} : {};
+const iOSContentStyles = iOSDevice
+  ? {
+      top: "calc(100% - 225px)",
+      height: "65vh",
+    }
+  : {};
 
 const CancelButton = ({ handleOnCancel }) => (
   <Widget
@@ -90,6 +94,7 @@ const CancelButton = ({ handleOnCancel }) => (
       fill: "ghost",
       onClick: handleOnCancel,
       style: { width: "100%" },
+      loading,
     }}
   />
 );
@@ -102,6 +107,7 @@ const ConfirmButton = ({ handleTurnOn }) => (
       variant: "primary",
       onClick: handleTurnOn,
       style: { width: "100%" },
+      loading,
     }}
   />
 );

@@ -10,7 +10,11 @@ let {
   accountId,
   handlePushManagerUnsubscribe,
   iOSDevice,
+  loading,
+  disabled,
 } = props;
+
+const notificationSupported = isNotificationSupported();
 
 const Wrapper = styled.div`
   display: flex;
@@ -36,8 +40,8 @@ const IosNotification = () => (
   <Text>
     <i class="ph-bold ph-info" />
     In order to enable Mobile Browser notifications on iOS, you will also need
-    to add near.org as a icon to your home screen. Click on the share icon,
-    and then tap on <b>"Add to Home Screen"</b>
+    to add near.org as a icon to your home screen. Click on the share icon, and
+    then tap on <b>"Add to Home Screen"</b>
   </Text>
 );
 
@@ -47,7 +51,9 @@ const SettingHeaderContent = () => {
       {iOSDevice && <IosNotification />}
       <Text>
         Learn more about notifications
-        <TextLink href="https://near.org/blog/announcing-web-push-notifications-on-b-o-s">here</TextLink>
+        <TextLink href="https://near.org/blog/announcing-web-push-notifications-on-b-o-s">
+          here
+        </TextLink>
       </Text>
     </>
   );
@@ -80,7 +86,7 @@ return (
       props={{
         title: "Notification Settings",
         text: "Configure your notifications for activity on near.org",
-        content: <SettingHeaderContent />
+        content: <SettingHeaderContent />,
       }}
     />
 
@@ -92,6 +98,8 @@ return (
             handleTurnOn(accountId, checkShow);
           },
           label: "Turn On",
+          loading,
+          disabled,
         }}
       />
     )}
@@ -103,11 +111,18 @@ return (
             handlePushManagerUnsubscribe(checkShow);
           },
           label: "Turn Off",
+          loading,
+          disabled,
         }}
       />
     )}
-    {isNotificationSupported || (
-      <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.SettingsTurnOn" />
+    {!notificationSupported && (
+      <Widget
+        src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.SettingsTurnOn"
+        props={{
+          iOSDevice,
+        }}
+      />
     )}
   </Wrapper>
 );

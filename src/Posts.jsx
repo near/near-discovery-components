@@ -147,7 +147,7 @@ const createQuery = (type) => {
 
   const indexerQueries = `
 query GetPostsQuery($offset: Int, $limit: Int) {
-  dataplatform_near_social_feed_posts(order_by: [${querySortOption} { block_height: desc }], offset: $offset, limit: $limit) {
+  dataplatform_near_social_feed_moderated_posts(order_by: [${querySortOption} { block_height: desc }], offset: $offset, limit: $limit) {
     account_id
     block_height
     block_timestamp
@@ -167,14 +167,14 @@ query GetPostsQuery($offset: Int, $limit: Int) {
       human_verification_level
     }
   }
-  dataplatform_near_social_feed_posts_aggregate(order_by: [${querySortOption} { block_height: desc }], offset: $offset){
+  dataplatform_near_social_feed_moderated_posts_aggregate {
     aggregate {
       count
     }
   }
 }
 query GetFollowingPosts($offset: Int, $limit: Int) {
-  dataplatform_near_social_feed_posts(where: {${queryFilter}}, order_by: [{ block_height: desc }], offset: $offset, limit: $limit) {
+  dataplatform_near_social_feed_moderated_posts(where: {${queryFilter}}, order_by: [{ block_height: desc }], offset: $offset, limit: $limit) {
     account_id
     block_height
     block_timestamp
@@ -195,7 +195,7 @@ query GetFollowingPosts($offset: Int, $limit: Int) {
     }
 
   }
-  dataplatform_near_social_feed_posts_aggregate(where: {${queryFilter}}, order_by: [{ block_height: desc }], offset: $offset) {
+  dataplatform_near_social_feed_moderated_posts_aggregate(where: {${queryFilter}}) {
     aggregate {
       count
     }
@@ -227,9 +227,9 @@ const loadMorePosts = () => {
       }
       let data = result.body.data;
       if (data) {
-        const newPosts = data.dataplatform_near_social_feed_posts;
+        const newPosts = data.dataplatform_near_social_feed_moderated_posts;
         const postsCountLeft =
-          data.dataplatform_near_social_feed_posts_aggregate.aggregate.count;
+          data.dataplatform_near_social_feed_moderated_posts_aggregate.aggregate.count;
         if (newPosts.length > 0) {
           let filteredPosts = newPosts.filter((i) => !shouldFilter(i));
           filteredPosts = filteredPosts.map((post) => {

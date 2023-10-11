@@ -165,7 +165,7 @@ return (
         {state.userData.map((user, index) => (
           <Profile key={index}>
             <Widget
-              src="scopalaffairs.near/widget/Recommender.Account.AccountProfileSidebar"
+              src="${REPL_ACCOUNT}/widget/Recommender.Account.AccountProfileSidebar"
               props={{
                 accountId:
                   user.recommended_profile ||

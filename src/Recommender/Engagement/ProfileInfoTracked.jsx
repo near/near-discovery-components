@@ -65,15 +65,14 @@ const AvatarCount = styled.div`
   padding-left: 12px;
 `;
 
+const Tracker = styled.div`
+  display: flex;
+  flexdirection: column;
+  justifycontent: space-between;
+`;
+
 return (
-  <div
-    onClick={handleClick}
-    style={{
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "space-between",
-    }}
-  >
+  <Tracker onClick={handleClick}>
     <Widget
       src="${REPL_ACCOUNT}/widget/Recommender.Service.EngagementTracker"
       props={{
@@ -123,5 +122,5 @@ return (
         ago
       </Text>
     )}
-  </div>
+  </Tracker>
 );

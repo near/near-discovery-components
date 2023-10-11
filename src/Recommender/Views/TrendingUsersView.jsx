@@ -125,7 +125,7 @@ return (
         <p>
           Follow More Users to Unlock More Personalized Recommendations, See
           Who’s
-          <a href="https://near.org/${REPL_ACCOUNT}/widget/PeoplePage?tab=trending">
+          <a href="https://${REPL_NEAR_URL}/${REPL_ACCOUNT}/widget/PeoplePage?tab=trending">
             Trending
           </a>
         </p>

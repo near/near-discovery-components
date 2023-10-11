@@ -173,6 +173,14 @@ const sections = [
         title: "Events",
         url: "/events",
       },
+      {
+        title: "People",
+        url: "/people",
+      },
+      {
+        title: "Founders",
+        url: "/horizon",
+      },
     ],
   },
   {

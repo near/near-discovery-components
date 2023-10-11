@@ -133,8 +133,8 @@ return (
           )}
         </>
       ) : (
-        displayedUsers.map((user, index) => (
-          <Profile key={index}>
+        displayedUsers.map((user, rank) => (
+          <Profile key={rank}>
             <Widget
               src="${REPL_ACCOUNT}/widget/Recommender.Account.AccountProfileLargeCard"
               props={{
@@ -142,7 +142,7 @@ return (
                   user.recommended_profile ||
                   user.similar_profile ||
                   user.signer_id,
-                accountIdRank: index + 1,
+                accountIdRank: rank + 1,
                 showTags: true,
                 showFollowerStats: true,
                 showFollowButton: state.multiSelectMode === false,

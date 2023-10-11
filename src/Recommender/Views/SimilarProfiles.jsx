@@ -144,7 +144,7 @@ return (
         displayedUsers.map((user, index) => (
           <Profile key={index}>
             <Widget
-              src="scopalaffairs.near/widget/Recommender.Account.AccountProfileLargeCard"
+              src="${REPL_ACCOUNT}/widget/Recommender.Account.AccountProfileLargeCard"
               props={{
                 accountId:
                   user.recommended_profile ||

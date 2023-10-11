@@ -289,7 +289,7 @@ const IconCircle = styled.div`
   width: 64px;
   height: 64px;
   border-radius: 100%;
-  border: 1px solid var(--sand9);
+  border: 1px solid var(--sand11);
 
   i {
     color: var(--sand11);

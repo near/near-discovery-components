@@ -5,9 +5,9 @@ const ipfsImages = {
     nui: "bafkreiefq7qqug2f657fdb5fyuaf5uesybwn7qu3ebxvmo47dhcsxu27vm",
   },
   community: {
-    devHub: "bafkreifnk4tpvk5uvdm6gwun5hflgn2f4uh6m6qmnhcitzqhyh67jdspae",
+    devHub: "bafkreifdsmtvi7mpovau5asmaabibk6cvtqvujuunjjlazqov32wng34q4",
     horizon: "bafkreiguqynoybtr6esvnyetcaayke5gsh5ex7lk4efjgunnyw6unszin4",
-    ndc: "bafkreiafoftreo2t7hutdbtbehyvh3imwg2opxp6dzsjfen7jxu5a5yqpi",
+    ndc: "bafkreigqrtvkwu4uzjzg7nrv3ivsb2uthvcozici34loxumkpekz7weyly",
   },
   illustrations: {
     betterWayToBuild:
@@ -380,14 +380,13 @@ const CardThumbnail = styled.div`
 `;
 
 const Stats = styled.div`
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 80px;
 
   div {
-    text-align: center;
-
     p:first-child {
+      font-family: "FK Grotesk";
       font-size: 100px;
       font-weight: 500;
       line-height: 100%;
@@ -402,7 +401,8 @@ const Stats = styled.div`
   }
 
   @media (max-width: 900px) {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+    gap: 80px;
   }
 `;
 
@@ -413,7 +413,7 @@ const IconCircle = styled.div`
   width: 64px;
   height: 64px;
   border-radius: 100%;
-  border: 1px solid var(--sand9);
+  border: 1px solid var(--sand11);
 
   i {
     color: var(--sand11);
@@ -433,6 +433,12 @@ const Article = styled.a`
     h3 {
       text-decoration: underline;
     }
+
+    div:first-child {
+      &::before {
+        opacity: 1;
+      }
+    }
   }
 
   &:focus {
@@ -449,12 +455,26 @@ const ArticleImage = styled.div`
   height: 220px;
   transition: all 200ms;
   margin-bottom: 10px;
+  position: relative;
 
   img {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    position: relative;
+    z-index: 5;
+  }
+
+  &::before {
+    content: "";
+    display: block;
+    inset: 0;
+    background: var(--whiteA6);
+    z-index: 10;
+    position: absolute;
+    opacity: 0;
+    transition: all 200ms;
   }
 `;
 
@@ -664,6 +684,7 @@ return (
                 props={{
                   as: "a",
                   href: app.url,
+                  style: { borderColor: "var(--sand12)" },
                   children: (
                     <>
                       <Flex alignItems="center" gap="24px">
@@ -886,7 +907,7 @@ return (
               </>
             ),
             image: returnIpfsImage(ipfsImages.illustrations.gateways),
-            imageSide: "right",
+            imageSide: "left",
             alt: "Illustration of a search bar above two buttons for GitHub and Deploy",
           }}
         />
@@ -919,7 +940,7 @@ return (
               </>
             ),
             image: returnIpfsImage(ipfsImages.illustrations.fastAuth),
-            imageSide: "left",
+            imageSide: "right",
             alt: "Illustration of the FastAuth UI showing the stage allowing user to connect their account to a dApp.",
           }}
         />
@@ -958,7 +979,7 @@ return (
       </Container>
     </Section>
 
-    <Section backgroundColor="#161615">
+    <Section backgroundColor="#161615" style={{ "--sand11": "#A1A09A" }}>
       <Container>
         <Flex direction="column" gap="24px">
           <H2 style={{ color: "var(--white)" }}>
@@ -975,30 +996,32 @@ return (
           </Text>
         </Flex>
 
-        <Flex direction="column" gap="24px">
-          <Flex alignItems="center" gap="12px">
-            <i
-              className="ph-duotone ph-book-open-text"
-              style={{ color: "var(--white)", fontSize: "32px" }}
-            />
-            <Text size="text-xl" fontWeight="600" color="white">
-              Learn
-            </Text>
-          </Flex>
+        <Flex direction="column" gap="24px" mobileGap="48px">
+          <Flex direction="column" gap="24px">
+            <Flex alignItems="center" gap="12px">
+              <i
+                className="ph-duotone ph-book-open-text"
+                style={{ color: "var(--white)", fontSize: "32px" }}
+              />
+              <Text size="text-xl" fontWeight="600" color="white">
+                Learn
+              </Text>
+            </Flex>
 
-          <Flex
-            gap="24px"
-            alignItems="flex-end"
-            mobileStack
-            mobileAlignItems="flex-start"
-          >
-            <Text
-              style={{ maxWidth: "393px", marginRight: "auto" }}
-              color="white"
+            <Flex
+              gap="24px"
+              alignItems="flex-end"
+              mobileStack
+              mobileAlignItems="flex-start"
             >
-              Everything you need to know about NEAR from ongoing developments
-              to the latest updates.
-            </Text>
+              <Text
+                style={{ maxWidth: "393px", marginRight: "auto" }}
+                color="white"
+              >
+                Everything you need to know about NEAR from ongoing developments
+                to the latest updates.
+              </Text>
+            </Flex>
           </Flex>
 
           <Grid columns="1fr 1fr 1fr" gap="24px">
@@ -1033,41 +1056,43 @@ return (
           </Grid>
         </Flex>
 
-        <Flex direction="column" gap="24px">
-          <Flex alignItems="center" gap="12px">
-            <i
-              className="ph-duotone ph-users-three"
-              style={{ color: "var(--white)", fontSize: "32px" }}
-            />
-            <Text size="text-xl" fontWeight="600" color="white">
-              Community
-            </Text>
-          </Flex>
+        <Flex direction="column" gap="24px" mobileGap="48px">
+          <Flex direction="column" gap="24px">
+            <Flex alignItems="center" gap="12px">
+              <i
+                className="ph-duotone ph-users-three"
+                style={{ color: "var(--white)", fontSize: "32px" }}
+              />
+              <Text size="text-xl" fontWeight="600" color="white">
+                Community
+              </Text>
+            </Flex>
 
-          <Flex
-            gap="24px"
-            alignItems="flex-end"
-            mobileStack
-            mobileAlignItems="flex-start"
-          >
-            <Text
-              style={{ maxWidth: "393px", marginRight: "auto" }}
-              color="white"
+            <Flex
+              gap="24px"
+              alignItems="flex-end"
+              mobileStack
+              mobileAlignItems="flex-start"
             >
-              Connect with people to help you on your journey across the open
-              web.
-            </Text>
+              <Text
+                style={{ maxWidth: "393px", marginRight: "auto" }}
+                color="white"
+              >
+                Connect with people to help you on your journey across the open
+                web.
+              </Text>
 
-            <Widget
-              src="${REPL_ACCOUNT}/widget/DIG.Button"
-              props={{
-                href: "/ecosystem",
-                label: "Explore the Ecosystem",
-                variant: "affirmative",
-                size: "large",
-                className: "darkButton",
-              }}
-            />
+              <Widget
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
+                props={{
+                  href: "/ecosystem",
+                  label: "Explore the Ecosystem",
+                  variant: "affirmative",
+                  size: "large",
+                  className: "darkButton",
+                }}
+              />
+            </Flex>
           </Flex>
 
           <Grid columns="1fr 1fr 1fr" gap="24px">
@@ -1108,44 +1133,46 @@ return (
           </Grid>
         </Flex>
 
-        <Flex direction="column" gap="24px">
-          <Flex alignItems="center" gap="12px">
-            <i
-              className="ph-duotone ph-newspaper"
-              style={{ color: "var(--white)", fontSize: "32px" }}
-            />
-            <Text size="text-xl" fontWeight="600" color="white">
-              News
-            </Text>
-          </Flex>
+        <Flex direction="column" gap="24px" mobileGap="48px">
+          <Flex direction="column" gap="24px">
+            <Flex alignItems="center" gap="12px">
+              <i
+                className="ph-duotone ph-newspaper"
+                style={{ color: "var(--white)", fontSize: "32px" }}
+              />
+              <Text size="text-xl" fontWeight="600" color="white">
+                News
+              </Text>
+            </Flex>
 
-          <Flex
-            gap="24px"
-            alignItems="flex-end"
-            mobileStack
-            mobileAlignItems="flex-start"
-          >
-            <Text
-              style={{ maxWidth: "393px", marginRight: "auto" }}
-              color="white"
+            <Flex
+              gap="24px"
+              alignItems="flex-end"
+              mobileStack
+              mobileAlignItems="flex-start"
             >
-              Catch up on the latest news and announcements from around the
-              ecosystem.
-            </Text>
+              <Text
+                style={{ maxWidth: "393px", marginRight: "auto" }}
+                color="white"
+              >
+                Catch up on the latest news and announcements from around the
+                ecosystem.
+              </Text>
 
-            <Widget
-              src="${REPL_ACCOUNT}/widget/DIG.Button"
-              props={{
-                href: "/nearweekapp.near/widget/nearweek-news",
-                label: "All News",
-                variant: "affirmative",
-                size: "large",
-                className: "darkButton",
-              }}
-            />
+              <Widget
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
+                props={{
+                  href: "/nearweekapp.near/widget/nearweek-news",
+                  label: "All News",
+                  variant: "affirmative",
+                  size: "large",
+                  className: "darkButton",
+                }}
+              />
+            </Flex>
           </Flex>
 
-          <Grid columns="1fr 1fr 1fr" gap="24px">
+          <Grid columns="1fr 1fr 1fr" gap="24px" mobileGap="48px">
             <Widget
               src="${REPL_ACCOUNT}/widget/NearOrg.LatestNews"
               props={{
@@ -1168,6 +1195,13 @@ return (
                           size="text-l"
                           fontWeight="500"
                           as="h3"
+                          style={{
+                            display: "-webkit-box",
+                            maxWidth: "100%",
+                            "-webkit-line-clamp": "2",
+                            "-webkit-box-orient": "vertical",
+                            overflow: "hidden",
+                          }}
                         >
                           {post.title}
                         </Text>
@@ -1180,44 +1214,46 @@ return (
           </Grid>
         </Flex>
 
-        <Flex direction="column" gap="24px">
-          <Flex alignItems="center" gap="12px">
-            <i
-              className="ph-duotone ph-calendar-blank"
-              style={{ color: "var(--white)", fontSize: "32px" }}
-            />
-            <Text size="text-xl" fontWeight="600" color="white">
-              Events
-            </Text>
-          </Flex>
+        <Flex direction="column" gap="24px" mobileGap="48px">
+          <Flex direction="column" gap="24px">
+            <Flex alignItems="center" gap="12px">
+              <i
+                className="ph-duotone ph-calendar-blank"
+                style={{ color: "var(--white)", fontSize: "32px" }}
+              />
+              <Text size="text-xl" fontWeight="600" color="white">
+                Events
+              </Text>
+            </Flex>
 
-          <Flex
-            gap="24px"
-            alignItems="flex-end"
-            mobileStack
-            mobileAlignItems="flex-start"
-          >
-            <Text
-              style={{ maxWidth: "393px", marginRight: "auto" }}
-              color="white"
+            <Flex
+              gap="24px"
+              alignItems="flex-end"
+              mobileStack
+              mobileAlignItems="flex-start"
             >
-              Join us at conferences, meetups, and more as we gather across the
-              globe.
-            </Text>
+              <Text
+                style={{ maxWidth: "393px", marginRight: "auto" }}
+                color="white"
+              >
+                Join us at conferences, meetups, and more as we gather across
+                the globe.
+              </Text>
 
-            <Widget
-              src="${REPL_ACCOUNT}/widget/DIG.Button"
-              props={{
-                href: "/events",
-                label: "All Events",
-                variant: "affirmative",
-                size: "large",
-                className: "darkButton",
-              }}
-            />
+              <Widget
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
+                props={{
+                  href: "/events",
+                  label: "All Events",
+                  variant: "affirmative",
+                  size: "large",
+                  className: "darkButton",
+                }}
+              />
+            </Flex>
           </Flex>
 
-          <Grid columns="1fr 1fr 1fr" gap="24px">
+          <Grid columns="1fr 1fr 1fr" gap="24px" mobileGap="48px">
             <Widget
               src="${REPL_ACCOUNT}/widget/NearOrg.LatestEvents"
               props={{
@@ -1228,6 +1264,7 @@ return (
                         key={event.title}
                         href={event.url}
                         target="_blank"
+                        style={{ minWidth: 0 }}
                       >
                         <ArticleImage>
                           <img src={event.thumbnail} />
@@ -1240,22 +1277,43 @@ return (
                         >
                           {event.title}
                         </Text>
-                        <Flex alignItems="center" gap="32px">
+                        <Flex
+                          alignItems="center"
+                          gap="32px"
+                          style={{ minWidth: 0 }}
+                        >
                           <Flex alignItems="center" gap="8px">
                             <i
                               className="ph-bold ph-calendar-blank"
                               style={{ color: "var(--white)" }}
                             />
-                            <Text color="sand11" size="text-s">
+                            <Text
+                              color="sand11"
+                              size="text-s"
+                              style={{ whiteSpace: "nowrap" }}
+                            >
                               {event.date}
                             </Text>
                           </Flex>
-                          <Flex alignItems="center" gap="8px">
+                          <Flex
+                            alignItems="center"
+                            gap="8px"
+                            style={{ minWidth: 0 }}
+                          >
                             <i
                               className="ph-bold ph-map-pin-line"
                               style={{ color: "var(--white)" }}
                             />
-                            <Text color="sand11" size="text-s">
+                            <Text
+                              color="sand11"
+                              size="text-s"
+                              style={{
+                                whiteSpace: "nowrap",
+                                minWidth: 0,
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                              }}
+                            >
                               {event.location}
                             </Text>
                           </Flex>

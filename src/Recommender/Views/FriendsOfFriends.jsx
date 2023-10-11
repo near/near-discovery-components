@@ -115,10 +115,13 @@ if (state.isLoading) {
   getRecommendedUsers(state.currentPage);
 }
 
+if (state.error) {
+  console.error("Error, try again later", state.error);
+}
+
 return (
   <RecommendedUsers>
     {state.isLoading && <p>Loading...</p>}
-    {state.error && <p>Error: {state.error}</p>}
     <Profiles>
       {!state.isLoading && displayedUsers.length < 4 ? (
         <>

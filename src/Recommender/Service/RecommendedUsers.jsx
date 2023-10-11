@@ -129,6 +129,10 @@ if (state.isLoading) {
   getRecommendedUsers(state.currentPage);
 }
 
+if (state.error) {
+  console.error("Error, try again later", state.error);
+}
+
 const handleFollowed = (accountId) => {
   const updatedUsers = state.displayedUsers.filter(
     (user) => (user.recommended_profile || user.similar_profile) !== accountId
@@ -141,7 +145,6 @@ const handleFollowed = (accountId) => {
 return (
   <RecommendedUsers>
     {state.isLoading && <p>Loading...</p>}
-    {state.error && <p>Error: {state.error}</p>}
     <Profiles>
       {!state.isLoading && state.displayedUsers.length < 4 ? (
         <>

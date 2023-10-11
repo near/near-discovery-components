@@ -115,10 +115,13 @@ if (state.isLoading) {
   getRecommendedUsers(state.currentPage);
 }
 
+if (state.error) {
+  console.error("Error, try again later", state.error);
+}
+
 return (
   <RecommendedUsers>
     {state.isLoading && displayedUsers.length == null && <p>Loading...</p>}
-    {state.error && <p>Error: {state.error}</p>}
     {(displayedUsers.length < 4 || displayedUsers == null) &&
       state.isLoading &&
       (props.scope == "friends" || props.scope === "similar") && (

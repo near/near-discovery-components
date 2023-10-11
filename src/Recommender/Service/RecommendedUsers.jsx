@@ -102,14 +102,14 @@ const getRecommendedUsers = (page) => {
         const parsedResults = JSON.parse(res.body);
         const totalPageNum = parsedResults.total_pages || 10;
         updateState(parsedResults.data, totalPageNum);
-      } 
+      }
     } else {
       asyncFetch(url).then((res) => {
         if (res.ok) {
           const parsedResults = JSON.parse(res.body);
           const totalPageNum = parsedResults.total_pages || 10;
           updateState(parsedResults.data, totalPageNum);
-        } 
+        }
       });
     }
   } catch (error) {
@@ -143,34 +143,48 @@ return (
     {state.isLoading && <p>Loading...</p>}
     {state.error && <p>Error: {state.error}</p>}
     <Profiles>
-      {state.displayedUsers.map((user, index) => (
-        <Profile key={index}>
-          <Widget
-            src="${REPL_ACCOUNT}/widget/Recommender.Account.AccountProfileSidebar"
-            props={{
-              accountId: user.recommended_profile || user.similar_profile,
-              accountIdRank: index + 1,
-              showTags: true,
-              showFollowerStats: true,
-              showFollowButton: state.multiSelectMode === false,
-              followsYou: user.follows_you || null,
-              becauseYouFollow: user.because_you_follow || null,
-              likers: user.likers || null,
-              followers: user.followers || null,
-              following: user.following || null,
-              profileImage: user.profileImage || null,
-              profileName: user.profileName || null,
-              sidebar: props.sidebar || null,
-              scope: props.scope || null,
-              fromContext: fromContext,
-              onFollowed: () =>
-                handleFollowed(
-                  user.recommended_profile || user.similar_profile
-                ),
-            }}
-          />
-        </Profile>
-      ))}
+      {!state.isLoading && state.displayedUsers.length < 4 ? (
+        <>
+          {!state.isLoading && (
+            <div>
+              Follow More Users to Unlock More Personalized Recommendations, See
+              Who’s
+              <a href="https://near.org/${REPL_ACCOUNT}/widget/PeoplePage?tab=trending">
+                Trending
+              </a>
+            </div>
+          )}
+        </>
+      ) : (
+        state.displayedUsers.map((user, index) => (
+          <Profile key={index}>
+            <Widget
+              src="${REPL_ACCOUNT}/widget/Recommender.Account.AccountProfileSidebar"
+              props={{
+                accountId: user.recommended_profile || user.similar_profile,
+                accountIdRank: index + 1,
+                showTags: true,
+                showFollowerStats: true,
+                showFollowButton: state.multiSelectMode === false,
+                followsYou: user.follows_you || null,
+                becauseYouFollow: user.because_you_follow || null,
+                likers: user.likers || null,
+                followers: user.followers || null,
+                following: user.following || null,
+                profileImage: user.profileImage || null,
+                profileName: user.profileName || null,
+                sidebar: props.sidebar || null,
+                scope: props.scope || null,
+                fromContext: fromContext,
+                onFollowed: () =>
+                  handleFollowed(
+                    user.recommended_profile || user.similar_profile
+                  ),
+              }}
+            />
+          </Profile>
+        ))
+      )}
     </Profiles>
     {!props.returnElements && state.currentPage < state.totalPages ? (
       <Button type="button" onClick={() => loadMore()}>

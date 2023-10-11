@@ -107,7 +107,7 @@ const getRecommendedUsers = (page) => {
       });
     }
   } catch (error) {
-    console.log(error.message);
+    console.error("Error on fetching recommended users: ", error.message);
   }
 };
 

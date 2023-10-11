@@ -43,7 +43,7 @@ return (
         {avatarData.map((avatar, index) => (
           <Avatar key={index}>
             <Widget
-              src="mob.near/widget/Image"
+              src="${REPL_MOB}/widget/Image"
               props={{
                 image: avatar.image,
                 alt: avatar.name,

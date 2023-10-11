@@ -104,7 +104,7 @@ return (
           </CategoryHeader>
         )}
         <Widget
-          src={`${REPL_ACCOUNT}/widget/Recommender.Views.FriendsOfFriends`}
+          src="${REPL_ACCOUNT}/widget/Recommender.Views.FriendsOfFriends"
           props={{
             returnElements: state.expandedList === "list1" ? null : 4,
             sidebar: props.sidebar || null,

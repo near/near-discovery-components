@@ -91,7 +91,7 @@ const BASE_URL = `https://${STORE}/${BUCKET}/output/recommendations`;
 const accountId = props.accountId;
 const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
 const tags = Object.keys(profile.tags || {});
-const profileUrl = `#/near/widget/ProfilePage?accountId=${accountId}`;
+const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 
 const getRecommendedUsers = (page) => {
   try {
@@ -113,7 +113,7 @@ const getRecommendedUsers = (page) => {
       });
     }
   } catch (error) {
-    console.log(error.message);
+    console.error("Error on fetching recommended users: ", error.message);
   }
 };
 
@@ -149,7 +149,7 @@ return (
             <div>
               Follow More Users to Unlock More Personalized Recommendations, See
               Who’s
-              <a href="https://near.org/${REPL_ACCOUNT}/widget/PeoplePage?tab=trending">
+              <a href="https://${REPL_NEAR_URL}/${REPL_ACCOUNT}/widget/PeoplePage?tab=trending">
                 Trending
               </a>
             </div>
@@ -157,7 +157,7 @@ return (
         </>
       ) : (
         state.displayedUsers.map((user, index) => (
-          <Profile key={index}>
+          <Profile key={user.recommended_profile || user.similar_profile}>
             <Widget
               src="${REPL_ACCOUNT}/widget/Recommender.Account.AccountProfileSidebar"
               props={{

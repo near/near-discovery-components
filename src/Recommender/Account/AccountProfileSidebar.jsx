@@ -89,11 +89,13 @@ const VerifiedBadge = styled.div`
   left: 24px;
   top: 22px;
 `;
+
 const Name = styled.div`
   display: flex;
   gap: 6px;
   align-items: center;
 `;
+
 const AccountProfile = (
   <Wrapper
     as={props.onClick ? "button" : "a"}
@@ -165,7 +167,7 @@ if (props.noOverlay) return AccountProfile;
 
 return (
   <Widget
-    src="${REPL_ACCOUNT}/widget/Recommender.Account.AccountProfileOverlay"
+    src="${REPL_ACCOUNT}/widget/AccountProfileOverlay"
     props={{
       accountId: props.accountId,
       accountIdRank: props.accountIdRank || null,
@@ -178,6 +180,7 @@ return (
       scope: props.scope || null,
       fromContext: props.fromContext,
       onFollowed: props.onFollowed,
+      sidebar: props.sidebar,
     }}
   />
 );

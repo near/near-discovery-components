@@ -30,6 +30,13 @@ const onReport = () => {
   });
 };
 
+const AvatarCount = styled.div`
+  color: rgb(104, 112, 118);
+  font-size: 14px;
+  font-weight: 300;
+  padding-left: 12px;
+`;
+
 const CardWrapper = styled.div`
   z-index: 100;
   padding: 6px;
@@ -64,6 +71,17 @@ const VerificationText = styled.div`
   top: 1px;
   font-size: 14px;
   color: ${(props) => (props.secondary ? "#717069" : "black")};
+`;
+
+const RecommendedAvatars = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 12px 0 0;
+`;
+
+const OverlayTagsWrapper = styled.div`
+  margin-left: 50px;
 `;
 
 const contentModerationItem = {

@@ -15,7 +15,7 @@ return (
       }}
     />
     <Widget
-      src={"${REPL_ACCOUNT}/widget/FollowButton"}
+      src="${REPL_ACCOUNT}/widget/FollowButton"
       props={{
         accountId: props.accountId,
         onCommit: () => {

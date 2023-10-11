@@ -23,7 +23,11 @@ const renderItem = (a) =>
     <Post className="post" key={JSON.stringify(a)}>
       <Widget
         src="${REPL_ACCOUNT}/widget/v1.Posts.Post"
-        props={{ accountId: a.accountId, blockHeight: a.blockHeight }}
+        props={{
+          accountId: a.accountId,
+          blockHeight: a.blockHeight,
+          showFlagAccountFeature: props.showFlagAccountFeature,
+        }}
       />
     </Post>
   );

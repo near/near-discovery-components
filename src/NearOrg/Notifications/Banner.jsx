@@ -1,13 +1,14 @@
-const handleTurnOn = props?.handleTurnOn;
-const handleOnCancel = props?.handleOnCancel;
+let { handleTurnOn, handleOnCancel, radius, iOSDevice, iOSVersion, recomendedIOSVersion } = props;
+const showIosNoteText =
+  (iOSDevice && !iOSVersion) || (iOSDevice && iOSVersion && iOSVersion < recomendedIOSVersion);
 
 const Card = styled.div`
   display: flex;
   padding: 24px 16px;
   align-items: flex-start;
   align-self: stretch;
-  border-radius: 6px;
-  background: var(--violet-light-9, #8279e2);
+  border-radius: ${(p) => p.borderRadius ?? "6px"};
+  background: var(--violet9);
 `;
 
 const Component = styled.div`
@@ -18,26 +19,21 @@ const Component = styled.div`
   flex: 1 0 0;
 `;
 
-const Icon = styled.div`
-  & > i {
-    font-size: 24px;
-    color: white;
-  }
+const Icon = styled.i`
+  font-size: 24px;
+  color: var(--white);
 `;
 
-const Close = styled.div`
+const Close = styled.i`
   flex-shrink: 0;
-
-  & > i {
-    font-size: 24px;
-    color: white;
-    cursor: pointer;
-  }
+  font-size: 24px;
+  color: var(--white);
+  cursor: pointer;
 `;
 
 const Text = styled.div`
-  color: var(--white, #fff);
-  font: var(--text-base);
+  color: var(--white);
+  font: ${(p) => `var(--${p.small ? "text-s" : "text-base"})`};
   font-weight: 600;
 `;
 
@@ -48,12 +44,17 @@ const Buttons = styled.div`
 `;
 
 return (
-  <Card>
+  <Card borderRadius={radius}>
     <Component>
-      <Icon>
-        <i class="ph ph-bell-ringing" />
-      </Icon>
+      <Icon className="ph ph-bell-ringing" />
       <Text>Don't miss out on updates, turn on desktop notifications.</Text>
+      {showIosNoteText && (
+        <Text small>
+          <i class="ph-bold ph-info" />
+          Mobile browser push notifications are only supported on iOS "{recomendedIOSVersion}" or
+          greater.
+        </Text>
+      )}
       <Buttons>
         <Widget
           src="${REPL_ACCOUNT}/widget/DIG.Button"
@@ -75,8 +76,6 @@ return (
         />
       </Buttons>
     </Component>
-    <Close>
-      <i class="ph ph-x" onClick={handleOnCancel} />
-    </Close>
+    <Close className="ph ph-x" onClick={handleOnCancel} />
   </Card>
 );

@@ -1,5 +1,7 @@
 const accountId = context.accountId;
 const moderatorAccount = props?.moderatorAccount || "${REPL_MODERATOR}";
+const notificationFeedSrc =
+  "${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsList";
 
 const isLocalStorageSupported = props?.isLocalStorageSupported;
 const isNotificationSupported = props?.isNotificationSupported;
@@ -14,35 +16,6 @@ const mobileView = props?.mobileView;
 State.init({
   open: false,
 });
-
-if (context.loading || !accountId) return <></>;
-
-const filterUsersRaw = Social.get(
-  `${moderatorAccount}/moderate/users`, //TODO
-  "optimistic",
-  {
-    subscribe: true,
-  }
-);
-
-if (filterUsers === null) {
-  // haven't loaded filter list yet, return early
-  return <></>;
-}
-
-const filterUsers = filterUsersRaw ? JSON.parse(filterUsersRaw) : [];
-const notificationFeedSrc =
-  "${REPL_ACCOUNT}/widget/NearOrg.Notifications.Notifications";
-const lastBlockHeight = Storage.get("lastBlockHeight", notificationFeedSrc);
-let notifications =
-  Social.index("notify", accountId, {
-    order: "asc",
-    from: (lastBlockHeight ?? 0) + 1,
-    subscribe: true,
-  }) || [];
-notifications = notifications.filter((i) => !filterUsers.includes(i.accountId));
-
-const notificationsCount = notifications.length || 0;
 
 const Wrapper = styled.div``;
 
@@ -78,8 +51,9 @@ const PreviewWrapper = styled.div`
   top: 70px;
   right: 68%;
   width: 460px;
+  max-height: 80vh;
   visibility: hidden;
-  overflow: hidden;
+  overflow: hidden auto;
   transition: visibility 300ms ease;
   transform-origin: right top;
 
@@ -128,8 +102,8 @@ const Counter = ({ count }) => {
   return <Count>{count}</Count>;
 };
 
-const Button = () => {
-  const icon = notificationsCount > 0 ? "ph ph-bell-ringing" : "ph ph-bell";
+const Button = ({ count }) => {
+  const icon = count > 0 ? "ph ph-bell-ringing" : "ph ph-bell";
   return (
     <ButtonWrapper>
       <Widget
@@ -142,52 +116,101 @@ const Button = () => {
           onClick: () => State.update({ open: !!state.open }),
         }}
       />
-      <Counter count={notificationsCount} />
+      <Counter count={count} />
     </ButtonWrapper>
   );
 };
 
-if (mobileView) return <Button />;
+const Notification = ({ count, disabled }) => {
+  if (disabled) {
+    return <Button count={count} />;
+  }
+  return (
+    <Wrapper
+      onMouseEnter={() => State.update({ open: true })}
+      onMouseLeave={() => State.update({ open: false })}
+      onClick={() => State.update({ open: false })}
+    >
+      <Button count={count} />
+      <PreviewWrapper data-state={state.open}>
+        {state.open && (
+          <PreviewContent>
+            <Widget
+              src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.Notifications"
+              props={{
+                isLocalStorageSupported,
+                isNotificationSupported,
+                isPermisionGranted,
+                isPushManagerSupported,
+                handleOnCancel,
+                getNotificationLocalStorage,
+                handleOnCancelBanner,
+                accountId,
+                handleTurnOn,
+                showLimit: 5,
+                showInBox: true,
+                bannerBorderRadius: "0",
+              }}
+            />
+            <SeeAll>
+              <Widget
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
+                props={{
+                  href: "#/notifications",
+                  fill: "outline",
+                  variant: "secondary",
+                  label: "See all",
+                  size: "small",
+                  style: { width: "100%" },
+                }}
+              />
+            </SeeAll>
+          </PreviewContent>
+        )}
+      </PreviewWrapper>
+    </Wrapper>
+  );
+};
 
-return (
-  <Wrapper
-    onMouseEnter={() => State.update({ open: true })}
-    onMouseLeave={() => State.update({ open: false })}
-    onClick={() => State.update({ open: false })}
-  >
-    <Button />
-    <PreviewWrapper data-state={state.open}>
-      <PreviewContent>
-        <Widget
-          src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.Notifications"
-          props={{
-            isLocalStorageSupported,
-            isNotificationSupported,
-            isPermisionGranted,
-            isPushManagerSupported,
-            handleOnCancel,
-            getNotificationLocalStorage,
-            handleOnCancelBanner,
-            accountId,
-            handleTurnOn,
-            showLimit: 5,
-            showInBox: true,
-          }}
-        />
-        <SeeAll>
-          <Widget
-            src="${REPL_ACCOUNT}/widget/DIG.Button"
-            props={{
-              href: "#/notifications",
-              fill: "outline",
-              variant: "secondary",
-              label: "See all",
-              size: "small",
-              style: { width: "100%" },
-            }}
-          />
-        </SeeAll>
-      </PreviewContent>
-    </PreviewWrapper>
-  </Wrapper>
+if (context.loading || !accountId) {
+  return <Notification count={0} disabled={true} />;
+}
+
+const lastBlockHeight = Storage.get("lastBlockHeight", notificationFeedSrc);
+
+if (lastBlockHeight === null) {
+  return <Notification count={0} disabled={true} />;
+}
+
+// load the list of users that have been flagged by the moderator
+const filterUsersRaw = Social.get(
+  `${moderatorAccount}/moderate/users`, //TODO
+  "optimistic",
+  {
+    subscribe: true,
+  }
 );
+
+if (filterUsers === null) {
+  // haven't loaded filter list yet, return early
+  return <Notification count={0} disabled={true} />;
+}
+
+const filterUsers = filterUsersRaw ? JSON.parse(filterUsersRaw) : [];
+
+let notifications =
+  Social.index("notify", accountId, {
+    order: "asc",
+    from: (lastBlockHeight ?? 0) + 1,
+    subscribe: true,
+  }) || [];
+
+notifications = notifications.filter((i) => !filterUsers.includes(i.accountId));
+
+const notificationsCount = notifications.length || 0;
+
+if (mobileView) {
+  return <Notification count={notificationsCount} disabled={true} />;
+}
+
+return <Notification count={notificationsCount} disabled={false} />;

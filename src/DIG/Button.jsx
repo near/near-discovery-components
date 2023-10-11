@@ -35,7 +35,7 @@ if (icon) {
 const variants = {
   primary: {
     outline: {
-      background: "var(--sand1)",
+      background: "transparent",
       border: "var(--sand6)",
       color: "var(--violet8)",
       iconColor: "var(--violet9)",
@@ -65,19 +65,19 @@ const variants = {
   },
   secondary: {
     outline: {
-      background: "var(--sand1)",
-      border: "var(--sand6)",
+      background: "transparent",
+      border: "var(--sand12)",
       color: "var(--sand12)",
       iconColor: "var(--sand10)",
       hover: {
-        border: "var(--sand8)",
+        background: "var(--sand12)",
+        color: "var(--white)",
       },
       focus: {
         border: "var(--violet8)",
       },
       active: {
-        background: "var(--sand3)",
-        border: "var(--sand8)",
+        background: "var(--sand8)",
       },
     },
     solid: {
@@ -98,7 +98,7 @@ const variants = {
   },
   destructive: {
     outline: {
-      background: "var(--sand1)",
+      background: "transparent",
       border: "var(--sand6)",
       color: "var(--red8)",
       iconColor: "var(--red9)",
@@ -131,7 +131,7 @@ const variants = {
   },
   affirmative: {
     outline: {
-      background: "var(--sand1)",
+      background: "transparent",
       border: "var(--sand6)",
       color: "var(--green11)",
       iconColor: "var(--green10)",

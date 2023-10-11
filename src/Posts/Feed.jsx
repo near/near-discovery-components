@@ -12,6 +12,10 @@ const Post = styled.div`
   }
 `;
 
+const TextLink = styled.a`
+  font-weight: 600;
+`;
+
 const renderItem = (item) => {
   if (item.accounts_liked.length !== 0) {
     item.accounts_liked = JSON.parse(item.accounts_liked);
@@ -27,12 +31,27 @@ const renderItem = (item) => {
           comments: item.comments,
           likes: item.accounts_liked,
           GRAPHQL_ENDPOINT,
-          verifications: item.verifications
+          verifications: item.verifications,
+          showFlagAccountFeature: props.showFlagAccountFeature ?? false,
         }}
       />
     </Post>
   );
 };
+
+if (posts.length === 0) {
+  return (
+    <div class="alert alert-info mx-3" role="alert">
+      Build your feed by finding
+      <TextLink
+        className="alert-link"
+        href="${REPL_ACCOUNT}/widget/PeoplePage"
+      >
+        people to follow
+      </TextLink>
+    </div>
+  );
+}
 
 const renderedItems = posts.map(renderItem);
 

@@ -26,7 +26,7 @@ const queryFollowedAccountsList = () => {
   const graph = Social.keys(`${context.accountId}/graph/follow/*`, "final");
   if (graph !== null) {
     const followedAccounts = Object.keys(
-      graph[context.accountId].graph.follow || {}
+      graph[context.accountId].graph.follow || {},
     );
     State.update({ accountsFollowing: followedAccounts });
   }
@@ -45,48 +45,31 @@ const selectTab = (selectedTab) => {
   loadMorePosts();
 };
 
-let gatewayModeratedUsersRaw = Social.get(
-  `${moderatorAccount}/moderate/users`,
-  "optimistic",
-  {
-    subscribe: true,
-  }
-);
-
+// get the full list of posts that the current user has flagged so
+// they can be hidden
 const selfFlaggedPosts = context.accountId
   ? Social.index("flag", "main", {
       accountId: context.accountId,
     })
   : [];
 
-const selfModeration = context.accountId
-  ? Social.index("moderate", "main", {
-      accountId: context.accountId,
-    })
-  : [];
-
-if (gatewayModeratedUsersRaw === null) {
-  // haven't loaded filter list yet, return early
-  return "";
-}
-
-const gatewayModeratedUsers = gatewayModeratedUsersRaw
-  ? JSON.parse(gatewayModeratedUsersRaw)
-  : [];
-
-// get the full list of posts that the current user has flagged so
-// they can be hidden
-
-// expecting moderation structure for accounts and posts like
+// V2 self moderation data, structure is like:
 // { moderate: {
-//     "account1.near": "block",
+//     "account1.near": "report",
 //     "account2.near": {
-//         "100000123": "spam",
+//         ".post.main": { // slashes are not allowed in keys
+//           "100000123": "spam", // post ids are account/blockHeight
+//         }
 //     },
 //   }
 // }
-function matchesModeration(moderated, item) {
-  let accountFound = moderated[accountId];
+const selfModeration = context.accountId
+  ? Social.getr(`${context.accountId}/moderate`, "optimistic")
+  : [];
+const postsModerationKey = ".post.main";
+const matchesModeration = (moderated, socialDBObjectType, item) => {
+  if (!moderated) return false;
+  const accountFound = moderated[item.account_id];
   if (typeof accountFound === "undefined") {
     return false;
   }
@@ -94,19 +77,18 @@ function matchesModeration(moderated, item) {
     return true;
   }
   // match posts
-  return typeof accountFound[item.block_height] !== "undefined";
-}
+  const posts = accountFound[postsModerationKey];
+  return posts && typeof posts[item.block_height] !== "undefined";
+};
 
 const shouldFilter = (item) => {
   return (
-    gatewayModeratedUsers.includes(item.account_id) ||
     selfFlaggedPosts.find((flagged) => {
       return (
         flagged?.value?.blockHeight === item.block_height &&
         flagged?.value?.path.includes(item.account_id)
       );
-    }) ||
-    matchesModeration(selfModeration, item)
+    }) || matchesModeration(selfModeration, postsModerationKey, item)
   );
 };
 function fetchGraphQL(operationsDoc, operationName, variables) {
@@ -210,10 +192,7 @@ const loadMorePosts = () => {
     state.selectedTab == "following" ? "GetFollowingPosts" : "GetPostsQuery";
   const type = state.selectedTab;
 
-  if (
-    state.selectedTab == "following" &&
-    !state.accountsFollowing
-  ) {
+  if (state.selectedTab == "following" && !state.accountsFollowing) {
     return;
   }
   fetchGraphQL(createQuery(type), queryName, {
@@ -229,13 +208,14 @@ const loadMorePosts = () => {
       if (data) {
         const newPosts = data.dataplatform_near_social_feed_moderated_posts;
         const postsCountLeft =
-          data.dataplatform_near_social_feed_moderated_posts_aggregate.aggregate.count;
+          data.dataplatform_near_social_feed_moderated_posts_aggregate.aggregate
+            .count;
         if (newPosts.length > 0) {
           let filteredPosts = newPosts.filter((i) => !shouldFilter(i));
           filteredPosts = filteredPosts.map((post) => {
             const prevComments = post.comments;
             const filteredComments = prevComments.filter(
-              (comment) => !shouldFilter(comment)
+              (comment) => !shouldFilter(comment),
             );
             post.comments = filteredComments;
             return post;
@@ -265,12 +245,7 @@ if (
   queryFollowedAccountsList();
 }
 
-if (
-  !state.initLoadPostsAll &&
-  selfFlaggedPosts &&
-  selfModeration &&
-  gatewayModeratedUsers
-) {
+if (!state.initLoadPostsAll && selfFlaggedPosts && selfModeration) {
   loadMorePosts();
   State.update({ initLoadPostsAll: true });
 }
@@ -482,7 +457,7 @@ return (
             hasMore,
             loadMorePosts,
             posts: state.posts,
-            showFlagAccountFeature: props.showFlagAccountFeature
+            showFlagAccountFeature: props.showFlagAccountFeature,
           }}
         />
       </FeedWrapper>

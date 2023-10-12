@@ -1,15 +1,17 @@
 const accountId = props.accountId ?? context.accountId;
+const isCustomProfile = props.isCustomProfile || false;
 if (!accountId) {
   return "No account ID";
 }
 
 // if it exists, render the accountId's custom profile component
-if (Social.getr(`${accountId}/widget/ProfilePage`)) {
+if (!isCustomProfile && Social.getr(`${accountId}/widget/ProfilePage`)) {
   return (
     <Widget
       src={`${accountId}/widget/ProfilePage`}
       props={{
         accountId,
+        isCustomProfile: true,
       }}
     />
   );

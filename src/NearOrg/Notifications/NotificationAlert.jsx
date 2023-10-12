@@ -8,7 +8,14 @@ let {
   setNotificationsSessionStorage,
   onOpenChange,
   iOSDevice,
+  iOSVersion,
+  recomendedIOSVersion,
+  loading,
 } = props;
+
+const showIosNoteText =
+  (iOSDevice && !iOSVersion) ||
+  (iOSDevice && iOSVersion && iOSVersion < recomendedIOSVersion);
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -27,12 +34,18 @@ const Title = styled.span`
 
 const DescriptionWrapper = styled.div`
   text-align: center;
-  margin-bottom: 56px;
+  margin-bottom: ${(p) => (p.showIosNoteText ? "16px" : "56px")};
 `;
 
 const Img = styled.img`
   width: 78px;
   height: 78px;
+`;
+
+const NoteText = styled.div`
+  text-align: center;
+  font: var(--text-s);
+  font-weight: 600;
 `;
 
 const Header = () => (
@@ -46,20 +59,31 @@ const Header = () => (
 );
 
 const Description = () => (
-  <DescriptionWrapper>
-    Stay in the know on updates and activity. Customize your preferences
-    anytime.
-  </DescriptionWrapper>
+  <>
+    <DescriptionWrapper showIosNoteText={showIosNoteText}>
+      Stay in the know on updates and activity. Customize your preferences
+      anytime.
+    </DescriptionWrapper>
+    {showIosNoteText && (
+      <NoteText>
+        <i class="ph-bold ph-info" />
+        Mobile browser push notifications are only supported on iOS "
+        {recomendedIOSVersion}" or greater.
+      </NoteText>
+    )}
+  </>
 );
 
 const actionStyles = {
   flexDirection: "column-reverse",
 };
 
-const iOSContentStyles = iOSDevice ? {
-  top: "calc(100% - 225px)",
-  height: "50vh",
-} : {};
+const iOSContentStyles = iOSDevice
+  ? {
+      top: "calc(100% - 225px)",
+      height: "65vh",
+    }
+  : {};
 
 const CancelButton = ({ handleOnCancel }) => (
   <Widget
@@ -70,6 +94,7 @@ const CancelButton = ({ handleOnCancel }) => (
       fill: "ghost",
       onClick: handleOnCancel,
       style: { width: "100%" },
+      loading,
     }}
   />
 );
@@ -82,6 +107,7 @@ const ConfirmButton = ({ handleTurnOn }) => (
       variant: "primary",
       onClick: handleTurnOn,
       style: { width: "100%" },
+      loading,
     }}
   />
 );

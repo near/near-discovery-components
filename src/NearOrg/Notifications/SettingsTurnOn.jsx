@@ -1,4 +1,10 @@
 // This component will be shown to users who have disabled notifications in browser settings
+let { iOSDevice } = props;
+
+const iOSLearnLink =
+  "https://support.google.com/chrome/answer/3220216?co=GENIE.Platform%3DiOS&oco=1";
+const androidLearnLink =
+  "https://support.google.com/chrome/answer/3220216?co=GENIE.Platform%3DAndroid&oco=1";
 
 const Card = styled.div`
   display: flex;
@@ -8,8 +14,8 @@ const Card = styled.div`
   gap: 32px;
   align-self: stretch;
   border-radius: 6px;
-  border: 1px solid var(--sand-light-6, #e3e3e0);
-  background: var(--sand-light-1, #fdfdfc);
+  border: 1px solid var(--sand6);
+  background: var(--sand-1);
 `;
 
 const Header = styled.div`
@@ -27,17 +33,15 @@ const Title = styled.div`
 `;
 
 const Text = styled.div`
-  color: var(--sand-light-11, var(--sand-light-11, #706f6c));
+  color: var(--sand-11);
   font: var(--text-s);
   ont-weight: 450;
   line-height: 150%;
 `;
 
-const Button = styled.div``;
+const ButtonWrapper = styled.div``;
 
-const handleOnClick = () => {
-  //   where does this lead
-};
+const learnMoreHref = iOSDevice ? iOSLearnLink : androidLearnLink;
 
 return (
   <Card>
@@ -48,17 +52,17 @@ return (
         browser settings.
       </Text>
     </Header>
-    <Button>
+    <ButtonWrapper>
       <Widget
         src="${REPL_ACCOUNT}/widget/DIG.Button"
         props={{
           label: "Learn More",
           variant: "secondary",
-          // fill: "",
-          onClick: handleOnClick,
           style: { width: "100%" },
+          href: learnMoreHref,
+          target: "_blank",
         }}
       />
-    </Button>
+    </ButtonWrapper>
   </Card>
 );

@@ -1,18 +1,63 @@
-const isLocalStorageSupported = props?.isLocalStorageSupported;
-const isNotificationSupported = props?.isNotificationSupported;
-const isPermisionGranted = props?.isPermisionGranted;
-const isPushManagerSupported = props?.isPushManagerSupported;
-const handleTurnOn = props?.handleTurnOn;
-const handleOnCancel = props?.handleOnCancel;
-const getNotificationLocalStorage = props?.getNotificationLocalStorage;
-const handleOnCancelBanner = props?.handleOnCancelBanner;
-const accountId = props?.accountId;
-const handlePushManagerUnsubscribe = props?.handlePushManagerUnsubscribe;
+let {
+  isLocalStorageSupported,
+  isNotificationSupported,
+  isPermisionGranted,
+  isPushManagerSupported,
+  handleTurnOn,
+  handleOnCancel,
+  getNotificationLocalStorage,
+  handleOnCancelBanner,
+  accountId,
+  handlePushManagerUnsubscribe,
+  iOSDevice,
+  loading,
+  disabled,
+} = props;
 
-const Card = styled.div`
+const notificationSupported = isNotificationSupported();
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 48px;
+  padding-top: 48px;
   max-width: 592px;
   margin: 0 auto;
 `;
+
+const Text = styled.div`
+  font: var(--text-s);
+  color: var(--sand11);
+  font-weight: 450;
+`;
+
+const TextLink = styled.a`
+  font-weight: 600;
+`;
+
+const IosNotification = () => (
+  <Text>
+    <i class="ph-bold ph-info" />
+    In order to enable Mobile Browser notifications on iOS, you will also need
+    to add near.org as a icon to your home screen. Click on the share icon, and
+    then tap on <b>"Add to Home Screen"</b>
+  </Text>
+);
+
+const SettingHeaderContent = () => {
+  return (
+    <>
+      {iOSDevice && <IosNotification />}
+      <Text>
+        Learn more about notifications
+        <TextLink href="https://near.org/blog/announcing-web-push-notifications-on-b-o-s">
+          here
+        </TextLink>
+      </Text>
+    </>
+  );
+};
 
 // TODO: solution to pass data to this component
 // at this moment we don't have a simple solution to pass data to this component
@@ -35,12 +80,13 @@ const checkShow = () => {
 };
 
 return (
-  <Card>
+  <Wrapper className="container-xl">
     <Widget
       src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.SettingsHeader"
       props={{
         title: "Notification Settings",
         text: "Configure your notifications for activity on near.org",
+        content: <SettingHeaderContent />,
       }}
     />
 
@@ -52,6 +98,8 @@ return (
             handleTurnOn(accountId, checkShow);
           },
           label: "Turn On",
+          loading,
+          disabled,
         }}
       />
     )}
@@ -63,11 +111,18 @@ return (
             handlePushManagerUnsubscribe(checkShow);
           },
           label: "Turn Off",
+          loading,
+          disabled,
         }}
       />
     )}
-    {isNotificationSupported || (
-      <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.SettingsTurnOn" />
+    {!notificationSupported && (
+      <Widget
+        src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.SettingsTurnOn"
+        props={{
+          iOSDevice,
+        }}
+      />
     )}
-  </Card>
+  </Wrapper>
 );

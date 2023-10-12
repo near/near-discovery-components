@@ -78,23 +78,24 @@ return (
   <Widget
     src="near/widget/DIG.DropdownMenu"
     props={{
-      trigger: <i className="ph-bold ph-dots-three-vertical" />,
+      trigger: <i className="ph-bold ph-dots-three" />,
       items: [
         {
+        {
           name: "Hide",
-          iconLeft: "ph ph-eye-slash",
+          iconLeft: "ph-bold ph-eye-slash",
           disabled: !context.accountId || context.accountId === accountId,
           subMenuProps: {
             items: [
               {
                 name: "Hide this Post",
-                iconLeft: "ph ph-eye-slash",
+                iconLeft: "ph-bold ph-eye-slash",
                 onSelect: () =>
                   moderatePost(accountId, blockHeight, "hide", "hidePost"),
               },
               {
                 name: "Mute " + accountId,
-                iconLeft: "ph ph-ear-slash",
+                iconLeft: "ph-bold ph-ear-slash",
                 onSelect: () =>
                   moderateAccount(accountId, "hide", "hideAccount"),
               },
@@ -104,8 +105,8 @@ return (
         {
           name: (
             <>
-              <i className="ph ph-prohibit" style={{ color: "var(--red11)" }} />
-              <span style={{ color: "red" }}>Report</span>
+              <i className="ph-bold ph-warning-octagon" style={{ color: "#D95C4A" }} />
+              <span style={{ color: "#D95C4A" }}>Report</span>
             </>
           ),
           disabled: !context.accountId || context.accountId === accountId,
@@ -113,13 +114,13 @@ return (
             items: [
               {
                 name: "Report this Post",
-                iconLeft: "ph ph-warning-circle",
+                iconLeft: "ph-bold ph-warning-octagon",
                 onSelect: () =>
                   moderatePost(accountId, blockHeight, "report", "reportPost"),
               },
               {
                 name: "Report " + accountId,
-                iconLeft: "ph ph-prohibit",
+                iconLeft: "ph-bold ph-warning-octagon",
                 onSelect: () =>
                   moderateAccount(accountId, "report", "reportAccount"),
               },
@@ -128,7 +129,7 @@ return (
         },
         // {
         //   name: "Edit",
-        //   iconLeft: "ph ph-pencil me-1",
+        //   iconLeft: "ph-bold ph-pencil me-1",
         //   onSelect: parentFunctions.toggleEdit,
         //  },
       ],

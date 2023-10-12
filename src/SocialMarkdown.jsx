@@ -54,6 +54,7 @@ const Wrapper = styled.div`
 const renderMention =
   props.renderMention ??
   ((accountId) => (
+  <span className="d-inline-flex">
     <Widget
       key={accountId}
       src="${REPL_ACCOUNT}/widget/AccountProfileInline"
@@ -62,6 +63,7 @@ const renderMention =
         hideAvatar: true,
       }}
     />
+  </span>
   ));
 
 return (

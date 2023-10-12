@@ -189,10 +189,10 @@ query GetFollowingPosts($offset: Int, $limit: Int) {
 
 const loadMorePosts = () => {
   const queryName =
-    state.selectedTab == "following" ? "GetFollowingPosts" : "GetPostsQuery";
+    state.selectedTab === "following" ? "GetFollowingPosts" : "GetPostsQuery";
   const type = state.selectedTab;
 
-  if (state.selectedTab == "following" && !state.accountsFollowing) {
+  if (state.selectedTab === "following" && !state.accountsFollowing) {
     return;
   }
   fetchGraphQL(createQuery(type), queryName, {
@@ -251,7 +251,7 @@ if (!state.initLoadPostsAll && selfFlaggedPosts && selfModeration) {
 }
 
 if (
-  state.initLoadPostsAll == true &&
+  state.initLoadPostsAll === true &&
   !state.initLoadPosts &&
   state.accountsFollowing
 ) {
@@ -421,7 +421,7 @@ return (
             </PillSelect>
           </FilterWrapper>
           <SortContainer>
-            {state.selectedTab == "all" && (
+            {state.selectedTab === "all" && (
               <Sort>
                 <span className="label">Sort by:</span>
                 <Widget

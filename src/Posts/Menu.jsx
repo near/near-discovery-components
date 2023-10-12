@@ -81,7 +81,6 @@ return (
       trigger: <i className="ph-bold ph-dots-three" />,
       items: [
         {
-        {
           name: "Hide",
           iconLeft: "ph-bold ph-eye-slash",
           disabled: !context.accountId || context.accountId === accountId,

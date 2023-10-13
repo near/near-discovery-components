@@ -3,7 +3,7 @@ const webThreeItems = [
     name: "Why Web3 is needed now more than ever",
     description:
       "An article written by the Near Foundation describing the need for Web3 in the context of the world’s growing problems.",
-    icon: "ph-file-doc",
+    icon: "ph-article",
     url: "https://pages.near.org/blog/why-web3-is-needed-more-than-ever/",
     target: "_blank",
   },
@@ -32,11 +32,11 @@ const webThreeItems = [
     target: "_blank",
   },
   {
-    name: "Transitioning a Web2 App to Web3",
+    name: "Web 3.0 Economics",
     description:
-      "A guideline written to show how to bring a traditional Web 2 application into a Web 3 world using NEAR Protocol.",
+      "An article demonstrating that in addition to technological decentralization there also came economical decentralization.",
     icon: "ph-file-doc",
-    url: "https://docs.near.org/concepts/web3/intro",
+    url: "https://docs.near.org/concepts/web3/economics",
     target: "_blank",
   },
   {
@@ -67,10 +67,10 @@ const bosItems = [
     target: "_blank",
   },
   {
-    name: "Illia Introduces the B.O.S",
+    name: "Illia Announces the B.O.S",
     description:
       "NEAR’s co-founder, Illia Polosukhin announces the Blockchain Operating System at ETH Denver 2023.",
-    icon: "ph-article",
+    icon: "ph-video",
     url: "https://www.youtube.com/watch?v=zpkkhCESPU4",
     target: "_blank",
   },
@@ -94,7 +94,7 @@ const bosItems = [
     name: "The Blockchain Operating System Explained",
     description:
       "David Weinstein (Chief of Staff at NEAR Foundation) discusses NEAR's  Blockchain Operating System.",
-    icon: "ph-article",
+    icon: "ph-video",
     url: "https://www.youtube.com/watch?v=eQbuS1Xb5dc",
     target: "_blank",
   },

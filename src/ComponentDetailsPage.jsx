@@ -20,18 +20,20 @@ const tags = Object.keys(metadata.tags || {});
 const detailsUrl = `#/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${src}`;
 const shareUrl = `https://${REPL_NEAR_URL}${detailsUrl}`;
 const stats = {
-  numberOfForks: 10,
-  numberOfComponentsPublished: 40,
-  developerSince: new Date().getFullYear(),
-  componentImpressions: 93,
-  componentParents: [
-    "mob.near/widget/Image",
-    "mob.near/widget/Image",
-    "mob.near/widget/Image",
-    "mob.near/widget/Image",
-    "mob.near/widget/Image",
-    "mob.near/widget/Image",
-  ],
+  developerStats: {
+    numberOfComponentsPublished: 40,
+    developerSince: new Date("2015-01-01").getFullYear(),
+  },
+  componentStats: {
+    numberOfForks: 10,
+    impressions: 93,
+    parents: [
+      "mob.near/widget/Image",
+      "mob.near/widget/Image",
+      "mob.near/widget/Image",
+      "mob.near/widget/Image",
+    ],
+  },
 };
 
 const dependencyMatch =
@@ -237,196 +239,191 @@ if (!exists) {
 }
 
 return (
-  <Wrapper>
-    <SummaryWrapper>
-      <Widget
-        src="${REPL_ACCOUNT}/widget/ComponentSummary"
-        props={{
-          primaryAction: "open",
-          size: "large",
-          showTags: true,
-          showDesc: true,
-          src,
-        }}
-      />
-    </SummaryWrapper>
+  <Content>
+    <Wrapper>
+      <SummaryWrapper>
+          <Widget
+            src="${REPL_ACCOUNT}/widget/ComponentSummary"
+            props={{
+              primaryAction: "open",
+              size: "large",
+              showTags: true,
+              showDesc: true,
+              src,
+            }}
+          />
+      </SummaryWrapper>
 
-    <Tabs>
-      <TabsButton
-        href={`${detailsUrl}&tab=source`}
-        selected={state.selectedTab === "source"}
-      >
-        <Icon className="ph ph-code" />
-        Source & Preview
-      </TabsButton>
-      <TabsButton
-        href={`${detailsUrl}&tab=about`}
-        selected={state.selectedTab === "about"}
-      >
-        <Icon className="bi bi-file-earmark-text" />
-        Read.me
-      </TabsButton>
-      <TabsButton
-        href={`${detailsUrl}&tab=discussion`}
-        selected={state.selectedTab === "discussion"}
-      >
-        <Icon className="bi bi-chat-text" />
-        Discussion
-      </TabsButton>
-    </Tabs>
+      <Tabs>
+        <TabsButton
+          href={`${detailsUrl}&tab=source`}
+          selected={state.selectedTab === "source"}
+        >
+          <Icon className="ph ph-code" />
+          Source & Preview
+        </TabsButton>
+        <TabsButton
+          href={`${detailsUrl}&tab=about`}
+          selected={state.selectedTab === "about"}
+        >
+          <Icon className="bi bi-file-earmark-text" />
+          Read.me
+        </TabsButton>
+        <TabsButton
+          href={`${detailsUrl}&tab=discussion`}
+          selected={state.selectedTab === "discussion"}
+        >
+          <Icon className="bi bi-chat-text" />
+          Discussion
+        </TabsButton>
+      </Tabs>
 
-    {state.selectedTab === "about" && (
-      <Content>
-        <div>
-          {metadata.description ? (
-            <Markdown text={metadata.description} />
-          ) : (
-            <Text>This component has no description.</Text>
-          )}
-        </div>
-      </Content>
-    )}
-
-    {state.selectedTab === "source" && (
-      <Content>
-        <Widget
-          src="${REPL_ACCOUNT}/widget/ComponentHistory"
-          props={{ widgetPath: src }}
-        />
-        <Sidebar>
-          {(tags.includes("Coming Soon") || tags.includes("coming-soon")) && (
-            <div>
-              <Widget
-                src="${REPL_ACCOUNT}/widget/WaitList"
-                props={{ formUrl: "http://eepurl.com/hXyUnf" }}
-              />
-            </div>
-          )}
-
+      {state.selectedTab === "about" && (
+        <Content noSidebar>
           <div>
-            <SmallTitle>DEVELOPER</SmallTitle>
-            <Widget
-              src="${REPL_ACCOUNT}/widget/AccountProfile"
-              props={{
-                accountId: accountId,
-              }}
-            />
-            <Container>
-              <Stats>
-                <StatsBadge>
-                  <Icon className="ph ph-code" />
-                  <span className="badge rounded-pill bg-secondary">
-                    {stats.numberOfComponentsPublished} published
-                  </span>
-                </StatsBadge>
-                <StatsBadge>
-                  <Icon className="bi bi-shuffle" />
-                  <span className="badge rounded-pill bg-secondary">
-                    {stats.numberOfForks} forks
-                  </span>
-                </StatsBadge>
-                <StatsBadge>
-                  <Icon className="bi bi-calendar" />
-                  <span className="badge rounded-pill bg-secondary">
-                    {stats.developerSince}
-                  </span>
-                </StatsBadge>
-              </Stats>
-            </Container>
-            <Container>
-              <SmallTitle>STATS</SmallTitle>
-              <Text medium style={{ "margin-bottom": "10px" }}>
-                Impressions
-              </Text>
-              <Text medium bold style={{ "margin-bottom": "10px" }}>
-                {stats.componentImpressions}
-              </Text>
-              <Text small style={{ "margin-bottom": "10px" }}>
-                Last Updated
-              </Text>
-              <Text medium bold style={{ "margin-bottom": "10px" }}>
-                <Widget
-                  src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
-                  props={{ keyPath: `${accountId}/widget/${widgetName}` }}
-                />{" "}
-                ago.
-              </Text>
-            </Container>
-            <Container>
-              <SmallTitle>PARENTS ({stats.componentParents.length})</SmallTitle>
-              {stats.componentParents.length === 0 && (
-                <Text>This component has no parents.</Text>
-              )}
-              {stats.componentParents.map((source) => (
-                <Component
-                  key={source}
-                  src="${REPL_ACCOUNT}/widget/ComponentProfile"
-                  props={{ src: source }}
-                />
-              ))}
-              {!state.showAllComponentParents &&
-                stats.componentParents.length > 5 && (
-                  <Widget
-                    src="${REPL_ACCOUNT}/widget/DIG.Button"
-                    props={{
-                      fill: "outline",
-                      variant: "secondary",
-                      label: "Show All",
-                      size: "small",
-                      style: { width: "30%" },
-                      onClick: () => {
-                        State.update({ showAllComponentParents: true });
-                      },
-                    }}
-                  />
-                )}
-            </Container>
-            <Container>
-              <SmallTitle>DEPENDENCIES ({dependencySources.length})</SmallTitle>
-              {dependencySources.length === 0 && (
-                <Text>This component has no dependencies.</Text>
-              )}
-              {dependencySources.map((source) => (
-                <Component
-                  key={source}
-                  src="${REPL_ACCOUNT}/widget/ComponentProfile"
-                  props={{ src: source }}
-                />
-              ))}
-              {!state.showAllDependencies && dependencySources.length > 5 && (
-                <Widget
-                  src="${REPL_ACCOUNT}/widget/DIG.Button"
-                  props={{
-                    fill: "outline",
-                    variant: "secondary",
-                    label: "Show All",
-                    size: "small",
-                    style: { width: "30%" },
-                    onClick: () => {
-                      State.update({ showAllDependencies: true });
-                    },
-                  }}
-                />
-              )}
-            </Container>
+            {metadata.description ? (
+              <Markdown text={metadata.description} />
+            ) : (
+              <Text>This component has no description.</Text>
+            )}
           </div>
-        </Sidebar>
-      </Content>
-    )}
+        </Content>
+      )}
 
-    {state.selectedTab === "discussion" && (
-      <Content>
+      {state.selectedTab === "source" && (
+        <Content noSidebar>
+          <Widget
+            src="${REPL_ACCOUNT}/widget/ComponentHistory"
+            props={{ widgetPath: src }}
+          />
+        </Content>
+      )}
+
+      {state.selectedTab === "discussion" && (
+        <Content noSidebar>
+          <Widget
+            src="${REPL_ACCOUNT}/widget/NestedDiscussions"
+            props={{
+              identifier: src,
+              notifyAccountId: accountId,
+              parentComponent: "${REPL_ACCOUNT}/widget/ComponentDetailsPage",
+              parentParams: { tab: "discussion", src },
+              highlightComment: props.highlightComment,
+            }}
+          />
+        </Content>
+      )}
+    </Wrapper>
+    <Sidebar>
+      <div>
+        <SmallTitle>DEVELOPER</SmallTitle>
         <Widget
-          src="${REPL_ACCOUNT}/widget/NestedDiscussions"
+          src="${REPL_ACCOUNT}/widget/AccountProfile"
           props={{
-            identifier: src,
-            notifyAccountId: accountId,
-            parentComponent: "${REPL_ACCOUNT}/widget/ComponentDetailsPage",
-            parentParams: { tab: "discussion", src },
-            highlightComment: props.highlightComment,
+            accountId: accountId,
           }}
         />
-      </Content>
-    )}
-  </Wrapper>
+        <Container>
+          <Stats>
+            <StatsBadge>
+              <Icon className="ph ph-code" />
+              <span className="badge rounded-pill bg-secondary">
+                {stats.developerStats.numberOfComponentsPublished} published
+              </span>
+            </StatsBadge>
+            <StatsBadge>
+              <Icon className="bi bi-shuffle" />
+              <span className="badge rounded-pill bg-secondary">
+                {stats.numberOfForks} forks
+              </span>
+            </StatsBadge>
+            <StatsBadge>
+              <Icon className="bi bi-calendar" />
+              <span className="badge rounded-pill bg-secondary">
+                {stats.developerStats.developerSince}
+              </span>
+            </StatsBadge>
+          </Stats>
+        </Container>
+        <Container>
+          <SmallTitle>STATS</SmallTitle>
+          <Text medium style={{ "margin-bottom": "10px" }}>
+            Impressions
+          </Text>
+          <Text medium bold style={{ "margin-bottom": "10px" }}>
+            {stats.componentStats.impressions}
+          </Text>
+          <Text small style={{ "margin-bottom": "10px" }}>
+            Last Updated
+          </Text>
+          <Text medium bold style={{ "margin-bottom": "10px" }}>
+            <Widget
+              src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
+              props={{ keyPath: `${accountId}/widget/${widgetName}` }}
+            />{" "}
+            ago.
+          </Text>
+        </Container>
+        <Container>
+          <SmallTitle>
+            PARENTS ({stats.componentStats.parents.length})
+          </SmallTitle>
+          {stats.componentStats.parents.length === 0 && (
+            <Text>This component has no parents.</Text>
+          )}
+          {stats.componentStats.parents.map((parent) => (source) => (
+            <Component
+              key={source}
+              src="${REPL_ACCOUNT}/widget/ComponentProfile"
+              props={{ src: source }}
+            />
+          ))}
+          {!state.showAllComponentParents &&
+            stats.componentStats.parents.length > 5 && (
+              <Widget
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
+                props={{
+                  fill: "outline",
+                  variant: "secondary",
+                  label: "Show All",
+                  size: "small",
+                  style: { width: "30%" },
+                  onClick: () => {
+                    State.update({ showAllComponentParents: true });
+                  },
+                }}
+              />
+            )}
+        </Container>
+        <Container>
+          <SmallTitle>DEPENDENCIES ({dependencySources.length})</SmallTitle>
+          {dependencySources.length === 0 && (
+            <Text>This component has no dependencies.</Text>
+          )}
+          {dependencySources.map((source) => (
+            <Component
+              key={source}
+              src="${REPL_ACCOUNT}/widget/ComponentProfile"
+              props={{ src: source }}
+            />
+          ))}
+          {!state.showAllDependencies && dependencySources.length > 5 && (
+            <Widget
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
+              props={{
+                fill: "outline",
+                variant: "secondary",
+                label: "Show All",
+                size: "small",
+                style: { width: "30%" },
+                onClick: () => {
+                  State.update({ showAllDependencies: true });
+                },
+              }}
+            />
+          )}
+        </Container>
+      </div>
+    </Sidebar>
+  </Content>
 );

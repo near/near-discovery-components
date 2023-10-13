@@ -57,7 +57,7 @@ const Header = styled.div`
 `;
 
 const TagsWrapper = styled.div`
-  margin-bottom: 32px;
+  margin-bottom: 16px;
 `;
 
 const Actions = styled.div`
@@ -190,6 +190,28 @@ return (
         <Text ellipsis>{src}</Text>
       </div>
     </Header>
+
+    {props.showDesc && (
+      <div>
+        {metadata.description ? (
+          <Markdown text={metadata.description} />
+        ) : (
+          <Text>This component has no description.</Text>
+        )}
+        {metadata.linktree?.website && (
+          <div>
+            <SmallTitle>Website</SmallTitle>
+            <TextLink
+              href={`https://${metadata.linktree.website}`}
+              target="_blank"
+            >
+              {metadata.linktree.website}
+              <i className="bi bi-box-arrow-up-right"></i>
+            </TextLink>
+          </div>
+        )}
+      </div>
+    )}
 
     {props.showTags && tags.length > 0 && (
       <TagsWrapper>

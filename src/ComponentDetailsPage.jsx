@@ -22,7 +22,7 @@ const shareUrl = `https://${REPL_NEAR_URL}${detailsUrl}`;
 const accountProfileDescription =
   Social.getr(`${accountId}/profile`).description ?? "";
 console.log(accountProfileDescription, "desc");
-const descMaxWords = 30;
+const descMaxWords = 15;
 if (accountProfileDescription) {
   const text = accountProfileDescription.split(" ");
   accountProfileDescription = text.slice(0, descMaxWords);
@@ -412,11 +412,12 @@ return (
             <Text>This component has no parents.</Text>
           )}
           {stats.componentStats.parents.map((parent) => (source) => (
-            <Component
-              key={source}
-              src="${REPL_ACCOUNT}/widget/ComponentProfile"
-              props={{ src: source }}
-            />
+            <Component key={source}>
+              <Widget
+                src="${REPL_ACCOUNT}/widget/ComponentProfile"
+                props={{ src: source }}
+              />
+            </Component>
           ))}
           {!state.showAllComponentParents &&
             stats.componentStats.parents.length > 5 && (
@@ -441,11 +442,13 @@ return (
             <Text>This component has no dependencies.</Text>
           )}
           {dependencySources.map((source) => (
-            <Component
-              key={source}
-              src="${REPL_ACCOUNT}/widget/ComponentProfile"
-              props={{ src: source }}
-            />
+            <Component key={source}>
+              <Widget
+                key={source}
+                src="${REPL_ACCOUNT}/widget/ComponentProfile"
+                props={{ src: source }}
+              />
+            </Component>
           ))}
           {!state.showAllDependencies && dependencySources.length > 5 && (
             <Widget

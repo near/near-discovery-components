@@ -19,6 +19,20 @@ const metadata = data.metadata;
 const tags = Object.keys(metadata.tags || {});
 const detailsUrl = `#/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${src}`;
 const shareUrl = `https://${REPL_NEAR_URL}${detailsUrl}`;
+const stats = {
+  numberOfForks: 10,
+  numberOfComponentsPublished: 40,
+  developerSince: new Date().getFullYear(),
+  componentImpressions: 93,
+  componentParents: [
+    "mob.near/widget/Image",
+    "mob.near/widget/Image",
+    "mob.near/widget/Image",
+    "mob.near/widget/Image",
+    "mob.near/widget/Image",
+    "mob.near/widget/Image",
+  ],
+};
 
 const dependencyMatch =
   code && code.matchAll(/<Widget[\s\S]*?src=.*?"(.+)"[\s\S]*?\/>/g);
@@ -162,8 +176,55 @@ const Text = styled.p`
   }
 `;
 
-const Dependency = styled.div`
+const Component = styled.div`
   margin-bottom: 24px;
+`;
+
+const IconWrapper = styled.div`
+  display: flex;
+  width: 40px;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 50px;
+  background: var(--violet3);
+  color: var(--violet8);
+`;
+
+const Icon = styled.i`
+  font-size: 15px;
+  fill: currentColor;
+  padding-right: 5px;
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 25px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid #eceef0;
+`;
+
+const Stats = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const StatsBadge = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+`;
+
+const StatsText = styled.p`
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: "#11181C";
+  font-weight: ${(p) => (p.bold ? "600" : "400")};
+  font-size: ${(p) => (p.small ? "12px" : "14px")};
+  border-radius: 12px;
 `;
 
 if (!exists) {
@@ -183,7 +244,8 @@ return (
         props={{
           primaryAction: "open",
           size: "large",
-          showTags: false,
+          showTags: true,
+          showDesc: true,
           src,
         }}
       />
@@ -191,30 +253,24 @@ return (
 
     <Tabs>
       <TabsButton
-        href={`${detailsUrl}&tab=about`}
-        selected={state.selectedTab === "about"}
-      >
-        About
-      </TabsButton>
-
-      <TabsButton
         href={`${detailsUrl}&tab=source`}
         selected={state.selectedTab === "source"}
       >
-        Source
+        <Icon className="ph ph-code" />
+        Source & Preview
       </TabsButton>
-
       <TabsButton
-        href={`${detailsUrl}&tab=history`}
-        selected={state.selectedTab === "history"}
+        href={`${detailsUrl}&tab=about`}
+        selected={state.selectedTab === "about"}
       >
-        History
+        <Icon className="bi bi-file-earmark-text" />
+        Read.me
       </TabsButton>
-
       <TabsButton
         href={`${detailsUrl}&tab=discussion`}
         selected={state.selectedTab === "discussion"}
       >
+        <Icon className="bi bi-chat-text" />
         Discussion
       </TabsButton>
     </Tabs>
@@ -228,7 +284,15 @@ return (
             <Text>This component has no description.</Text>
           )}
         </div>
+      </Content>
+    )}
 
+    {state.selectedTab === "source" && (
+      <Content>
+        <Widget
+          src="${REPL_ACCOUNT}/widget/ComponentHistory"
+          props={{ widgetPath: src }}
+        />
         <Sidebar>
           {(tags.includes("Coming Soon") || tags.includes("coming-soon")) && (
             <div>
@@ -240,86 +304,113 @@ return (
           )}
 
           <div>
-            <SmallTitle>Developer</SmallTitle>
+            <SmallTitle>DEVELOPER</SmallTitle>
             <Widget
               src="${REPL_ACCOUNT}/widget/AccountProfile"
               props={{
                 accountId: accountId,
               }}
             />
-          </div>
-
-          {tags.length > 0 && (
-            <div>
-              <SmallTitle>Tags</SmallTitle>
-              <Widget
-                src="${REPL_ACCOUNT}/widget/Tags"
-                props={{
-                  tags,
-                }}
-              />
-            </div>
-          )}
-
-          {metadata.linktree?.website && (
-            <div>
-              <SmallTitle>Website</SmallTitle>
-              <TextLink
-                href={`https://${metadata.linktree.website}`}
-                target="_blank"
-              >
-                {metadata.linktree.website}
-                <i className="bi bi-box-arrow-up-right"></i>
-              </TextLink>
-            </div>
-          )}
-
-          <div>
-            <Text small>
-              <i className="bi bi-clock"></i>
-              Last updated
-              <Widget
-                src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
-                props={{ keyPath: `${accountId}/widget/${widgetName}` }}
-              />{" "}
-              ago.
-            </Text>
-          </div>
-        </Sidebar>
-      </Content>
-    )}
-
-    {state.selectedTab === "source" && (
-      <Content>
-        <Markdown text={sourceCode} />
-
-        <Sidebar>
-          <div>
-            <SmallTitle>Dependencies ({dependencySources.length})</SmallTitle>
-
-            {dependencySources.length === 0 && (
-              <Text>This component has no dependencies.</Text>
-            )}
-
-            {dependencySources.map((source) => (
-              <Dependency key={source}>
+            <Container>
+              <Stats>
+                <StatsBadge>
+                  <Icon className="ph ph-code" />
+                  <span className="badge rounded-pill bg-secondary">
+                    {stats.numberOfComponentsPublished} published
+                  </span>
+                </StatsBadge>
+                <StatsBadge>
+                  <Icon className="bi bi-shuffle" />
+                  <span className="badge rounded-pill bg-secondary">
+                    {stats.numberOfForks} forks
+                  </span>
+                </StatsBadge>
+                <StatsBadge>
+                  <Icon className="bi bi-calendar" />
+                  <span className="badge rounded-pill bg-secondary">
+                    {stats.developerSince}
+                  </span>
+                </StatsBadge>
+              </Stats>
+            </Container>
+            <Container>
+              <SmallTitle>STATS</SmallTitle>
+              <Text medium style={{ "margin-bottom": "10px" }}>
+                Impressions
+              </Text>
+              <Text medium bold style={{ "margin-bottom": "10px" }}>
+                {stats.componentImpressions}
+              </Text>
+              <Text small style={{ "margin-bottom": "10px" }}>
+                Last Updated
+              </Text>
+              <Text medium bold style={{ "margin-bottom": "10px" }}>
                 <Widget
+                  src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
+                  props={{ keyPath: `${accountId}/widget/${widgetName}` }}
+                />{" "}
+                ago.
+              </Text>
+            </Container>
+            <Container>
+              <SmallTitle>PARENTS ({stats.componentParents.length})</SmallTitle>
+              {stats.componentParents.length === 0 && (
+                <Text>This component has no parents.</Text>
+              )}
+              {stats.componentParents.map((source) => (
+                <Component
+                  key={source}
                   src="${REPL_ACCOUNT}/widget/ComponentProfile"
                   props={{ src: source }}
                 />
-              </Dependency>
-            ))}
+              ))}
+              {!state.showAllComponentParents &&
+                stats.componentParents.length > 5 && (
+                  <Widget
+                    src="${REPL_ACCOUNT}/widget/DIG.Button"
+                    props={{
+                      fill: "outline",
+                      variant: "secondary",
+                      label: "Show All",
+                      size: "small",
+                      style: { width: "30%" },
+                      onClick: () => {
+                        State.update({ showAllComponentParents: true });
+                      },
+                    }}
+                  />
+                )}
+            </Container>
+            <Container>
+              <SmallTitle>DEPENDENCIES ({dependencySources.length})</SmallTitle>
+              {dependencySources.length === 0 && (
+                <Text>This component has no dependencies.</Text>
+              )}
+              {dependencySources.map((source) => (
+                <Component
+                  key={source}
+                  src="${REPL_ACCOUNT}/widget/ComponentProfile"
+                  props={{ src: source }}
+                />
+              ))}
+              {!state.showAllDependencies && dependencySources.length > 5 && (
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/DIG.Button"
+                  props={{
+                    fill: "outline",
+                    variant: "secondary",
+                    label: "Show All",
+                    size: "small",
+                    style: { width: "30%" },
+                    onClick: () => {
+                      State.update({ showAllDependencies: true });
+                    },
+                  }}
+                />
+              )}
+            </Container>
           </div>
         </Sidebar>
-      </Content>
-    )}
-
-    {state.selectedTab === "history" && (
-      <Content noSidebar>
-        <Widget
-          src="${REPL_ACCOUNT}/widget/ComponentHistory"
-          props={{ widgetPath: src }}
-        />
       </Content>
     )}
 

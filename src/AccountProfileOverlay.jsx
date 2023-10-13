@@ -47,6 +47,13 @@ const FlaggedWrapper = styled.div`
   position: absolute;
 `;
 
+const AvatarCount = styled.div`
+  color: rgb(104, 112, 118);
+  font-size: 14px;
+  font-weight: 300;
+  padding-left: 12px;
+`;
+
 const CardWrapper = styled.div`
   z-index: 100;
   padding: 6px;
@@ -83,6 +90,17 @@ const VerificationText = styled.div`
   color: ${(props) => (props.secondary ? "#717069" : "black")};
 `;
 
+const RecommendedAvatars = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 12px 0 0;
+`;
+
+const OverlayTagsWrapper = styled.div`
+  margin-left: 50px;
+`;
+
 const contentModerationItem = {
   type: "social",
   path: profileUrl,
@@ -93,10 +111,22 @@ const overlay = (
   <CardWrapper style={overlayStyles}>
     <Card onMouseEnter={handleOnMouseEnter} onMouseLeave={handleOnMouseLeave}>
       <div className="d-flex align-items-center">
-        <Widget
-          src="${REPL_ACCOUNT}/widget/AccountProfile"
-          props={{ accountId: props.accountId, profile, noOverlay: true }}
-        />
+        {props.sidebar && (
+          <Widget
+            src="${REPL_ACCOUNT}/widget/Recommender.Account.AccountProfileSidebar"
+            props={{
+              accountId: props.accountId,
+              profile,
+              noOverlay: true,
+            }}
+          />
+        )}
+        {!props.sidebar && (
+          <Widget
+            src="${REPL_ACCOUNT}/widget/AccountProfile"
+            props={{ accountId: props.accountId, profile, noOverlay: true }}
+          />
+        )}
         {!props.showFlagAccountFeature &&
           !!context.accountId &&
           context.accountId !== props.accountId && (
@@ -228,16 +258,51 @@ const overlay = (
         </div>
       )}
 
-      <Widget
-        src="${REPL_ACCOUNT}/widget/Tags"
-        props={{ tags, scroll: true }}
-      />
+      {props.scope === "friends" ? (
+        <OverlayTagsWrapper>
+          <Widget
+            className="layout"
+            src="${REPL_ACCOUNT}/widget/Tags"
+            props={{ tags, scroll: true }}
+          />
+          <RecommendedAvatars>
+            <Widget
+              src="${REPL_ACCOUNT}/widget/Recommender.Views.RecommendedAvatars"
+              props={{
+                avatarSize: "25px",
+                becauseYouFollow: props.becauseYouFollow,
+              }}
+            />
+            <AvatarCount>
+              {props.becauseYouFollow.length} friends following
+            </AvatarCount>
+          </RecommendedAvatars>
+        </OverlayTagsWrapper>
+      ) : (
+        <Widget
+          src="${REPL_ACCOUNT}/widget/Tags"
+          props={{ tags, scroll: true }}
+        />
+      )}
+
       {!!context.accountId && context.accountId !== props.accountId && (
         <FollowButtonWrapper>
-          <Widget
-            src="${REPL_ACCOUNT}/widget/FollowButton"
-            props={{ accountId: props.accountId }}
-          />
+          {props.sidebar && (
+            <Widget
+              src="${REPL_ACCOUNT}/widget/Recommender.Engagement.FollowButtonTracked"
+              props={{
+                accountIdRank: props.accountIdRank || null,
+                accountId: accountId || props.accountId,
+                fromContext: props.fromContext,
+              }}
+            />
+          )}
+          {!props.sidebar && (
+            <Widget
+              src="${REPL_ACCOUNT}/widget/FollowButton"
+              props={{ accountId: props.accountId }}
+            />
+          )}
         </FollowButtonWrapper>
       )}
     </Card>

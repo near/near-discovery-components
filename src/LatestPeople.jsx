@@ -23,6 +23,28 @@ let accounts = Object.entries(accountsWithProfileData || {})
 
 accounts.reverse();
 
+State.init({
+  selectedView: { text: "Top", value: "trending" },
+});
+
+const handleViewChange = (option) => {
+  State.update({ selectedView: { value: option.value } });
+};
+
+const options = [
+  { text: "Latest", value: "latest" },
+  { text: "Top", value: "trending" },
+  { text: "Recommended", value: "recommended" },
+];
+
+const fromContext = props;
+
+const FlexContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 const Wrapper = styled.div`
   display: grid;
   gap: 24px;
@@ -35,7 +57,7 @@ const H2 = styled.h2`
   margin: 0;
 `;
 
-const Items = styled.div`
+const LatestPeople = styled.div`
   display: grid;
   gap: 18px;
 `;
@@ -70,26 +92,72 @@ const ButtonLink = styled.a`
   }
 `;
 
+const Select = styled.div`
+  max-width: 100%;
+`;
+
 return (
   <Wrapper>
-    <H2>People</H2>
-
-    <Items>
-      {accounts.map((account) => (
-        <Item key={account.accountId}>
-          <Widget
-            src="${REPL_ACCOUNT}/widget/AccountProfile"
-            props={{
-              accountId: account.accountId,
-              blockHeight: account.blockHeight,
-            }}
-          />
-        </Item>
-      ))}
-    </Items>
-
-    <ButtonLink href="#/${REPL_ACCOUNT}/widget/PeoplePage">
-      View All People <span>({totalAccounts})</span>
-    </ButtonLink>
+    <FlexContainer>
+      <H2>People</H2>
+      <Select>
+        <Widget
+          src="${REPL_ACCOUNT}/widget/Select"
+          props={{
+            border: "0px",
+            noLabel: true,
+            value: state.selectedView,
+            options: options,
+            onChange: handleViewChange,
+          }}
+        />
+      </Select>
+    </FlexContainer>
+    {state.selectedView.value === "latest" && (
+      <>
+        <LatestPeople>
+          {accounts.map((account) => (
+            <Item key={account.accountId}>
+              <Widget
+                src="${REPL_ACCOUNT}/widget/AccountProfile"
+                props={{
+                  accountId: account.accountId,
+                  blockHeight: account.blockHeight,
+                }}
+              />
+            </Item>
+          ))}
+        </LatestPeople>
+        <ButtonLink href="#/${REPL_ACCOUNT}/widget/PeoplePage">
+          View All People <span>({totalAccounts})</span>
+        </ButtonLink>
+      </>
+    )}
+    {state.selectedView.value === "trending" && (
+      <>
+        <Widget
+          src="${REPL_ACCOUNT}/widget/Recommender.Views.TrendingUsersSidebar"
+          props={{
+            sidebar: true,
+            fromContext: fromContext,
+            gridCols: "repeat(1, minmax(0, 1fr))",
+            returnElements: 5,
+          }}
+        />
+      </>
+    )}
+    {state.selectedView.value === "recommended" && (
+      <>
+        <Widget
+          src="${REPL_ACCOUNT}/widget/Recommender.Views.RecommendedUsersSidebar"
+          props={{
+            sidebar: true,
+            fromContext: fromContext,
+            gridCols: "repeat(1, minmax(0, 1fr))",
+            returnElements: 10,
+          }}
+        />
+      </>
+    )}
   </Wrapper>
 );

@@ -388,13 +388,13 @@ return (
         <Container>
           <SmallTitle>STATS</SmallTitle>
           <Text medium style={{ "margin-bottom": "10px" }}>
-            Impressions
+            Times loaded (RPC)
           </Text>
           <Text medium bold style={{ "margin-bottom": "10px" }}>
             {stats.componentStats.impressions}
           </Text>
           <Text small style={{ "margin-bottom": "10px" }}>
-            Last Updated
+            Last updated
           </Text>
           <Text medium bold style={{ "margin-bottom": "10px" }}>
             <Widget

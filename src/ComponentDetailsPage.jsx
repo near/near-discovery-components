@@ -108,6 +108,20 @@ const TabsButton = styled.a`
     height: 3px;
     background: #59e692;
   }
+
+  > span {
+    margin-right: 8px;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+
+    > span {
+      margin-right: 0;
+      margin-bottom: 8px;
+    }
+  }
 `;
 
 const Content = styled.div`
@@ -138,7 +152,7 @@ const Sidebar = styled.div`
   @media (max-width: 995px) {
     padding-bottom: 32px;
     border-bottom: 1px solid #eceef0;
-    grid-row: 1;
+    grid-row: 2;
   }
 `;
 
@@ -180,18 +194,6 @@ const Text = styled.p`
 
 const Component = styled.div`
   margin-bottom: 24px;
-`;
-
-const IconWrapper = styled.div`
-  display: flex;
-  width: 40px;
-  height: 40px;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  border-radius: 50px;
-  background: var(--violet3);
-  color: var(--violet8);
 `;
 
 const Icon = styled.i`

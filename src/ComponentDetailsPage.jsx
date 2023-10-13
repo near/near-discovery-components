@@ -19,6 +19,19 @@ const metadata = data.metadata;
 const tags = Object.keys(metadata.tags || {});
 const detailsUrl = `#/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${src}`;
 const shareUrl = `https://${REPL_NEAR_URL}${detailsUrl}`;
+const accountProfileDescription =
+  Social.getr(`${accountId}/profile`).description ?? "";
+console.log(accountProfileDescription, "desc");
+const descMaxWords = 30;
+if (accountProfileDescription) {
+  const text = accountProfileDescription.split(" ");
+  accountProfileDescription = text.slice(0, descMaxWords);
+  if (text.length >= descMaxWords) {
+    accountProfileDescription.push("...");
+  }
+  accountProfileDescription = accountProfileDescription.join(" ");
+}
+
 const stats = {
   developerStats: {
     numberOfComponentsPublished: 40,
@@ -231,6 +244,22 @@ const StatsText = styled.p`
   border-radius: 12px;
 `;
 
+const Bio = styled.div`
+  color: #11181c;
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 15px;
+  margin-top: 20px;
+
+  > *:last-child {
+    margin-bottom: 15 !important;
+  }
+
+  @media (max-width: 900px) {
+    margin-bottom: 15px;
+  }
+`;
+
 if (!exists) {
   return (
     <>
@@ -325,6 +354,15 @@ return (
             accountId: accountId,
           }}
         />
+
+        {accountProfileDescription && (
+          <Bio>
+            <Widget
+              src="${REPL_ACCOUNT}/widget/SocialMarkdown"
+              props={{ text: accountProfileDescription }}
+            />
+          </Bio>
+        )}
         <Container>
           <Stats>
             <StatsBadge>

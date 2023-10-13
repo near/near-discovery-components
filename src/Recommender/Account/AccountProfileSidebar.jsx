@@ -2,7 +2,6 @@ const accountId = props.accountId || context.accountId;
 const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
 const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 const verifications = props.verifications;
-const showFlagAccountFeature = props.showFlagAccountFeature ?? false;
 
 const Wrapper = styled.a`
   display: inline-grid;
@@ -24,12 +23,37 @@ const Wrapper = styled.a`
     min-width: 0;
   }
 
+  .hover-state1 {
+    opacity: 0;
+  }
+
+  .hover-state2 {
+    opacity: 1;
+  }
+
   &:hover,
   &:focus {
-    div:first-child {
+    div.hover {
       border-color: #d0d5dd;
     }
+    .hover-state1 {
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+    .hover-state2 {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
   }
+`;
+
+const AvatarCount = styled.div`
+  color: rgb(104, 112, 118);
+  font-size: 14px;
+  font-weight: 300;
+  position: absolute;
+  right: 0px;
+  padding-right: 20px;
 `;
 
 const Text = styled.p`
@@ -65,6 +89,7 @@ const VerifiedBadge = styled.div`
   left: 24px;
   top: 22px;
 `;
+
 const Name = styled.div`
   display: flex;
   gap: 6px;
@@ -77,14 +102,15 @@ const AccountProfile = (
     href={!props.onClick && profileUrl}
     onClick={props.onClick && (() => props.onClick(accountId))}
   >
-    <Avatar>
+    <Avatar className="hover">
       <Widget
-        src="${REPL_MOB}/widget/Image"
+        src="${REPL_ACCOUNT}/widget/Recommender.Engagement.ImageTracked"
         props={{
-          image: profile.image,
-          alt: profile.name,
-          fallbackUrl:
-            "https://ipfs.near.social/ipfs/bafkreibiyqabm3kl24gcb2oegb7pmwdi6wwrpui62iwb44l7uomnn3lhbi",
+          accountId: props.accountId,
+          accountIdRank: props.accountIdRank,
+          fromContext: props.fromContext,
+          profileImage: props.profileImage || profile.image,
+          profileImageAlt: props.profileName || profile.name,
         }}
       />
     </Avatar>
@@ -117,25 +143,22 @@ const AccountProfile = (
 
     <div>
       <Name>
-        <Text ellipsis bold>
-          {profile.name || accountId.split(".near")[0]}
-        </Text>
-
-        {props.inlineContent}
-
-        {props.blockHeight && (
-          <Text small style={{ marginLeft: "auto" }}>
-            Joined{" "}
-            <Widget
-              src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
-              props={{ blockHeight: props.blockHeight }}
-            />{" "}
-            ago
-          </Text>
-        )}
+        <Widget
+          src="${REPL_ACCOUNT}/widget/Recommender.Engagement.ProfileInfoTracked"
+          props={{
+            accountId: props.accountId,
+            accountIdRank: props.accountIdRank,
+            fromContext: props.fromContext,
+            profileName:
+              props.profileName || profile.name || accountId.split(".near")[0],
+            profileUrl: profileUrl,
+            inlineContent: props.inlineContent,
+            blockHeight: props.blockHeight,
+            becauseYouFollow: props.becauseYouFollow,
+            scope: props.scope || null,
+          }}
+        />
       </Name>
-
-      {!props.hideAccountId && <Text ellipsis>@{accountId}</Text>}
     </div>
   </Wrapper>
 );
@@ -147,11 +170,17 @@ return (
     src="${REPL_ACCOUNT}/widget/AccountProfileOverlay"
     props={{
       accountId: props.accountId,
+      accountIdRank: props.accountIdRank || null,
       profile,
       children: AccountProfile,
       placement: props.overlayPlacement,
       verifications,
-      showFlagAccountFeature,
+      becauseYouFollow:
+        props.scope === "friends" ? props.becauseYouFollow : null,
+      scope: props.scope || null,
+      fromContext: props.fromContext,
+      onFollowed: props.onFollowed,
+      sidebar: props.sidebar,
     }}
   />
 );

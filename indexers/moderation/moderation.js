@@ -76,7 +76,7 @@ async function getBlock(block: Block) {
       // user self-moderation data and reported feed
       const reportedObjects = []; // build up an array of reported objects
       const userModeration = userData.moderate;
-      if (userModeration) {
+      if(userModeration) {
         const moderatedAccounts = Object.keys(userModeration);
         for (let account of moderatedAccounts) {
           let value = userModeration[account];
@@ -84,14 +84,14 @@ async function getBlock(block: Block) {
             const label = value;
             reportedObjects.push({ account, label });
           } else {
-            for (let path of Object.keys(account)) {
-              value = account[path];
+            for (let path of Object.keys(value)) {
+              value = value[path];
               if (typeof value === "string") {
                 const label = value;
                 reportedObjects.push({ account, path, label });
               } else {
-                for (let blockHeight of Object.keys(path)) {
-                  value = path[blockHeight];
+                for (let blockHeight of Object.keys(value)) {
+                  value = value[blockHeight];
                   if (typeof value === "string") {
                     const label = value;
                     reportedObjects.push({ account, path, blockHeight, label });
@@ -124,8 +124,8 @@ async function getBlock(block: Block) {
       for (let report of reportedObjects) {
         const label = report.label;
         const moderated_account_id = report.account;
-        const moderated_path = report.path;
-        const moderated_blockheight = report.blockHeight;
+        const moderated_path = report.path?.replace(/\./g, "/");
+        const moderated_blockheight = parseInt(report.blockHeight);
         const mutationData = {
           report: {
             group,

@@ -169,12 +169,16 @@ const Sidebar = styled.div`
   }
 `;
 
+const SideBarContainer = styled.div`
+  margin-top: 150px;
+`
+
 const SmallTitle = styled.h3`
   color: #687076;
   font-weight: 600;
   font-size: 12px;
   line-height: 15px;
-  margin-bottom: 32px;
+  margin-bottom: 20px;
   text-transform: uppercase;
 
   @media (max-width: 770px) {
@@ -346,7 +350,7 @@ return (
       )}
     </Wrapper>
     <Sidebar>
-      <div>
+      <SideBarContainer>
         <SmallTitle>DEVELOPER</SmallTitle>
         <Widget
           src="${REPL_ACCOUNT}/widget/AccountProfile"
@@ -411,7 +415,7 @@ return (
           {stats.componentStats.parents.length === 0 && (
             <Text>This component has no parents.</Text>
           )}
-          {stats.componentStats.parents.map((parent) => (source) => (
+          {stats.componentStats.parents.map((source) => (
             <Component key={source}>
               <Widget
                 src="${REPL_ACCOUNT}/widget/ComponentProfile"
@@ -466,7 +470,7 @@ return (
             />
           )}
         </Container>
-      </div>
+      </SideBarContainer>
     </Sidebar>
   </Content>
 );

@@ -27,7 +27,7 @@ const webThreeItems = [
     name: "How to open the web",
     description:
       "NEAR’s co-founder Illia Polosukhin presents the core thesis for NEAR’s vision to build the open web.",
-    icon: "ph-file-doc",
+    icon: "ph-video",
     url: "https://www.youtube.com/watch?v=s3lhhyNCRwU",
     target: "_blank",
   },

@@ -198,18 +198,6 @@ return (
         ) : (
           <Text>This component has no description.</Text>
         )}
-        {metadata.linktree?.website && (
-          <div>
-            <SmallTitle>Website</SmallTitle>
-            <TextLink
-              href={`https://${metadata.linktree.website}`}
-              target="_blank"
-            >
-              {metadata.linktree.website}
-              <i className="bi bi-box-arrow-up-right"></i>
-            </TextLink>
-          </div>
-        )}
       </div>
     )}
 

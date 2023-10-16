@@ -126,36 +126,39 @@ const item = value?.item || {};
 const path = item.path || "";
 
 // Build notification
-const isComment = path.indexOf("/post/comment") > 0 || type === "comment";
-const isPost = !isComment && path.indexOf("/post/main") > 0;
+let { blockHeight, accountId } = props;
+let postUrl = "";
 
-const accountId = type === "like" ? props.initiator : props.accountId;
-const blockHeight = type === "like" ? item.blockHeight : props.blockHeight;
-const urlBlockHeight = isComment ? "commentBlockHeight" : "blockHeight";
+switch (type) {
+  case "mention":
+    accountId = props.initiator;
+    postUrl = `#/${REPL_ACCOUNT}/widget/NearOrg.Notifications.CommentPost?accountId=${accountId}&blockHeight=${blockHeight}`;
+    break;
+  case "custom":
+    postUrl = `#/${value.widget}?${Object.entries(value.params || {})
+      .map(([k, v]) => `${k}=${v}`)
+      .join("&")}`;
+    break;
+  case "like":
+    blockHeight = item.blockHeight;
+    const pathAccountId = path.split("/")[0];
+    postUrl = `#/${REPL_ACCOUNT}/widget/PostPage?accountId=${pathAccountId}&blockHeight=${blockHeight}`;
+    break;
+  case "comment":
+    accountId = props.initiator;
+    postUrl = `#/${REPL_ACCOUNT}/widget/PostPage?accountId=${accountId}&commentBlockHeight=${blockHeight}`;
+    break;
+  default:
+    postUrl = `#/${REPL_ACCOUNT}/widget/PostPage?accountId=${accountId}&blockHeight=${blockHeight}`;
+}
 
 const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
 const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
-
-let postUrl = "";
-
-if (type !== "custom") {
-  const pathAccount = path.split("/")[0];
-  postUrl = `#/${REPL_ACCOUNT}/widget/PostPage?accountId=${pathAccount}&${urlBlockHeight}=${blockHeight}`;
-} else {
-  postUrl = `#/${value.widget}?${Object.entries(value.params || {})
-    .map(([k, v]) => `${k}=${v}`)
-    .join("&")}`;
-}
-
-const actionable =
-  type === "like" ||
-  type === "comment" ||
-  type === "mention" ||
-  type === "custom";
+const isComment = path.indexOf("/post/comment") > 0 || type === "comment";
+const isPost = !isComment && path.indexOf("/post/main") > 0;
 
 let notificationMessage = {
-  like: isPost ? "liked your post" : isComment ? "liked your comment" : "",
-  // fork: '',
+  like: isPost ? "liked your post" : "liked your comment",
   follow: "followed you",
   unfollow: "unfollowed you",
   comment: "replied to your post",
@@ -163,6 +166,12 @@ let notificationMessage = {
   poke: "poked you",
   custom: value.message ?? "",
 };
+
+const actionable =
+  type === "like" ||
+  type === "comment" ||
+  type === "mention" ||
+  type === "custom";
 
 // DevGov handles their own type
 if (type && type.startsWith("devgovgigs/")) {

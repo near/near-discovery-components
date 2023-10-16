@@ -10,6 +10,8 @@ const showFlagAccountFeature = props.showFlagAccountFeature;
 
 State.init({
   hasBeenFlagged: false,
+  showFlaggedToast: false,
+  flaggedMessage: { header: "", detail: "" },
   postExists: true,
   comments: props.comments ?? undefined,
   content: JSON.parse(props.content) ?? undefined,
@@ -171,6 +173,14 @@ const CommentWrapper = styled.div`
   }
 `;
 
+const resolveHidePost = (message) => {
+  State.update({
+    hasBeenFlagged: true,
+    showFlaggedToast: true,
+    flaggedMessage: message,
+  });
+};
+
 const renderComment = (a) => {
   return (
     <div key={JSON.stringify(a)}>
@@ -196,12 +206,11 @@ if (state.hasBeenFlagged) {
       src={`${REPL_ACCOUNT}/widget/DIG.Toast`}
       props={{
         type: "info",
-        title: "Flagged for moderation",
-        description:
-          "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
-        open: state.hasBeenFlagged,
+        title: state.flaggedMessage.header,
+        description: state.flaggedMessage.detail,
+        open: state.showFlaggedToast,
         onOpenChange: () => {
-          State.update({ hasBeenFlagged: false });
+          State.update({ showFlaggedToast: false });
         },
         duration: 5000,
       }}
@@ -246,19 +255,19 @@ return (
           />
         </div>
         <div className="col-1">
-          {false && (
+          <div style={{ position: "absolute", right: 0, top: "2px" }}>
             <Widget
               src="${REPL_ACCOUNT}/widget/Posts.Menu"
               props={{
-                elements: [
-                  <button className={`btn`} onClick={toggleEdit}>
-                    <i className="bi bi-pencil me-1" />
-                    <span>Edit</span>
-                  </button>,
-                ],
+                accountId: accountId,
+                blockHeight: blockHeight,
+                parentFunctions: {
+                  toggleEdit,
+                  resolveHidePost,
+                },
               }}
             />
-          )}
+          </div>
         </div>
       </div>
     </Header>
@@ -325,16 +334,6 @@ return (
             props={{
               postType: "post",
               url: postUrl,
-            }}
-          />
-          <Widget
-            src="${REPL_ACCOUNT}/widget/FlagButton"
-            props={{
-              item,
-              disabled: !context.accountId || context.accountId === accountId,
-              onFlag: () => {
-                State.update({ hasBeenFlagged: true });
-              },
             }}
           />
         </Actions>

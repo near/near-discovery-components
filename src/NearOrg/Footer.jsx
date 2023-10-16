@@ -1,6 +1,10 @@
 const Wrapper = styled.div`
   background: var(--white);
   padding: 100px 24px;
+
+  @media (max-width: 1024px) {
+    padding: 80px 24px 24px;
+  }
 `;
 
 const Text = styled.p`
@@ -15,14 +19,14 @@ const Text = styled.p`
 const Container = styled.div`
   display: grid;
   gap: 100px;
-  max-width: 1040px;
+  max-width: 1224px;
   margin: 0 auto;
 `;
 
 const LinkGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 34px;
+  gap: 24px;
 
   div {
     display: flex;
@@ -55,12 +59,8 @@ const LinkGrid = styled.div`
     }
   }
 
-  @media (max-width: 1100px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  @media (max-width: 650px) {
-    grid-template-columns: 1fr;
+  @media (max-width: 1024px) {
+    display: none;
   }
 `;
 
@@ -75,9 +75,9 @@ const Bottom = styled.div`
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  padding-right: 2.85rem;
+  padding-right: 5.55rem;
 
-  @media (max-width: 1100px) {
+  @media (max-width: 1024px) {
     padding-right: 0;
   }
 `;
@@ -167,11 +167,19 @@ const sections = [
       },
       {
         title: "News",
-        url: "https://near.org/nearweekapp.near/widget/nearweek-news",
+        url: "/nearweekapp.near/widget/nearweek-news",
       },
       {
         title: "Events",
         url: "/events",
+      },
+      {
+        title: "People",
+        url: "/people",
+      },
+      {
+        title: "Founders",
+        url: "/horizon",
       },
     ],
   },

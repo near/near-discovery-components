@@ -226,10 +226,14 @@ return (
         </a>
         <Text>
           <ProfileOverlay>
-            <a href={!props.onClick && profileUrl}>
-              <Username>{profile.name || accountId.split(".near")[0]}</Username>
-            </a>
-            <Action>{notificationMessage[type]}</Action>
+            <div style={{ "text-align": "center" }}>
+              <a href={!props.onClick && profileUrl}>
+                <Username>
+                  {profile.name || accountId.split(".near")[0]}
+                </Username>
+              </a>
+              <Action>{notificationMessage[type]}</Action>
+            </div>
           </ProfileOverlay>
           {/*<ComponentName>{componentName}</ComponentName>*/}
 

@@ -1,15 +1,7 @@
-function search(query) {
-  if (!query) {
-    State.update({
-      isLoading: false,
-      results: [],
-    });
-    return;
-  }
-
+function search({ currentPage, query, results }) {
   const body = {
     query,
-    page: state.currentPage,
+    page: currentPage,
     filters: "categories:widget AND tags:app AND NOT _tags:hidden",
   };
 
@@ -23,8 +15,9 @@ function search(query) {
     .then((res) => {
       State.update({
         isLoading: false,
-        results: [...state.results, ...res.body.hits],
+        results: [...results, ...res.body.hits],
         totalPages: res.body.nbPages,
+        totalResults: res.body.nbHits,
       });
     })
     .catch((error) => {
@@ -39,6 +32,7 @@ function handleOnInput() {
   State.update({
     currentPage: 0,
     totalPages: 0,
+    totalResults: 0,
     isLoading: true,
     results: [],
   });
@@ -48,7 +42,12 @@ function handleOnQueryChange(query) {
   State.update({
     query,
   });
-  search(query);
+
+  search({
+    currentPage: 0,
+    results: [],
+    query,
+  });
 }
 
 function loadMore() {
@@ -57,16 +56,33 @@ function loadMore() {
     isLoading: true,
   });
 
-  search(state.query);
+  search({
+    currentPage: state.currentPage,
+    results: state.results,
+    query: state.query,
+  });
 }
 
 State.init({
   currentPage: 0,
   totalPages: 0,
+  totalResults: 0,
   isLoading: false,
   query: "",
   results: [],
 });
+
+if (!state.isLoading && state.results.length === 0 && state.query === "") {
+  State.update({
+    isLoading: true,
+  });
+
+  search({
+    currentPage: 0,
+    results: [],
+    query: "",
+  });
+}
 
 const Wrapper = styled.div`
   display: flex;
@@ -91,11 +107,11 @@ const Text = styled.p`
 
 const ContentGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 2rem;
 
   @media (max-width: 650px) {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 `;
 
@@ -116,7 +132,7 @@ return (
 
     {state.results.length > 0 && (
       <>
-        <Text>Showing {state.results.length} results</Text>
+        {state.query && <Text>Showing {state.totalResults} results</Text>}
 
         <ContentGrid>
           {state.results.map((result) => {

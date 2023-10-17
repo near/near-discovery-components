@@ -95,7 +95,7 @@ return (
                 ) : (
                   <>
                     <Widget
-                      src="${REPL_MOB}/widget/TimeAgo@97556750"
+                      src="${REPL_MOB_2}/widget/TimeAgo@97556750"
                       props={{ blockHeight }}
                     />{" "}
                     ago

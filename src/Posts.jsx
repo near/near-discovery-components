@@ -26,7 +26,7 @@ const queryFollowedAccountsList = () => {
   const graph = Social.keys(`${context.accountId}/graph/follow/*`, "final");
   if (graph !== null) {
     const followedAccounts = Object.keys(
-      graph[context.accountId].graph.follow || {},
+      graph[context.accountId].graph.follow || {}
     );
     State.update({ accountsFollowing: followedAccounts });
   }
@@ -45,31 +45,48 @@ const selectTab = (selectedTab) => {
   loadMorePosts();
 };
 
-// get the full list of posts that the current user has flagged so
-// they can be hidden
+let gatewayModeratedUsersRaw = Social.get(
+  `${moderatorAccount}/moderate/users`,
+  "optimistic",
+  {
+    subscribe: true,
+  }
+);
+
 const selfFlaggedPosts = context.accountId
   ? Social.index("flag", "main", {
       accountId: context.accountId,
     })
   : [];
 
-// V2 self moderation data, structure is like:
+const selfModeration = context.accountId
+  ? Social.index("moderate", "main", {
+      accountId: context.accountId,
+    })
+  : [];
+
+if (gatewayModeratedUsersRaw === null) {
+  // haven't loaded filter list yet, return early
+  return "";
+}
+
+const gatewayModeratedUsers = gatewayModeratedUsersRaw
+  ? JSON.parse(gatewayModeratedUsersRaw)
+  : [];
+
+// get the full list of posts that the current user has flagged so
+// they can be hidden
+
+// expecting moderation structure for accounts and posts like
 // { moderate: {
-//     "account1.near": "report",
+//     "account1.near": "block",
 //     "account2.near": {
-//         ".post.main": { // slashes are not allowed in keys
-//           "100000123": "spam", // post ids are account/blockHeight
-//         }
+//         "100000123": "spam",
 //     },
 //   }
 // }
-const selfModeration = context.accountId
-  ? Social.getr(`${context.accountId}/moderate`, "optimistic")
-  : [];
-const postsModerationKey = ".post.main";
-const matchesModeration = (moderated, socialDBObjectType, item) => {
-  if (!moderated) return false;
-  const accountFound = moderated[item.account_id];
+function matchesModeration(moderated, item) {
+  let accountFound = moderated[accountId];
   if (typeof accountFound === "undefined") {
     return false;
   }
@@ -77,18 +94,19 @@ const matchesModeration = (moderated, socialDBObjectType, item) => {
     return true;
   }
   // match posts
-  const posts = accountFound[postsModerationKey];
-  return posts && typeof posts[item.block_height] !== "undefined";
-};
+  return typeof accountFound[item.block_height] !== "undefined";
+}
 
 const shouldFilter = (item) => {
   return (
+    gatewayModeratedUsers.includes(item.account_id) ||
     selfFlaggedPosts.find((flagged) => {
       return (
         flagged?.value?.blockHeight === item.block_height &&
         flagged?.value?.path.includes(item.account_id)
       );
-    }) || matchesModeration(selfModeration, postsModerationKey, item)
+    }) ||
+    matchesModeration(selfModeration, item)
   );
 };
 function fetchGraphQL(operationsDoc, operationName, variables) {
@@ -129,7 +147,7 @@ const createQuery = (type) => {
 
   const indexerQueries = `
 query GetPostsQuery($offset: Int, $limit: Int) {
-  dataplatform_near_social_feed_moderated_posts(order_by: [${querySortOption} { block_height: desc }], offset: $offset, limit: $limit) {
+  dataplatform_near_social_feed_posts(order_by: [${querySortOption} { block_height: desc }], offset: $offset, limit: $limit) {
     account_id
     block_height
     block_timestamp
@@ -149,14 +167,14 @@ query GetPostsQuery($offset: Int, $limit: Int) {
       human_verification_level
     }
   }
-  dataplatform_near_social_feed_moderated_posts_aggregate {
+  dataplatform_near_social_feed_posts_aggregate(order_by: [${querySortOption} { block_height: desc }], offset: $offset){
     aggregate {
       count
     }
   }
 }
 query GetFollowingPosts($offset: Int, $limit: Int) {
-  dataplatform_near_social_feed_moderated_posts(where: {${queryFilter}}, order_by: [{ block_height: desc }], offset: $offset, limit: $limit) {
+  dataplatform_near_social_feed_posts(where: {${queryFilter}}, order_by: [{ block_height: desc }], offset: $offset, limit: $limit) {
     account_id
     block_height
     block_timestamp
@@ -177,7 +195,7 @@ query GetFollowingPosts($offset: Int, $limit: Int) {
     }
 
   }
-  dataplatform_near_social_feed_moderated_posts_aggregate(where: {${queryFilter}}) {
+  dataplatform_near_social_feed_posts_aggregate(where: {${queryFilter}}, order_by: [{ block_height: desc }], offset: $offset) {
     aggregate {
       count
     }
@@ -189,10 +207,13 @@ query GetFollowingPosts($offset: Int, $limit: Int) {
 
 const loadMorePosts = () => {
   const queryName =
-    state.selectedTab === "following" ? "GetFollowingPosts" : "GetPostsQuery";
+    state.selectedTab == "following" ? "GetFollowingPosts" : "GetPostsQuery";
   const type = state.selectedTab;
 
-  if (state.selectedTab === "following" && !state.accountsFollowing) {
+  if (
+    state.selectedTab == "following" &&
+    !state.accountsFollowing
+  ) {
     return;
   }
   fetchGraphQL(createQuery(type), queryName, {
@@ -206,16 +227,15 @@ const loadMorePosts = () => {
       }
       let data = result.body.data;
       if (data) {
-        const newPosts = data.dataplatform_near_social_feed_moderated_posts;
+        const newPosts = data.dataplatform_near_social_feed_posts;
         const postsCountLeft =
-          data.dataplatform_near_social_feed_moderated_posts_aggregate.aggregate
-            .count;
+          data.dataplatform_near_social_feed_posts_aggregate.aggregate.count;
         if (newPosts.length > 0) {
           let filteredPosts = newPosts.filter((i) => !shouldFilter(i));
           filteredPosts = filteredPosts.map((post) => {
             const prevComments = post.comments;
             const filteredComments = prevComments.filter(
-              (comment) => !shouldFilter(comment),
+              (comment) => !shouldFilter(comment)
             );
             post.comments = filteredComments;
             return post;
@@ -245,13 +265,18 @@ if (
   queryFollowedAccountsList();
 }
 
-if (!state.initLoadPostsAll && selfFlaggedPosts && selfModeration) {
+if (
+  !state.initLoadPostsAll &&
+  selfFlaggedPosts &&
+  selfModeration &&
+  gatewayModeratedUsers
+) {
   loadMorePosts();
   State.update({ initLoadPostsAll: true });
 }
 
 if (
-  state.initLoadPostsAll === true &&
+  state.initLoadPostsAll == true &&
   !state.initLoadPosts &&
   state.accountsFollowing
 ) {
@@ -421,7 +446,7 @@ return (
             </PillSelect>
           </FilterWrapper>
           <SortContainer>
-            {state.selectedTab === "all" && (
+            {state.selectedTab == "all" && (
               <Sort>
                 <span className="label">Sort by:</span>
                 <Widget
@@ -457,7 +482,7 @@ return (
             hasMore,
             loadMorePosts,
             posts: state.posts,
-            showFlagAccountFeature: props.showFlagAccountFeature,
+            showFlagAccountFeature: props.showFlagAccountFeature
           }}
         />
       </FeedWrapper>

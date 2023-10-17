@@ -18,7 +18,7 @@ function blockPost(accountId, blockHeight) {
     key: moderationStream,
     value: {
       path: `${account}${objectPath}`,
-      blockHeight: parseInt(block),
+      blockHeight: block,
       label: "moderate",
     },
   });
@@ -29,7 +29,7 @@ function unblockPost(accountId, blockHeight) {
     key: moderationStream,
     value: {
       path: `${accountId}${objectPath}`,
-      blockHeight: parseInt(blockHeight),
+      blockHeight: blockHeight,
       label: null,
       operation: "delete",
     },
@@ -40,8 +40,9 @@ const moderatedObjects = context.accountId
   ? Social.index("moderate", moderationStream, {
       subscribe: true,
       order: "desc",
-    })?.filter((f) => f.accountId === moderatorAccount)
-  : [];
+    })
+  : // .filter((f) => f.accountId === moderatorAccount)
+    [];
 const modifiedModerations = {}; // track update & delete operations
 
 return (

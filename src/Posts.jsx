@@ -50,7 +50,7 @@ const selectTab = (selectedTab) => {
 const selfFlaggedPosts = context.accountId
   ? Social.index("flag", "main", {
       accountId: context.accountId,
-    })
+    }) ?? []
   : [];
 
 // V2 self moderation data, structure is like:
@@ -64,7 +64,7 @@ const selfFlaggedPosts = context.accountId
 //   }
 // }
 const selfModeration = context.accountId
-  ? Social.getr(`${context.accountId}/moderate`, "optimistic")
+  ? Social.getr(`${context.accountId}/moderate`, "optimistic") ?? []
   : [];
 const postsModerationKey = ".post.main";
 const matchesModeration = (moderated, socialDBObjectType, item) => {

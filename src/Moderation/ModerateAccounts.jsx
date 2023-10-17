@@ -30,7 +30,7 @@ const moderatedObjects = context.accountId
   ? Social.index("moderate", moderationStream, {
       subscribe: true,
       order: "desc",
-    })?.filter((f) => f.accountId === moderatorAccount)
+    }).filter((f) => f.accountId === moderatorAccount)
   : [];
 const modifiedModerations = {}; // track update & delete operations
 

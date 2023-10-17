@@ -1,7 +1,7 @@
 const [accountId, widget, widgetName] = props.src.split("/");
 const metadata = Social.get(
   `${accountId}/widget/${widgetName}/metadata/**`,
-  "final"
+  "final",
 );
 const tags = Object.keys(metadata.tags || {});
 const detailsUrl = `/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${accountId}/widget/${widgetName}`;
@@ -21,7 +21,8 @@ const Card = styled.div`
   border-radius: 12px;
   background: #fff;
   border: 1px solid #eceef0;
-  box-shadow: 0px 1px 3px rgba(16, 24, 40, 0.1),
+  box-shadow:
+    0px 1px 3px rgba(16, 24, 40, 0.1),
     0px 1px 2px rgba(16, 24, 40, 0.06);
   overflow: hidden;
 `;

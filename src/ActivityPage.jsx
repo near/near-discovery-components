@@ -25,7 +25,7 @@ function fetchGraphQL(operationsDoc, operationName, variables) {
 
 const lastPostQuery = `
 query IndexerQuery {
-  dataplatform_near_social_feed_posts( limit: 1, order_by: { block_height: desc }) {
+  dataplatform_near_social_feed_moderated_posts( limit: 1, order_by: { block_height: desc }) {
       block_height
   }
 }
@@ -35,13 +35,13 @@ fetchGraphQL(lastPostQuery, "IndexerQuery", {})
   .then((feedIndexerResponse) => {
     if (
       feedIndexerResponse &&
-      feedIndexerResponse.body.data.dataplatform_near_social_feed_posts.length >
-        0
+      feedIndexerResponse.body.data
+        .dataplatform_near_social_feed_moderated_posts.length > 0
     ) {
       const nearSocialBlockHeight = lastPostSocialApi[0].blockHeight;
       const feedIndexerBlockHeight =
-        feedIndexerResponse.body.data.dataplatform_near_social_feed_posts[0]
-          .block_height;
+        feedIndexerResponse.body.data
+          .dataplatform_near_social_feed_moderated_posts[0].block_height;
 
       const lag = nearSocialBlockHeight - feedIndexerBlockHeight;
       let shouldFallback = lag > 2 || !feedIndexerBlockHeight;
@@ -54,7 +54,7 @@ fetchGraphQL(lastPostQuery, "IndexerQuery", {})
   .catch((error) => {
     console.log(
       "Error while fetching GraphQL(falling back to old widget): ",
-      error
+      error,
     );
     State.update({ shouldFallback: true });
   });

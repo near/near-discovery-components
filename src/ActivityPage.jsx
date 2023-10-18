@@ -196,7 +196,7 @@ return (
         <Widget src="${REPL_ACCOUNT}/widget/FeaturedComponents" />
         <Widget src="${REPL_ACCOUNT}/widget/LatestComponents" />
       </Section>
-      <Section negativeMargin primary active={state.selectedTab === "posts"}>
+      {/* <Section negativeMargin primary active={state.selectedTab === "posts"}>
         {state.shouldFallback == true ? (
           <Widget
             src={`${REPL_ACCOUNT}/widget/v1.Posts`}
@@ -212,7 +212,7 @@ return (
             }}
           />
         )}
-      </Section>
+      </Section>*/}
       <Section active={state.selectedTab === "explore"}>
         <Widget src="${REPL_ACCOUNT}/widget/ExploreWidgets" />
       </Section>

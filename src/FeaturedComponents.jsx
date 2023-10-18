@@ -1,5 +1,30 @@
+let components = [];
 const componentsUrl = "#/${REPL_ACCOUNT}/widget/ComponentsPage";
-//bozon.near/widget/WidgetHistory
+
+const featuredComponentListRes = Social.get(
+  "${REPL_FEATURED_COMP_MANAGER}/listManager/FeaturedComponents",
+  "final"
+);
+const featuredComponentPaths = featuredComponentListRes
+  ? JSON.parse(featuredComponentListRes)
+  : [];
+
+const componentData =
+  featuredComponentPaths.length > 0
+    ? Social.getr(featuredComponentPaths)
+    : null;
+
+if (componentData) {
+  featuredComponentPaths.forEach((src) => {
+    const path = src.split("/");
+    const result = {
+      metadata: componentData[path[0]][path[1]][path[2]].metadata,
+      src,
+    };
+
+    components.push(result);
+  });
+}
 
 const Wrapper = styled.div`
   display: flex;
@@ -43,13 +68,6 @@ const TextLink = styled.a`
   }
 `;
 
-const featuredComponentListRes = Social.get(
-  "${REPL_FEATURED_COMP_MANAGER}/listManager/FeaturedComponents"
-);
-const featuredComponents = featuredComponentListRes
-  ? JSON.parse(featuredComponentListRes)
-  : [];
-
 return (
   <Wrapper>
     <Header>
@@ -58,11 +76,11 @@ return (
     </Header>
 
     <Items>
-      {featuredComponents.map((featuredComp) => (
-        <Item key={featuredComp}>
+      {components.map((component) => (
+        <Item key={component.src}>
           <Widget
             src="${REPL_ACCOUNT}/widget/ComponentCard"
-            props={{ src: featuredComp }}
+            props={{ ...component, hideBlockHeightTimestamp: true }}
           />
         </Item>
       ))}

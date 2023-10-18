@@ -41,7 +41,7 @@ const renderItem = (item) => {
 
 if (posts.length === 0) {
   return (
-    <div class="alert alert-info mx-3" role="alert">
+    <div className="alert alert-info mx-3" role="alert">
       Build your feed by finding
       <TextLink
         className="alert-link"

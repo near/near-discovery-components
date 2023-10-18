@@ -5,6 +5,21 @@ const follows =
     order: "desc",
   }) || [];
 
+const accountIds = [];
+
+follows.forEach((follow) => {
+  accountIds.push(follow.accountId);
+  accountIds.push(follow.value.accountId);
+});
+
+const profiles =
+  accountIds.length > 0
+    ? Social.getr(
+        accountIds.map((id) => `${id}/profile`),
+        "final"
+      )
+    : null;
+
 const Wrapper = styled.div`
   display: grid;
   gap: 24px;
@@ -56,28 +71,37 @@ return (
     <H2>Follow Activity</H2>
 
     <Items>
-      {follows.map((item, i) => (
-        <Item key={i}>
-          <Widget
-            src="${REPL_ACCOUNT}/widget/AccountProfile"
-            props={{ accountId: item.accountId, hideAccountId: true }}
-          />
-
-          <Text small bold>
-            <i className="bi bi-arrow-right"></i>
-            <br />
+      {profiles &&
+        follows.map((item, i) => (
+          <Item key={i}>
             <Widget
-              src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
-              props={{ blockHeight: item.blockHeight }}
+              src="${REPL_ACCOUNT}/widget/AccountProfile"
+              props={{
+                accountId: item.accountId,
+                hideAccountId: true,
+                profile: profiles[item.accountId]?.profile,
+              }}
             />
-          </Text>
 
-          <Widget
-            src="${REPL_ACCOUNT}/widget/AccountProfile"
-            props={{ accountId: item.value.accountId, hideAccountId: true }}
-          />
-        </Item>
-      ))}
+            <Text small bold>
+              <i className="bi bi-arrow-right"></i>
+              {/* <br />
+              <Widget
+                src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
+                props={{ blockHeight: item.blockHeight }}
+              /> */}
+            </Text>
+
+            <Widget
+              src="${REPL_ACCOUNT}/widget/AccountProfile"
+              props={{
+                accountId: item.value.accountId,
+                hideAccountId: true,
+                profile: profiles[item.value.accountId]?.profile,
+              }}
+            />
+          </Item>
+        ))}
     </Items>
   </Wrapper>
 );

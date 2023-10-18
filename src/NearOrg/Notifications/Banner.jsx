@@ -50,7 +50,7 @@ return (
       <Text>Don't miss out on updates, turn on desktop notifications.</Text>
       {showIosNoteText && (
         <Text small>
-          <i class="ph-bold ph-info" />
+          <i className="ph-bold ph-info" />
           Mobile browser push notifications are only supported on iOS "{recomendedIOSVersion}" or
           greater.
         </Text>

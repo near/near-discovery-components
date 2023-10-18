@@ -61,6 +61,7 @@ const RecommendedUsers = styled.div`
 
 State.init({
   currentPage: 1,
+  hasFetched: false,
   isLoading: true,
   error: null,
   totalPages: 1,
@@ -68,18 +69,16 @@ State.init({
 });
 
 const updateState = (data, totalPageNum) => {
+  const users = [...state.displayedUsers, ...data];
+
   State.update({
     isLoading: false,
-    displayedUsers: [...state.displayedUsers, ...data],
+    displayedUsers: props.returnElements
+      ? users.slice(0, props.returnElements)
+      : users,
     totalPages: totalPageNum,
   });
 };
-
-State.update({
-  displayedUsers: props.returnElements
-    ? state.displayedUsers.slice(0, props.returnElements)
-    : state.displayedUsers,
-});
 
 const passedContext = props.fromContext;
 const fromContext = { ...passedContext, scope: props.scope };
@@ -89,32 +88,29 @@ const BUCKET = "databricks-near-query-runner";
 const BASE_URL = `https://${STORE}/${BUCKET}/output/recommendations`;
 
 const accountId = props.accountId;
-const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
-const tags = Object.keys(profile.tags || {});
 const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 
 const getRecommendedUsers = (page) => {
-  try {
-    const url = `${props.dataset}_${page}.json`;
-    if (state.currentPage == 1) {
-      const res = fetch(url);
+  const url = `${props.dataset}_${page}.json`;
+
+  State.update({
+    hasFetched: true,
+  });
+
+  asyncFetch(url)
+    .then((res) => {
       if (res.ok) {
         const parsedResults = JSON.parse(res.body);
         const totalPageNum = parsedResults.total_pages || 10;
         updateState(parsedResults.data, totalPageNum);
+      } else {
+        throw res;
       }
-    } else {
-      asyncFetch(url).then((res) => {
-        if (res.ok) {
-          const parsedResults = JSON.parse(res.body);
-          const totalPageNum = parsedResults.total_pages || 10;
-          updateState(parsedResults.data, totalPageNum);
-        }
-      });
-    }
-  } catch (error) {
-    console.error("Error on fetching recommended users: ", error.message);
-  }
+    })
+    .catch((e) => {
+      State.update({ isLoading: false });
+      console.error("Error on fetching recommended users: ", error);
+    });
 };
 
 const loadMore = () => {
@@ -125,7 +121,7 @@ const loadMore = () => {
   }
 };
 
-if (state.isLoading) {
+if (state.isLoading && !state.hasFetched) {
   getRecommendedUsers(state.currentPage);
 }
 
@@ -141,6 +137,32 @@ const handleFollowed = (accountId) => {
     displayedUsers: updatedUsers,
   });
 };
+
+function returnProfileForUser(user) {
+  const rawImage =
+    user.profile_image_1 || user.profile_image_2 || user.profile_image_3;
+  const image =
+    rawImage && rawImage.indexOf("http") === 0
+      ? { url: rawImage }
+      : { ipfs_cid: rawImage };
+  const name = user.profile_name ?? "";
+  let tags = null;
+
+  if (user.profile_tags) {
+    tags = {};
+    user.profile_tags.forEach((tag) => (tags[tag] = ""));
+  }
+
+  if (image && tags) {
+    return {
+      image,
+      name,
+      tags,
+    };
+  }
+
+  return null;
+}
 
 return (
   <RecommendedUsers>
@@ -174,8 +196,7 @@ return (
                 likers: user.likers || null,
                 followers: user.followers || null,
                 following: user.following || null,
-                profileImage: user.profileImage || null,
-                profileName: user.profileName || null,
+                profile: returnProfileForUser(user),
                 sidebar: props.sidebar || null,
                 scope: props.scope || null,
                 fromContext: fromContext,

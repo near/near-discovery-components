@@ -6,6 +6,13 @@ State.init({
   clicked: false,
 });
 
+const image =
+  typeof props.profileImage === "string"
+    ? props.profileImage.indexOf("http") === 0
+      ? { url: props.profileImage }
+      : { ipfs_cid: props.profileImage }
+    : props.profileImage;
+
 return (
   <div onClick={handleClick}>
     <Widget
@@ -18,14 +25,14 @@ return (
         onClick: state.clicked,
       }}
     />
-      <Widget
-        src="${REPL_MOB}/widget/Image"
-        props={{
-          image: props.profileImage,
-          alt: props.profileImageAlt,
-          fallbackUrl:
-            "https://ipfs.near.social/ipfs/bafkreibiyqabm3kl24gcb2oegb7pmwdi6wwrpui62iwb44l7uomnn3lhbi",
-        }}
-      />
+    <Widget
+      src="${REPL_MOB}/widget/Image"
+      props={{
+        image,
+        alt: props.profileImageAlt,
+        fallbackUrl:
+          "https://ipfs.near.social/ipfs/bafkreibiyqabm3kl24gcb2oegb7pmwdi6wwrpui62iwb44l7uomnn3lhbi",
+      }}
+    />
   </div>
 );

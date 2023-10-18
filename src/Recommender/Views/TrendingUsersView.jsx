@@ -53,6 +53,7 @@ const RecommendedUsers = styled.div`
 State.init({
   currentPage: 1,
   userData: [],
+  hasFetched: false,
   isLoading: true,
   error: null,
   totalPages: 1,
@@ -80,27 +81,26 @@ const algorithm = "trending_users";
 const dataset = `${BASE_URL}/${algorithm}`;
 
 const getRecommendedUsers = (page) => {
-  try {
-    const url = `${dataset}_${page}.json`;
-    if (state.currentPage == 1) {
-      const res = fetch(url);
+  const url = `${dataset}_${page}.json`;
+
+  State.update({
+    hasFetched: true,
+  });
+
+  asyncFetch(url)
+    .then((res) => {
       if (res.ok) {
         const parsedResults = JSON.parse(res.body);
         const totalPageNum = parsedResults.total_pages || 10;
         updateState(parsedResults.data, totalPageNum);
-      } 
-    } else {
-      asyncFetch(url).then((res) => {
-        if (res.ok) {
-          const parsedResults = JSON.parse(res.body);
-          const totalPageNum = parsedResults.total_pages || 10;
-          updateState(parsedResults.data, totalPageNum);
-        } 
-      });
-    }
-  } catch (error) {
-    console.log(error.message);
-  }
+      } else {
+        throw res;
+      }
+    })
+    .catch((e) => {
+      State.update({ isLoading: false });
+      console.error("Error on fetching recommended users: ", error);
+    });
 };
 
 const loadMore = () => {
@@ -111,7 +111,7 @@ const loadMore = () => {
   }
 };
 
-if (state.isLoading) {
+if (state.isLoading && !state.hasFetched) {
   getRecommendedUsers(state.currentPage);
 }
 
@@ -153,8 +153,12 @@ return (
                 likers: user.likers || null,
                 followers: user.followers || null,
                 following: user.following || null,
-                profileImage: user.profileImage || null,
-                profileName: user.profileName || null,
+                profileImage:
+                  user.profile_image_1 ||
+                  user.profile_image_2 ||
+                  user.profile_image_3 ||
+                  null,
+                profileName: user.profile_name || null,
                 scope: props.scope || null,
                 fromContext: fromContext,
               }}
@@ -163,7 +167,7 @@ return (
         ))}
       </Profiles>
     )}
-     {props.sidebar && (
+    {props.sidebar && (
       <Profiles>
         {state.userData.map((user, index) => (
           <Profile key={index}>
@@ -183,8 +187,12 @@ return (
                 likers: user.likers || null,
                 followers: user.followers || null,
                 following: user.following || null,
-                profileImage: user.profileImage || null,
-                profileName: user.profileName || null,
+                profileImage:
+                  user.profile_image_1 ||
+                  user.profile_image_2 ||
+                  user.profile_image_3 ||
+                  null,
+                profileName: user.profile_name || null,
                 scope: props.scope || null,
                 fromContext: fromContext,
               }}

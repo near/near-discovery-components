@@ -1,35 +1,34 @@
-const GRAPHQL_ENDPOINT =
-  props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
-const LIMIT = 25;
-const accountsFollowing = props.accountsFollowing;
-const moderatorAccount = props?.moderatorAccount || "bosmod.near";
-const sort = Storage.get(`queryapi:feed-sort`) ?? "timedesc";
-const initialSelectedTab = Storage.privateGet("selectedTab") ?? "all";
-
 State.init({
-  selectedTab: initialSelectedTab,
+  initialized: false,
+  isLoading: false,
+  selectedTab: null,
   posts: [],
   postsCountLeft: 0,
-  initLoadPosts: false,
-  initLoadPostsAll: false,
-  sort,
-  accountsFollowing,
+  sort: null,
 });
+
+const GRAPHQL_ENDPOINT =
+  props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
+const LIMIT = 10;
+const moderatorAccount = props?.moderatorAccount || "bosmod.near";
+const sortRaw = Storage.get("queryapi:feed-sort");
+const sort = sortRaw ?? (sortRaw === undefined ? "timedesc" : null);
+const initialSelectedTabRaw = Storage.privateGet("selectedTab");
+const initialSelectedTab =
+  initialSelectedTabRaw ?? (initialSelectedTabRaw === undefined ? "all" : null);
+const followGraph = context.accountId
+  ? Social.keys(`${context.accountId}/graph/follow/*`, "final")
+  : null;
+const accountsFollowing =
+  props.accountsFollowing ??
+  (followGraph
+    ? Object.keys(followGraph[context.accountId].graph.follow || {})
+    : null);
+const isLoading = !state.initialized || state.isLoading;
 
 const optionsMap = {
   timedesc: "Most Recent",
   recentcommentdesc: "Recent Comments",
-};
-
-// TODO port to QueryAPI
-const queryFollowedAccountsList = () => {
-  const graph = Social.keys(`${context.accountId}/graph/follow/*`, "final");
-  if (graph !== null) {
-    const followedAccounts = Object.keys(
-      graph[context.accountId].graph.follow || {}
-    );
-    State.update({ accountsFollowing: followedAccounts });
-  }
 };
 
 const selectTab = (selectedTab) => {
@@ -39,54 +38,34 @@ const selectTab = (selectedTab) => {
     postsCountLeft: 0,
     selectedTab,
   });
-  if (!state.accountsFollowing) {
-    queryFollowedAccountsList();
-  }
   loadMorePosts();
 };
 
-let gatewayModeratedUsersRaw = Social.get(
-  `${moderatorAccount}/moderate/users`,
-  "optimistic",
-  {
-    subscribe: true,
-  }
-);
-
+// get the full list of posts that the current user has flagged so
+// they can be hidden
 const selfFlaggedPosts = context.accountId
   ? Social.index("flag", "main", {
       accountId: context.accountId,
-    })
+    }) ?? []
   : [];
 
-const selfModeration = context.accountId
-  ? Social.index("moderate", "main", {
-      accountId: context.accountId,
-    })
-  : [];
-
-if (gatewayModeratedUsersRaw === null) {
-  // haven't loaded filter list yet, return early
-  return "";
-}
-
-const gatewayModeratedUsers = gatewayModeratedUsersRaw
-  ? JSON.parse(gatewayModeratedUsersRaw)
-  : [];
-
-// get the full list of posts that the current user has flagged so
-// they can be hidden
-
-// expecting moderation structure for accounts and posts like
+// V2 self moderation data, structure is like:
 // { moderate: {
-//     "account1.near": "block",
+//     "account1.near": "report",
 //     "account2.near": {
-//         "100000123": "spam",
+//         ".post.main": { // slashes are not allowed in keys
+//           "100000123": "spam", // post ids are account/blockHeight
+//         }
 //     },
 //   }
 // }
-function matchesModeration(moderated, item) {
-  let accountFound = moderated[accountId];
+const selfModeration = context.accountId
+  ? Social.getr(`${context.accountId}/moderate`, "optimistic") ?? []
+  : [];
+const postsModerationKey = ".post.main";
+const matchesModeration = (moderated, socialDBObjectType, item) => {
+  if (!moderated) return false;
+  const accountFound = moderated[item.account_id];
   if (typeof accountFound === "undefined") {
     return false;
   }
@@ -94,19 +73,18 @@ function matchesModeration(moderated, item) {
     return true;
   }
   // match posts
-  return typeof accountFound[item.block_height] !== "undefined";
-}
+  const posts = accountFound[postsModerationKey];
+  return posts && typeof posts[item.block_height] !== "undefined";
+};
 
 const shouldFilter = (item) => {
   return (
-    gatewayModeratedUsers.includes(item.account_id) ||
     selfFlaggedPosts.find((flagged) => {
       return (
         flagged?.value?.blockHeight === item.block_height &&
         flagged?.value?.path.includes(item.account_id)
       );
-    }) ||
-    matchesModeration(selfModeration, item)
+    }) || matchesModeration(selfModeration, postsModerationKey, item)
   );
 };
 function fetchGraphQL(operationsDoc, operationName, variables) {
@@ -135,7 +113,7 @@ const createQuery = (type) => {
   let queryFilter = "";
   switch (type) {
     case "following":
-      let queryAccountsString = state.accountsFollowing
+      let queryAccountsString = accountsFollowing
         .map((account) => `"${account}"`)
         .join(", ");
       queryFilter = `account_id: { _in: [${queryAccountsString}]}`;
@@ -147,7 +125,7 @@ const createQuery = (type) => {
 
   const indexerQueries = `
 query GetPostsQuery($offset: Int, $limit: Int) {
-  dataplatform_near_social_feed_posts(order_by: [${querySortOption} { block_height: desc }], offset: $offset, limit: $limit) {
+  dataplatform_near_social_feed_moderated_posts(order_by: [${querySortOption} { block_height: desc }], offset: $offset, limit: $limit) {
     account_id
     block_height
     block_timestamp
@@ -167,14 +145,14 @@ query GetPostsQuery($offset: Int, $limit: Int) {
       human_verification_level
     }
   }
-  dataplatform_near_social_feed_posts_aggregate(order_by: [${querySortOption} { block_height: desc }], offset: $offset){
+  dataplatform_near_social_feed_moderated_posts_aggregate {
     aggregate {
       count
     }
   }
 }
 query GetFollowingPosts($offset: Int, $limit: Int) {
-  dataplatform_near_social_feed_posts(where: {${queryFilter}}, order_by: [{ block_height: desc }], offset: $offset, limit: $limit) {
+  dataplatform_near_social_feed_moderated_posts(where: {${queryFilter}}, order_by: [{ block_height: desc }], offset: $offset, limit: $limit) {
     account_id
     block_height
     block_timestamp
@@ -195,7 +173,7 @@ query GetFollowingPosts($offset: Int, $limit: Int) {
     }
 
   }
-  dataplatform_near_social_feed_posts_aggregate(where: {${queryFilter}}, order_by: [{ block_height: desc }], offset: $offset) {
+  dataplatform_near_social_feed_moderated_posts_aggregate(where: {${queryFilter}}) {
     aggregate {
       count
     }
@@ -207,15 +185,17 @@ query GetFollowingPosts($offset: Int, $limit: Int) {
 
 const loadMorePosts = () => {
   const queryName =
-    state.selectedTab == "following" ? "GetFollowingPosts" : "GetPostsQuery";
+    state.selectedTab === "following" ? "GetFollowingPosts" : "GetPostsQuery";
   const type = state.selectedTab;
 
-  if (
-    state.selectedTab == "following" &&
-    !state.accountsFollowing
-  ) {
+  if (state.selectedTab === "following" && !accountsFollowing) {
     return;
   }
+
+  State.update({
+    isLoading: true,
+  });
+
   fetchGraphQL(createQuery(type), queryName, {
     offset: state.posts.length,
     limit: LIMIT,
@@ -227,9 +207,10 @@ const loadMorePosts = () => {
       }
       let data = result.body.data;
       if (data) {
-        const newPosts = data.dataplatform_near_social_feed_posts;
+        const newPosts = data.dataplatform_near_social_feed_moderated_posts;
         const postsCountLeft =
-          data.dataplatform_near_social_feed_posts_aggregate.aggregate.count;
+          data.dataplatform_near_social_feed_moderated_posts_aggregate.aggregate
+            .count;
         if (newPosts.length > 0) {
           let filteredPosts = newPosts.filter((i) => !shouldFilter(i));
           filteredPosts = filteredPosts.map((post) => {
@@ -242,6 +223,7 @@ const loadMorePosts = () => {
           });
 
           State.update({
+            isLoading: false,
             posts: [...state.posts, ...filteredPosts],
             postsCountLeft,
           });
@@ -251,39 +233,19 @@ const loadMorePosts = () => {
   });
 };
 
-const hasMore = state.postsCountLeft != state.posts.length;
+const hasMore =
+  state.postsCountLeft !== state.posts.length && state.posts.length > 0;
 
-if (initialSelectedTab && initialSelectedTab !== state.selectedTab) {
+if (
+  !state.initialized &&
+  initialSelectedTab &&
+  initialSelectedTab !== state.selectedTab &&
+  sort
+) {
+  if (initialSelectedTab === "following" && !accountsFollowing) return null;
+
+  State.update({ initialized: true, sort });
   selectTab(initialSelectedTab);
-}
-
-if (
-  state.selectedTab === "following" &&
-  context.accountId &&
-  !state.accountsFollowing
-) {
-  queryFollowedAccountsList();
-}
-
-if (
-  !state.initLoadPostsAll &&
-  selfFlaggedPosts &&
-  selfModeration &&
-  gatewayModeratedUsers
-) {
-  loadMorePosts();
-  State.update({ initLoadPostsAll: true });
-}
-
-if (
-  state.initLoadPostsAll == true &&
-  !state.initLoadPosts &&
-  state.accountsFollowing
-) {
-  if (state.accountsFollowing.length > 0 && state.selectedTab === "following") {
-    loadMorePosts();
-  }
-  State.update({ initLoadPosts: true });
 }
 
 const H2 = styled.h2`
@@ -445,21 +407,22 @@ return (
               </PillSelectButton>
             </PillSelect>
           </FilterWrapper>
+
           <SortContainer>
-            {state.selectedTab == "all" && (
+            {state.selectedTab === "all" && (
               <Sort>
                 <span className="label">Sort by:</span>
                 <Widget
                   src={`${REPL_ACCOUNT}/widget/Select`}
                   props={{
                     noLabel: true,
-                    value: { text: optionsMap[sort], value: state.sort },
+                    value: { text: optionsMap[sort], value: sort },
                     onChange: ({ value }) => {
-                      Storage.set(`queryapi:feed-sort`, value);
+                      Storage.set("queryapi:feed-sort", value);
                       State.update({
-                        sort: value,
                         posts: [],
                         postsCountLeft: 0,
+                        sort: value,
                       });
                       loadMorePosts();
                     },
@@ -480,9 +443,14 @@ return (
           src="${REPL_ACCOUNT}/widget/Posts.Feed"
           props={{
             hasMore,
-            loadMorePosts,
+            isLoading,
+            loadMorePosts: () => {
+              if (!isLoading) {
+                loadMorePosts();
+              }
+            },
             posts: state.posts,
-            showFlagAccountFeature: props.showFlagAccountFeature
+            showFlagAccountFeature: props.showFlagAccountFeature,
           }}
         />
       </FeedWrapper>

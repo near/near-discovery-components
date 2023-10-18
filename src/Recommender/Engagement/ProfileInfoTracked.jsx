@@ -67,8 +67,8 @@ const AvatarCount = styled.div`
 
 const Tracker = styled.div`
   display: flex;
-  flexdirection: column;
-  justifycontent: space-between;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 return (

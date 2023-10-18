@@ -12,7 +12,7 @@ const ipfsImages = {
   illustrations: {
     betterWayToBuild:
       "bafkreib6sp7aoovferwg4zfvekhxxmp6hdp4u7f2bgxupebntrfgrmjhbe",
-    code: "bafkreihftdjefcrp2ctuyxt2wah6trlb4n56xts66th5xie7k2q7znlgqy",
+    code: "bafkreig2anu2f6j6kh7i26k2x7z75d72bn4vtsp2dusiin5pahwbjd3rvi",
     components: "bafkreiecfsfxzubbayv27se2pr2xcz4rugp5a5kscsfz5lvjykiomt3a4u",
     dapps: "bafkreihhuffoky3qywxmnnr7z7r2gdtjfab6tbx7f7ml2xvwldx76ggrni",
     fastAuth: "bafkreib5rowa6ujusqvk6xr4qo2bnoazwvraozrl56taejqypemd5mc75y",

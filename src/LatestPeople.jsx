@@ -1,10 +1,18 @@
-const accountsData = Social.keys("*", "final", {
-  return_type: "BlockHeight",
+State.init({
+  selectedView: { text: "Top", value: "trending" },
 });
 
-const accountsWithProfileData = Social.keys("*/profile", "final", {
-  return_type: "BlockHeight",
-});
+const accountsData =
+  state.selectedView.value === "latest" &&
+  Social.keys("*", "final", {
+    return_type: "BlockHeight",
+  });
+
+const accountsWithProfileData =
+  state.selectedView.value === "latest" &&
+  Social.keys("*/profile", "final", {
+    return_type: "BlockHeight",
+  });
 
 const limit = 5;
 const totalAccounts = Object.keys(accountsData || {}).length;
@@ -23,10 +31,6 @@ let accounts = Object.entries(accountsWithProfileData || {})
 
 accounts.reverse();
 
-State.init({
-  selectedView: { text: "Top", value: "trending" },
-});
-
 const handleViewChange = (option) => {
   State.update({ selectedView: { value: option.value } });
 };
@@ -36,8 +40,6 @@ const options = [
   { text: "Top", value: "trending" },
   { text: "Recommended", value: "recommended" },
 ];
-
-const fromContext = props;
 
 const FlexContainer = styled.div`
   display: flex;
@@ -139,7 +141,6 @@ return (
           src="${REPL_ACCOUNT}/widget/Recommender.Views.TrendingUsersSidebar"
           props={{
             sidebar: true,
-            fromContext: fromContext,
             gridCols: "repeat(1, minmax(0, 1fr))",
             returnElements: 5,
           }}
@@ -152,7 +153,6 @@ return (
           src="${REPL_ACCOUNT}/widget/Recommender.Views.RecommendedUsersSidebar"
           props={{
             sidebar: true,
-            fromContext: fromContext,
             gridCols: "repeat(1, minmax(0, 1fr))",
             returnElements: 10,
           }}

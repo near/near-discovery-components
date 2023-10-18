@@ -1,19 +1,22 @@
-## Near Discovery Components
+# Near Discovery Components
 
-This is a repository that holds the source code of all NEAR discovery components that the team maintains for [near.org]().
+This is a repository that holds the source code of all NEAR discovery components that the team maintains for [near.org](https://near.org).
 
 Components will be deployed to production automatically as they are merged into the main branch. This occurs weekly, on Thursdays.
 
 Keep in mind that folders under `src` will be prepended to the component name when it's deployed. E.g. `src/post/comment.jsx` will be deployed as `post.comment`.
 
-This repository is not compatible with the [VS Code Extension](https://docs.near.org/bos/dev/vscode) due to the replacements strategy featured in this repository.
+*Note:* This repository is not compatible with the [VS Code Extension](https://docs.near.org/bos/dev/vscode) due to the [replacements](CONTRIBUTING.md#testing-across-multiple-environments) strategy featured in this repository.
 
-### Contributing
+## Contributing
 
-Please review the [contribution guide](https://github.com/near/near-discovery-components/blob/develop/CONTRIBUTING.md)
+Please review the [contribution guide](CONTRIBUTING.md)
 
+## Local Development
 
-### Troubleshooting Deployments
+Please review the [Local development with BOS-Loader](CONTRIBUTING.md#local-development-with-bos-loader)
+
+## Troubleshooting Deployments
 
 `near-social` cli tool will attempt to deploy any updated components with 1 NEAR of deposit and 100 Tgas.
 

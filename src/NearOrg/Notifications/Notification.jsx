@@ -197,14 +197,14 @@ const ProfileOverlay = ({ children }) => (
 );
 
 const iconType = {
-  like: <i class="ph ph-heart" />,
-  // fork: <i class="ph ph-git-fork" />,
-  follow: <i class="ph ph-user-plus" />,
-  unfollow: <i class="ph ph-user-minus" />,
-  comment: <i class="ph ph-share-fat" />,
-  mention: <i class="ph ph-at" />,
-  poke: <i class="ph ph-hand-pointing" />,
-  custom: <i class="ph ph-" />,
+  like: <i className="ph ph-heart" />,
+  // fork: <i className="ph ph-git-fork" />,
+  follow: <i className="ph ph-user-plus" />,
+  unfollow: <i className="ph ph-user-minus" />,
+  comment: <i className="ph ph-share-fat" />,
+  mention: <i className="ph ph-at" />,
+  poke: <i className="ph ph-hand-pointing" />,
+  custom: <i className="ph ph-" />,
 };
 
 return (
@@ -241,7 +241,7 @@ return (
             <Dot>·</Dot>
             {/* TODO: add title tag to show full time on hover */}
             <Widget
-              src="${REPL_MOB}/widget/TimeAgo@97556750"
+              src="${REPL_MOB_2}/widget/TimeAgo@97556750"
               props={{ blockHeight: props.blockHeight }}
             />
           </Timestamp>

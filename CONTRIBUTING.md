@@ -15,29 +15,62 @@ If you have an idea for an enhancement to Near Discovery's components, please su
 
 
 ## Testing across multiple environments
-When referencing a component or any parameter that depends on the network, please use the placeholders defined in replacements.*.json. There are three such files that correspond to different environments:
+When referencing a component or any parameter that depends on the network, please use the placeholders defined in `replacements.*.json`. There are three such files that correspond to different environments:
 
-`replacements.dev.json` - deploys the develop branch, to testnet @ test.beta.near.org 
+`replacements.dev.json` - deploys the develop branch, to testnet @ test.beta.near.org
 
 `replacements.testnet.json` - deploys main branch, to testnet @ test.near.org
 
 `replacements.mainnet.json` - deploys main branch to mainnet @ near.org
 
-Placeholders should be encapsulated in the ${} expression. Here is an example of a placeholder usage:
+Placeholders should be encapsulated in the `${}` expression. Here is an example of a placeholder usage:
 
 `<Widget src={homepage ?? "${REPL_ACCOUNT}/widget/ActivityPage"} />`
+or
+`<Widget src="${REPL_ACCOUNT}/widget/DIG.Button" />`
 
-Placeholders are replaced with the target values specified in replacements.json when github actions deploys the components.
+Placeholders are replaced with the target values specified in `replacements.*.json` when github actions deploys the components.
 
-Feel free to specify a new placeholder if needed. The placeholder should have a REPL prefix, for example: `REPL_PROJECT_NAME`
+Feel free to specify a new placeholder if needed. The placeholder should have a `REPL_` prefix, for example: `REPL_PROJECT_NAME`
 
 A new placeholder should be defined for all three environments: dev-testnet, prod-testnet and prod-mainnet.
 
-### Verify locally with BOS-Loader
-Use bos-loader >0.7.0 to faciliate testing the appearance and behavior of your components from a locally running viewer, or near.org.
+## Local development with BOS-Loader
+Use [bos-loader](https://github.com/near/bos-loader) > `0.7.0` to faciliate testing the appearance and behavior of your components from a locally running viewer, or [near.org](https://near.org).
 
-*Heads up!* 
-One trick is to using bos-loader with this near-discovery-components repo is that you have to modify your local copy of the replacements.*.json file, deleting the REPL_ACCOUNT line, because you need to specify a REPL_ACCOUNT value when launching bos-loader, e.g. `bos-loader myaccount.near --path src/ -r replacements.mainnet.json`
+### Heads up!
+One trick when using [bos-loader](https://github.com/near/bos-loader) with this `near-discovery-components` repository:
+1. Open one of `replacements.*.json` depending on what environment you are about to start working on. Try to use `replacements.testnet.json` if you're not sure.
+2. Delete the `REPL_ACCOUNT` line. This step is needed because you need to specify a `REPL_ACCOUNT` value when launching the `bos-loader`.
+3. Open `near-discovery-components` in your terminal.
+4. Navigate to `src` directory.
+5. Run this command:
+```bash
+bos-loader -r ../replacements.<working-env>.json <account-name>
+```
+
+*Don't forget to specify your working environment and account name!*
+
+If you did everything right you have to see such message in your terminal:
+
+```
+Serving .jsx files on http://127.0.0.1:3030
+
+. as account <account-name>
+```
+
+6. Open the `/flags` route of your gateway and set the BOS Loader URL e.g. `http://127.0.0.1:3030`.
+   If you are not testing changes to gateway code, then you can use `near.org` as your gateway. In this case you would navigate to `near.org/flags` and set the BOS Loader URL to `http://127.0.0.1:3030`.
+
+*Note:* there is no hot reload, you must refresh the page to see component changes.
+
+#### Do not commit `replacements.*.json` changes unless you have added a new `REPL_` variable
+
+### Example:
+
+```bash
+bos-loader -r ../replacements.testnet.json discom.testnet
+```
 
 ## Pull Requests
 All the contributions to `near-discovery-components` happen via Pull Requests.  Please follow the following steps when creating a PR:

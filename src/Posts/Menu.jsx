@@ -76,7 +76,7 @@ const moderateAccount = (account, action, message) => {
 };
 return (
   <Widget
-    src="near/widget/DIG.DropdownMenu"
+    src="${REPL_ACCOUNT}/widget/DIG.DropdownMenu"
     props={{
       trigger: <i className="ph-bold ph-dots-three" />,
       items: [
@@ -104,7 +104,10 @@ return (
         {
           name: (
             <>
-              <i className="ph-bold ph-warning-octagon" style={{ color: "#D95C4A" }} />
+              <i
+                className="ph-bold ph-warning-octagon"
+                style={{ color: "#D95C4A" }}
+              />
               <span style={{ color: "#D95C4A" }}>Report</span>
             </>
           ),

@@ -3,14 +3,27 @@
 # Store the current working directory
 CURRENT_DIR=$(pwd)
 
+# Set these to your preferred environment and account to enable a shorter start syntax
+# ./startup
+DEFAULT_ACCT=""
+DEFAULT_ENV=""
+
+ENVIRONMENT="${DEFAULT_ENV:-"$1"}"
+ACCOUNT="${DEFAULT_ACCT:-"$2"}"
+
+echo ${ENVIRONMENT}
+echo ${ACCOUNT}
+
 # Check if environment and account were provided as arguments
-if [ "$#" -ne 2 ]; then
-  echo "Usage: $0 <environment> <account>"
+if [[ -z "$ENVIRONMENT" ]]; then
+  echo "Missing ENVIRONMENT"
+  exit 1
+fi
+if [[ -z "$ACCOUNT" ]]; then
+  echo "Missing ACCOUNT"
   exit 1
 fi
 
-ENVIRONMENT="$1"
-ACCOUNT="$2"
 
 # Define the path to the replacements JSON file
 REPLACEMENTS_FILE="replacements.${ENVIRONMENT}.json"

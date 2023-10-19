@@ -1,6 +1,8 @@
 State.init({
   copiedShareUrl: false,
   selectedTab: props.tab ?? "about",
+  isLoadingRpcImpressions: true,
+  componentImpressionsData: {},
 });
 
 if (props.tab && props.tab !== state.selectedTab) {
@@ -63,6 +65,34 @@ const sourceCode = `
 ${code}
 \`\`\`
 `;
+
+const STORE = "storage.googleapis.com";
+const BUCKET = "databricks-near-query-runner";
+const BASE_URL = `https://${STORE}/${BUCKET}/output/near_bos_component_details/component_rpc_loads`;
+const dataset = `${BASE_URL}/${accountId}/widget/${widgetName}`;
+
+const getComponentImpressions = () => {
+  try {
+    const url = `${dataset}.json`;
+    console.log(url);
+    const res = fetch(url);
+    console.log("trying to load")
+    if (res.ok) {
+      const parsedResults = JSON.parse(res.body);
+      console.log(parsedResults.data.total_rpc_loads)
+      State.update({
+        isLoadingRpcImpressions: false,
+        componentImpressionsData: parsedResults.data,
+      });
+    }
+  } catch (error) {
+    console.error("Error on fetching component impression data: ", error.message);
+  }
+};
+
+if (state.isLoadingRpcImpressions) {
+  getComponentImpressions();
+}
 
 const Wrapper = styled.div`
   padding-bottom: 48px;
@@ -395,7 +425,7 @@ return (
             Times loaded (RPC)
           </Text>
           <Text medium bold style={{ "margin-bottom": "10px" }}>
-            {stats.componentStats.impressions}
+            {state.componentImpressionsData?.total_rpc_loads ?? "..."}
           </Text>
           <Text small style={{ "margin-bottom": "10px" }}>
             Last updated

@@ -16,6 +16,30 @@ const TextLink = styled.a`
   font-weight: 600;
 `;
 
+function returnProfileForUser(post) {
+  const image =
+    post.profile_image && post.profile_image.indexOf("http") === 0
+      ? { url: rawImage }
+      : { ipfs_cid: rawImage };
+  const name = post.profile_name ?? "";
+  let tags = null;
+
+  if (post.profile_tags) {
+    tags = {};
+    post.profile_tags.forEach((tag) => (tags[tag] = ""));
+  }
+
+  if (image && tags) {
+    return {
+      image,
+      name,
+      tags,
+    };
+  }
+
+  return null;
+}
+
 const renderItem = (item) => {
   if (item.accounts_liked.length !== 0) {
     item.accounts_liked = JSON.parse(item.accounts_liked);
@@ -27,26 +51,25 @@ const renderItem = (item) => {
         props={{
           accountId: item.account_id,
           blockHeight: item.block_height,
+          blockTimestamp: item.block_timestamp,
           content: item.content,
           comments: item.comments,
           likes: item.accounts_liked,
           GRAPHQL_ENDPOINT,
           verifications: item.verifications,
           showFlagAccountFeature: props.showFlagAccountFeature ?? false,
+          profile: returnProfileForUser(item),
         }}
       />
     </Post>
   );
 };
 
-if (posts.length === 0) {
+if (posts.length === 0 && !props.isLoading) {
   return (
     <div className="alert alert-info mx-3" role="alert">
       Build your feed by finding
-      <TextLink
-        className="alert-link"
-        href="${REPL_ACCOUNT}/widget/PeoplePage"
-      >
+      <TextLink className="alert-link" href="${REPL_ACCOUNT}/widget/PeoplePage">
         people to follow
       </TextLink>
     </div>
@@ -60,6 +83,7 @@ return (
     pageStart={0}
     loadMore={loadMorePosts}
     hasMore={hasMore}
+    initialLoad={false}
     loader={
       <div className="loader">
         <span

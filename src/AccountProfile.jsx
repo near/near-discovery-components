@@ -41,7 +41,7 @@ const Text = styled.p`
   font-size: ${(p) => (p.small ? "10px" : "14px")};
   overflow: ${(p) => (p.ellipsis ? "hidden" : "")};
   text-overflow: ${(p) => (p.ellipsis ? "ellipsis" : "")};
-  white-space: nowrap;
+  white-space: nowrap !important;
 `;
 
 const Avatar = styled.div`
@@ -57,6 +57,7 @@ const Avatar = styled.div`
     object-fit: cover;
     width: 100%;
     height: 100%;
+    margin: 0 !important;
   }
 `;
 

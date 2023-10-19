@@ -6,6 +6,7 @@ const tags = Object.keys(profile.tags || {});
 const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 const verifications = props.verifications;
 const overlayStyles = props.overlayStyles;
+const side = props.side ?? "top";
 
 State.init({
   hasBeenFlagged: false,
@@ -18,6 +19,20 @@ const onReport = () => {
     hasBeenFlagged: true,
   });
 };
+
+const Wrapper = styled.span`
+  display: ${props.inline ? "inline-flex" : "flex"};
+  vertical-align: ${props.inline ? "baseline" : ""};
+  max-width: 100%;
+  white-space: normal;
+`;
+
+const TriggerWrapper = styled.span`
+  display: ${props.inline ? "inline-flex" : "flex"};
+  vertical-align: ${props.inline ? "baseline" : ""};
+  max-width: 100%;
+  white-space: normal;
+`;
 
 const HoverCardContent = styled("HoverCard.Content")`
   animation: fadeIn 200ms 100ms forwards;
@@ -33,12 +48,6 @@ const HoverCardContent = styled("HoverCard.Content")`
       pointer-events: auto;
     }
   }
-`;
-
-const TriggerWrapper = styled.span`
-  display: ${props.inline ? "inline-flex" : "flex"};
-  vertical-align: ${props.inline ? "baseline" : ""};
-  max-width: 100%;
 `;
 
 const FlaggedWrapper = styled.div`
@@ -307,13 +316,15 @@ const overlay = (
 );
 
 return (
-  <>
+  <Wrapper>
     <HoverCard.Root openDelay={200} closeDelay={300}>
       <HoverCard.Trigger asChild>
         <TriggerWrapper>{props.children || "Hover Me"}</TriggerWrapper>
       </HoverCard.Trigger>
 
-      <HoverCardContent sideOffset={5}>{overlay}</HoverCardContent>
+      <HoverCardContent side={side} sideOffset={3}>
+        {overlay}
+      </HoverCardContent>
     </HoverCard.Root>
 
     <FlaggedWrapper>
@@ -343,5 +354,5 @@ return (
         }}
       />
     </FlaggedWrapper>
-  </>
+  </Wrapper>
 );

@@ -4,9 +4,11 @@ const accountId = props.accountId;
 const verifications = props.verifications;
 const blockHeight =
   props.blockHeight === "now" ? "now" : parseInt(props.blockHeight);
+const blockTimestamp = props.blockTimestamp;
 const notifyAccountId = accountId;
 const postUrl = `https://${REPL_NEAR_URL}/s/p?a=${accountId}&b=${blockHeight}`;
 const showFlagAccountFeature = props.showFlagAccountFeature;
+const profile = props.profile;
 
 State.init({
   hasBeenFlagged: false,
@@ -219,6 +221,7 @@ return (
           <Widget
             src="${REPL_ACCOUNT}/widget/AccountProfile"
             props={{
+              profile,
               verifications,
               accountId,
               hideAccountId: true,
@@ -226,17 +229,10 @@ return (
                 <>
                   <Text as="span">･</Text>
                   <Text>
-                    {blockHeight === "now" ? (
-                      "now"
-                    ) : (
-                      <>
-                        <Widget
-                          src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
-                          props={{ blockHeight }}
-                        />{" "}
-                        ago
-                      </>
-                    )}
+                    <Widget
+                      src="${REPL_ACCOUNT}/widget/TimeAgo"
+                      props={{ blockHeight, blockTimestamp }}
+                    />
                   </Text>
                   {false && edits.length > 0 && <Text as="span">･ Edited</Text>}
                 </>

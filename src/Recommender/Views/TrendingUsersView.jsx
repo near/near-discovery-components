@@ -111,6 +111,32 @@ const loadMore = () => {
   }
 };
 
+function returnProfileForUser(user) {
+  const rawImage =
+    user.profile_image_1 || user.profile_image_2 || user.profile_image_3;
+  const image =
+    rawImage && rawImage.indexOf("http") === 0
+      ? { url: rawImage }
+      : { ipfs_cid: rawImage };
+  const name = user.profile_name ?? "";
+  let tags = null;
+
+  if (user.profile_tags) {
+    tags = {};
+    user.profile_tags.forEach((tag) => (tags[tag] = ""));
+  }
+
+  if (image && tags) {
+    return {
+      image,
+      name,
+      tags,
+    };
+  }
+
+  return null;
+}
+
 if (state.isLoading && !state.hasFetched) {
   getRecommendedUsers(state.currentPage);
 }
@@ -153,12 +179,7 @@ return (
                 likers: user.likers || null,
                 followers: user.followers || null,
                 following: user.following || null,
-                profileImage:
-                  user.profile_image_1 ||
-                  user.profile_image_2 ||
-                  user.profile_image_3 ||
-                  null,
-                profileName: user.profile_name || null,
+                profile: returnProfileForUser(user),
                 scope: props.scope || null,
                 fromContext: fromContext,
               }}
@@ -187,12 +208,7 @@ return (
                 likers: user.likers || null,
                 followers: user.followers || null,
                 following: user.following || null,
-                profileImage:
-                  user.profile_image_1 ||
-                  user.profile_image_2 ||
-                  user.profile_image_3 ||
-                  null,
-                profileName: user.profile_name || null,
+                profile: returnProfileForUser(user),
                 scope: props.scope || null,
                 fromContext: fromContext,
               }}

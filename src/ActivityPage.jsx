@@ -7,7 +7,8 @@ let lastPostSocialApi = Social.index("post", "main", {
 
 State.init({
   // If QueryAPI Feed is lagging behind Social API, fallback to old widget.
-  shouldFallback: props.shouldFallback ?? false,
+  shouldFallback:
+    props.shouldFallback === "true" || props.shouldFallback === true,
   selectedTab: props.tab || "posts",
 });
 
@@ -196,8 +197,8 @@ return (
         <Widget src="${REPL_ACCOUNT}/widget/FeaturedComponents" />
         <Widget src="${REPL_ACCOUNT}/widget/LatestComponents" />
       </Section>
-      {/* <Section negativeMargin primary active={state.selectedTab === "posts"}>
-        {state.shouldFallback == true ? (
+      <Section negativeMargin primary active={state.selectedTab === "posts"}>
+        {state.shouldFallback ? (
           <Widget
             src={`${REPL_ACCOUNT}/widget/v1.Posts`}
             props={{ showFlagAccountFeature: true }}
@@ -212,7 +213,7 @@ return (
             }}
           />
         )}
-      </Section>*/}
+      </Section>
       <Section active={state.selectedTab === "explore"}>
         <Widget src="${REPL_ACCOUNT}/widget/ExploreWidgets" />
       </Section>

@@ -1,35 +1,33 @@
-const GRAPHQL_ENDPOINT =
-  props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
-const LIMIT = 25;
-const accountsFollowing = props.accountsFollowing;
-const moderatorAccount = props?.moderatorAccount || "bosmod.near";
-const sort = Storage.get(`queryapi:feed-sort`) ?? "timedesc";
-const initialSelectedTab = Storage.privateGet("selectedTab") ?? "all";
-
 State.init({
-  selectedTab: initialSelectedTab,
+  initialized: false,
+  isLoading: false,
+  selectedTab: null,
   posts: [],
   postsCountLeft: 0,
-  initLoadPosts: false,
-  initLoadPostsAll: false,
-  sort,
-  accountsFollowing,
 });
+
+const GRAPHQL_ENDPOINT =
+  props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
+const LIMIT = 10;
+const moderatorAccount = props?.moderatorAccount || "bosmod.near";
+const sortRaw = Storage.get("queryapi:feed-sort");
+const sort = sortRaw ?? (sortRaw === undefined ? "timedesc" : null);
+const initialSelectedTabRaw = Storage.privateGet("selectedTab");
+const initialSelectedTab =
+  initialSelectedTabRaw ?? (initialSelectedTabRaw === undefined ? "all" : null);
+const followGraph = context.accountId
+  ? Social.keys(`${context.accountId}/graph/follow/*`, "final")
+  : null;
+const accountsFollowing =
+  props.accountsFollowing ??
+  (followGraph
+    ? Object.keys(followGraph[context.accountId].graph.follow || {})
+    : null);
+const isLoading = !state.initialized || state.isLoading;
 
 const optionsMap = {
   timedesc: "Most Recent",
   recentcommentdesc: "Recent Comments",
-};
-
-// TODO port to QueryAPI
-const queryFollowedAccountsList = () => {
-  const graph = Social.keys(`${context.accountId}/graph/follow/*`, "final");
-  if (graph !== null) {
-    const followedAccounts = Object.keys(
-      graph[context.accountId].graph.follow || {}
-    );
-    State.update({ accountsFollowing: followedAccounts });
-  }
 };
 
 const selectTab = (selectedTab) => {
@@ -39,9 +37,6 @@ const selectTab = (selectedTab) => {
     postsCountLeft: 0,
     selectedTab,
   });
-  if (!state.accountsFollowing) {
-    queryFollowedAccountsList();
-  }
   loadMorePosts();
 };
 
@@ -123,7 +118,7 @@ function fetchGraphQL(operationsDoc, operationName, variables) {
 
 const createQuery = (type) => {
   let querySortOption = "";
-  switch (state.sort) {
+  switch (sort) {
     case "recentcommentdesc":
       querySortOption = `{ last_comment_timestamp: desc_nulls_last },`;
       break;
@@ -135,7 +130,7 @@ const createQuery = (type) => {
   let queryFilter = "";
   switch (type) {
     case "following":
-      let queryAccountsString = state.accountsFollowing
+      let queryAccountsString = accountsFollowing
         .map((account) => `"${account}"`)
         .join(", ");
       queryFilter = `account_id: { _in: [${queryAccountsString}]}`;
@@ -210,12 +205,14 @@ const loadMorePosts = () => {
     state.selectedTab == "following" ? "GetFollowingPosts" : "GetPostsQuery";
   const type = state.selectedTab;
 
-  if (
-    state.selectedTab == "following" &&
-    !state.accountsFollowing
-  ) {
+  if (state.selectedTab == "following" && !accountsFollowing) {
     return;
   }
+
+  State.update({
+    isLoading: true,
+  });
+
   fetchGraphQL(createQuery(type), queryName, {
     offset: state.posts.length,
     limit: LIMIT,
@@ -242,6 +239,7 @@ const loadMorePosts = () => {
           });
 
           State.update({
+            isLoading: false,
             posts: [...state.posts, ...filteredPosts],
             postsCountLeft,
           });
@@ -251,39 +249,19 @@ const loadMorePosts = () => {
   });
 };
 
-const hasMore = state.postsCountLeft != state.posts.length;
+const hasMore =
+  state.postsCountLeft !== state.posts.length && state.posts.length > 0;
 
-if (initialSelectedTab && initialSelectedTab !== state.selectedTab) {
+if (
+  !state.initialized &&
+  initialSelectedTab &&
+  initialSelectedTab !== state.selectedTab &&
+  sort
+) {
+  if (initialSelectedTab === "following" && !accountsFollowing) return null;
+
+  State.update({ initialized: true });
   selectTab(initialSelectedTab);
-}
-
-if (
-  state.selectedTab === "following" &&
-  context.accountId &&
-  !state.accountsFollowing
-) {
-  queryFollowedAccountsList();
-}
-
-if (
-  !state.initLoadPostsAll &&
-  selfFlaggedPosts &&
-  selfModeration &&
-  gatewayModeratedUsers
-) {
-  loadMorePosts();
-  State.update({ initLoadPostsAll: true });
-}
-
-if (
-  state.initLoadPostsAll == true &&
-  !state.initLoadPosts &&
-  state.accountsFollowing
-) {
-  if (state.accountsFollowing.length > 0 && state.selectedTab === "following") {
-    loadMorePosts();
-  }
-  State.update({ initLoadPosts: true });
 }
 
 const H2 = styled.h2`
@@ -445,6 +423,7 @@ return (
               </PillSelectButton>
             </PillSelect>
           </FilterWrapper>
+
           <SortContainer>
             {state.selectedTab == "all" && (
               <Sort>
@@ -453,11 +432,10 @@ return (
                   src={`${REPL_ACCOUNT}/widget/Select`}
                   props={{
                     noLabel: true,
-                    value: { text: optionsMap[sort], value: state.sort },
+                    value: { text: optionsMap[sort], value: sort },
                     onChange: ({ value }) => {
-                      Storage.set(`queryapi:feed-sort`, value);
+                      Storage.set("queryapi:feed-sort", value);
                       State.update({
-                        sort: value,
                         posts: [],
                         postsCountLeft: 0,
                       });
@@ -480,9 +458,14 @@ return (
           src="${REPL_ACCOUNT}/widget/Posts.Feed"
           props={{
             hasMore,
-            loadMorePosts,
+            isLoading,
+            loadMorePosts: () => {
+              if (!isLoading) {
+                loadMorePosts();
+              }
+            },
             posts: state.posts,
-            showFlagAccountFeature: props.showFlagAccountFeature
+            showFlagAccountFeature: props.showFlagAccountFeature,
           }}
         />
       </FeedWrapper>

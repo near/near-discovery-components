@@ -187,7 +187,7 @@ const loadMorePosts = () => {
     state.selectedTab === "following" ? "GetFollowingPosts" : "GetPostsQuery";
   const type = state.selectedTab;
 
-  if (state.selectedTab == "following" && !accountsFollowing) {
+  if (state.selectedTab === "following" && !accountsFollowing) {
     return;
   }
 

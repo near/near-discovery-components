@@ -85,11 +85,11 @@ return (
 
             <Text small bold>
               <i className="bi bi-arrow-right"></i>
-              {/* <br />
+              <br />
               <Widget
                 src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
                 props={{ blockHeight: item.blockHeight }}
-              /> */}
+              />
             </Text>
 
             <Widget

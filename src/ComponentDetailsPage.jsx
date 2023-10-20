@@ -489,7 +489,7 @@ return (
           <GraphContainer>
             <div style={{ display: "flex", "flex-direction": "column" }}>
               <Text small style={{ "margin-bottom": "10px" }}>
-                Times loaded (RPC)
+                Impressions
               </Text>
               <Text medium bold style={{ "margin-bottom": "10px" }}>
                 {state.componentImpressionsData.impressions ?? "..."}

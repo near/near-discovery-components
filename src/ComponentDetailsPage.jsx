@@ -511,38 +511,6 @@ return (
           </Text>
         </Container>
         <Container>
-          <SmallTitle>
-            PARENTS ({stats.componentStats.parents.length})
-          </SmallTitle>
-          {stats.componentStats.parents.length === 0 && (
-            <Text>This component has no parents.</Text>
-          )}
-          {stats.componentStats.parents.map((source) => (
-            <Component key={source}>
-              <Widget
-                src="${REPL_ACCOUNT}/widget/ComponentProfile"
-                props={{ src: source }}
-              />
-            </Component>
-          ))}
-          {!state.showAllComponentParents &&
-            stats.componentStats.parents.length > 5 && (
-              <Widget
-                src="${REPL_ACCOUNT}/widget/DIG.Button"
-                props={{
-                  fill: "outline",
-                  variant: "secondary",
-                  label: "Show All",
-                  size: "small",
-                  style: { width: "30%" },
-                  onClick: () => {
-                    State.update({ showAllComponentParents: true });
-                  },
-                }}
-              />
-            )}
-        </Container>
-        <Container>
           <SmallTitle>DEPENDENCIES ({dependencySources.length})</SmallTitle>
           {dependencySources.length === 0 && (
             <Text>This component has no dependencies.</Text>

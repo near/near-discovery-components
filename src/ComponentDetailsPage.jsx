@@ -2,7 +2,9 @@ State.init({
   copiedShareUrl: false,
   selectedTab: props.tab ?? "about",
   isLoadingRpcImpressions: true,
-  componentImpressionsData: {},
+  componentImpressionsData: {
+    impressions: undefined, weekly_chart_data_config: undefined, executed_at: undefined
+  },
 });
 
 if (props.tab && props.tab !== state.selectedTab) {
@@ -71,6 +73,18 @@ const BUCKET = "databricks-near-query-runner";
 const BASE_URL = `https://${STORE}/${BUCKET}/output/near_bos_component_details/component_rpc_loads`;
 const dataset = `${BASE_URL}/${accountId}/widget/${widgetName}`;
 
+function computeWeekLabel(weekDateString) {
+  let startDate = new Date(weekDateString);
+  let endDate = new Date(startDate);
+  endDate.setDate(startDate.getDate() + 6);
+  let label = `${formatDate(startDate)} - ${formatDate(endDate)}`;
+  return label;
+}
+
+function formatDate(date) {
+  return date.toISOString().split('T')[0];
+}
+
 const getComponentImpressions = () => {
   try {
     const url = `${dataset}.json`;
@@ -80,9 +94,52 @@ const getComponentImpressions = () => {
     if (res.ok) {
       const parsedResults = JSON.parse(res.body);
       console.log(parsedResults.data.total_rpc_loads)
+      const weekly_chart_data = parsedResults.data.rpc_loads.sort((a, b) => new Date(a.week) - new Date(b.week)).map((row) => ({
+        "RPC Impressions": row.number_of_rpc_loads,
+        Week: computeWeekLabel(row.week)
+      }));
+
+      const weekly_chart_data_config = {
+        tooltip: {
+          trigger: "axis",
+          confine: true
+        },
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true
+        },
+        xAxis: {
+          type: "category",
+          boundaryGap: false,
+          data: weekly_chart_data.map((r) => r.Week),
+          axisLine: { show: false },
+          axisTick: { show: false },
+          axisLabel: { show: false }
+        },
+        yAxis: {
+          type: "value",
+          splitLine: { show: false },
+          axisLine: { show: false },
+          axisTick: { show: false },
+          axisLabel: { show: false }
+        },
+        series: [{
+          name: 'RPC Impressions',
+          type: 'line',
+          smooth: true,
+          data: weekly_chart_data.map((r) => r['RPC Impressions']),
+          areaStyle: {},
+          color: '#59e691'
+        }]
+      };
+
       State.update({
         isLoadingRpcImpressions: false,
-        componentImpressionsData: parsedResults.data,
+        componentImpressionsData: {
+          impressions: parsedResults.data.total_rpc_loads, weekly_chart_data_config, executed_at: parsedResults.executed_at,
+        },
       });
     }
   } catch (error) {
@@ -278,6 +335,14 @@ const StatsText = styled.p`
   border-radius: 12px;
 `;
 
+const GraphContainer = styled.div`
+display: flex;
+flex-direction: column;
+
+  @media (min-width: 450px) {
+    flex-direction: row;
+  }
+`;
 const Bio = styled.div`
   color: #11181c;
   font-size: 14px;
@@ -421,12 +486,19 @@ return (
         </Container>
         <Container>
           <SmallTitle>STATS</SmallTitle>
-          <Text medium style={{ "margin-bottom": "10px" }}>
-            Times loaded (RPC)
-          </Text>
-          <Text medium bold style={{ "margin-bottom": "10px" }}>
-            {state.componentImpressionsData?.total_rpc_loads ?? "..."}
-          </Text>
+          <GraphContainer>
+            <div style={{ display: "flex", "flex-direction": "column" }}>
+              <Text small style={{ "margin-bottom": "10px" }}>
+                Times loaded (RPC)
+              </Text>
+              <Text medium bold style={{ "margin-bottom": "10px" }}>
+                {state.componentImpressionsData.impressions ?? "..."}
+              </Text>
+            </div>
+            <div style={{ "margin-top": "-50px" }}>
+              <Widget src="${REPL_ACCOUNT}/widget/Charts.Chart" props={{ definition: state.componentImpressionsData.weekly_chart_data_config, width: "180px", height: "100px" }} />
+            </div>
+          </GraphContainer>
           <Text small style={{ "margin-bottom": "10px" }}>
             Last updated
           </Text>

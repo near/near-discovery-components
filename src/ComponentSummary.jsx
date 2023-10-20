@@ -14,6 +14,16 @@ const appUrl = `#/${src}`;
 const detailsUrl = `#/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${src}`;
 const shareUrl = `https://${REPL_NEAR_URL}${detailsUrl}`;
 const size = props.size || "large";
+const componentDescMaxWords =  props.descMaxWords || 30;
+
+if (props.showDesc && metadata.description) {
+  const text = metadata.description.split(" ");
+  metadata.description = text.slice(0, componentDescMaxWords);
+  if (text.length >= componentDescMaxWords) {
+    metadata.description.push("...");
+  }
+  metadata.description = metadata.description.join(" ");
+}
 
 const primaryActions = {
   open: {

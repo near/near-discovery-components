@@ -27,6 +27,7 @@ const accountProfileDescription =
   Social.getr(`${accountId}/profile`).description ?? "";
 console.log(accountProfileDescription, "desc");
 const descMaxWords = 15;
+const componentDescMaxWords = 25;
 if (accountProfileDescription) {
   const text = accountProfileDescription.split(" ");
   accountProfileDescription = text.slice(0, descMaxWords);

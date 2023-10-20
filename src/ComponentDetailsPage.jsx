@@ -496,7 +496,7 @@ return (
               </Text>
             </div>
             <div style={{ "margin-top": "-50px" }}>
-              <Widget src="${REPL_ACCOUNT}/widget/Charts.Chart" props={{ definition: state.componentImpressionsData.weekly_chart_data_config, width: "180px", height: "100px" }} />
+              <Widget src="${REPL_ACCOUNT}/widget/Chart" props={{ definition: state.componentImpressionsData.weekly_chart_data_config, width: "180px", height: "100px" }} />
             </div>
           </GraphContainer>
           <Text small style={{ "margin-bottom": "10px" }}>

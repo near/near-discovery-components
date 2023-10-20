@@ -343,6 +343,13 @@ flex-direction: column;
     flex-direction: row;
   }
 `;
+const Graph = styled.div`
+display: flex;
+margin-top: -50px;
+  @media (min-width: 450px) {
+    margin-left: 30px;
+  }
+`;
 const Bio = styled.div`
   color: #11181c;
   font-size: 14px;
@@ -495,9 +502,9 @@ return (
                 {state.componentImpressionsData.impressions ?? "..."}
               </Text>
             </div>
-            <div style={{ "margin-top": "-50px" }}>
+            <Graph>
               <Widget src="${REPL_ACCOUNT}/widget/Chart" props={{ definition: state.componentImpressionsData.weekly_chart_data_config, width: "180px", height: "100px" }} />
-            </div>
+            </Graph>
           </GraphContainer>
           <Text small style={{ "margin-bottom": "10px" }}>
             Last updated

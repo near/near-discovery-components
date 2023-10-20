@@ -251,14 +251,16 @@ const Sidebar = styled.div`
   }
 
   @media (max-width: 995px) {
-    padding-bottom: 32px;
-    border-bottom: 1px solid #eceef0;
-    grid-row: 2;
+    grid-row: 1;
   }
 `;
 
 const SideBarContainer = styled.div`
-  margin-top: 80px;
+ margin-top: -150px;
+@media (max-width: 995px) {
+  margin-top: 10px;
+  border-top: 1px solid #eceef0;
+}
 `
 
 const SmallTitle = styled.h3`
@@ -344,9 +346,11 @@ flex-direction: column;
     flex-direction: row;
   }
 `;
+
 const Graph = styled.div`
 display: flex;
 margin-top: -50px;
+margin-bottom: 20px;
   @media (min-width: 450px) {
     margin-left: 30px;
   }
@@ -377,172 +381,176 @@ if (!exists) {
 }
 
 return (
-  <Content>
-    <Wrapper>
-      <SummaryWrapper>
-          <Widget
-            src="${REPL_ACCOUNT}/widget/ComponentSummary"
-            props={{
-              primaryAction: "open",
-              size: "large",
-              showTags: true,
-              showDesc: true,
-              src,
-            }}
-          />
-      </SummaryWrapper>
+  <>
+    <SummaryWrapper>
+      <Widget
+        src="${REPL_ACCOUNT}/widget/ComponentSummary"
+        props={{
+          primaryAction: "open",
+          size: "large",
+          showTags: true,
+          showDesc: true,
+          descMaxWords: componentDescMaxWords,
+          src,
+        }}
+      />
+    </SummaryWrapper>
+    <Content>
+      <Wrapper>
 
-      <Tabs>
-        <TabsButton
-          href={`${detailsUrl}&tab=source`}
-          selected={state.selectedTab === "source"}
-        >
-          <Icon className="ph ph-code" />
-          Source & Preview
-        </TabsButton>
-        <TabsButton
-          href={`${detailsUrl}&tab=about`}
-          selected={state.selectedTab === "about"}
-        >
-          <Icon className="bi bi-file-earmark-text" />
-          Read.me
-        </TabsButton>
-        <TabsButton
-          href={`${detailsUrl}&tab=discussion`}
-          selected={state.selectedTab === "discussion"}
-        >
-          <Icon className="bi bi-chat-text" />
-          Discussion
-        </TabsButton>
-      </Tabs>
+        <Tabs>
+          <TabsButton
+            href={`${detailsUrl}&tab=source`}
+            selected={state.selectedTab === "source"}
+          >
+            <Icon className="ph ph-code" />
+            Source & Preview
+          </TabsButton>
+          <TabsButton
+            href={`${detailsUrl}&tab=about`}
+            selected={state.selectedTab === "about"}
+          >
+            <Icon className="bi bi-file-earmark-text" />
+            Read.me
+          </TabsButton>
+          <TabsButton
+            href={`${detailsUrl}&tab=discussion`}
+            selected={state.selectedTab === "discussion"}
+          >
+            <Icon className="bi bi-chat-text" />
+            Discussion
+          </TabsButton>
+        </Tabs>
 
-      {state.selectedTab === "about" && (
-        <Content noSidebar>
-          <div>
-            {metadata.description ? (
-              <Markdown text={metadata.description} />
-            ) : (
-              <Text>This component has no description.</Text>
-            )}
-          </div>
-        </Content>
-      )}
-
-      {state.selectedTab === "source" && (
-        <Content noSidebar>
-          <Widget
-            src="${REPL_ACCOUNT}/widget/ComponentHistory"
-            props={{ widgetPath: src }}
-          />
-        </Content>
-      )}
-
-      {state.selectedTab === "discussion" && (
-        <Content noSidebar>
-          <Widget
-            src="${REPL_ACCOUNT}/widget/NestedDiscussions"
-            props={{
-              identifier: src,
-              notifyAccountId: accountId,
-              parentComponent: "${REPL_ACCOUNT}/widget/ComponentDetailsPage",
-              parentParams: { tab: "discussion", src },
-              highlightComment: props.highlightComment,
-            }}
-          />
-        </Content>
-      )}
-    </Wrapper>
-    <Sidebar>
-      <SideBarContainer>
-        <SmallTitle>DEVELOPER</SmallTitle>
-        <Widget
-          src="${REPL_ACCOUNT}/widget/AccountProfile"
-          props={{
-            accountId: accountId,
-          }}
-        />
-
-        {accountProfileDescription && (
-          <Bio>
-            <Widget
-              src="${REPL_ACCOUNT}/widget/SocialMarkdown"
-              props={{ text: accountProfileDescription }}
-            />
-          </Bio>
-        )}
-        <Container>
-          <Stats>
-            <StatsBadge>
-              <Icon className="ph ph-code" />
-              <span className="badge rounded-pill bg-secondary">
-                {stats.developerStats.numberOfComponentsPublished} published
-              </span>
-            </StatsBadge>
-            <StatsBadge>
-              <Icon className="bi bi-calendar" />
-              <span className="badge rounded-pill bg-secondary">
-                {stats.developerStats.developerSince}
-              </span>
-            </StatsBadge>
-          </Stats>
-        </Container>
-        <Container>
-          <SmallTitle>STATS</SmallTitle>
-          <GraphContainer>
-            <div style={{ display: "flex", "flex-direction": "column" }}>
-              <Text small style={{ "margin-bottom": "10px" }}>
-                Impressions
-              </Text>
-              <Text medium bold style={{ "margin-bottom": "10px" }}>
-                {state.componentImpressionsData.impressions ?? "..."}
-              </Text>
+        {state.selectedTab === "about" && (
+          <Content noSidebar>
+            <div>
+              {metadata.description ? (
+                <Markdown text={metadata.description} />
+              ) : (
+                <Text>This component has no description.</Text>
+              )}
             </div>
-            <Graph>
-              <Widget src="${REPL_ACCOUNT}/widget/Chart" props={{ definition: state.componentImpressionsData.weekly_chart_data_config, width: "180px", height: "100px" }} />
-            </Graph>
-          </GraphContainer>
-          <Text small style={{ "margin-bottom": "10px" }}>
-            Last updated
-          </Text>
-          <Text medium bold style={{ "margin-bottom": "10px" }}>
+          </Content>
+        )}
+
+        {state.selectedTab === "source" && (
+          <Content noSidebar>
             <Widget
-              src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
-              props={{ keyPath: `${accountId}/widget/${widgetName}` }}
-            />{" "}
-            ago.
-          </Text>
-        </Container>
-        <Container>
-          <SmallTitle>DEPENDENCIES ({dependencySources.length})</SmallTitle>
-          {dependencySources.length === 0 && (
-            <Text>This component has no dependencies.</Text>
-          )}
-          {dependencySources.map((source) => (
-            <Component key={source}>
-              <Widget
-                key={source}
-                src="${REPL_ACCOUNT}/widget/ComponentProfile"
-                props={{ src: source }}
-              />
-            </Component>
-          ))}
-          {!state.showAllDependencies && dependencySources.length > 5 && (
+              src="${REPL_ACCOUNT}/widget/ComponentHistory"
+              props={{ widgetPath: src }}
+            />
+          </Content>
+        )}
+
+        {state.selectedTab === "discussion" && (
+          <Content noSidebar>
             <Widget
-              src="${REPL_ACCOUNT}/widget/DIG.Button"
+              src="${REPL_ACCOUNT}/widget/NestedDiscussions"
               props={{
-                fill: "outline",
-                variant: "secondary",
-                label: "Show All",
-                size: "small",
-                style: { width: "30%" },
-                onClick: () => {
-                  State.update({ showAllDependencies: true });
-                },
+                identifier: src,
+                notifyAccountId: accountId,
+                parentComponent: "${REPL_ACCOUNT}/widget/ComponentDetailsPage",
+                parentParams: { tab: "discussion", src },
+                highlightComment: props.highlightComment,
               }}
             />
+          </Content>
+        )}
+      </Wrapper>
+      <Sidebar>
+        <SideBarContainer>
+          <SmallTitle style={{ "padding-top": "20px" }}>DEVELOPER</SmallTitle>
+          <Widget
+            src="${REPL_ACCOUNT}/widget/AccountProfile"
+            props={{
+              accountId: accountId,
+            }}
+          />
+
+          {accountProfileDescription && (
+            <Bio>
+              <Widget
+                src="${REPL_ACCOUNT}/widget/SocialMarkdown"
+                props={{ text: accountProfileDescription }}
+              />
+            </Bio>
           )}
-        </Container>
-      </SideBarContainer>
-    </Sidebar>
-  </Content>
+          <Container>
+            <Stats>
+              <StatsBadge>
+                <Icon className="ph ph-code" />
+                <span className="badge rounded-pill bg-secondary">
+                  {stats.developerStats.numberOfComponentsPublished} published
+                </span>
+              </StatsBadge>
+              <StatsBadge>
+                <Icon className="bi bi-calendar" />
+                <span className="badge rounded-pill bg-secondary">
+                  {stats.developerStats.developerSince}
+                </span>
+              </StatsBadge>
+            </Stats>
+          </Container>
+          <Container>
+            <SmallTitle>STATS</SmallTitle>
+            <GraphContainer>
+              <div style={{ display: "flex", "flex-direction": "column" }}>
+                <Text small style={{ "margin-bottom": "10px" }}>
+                  Impressions
+                </Text>
+                <Text medium bold style={{ "margin-bottom": "10px" }}>
+                  {state.componentImpressionsData.impressions ?? "..."}
+                </Text>
+              </div>
+              <Graph>
+
+                <Widget src="${REPL_ACCOUNT}/widget/Chart" props={{ definition: state.componentImpressionsData.weekly_chart_data_config, width: "180px", height: "100px" }} />
+              </Graph>
+            </GraphContainer>
+            <Text small style={{ "margin-bottom": "10px" }}>
+              Last updated
+            </Text>
+            <Text medium bold style={{ "margin-bottom": "10px" }}>
+              <Widget
+                src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
+                props={{ keyPath: `${accountId}/widget/${widgetName}` }}
+              />{" "}
+              ago.
+            </Text>
+          </Container>
+          <Container>
+            <SmallTitle>DEPENDENCIES ({dependencySources.length})</SmallTitle>
+            {dependencySources.length === 0 && (
+              <Text>This component has no dependencies.</Text>
+            )}
+            {dependencySources.map((source) => (
+              <Component key={source}>
+                <Widget
+                  key={source}
+                  src="${REPL_ACCOUNT}/widget/ComponentProfile"
+                  props={{ src: source }}
+                />
+              </Component>
+            ))}
+            {!state.showAllDependencies && dependencySources.length > 5 && (
+              <Widget
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
+                props={{
+                  fill: "outline",
+                  variant: "secondary",
+                  label: "Show All",
+                  size: "small",
+                  style: { width: "30%" },
+                  onClick: () => {
+                    State.update({ showAllDependencies: true });
+                  },
+                }}
+              />
+            )}
+          </Container>
+        </SideBarContainer>
+      </Sidebar>
+    </Content>
+  </>
 );

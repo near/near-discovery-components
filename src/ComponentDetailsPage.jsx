@@ -478,12 +478,6 @@ return (
               </span>
             </StatsBadge>
             <StatsBadge>
-              <Icon className="bi bi-shuffle" />
-              <span className="badge rounded-pill bg-secondary">
-                {stats.numberOfForks} forks
-              </span>
-            </StatsBadge>
-            <StatsBadge>
               <Icon className="bi bi-calendar" />
               <span className="badge rounded-pill bg-secondary">
                 {stats.developerStats.developerSince}

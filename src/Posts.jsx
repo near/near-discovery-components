@@ -4,6 +4,7 @@ State.init({
   selectedTab: null,
   posts: [],
   postsCountLeft: 0,
+  sort: null,
 });
 
 const GRAPHQL_ENDPOINT =
@@ -100,7 +101,7 @@ function fetchGraphQL(operationsDoc, operationName, variables) {
 
 const createQuery = (type) => {
   let querySortOption = "";
-  switch (sort) {
+  switch (state.sort) {
     case "recentcommentdesc":
       querySortOption = `{ last_comment_timestamp: desc_nulls_last },`;
       break;
@@ -243,7 +244,7 @@ if (
 ) {
   if (initialSelectedTab === "following" && !accountsFollowing) return null;
 
-  State.update({ initialized: true });
+  State.update({ initialized: true, sort });
   selectTab(initialSelectedTab);
 }
 
@@ -421,6 +422,7 @@ return (
                       State.update({
                         posts: [],
                         postsCountLeft: 0,
+                        sort: value,
                       });
                       loadMorePosts();
                     },

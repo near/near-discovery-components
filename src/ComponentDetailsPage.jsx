@@ -257,7 +257,7 @@ const Sidebar = styled.div`
 `;
 
 const SideBarContainer = styled.div`
-  margin-top: 150px;
+  margin-top: 80px;
 `
 
 const SmallTitle = styled.h3`

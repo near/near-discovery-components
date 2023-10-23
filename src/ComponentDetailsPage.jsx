@@ -25,7 +25,6 @@ const detailsUrl = `#/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${src}`;
 const shareUrl = `https://${REPL_NEAR_URL}${detailsUrl}`;
 const accountProfileDescription =
   Social.getr(`${accountId}/profile`).description ?? "";
-console.log(accountProfileDescription, "desc");
 const descMaxWords = 15;
 const componentDescMaxWords = 25;
 if (accountProfileDescription) {
@@ -460,7 +459,7 @@ return (
       </Wrapper>
       <Sidebar>
         <SideBarContainer>
-          <SmallTitle style={{ "padding-top": "20px" }}>DEVELOPER</SmallTitle>
+          <SmallTitle style={{ "padding-top": "20px" }}>Developer</SmallTitle>
           <Widget
             src="${REPL_ACCOUNT}/widget/AccountProfile"
             props={{
@@ -493,7 +492,7 @@ return (
             </Stats>
           </Container>
           <Container>
-            <SmallTitle>STATS</SmallTitle>
+            <SmallTitle>Stats</SmallTitle>
             <GraphContainer>
               <div style={{ display: "flex", "flex-direction": "column" }}>
                 <Text small style={{ "margin-bottom": "10px" }}>
@@ -504,7 +503,6 @@ return (
                 </Text>
               </div>
               <Graph>
-
                 <Widget src="${REPL_ACCOUNT}/widget/Chart" props={{ definition: state.componentImpressionsData.weekly_chart_data_config, width: "180px", height: "100px" }} />
               </Graph>
             </GraphContainer>

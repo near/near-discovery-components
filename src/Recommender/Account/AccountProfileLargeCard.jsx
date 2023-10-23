@@ -184,7 +184,7 @@ return (
               overlay={<Tooltip>Followers</Tooltip>}
             >
               <div>
-                <i class="bi bi-person"></i>
+                <i className="bi bi-person"></i>
                 {abbreviateNumber(props.followers)}
               </div>
             </OverlayTrigger>
@@ -198,7 +198,7 @@ return (
               overlay={<Tooltip>Following</Tooltip>}
             >
               <div>
-                <i class="bi bi-person-gear"></i>
+                <i className="bi bi-person-gear"></i>
                 {abbreviateNumber(props.following)}
               </div>
             </OverlayTrigger>
@@ -212,7 +212,7 @@ return (
               overlay={<Tooltip>Likes received</Tooltip>}
             >
               <div>
-                <i class="bi bi-heart"></i>
+                <i className="bi bi-heart"></i>
                 {abbreviateNumber(props.likers)}
               </div>
             </OverlayTrigger>

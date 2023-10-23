@@ -65,7 +65,7 @@ return (
   <Wrapper>
     <Root id={id} {...forwardedProps}>
       <Indicator>
-        <i class="ph ph-check" />
+        <i className="ph ph-check" />
       </Indicator>
     </Root>
     <Label htmlFor={id}>{label}</Label>

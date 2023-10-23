@@ -36,7 +36,7 @@ Feel free to specify a new placeholder if needed. The placeholder should have a 
 A new placeholder should be defined for all three environments: dev-testnet, prod-testnet and prod-mainnet.
 
 ## Local development with BOS-Loader
-Use [bos-loader](https://github.com/near/bos-loader) > `0.7.0` to faciliate testing the appearance and behavior of your components from a locally running viewer, or [near.org](https://near.org).
+Use the latest version of [bos-loader](https://github.com/near/bos-loader) to faciliate testing the appearance and behavior of your components from a locally running viewer, or [near.org](https://near.org).
 
 ### Heads up!
 One trick when using [bos-loader](https://github.com/near/bos-loader) with this `near-discovery-components` repository:

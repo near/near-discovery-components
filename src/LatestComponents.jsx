@@ -1,41 +1,59 @@
 const requiredTag = "app";
 const limit = 5;
-let apps = [];
+let components = [];
 let totalComponents = 0;
 const componentsUrl = `#/${REPL_ACCOUNT}/widget/ComponentsPage`;
+let recentAppPaths = [];
 
 const taggedData = Social.keys(
   `*/widget/*/metadata/tags/${requiredTag}`,
   "final"
 );
 
-const data = Social.keys("*/widget/*", "final", {
+const blockHeights = Social.keys("*/widget/*", "final", {
   return_type: "BlockHeight",
 });
 
-if (data && taggedData) {
-  const result = [];
+if (blockHeights && taggedData) {
+  const results = [];
 
-  Object.keys(data).forEach((accountId) => {
-    return Object.keys(data[accountId].widget).forEach((widgetName) => {
+  Object.keys(blockHeights).forEach((accountId) => {
+    return Object.keys(blockHeights[accountId].widget).forEach((widgetName) => {
       const hasRequiredTag =
         taggedData[accountId]?.widget[widgetName]?.metadata?.tags?.app;
 
       totalComponents++;
 
       if (hasRequiredTag) {
-        result.push({
+        results.push({
           accountId,
           widgetName,
-          blockHeight: data[accountId].widget[widgetName],
+          blockHeight: blockHeights[accountId].widget[widgetName],
         });
       }
     });
   });
 
-  result.sort((a, b) => b.blockHeight - a.blockHeight);
+  results.sort((a, b) => b.blockHeight - a.blockHeight);
 
-  apps = result.slice(0, limit);
+  recentAppPaths = results
+    .slice(0, limit)
+    .map((result) => `${result.accountId}/widget/${result.widgetName}`);
+}
+
+const componentData =
+  recentAppPaths.length > 0 ? Social.getr(recentAppPaths) : null;
+
+if (componentData) {
+  recentAppPaths.forEach((src) => {
+    const path = src.split("/");
+    const result = {
+      metadata: componentData[path[0]][path[1]][path[2]].metadata,
+      src,
+    };
+
+    components.push(result);
+  });
 }
 
 const Wrapper = styled.div`
@@ -116,13 +134,13 @@ return (
     </Header>
 
     <Items>
-      {apps.map((app, i) => (
-        <Item key={i}>
+      {components.map((component, i) => (
+        <Item key={component.src}>
           <Widget
             src="${REPL_ACCOUNT}/widget/ComponentCard"
             props={{
-              src: `${app.accountId}/widget/${app.widgetName}`,
-              blockHeight: app.blockHeight,
+              ...component,
+              hideBlockHeightTimestamp: true,
             }}
           />
         </Item>

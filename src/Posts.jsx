@@ -63,6 +63,7 @@ const selfModeration = context.accountId
   ? Social.getr(`${context.accountId}/moderate`, "optimistic") ?? []
   : [];
 const postsModerationKey = ".post.main";
+const commentsModerationKey = ".post.comment";
 const matchesModeration = (moderated, socialDBObjectType, item) => {
   if (!moderated) return false;
   const accountFound = moderated[item.account_id];
@@ -72,19 +73,18 @@ const matchesModeration = (moderated, socialDBObjectType, item) => {
   if (typeof accountFound === "string") {
     return true;
   }
-  // match posts
-  const posts = accountFound[postsModerationKey];
-  return posts && typeof posts[item.block_height] !== "undefined";
+  const moderatedItemsOfType = accountFound[socialDBObjectType];
+  return moderatedItemsOfType && typeof moderatedItemsOfType[item.block_height] !== "undefined";
 };
 
-const shouldFilter = (item) => {
+const shouldFilter = (item, socialDBObjectType) => {
   return (
     selfFlaggedPosts.find((flagged) => {
       return (
         flagged?.value?.blockHeight === item.block_height &&
         flagged?.value?.path.includes(item.account_id)
       );
-    }) || matchesModeration(selfModeration, postsModerationKey, item)
+    }) || matchesModeration(selfModeration, socialDBObjectType, item)
   );
 };
 function fetchGraphQL(operationsDoc, operationName, variables) {
@@ -212,11 +212,11 @@ const loadMorePosts = () => {
           data.dataplatform_near_social_feed_moderated_posts_aggregate.aggregate
             .count;
         if (newPosts.length > 0) {
-          let filteredPosts = newPosts.filter((i) => !shouldFilter(i));
+          let filteredPosts = newPosts.filter((i) => !shouldFilter(i, postsModerationKey));
           filteredPosts = filteredPosts.map((post) => {
             const prevComments = post.comments;
             const filteredComments = prevComments.filter(
-              (comment) => !shouldFilter(comment)
+              (comment) => !shouldFilter(comment, commentsModerationKey)
             );
             post.comments = filteredComments;
             return post;

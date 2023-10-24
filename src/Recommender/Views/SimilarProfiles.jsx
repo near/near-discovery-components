@@ -50,12 +50,17 @@ const RecommendedUsers = styled.div`
   padding-bottom: 100px;
 `;
 
+const NotEnoughData = styled.div`
+  width: 100vw;
+`;
+
 State.init({
   currentPage: 1,
   userData: [],
-  isLoading: true,
+  isLoading: false,
   error: null,
   totalPages: 1,
+  hasLoaded: false,
 });
 
 const updateState = (data, totalPageNum) => {
@@ -63,6 +68,7 @@ const updateState = (data, totalPageNum) => {
     isLoading: false,
     userData: [...state.userData, ...data],
     totalPages: totalPageNum,
+    hasLoaded: true,
   });
 };
 
@@ -80,33 +86,24 @@ const algorithm = "similarity_estimation";
 const dataset = `${BASE_URL}/${algorithm}_${props.accountId}`;
 
 const getRecommendedUsers = (page) => {
+  if (state.hasLoaded) return;
+
+  State.update({ isLoading: true });
   try {
     const url = `${dataset}_${page}.json`;
-    if (state.currentPage == 1) {
-      const res = fetch(url);
+    asyncFetch(url).then((res) => {
       if (res.ok) {
-        const parsedResults = JSON.parse(res.body);
-        const totalPageNum = parsedResults.total_pages || 10;
-        updateState(parsedResults.data, totalPageNum);
+        const data = JSON.parse(res.body);
+        updateState(data.data, data.total_pages);
       } else {
-        console.log(
+        State.update({ isLoading: false, error: true, hasLoaded: true });
+        console.error(
           "Error fetching data. Try reloading the page, or no data available."
         );
       }
-    } else {
-      asyncFetch(url).then((res) => {
-        if (res.ok) {
-          const parsedResults = JSON.parse(res.body);
-          const totalPageNum = parsedResults.total_pages || 10;
-          updateState(parsedResults.data, totalPageNum);
-        } else {
-          console.log(
-            "Error fetching data. Try reloading the page, or no data available."
-          );
-        }
-      });
-    }
+    });
   } catch (error) {
+    State.update({ isLoading: false, error: true, hasLoaded: true });
     console.error("Error on fetching recommended users: ", error.message);
   }
 };
@@ -114,12 +111,12 @@ const getRecommendedUsers = (page) => {
 const loadMore = () => {
   const nextPage = state.currentPage + 1;
   if (nextPage <= state.totalPages) {
-    State.update({ currentPage: nextPage });
+    State.update({ currentPage: nextPage, hasLoaded: false });
     getRecommendedUsers(nextPage);
   }
 };
 
-if (state.isLoading) {
+if (!state.isLoading) {
   getRecommendedUsers(state.currentPage);
 }
 
@@ -131,21 +128,21 @@ return (
   <RecommendedUsers>
     {state.isLoading && <p>Loading...</p>}
     <Profiles>
-      {!state.isLoading && displayedUsers.length < 4 ? (
-        <>
-          {!state.isLoading && (
-            <div style={{ width: "100vw" }}>
-              Follow More Users to Unlock More Personalized Recommendations, See
-              Who’s
-              <a href="https://${REPL_NEAR_URL}/${REPL_ACCOUNT}/widget/PeoplePage?tab=trending">
-                Trending
-              </a>
-            </div>
-          )}
-        </>
+      {!state.isLoading && displayedUsers.length < 4 && state.error ? (
+        <NotEnoughData>
+          Follow More Users to Unlock More Personalized Recommendations, See
+          Who’s
+          <a href="https://${REPL_NEAR_URL}/${REPL_ACCOUNT}/widget/PeoplePage?tab=trending">
+            Trending
+          </a>
+        </NotEnoughData>
       ) : (
-        displayedUsers.map((user, index) => (
-          <Profile key={index}>
+        displayedUsers.map((user, rank) => (
+          <Profile
+            key={
+              user.recommended_profile || user.similar_profile || user.signer_id
+            }
+          >
             <Widget
               src="${REPL_ACCOUNT}/widget/Recommender.Account.AccountProfileLargeCard"
               props={{
@@ -153,7 +150,7 @@ return (
                   user.recommended_profile ||
                   user.similar_profile ||
                   user.signer_id,
-                accountIdRank: index + 1,
+                accountIdRank: rank + 1,
                 showTags: true,
                 showFollowerStats: true,
                 showFollowButton: state.multiSelectMode === false,

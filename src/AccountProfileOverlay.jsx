@@ -40,7 +40,7 @@ const TriggerWrapper = styled.div`
 const TriggerInsideWrapper = styled.div`
   display: ${props.inline ? "inline-flex" : "flex"};
   vertical-align: ${props.inline ? "baseline" : ""};
-  max-width: 100%;
+  width: 100%;
 `;
 
 const FlaggedWrapper = styled.div`
@@ -294,6 +294,7 @@ const overlay = (
                 accountIdRank: props.accountIdRank || null,
                 accountId: accountId || props.accountId,
                 fromContext: props.fromContext,
+                onFollowed: props.onFollowed,
               }}
             />
           )}

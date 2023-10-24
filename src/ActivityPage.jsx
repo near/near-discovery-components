@@ -7,7 +7,8 @@ let lastPostSocialApi = Social.index("post", "main", {
 
 State.init({
   // If QueryAPI Feed is lagging behind Social API, fallback to old widget.
-  shouldFallback: props.shouldFallback ?? false,
+  shouldFallback:
+    props.shouldFallback === "true" || props.shouldFallback === true,
   selectedTab: props.tab || "posts",
 });
 
@@ -25,7 +26,7 @@ function fetchGraphQL(operationsDoc, operationName, variables) {
 
 const lastPostQuery = `
 query IndexerQuery {
-  dataplatform_near_social_feed_posts( limit: 1, order_by: { block_height: desc }) {
+  dataplatform_near_social_feed_moderated_posts( limit: 1, order_by: { block_height: desc }) {
       block_height
   }
 }
@@ -35,13 +36,13 @@ fetchGraphQL(lastPostQuery, "IndexerQuery", {})
   .then((feedIndexerResponse) => {
     if (
       feedIndexerResponse &&
-      feedIndexerResponse.body.data.dataplatform_near_social_feed_posts.length >
-        0
+      feedIndexerResponse.body.data
+        .dataplatform_near_social_feed_moderated_posts.length > 0
     ) {
       const nearSocialBlockHeight = lastPostSocialApi[0].blockHeight;
       const feedIndexerBlockHeight =
-        feedIndexerResponse.body.data.dataplatform_near_social_feed_posts[0]
-          .block_height;
+        feedIndexerResponse.body.data
+          .dataplatform_near_social_feed_moderated_posts[0].block_height;
 
       const lag = nearSocialBlockHeight - feedIndexerBlockHeight;
       let shouldFallback = lag > 2 || !feedIndexerBlockHeight;
@@ -54,7 +55,7 @@ fetchGraphQL(lastPostQuery, "IndexerQuery", {})
   .catch((error) => {
     console.log(
       "Error while fetching GraphQL(falling back to old widget): ",
-      error
+      error,
     );
     State.update({ shouldFallback: true });
   });
@@ -197,7 +198,7 @@ return (
         <Widget src="${REPL_ACCOUNT}/widget/LatestComponents" />
       </Section>
       <Section negativeMargin primary active={state.selectedTab === "posts"}>
-        {state.shouldFallback == true ? (
+        {state.shouldFallback ? (
           <Widget
             src={`${REPL_ACCOUNT}/widget/v1.Posts`}
             props={{ showFlagAccountFeature: true }}

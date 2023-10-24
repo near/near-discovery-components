@@ -75,6 +75,8 @@ State.init({
 });
 
 const updateState = (data, totalPageNum) => {
+  const users = [...state.displayedUsers, ...data];
+
   State.update({
     isLoading: false,
     allUsers: [...state.allUsers, ...data],
@@ -116,7 +118,7 @@ const getRecommendedUsers = (page) => {
   }
 };
 
-if (!state.isLoading) {
+if (!state.isLoading && !state.hasLoaded) {
   getRecommendedUsers(state.currentPage);
 }
 
@@ -124,7 +126,7 @@ if (state.error) {
   console.error("Error, try again later", state.error);
 }
 
-const isAccountMatch = (user, accountId) => 
+const isAccountMatch = (user, accountId) =>
   user.recommended_profile === accountId || user.similar_profile === accountId;
 
 const handleFollowed = (accountId) => {
@@ -137,10 +139,11 @@ const handleFollowed = (accountId) => {
   );
 
   const nextUser = updatedAllUsers.find(
-    (user) => 
+    (user) =>
       !updatedDisplayedUsers.some(
-        (displayedUser) => isAccountMatch(displayedUser, user.recommended_profile) || 
-                            isAccountMatch(displayedUser, user.similar_profile)
+        (displayedUser) =>
+          isAccountMatch(displayedUser, user.recommended_profile) ||
+          isAccountMatch(displayedUser, user.similar_profile)
       )
   );
 
@@ -153,6 +156,32 @@ const handleFollowed = (accountId) => {
     displayedUsers: updatedDisplayedUsers,
   });
 };
+
+function returnProfileForUser(user) {
+  const rawImage =
+    user.profile_image_1 || user.profile_image_2 || user.profile_image_3;
+  const image =
+    rawImage && rawImage.indexOf("http") === 0
+      ? { url: rawImage }
+      : { ipfs_cid: rawImage };
+  const name = user.profile_name ?? "";
+  let tags = null;
+
+  if (user.profile_tags) {
+    tags = {};
+    user.profile_tags.forEach((tag) => (tags[tag] = ""));
+  }
+
+  if (image && tags) {
+    return {
+      image,
+      name,
+      tags,
+    };
+  }
+
+  return null;
+}
 
 return (
   <RecommendedUsers>
@@ -182,8 +211,7 @@ return (
                 likers: user.likers || null,
                 followers: user.followers || null,
                 following: user.following || null,
-                profileImage: user.profileImage || null,
-                profileName: user.profileName || null,
+                profile: returnProfileForUser(user),
                 sidebar: props.sidebar || null,
                 scope: props.scope || null,
                 fromContext: fromContext,

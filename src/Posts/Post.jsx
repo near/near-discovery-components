@@ -4,12 +4,16 @@ const accountId = props.accountId;
 const verifications = props.verifications;
 const blockHeight =
   props.blockHeight === "now" ? "now" : parseInt(props.blockHeight);
+const blockTimestamp = props.blockTimestamp;
 const notifyAccountId = accountId;
 const postUrl = `https://${REPL_NEAR_URL}/s/p?a=${accountId}&b=${blockHeight}`;
 const showFlagAccountFeature = props.showFlagAccountFeature;
+const profile = props.profile;
 
 State.init({
   hasBeenFlagged: false,
+  showFlaggedToast: false,
+  flaggedMessage: { header: "", detail: "" },
   postExists: true,
   comments: props.comments ?? undefined,
   content: JSON.parse(props.content) ?? undefined,
@@ -171,6 +175,14 @@ const CommentWrapper = styled.div`
   }
 `;
 
+const resolveHidePost = (message) => {
+  State.update({
+    hasBeenFlagged: true,
+    showFlaggedToast: true,
+    flaggedMessage: message,
+  });
+};
+
 const renderComment = (a) => {
   return (
     <div key={JSON.stringify(a)}>
@@ -196,12 +208,11 @@ if (state.hasBeenFlagged) {
       src={`${REPL_ACCOUNT}/widget/DIG.Toast`}
       props={{
         type: "info",
-        title: "Flagged for moderation",
-        description:
-          "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
-        open: state.hasBeenFlagged,
+        title: state.flaggedMessage.header,
+        description: state.flaggedMessage.detail,
+        open: state.showFlaggedToast,
         onOpenChange: () => {
-          State.update({ hasBeenFlagged: false });
+          State.update({ showFlaggedToast: false });
         },
         duration: 5000,
       }}
@@ -219,6 +230,7 @@ return (
           <Widget
             src="${REPL_ACCOUNT}/widget/AccountProfile"
             props={{
+              profile,
               verifications,
               accountId,
               hideAccountId: true,
@@ -226,17 +238,10 @@ return (
                 <>
                   <Text as="span">･</Text>
                   <Text>
-                    {blockHeight === "now" ? (
-                      "now"
-                    ) : (
-                      <>
-                        <Widget
-                          src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
-                          props={{ blockHeight }}
-                        />{" "}
-                        ago
-                      </>
-                    )}
+                    <Widget
+                      src="${REPL_ACCOUNT}/widget/TimeAgo"
+                      props={{ blockHeight, blockTimestamp }}
+                    />
                   </Text>
                   {false && edits.length > 0 && <Text as="span">･ Edited</Text>}
                 </>
@@ -246,19 +251,19 @@ return (
           />
         </div>
         <div className="col-1">
-          {false && (
+          <div style={{ position: "absolute", right: 0, top: "2px" }}>
             <Widget
               src="${REPL_ACCOUNT}/widget/Posts.Menu"
               props={{
-                elements: [
-                  <button className={`btn`} onClick={toggleEdit}>
-                    <i className="bi bi-pencil me-1" />
-                    <span>Edit</span>
-                  </button>,
-                ],
+                accountId: accountId,
+                blockHeight: blockHeight,
+                parentFunctions: {
+                  toggleEdit,
+                  resolveHidePost,
+                },
               }}
             />
-          )}
+          </div>
         </div>
       </div>
     </Header>
@@ -325,16 +330,6 @@ return (
             props={{
               postType: "post",
               url: postUrl,
-            }}
-          />
-          <Widget
-            src="${REPL_ACCOUNT}/widget/FlagButton"
-            props={{
-              item,
-              disabled: !context.accountId || context.accountId === accountId,
-              onFlag: () => {
-                State.update({ hasBeenFlagged: true });
-              },
             }}
           />
         </Actions>

@@ -1,5 +1,5 @@
 const [accountId, unused, widgetName] = props.src.split("/");
-const appUrl = `#/${accountId}/widget/${widgetName}`;
+const appUrl = props.appUrl || `#/${accountId}/widget/${widgetName}`;
 const accountUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 const metadata =
   props.metadata ??

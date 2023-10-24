@@ -1,69 +1,7 @@
-const GRAPHQL_ENDPOINT = "https://near-queryapi.api.pagoda.co";
+const [selectedTab, setSelectedTab] = useState(props.tab ?? "posts");
 
-let lastPostSocialApi = Social.index("post", "main", {
-  limit: 1,
-  order: "desc",
-});
-
-State.init({
-  // If QueryAPI Feed is lagging behind Social API, fallback to old widget.
-  shouldFallback:
-    props.shouldFallback === "true" || props.shouldFallback === true,
-  selectedTab: props.tab || "posts",
-});
-
-function fetchGraphQL(operationsDoc, operationName, variables) {
-  return asyncFetch(`${GRAPHQL_ENDPOINT}/v1/graphql`, {
-    method: "POST",
-    headers: { "x-hasura-role": "dataplatform_near" },
-    body: JSON.stringify({
-      query: operationsDoc,
-      variables: variables,
-      operationName: operationName,
-    }),
-  });
-}
-
-const lastPostQuery = `
-query IndexerQuery {
-  dataplatform_near_social_feed_moderated_posts( limit: 1, order_by: { block_height: desc }) {
-      block_height
-  }
-}
-`;
-
-fetchGraphQL(lastPostQuery, "IndexerQuery", {})
-  .then((feedIndexerResponse) => {
-    if (
-      feedIndexerResponse &&
-      feedIndexerResponse.body.data
-        .dataplatform_near_social_feed_moderated_posts.length > 0
-    ) {
-      const nearSocialBlockHeight = lastPostSocialApi[0].blockHeight;
-      const feedIndexerBlockHeight =
-        feedIndexerResponse.body.data
-          .dataplatform_near_social_feed_moderated_posts[0].block_height;
-
-      const lag = nearSocialBlockHeight - feedIndexerBlockHeight;
-      let shouldFallback = lag > 2 || !feedIndexerBlockHeight;
-      State.update({ shouldFallback });
-    } else {
-      console.log("Falling back to old widget.");
-      State.update({ shouldFallback: true });
-    }
-  })
-  .catch((error) => {
-    console.log(
-      "Error while fetching GraphQL(falling back to old widget): ",
-      error,
-    );
-    State.update({ shouldFallback: true });
-  });
-
-if (props.tab && props.tab !== state.selectedTab) {
-  State.update({
-    selectedTab: props.tab,
-  });
+if (props.tab && props.tab !== selectedTab) {
+  setSelectedTab(props.tab);
 }
 
 const activityUrl = `#/${REPL_ACCOUNT}/widget/ActivityPage`;
@@ -162,59 +100,49 @@ const TabsButton = styled.a`
 `;
 
 return (
-  <Wrapper
-    className="container-xl"
-    negativeMargin={state.selectedTab === "posts"}
-  >
+  <Wrapper className="container-xl" negativeMargin={selectedTab === "posts"}>
     <Tabs
-      halfMargin={state.selectedTab === "apps"}
-      noMargin={state.selectedTab === "posts"}
+      halfMargin={selectedTab === "apps"}
+      noMargin={selectedTab === "posts"}
     >
       <TabsButton
         href={`${activityUrl}?tab=posts`}
-        selected={state.selectedTab === "posts"}
+        selected={selectedTab === "posts"}
       >
         Posts
       </TabsButton>
 
       <TabsButton
         href={`${activityUrl}?tab=apps`}
-        selected={state.selectedTab === "apps"}
+        selected={selectedTab === "apps"}
       >
         Components
       </TabsButton>
 
       <TabsButton
         href={`${activityUrl}?tab=explore`}
-        selected={state.selectedTab === "explore"}
+        selected={selectedTab === "explore"}
       >
         Explore
       </TabsButton>
     </Tabs>
 
     <Main>
-      <Section active={state.selectedTab === "apps"}>
+      <Section active={selectedTab === "apps"}>
         <Widget src="${REPL_ACCOUNT}/widget/FeaturedComponents" />
         <Widget src="${REPL_ACCOUNT}/widget/LatestComponents" />
       </Section>
-      <Section negativeMargin primary active={state.selectedTab === "posts"}>
-        {state.shouldFallback ? (
-          <Widget
-            src={`${REPL_ACCOUNT}/widget/v1.Posts`}
-            props={{ showFlagAccountFeature: true }}
-          />
-        ) : (
-          <Widget
-            src={`${REPL_ACCOUNT}/widget/Posts`}
-            props={{
-              GRAPHQL_ENDPOINT,
-              accountsFollowing,
-              showFlagAccountFeature: true,
-            }}
-          />
-        )}
+
+      <Section negativeMargin primary active={selectedTab === "posts"}>
+        <Widget
+          src={`${REPL_ACCOUNT}/widget/ActivityPageFeed`}
+          props={{
+            shouldFallback: props.shouldFallback,
+          }}
+        />
       </Section>
-      <Section active={state.selectedTab === "explore"}>
+
+      <Section active={selectedTab === "explore"}>
         <Widget src="${REPL_ACCOUNT}/widget/ExploreWidgets" />
       </Section>
     </Main>

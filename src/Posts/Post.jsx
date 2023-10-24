@@ -175,7 +175,7 @@ const CommentWrapper = styled.div`
   }
 `;
 
-const resolveHidePost = (message) => {
+const resolveHideItem = (message) => {
   State.update({
     hasBeenFlagged: true,
     showFlaggedToast: true,
@@ -259,7 +259,7 @@ return (
                 blockHeight: blockHeight,
                 parentFunctions: {
                   toggleEdit,
-                  resolveHidePost,
+                  resolveHideItem,
                 },
               }}
             />

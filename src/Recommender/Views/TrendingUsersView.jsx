@@ -144,7 +144,6 @@ const returnProfileForUser = (user) => {
 };
 
 if (!state.isLoading && !state.hasLoaded) {
-  returnProfileForUser();
   getRecommendedUsers(state.currentPage);
 }
 

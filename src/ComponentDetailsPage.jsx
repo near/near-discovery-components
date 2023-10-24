@@ -1,3 +1,5 @@
+const GRAPHQL_ENDPOINT = "https://near-queryapi.api.pagoda.co";
+
 State.init({
   copiedShareUrl: false,
   selectedTab: props.tab ?? "about",
@@ -7,6 +9,8 @@ State.init({
     weekly_chart_data_config: undefined,
     executed_at: undefined,
   },
+  developerSince: undefined,
+  numberOfComponentsPublished: 0,
 });
 
 if (props.tab && props.tab !== state.selectedTab) {
@@ -54,6 +58,82 @@ const stats = {
     ],
   },
 };
+function fetchGraphQL(operationsDoc, operationName, variables) {
+  return asyncFetch(`${GRAPHQL_ENDPOINT}/v1/graphql`, {
+    method: "POST",
+    headers: { "x-hasura-role": "eduohe_near" },
+    body: JSON.stringify({
+      query: operationsDoc,
+      variables: variables,
+      operationName: operationName,
+    }),
+  });
+}
+
+const indexerQueries = `
+  query GetWidgetCount {
+   eduohe_near_nearcon_2023_widget_activity_feed_widget_activity_aggregate(
+      where: {account_id: {_eq: "${accountId}"}}
+    ) {
+      aggregate {
+        count(distinct: true, columns: widget_name)
+      }
+    }
+  }
+  query GetDeveloperSince {
+  eduohe_near_nearcon_2023_widget_activity_feed_widget_activity_aggregate(
+      where: {account_id: {_eq: "${accountId}"}}
+    ) {
+      aggregate {
+        min {
+          block_timestamp
+        }
+      }
+    }
+  }
+`;
+
+useEffect(() => {
+  fetchGraphQL(indexerQueries, "GetWidgetCount", {}).then((result) => {
+    if (result.status === 200 && result.body) {
+      if (result.body.errors) {
+        console.log("error:", result.body.errors);
+        return;
+      }
+      let data = result.body.data;
+      console.log("loaded data, count comp");
+      if (data) {
+        const noComponents =
+          data
+            .eduohe_near_nearcon_2023_widget_activity_feed_widget_activity_aggregate
+            .aggregate.count;
+        State.update({
+          numberOfComponentsPublished: noComponents,
+        });
+      }
+    }
+  });
+}, []);
+
+useEffect(() => {
+  fetchGraphQL(indexerQueries, "GetDeveloperSince", {}).then((result) => {
+    if (result.status === 200 && result.body) {
+      if (result.body.errors) {
+        console.log("error:", result.body.errors);
+        return;
+      }
+      let data = result.body.data;
+      console.log("loaded data, developer since");
+
+      if (data) {
+        const developerSince = data.eduohe_near_nearcon_2023_widget_activity_feed_widget_activity_aggregate.aggregate.min.block_timestamp;
+        State.update({
+          developerSince: developerSince,
+        });
+      }
+    }
+  });
+}, []);
 
 const dependencyMatch =
   code && code.matchAll(/<Widget[\s\S]*?src=.*?"(.+)"[\s\S]*?\/>/g);
@@ -90,9 +170,7 @@ function formatDate(date) {
 const getComponentImpressions = () => {
   try {
     const url = `${dataset}.json`;
-    console.log(url);
     const res = fetch(url);
-    console.log("trying to load")
     if (res.ok) {
       const parsedResults = JSON.parse(res.body);
       const weekly_chart_data = parsedResults.data.rpc_loads
@@ -485,13 +563,22 @@ return (
               <StatsBadge>
                 <Icon className="ph ph-code" />
                 <span className="badge rounded-pill bg-secondary">
-                  {stats.developerStats.numberOfComponentsPublished} published
+                  {state.numberOfComponentsPublished
+                    ? state.numberOfComponentsPublished + " published"
+                    : "..."}
                 </span>
               </StatsBadge>
               <StatsBadge>
                 <Icon className="bi bi-calendar" />
                 <span className="badge rounded-pill bg-secondary">
-                  {stats.developerStats.developerSince}
+                  {state.developerSince ? (
+                    <Widget
+                      src="${REPL_ACCOUNT}/widget/TimeAgoComponentDetailsPage"
+                      props={{ blockTimestamp: state.developerSince }}
+                    />
+                  ) : (
+                    "..."
+                  )}
                 </span>
               </StatsBadge>
             </Stats>

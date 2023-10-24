@@ -188,7 +188,6 @@ const getComponentImpressions = () => {
         grid: {
           left: "3%",
           right: "4%",
-          bottom: "3%",
           containLabel: true
         },
         xAxis: {
@@ -212,7 +211,8 @@ const getComponentImpressions = () => {
           smooth: true,
           data: weekly_chart_data.map((r) => r['RPC Impressions']),
           areaStyle: {},
-          color: '#59e691'
+          color: '#59e691',
+          showSymbol: false
         }]
       };
 

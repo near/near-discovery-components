@@ -21,10 +21,15 @@ const MenuItem = styled.div`
   transition: 0.2s all;
   font-weight: 400;
   ${(p) =>
-    p.active &&
-    `
-    font-weight: 700;
-  `}
+    p.active && 
+      `color: var(--violet11);
+       font-weight: 700;`
+  }
+  ${(p) =>
+    p.disabled &&
+  `color: var(--sand8);
+   pointer-events: none;`
+  }
 `;
 
 const Text = styled.span`
@@ -40,12 +45,12 @@ const Icon = styled.i`
 let { activeTab } = props;
 const menuItems = props.items || [
   {
-    id: "a",
+    value: "a",
     icon: "ph-bold ph-users",
     label: "Menu Item A",
   },
   {
-    id: "b",
+    value: "b",
     icon: "ph-bold ph-users",
     label: "Menu Item B",
   },
@@ -56,9 +61,10 @@ return (
 
     {menuItems.map((item) => (
       <MenuItem
-        key={`sidebar-${item.id}`}
-        onClick={() => item.onSelect(item.id)}
-        active={activeTab === item.id}
+        key={`sidebar-${item.value}`}
+        onClick={() => item.onSelect(item.value)}
+        active={activeTab === item.value}
+        disabled={item.disabled}
       >
         <Icon className={item.icon} />
         <Text>{item.name}</Text>

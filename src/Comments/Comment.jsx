@@ -8,6 +8,8 @@ const commentUrl = `https://${REPL_NEAR_URL}/s/c?a=${accountId}&b=${blockHeight}
 
 State.init({
   hasBeenFlagged: false,
+  showFlaggedToast: false,
+  flaggedMessage: { header: "", detail: "" },
   content: JSON.parse(props.content) ?? undefined,
   notifyAccountId: undefined,
 });
@@ -18,6 +20,14 @@ const extractNotifyAccountId = (parentItem) => {
   }
   const accountId = parentItem.path.split("/")[0];
   return `${accountId}/post/main` === parentItem.path ? accountId : undefined;
+};
+
+const resolveHideItem = (message) => {
+    State.update({
+        hasBeenFlagged: true,
+        showFlaggedToast: true,
+        flaggedMessage: message,
+    });
 };
 
 if (!state.content && accountId && blockHeight !== "now") {
@@ -123,12 +133,11 @@ if (state.hasBeenFlagged) {
       src={`${REPL_ACCOUNT}/widget/DIG.Toast`}
       props={{
         type: "info",
-        title: "Flagged for moderation",
-        description:
-          "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
-        open: state.hasBeenFlagged,
+          title: state.flaggedMessage.header,
+          description: state.flaggedMessage.detail,
+          open: state.showFlaggedToast,
         onOpenChange: () => {
-          State.update({ hasBeenFlagged: false });
+          State.update({ showFlaggedToast: false });
         },
         duration: 5000,
       }}
@@ -163,6 +172,22 @@ return (
           ),
         }}
       />
+        <div className="col-1">
+            <div style={{ position: "absolute", right: 0, top: "2px" }}>
+                <Widget
+                    src="${REPL_ACCOUNT}/widget/Posts.Menu"
+                    props={{
+                        accountId: accountId,
+                        blockHeight: blockHeight,
+                        parentFunctions: {
+                            resolveHideItem,
+                        },
+                        contentType: "comment",
+                        contentPath: `/post/comment`,
+                    }}
+                />
+            </div>
+        </div>
     </Header>
 
     <Main>
@@ -215,20 +240,6 @@ return (
             props={{
               postType: "comment",
               url: commentUrl,
-            }}
-          />
-          <Widget
-            src="${REPL_ACCOUNT}/widget/FlagButton"
-            props={{
-              item: {
-                type: "social",
-                path: `${accountId}/post/comment`,
-                blockHeight,
-              },
-              disabled: !context.accountId || context.accountId === accountId,
-              onFlag: () => {
-                State.update({ hasBeenFlagged: true });
-              },
             }}
           />
         </Actions>

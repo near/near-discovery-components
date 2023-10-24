@@ -1,0 +1,68 @@
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-right: 1px solid #eceef0;
+  gap: 24px;
+  width: 240px;
+  height: 100%;
+`;
+
+const Title = styled.h2`
+  font: var(text-l);
+  font-weight: 600;
+`;
+
+const MenuItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: 0.2s all;
+  font-weight: 400;
+  ${(p) =>
+    p.active &&
+    `
+    font-weight: 700;
+  `}
+`;
+
+const Text = styled.span`
+  font: var(--text-s);
+  font-weight: inherit;
+  line-height: 16px;
+`;
+
+const Icon = styled.i`
+  font-size: 24px;
+`;
+
+let { activeTab } = props;
+const menuItems = props.items || [
+  {
+    id: "a",
+    icon: "ph-bold ph-users",
+    label: "Menu Item A",
+  },
+  {
+    id: "b",
+    icon: "ph-bold ph-users",
+    label: "Menu Item B",
+  },
+];
+return (
+  <Wrapper>
+    <Title>{props.title || ""}</Title>
+
+    {menuItems.map((item) => (
+      <MenuItem
+        key={`sidebar-${item.id}`}
+        onClick={() => item.onSelect(item.id)}
+        active={activeTab === item.id}
+      >
+        <Icon className={item.icon} />
+        <Text>{item.name}</Text>
+      </MenuItem>
+    ))}
+  </Wrapper>
+);

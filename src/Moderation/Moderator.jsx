@@ -1,133 +1,208 @@
-// noinspection JSAnnotator
-
 const Content = styled.div`
   .post {
     padding-left: 0;
     padding-right: 0;
   }
 `;
-const Tabs = styled.div`
-  display: flex;
-  height: 48px;
-  border-bottom: 1px solid #eceef0;
-  margin-bottom: 72px;
-  overflow: auto;
-  scroll-behavior: smooth;
-
-  @media (max-width: 1024px) {
-    background: #f8f9fa;
-    border-top: 1px solid #eceef0;
-    margin: 0 -12px 48px;
-
-    > * {
-      flex: 1;
-    }
-  }
-`;
-
-const TabsButton = styled.a`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+const Wrapper = styled.div`
+  display: grid;
+  gap: 40px;
+  grid-template-columns: 264px minmax(0, 1fr);
+  align-items: start;
   height: 100%;
-  font-weight: 600;
-  font-size: 12px;
-  padding: 0 12px;
-  position: relative;
-  color: ${(p) => (p.selected ? "#11181C" : "#687076")};
-  background: none;
-  border: none;
-  outline: none;
-  text-align: center;
-  text-decoration: none !important;
-
-  &:hover {
-    color: #11181c;
-  }
-
-  &::after {
-    content: "";
-    display: ${(p) => (p.selected ? "block" : "none")};
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: #59e692;
-  }
 `;
 
-State.init({
-  selectedTab: props.tab || "reported",
-});
-if (props.tab && props.tab !== state.selectedTab) {
+const activeTab = Storage.get("moderator-tab") || "overview";
+if (props.tab && props.tab !== activeTab) {
   State.update({
-    selectedTab: props.tab,
+    activeTab: props.tab,
   });
 }
 
-const baseUrl = `#/${REPL_ACCOUNT}/widget/Moderation.Moderator`;
 const moderatorAccount = props?.moderatorAccount || "${REPL_MODERATOR}";
 const moderationStream = props.moderationStream || moderatorAccount;
+const group = 'near.org';
 
+function overview() {
+  return (
+    <div>
+      <h4 style={{ textAlign: "left" }}>Overview</h4>
+      <p>Welcome to Moderation for Group: {group}</p>
+      {context.accountId === moderatorAccount ? (
+        <p>
+          <span style={{ fontWeight: "bold" }}>{moderatorAccount}</span> you are
+          a Moderator of this group.
+        </p>
+      ) : (
+        <>
+          <p>{moderatorAccount} you are NOT a moderator of this group.</p>
+          <p style={{ color: "grey", float: left, paddingRight: "2em" }}>
+            When saving, ensure data is being written to moderator key. You may
+            need to refresh your browser if you used "Pretend to be another
+            account" while on this page
+          </p>
+        </>
+      )}
+      <div style={{ paddingLeft: "2em" }}>
+        <p>
+          Moderating a post will prevent users other than the posting user from
+          seeing it in near widgets (ones where the path starts with
+          /near/widget).
+        </p>
+        <p>
+          Moderating an account will apply moderation to all posts and comments
+          made by that account.
+        </p>
+      </div>
+      <p>
+        The Flagged Feed (in Needs Moderation) is being phased out in favor of
+        the new reporting options and data. While widgets transition, some items
+        may be Flagged instead of Reported.
+      </p>
+    </div>
+  );
+}
+
+function needsModeration() {
+  return (
+    <div>
+      <h4 style={{ textAlign: "left" }}>Needs Moderation</h4>
+      <Widget
+        src="near/widget/DIG.Tabs"
+        props={{
+          variant: "line",
+          size: "large",
+          defaultValue: "needsModeration",
+          items: [
+            {
+              name: "Reported",
+              value: "needsModeration",
+              content: (
+                <Widget src="${REPL_ACCOUNT}/widget/Moderation.NeedsModeration" />
+              ),
+              icon: "ph ph-warning-octagon",
+            },
+            {
+              name: "Flagged Posts (being phased out)",
+              value: "flaggedPosts",
+              content: <Widget src="${REPL_ACCOUNT}/widget/Flagged.Feed" />,
+              icon: "ph ph-flag",
+            },
+          ],
+        }}
+      />
+    </div>
+  );
+}
+
+function previouslyModerated() {
+  return (
+    <div>
+      <h4 style={{ textAlign: "left" }}>Previously Moderated</h4>
+      <Widget
+        src="near/widget/DIG.Tabs"
+        props={{
+          variant: "line",
+          size: "large",
+          defaultValue: "moderatedAccounts",
+          items: [
+            {
+              name: "Moderated Accounts",
+              value: "moderatedAccounts",
+              content: (
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/Moderation.ModerateAccounts"
+                  props={{ moderatorAccount, moderationStream }}
+                />
+              ),
+              icon: "ph ph-browser",
+            },
+            {
+              name: "Moderated Posts",
+              value: "moderatedPosts",
+              content: (
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/Moderation.ModeratePosts"
+                  props={{ moderatorAccount, moderationStream }}
+                />
+              ),
+              icon: "ph ph-browser",
+            },
+            {
+              name: "Moderated Comments",
+              value: "moderatedComments",
+              content: (
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/Moderation.ModerateComments"
+                  props={{ moderatorAccount, moderationStream }}
+                />
+              ),
+              icon: "ph ph-browser",
+            },
+          ],
+        }}
+      />
+    </div>
+  );
+}
+
+const renderContent = () => {
+  switch (activeTab) {
+    case "overview":
+      return overview();
+    case "needsModeration":
+      return needsModeration();
+    case "previouslyModerated":
+      return previouslyModerated();
+    default:
+      return null;
+  }
+};
+
+const handleMenuClick = (value) => {
+  Storage.set("moderator-tab", value);
+};
 return (
-  <div className="d-flex flex-column gap-5">
-    <span>Admin: {moderatorAccount}</span>
-    <Content>
-      <Tabs>
-        <TabsButton
-          href={`${baseUrl}?&tab=reported`}
-          selected={state.selectedTab === "reported"}
-        >
-          Reported and needs moderation
-        </TabsButton>
-
-        <TabsButton
-          href={`${baseUrl}?&tab=moderated_accounts`}
-          selected={state.selectedTab === "moderated_accounts"}
-        >
-          Moderated Accounts
-        </TabsButton>
-
-        <TabsButton
-          href={`${baseUrl}?&tab=moderated_posts`}
-          selected={state.selectedTab === "moderated_posts"}
-        >
-          Moderated Posts
-        </TabsButton>
-
-        <TabsButton
-          href={`${baseUrl}?&tab=moderated_comments`}
-          selected={state.selectedTab === "moderated_comments"}
-        >
-          Moderated Comments
-        </TabsButton>
-      </Tabs>
-
-      {state.selectedTab === "reported" && (
-        <Widget src="${REPL_ACCOUNT}/widget/Flagged.Feed" />
-      )}
-
-      {state.selectedTab === "moderated_accounts" && (
+  <>
+    <div className="d-flex flex-column gap-5">
+      <Wrapper>
         <Widget
-          src="${REPL_ACCOUNT}/widget/Moderation.ModerateAccounts"
-          props={{ moderatorAccount, moderationStream }}
+          src={`${REPL_ACCOUNT}/widget/Moderation.Sidebar`}
+          props={{
+            title: "Moderation",
+            activeTab,
+            items: [
+              {
+                name: "Overview",
+                value: "overview",
+                icon: "ph ph-flower-lotus",
+                onSelect: () => {
+                  handleMenuClick("overview");
+                },
+              },
+              {
+                name: "Needs Moderation",
+                value: "needsModeration",
+                count: "12",
+                icon: "ph ph-warning-octagon",
+                onSelect: () => {
+                  handleMenuClick("needsModeration");
+                },
+              },
+              {
+                name: "Previously Moderated",
+                value: "previouslyModerated",
+                count: "12",
+                icon: "ph ph-list-checks",
+                onSelect: () => {
+                  handleMenuClick("previouslyModerated");
+                },
+              },
+            ],
+          }}
         />
-      )}
-
-      {state.selectedTab === "moderated_posts" && (
-        <Widget
-          src="${REPL_ACCOUNT}/widget/Moderation.ModeratePosts"
-          props={{ moderatorAccount, moderationStream }}
-        />
-      )}
-
-      {state.selectedTab === "moderated_comments" && (
-        <Widget
-          src="${REPL_ACCOUNT}/widget/Moderation.ModerateComments"
-          props={{ moderatorAccount, moderationStream }}
-        />
-      )}
-    </Content>
-  </div>
+        {renderContent()}
+      </Wrapper>
+    </div>
+  </>
 );

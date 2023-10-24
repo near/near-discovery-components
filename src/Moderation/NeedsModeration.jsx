@@ -9,6 +9,7 @@ State.init({
   itemCountLeft: 0,
   loadingState: "none",
   sort,
+  locallyModeratedItems: {},
 });
 
 const moderationDataFormat = (accountId, path, blockHeight) => {
@@ -42,7 +43,7 @@ const createQuery = () => {
 
   const indexerQueries = `
 query GetNeedsModeration($offset: Int, $limit: Int) {
-  dataplatform_near_social_feed_needs_moderation(
+  dataplatform_near_moderation_needs_moderation(
       where: {${queryFilter}}
       order_by: [${querySortOption} { first_report_blockheight: desc }], 
       offset: $offset, limit: $limit) {
@@ -55,8 +56,9 @@ query GetNeedsModeration($offset: Int, $limit: Int) {
     content
     receipt_id
     first_report_blockheight
+    most_frequent_label
   }
-  dataplatform_near_social_feed_needs_moderation_aggregate {
+  dataplatform_near_moderation_needs_moderation_aggregate {
     aggregate {
       count
     }
@@ -79,10 +81,10 @@ const loadItems = () => {
       }
       let data = result.body.data;
       if (data) {
-        const newItems = data.dataplatform_near_social_feed_needs_moderation;
+        const newItems = data.dataplatform_near_moderation_needs_moderation;
         const itemsCountLeft =
-          data.dataplatform_near_social_feed_needs_moderation_aggregate
-            .aggregate.count;
+          data.dataplatform_near_moderation_needs_moderation_aggregate.aggregate
+            .count;
         if (newItems) {
           State.update({
             items: [...state.items, ...newItems],
@@ -123,10 +125,52 @@ const pathToType = (path) => {
   }
 };
 
+const setLocalAfterModeration = (id) => {
+  State.update({
+    locallyModeratedItems: {
+      ...state.locallyModeratedItems,
+      [id]: true,
+    },
+  });
+};
+
+const renderModeratedRow = (id, item) => {
+  const renderWidget = (
+    <div>
+      {item.account_id} {item.moderated_path} {item.block_height} has been
+      moderated
+    </div>
+  );
+  const header = (
+    <div key={id} style={{ width: "100%" }}>
+      <div className="row">
+        <div className="col">
+          Moderation complete for {pathToType(item.moderated_path)}
+        </div>
+      </div>
+    </div>
+  );
+  return { value: id, header, content: renderWidget };
+};
+
+const blockItemHelperText =
+  "to no longer be shown in feeds that obey moderation. \n" +
+  "Direct links will show a moderation message. \n" +
+  "The posting user will still see their content, with a moderation message.";
+const blockAccountHelperText =
+  "Cause all posts and comments by this user\n" + blockItemHelperText;
+
 const renderItem = (item) => {
   const accountId = item.account_id;
   const blockHeight = item.block_height;
-  const id = `${accountId}_${item.first_report_blockheight ?? blockHeight}`;
+  const pathForId = item.moderated_path ?? "account";
+  const id = `${accountId}_${pathForId}_${
+    item.first_report_blockheight ?? blockHeight
+  }`;
+
+  if (state.locallyModeratedItems[id]) {
+    return renderModeratedRow(id, item);
+  }
 
   let renderWidget;
   switch (item.moderated_path) {
@@ -192,81 +236,93 @@ const renderItem = (item) => {
       console.log("Unknown moderated path", item);
   }
 
+  const overviewTooltip = accountId + (blockHeight ? " " + blockHeight : "");
   const header = (
     <div key={id} style={{ width: "100%" }}>
       <div className="row">
-        <div className="col">{pathToType(item.moderated_path)}</div>
-        <div className="col-3">
-          reported by {item.reporter_count} {item.reporter_count > 0 ? "users" : "user"}
+        <div className="col-1">
+          <Widget
+            src="near/widget/DIG.Tooltip"
+            props={{
+              content: (
+                <span style={{ whiteSpace: "pre-line" }}>
+                  {overviewTooltip}
+                </span>
+              ),
+              trigger: pathToType(item.moderated_path),
+            }}
+          />
         </div>
-        <div className="col">
+        <div className="col-3">
+          {item.most_frequent_label} by {item.reporter_count}{" "}
+          {item.reporter_count > 0 ? "users" : "user"}
+        </div>
+        <div className="col-1">
           <Widget
             src="near/widget/DIG.Tooltip"
             props={{
               content: "How long ago this item was first reported",
               trigger: (
-                <>
-                  <Widget
-                    src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
-                    props={{
-                      blockHeight:
-                        item.first_report_blockheight ?? item.block_height,
-                    }}
-                  />{" "}
-                  ago
-                </>
+                <Widget
+                  src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
+                  props={{
+                    blockHeight:
+                      item.first_report_blockheight ?? item.block_height,
+                  }}
+                />
               ),
             }}
           />
         </div>
-        <div className="col-lg-6 text-right">
+
+        <div className="col-lg-7" style={{ textAlign: "right" }}>
           {item.moderated_path != null && (
             <span>
-              <CommitButton
-                force
-                data={{
-                  index: {
-                    moderate: moderationDataFormat(
-                      accountId,
-                      item.moderated_path,
-                      blockHeight,
-                    ),
+              <Widget
+                src="${REPL_ACCOUNT}/widget/Moderation.TogglingSetButton"
+                props={{
+                  title: "Block " + pathToType(item.moderated_path),
+                  iconLeft: "ph-bold ph-warning-octagon",
+                  tooltip:
+                    "Cause this " +
+                    pathToType(item.moderated_path) +
+                    " " +
+                    blockItemHelperText,
+                  data: {
+                    index: {
+                      moderate: moderationDataFormat(
+                        accountId,
+                        item.moderated_path,
+                        blockHeight,
+                      ),
+                    },
+                  },
+                  onCommit: () => {
+                    setLocalAfterModeration(id);
                   },
                 }}
-                onCommit={() => {
-                  console.log(
-                    "moderated",
-                    item.account_id,
-                    item.moderated_path,
-                    item.block_height,
-                  );
-                  // todo hide the item, show toast.
-                }}
-              >
-                Block {pathToType(item.moderated_path)}
-              </CommitButton>
+              />
             </span>
           )}
-          <span style={{ marginLeft: "30px" }}>
-            <CommitButton
-              force
-              data={{
-                index: {
-                  moderate: moderationDataFormat(accountId),
+          <span style={{ marginLeft: "20px" }}>
+            <Widget
+              src="${REPL_ACCOUNT}/widget/Moderation.TogglingSetButton"
+              props={{
+                title: "Moderate Account",
+                iconLeft: "ph-bold ph-prohibit",
+                tooltip: blockAccountHelperText,
+                variant: "destructive",
+                fill: "outline",
+                data: {
+                  index: {
+                    moderate: moderationDataFormat(accountId),
+                  },
+                },
+                onCommit: () => {
+                  setLocalAfterModeration(id);
                 },
               }}
-              onCommit={() => {
-                console.log(
-                  "moderated",
-                  item.account_id,
-                  item.moderated_path,
-                  item.block_height,
-                );
-                // hide the item, show toast.
-              }}
-            >
-              Moderate Account
-            </CommitButton>
+            />
           </span>
         </div>
       </div>

@@ -1,8 +1,6 @@
-const Content = styled.div`
-  .post {
-    padding-left: 0;
-    padding-right: 0;
-  }
+const Instructions = styled.div`
+  width: 70%;
+  color: #555;
 `;
 const Wrapper = styled.div`
   display: grid;
@@ -21,44 +19,48 @@ if (props.tab && props.tab !== activeTab) {
 
 const moderatorAccount = props?.moderatorAccount || "${REPL_MODERATOR}";
 const moderationStream = props.moderationStream || moderatorAccount;
-const group = 'near.org';
+const group = "near.org";
 
 function overview() {
   return (
     <div>
       <h4 style={{ textAlign: "left" }}>Overview</h4>
-      <p>Welcome to Moderation for Group: {group}</p>
-      {context.accountId === moderatorAccount ? (
-        <p>
-          <span style={{ fontWeight: "bold" }}>{moderatorAccount}</span> you are
-          a Moderator of this group.
-        </p>
-      ) : (
-        <>
-          <p>{moderatorAccount} you are NOT a moderator of this group.</p>
-          <p style={{ color: "grey", float: left, paddingRight: "2em" }}>
-            When saving, ensure data is being written to moderator key. You may
-            need to refresh your browser if you used "Pretend to be another
-            account" while on this page
+      <Instructions>
+        <p>Welcome to Moderation for Group: {group}</p>
+        {context.accountId === moderatorAccount ? (
+          <p>
+            <span style={{ fontWeight: "bold" }}>{moderatorAccount}</span> you
+            are a Moderator of this group.
           </p>
-        </>
-      )}
-      <div style={{ paddingLeft: "2em" }}>
+        ) : (
+          <>
+            <p>{moderatorAccount} you are NOT a moderator of this group.</p>
+            <p style={{ color: "grey", float: left, paddingRight: "2em" }}>
+              When saving, ensure data is being written to moderator key. You
+              may need to refresh your browser if you used "Pretend to be
+              another account" while on this page
+            </p>
+          </>
+        )}
+        <div style={{ paddingLeft: "2em" }}>
+          <p>
+            Moderating a post or comment will prevent users other than the
+            posting user from seeing it in near widgets (ones where the path
+            starts with /near/widget).
+          </p>
+          <p>
+            Moderating an account will apply moderation to all posts and
+            comments made by that account.
+          </p>
+        </div>
         <p>
-          Moderating a post will prevent users other than the posting user from
-          seeing it in near widgets (ones where the path starts with
-          /near/widget).
+          The Flagged Feed (in Needs Moderation) is being phased out in favor of
+          the new reporting options and data. While widgets transition, some
+          items may be Flagged instead of Reported. These items can still be
+          reviewed and manually moderated (using the controls in the Previously
+          Moderated section).
         </p>
-        <p>
-          Moderating an account will apply moderation to all posts and comments
-          made by that account.
-        </p>
-      </div>
-      <p>
-        The Flagged Feed (in Needs Moderation) is being phased out in favor of
-        the new reporting options and data. While widgets transition, some items
-        may be Flagged instead of Reported.
-      </p>
+      </Instructions>
     </div>
   );
 }

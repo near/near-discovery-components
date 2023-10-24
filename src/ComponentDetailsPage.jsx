@@ -3,7 +3,9 @@ State.init({
   selectedTab: props.tab ?? "about",
   isLoadingRpcImpressions: true,
   componentImpressionsData: {
-    impressions: undefined, weekly_chart_data_config: undefined, executed_at: undefined
+    impressions: undefined,
+    weekly_chart_data_config: undefined,
+    executed_at: undefined,
   },
 });
 
@@ -93,11 +95,12 @@ const getComponentImpressions = () => {
     console.log("trying to load")
     if (res.ok) {
       const parsedResults = JSON.parse(res.body);
-      console.log(parsedResults.data.total_rpc_loads)
-      const weekly_chart_data = parsedResults.data.rpc_loads.sort((a, b) => new Date(a.week) - new Date(b.week)).map((row) => ({
-        "RPC Impressions": row.number_of_rpc_loads,
-        Week: computeWeekLabel(row.week)
-      }));
+      const weekly_chart_data = parsedResults.data.rpc_loads
+        .sort((a, b) => new Date(a.week) - new Date(b.week))
+        .map((row) => ({
+          "RPC Impressions": row.number_of_rpc_loads,
+          Week: computeWeekLabel(row.week),
+        }));
 
       const weekly_chart_data_config = {
         tooltip: {
@@ -138,7 +141,9 @@ const getComponentImpressions = () => {
       State.update({
         isLoadingRpcImpressions: false,
         componentImpressionsData: {
-          impressions: parsedResults.data.total_rpc_loads, weekly_chart_data_config, executed_at: parsedResults.executed_at,
+          impressions: parsedResults.data.total_rpc_loads,
+          weekly_chart_data_config,
+          executed_at: parsedResults.executed_at,
         },
       });
     }
@@ -503,7 +508,15 @@ return (
                 </Text>
               </div>
               <Graph>
-                <Widget src="${REPL_ACCOUNT}/widget/Chart" props={{ definition: state.componentImpressionsData.weekly_chart_data_config, width: "180px", height: "100px" }} />
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/Chart"
+                  props={{
+                    definition:
+                      state.componentImpressionsData.weekly_chart_data_config,
+                    width: "180px",
+                    height: "100px",
+                  }}
+                />
               </Graph>
             </GraphContainer>
             <Text small style={{ "margin-bottom": "10px" }}>

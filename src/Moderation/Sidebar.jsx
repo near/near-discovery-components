@@ -13,7 +13,8 @@ const Title = styled.h2`
   font-weight: 600;
 `;
 
-const MenuItem = styled.div`
+const MenuItem = styled.button`
+  all: unset;
   display: flex;
   align-items: center;
   gap: 10px;

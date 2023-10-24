@@ -10,7 +10,7 @@ if (props.tab && props.tab !== state.selectedTab) {
 }
 
 const appLibraryIndexUrl = "#/${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.IndexPage";
-const detailsUrl = `#/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=`;
+const detailsUrl = `https://near.org/#/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=`;
 const selectedCategory = [];
 
 function loadData() {
@@ -22,9 +22,13 @@ function loadData() {
     .then((res) => {
       const apps = JSON.parse(res.body).data.map((app_raw) => {
         const app = JSON.parse(app_raw);
-        const appUrl = `${detailsUrl}${app.account_id}/widget/${app.widget_name}`;
-        return { ...app, metadata: JSON.parse(app.metadata), tags: JSON.parse(app.tags), appUrl }
+        const metadata = JSON.parse(app.metadata[0].metadata);
+        const appUrl = `${detailsUrl}${app.widget_name}`;
+        const imgURL = `https://ipfs.near.social/ipfs/${image_cid}`;
+        return { ...app, metadata, appUrl};
       });
+      console.log(apps);
+
       State.update({
         apps,
         isLoading: false,
@@ -46,9 +50,14 @@ const Wrapper = styled.div`
   padding: 100px 0;
   background: url("https://ipfs.near.social/ipfs/bafkreig36ih64xg2nb64hb4ge4dwtra6zcskqupfywlnqi55vjtdejwmey");
   background-position: right top;
-  background-size: 1440px auto;
+  background-size: 100% auto;
   background-repeat: no-repeat;
 
+  img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
   @media (max-width: 1024px) {
     padding: 50px 0;
   }
@@ -208,12 +217,13 @@ return (
             <Section>
               <ContentGrid>
                 {state.apps.map((item) => {
+                  console.log(item, "item");
                   return (
                     <Widget
                       src="${REPL_ACCOUNT}/widget/AppLibrary.AppCard"
-                      key={item.account_id + item.widget_name}
+                      key={item.widget_name}
                       props={{
-                        src: `${item.account_id}/widget/${item.widget_name}`,
+                        src: `${item.widget_name}`,
                         metadata: {
                           image: item.metadata.image,
                           name: item.metadata.name,

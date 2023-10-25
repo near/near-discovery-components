@@ -9,7 +9,8 @@ if (props.tab && props.tab !== state.selectedTab) {
   });
 }
 
-const appLibraryIndexUrl = "#/${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.IndexPage";
+const appLibraryIndexUrl =
+  "#/${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.IndexPage";
 const detailsUrl = `https://near.org/#/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=`;
 const selectedCategory = [];
 
@@ -24,7 +25,7 @@ function loadData() {
         const app = JSON.parse(app_raw);
         const metadata = {
           ...JSON.parse(app.metadata[0].metadata),
-          image: { ipfs_cid: app.ipfs_cid }
+          image: { ipfs_cid: app.ipfs_cid },
         };
         const appUrl = `${detailsUrl}${app.widget_name}`;
         const imgURL = `https://ipfs.near.social/ipfs/${image_cid}`;
@@ -46,7 +47,6 @@ function loadData() {
 }
 
 loadData();
-
 
 const Wrapper = styled.div`
   padding: 100px 0;
@@ -119,10 +119,10 @@ const MenuLink = styled.a`
   border-radius: 7px;
   transition: background-color 0.3s;
   &:hover,
-    &:focus {
+  &:focus {
     background-color: rgb(187 188 188);
     text-decoration: none;
-    }
+  }
 
   &[data-active="true"] {
     background-color: #000000;

@@ -22,12 +22,14 @@ function loadData() {
     .then((res) => {
       const apps = JSON.parse(res.body).data.map((app_raw) => {
         const app = JSON.parse(app_raw);
-        const metadata = JSON.parse(app.metadata[0].metadata);
+        const metadata = {
+          ...JSON.parse(app.metadata[0].metadata),
+          image: { ipfs_cid: app.ipfs_cid }
+        };
         const appUrl = `${detailsUrl}${app.widget_name}`;
         const imgURL = `https://ipfs.near.social/ipfs/${image_cid}`;
-        return { ...app, metadata, appUrl};
+        return { ...app, metadata, appUrl };
       });
-      console.log(apps);
 
       State.update({
         apps,
@@ -217,7 +219,6 @@ return (
             <Section>
               <ContentGrid>
                 {state.apps.map((item) => {
-                  console.log(item, "item");
                   return (
                     <Widget
                       src="${REPL_ACCOUNT}/widget/AppLibrary.AppCard"
@@ -226,7 +227,7 @@ return (
                         src: `${item.widget_name}`,
                         metadata: {
                           image: item.metadata.image,
-                          name: item.metadata.name,
+                          name: item.name,
                           tags: item.tags,
                         },
                         appUrl: item.appUrl,

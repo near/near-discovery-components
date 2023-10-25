@@ -434,6 +434,7 @@ return (
       >
         {inner}
         Upvote
+        {context.accountId == accountId ? `(${voteCount})` : null}
       </Button>
 
     </Actions>

@@ -85,7 +85,6 @@ useEffect(() => {
         return;
       }
       let data = result.body.data;
-      console.log("loaded data, count comp");
       if (data) {
         const noComponents =
           data
@@ -107,8 +106,6 @@ useEffect(() => {
         return;
       }
       let data = result.body.data;
-      console.log("loaded data, developer since");
-
       if (data) {
         const developerSince = data.eduohe_near_nearcon_2023_widget_activity_feed_widget_activity_aggregate.aggregate.min.block_timestamp;
         State.update({

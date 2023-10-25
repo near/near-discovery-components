@@ -2,6 +2,7 @@ if (!props.src) return "";
 
 State.init({
   copiedShareUrl: false,
+  showVoteButton: false,
 });
 
 const src = props.src;
@@ -216,7 +217,26 @@ function checkNearConEventDate() {
   }
 }
 
-const showVoteButton = checkNearConEventDate()
+function loadAppQuestData() {
+  if (state.apps.length > 0) return;
+
+  asyncFetch(
+    "https://storage.googleapis.com/databricks-near-query-runner/output/nearcon_apps/apps_qualified.json"
+  )
+    .then((res) => {
+        const apps = [JSON.parse(JSON.parse(res.body).data)];
+        if (!apps) return
+
+        const isAppSignedUpToNearConAppQuest = apps.some((app) => app.widget_name === src);
+        const showVoteButton = isAppSignedUpToNearConAppQuest && checkNearConEventDate()
+
+      State.update({
+        showVoteButton
+      });
+    })
+}
+
+loadAppQuestData();
 
 const VoteButton = styled.div`
   line-height: 20px;
@@ -441,7 +461,7 @@ return (
           Share
         </Button>
       </OverlayTrigger>
-      {showVoteButton && <Button
+      {state.showVoteButton && <Button
         type="button"
         onClick={voteClick}
       >

@@ -51,7 +51,7 @@ const RecommendedUsers = styled.div`
 `;
 
 const NotEnoughData = styled.div`
-  width: 100%;
+  width: 100vw;
 `;
 
 State.init({
@@ -71,10 +71,6 @@ const updateState = (data, totalPageNum) => {
     hasLoaded: true,
   });
 };
-
-const displayedUsers = props.returnElements
-  ? state.userData.slice(0, props.returnElements)
-  : state.userData;
 
 const passedContext = props.fromContext;
 const fromContext = { ...passedContext, scope: props.scope || null };
@@ -97,14 +93,14 @@ const getRecommendedUsers = (page) => {
         const totalPageNum = data.total_pages || 28;
         updateState(data.data, totalPageNum);
       } else {
-        State.update({ isLoading: false, error: true });
+        State.update({ isLoading: false, error: true, hasLoaded: true });
         console.error(
           "Error fetching data. Try reloading the page, or no data available."
         );
       }
     });
   } catch (error) {
-    State.update({ isLoading: false, error: true });
+    State.update({ isLoading: false, error: true, hasLoaded: true });
     console.error("Error on fetching recommended users: ", error.message);
   }
 };
@@ -153,13 +149,10 @@ if (state.error) {
 
 return (
   <RecommendedUsers>
-    {state.isLoading && displayedUsers.length == null && <p>Loading...</p>}
-    {!state.isLoading && displayedUsers.length < 4 && state.error && (
+    {state.isLoading && <p>Loading...</p>}
+    {!state.isLoading && state.error && (
       <NotEnoughData>
-        Follow More Users to Unlock More Personalized Recommendations, See Who’s
-        <a href="https://${REPL_NEAR_URL}/${REPL_ACCOUNT}/widget/PeoplePage?tab=trending">
-          Trending
-        </a>
+        404. Data not loading. Try again later.
       </NotEnoughData>
     )}
     {!props.sidebar && (

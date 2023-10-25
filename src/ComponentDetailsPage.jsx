@@ -466,18 +466,18 @@ return (
 
         <Tabs>
           <TabsButton
-            href={`${detailsUrl}&tab=source`}
-            selected={state.selectedTab === "source"}
-          >
-            <Icon className="ph ph-code" />
-            Source & Preview
-          </TabsButton>
-          <TabsButton
             href={`${detailsUrl}&tab=about`}
             selected={state.selectedTab === "about"}
           >
             <Icon className="bi bi-file-earmark-text" />
             Read.me
+          </TabsButton>
+          <TabsButton
+            href={`${detailsUrl}&tab=source`}
+            selected={state.selectedTab === "source"}
+          >
+            <Icon className="ph ph-code" />
+            Source & Preview
           </TabsButton>
           <TabsButton
             href={`${detailsUrl}&tab=discussion`}

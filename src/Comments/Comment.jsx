@@ -7,8 +7,9 @@ const highlight = !!props.highlight;
 const commentUrl = `https://${REPL_NEAR_URL}/s/c?a=${accountId}&b=${blockHeight}`;
 
 State.init({
+  hasBeenFlaggedOptimistic: false,
   hasBeenFlagged: false,
-  showFlaggedToast: false,
+  showToast: false,
   flaggedMessage: { header: "", detail: "" },
   content: JSON.parse(props.content) ?? undefined,
   notifyAccountId: undefined,
@@ -22,14 +23,28 @@ const extractNotifyAccountId = (parentItem) => {
   return `${accountId}/post/main` === parentItem.path ? accountId : undefined;
 };
 
-const resolveHideItem = (message) => {
-    State.update({
-        hasBeenFlagged: true,
-        showFlaggedToast: true,
-        flaggedMessage: message,
-    });
+const optimisticallyHideItem = (message) => {
+  // State change here prevents Social.set from firing
+  // State.update({
+  //   hasBeenFlaggedOptimistic: true,
+  //   showToast: true,
+  //   flaggedMessage: message,
+  // });
 };
-
+const resolveHideItem = (message) => {
+  State.update({
+    hasBeenFlagged: true,
+    showToast: true,
+    flaggedMessage: message,
+  });
+};
+const cancelHideItem = () => {
+  State.update({
+    hasBeenFlaggedOptimistic: false,
+    showToast: false,
+    flaggedMessage: { header: "", detail: "" }
+  });
+}
 if (!state.content && accountId && blockHeight !== "now") {
   const commentQuery = `
 query CommentQuery {
@@ -127,70 +142,77 @@ const Actions = styled.div`
   margin: -6px -6px 6px;
 `;
 
-if (state.hasBeenFlagged) {
-  return (
-    <Widget
-      src={`${REPL_ACCOUNT}/widget/DIG.Toast`}
-      props={{
-        type: "info",
-          title: state.flaggedMessage.header,
-          description: state.flaggedMessage.detail,
-          open: state.showFlaggedToast,
-        onOpenChange: () => {
-          State.update({ showFlaggedToast: false });
-        },
-        duration: 5000,
-      }}
-    />
-  );
-}
-
 return (
+<>
+{state.showToast && (
+  <Widget
+    src={`${REPL_ACCOUNT}/widget/DIG.Toast`}
+    props={{
+      type: "info",
+      title: state.flaggedMessage.header,
+      description: state.flaggedMessage.detail,
+      open: state.showToast,
+      onOpenChange: () => {
+        State.update({showToast: false});
+      },
+      duration: 5000,
+    }}
+  />
+)}
+{!state.hasBeenFlagged && (
   <Comment>
     <Header>
-      <Widget
-        src="${REPL_ACCOUNT}/widget/AccountProfile"
-        props={{
-          accountId,
-          avatarSize: "32px",
-          hideAccountId: true,
-          inlineContent: (
-            <>
-              <Text as="span">･</Text>
-              {blockHeight === "now" ? (
-                "now"
-              ) : (
-                <Text>
-                  <Widget
-                    src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
-                    props={{ blockHeight }}
-                  />{" "}
-                  ago
-                </Text>
-              )}
-            </>
-          ),
-        }}
-      />
-        <div className="col-1">
-            <div style={{ position: "absolute", right: 0, top: "2px" }}>
-                <Widget
-                    src="${REPL_ACCOUNT}/widget/Posts.Menu"
-                    props={{
-                        accountId: accountId,
-                        blockHeight: blockHeight,
-                        parentFunctions: {
-                            resolveHideItem,
-                        },
-                        contentType: "comment",
-                        contentPath: `/post/comment`,
-                    }}
-                />
-            </div>
+      <div className="row">
+        <div className="col-auto">
+          <Widget
+            src="${REPL_ACCOUNT}/widget/AccountProfile"
+            props={{
+              accountId,
+              avatarSize: "32px",
+              hideAccountId: true,
+              inlineContent: (
+                <>
+                  <Text as="span">･</Text>
+                  {blockHeight === "now" ? (
+                    "now"
+                  ) : (
+                    <Text>
+                      <Widget
+                        src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
+                        props={{ blockHeight }}
+                      />{" "}
+                      ago
+                    </Text>
+                  )}
+                </>
+              ),
+            }}
+          />
         </div>
+        <div className="col-1">
+          <div style={{ position: "absolute", right: 0, top: "2px" }}>
+            <Widget
+              src="${REPL_ACCOUNT}/widget/Posts.Menu"
+              props={{
+                accountId: accountId,
+                blockHeight: blockHeight,
+                parentFunctions: {
+                  optimisticallyHideItem,
+                  resolveHideItem,
+                  cancelHideItem,
+                },
+                contentType: "comment",
+                contentPath: `/post/comment`,
+              }}
+            />
+          </div>
+        </div>
+      </div>
     </Header>
 
+  {!state.hasBeenFlaggedOptimistic && (
     <Main>
+      {state.content && (
       <Content>
         {state.content.text && (
           <Widget
@@ -208,7 +230,7 @@ return (
           />
         )}
       </Content>
-
+      )}
       {blockHeight !== "now" && (
         <Actions>
           <Widget
@@ -259,5 +281,8 @@ return (
         </div>
       )}
     </Main>
+  )}
   </Comment>
+)}
+</>
 );

@@ -6,6 +6,10 @@ const contentPath = props.contentPath || "/post/main";
 const capitalizedContentType = contentType.charAt(0).toUpperCase() + contentType.slice(1);
 
 const confirmationMessages = {
+  savingData: {
+    header: "Saving Data",
+    detail: "Storing your action.",
+  },
   hideItem: {
     header: capitalizedContentType + " Hidden",
     detail: `This ${contentType} will no longer be shown to you.`,
@@ -48,14 +52,20 @@ const moderateItem = (account, block, action, messageKey) => {
       }),
     };
   }
+  if(parentFunctions.optimisticallyHideItem) {
+    parentFunctions.optimisticallyHideItem(confirmationMessages['savingData']);
+  }
   Social.set(data, {
     onCommit: () => {
       parentFunctions.resolveHideItem(confirmationMessages[messageKey]);
     },
+    onCancel: () => {
+        parentFunctions.cancelHideItem();
+    }
   });
 };
 
-const moderateAccount = (account, action, message) => {
+const moderateAccount = (account, action, messageKey) => {
   const data = {
     moderate: {
       [account]: action,
@@ -72,10 +82,16 @@ const moderateAccount = (account, action, message) => {
       }),
     };
   }
+  if(parentFunctions.optimisticallyHideItem) {
+    parentFunctions.optimisticallyHideItem(confirmationMessages['savingData']);
+  }
   Social.set(data, {
     onCommit: () => {
-      alert(message);
+      parentFunctions.resolveHideItem(confirmationMessages[messageKey]);
     },
+    onCancel: () => {
+      parentFunctions.cancelHideItem();
+    }
   });
 };
 return (

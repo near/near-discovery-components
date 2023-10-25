@@ -205,6 +205,19 @@ const accountsWithVotes = Object.keys(votesByUsers);
 const voteCount = accountsWithVotes.length;
 const hasVote = context.accountId && !!votesByUsers[context.accountId];
 
+function checkNearConEventDate() {
+  const today = new Date();
+  const compareDate = new Date('2023-11-05T00:00:00');
+
+  if (today >= compareDate) {
+    return true
+  } else {
+    return false
+  }
+}
+
+const showVoteButton = checkNearConEventDate()
+
 const VoteButton = styled.div`
   line-height: 20px;
   min-height: 20px;
@@ -428,7 +441,7 @@ return (
           Share
         </Button>
       </OverlayTrigger>
-      <Button
+      {showVoteButton && <Button
         type="button"
         onClick={voteClick}
       >
@@ -436,6 +449,7 @@ return (
         Upvote
         {context.accountId == accountId ? `(${voteCount})` : null}
       </Button>
+      }
 
     </Actions>
   </Wrapper>

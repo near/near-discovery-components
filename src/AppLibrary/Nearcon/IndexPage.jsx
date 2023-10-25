@@ -50,7 +50,7 @@ loadData();
 
 const Wrapper = styled.div`
   padding: 100px 0;
-  background: url("https://ipfs.near.social/ipfs/bafkreig36ih64xg2nb64hb4ge4dwtra6zcskqupfywlnqi55vjtdejwmey");
+  background: url("https://ipfs.near.social/ipfs/bafkreifjwtibuq7kh2nvtbbn2vwfah4uxpagwbp656hxakwxquuz6mdb6i");
   background-position: right top;
   background-size: 100% auto;
   background-repeat: no-repeat;

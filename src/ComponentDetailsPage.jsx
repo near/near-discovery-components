@@ -42,22 +42,6 @@ if (accountProfileDescription) {
   accountProfileDescription = accountProfileDescription.join(" ");
 }
 
-const stats = {
-  developerStats: {
-    numberOfComponentsPublished: 40,
-    developerSince: new Date("2015-01-01").getFullYear(),
-  },
-  componentStats: {
-    numberOfForks: 10,
-    impressions: 93,
-    parents: [
-      "mob.near/widget/Image",
-      "mob.near/widget/Image",
-      "mob.near/widget/Image",
-      "mob.near/widget/Image",
-    ],
-  },
-};
 function fetchGraphQL(operationsDoc, operationName, variables) {
   return asyncFetch(`${GRAPHQL_ENDPOINT}/v1/graphql`, {
     method: "POST",

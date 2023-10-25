@@ -195,7 +195,16 @@ const ContentGrid = styled.div`
   }
 `;
 
-const categories = ["Event Guide", "Earn", "Play", "Develop", "Engage", "Stats"];
+const categories = [
+  // TODO Add Event Guide Page
+  // "Event Guide",
+  "Earn",
+  "Play",
+  "Develop",
+  "Engage",
+  // TODO Add Stats Page
+  // "Stats",
+];
 return (
   <Wrapper>
     <Container>

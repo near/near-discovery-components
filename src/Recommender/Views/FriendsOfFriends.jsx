@@ -51,7 +51,7 @@ const RecommendedUsers = styled.div`
 `;
 
 const NotEnoughData = styled.div`
-  width: 100vw;
+  width: 100%;
 `;
 
 State.init({

@@ -60,7 +60,7 @@ const RecommendedUsers = styled.div`
 `;
 
 const NotEnoughData = styled.div`
-  width: 100vw;
+  width: 100%;
 `;
 
 State.init({
@@ -75,8 +75,6 @@ State.init({
 });
 
 const updateState = (data, totalPageNum) => {
-  const users = [...state.displayedUsers, ...data];
-
   State.update({
     isLoading: false,
     allUsers: [...state.allUsers, ...data],
@@ -118,7 +116,7 @@ const getRecommendedUsers = (page) => {
   }
 };
 
-if (!state.isLoading && !state.hasLoaded) {
+if (!state.isLoading) {
   getRecommendedUsers(state.currentPage);
 }
 
@@ -187,7 +185,7 @@ return (
   <RecommendedUsers>
     {state.isLoading && <p>Loading...</p>}
     <Profiles>
-      {!state.isLoading && displayedUsers.length < 3 && state.error ? (
+      {(!state.isLoading && displayedUsers.length < 3) || state.error ? (
         <NotEnoughData>
           Follow More Users to Unlock More Personalized Recommendations, See
           Who’s

@@ -11,8 +11,9 @@ const showFlagAccountFeature = props.showFlagAccountFeature;
 const profile = props.profile;
 
 State.init({
+  hasBeenFlaggedOptimistic: false,
   hasBeenFlagged: false,
-  showFlaggedToast: false,
+  showToast: false,
   flaggedMessage: { header: "", detail: "" },
   postExists: true,
   comments: props.comments ?? undefined,
@@ -175,13 +176,27 @@ const CommentWrapper = styled.div`
   }
 `;
 
-const resolveHideItem = (message) => {
+const optimisticallyHideItem = (message) => {
   State.update({
-    hasBeenFlagged: true,
-    showFlaggedToast: true,
+    hasBeenFlaggedOptimistic: true,
+    showToast: true,
     flaggedMessage: message,
   });
 };
+const resolveHideItem = (message) => {
+  State.update({
+    hasBeenFlagged: true,
+    showToast: true,
+    flaggedMessage: message,
+  });
+};
+const cancelHideItem = () => {
+  State.update({
+    hasBeenFlaggedOptimistic: false,
+    showToast: false,
+    flaggedMessage: { header: "", detail: "" }
+  });
+}
 
 const renderComment = (a) => {
   return (
@@ -202,27 +217,26 @@ const renderComment = (a) => {
   );
 };
 
-if (state.hasBeenFlagged) {
-  return (
-    <Widget
-      src={`${REPL_ACCOUNT}/widget/DIG.Toast`}
-      props={{
-        type: "info",
-        title: state.flaggedMessage.header,
-        description: state.flaggedMessage.detail,
-        open: state.showFlaggedToast,
-        onOpenChange: () => {
-          State.update({ showFlaggedToast: false });
-        },
-        duration: 5000,
-      }}
-    />
-  );
-}
-
 const renderedComments = state.comments.map(renderComment);
 
 return (
+<>
+{state.showToast && (
+  <Widget
+    src={`${REPL_ACCOUNT}/widget/DIG.Toast`}
+    props={{
+      type: "info",
+      title: state.flaggedMessage.header,
+      description: state.flaggedMessage.detail,
+      open: state.showToast,
+      onOpenChange: () => {
+        State.update({showToast: false});
+      },
+      duration: 5000,
+    }}
+  />
+)}
+{!state.hasBeenFlagged && (
   <Post>
     <Header>
       <div className="row">
@@ -259,7 +273,9 @@ return (
                 blockHeight: blockHeight,
                 parentFunctions: {
                   toggleEdit,
+                  optimisticallyHideItem,
                   resolveHideItem,
+                  cancelHideItem,
                 },
               }}
             />
@@ -268,6 +284,7 @@ return (
       </div>
     </Header>
 
+  {!state.hasBeenFlaggedOptimistic && (
     <Body>
       {state.content && (
         <Content>
@@ -352,5 +369,8 @@ return (
         </Comments>
       )}
     </Body>
+  )}
   </Post>
+)}
+</>
 );

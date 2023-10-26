@@ -29,6 +29,10 @@ function loadData() {
         };
         const appUrl = `${detailsUrl}${app.widget_name}`;
         const imgURL = `https://ipfs.near.social/ipfs/${image_cid}`;
+
+        const uniqueTags = Array.from(new Set(app.tags));
+        app.tags = uniqueTags;
+
         return { ...app, metadata, appUrl };
       });
 

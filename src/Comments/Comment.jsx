@@ -56,6 +56,7 @@ query CommentQuery {
     receipt_id
     post {
       account_id
+      block_height
     }
   }
 }
@@ -72,6 +73,13 @@ query CommentQuery {
       }),
     });
   }
+  function postAsItem(post) {
+    return {
+      type: "social",
+      path: `${post.account_id}/post/main`,
+      blockHeight: post.block_height,
+    };
+  }
 
   fetchGraphQL(commentQuery, "CommentQuery", {}).then((result) => {
     if (result.status === 200) {
@@ -81,6 +89,8 @@ query CommentQuery {
         if (comments.length > 0) {
           const comment = comments[0];
           let content = JSON.parse(comment.content);
+
+          content.item = postAsItem(comment.post);
           State.update({
             content: content,
             notifyAccountId: comment.post.accountId,
@@ -273,8 +283,8 @@ return (
             src="${REPL_ACCOUNT}/widget/Comments.Compose"
             props={{
               initialText: `@${accountId}, `,
-              notifyAccountId: extractNotifyAccountId(parentItem),
-              item: parentItem,
+              notifyAccountId: extractNotifyAccountId(state.content.item),
+              item: state.content.item,
               onComment: () => State.update({ showReply: false }),
             }}
           />

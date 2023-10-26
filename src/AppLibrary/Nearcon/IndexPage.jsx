@@ -33,6 +33,8 @@ function loadData() {
         const uniqueTags = Array.from(new Set(app.tags));
         app.tags = uniqueTags;
 
+        // decide category on last add tag, should be coming form backend
+
         return { ...app, metadata, appUrl };
       });
 
@@ -167,6 +169,13 @@ const H2 = styled.h2`
   font-weight: 600;
 `;
 
+const H3 = styled.h3`
+  font: var(--text-m);
+  color: var(--sand12);
+  margin: 0 0 1.5rem;
+  font-weight: 400;
+`;
+
 const Text = styled.p`
   font: var(--${(p) => p.size ?? "text-base"});
   font-weight: ${(p) => p.fontWeight};
@@ -199,9 +208,64 @@ const ContentGrid = styled.div`
   }
 `;
 
+const P1 = styled.p`
+  font-weight: 500;
+  font-size: 17px;
+  margin-bottom: 0;
+  padding-bottom: 0.3rem;
+`;
+
+const P2 = styled.p`
+  font-weight: 200;
+  padding-bottom: 1rem;
+`;
+
+const P3 = styled.p`
+  font-weight: 200;
+  margin-bottom: 0;
+  padding-bottom: 0.3rem;
+`;
+
+const S1 = styled.span``;
+
+const Em = styled.span`
+  font-style: oblique;
+`;
+
+const List = styled.ul`
+  padding-bottom: 1rem;
+`;
+
+const ListItem = styled.li`
+  font-weight: 200;
+  margin-left: 0.5rem;
+`;
+
+const SubTabMenu = styled.div`
+  display: flex;
+`;
+
+const SubTabLink = styled.a`
+  display: flex;
+  align-items: center;
+  font-size: 0.825rem;
+  padding: 7px 15px;
+  border-radius: 50px;
+  background-color: ${({ isActive }) => (isActive ? "#fbfaff" : "transparent")};
+  color: ${({ isActive }) => (isActive ? "#5746af" : "#706f6c")};
+  text-decoration: none;
+  margin-bottom: 50px;
+
+  i {
+    margin-right: 5px;
+  }
+`;
+
+const [selectedSubTab, setSelectedSubTab] = useState("Everyone");
+const isActive = (tabName) => selectedSubTab === tabName;
+
 const categories = [
-  // TODO Add Event Guide Page
-  // "Event Guide",
+  "Event Guide",
   "Earn",
   "Play",
   "Develop",
@@ -229,27 +293,314 @@ return (
 
         <Sections>
           <>
-            <Section>
-              <ContentGrid>
-                {state.apps.map((item) => {
-                  return (
-                    <Widget
-                      src="${REPL_ACCOUNT}/widget/AppLibrary.AppCard"
-                      key={item.widget_name}
-                      props={{
-                        src: `${item.widget_name}`,
-                        metadata: {
-                          image: item.metadata.image,
-                          name: item.name,
-                          tags: item.tags,
-                        },
-                        appUrl: item.appUrl,
-                      }}
-                    />
-                  );
-                })}
-              </ContentGrid>
-            </Section>
+            {state.selectedTab === "Develop" && (
+              <Section>
+                <ContentGrid>
+                  {state.apps.map((item) => {
+                    return (
+                      <Widget
+                        src="${REPL_ACCOUNT}/widget/AppLibrary.AppCard"
+                        key={item.widget_name}
+                        props={{
+                          src: `${item.widget_name}`,
+                          metadata: {
+                            image: item.metadata.image,
+                            name: item.name,
+                            tags: item.tags,
+                          },
+                          appUrl: item.appUrl,
+                        }}
+                      />
+                    );
+                  })}
+                </ContentGrid>
+              </Section>
+            )}
+            {state.selectedTab === "Event Guide" && (
+              <Section>
+                <SubTabMenu>
+                  <SubTabLink
+                    isActive={isActive("Everyone")}
+                    onClick={() => setSelectedSubTab("Everyone")}
+                    data-active={selectedSubTab === "Everyone"}
+                  >
+                    Everyone
+                  </SubTabLink>
+                  <SubTabLink
+                    isActive={isActive("App Owners")}
+                    onClick={() => setSelectedSubTab("App Owners")}
+                    data-active={selectedSubTab === "App Owners"}
+                  >
+                    App Owners
+                  </SubTabLink>
+                </SubTabMenu>
+
+                {selectedSubTab === "Everyone" && (
+                  <>
+                    <P1>
+                      <H3>
+                        <S1>🌟</S1> NEARCON APP QUEST: UPVOTE Your Favorite
+                        dApp! <S1>🚀</S1>
+                      </H3>
+                    </P1>
+
+                    <P2>
+                      Welcome aboard to the NCON Task to help find the first
+                      group of featured Apps on B.O.S. Your upvotes decide the
+                      stars of the NEAR App Library for 3 months! Be part of the
+                      movement to shape the NEAR ecosystem and earn more NCONs!
+                    </P2>
+
+                    <P1>
+                      <S1>🎉</S1> Why Participate?
+                    </P1>
+
+                    <P2>
+                      Discover innovation and influence the future! Your upvotes
+                      determine the top 8 dApps featured on the NEAR App Library
+                      landing page and the top 4 in each category for the next
+                      three months.
+                    </P2>
+
+                    <P1>
+                      <S1>🚀</S1> How to Participate?
+                    </P1>
+
+                    <P2>
+                      Explore and find your favorite dApps.<br></br> Hit the
+                      Upvote button on the <strong>details page</strong>
+                      of your favorite apps!
+                    </P2>
+
+                    <P1>
+                      <S1>💡</S1> Make Your Likes Count!
+                    </P1>
+
+                    <P2>
+                      Share your favorite dApps on social media. Spread the word
+                      and invite others to participate. This is your opportunity
+                      to showcase what you love in the NEAR ecosystem.
+                    </P2>
+
+                    <P1>
+                      <S1>🔗</S1> #NEARConAppLibrary #LikeToInnovate
+                      #NEARCon2023
+                    </P1>
+                  </>
+                )}
+
+                {selectedSubTab === "App Owners" && (
+                  <>
+                    <H2>
+                      <S1>🚀</S1> Get your Apps qualified to Participate in the
+                      NCON App Upvoting Event <S1>🚀</S1>
+                    </H2>
+
+                    <P2>
+                      <Em>
+                        Attendees at NEARCON will be incentivized with NCON to
+                        upvote apps in the App Upvoting Task Page
+                      </Em>
+                    </P2>
+
+                    <P2>Dear NEAR BOS Developer Community,</P2>
+
+                    <P2>
+                      The Pagoda product team launched the App Library this week
+                      to help B.O.S founders and developers showcase and promote
+                      their apps. The App Library is a page on near.org
+                      dedicated to spotlighting B.O.S-powered apps to increase
+                      their discoverability and engagement. With over 200
+                      applications powered by BOS and more than 11,000
+                      components now in the ecosystem, the App Library is
+                      designed to help users and community members find your
+                      applications and promote greater usage across the NEAR
+                      ecosystem.
+                    </P2>
+
+                    <P2>
+                      <strong>
+                        To find the first group of featured apps on App Library,
+                        we are launching the App Upvoting Event as a NCON Task
+                        to invite all NEARCON attendees to upvote and decide who
+                        gets featured!
+                      </strong>
+                    </P2>
+
+                    <P2>
+                      “NCON Tasks” is a Web3 gamified event experience for
+                      attendees to engage throughout the event. Attendees will
+                      earn NCON by completing Tasks and have the option to
+                      redeem NCON for food, merchandise, and more. Participants
+                      who decide to complete this special NCON Task will also
+                      help select the first group of featured apps in the B.O.S.
+                      App Library.
+                    </P2>
+
+                    <P1>
+                      <S1>👉</S1> How to Qualify and Get Your App Featured?
+                    </P1>
+
+                    <P2>
+                      To ensure your dApp shines during this event, here&#39;s
+                      what you need to do. All of these steps are right in the
+                      B.O.S interface for those who want to participate: simply
+                      go to the Metadata page of your app and follow the
+                      instructions below.
+                    </P2>
+                    <P3>
+                      1. <strong>Create a Captivating Description:</strong>
+                    </P3>
+
+                    <P2>
+                      Craft a compelling introduction to your dApp. Highlight
+                      its unique features and value proposition. Pro tip: Add
+                      screenshots to make your dApp visually appealing and easy
+                      to understand. (Description is required!)
+                    </P2>
+
+                    <P3>
+                      2. <strong>Tag Your App:</strong>
+                    </P3>
+
+                    <P2>
+                      First, make sure to tag the component that holds the entry
+                      to your project experience as App. Then, choose the
+                      category that best represents your dApp&#45;
+                      <strong>Earn, Play, Develop, Engage</strong>. (Choosing
+                      one of these four categories is
+                      <strong>required</strong>!) Add additional tags for
+                      improved discoverability. Make it easy for users to find
+                      and appreciate your work.
+                    </P2>
+
+                    <P2>
+                      <Em>
+                        (These categories are suggested from research around
+                        users&#39; needs, broken down by categories and industry
+                        app store benchmarks.)
+                      </Em>
+                    </P2>
+
+                    <P3>
+                      3. <strong>Spread the Word:</strong>
+                    </P3>
+
+                    <P2>
+                      It's time to promote! Rally your community, spread the
+                      news across your networks, and encourage users to like and
+                      engage with your dApp. The more upvotes your app gets, the
+                      greater your chances of securing a top spot.
+                    </P2>
+
+                    <P1>
+                      <S1>✨</S1> Why Participate?
+                    </P1>
+
+                    <P2>
+                      The App Library isn't just a catalog; it's an interactive
+                      platform that spotlights the capabilities of NEAR B.O.S.
+                      It will become the most visited page on near.org and
+                      serves as a gateway to the NEAR Ecosystem. By
+                      participating, you have the chance to feature prominently
+                      on the App Library and the NEAR homepage for the next
+                      three months, gaining exposure and recognition across the
+                      NEAR ecosystem and beyond.
+                    </P2>
+
+                    <P1>
+                      <S1>🏆</S1> What's the Payoff?
+                    </P1>
+
+                    <P2>
+                      Your active participation can lead to significant rewards:
+                    </P2>
+
+                    <P3>
+                      <strong>Top 8 Featured dApps:</strong>
+                    </P3>
+
+                    <P2>
+                      The dApps with the highest number of upvotes from this
+                      event will be showcased prominently on the landing page of
+                      the App Library for the next three months—putting your
+                      creation on the most visited page on near.org.
+                    </P2>
+
+                    <P3>
+                      <strong>Category Leaders:</strong>
+                    </P3>
+
+                    <P2>
+                      The top 4 dApps in each category will be prominently
+                      featured on category pages, such as Earn, Play, Develop,
+                      and Engage. This targeted exposure aligns with the core
+                      needs and use cases of the diverse NEAR user base.
+                    </P2>
+
+                    <P1>
+                      <S1>👍</S1> What&#39;s Next?
+                    </P1>
+
+                    <P2>
+                      <strong>
+                        Upvote Button Enabled 2 days Before NEARCON
+                      </strong>
+                      <br></br>2 days before NEARCON, you will see an upvote
+                      button appear on the details pages of your qualified Apps.
+                      Any users who have an account on near.org can now send
+                      their support by hitting that upvote button. This upvote
+                      button will be disabled two days after NEARCON and the Top
+                      8 will be announced shortly after.
+                    </P2>
+
+                    <P2>
+                      <strong>
+                        NEARCON attendees will be incentivized to engage with
+                        App Upvoting by earning NCON
+                      </strong>
+                      <br></br>
+                      QR code and event posters will be promoted at the NEARCON
+                      venues to encourage them to complete this Task. In
+                      addition, this Task will be part of the NCON product for
+                      NEARCON participants to earn more NCON, so we will make
+                      sure your dApps get plenty of exposure.
+                    </P2>
+
+                    <P1>
+                      <S1>📅</S1> Event Timeline
+                    </P1>
+                    <List>
+                      <ListItem>
+                        October 26: Submit your App for Qualification. App
+                        Upvoting Task Event Page available on near.org.
+                        Qualified Apps will be Fetched (Qualified Apps will be
+                        fetched continuously on one-hour intervals throughout
+                        the NEARCON event through November 13).
+                      </ListItem>
+                      <ListItem>
+                        November 3: Upvote button enabled + counters started
+                      </ListItem>
+                      <ListItem>
+                        November 13: Upvote disabled + results calculated
+                      </ListItem>
+                      <ListItem>
+                        November 17: Results display + feature apps updated on
+                        main App Library page.
+                      </ListItem>
+                    </List>
+                    <P2>
+                      The primary goal of the App Library is to celebrate the
+                      creativity and efforts of NEAR developers and founders. To
+                      increase visibility, boost engagement, and get valuable
+                      feedback from the whole NEAR community on your app, make
+                      sure to register your apps as qualified and participate in
+                      the App Upvoting NCON Task.
+                    </P2>
+                  </>
+                )}
+              </Section>
+            )}
           </>
         </Sections>
       </Main>

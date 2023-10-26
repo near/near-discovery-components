@@ -13,6 +13,7 @@ const appLibraryIndexUrl =
   "#/${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.IndexPage";
 const detailsUrl = `https://near.org/#/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=`;
 const selectedCategory = [];
+const targetTags = ["develop", "earn", "play", "engage"];
 
 function loadData() {
   if (state.apps.length > 0) return;
@@ -30,12 +31,23 @@ function loadData() {
         const appUrl = `${detailsUrl}${app.widget_name}`;
         const imgURL = `https://ipfs.near.social/ipfs/${image_cid}`;
 
+        for (let i = 0; i < app.tags.length; i++) {
+          if (app.tags[i] === "app" && i === 0) {
+            continue;
+          }
+          if (!targetTags.includes(app.tags[i])) {
+            continue;
+          }
+          if (targetTags.includes(app.tags[i])) {
+            app.recentTag = app.tags[i];
+            break;
+          }
+        }
+
         const uniqueTags = Array.from(new Set(app.tags));
         app.tags = uniqueTags;
 
-        // decide category on last add tag, should be coming form backend
-
-        return { ...app, metadata, appUrl };
+        return { ...app, metadata, appUrld };
       });
 
       State.update({
@@ -48,7 +60,7 @@ function loadData() {
       State.update({
         isLoading: false,
       });
-      console.log(error);
+      console.error(error);
     });
 }
 
@@ -56,7 +68,7 @@ loadData();
 
 const Wrapper = styled.div`
   padding: 100px 0;
-  background: url("https://ipfs.near.social/ipfs/bafkreifjwtibuq7kh2nvtbbn2vwfah4uxpagwbp656hxakwxquuz6mdb6i");
+  background: url("https://ipfs.near.social/ipfs/bafkreifbcebsx2gguifpzvd7skcctkdiujgu3gtahmdby4u6kajmavu5bq");
   background-position: right top;
   background-size: 100% auto;
   background-repeat: no-repeat;
@@ -220,6 +232,11 @@ const P2 = styled.p`
   padding-bottom: 1rem;
 `;
 
+const P21 = styled.p`
+  font-weight: 600;
+  padding-bottom: 1rem;
+`;
+
 const P3 = styled.p`
   font-weight: 200;
   margin-bottom: 0;
@@ -273,6 +290,7 @@ const categories = [
   // TODO Add Stats Page
   // "Stats",
 ];
+
 return (
   <Wrapper>
     <Container>
@@ -283,7 +301,7 @@ return (
               <MenuLink
                 href={`${appLibraryIndexUrl}?tab=${category}`}
                 data-active={state.selectedTab === category}
-                key={app.label}
+                key={category}
               >
                 {category}
               </MenuLink>
@@ -293,29 +311,58 @@ return (
 
         <Sections>
           <>
-            {state.selectedTab === "Develop" && (
-              <Section>
-                <ContentGrid>
-                  {state.apps.map((item) => {
-                    return (
-                      <Widget
-                        src="${REPL_ACCOUNT}/widget/AppLibrary.AppCard"
-                        key={item.widget_name}
-                        props={{
-                          src: `${item.widget_name}`,
-                          metadata: {
-                            image: item.metadata.image,
-                            name: item.name,
-                            tags: item.tags,
-                          },
-                          appUrl: item.appUrl,
-                        }}
-                      />
-                    );
-                  })}
-                </ContentGrid>
-              </Section>
-            )}
+            {categories.map((category) => {
+              const lowerCaseCategory = category.toLowerCase();
+              if (targetTags.includes(lowerCaseCategory)) {
+                if (state.selectedTab === category) {
+                  const filteredApps = state.apps.filter(
+                    (item) =>
+                      item.recentTag &&
+                      item.recentTag.toLowerCase() === lowerCaseCategory
+                  );
+                  return (
+                    <Section key={category}>
+                      <ContentGrid>
+                        {filteredApps.length > 0 ? (
+                          filteredApps.map((item) => (
+                            <Widget
+                              src="${REPL_ACCOUNT}/widget/AppLibrary.AppCard"
+                              key={item.widget_name}
+                              props={{
+                                src: `${item.widget_name}`,
+                                metadata: {
+                                  image: item.metadata.image,
+                                  name: item.name,
+                                  tags: item.tags,
+                                },
+                                appUrl: item.appUrl,
+                              }}
+                            />
+                          ))
+                        ) : (
+                          <div>
+                            {" "}
+                            Help Spread the word and get more Apps in this
+                            category to participate in the App Upvoting event,
+                            instructions in the
+                            <a href={`${appLibraryIndexUrl}?tab=Event+Guide`}>
+                              Event Guide Section
+                            </a>
+                            . Explore in{" "}
+                            <a href="near.org/applications">
+                              near.org/applications
+                            </a>
+                            for all B.O.S. Apps in the meantime!
+                          </div>
+                        )}
+                      </ContentGrid>
+                    </Section>
+                  );
+                }
+                return null;
+              }
+              return null;
+            })}
             {state.selectedTab === "Event Guide" && (
               <Section>
                 <SubTabMenu>
@@ -344,12 +391,12 @@ return (
                       </H3>
                     </P1>
 
-                    <P2>
+                    <P21>
                       Welcome aboard to the NCON Bounty to help find the first
                       group of featured Apps on B.O.S. Your upvotes decide the
                       stars of the NEAR App Library for 3 months! Be part of the
                       movement to shape the NEAR ecosystem and earn more NCONs!
-                    </P2>
+                    </P21>
 
                     <P1>
                       <S1>🎉</S1> Why Participate?

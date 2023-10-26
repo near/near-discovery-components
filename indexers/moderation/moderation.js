@@ -147,7 +147,7 @@ async function getBlock(block: Block) {
         // on_conflict: {constraint: moderation_reporting_pkey, update_columns: [label, expiration]}
 
         // requires QueryApi V2
-        // context.db.ModerationReporting.insert({
+        // context V2 ONLY .db.ModerationReporting.insert({
         //   group,
         //   account_id: accountId,
         //   moderated_account_id,
@@ -229,7 +229,7 @@ async function getBlock(block: Block) {
               // on_conflict: {constraint: moderation_decisions_pkey, update_columns: [label, expiration, notes]}
 
               // requires QueryApi V2
-              // context.db.ModerationDecisions.insert({
+              // context. V2 ONLY db.ModerationDecisions.insert({
               //   group,
               //   moderator_account_id: accountId,
               //   moderated_account_id,

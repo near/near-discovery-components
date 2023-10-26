@@ -7,7 +7,10 @@ const highlight = !!props.highlight;
 const commentUrl = `https://${REPL_NEAR_URL}/s/c?a=${accountId}&b=${blockHeight}`;
 
 State.init({
+  hasBeenFlaggedOptimistic: false,
   hasBeenFlagged: false,
+  showToast: false,
+  flaggedMessage: { header: "", detail: "" },
   content: JSON.parse(props.content) ?? undefined,
   notifyAccountId: undefined,
 });
@@ -20,6 +23,28 @@ const extractNotifyAccountId = (parentItem) => {
   return `${accountId}/post/main` === parentItem.path ? accountId : undefined;
 };
 
+const optimisticallyHideItem = (message) => {
+  // State change here prevents Social.set from firing
+  // State.update({
+  //   hasBeenFlaggedOptimistic: true,
+  //   showToast: true,
+  //   flaggedMessage: message,
+  // });
+};
+const resolveHideItem = (message) => {
+  State.update({
+    hasBeenFlagged: true,
+    showToast: true,
+    flaggedMessage: message,
+  });
+};
+const cancelHideItem = () => {
+  State.update({
+    hasBeenFlaggedOptimistic: false,
+    showToast: false,
+    flaggedMessage: { header: "", detail: "" }
+  });
+}
 if (!state.content && accountId && blockHeight !== "now") {
   const commentQuery = `
 query CommentQuery {
@@ -31,6 +56,7 @@ query CommentQuery {
     receipt_id
     post {
       account_id
+      block_height
     }
   }
 }
@@ -47,6 +73,13 @@ query CommentQuery {
       }),
     });
   }
+  function postAsItem(post) {
+    return {
+      type: "social",
+      path: `${post.account_id}/post/main`,
+      blockHeight: post.block_height,
+    };
+  }
 
   fetchGraphQL(commentQuery, "CommentQuery", {}).then((result) => {
     if (result.status === 200) {
@@ -56,6 +89,8 @@ query CommentQuery {
         if (comments.length > 0) {
           const comment = comments[0];
           let content = JSON.parse(comment.content);
+
+          content.item = postAsItem(comment.post);
           State.update({
             content: content,
             notifyAccountId: comment.post.accountId,
@@ -117,55 +152,77 @@ const Actions = styled.div`
   margin: -6px -6px 6px;
 `;
 
-if (state.hasBeenFlagged) {
-  return (
-    <Widget
-      src={`${REPL_ACCOUNT}/widget/DIG.Toast`}
-      props={{
-        type: "info",
-        title: "Flagged for moderation",
-        description:
-          "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
-        open: state.hasBeenFlagged,
-        onOpenChange: () => {
-          State.update({ hasBeenFlagged: false });
-        },
-        duration: 5000,
-      }}
-    />
-  );
-}
-
 return (
+<>
+{state.showToast && (
+  <Widget
+    src={`${REPL_ACCOUNT}/widget/DIG.Toast`}
+    props={{
+      type: "info",
+      title: state.flaggedMessage.header,
+      description: state.flaggedMessage.detail,
+      open: state.showToast,
+      onOpenChange: () => {
+        State.update({showToast: false});
+      },
+      duration: 5000,
+    }}
+  />
+)}
+{!state.hasBeenFlagged && (
   <Comment>
     <Header>
-      <Widget
-        src="${REPL_ACCOUNT}/widget/AccountProfile"
-        props={{
-          accountId,
-          avatarSize: "32px",
-          hideAccountId: true,
-          inlineContent: (
-            <>
-              <Text as="span">･</Text>
-              {blockHeight === "now" ? (
-                "now"
-              ) : (
-                <Text>
-                  <Widget
-                    src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
-                    props={{ blockHeight }}
-                  />{" "}
-                  ago
-                </Text>
-              )}
-            </>
-          ),
-        }}
-      />
+      <div className="row">
+        <div className="col-auto">
+          <Widget
+            src="${REPL_ACCOUNT}/widget/AccountProfile"
+            props={{
+              accountId,
+              avatarSize: "32px",
+              hideAccountId: true,
+              inlineContent: (
+                <>
+                  <Text as="span">･</Text>
+                  {blockHeight === "now" ? (
+                    "now"
+                  ) : (
+                    <Text>
+                      <Widget
+                        src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
+                        props={{ blockHeight }}
+                      />{" "}
+                      ago
+                    </Text>
+                  )}
+                </>
+              ),
+            }}
+          />
+        </div>
+        <div className="col-1">
+          <div style={{ position: "absolute", right: 0, top: "2px" }}>
+            <Widget
+              src="${REPL_ACCOUNT}/widget/Posts.Menu"
+              props={{
+                accountId: accountId,
+                blockHeight: blockHeight,
+                parentFunctions: {
+                  optimisticallyHideItem,
+                  resolveHideItem,
+                  cancelHideItem,
+                },
+                contentType: "comment",
+                contentPath: `/post/comment`,
+              }}
+            />
+          </div>
+        </div>
+      </div>
     </Header>
 
+  {!state.hasBeenFlaggedOptimistic && (
     <Main>
+      {state.content && (
       <Content>
         {state.content.text && (
           <Widget
@@ -183,7 +240,7 @@ return (
           />
         )}
       </Content>
-
+      )}
       {blockHeight !== "now" && (
         <Actions>
           <Widget
@@ -217,20 +274,6 @@ return (
               url: commentUrl,
             }}
           />
-          <Widget
-            src="${REPL_ACCOUNT}/widget/FlagButton"
-            props={{
-              item: {
-                type: "social",
-                path: `${accountId}/post/comment`,
-                blockHeight,
-              },
-              disabled: !context.accountId || context.accountId === accountId,
-              onFlag: () => {
-                State.update({ hasBeenFlagged: true });
-              },
-            }}
-          />
         </Actions>
       )}
 
@@ -240,13 +283,16 @@ return (
             src="${REPL_ACCOUNT}/widget/Comments.Compose"
             props={{
               initialText: `@${accountId}, `,
-              notifyAccountId: extractNotifyAccountId(parentItem),
-              item: parentItem,
+              notifyAccountId: extractNotifyAccountId(state.content.item),
+              item: state.content.item,
               onComment: () => State.update({ showReply: false }),
             }}
           />
         </div>
       )}
     </Main>
+  )}
   </Comment>
+)}
+</>
 );

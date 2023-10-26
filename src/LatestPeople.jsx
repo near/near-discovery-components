@@ -66,7 +66,7 @@ const LatestPeople = styled.div`
 
 const Item = styled.div``;
 
-const ButtonLink = styled.a`
+const ButtonLink = styled("Link")`
   display: block;
   width: 100%;
   padding: 8px;
@@ -130,7 +130,7 @@ return (
             </Item>
           ))}
         </LatestPeople>
-        <ButtonLink href="#/${REPL_ACCOUNT}/widget/PeoplePage">
+        <ButtonLink href="/${REPL_ACCOUNT}/widget/PeoplePage">
           View All People <span>({totalAccounts})</span>
         </ButtonLink>
       </>

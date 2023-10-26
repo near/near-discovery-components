@@ -17,7 +17,7 @@ const code = Social.get(`${accountId}/widget/${widgetName}`);
 const data = Social.get(`${accountId}/widget/${widgetName}/**`);
 const metadata = data.metadata;
 const tags = Object.keys(metadata.tags || {});
-const detailsUrl = `#/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${src}`;
+const detailsUrl = `/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${src}`;
 const shareUrl = `https://${REPL_NEAR_URL}${detailsUrl}`;
 
 const dependencyMatch =
@@ -62,7 +62,7 @@ const Tabs = styled.div`
   }
 `;
 
-const TabsButton = styled.a`
+const TabsButton = styled("Link")`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -139,7 +139,7 @@ const SmallTitle = styled.h3`
   }
 `;
 
-const TextLink = styled.a`
+const TextLink = styled("Link")`
   display: inline-flex;
   align-items: center;
   gap: 8px;

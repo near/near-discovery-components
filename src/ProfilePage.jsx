@@ -27,7 +27,7 @@ if (props.tab && props.tab !== state.selectedTab) {
 }
 
 const profile = props.profile ?? Social.getr(`${accountId}/profile`);
-const accountUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
+const accountUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 
 const Wrapper = styled.div`
   padding-bottom: 48px;
@@ -112,7 +112,7 @@ const Tabs = styled.div`
   }
 `;
 
-const TabsButton = styled.a`
+const TabsButton = styled("Link")`
   display: inline-flex;
   align-items: center;
   justify-content: center;

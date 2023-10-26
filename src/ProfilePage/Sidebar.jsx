@@ -6,7 +6,7 @@ State.init({
 const accountId = props.accountId;
 const profile =
   props.profile || Social.get(`${accountId}/profile/**`, "final") || {};
-const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
+const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 
 if (!accountId) {
   return "";
@@ -15,7 +15,7 @@ if (!accountId) {
 // Profile Data:
 const tags = Object.keys(profile.tags || {});
 const viewingOwnAccount = accountId === context.accountId;
-const accountUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
+const accountUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 const shareUrl = `https://${REPL_NEAR_URL}${accountUrl}`;
 
 // Follower Count:
@@ -151,19 +151,9 @@ const Text = styled.p`
     font-weight: 600;
     color: #11181c;
   }
-
-  &[href] {
-    display: inline-flex;
-    gap: 0.25rem;
-
-    &:hover,
-    &:focus {
-      text-decoration: underline;
-    }
-  }
 `;
 
-const TextLink = styled.a`
+const TextLink = styled("Link")`
   display: block;
   margin: 0;
   font-size: 14px;
@@ -285,13 +275,13 @@ return (
 
       <Actions>
         {viewingOwnAccount ? (
-          <a
+          <Link
             className="button button--primary"
-            href="#/${REPL_ACCOUNT}/widget/ProfileEditor"
+            href="/${REPL_ACCOUNT}/widget/ProfileEditor"
           >
             <i className="bi bi-pencil"></i>
             Edit Profile
-          </a>
+          </Link>
         ) : context.accountId ? (
           <>
             <FollowButtonWrapper>
@@ -354,15 +344,15 @@ return (
 
     <Section>
       <Stats>
-        <Text as="a" href={`${accountUrl}&tab=following`}>
+        <TextLink href={`${accountUrl}&tab=following`}>
           <b bold as="span">
             {followingCount === null ? "--" : followingCount}
           </b>{" "}
           Following
-        </Text>
-        <Text as="a" href={`${accountUrl}&tab=followers`}>
+        </TextLink>
+        <TextLink href={`${accountUrl}&tab=followers`}>
           <b>{followersCount === null ? "--" : followersCount}</b> Followers
-        </Text>
+        </TextLink>
       </Stats>
     </Section>
 

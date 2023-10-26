@@ -2,7 +2,7 @@ const requiredTag = "app";
 const limit = 5;
 let components = [];
 let totalComponents = 0;
-const componentsUrl = `#/${REPL_ACCOUNT}/widget/ComponentsPage`;
+const componentsUrl = `/${REPL_ACCOUNT}/widget/ComponentsPage`;
 let recentAppPaths = [];
 
 const taggedData = Social.keys(
@@ -77,7 +77,7 @@ const Items = styled.div`
 
 const Item = styled.div``;
 
-const ButtonLink = styled.a`
+const ButtonLink = styled("Link")`
   display: block;
   width: 100%;
   padding: 8px;
@@ -112,7 +112,7 @@ const Header = styled.div`
   gap: 12px;
 `;
 
-const TextLink = styled.a`
+const TextLink = styled("Link")`
   color: #006adc;
   outline: none;
   font-weight: 600;

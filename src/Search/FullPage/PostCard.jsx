@@ -26,7 +26,7 @@ const onClick =
 
 const Post =
   props.styles?.Post ??
-  styled.a`
+  styled("Link")`
     position: relative;
 
     &::before {

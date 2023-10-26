@@ -25,7 +25,7 @@ const Tabs = styled.div`
   }
 `;
 
-const TabsButton = styled.a`
+const TabsButton = styled("Link")`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -66,7 +66,7 @@ if (props.tab && props.tab !== state.selectedTab) {
   });
 }
 
-const baseUrl = `#/${REPL_ACCOUNT}/widget/Moderation.Moderator`;
+const baseUrl = `/${REPL_ACCOUNT}/widget/Moderation.Moderator`;
 const moderatorAccount = props?.moderatorAccount || "${REPL_MODERATOR}";
 const moderationStream = props.moderationStream || moderatorAccount;
 

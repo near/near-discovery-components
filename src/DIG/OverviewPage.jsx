@@ -2,7 +2,7 @@ State.init({
   selectedComponentName: props.component,
 });
 
-const overviewPageUrl = "#/${REPL_ACCOUNT}/widget/DIG.OverviewPage";
+const overviewPageUrl = "/${REPL_ACCOUNT}/widget/DIG.OverviewPage";
 const author = "${REPL_ACCOUNT}";
 const data = Social.get(`${author}/widget/**`) ?? {};
 const componentNames = Object.keys(data)
@@ -91,7 +91,7 @@ const Menu = styled.div`
   }
 `;
 
-const MenuLink = styled.a`
+const MenuLink = styled("Link")`
   display: block;
   font: var(--text-s);
   font-weight: 600;
@@ -197,7 +197,7 @@ return (
                 props={{
                   label: "View Details",
                   iconRight: "ph-bold ph-arrow-right",
-                  href: `#/${author}/widget/ComponentDetailsPage?src=${author}/widget/${selectedComponentName}`,
+                  href: `/${author}/widget/ComponentDetailsPage?src=${author}/widget/${selectedComponentName}`,
                   variant: "primary",
                   fill: "outline",
                   size: "small",

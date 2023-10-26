@@ -421,7 +421,7 @@ const IconCircle = styled.div`
   }
 `;
 
-const Article = styled.a`
+const Article = styled("Link")`
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -1198,8 +1198,8 @@ return (
                           style={{
                             display: "-webkit-box",
                             maxWidth: "100%",
-                            "-webkit-line-clamp": "2",
-                            "-webkit-box-orient": "vertical",
+                            WebkitLineClamp: "2",
+                            WebkitBoxOrient: "vertical",
                             overflow: "hidden",
                           }}
                         >

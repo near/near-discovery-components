@@ -10,8 +10,8 @@ const [accountId, widget, widgetName] = src.split("/");
 const data = Social.get(`${accountId}/widget/${widgetName}/metadata/**`);
 const metadata = data || {};
 const tags = Object.keys(metadata.tags || {});
-const appUrl = `#/${src}`;
-const detailsUrl = `#/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${src}`;
+const appUrl = `/${src}`;
+const detailsUrl = `/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${src}`;
 const shareUrl = `https://${REPL_NEAR_URL}${detailsUrl}`;
 const size = props.size || "large";
 
@@ -142,7 +142,7 @@ const Button = styled.button`
   }
 `;
 
-const ButtonLink = styled.a`
+const ButtonLink = styled("Link")`
   ${sharedButtonStyles}
   color: ${(p) => (p.primary ? "#09342E" : "#11181C")} !important;
   background: ${(p) => (p.primary ? "#59E692" : "#FBFCFD")};
@@ -207,7 +207,7 @@ return (
         {primaryActions[primaryAction].display}
       </ButtonLink>
 
-      <ButtonLink href={`#/edit/${src}`}>
+      <ButtonLink href={`/edit/${src}`}>
         {context.accountId === accountId ? (
           <>
             <i className="bi bi-pencil-fill"></i> Edit

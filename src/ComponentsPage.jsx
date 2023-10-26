@@ -2,7 +2,7 @@ const limitPerPage = 21;
 let components = [];
 let totalApps = 0;
 let totalComponents = 0;
-const componentsUrl = "#/${REPL_ACCOUNT}/widget/ComponentsPage";
+const componentsUrl = "/${REPL_ACCOUNT}/widget/ComponentsPage";
 const searchRequiredTag = state.selectedTab === "apps" ? "app" : null;
 const searchPlaceholder =
   state.selectedTab === "apps" ? "Search Apps" : "Search Components";
@@ -113,16 +113,6 @@ const Text = styled.p`
     font-weight: 600;
     color: #11181c;
   }
-
-  &[href] {
-    display: inline-flex;
-    gap: 0.25rem;
-
-    &:hover,
-    &:focus {
-      text-decoration: underline;
-    }
-  }
 `;
 
 const Items = styled.div`
@@ -189,7 +179,7 @@ const Tabs = styled.div`
   }
 `;
 
-const TabsButton = styled.a`
+const TabsButton = styled("Link")`
   display: inline-flex;
   align-items: center;
   justify-content: center;

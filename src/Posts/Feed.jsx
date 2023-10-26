@@ -12,7 +12,7 @@ const Post = styled.div`
   }
 `;
 
-const TextLink = styled.a`
+const TextLink = styled("Link")`
   font-weight: 600;
 `;
 

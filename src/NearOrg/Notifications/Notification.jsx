@@ -1,4 +1,4 @@
-const Notification = styled.a`
+const Notification = styled.div`
   display: flex;
   padding: 16px 24px 16px 16px;
   align-items: flex-start;
@@ -7,7 +7,6 @@ const Notification = styled.a`
 
   &:hover {
     background: var(--sand-light-2, #f9f9f8);
-    text-decoration: none;
 
     & i {
       color: #604cc8;
@@ -212,7 +211,7 @@ const iconType = {
 };
 
 return (
-  <Notification className="notification-item" href={postUrl}>
+  <Notification className="notification-item">
     <Icon>{iconType[type]}</Icon>
     <Content>
       <Left>

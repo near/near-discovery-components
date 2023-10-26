@@ -345,7 +345,7 @@ return (
                     </P1>
 
                     <P2>
-                      Welcome aboard to the NCON Task to help find the first
+                      Welcome aboard to the NCON Bounty to help find the first
                       group of featured Apps on B.O.S. Your upvotes decide the
                       stars of the NEAR App Library for 3 months! Be part of the
                       movement to shape the NEAR ecosystem and earn more NCONs!
@@ -399,7 +399,7 @@ return (
                     <P2>
                       <Em>
                         Attendees at NEARCON will be incentivized with NCON to
-                        upvote apps in the App Upvoting Task Page
+                        upvote apps in the App Upvoting Bounty Page
                       </Em>
                     </P2>
 
@@ -421,18 +421,18 @@ return (
                     <P2>
                       <strong>
                         To find the first group of featured apps on App Library,
-                        we are launching the App Upvoting Event as a NCON Task
+                        we are launching the App Upvoting Event as a NCON Bounty
                         to invite all NEARCON attendees to upvote and decide who
                         gets featured!
                       </strong>
                     </P2>
 
                     <P2>
-                      “NCON Tasks” is a Web3 gamified event experience for
+                      “NCON Bounties” is a Web3 gamified event experience for
                       attendees to engage throughout the event. Attendees will
-                      earn NCON by completing Tasks and have the option to
+                      earn NCON by completing Bounties and have the option to
                       redeem NCON for food, merchandise, and more. Participants
-                      who decide to complete this special NCON Task will also
+                      who decide to complete this special NCON Bounty will also
                       help select the first group of featured apps in the B.O.S.
                       App Library.
                     </P2>
@@ -468,10 +468,11 @@ return (
                       to your project experience as App. Then, choose the
                       category that best represents your dApp&#45;
                       <strong>Earn, Play, Develop, Engage</strong>. (Choosing
-                      one of these four categories is
-                      <strong>required</strong>!) Add additional tags for
-                      improved discoverability. Make it easy for users to find
-                      and appreciate your work.
+                      <strong>one of these four</strong> categories is{" "}
+                      <strong>required</strong>! If you applied more than one of
+                      these four tags, then we will only use the latest one you
+                      applied) Add additional tags for improved discoverability.
+                      Make it easy for users to find and appreciate your work.
                     </P2>
 
                     <P2>
@@ -561,8 +562,8 @@ return (
                       </strong>
                       <br></br>
                       QR code and event posters will be promoted at the NEARCON
-                      venues to encourage them to complete this Task. In
-                      addition, this Task will be part of the NCON product for
+                      venues to encourage them to complete this Bounty. In
+                      addition, this Bounty will be part of the NCON product for
                       NEARCON participants to earn more NCON, so we will make
                       sure your dApps get plenty of exposure.
                     </P2>
@@ -573,7 +574,7 @@ return (
                     <List>
                       <ListItem>
                         October 26: Submit your App for Qualification. App
-                        Upvoting Task Event Page available on near.org.
+                        Upvoting Bounty Event Page available on near.org.
                         Qualified Apps will be Fetched (Qualified Apps will be
                         fetched continuously on one-hour intervals throughout
                         the NEARCON event through November 13).
@@ -595,7 +596,7 @@ return (
                       increase visibility, boost engagement, and get valuable
                       feedback from the whole NEAR community on your app, make
                       sure to register your apps as qualified and participate in
-                      the App Upvoting NCON Task.
+                      the App Upvoting NCON Bounty.
                     </P2>
                   </>
                 )}

@@ -10,8 +10,8 @@ if (props.tab && props.tab !== state.selectedTab) {
 }
 
 const appLibraryIndexUrl =
-  "#/${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.IndexPage";
-const detailsUrl = `https://near.org/#/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=`;
+  "/${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.IndexPage";
+const detailsUrl = `/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=`;
 const selectedCategory = [];
 const targetTags = ["develop", "earn", "play", "engage"];
 
@@ -28,6 +28,7 @@ function loadData() {
           ...JSON.parse(app.metadata[0].metadata),
           image: { ipfs_cid: app.ipfs_cid },
         };
+
         const appUrl = `${detailsUrl}${app.widget_name}`;
         const imgURL = `https://ipfs.near.social/ipfs/${image_cid}`;
 
@@ -37,7 +38,7 @@ function loadData() {
         const uniqueTags = Array.from(new Set(app.tags));
         app.tags = uniqueTags;
 
-        return { ...app, metadata, appUrld };
+        return { ...app, metadata };
       });
 
       State.update({
@@ -116,7 +117,7 @@ const Menu = styled.div`
   }
 `;
 
-const MenuLink = styled.a`
+const MenuLink = styled("Link")`
   display: block;
   font: var(--text-s);
   font-weight: 600;
@@ -255,7 +256,8 @@ const SubTabMenu = styled.div`
   display: flex;
 `;
 
-const SubTabLink = styled.a`
+const SubTabLink = styled.button`
+  all: unset;
   display: flex;
   align-items: center;
   font-size: 0.825rem;
@@ -381,7 +383,7 @@ return (
                   <>
                     <P1>
                       <H2>
-                        Earn NCONs and Help Decide the Featured App on B.O.S. 
+                        Earn NCONs and Help Decide the Featured App on B.O.S.
                       </H2>
                     </P1>
 

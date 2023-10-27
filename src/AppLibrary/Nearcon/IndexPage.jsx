@@ -31,18 +31,7 @@ function loadData() {
         const appUrl = `${detailsUrl}${app.widget_name}`;
         const imgURL = `https://ipfs.near.social/ipfs/${image_cid}`;
 
-        for (let i = 0; i < app.tags.length; i++) {
-          if (app.tags[i] === "app" && i === 0) {
-            continue;
-          }
-          if (!targetTags.includes(app.tags[i])) {
-            continue;
-          }
-          if (targetTags.includes(app.tags[i])) {
-            app.recentTag = app.tags[i];
-            break;
-          }
-        }
+        app.recentTag = app.lastest_tag;
 
         const uniqueTags = Array.from(new Set(app.tags));
         app.tags = uniqueTags;
@@ -212,7 +201,10 @@ const ThumbnailGrid = styled.div`
 
 const ContentGrid = styled.div`
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: ${({ gridEnabled }) =>
+    gridEnabled
+      ? "minmax(0, 1fr) minmax(0, 1fr)"
+      : "minmax(0, 7fr) minmax(0, 1fr)"};
   gap: 2rem;
 
   @media (max-width: 650px) {
@@ -322,7 +314,7 @@ return (
                   );
                   return (
                     <Section key={category}>
-                      <ContentGrid>
+                      <ContentGrid gridEnabled={filteredApps.length > 0}>
                         {filteredApps.length > 0 ? (
                           filteredApps.map((item) => (
                             <Widget
@@ -348,7 +340,7 @@ return (
                             <a href={`${appLibraryIndexUrl}?tab=Event+Guide`}>
                               Event Guide Section
                             </a>
-                            . Explore in{" "}
+                            .<br></br> Explore in{" "}
                             <a href="near.org/applications">
                               near.org/applications
                             </a>

@@ -1,6 +1,6 @@
-const appUrl = `#/${props.author}/widget/${props.widgetName}`;
+const appUrl = `/${props.author}/widget/${props.widgetName}`;
 
-const Thumbnail = styled.a`
+const Thumbnail = styled("Link")`
   display: block;
   aspect-ratio: 1 / 1;
   overflow: hidden;

@@ -28,7 +28,7 @@ const ArticleContent = styled.div`
   gap: 0.25rem;
 `;
 
-const Article = styled.a`
+const Article = styled("Link")`
   display: flex;
   flex-direction: column;
   gap: 1rem;

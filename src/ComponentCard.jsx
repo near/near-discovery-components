@@ -1,7 +1,7 @@
 const [accountId, unused, widgetName] = props.src.split("/");
-const detailsUrl = `#/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${accountId}/widget/${widgetName}`;
-const appUrl = `#/${accountId}/widget/${widgetName}`;
-const accountUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
+const detailsUrl = `/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${accountId}/widget/${widgetName}`;
+const appUrl = `/${accountId}/widget/${widgetName}`;
+const accountUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 const metadata =
   props.metadata ??
   Social.get(`${accountId}/widget/${widgetName}/metadata/**`, "final") ??
@@ -63,7 +63,7 @@ const CardTag = styled.p`
   }
 `;
 
-const TextLink = styled.a`
+const TextLink = styled("Link")`
   display: block;
   margin: 0;
   font-size: 14px;
@@ -98,7 +98,7 @@ const Text = styled.p`
   }
 `;
 
-const Thumbnail = styled.a`
+const Thumbnail = styled("Link")`
   display: block;
   width: 60px;
   height: 60px;
@@ -126,7 +126,7 @@ const TagsWrapper = styled.div`
   margin-top: 4px;
 `;
 
-const ButtonLink = styled.a`
+const ButtonLink = styled("Link")`
   padding: 8px;
   height: 32px;
   border: 1px solid #d7dbdf;
@@ -178,11 +178,11 @@ return (
       </Thumbnail>
 
       <CardContent>
-        <TextLink as="a" href={detailsUrl} bold ellipsis>
+        <TextLink href={detailsUrl} bold ellipsis>
           {metadata.name || widgetName}
         </TextLink>
 
-        <TextLink small as="a" href={accountUrl} ellipsis>
+        <TextLink small href={accountUrl} ellipsis>
           @{accountId}
         </TextLink>
 

@@ -1,5 +1,5 @@
 let components = [];
-const componentsUrl = "#/${REPL_ACCOUNT}/widget/ComponentsPage";
+const componentsUrl = "/${REPL_ACCOUNT}/widget/ComponentsPage";
 
 const featuredComponentListRes = Social.get(
   "${REPL_FEATURED_COMP_MANAGER}/listManager/FeaturedComponents",
@@ -54,7 +54,7 @@ const Header = styled.div`
   gap: 12px;
 `;
 
-const TextLink = styled.a`
+const TextLink = styled("Link")`
   color: #006adc;
   outline: none;
   font-weight: 600;

@@ -88,7 +88,7 @@ const BUCKET = "databricks-near-query-runner";
 const BASE_URL = `https://${STORE}/${BUCKET}/output/recommendations`;
 
 const accountId = props.accountId;
-const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
+const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 
 const getRecommendedUsers = (page) => {
   const url = `${props.dataset}_${page}.json`;
@@ -174,9 +174,9 @@ return (
             <div>
               Follow More Users to Unlock More Personalized Recommendations, See
               Who’s
-              <a href="https://${REPL_NEAR_URL}/${REPL_ACCOUNT}/widget/PeoplePage?tab=trending">
+              <Link href="/${REPL_ACCOUNT}/widget/PeoplePage?tab=trending">
                 Trending
-              </a>
+              </Link>
             </div>
           )}
         </>

@@ -26,42 +26,43 @@ function unblockAccount(accountId) {
   });
 }
 
-const moderatedObjects = context.accountId
+const moderatedObjectsRaw = context.accountId
   ? Social.index("moderate", moderationStream, {
       subscribe: true,
       order: "desc",
-    })?.filter((f) => f.accountId === moderatorAccount)
+    }) ?? []
   : [];
+const moderatedObjects = moderatedObjectsRaw.filter(
+  (f) => f.accountId === moderatorAccount,
+);
 const modifiedModerations = {}; // track update & delete operations
 
 return (
   <>
-    <div className="d-flex flex-row gap-2 mb-5">
-      <span style={{ color: "grey", float: left, paddingRight: "2em" }}>
-        When saving, ensure data is being written to moderator key. You may need
-        to refresh your browser if you used "Pretend to be another account"
-        while on this page
-      </span>
-      <input
-        type="text"
-        value={state.inputContent}
-        onChange={(e) => {
-          State.update({
-            inputContent: e.target.value,
-          });
-        }}
-        placeholder="Comma-separated list of accounts"
-      />
-      <CommitButton
-        force
-        data={{ index: { moderate: blockAccounts(state.inputContent) } }}
-        onCommit={() => {
-          State.update({ inputContent: "" });
-        }}
-      >
-        Add to filter
-      </CommitButton>
-    </div>
+    {context.accountId && context.accountId === moderatorAccount && (
+      <div className="d-flex flex-row gap-2 mb-5">
+        <span>Manual moderation:</span>
+        <input
+          type="text"
+          value={state.inputContent}
+          onChange={(e) => {
+            State.update({
+              inputContent: e.target.value,
+            });
+          }}
+          placeholder="Comma-separated list of accounts"
+        />
+        <CommitButton
+          force
+          data={{ index: { moderate: blockAccounts(state.inputContent) } }}
+          onCommit={() => {
+            State.update({ inputContent: "" });
+          }}
+        >
+          Moderate
+        </CommitButton>
+      </div>
+    )}
     <h3>Moderated (blocked) Accounts</h3>
     <table className="table">
       <th>Account</th>
@@ -75,6 +76,9 @@ return (
             }
 
             const account = f.value.path;
+            if (!account) {
+              return;
+            }
             const mod = modifiedModerations[account];
             if (mod && mod.operation === "delete") {
               return;

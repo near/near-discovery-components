@@ -46,7 +46,7 @@ const CardLeft = styled.div`
   }
 `;
 
-const Avatar = styled.a`
+const Avatar = styled("Link")`
   width: 60px;
   height: 60px;
   flex-shrink: 0;
@@ -67,7 +67,7 @@ const Avatar = styled.a`
   }
 `;
 
-const TextLink = styled.a`
+const TextLink = styled("Link")`
   display: block;
   margin: 0;
   font-size: 14px;

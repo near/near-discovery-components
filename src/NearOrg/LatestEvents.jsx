@@ -11,7 +11,7 @@ const events = [
     location: "Paris, France",
     thumbnail:
       "https://pages.near.org/wp-content/uploads/2022/11/roadmap22-23-social-600x333.png",
-    url: "https://ethglobal.com/events/paris2023://nearapac.org/",
+    url: "https://ethglobal.com/events/paris2023",
   },
   {
     title: "NEAR APAC",

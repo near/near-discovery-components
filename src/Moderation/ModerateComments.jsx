@@ -36,57 +36,58 @@ function unblockComment(accountId, blockHeight) {
   });
 }
 
-const moderatedObjects = context.accountId
+const moderatedObjectsRaw = context.accountId
   ? Social.index("moderate", moderationStream, {
       subscribe: true,
       order: "desc",
-    })?.filter((f) => f.accountId === moderatorAccount)
+    }) ?? []
   : [];
+const moderatedObjects = moderatedObjectsRaw.filter(
+  (f) => f.accountId === moderatorAccount,
+);
 const modifiedModerations = {}; // track update & delete operations
 
 return (
   <>
-    <div className="d-flex flex-row gap-2 mb-5">
-      <span style={{ color: "grey", float: left, paddingRight: "2em" }}>
-        When saving, ensure data is being written to moderator key. You may need
-        to refresh your browser if you used "Pretend to be another account"
-        while on this page
-      </span>
-      <input
-        type="text"
-        value={state.accountInput}
-        onChange={(e) => {
-          State.update({
-            accountInput: e.target.value,
-          });
-        }}
-        placeholder="The account of the comment to moderate"
-      />
-      <input
-        type="text"
-        value={state.blockInput}
-        onChange={(e) => {
-          State.update({
-            blockInput: e.target.value,
-          });
-        }}
-        placeholder="The block height of the comment to moderate"
-      />
+    {context.accountId && context.accountId === moderatorAccount && (
+      <div className="d-flex flex-row gap-2 mb-5">
+        <span>Manual moderation:</span>
+        <input
+          type="text"
+          value={state.accountInput}
+          onChange={(e) => {
+            State.update({
+              accountInput: e.target.value,
+            });
+          }}
+          placeholder="The account of the comment to moderate"
+        />
+        <input
+          type="text"
+          value={state.blockInput}
+          onChange={(e) => {
+            State.update({
+              blockInput: e.target.value,
+            });
+          }}
+          placeholder="The block height of the comment to moderate"
+        />
 
-      <CommitButton
-        force
-        data={{
-          index: {
-            moderate: blockComment(state.accountInput, state.blockInput),
-          },
-        }}
-        onCommit={() => {
-          State.update({ accountInput: "", blockInput: "" });
-        }}
-      >
-        Add to filter
-      </CommitButton>
-    </div>
+        <CommitButton
+          force
+          data={{
+            index: {
+              moderate: blockComment(state.accountInput, state.blockInput),
+            },
+          }}
+          onCommit={() => {
+            State.update({ accountInput: "", blockInput: "" });
+          }}
+        >
+          Moderate
+        </CommitButton>
+      </div>
+    )}
     <h3>Moderated (blocked) Comments</h3>
     <table className="table">
       <th>Account</th>
@@ -101,6 +102,9 @@ return (
             }
 
             const account = f.value.path.split("/")[0];
+            if (!account) {
+              return;
+            }
             const block = f.value.blockHeight;
             const key = `${account}@${block}`;
             const mod = modifiedModerations[key];

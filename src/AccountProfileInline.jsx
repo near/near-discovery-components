@@ -1,7 +1,7 @@
 const accountId = props.accountId;
 const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
 
-const Wrapper = styled.a`
+const Wrapper = styled("Link")`
   --avatar-size: 24px;
   display: inline-flex;
   position: relative;
@@ -64,7 +64,7 @@ const Avatar = styled.div`
 `;
 
 const AccountProfile = (
-  <Wrapper href={`#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`}>
+  <Wrapper href={`/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`}>
     {!props.hideAvatar && (
       <Avatar>
         <Widget

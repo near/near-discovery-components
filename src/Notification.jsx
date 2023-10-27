@@ -14,9 +14,9 @@ const urlBlockHeight = isComment ? "commentBlockHeight" : "blockHeight";
 let postUrl = "";
 
 if (type !== "custom") {
-  postUrl = `#/${REPL_ACCOUNT}/widget/PostPage?accountId=${accountId}&${urlBlockHeight}=${blockHeight}`;
+  postUrl = `/${REPL_ACCOUNT}/widget/PostPage?accountId=${accountId}&${urlBlockHeight}=${blockHeight}`;
 } else {
-  postUrl = `#/${value.widget}?${Object.entries(value.params || {})
+  postUrl = `/${value.widget}?${Object.entries(value.params || {})
     .map(([k, v]) => `${k}=${v}`)
     .join("&")}`;
 }
@@ -94,21 +94,9 @@ const Text = styled.p`
     font-weight: 600;
     color: #11181c;
   }
-
-  &[href] {
-    font-weight: 600;
-    color: #006adc !important;
-    display: inline-flex;
-    gap: 0.25rem;
-
-    &:hover,
-    &:focus {
-      text-decoration: underline;
-    }
-  }
 `;
 
-const Button = styled.a`
+const Button = styled("Link")`
   display: inline-flex;
   align-items: center;
   justify-content: center;

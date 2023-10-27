@@ -226,9 +226,9 @@ const DropdownItems = (menu, isSection, noDivider) => (
           <>
             {item.subHeader && <Label subHeader>{item.subHeader}</Label>}
             {item.href ? (
-              <a href={item.href.toString()} target={item?.target}>
+              <Link href={item.href.toString()} target={item?.target}>
                 <DropdownItem {...item} />
-              </a>
+              </Link>
             ) : (
               <DropdownItem {...item} />
             )}

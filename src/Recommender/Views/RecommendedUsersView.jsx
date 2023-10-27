@@ -1,4 +1,4 @@
-const ButtonLink = styled.a`
+const ButtonLink = styled("Link")`
   display: block;
   width: 100%;
   padding: 8px;
@@ -146,7 +146,7 @@ return (
     )}
 
     {props.sidebar && (
-      <ButtonLink href="#/${REPL_ACCOUNT}/widget/PeoplePage?tab=recommended">
+      <ButtonLink href="/${REPL_ACCOUNT}/widget/PeoplePage?tab=recommended">
         View Recommended Profiles
       </ButtonLink>
     )}

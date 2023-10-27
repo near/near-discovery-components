@@ -1,32 +1,40 @@
 const accountId = props.accountId;
 const blockHeight = props.blockHeight;
 const parentFunctions = props.parentFunctions;
+const contentType = props.contentType || "post";
+const contentPath = props.contentPath || "/post/main";
+const capitalizedContentType = contentType.charAt(0).toUpperCase() + contentType.slice(1);
 
 const confirmationMessages = {
-  hidePost: {
-    header: "Post Hidden",
-    detail: "This post will no longer be shown to you.",
+  savingData: {
+    header: "Saving Data",
+    detail: "Storing your action.",
+  },
+  hideItem: {
+    header: capitalizedContentType + " Hidden",
+    detail: `This ${contentType} will no longer be shown to you.`,
   },
   hideAccount: {
     header: "Account Muted",
-    detail: "All posts from this account will be no longer be shown to you.",
+    detail: `All content from this account will be no longer be shown to you.`,
   },
-  reportPost: {
-    header: "Post Reported for Moderation",
+  reportItem: {
+    header: capitalizedContentType + " Reported for Moderation",
     detail:
       "The item will no longer be shown to you and will be reviewed. Thanks for helping our Content Moderators.",
   },
   reportAccount: {
     header: "Account Reported for Moderation",
     detail:
-      "All posts from this account will no longer be shown to you and will be reviewed. Thanks for helping our Content Moderators.",
+      "All content from this account will no longer be shown to you and will be reviewed. Thanks for helping our Content Moderators.",
   },
 };
-const moderatePost = (account, block, action, messageKey) => {
+const moderateItem = (account, block, action, messageKey) => {
+  const modifiedContentPath = contentPath.replace(/\//g, ".");
   const data = {
     moderate: {
       [account]: {
-        ".post.main": {
+        [modifiedContentPath]: {
           [block]: action,
         },
       },
@@ -37,21 +45,27 @@ const moderatePost = (account, block, action, messageKey) => {
       moderation: JSON.stringify({
         key: "reported",
         value: {
-          path: `${account}/post/main`,
+          path: `${account}${contentPath}`,
           blockHeight: block,
           label: action,
         },
       }),
     };
   }
+  if(parentFunctions.optimisticallyHideItem) {
+    parentFunctions.optimisticallyHideItem(confirmationMessages['savingData']);
+  }
   Social.set(data, {
     onCommit: () => {
-      parentFunctions.resolveHidePost(confirmationMessages[messageKey]);
+      parentFunctions.resolveHideItem(confirmationMessages[messageKey]);
     },
+    onCancel: () => {
+        parentFunctions.cancelHideItem();
+    }
   });
 };
 
-const moderateAccount = (account, action, message) => {
+const moderateAccount = (account, action, messageKey) => {
   const data = {
     moderate: {
       [account]: action,
@@ -68,10 +82,16 @@ const moderateAccount = (account, action, message) => {
       }),
     };
   }
+  if(parentFunctions.optimisticallyHideItem) {
+    parentFunctions.optimisticallyHideItem(confirmationMessages['savingData']);
+  }
   Social.set(data, {
     onCommit: () => {
-      alert(message);
+      parentFunctions.resolveHideItem(confirmationMessages[messageKey]);
     },
+    onCancel: () => {
+      parentFunctions.cancelHideItem();
+    }
   });
 };
 return (
@@ -87,10 +107,10 @@ return (
           subMenuProps: {
             items: [
               {
-                name: "Hide this Post",
+                name: "Hide this " + capitalizedContentType,
                 iconLeft: "ph-bold ph-eye-slash",
                 onSelect: () =>
-                  moderatePost(accountId, blockHeight, "hide", "hidePost"),
+                  moderateItem(accountId, blockHeight, "hide", "hideItem"),
               },
               {
                 name: "Mute " + accountId,
@@ -115,10 +135,10 @@ return (
           subMenuProps: {
             items: [
               {
-                name: "Report this Post",
+                name: "Report this " + capitalizedContentType,
                 iconLeft: "ph-bold ph-warning-octagon",
                 onSelect: () =>
-                  moderatePost(accountId, blockHeight, "report", "reportPost"),
+                  moderateItem(accountId, blockHeight, "report", "reportItem"),
               },
               {
                 name: "Report " + accountId,

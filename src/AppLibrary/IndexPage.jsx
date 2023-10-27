@@ -10,7 +10,7 @@ if (props.tab && props.tab !== state.selectedTab) {
   });
 }
 
-const appLibraryIndexUrl = "#/${REPL_ACCOUNT}/widget/AppLibrary.IndexPage";
+const appLibraryIndexUrl = "/${REPL_ACCOUNT}/widget/AppLibrary.IndexPage";
 const selectedCategory = state.categories.find(
   (category) => category.label === state.selectedTab
 );
@@ -93,7 +93,7 @@ const Menu = styled.div`
   }
 `;
 
-const MenuLink = styled.a`
+const MenuLink = styled("Link")`
   display: block;
   font: var(--text-s);
   font-weight: 600;

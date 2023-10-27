@@ -16,18 +16,6 @@ const Text = styled.p`
   color: var(--${(p) => p.color ?? "sand10"});
   margin: 0;
 
-  [href] {
-    color: var(--violet8);
-    &:hover {
-      color: var(--violet11);
-      text-decoration: none;
-    }
-    &:focus {
-      text-decoration: underline;
-      outline: none;
-    }
-  }
-
   ${(p) =>
     p.flex &&
     `

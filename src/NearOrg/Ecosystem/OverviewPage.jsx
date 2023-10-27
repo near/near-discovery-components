@@ -37,19 +37,25 @@ const Text = styled.p`
   color: var(--${(p) => p.color ?? "sand10"});
   margin: 0;
   text-align: ${(p) => p.align};
+`;
 
-  [href] {
-    color: var(--violet8);
-    &:hover {
-      color: var(--violet11);
-      text-decoration: none;
-    }
-    &:focus {
-      text-decoration: underline;
-      outline: none;
-    }
+const TextLink = styled("Link")`
+  font: var(--${(p) => p.size ?? "text-base"});
+  font-weight: ${(p) => p.fontWeight};
+  margin: 0;
+  text-align: ${(p) => p.align};
+  color: var(--violet8);
+
+  &:hover {
+    color: var(--violet11);
+    text-decoration: none;
+  }
+  &:focus {
+    text-decoration: underline;
+    outline: none;
   }
 `;
+
 const Small = styled.span`
   font: inherit;
   color: inherit;
@@ -114,7 +120,7 @@ const StickyNav = styled.div`
   position: sticky;
   top: 10px;
 `;
-const SocialLink = styled.a`
+const SocialLink = styled("Link")`
   color: var(--sand12);
   text-decoration: none;
   transition: all 200ms;
@@ -442,9 +448,9 @@ return (
           justifyContent="center"
         >
           {navLinks.map((nav) => (
-            <Text key={nav.href} as="a" href={`#${nav.href}`}>
+            <TextLink key={nav.href} href={`#${nav.href}`}>
               {nav.name}
-            </Text>
+            </TextLink>
           ))}
         </Flex>
       </Section>

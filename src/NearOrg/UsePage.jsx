@@ -38,18 +38,6 @@ const Text = styled.p`
   color: var(--${(p) => p.color ?? "sand10"});
   margin: 0;
 
-  [href] {
-    color: var(--violet8);
-    &:hover {
-      color: var(--violet11);
-      text-decoration: none;
-    }
-    &:focus {
-      text-decoration: underline;
-      outline: none;
-    }
-  }
-
   ${(p) =>
     p.flex &&
     `
@@ -57,6 +45,22 @@ const Text = styled.p`
     align-items: center;
     gap: 16px;
   `}
+`;
+
+const TextLink = styled("Link")`
+  font: var(--${(p) => p.size ?? "text-base"});
+  font-weight: ${(p) => p.fontWeight};
+  margin: 0;
+  color: var(--violet8);
+
+  &:hover {
+    color: var(--violet11);
+    text-decoration: none;
+  }
+  &:focus {
+    text-decoration: underline;
+    outline: none;
+  }
 `;
 
 const HR = styled.div`
@@ -398,9 +402,9 @@ return (
               Putting community first in DeFi
             </Text>
             <Text>
-              <Text as="a" href="https://www.ref.finance/" target="_blank">
+              <TextLink href="https://www.ref.finance/" target="_blank">
                 Ref.Finance
-              </Text>{" "}
+              </TextLink>{" "}
               is a community-led, multi-purpose DeFi platform built on NEAR
               Protocol.
             </Text>
@@ -465,9 +469,9 @@ return (
                 New, Fairer Ticketing with NFTs
               </Text>
               <Text>
-                <Text as="a" href="https://www.seatlabnft.com/" target="_blank">
+                <TextLink href="https://www.seatlabnft.com/" target="_blank">
                   Seatlab
-                </Text>{" "}
+                </TextLink>{" "}
                 is an NFT event ticketing marketplace helping artists foster
                 closer connections with fans, eliminating fraud and reducing the
                 impact of scalping.
@@ -485,9 +489,9 @@ return (
                 Advertising.
               </Text>
               <Text>
-                <Text as="a" href="https://www.tamastream.io/" target="_blank">
+                <TextLink href="https://www.tamastream.io/" target="_blank">
                   Tamago
-                </Text>{" "}
+                </TextLink>{" "}
                 offers a platform for decentralized audio streaming.
               </Text>
             </Flex>
@@ -549,9 +553,9 @@ return (
                 Healthier planet. Healthier, wealthier you
               </Text>
               <Text>
-                <Text as="a" href="https://sweatco.in/" target="_blank">
+                <TextLink href="https://sweatco.in/" target="_blank">
                   Sweatcoin
-                </Text>{" "}
+                </TextLink>{" "}
                 is a free app which rewards your daily steps with a
                 new-generation currency you can spend on cool products, donate
                 to charity or convert into SWEAT.
@@ -569,9 +573,9 @@ return (
                 decentralization
               </Text>
               <Text>
-                <Text as="a" href="https://blogchain.app/home" target="_blank">
+                <TextLink href="https://blogchain.app/home" target="_blank">
                   Blogchain App
-                </Text>{" "}
+                </TextLink>{" "}
                 is a publishing platform created for independent writers,
                 providing them with a decentralized, censorship-resistant, and
                 user-friendly space to engage and grow their audience.

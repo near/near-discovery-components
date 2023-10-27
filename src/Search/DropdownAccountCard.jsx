@@ -9,7 +9,7 @@ const onPointerUp =
     }
   });
 
-const Profile = styled.a`
+const Profile = styled("Link")`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -39,7 +39,7 @@ const Body = styled.div`
   text-overflow: ${(p) => (p.ellipsis ? "ellipsis" : "")};
 `;
 
-const ButtonLink = styled.a`
+const ButtonLink = styled("Link")`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -61,7 +61,7 @@ const ButtonLink = styled.a`
   }
 `;
 
-const TextLink = styled.a`
+const TextLink = styled("Link")`
   display: block;
   margin: 0;
   margin-right: 42.22px;
@@ -124,11 +124,11 @@ return (
           cursor: "pointer",
         }}
       >
-        <a href={profileUrl}>
+        <Link href={profileUrl}>
           <Text small bold>
             <i className="bi bi-arrow-right"></i>
           </Text>
-        </a>
+        </Link>
       </button>
     </ButtonLink>
   </Profile>

@@ -1,5 +1,4 @@
-const { tosName, targetComponent, logOut, recordToC } = props;
-const targetProps = props?.targetProps || {};
+const { tosName, logOut, recordToC } = props;
 const acceptanceKey = tosName; // may change
 
 State.init({
@@ -154,7 +153,7 @@ if (agreementsForUser && recordToC) {
 }
 
 return (
-  <div>
+  <>
     {showTos && (
       <Backdrop className="d-flex">
         <Modal>
@@ -222,6 +221,9 @@ return (
       </Backdrop>
     )}
 
-    <Widget src={targetComponent} props={targetProps} />
-  </div>
+    {/* The following code is only needed to remain backwards compatible for the short term: */}
+    {props.targetComponent && (
+      <Widget src={props.targetComponent} props={props.targetProps} />
+    )}
+  </>
 );

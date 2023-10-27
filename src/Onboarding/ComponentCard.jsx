@@ -4,7 +4,7 @@ const gateway = props.gateway ?? "https://${REPL_NEAR_URL}";
 const accountId = props.accountId || context.accountId || "near";
 const name = props.name ?? "NotRealComponentName";
 
-const Card = styled.a`
+const Card = styled("Link")`
   border: 1px solid #d0d7de;
 
   gap: 5px;

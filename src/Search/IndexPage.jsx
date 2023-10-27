@@ -97,17 +97,29 @@ const Text = styled.p`
     font-weight: 600;
     color: #11181c;
   }
+`;
 
-  &[href] {
-    color: #006adc;
-    outline: none;
+const TextLink = styled("Link")`
+  margin: 0;
+  line-height: 1.5rem;
+  font-size: ${(p) => (p.small ? "12px" : "14px")};
+  overflow: ${(p) => (p.ellipsis ? "hidden" : "")};
+  text-overflow: ${(p) => (p.ellipsis ? "ellipsis" : "")};
+  white-space: ${(p) => (p.ellipsis ? "nowrap" : "")};
+  overflow-wrap: anywhere;
+  color: #006adc;
+  outline: none;
+  font-weight: 600;
+
+  b {
     font-weight: 600;
+    color: #11181c;
+  }
 
-    &:hover,
-    &:focus {
-      color: #006adc;
-      text-decoration: underline;
-    }
+  &:hover,
+  &:focus {
+    color: #006adc;
+    text-decoration: underline;
   }
 `;
 
@@ -426,9 +438,9 @@ return (
       <Group>
         <GroupHeader>
           <H3>People</H3>
-          <Text as="a" href={peopleUrl} small>
+          <TextLink href={peopleUrl} small>
             View All
-          </Text>
+          </TextLink>
         </GroupHeader>
 
         <Items>
@@ -456,9 +468,9 @@ return (
       <Group>
         <GroupHeader>
           <H3>Components</H3>
-          <Text as="a" href={componentsUrl} small>
+          <TextLink href={componentsUrl} small>
             View All
-          </Text>
+          </TextLink>
         </GroupHeader>
 
         <Items>

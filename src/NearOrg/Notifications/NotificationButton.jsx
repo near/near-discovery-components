@@ -112,7 +112,7 @@ const Button = ({ count }) => {
           icon,
           variant: "secondary",
           style: { width: "45px", height: "45px" },
-          href: "#/notifications",
+          href: "/notifications",
           onClick: () => State.update({ open: !!state.open }),
         }}
       />
@@ -156,7 +156,7 @@ const Notification = ({ count, disabled }) => {
               <Widget
                 src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
-                  href: "#/notifications",
+                  href: "/notifications",
                   fill: "outline",
                   variant: "secondary",
                   label: "See all",

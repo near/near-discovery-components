@@ -38,7 +38,7 @@ const Section = styled.div`
   }
 `;
 
-const ButtonLink = styled.a`
+const ButtonLink = styled("Link")`
   display: flex;
   justify-content: center;
   gap: 8px;
@@ -77,7 +77,7 @@ return (
       {context.accountId && (
         <ButtonLink
           key="edit"
-          href={"#/${REPL_MOB_2}/widget/Welcome.RHS.Editor"}
+          href={"/${REPL_MOB_2}/widget/Welcome.RHS.Editor"}
         >
           <i className="bi bi-list" /> Edit Widgets
         </ButtonLink>

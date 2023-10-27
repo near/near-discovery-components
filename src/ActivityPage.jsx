@@ -4,7 +4,7 @@ if (props.tab && props.tab !== selectedTab) {
   setSelectedTab(props.tab);
 }
 
-const activityUrl = `#/${REPL_ACCOUNT}/widget/ActivityPage`;
+const activityUrl = `/${REPL_ACCOUNT}/widget/ActivityPage`;
 
 const Wrapper = styled.div`
   margin-top: calc(var(--body-top-padding) * -1);
@@ -67,7 +67,7 @@ const Tabs = styled.div`
   }
 `;
 
-const TabsButton = styled.a`
+const TabsButton = styled("Link")`
   display: inline-flex;
   align-items: center;
   justify-content: center;

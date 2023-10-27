@@ -1,7 +1,7 @@
 const accountId = props.accountId;
 const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
 const tags = Object.keys(profile.tags || {});
-const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
+const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 
 State.init({
   show: false,
@@ -38,7 +38,7 @@ const CardLeft = styled.div`
   }
 `;
 
-const Avatar = styled.a`
+const Avatar = styled("Link")`
   width: 60px;
   height: 60px;
   flex-shrink: 0;
@@ -59,7 +59,7 @@ const Avatar = styled.a`
   }
 `;
 
-const TextLink = styled.a`
+const TextLink = styled("Link")`
   display: block;
   margin: 0;
   font-size: 14px;

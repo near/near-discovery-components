@@ -77,12 +77,12 @@ return (
           <CommitButton data={{ profile: state.profile }}>
             Save profile
           </CommitButton>
-          <a
+          <Link
             className="btn btn-outline-primary ms-2"
-            href={`#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`}
+            href={`/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`}
           >
             View profile
-          </a>
+          </Link>
         </div>
       </div>
       <div className="col-lg-6">

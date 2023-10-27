@@ -134,7 +134,7 @@ const Tabs = styled.div`
 
 const TabsButton =
   props.tabButtonStyle ??
-  styled.a`
+  styled("Link")`
     display: inline-flex;
     align-items: center;
     justify-content: center;

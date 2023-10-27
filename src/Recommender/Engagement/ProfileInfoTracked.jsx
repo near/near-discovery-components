@@ -6,7 +6,7 @@ State.init({
   clicked: false,
 });
 
-const Wrapper = styled.a`
+const Wrapper = styled("Link")`
   text-decoration: none !important;
 
   .solid-state {

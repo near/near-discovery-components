@@ -12,7 +12,7 @@ const CenteredLinksWrapper = styled.div`
   align-items: center;
 `;
 
-const TextLink = styled.a`
+const TextLink = styled("Link")`
   display: block;
   margin: 0;
   font-size: 14px;

@@ -67,7 +67,7 @@ const Items = styled.div`
   }
 `;
 
-const Card = styled.a`
+const Card = styled("Link")`
   display: block;
   text-decoration: none;
   padding-top: 100%;
@@ -135,7 +135,7 @@ return (
       {allNfts.map((nft, i) => (
         <Card
           key={i}
-          href={`#/${REPL_MOB_2}/widget/NftImage?tokenId=${nft.token_id}&contractId=${nft.contractId}`}
+          href={`/${REPL_MOB_2}/widget/NftImage?tokenId=${nft.token_id}&contractId=${nft.contractId}`}
         >
           <Widget
             src="${REPL_MOB_2}/widget/NftImage"

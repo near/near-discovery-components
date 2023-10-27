@@ -33,7 +33,7 @@ const Title = styled.div`
   font-weight: 500;
 `;
 
-const Settings = styled.a`
+const Settings = styled("Link")`
   display: flex;
   width: 40px;
   height: 40px;
@@ -78,7 +78,7 @@ return (
       <Widget
         src="${REPL_ACCOUNT}/widget/DIG.Button"
         props={{
-          href: "#/notifications-settings",
+          href: "/notifications-settings",
           icon: "ph-bold ph-gear-six",
           variant: "secondary",
           fill: "outline",

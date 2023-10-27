@@ -1,6 +1,6 @@
 const limitPerPage = 21;
 let people = [];
-const peopleUrl = "#/${REPL_ACCOUNT}/widget/PeoplePage";
+const peopleUrl = "/${REPL_ACCOUNT}/widget/PeoplePage";
 let followingData = null;
 let followersData = null;
 const fromContext = props;
@@ -127,16 +127,6 @@ const Text = styled.p`
     font-weight: 600;
     color: #11181c;
   }
-
-  &[href] {
-    display: inline-flex;
-    gap: 0.25rem;
-
-    &:hover,
-    &:focus {
-      text-decoration: underline;
-    }
-  }
 `;
 
 const Items = styled.div`
@@ -203,7 +193,7 @@ const Tabs = styled.div`
   }
 `;
 
-const TabsButton = styled.a`
+const TabsButton = styled("Link")`
   display: inline-flex;
   align-items: center;
   justify-content: center;

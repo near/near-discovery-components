@@ -14,7 +14,7 @@ const onPointerUp =
     }
   });
 
-const Card = styled.a`
+const Card = styled("Link")`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -25,7 +25,7 @@ const Card = styled.a`
   margin-left: 10px;
 `;
 
-const Thumbnail = styled.a`
+const Thumbnail = styled("Link")`
   display: block;
   width: 40px;
   height: 40px;
@@ -92,7 +92,7 @@ const Body = styled.div`
   text-overflow: ${(p) => (p.ellipsis ? "ellipsis" : "")};
 `;
 
-const TextLink = styled.a`
+const TextLink = styled("Link")`
   display: block;
   margin: 0;
   font-size: 12px;
@@ -125,7 +125,7 @@ const Text = styled.p`
   }
 `;
 
-const ButtonLink = styled.a`
+const ButtonLink = styled("Link")`
   display: inline-flex;
   align-items: right;
   justify-content: center;
@@ -163,13 +163,7 @@ return (
           />
         </Thumbnail>
         <WidgetName>
-          <TextLink
-            as="a"
-            href={detailsUrl}
-            onPointerUp={onPointerUp}
-            bold
-            ellipsis
-          >
+          <TextLink href={detailsUrl} onPointerUp={onPointerUp} bold ellipsis>
             {metadata.name ?? widgetName}
           </TextLink>
         </WidgetName>
@@ -177,7 +171,7 @@ return (
     </HeaderAbove>
 
     <Body ellipsis={true}>
-      <TextLink as="a" href={accountUrl} onPointerUp={onPointerUp}>
+      <TextLink href={accountUrl} onPointerUp={onPointerUp}>
         @{accountId}
       </TextLink>
     </Body>
@@ -191,11 +185,11 @@ return (
           cursor: "pointer",
         }}
       >
-        <a href={appUrl}>
+        <Link href={appUrl}>
           <Text small bold>
             <i className="bi bi-arrow-right"></i>
           </Text>
-        </a>
+        </Link>
       </button>
     </ButtonLink>
   </Card>

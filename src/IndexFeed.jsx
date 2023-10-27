@@ -113,7 +113,9 @@ const computeFetchFrom = (items, limit, previouslyFoundItems) => {
 
 const mergeItems = (newItems) => {
   const items = [
-    ...new Set([...newItems, ...(state.items || [])].map((i) => JSON.stringify(i))),
+    ...new Set(
+      [...newItems, ...(state.items || [])].map((i) => JSON.stringify(i))
+    ),
   ].map((i) => JSON.parse(i));
   items.sort((a, b) => a.blockHeight - b.blockHeight);
   if (index.options.order === "desc") {
@@ -203,9 +205,9 @@ const fetchMore =
     ? loader
     : state.displayCount < state.items.length && (
         <div key={"loader more"}>
-          <a href="javascript:void" onClick={(e) => makeMoreItems()}>
+          <button type="button" onClick={(e) => makeMoreItems()}>
             {props.loadMoreText ?? "Load more..."}
-          </a>
+          </button>
         </div>
       ));
 

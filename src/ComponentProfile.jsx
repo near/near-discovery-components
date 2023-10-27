@@ -4,7 +4,7 @@ const metadata = Social.get(
   "final"
 );
 
-const Wrapper = styled.a`
+const Wrapper = styled("Link")`
   display: grid;
   align-items: center;
   gap: 12px;
@@ -56,7 +56,7 @@ const Thumbnail = styled.div`
 `;
 
 return (
-  <Wrapper href={`#/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${props.src}`}>
+  <Wrapper href={`/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${props.src}`}>
     <Thumbnail>
       <Widget
         src="${REPL_MOB}/widget/Image"

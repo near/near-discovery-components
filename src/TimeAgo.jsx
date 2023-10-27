@@ -1,4 +1,4 @@
-const { alwaysRelative = false, blockHeight, blockTimestamp } = props;
+const { alwaysRelative, blockHeight, blockTimestamp } = props;
 
 if (!blockTimestamp) {
   return (
@@ -17,7 +17,7 @@ const blockTimestampMs = Math.floor(blockTimestamp / 1000000); // Convert nanose
 const date = new Date(blockTimestampMs);
 const dateNow = new Date();
 
-const timeAgo = (diffSec) => {
+const timeAgo = (diffMs) => {
   if (alwaysRelative) {
     const diffSec = diffMs / 1000;
     const diffMin = diffSec / 60;
@@ -30,19 +30,19 @@ const timeAgo = (diffSec) => {
 
     const diffMonths = Math.round(diffDays / 30);
     if (diffMonths < 12) {
-      return diffMonths === 1 ? "1 month" : `${diffMonths} months`;
+      return diffMonths === 1 ? "1 month ago" : `${diffMonths} months ago`;
     }
 
     const diffYears = Math.round(diffDays / 365);
-    return diffYears === 1 ? "1 yr" : `${diffYears} yrs`;
+    return diffYears === 1 ? "1 yr ago" : `${diffYears} yrs ago`;
   }
 
-  return diffSec < 60000
-    ? `${(diffSec / 1000) | 0}s ago`
-    : diffSec < 3600000
-    ? `${(diffSec / 60000) | 0}m ago`
-    : diffSec < 86400000
-    ? `${(diffSec / 3600000) | 0}h ago`
+  return diffMs < 60000
+    ? `${(diffMs / 1000) | 0}s ago`
+    : diffMs < 3600000
+    ? `${(diffMs / 60000) | 0}m ago`
+    : diffMs < 86400000
+    ? `${(diffMs / 3600000) | 0}h ago`
     : date.getFullYear() === dateNow.getFullYear()
     ? date.toLocaleString("en-US", {
         month: "short",

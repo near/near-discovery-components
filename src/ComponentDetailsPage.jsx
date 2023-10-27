@@ -533,6 +533,7 @@ return (
       <Sidebar>
         <SideBarContainer>
           <SmallTitle style={{ "padding-top": "20px" }}>Developer</SmallTitle>
+
           <Widget
             src="${REPL_ACCOUNT}/widget/AccountProfile"
             props={{
@@ -588,17 +589,19 @@ return (
                   {state.componentImpressionsData.impressions ?? "..."}
                 </Text>
               </div>
-              <Graph>
-                <Widget
-                  src="${REPL_ACCOUNT}/widget/Chart"
-                  props={{
-                    definition:
-                      state.componentImpressionsData.weekly_chart_data_config,
-                    width: "180px",
-                    height: "100px",
-                  }}
-                />
-              </Graph>
+              {state.componentImpressionsData.weekly_chart_data_config && (
+                <Graph>
+                  <Widget
+                    src="${REPL_ACCOUNT}/widget/Chart"
+                    props={{
+                      definition:
+                        state.componentImpressionsData.weekly_chart_data_config,
+                      width: "180px",
+                      height: "100px",
+                    }}
+                  />
+                </Graph>
+              )}
             </GraphContainer>
             <Text small style={{ "margin-bottom": "10px" }}>
               Last updated

@@ -389,8 +389,8 @@ return (
 
                     <P1>
                       <H3>
-                        <S1>🌟</S1> NEARCON APP QUEST: UPVOTE Your Favorite
-                        dApp! <S1>🚀</S1>
+                        <S1>🌟</S1> NCON Bounty - App Upvoting: Upvote Your
+                        Favorite App <S1>🚀</S1>
                       </H3>
                     </P1>
 

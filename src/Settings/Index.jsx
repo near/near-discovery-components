@@ -1,4 +1,4 @@
-let { idOS, ...forwardedProps } = props;
+let { idosConnected, ...forwardedProps } = props;
 
 const activeTab = Storage.get("settings-tab");
 // tab names: account, content, news, identity, notifications
@@ -19,7 +19,7 @@ const renderContent = () => {
     case "notifications":
       return <div>Not implemented yet</div>;
     case "identity":
-      return <Widget src="${REPL_ACCOUNT}/widget/Settings.Identity.Index" props={{ ...forwardedProps }} />;
+      return <Widget src="${REPL_ACCOUNT}/widget/Settings.Identity.Index" props={{ idosConnected, ...forwardedProps }} />;
     default:
       return null;
   }

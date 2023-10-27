@@ -1,3 +1,4 @@
+const { idosCredentials, ...forwardedProps } = props;
 
 const Wrapper = styled.div`
   display: flex;
@@ -64,14 +65,14 @@ const CredentialButton = ({ href, disabled, onClick }) => (
   />
 );
 
-let verificationItems = [
+const verificationItems = [
   {
-    id: "personhood",
+    id: "human",
     title: "Proof of personhood",
     text: "This verification helps other users know that you are not a bot. Choose from various providers to earn this verification badge.",
     icon: <IconSealUser />,
     verified: false,
-    button: <CredentialButton onClick={() => Storage.set("personhood-alert", true)} />,
+    button: <CredentialButton href="#" disabled />,
   },
   {
     id: "kyc",
@@ -79,27 +80,25 @@ let verificationItems = [
     text: "This verification helps other users trust transactions with your account. Choose from various providers to earn this verification badge.",
     icon: <IconSealCheck />,
     verified: false,
-    button: <CredentialButton href="#" disabled />,
+    button: <CredentialButton onClick={() => Storage.set("kyc-alert", true)} />,
   },
 ];
 
-verificationItems = verificationItems.filter((item) => !item.verified);
-
-
-// useEffect(() => {
-//   if (props.getUserInfo) {
-//     const info = props.getUserInfo();
-//     console.log("verifications | user info", info);
-//   }
-// }, [props.getUserInfo]);
-
-// console.log("verifications | user info", info);
+const verifiedItems = verificationItems.filter((item) => !item.verified);
 
 return (
   <Wrapper>
+    <Widget
+      src="${REPL_ACCOUNT}/widget/Settings.Identity.Verifications.List"
+      props={{
+        idosCredentials,
+        verificationItems,
+      }}
+    />
+
     <Title>Verifications</Title>
 
-    {verificationItems.length === 0 ? (
+    {verifiedItems.length === 0 ? (
       <Widget
         src="${REPL_ACCOUNT}/widget/Settings.Identity.Verifications.Card"
         props={{
@@ -109,7 +108,7 @@ return (
         }}
       />
     ) : (
-      verificationItems.map((item) => (
+      verifiedItems.map((item) => (
         <Widget
           src="${REPL_ACCOUNT}/widget/Settings.Identity.Verifications.Card"
           key={item.id}

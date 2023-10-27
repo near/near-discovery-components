@@ -39,10 +39,10 @@ const ListItemWrapper = styled.div`
   gap: 6px;
 `;
 
-const ListItem = ({ children }) => (
+const ListItem = ({ text }) => (
   <ListItemWrapper>
     <i className="ph ph-check" />
-    {children}
+    {text}
   </ListItemWrapper>
 );
 
@@ -52,9 +52,9 @@ const Content = () => (
     <Title>Get verified &amp; own your identity data</Title>
     <Description>
       How does it work?
-      <ListItem>Verify your identity with Fractal</ListItem>
-      <ListItem>Store your data in idOS</ListItem>
-      <ListItem>Be the true owner of your data</ListItem>
+      <ListItem text="Verify your identity with Fractal" />
+      <ListItem text="Store your data in idOS" />
+      <ListItem text="Be the true owner of your data" />
     </Description>
   </Wrapper>
 );
@@ -78,7 +78,7 @@ const Confirm = () => (
       label: "Get started",
       variant: "primary",
       onClick: onConfirm,
-      // href: idOSVerificationLink,
+      href: idOSVerificationLink,
       style: { width: "100%" },
     }}
   />

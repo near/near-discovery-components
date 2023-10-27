@@ -46,34 +46,41 @@ const menuItems = [
     id: "account",
     icon: "ph-bold ph-users",
     label: "Account preferences",
+    disabled: true,
   },
   {
     id: "content",
     icon: "ph-bold ph-book-open",
     label: "Content preferences",
+    disabled: true,
   },
   {
     id: "news",
     icon: "ph-bold ph-newspaper",
     label: "News feed",
+    disabled: true,
   },
   {
     id: "identity",
     icon: "ph-bold ph-shield-check",
     label: "Identity & data privacy",
+    disabled: false,
   },
   {
     id: "notifications",
     icon: "ph-bold ph-bell",
     label: "Notifications",
+    disabled: true,
   },
 ];
+
+const filteredMenuItems = menuItems.filter((item) => item.disabled === false);
 
 return (
   <Wrapper>
     <Title>Settings</Title>
 
-    {menuItems.map((item) => (
+    {filteredMenuItems.map((item) => (
       <MenuItem
         key={`settings-${item.id}`}
         onClick={() => onClick(item.id)}

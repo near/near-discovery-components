@@ -1,8 +1,6 @@
-const modalOpen = Storage.get("personhood-alert") ?? false;
+const modalOpen = Storage.get("kyc-alert") ?? false;
 
-State.init({
-  showBanner: false,
-});
+const [showBanner, setShowBanner] = useState(false);
 
 const Wrapper = styled.div`
   display: flex;
@@ -29,7 +27,9 @@ const Icon = styled.i`
   cursor: pointer;
 `;
 
-const bannerToggle = () => State.update({ showBanner: !state.showBanner });
+const bannerToggle = useCallback(() => setShowBanner(!showBanner), [showBanner]);
+
+console.log("idosCredentials: ", props.idosCredentials);
 
 return (
   <Wrapper>
@@ -41,19 +41,33 @@ return (
     <Widget
       src="${REPL_ACCOUNT}/widget/Settings.Identity.Banner"
       props={{
-        open: state.showBanner,
+        open: showBanner,
         onClick: bannerToggle,
       }}
     />
 
-    <Widget src="${REPL_ACCOUNT}/widget/Settings.Identity.Verifications.Index" props={{ ...props }} />
+    {!props.idosConnected && (
+      <Widget
+        src="${REPL_ACCOUNT}/widget/DIG.Button"
+        props={{
+          variant: "primary",
+          label: "Connect to idOS",
+          disabled: disabled ?? !context.accountId,
+          onClick: props.connectIdOS,
+        }}
+      />
+    )}
+
+    {props.idosConnected && (
+      <Widget src="${REPL_ACCOUNT}/widget/Settings.Identity.Verifications.Index" props={{ ...props }} />
+    )}
 
     <Widget
       src="${REPL_ACCOUNT}/widget/Settings.Identity.Alert"
       props={{
         open: modalOpen,
-        onOpenChange: () => Storage.set("personhood-alert", !modalOpen),
-        onConfirm: props.connectIdOS,
+        onOpenChange: () => Storage.set("kyc-alert", !modalOpen),
+        onConfirm: () => {},
       }}
     />
   </Wrapper>

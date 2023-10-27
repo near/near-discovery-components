@@ -30,7 +30,8 @@ function loadData() {
         };
         const appUrl = `${detailsUrl}${app.widget_name}`;
         const imgURL = `https://ipfs.near.social/ipfs/${image_cid}`;
-
+        
+        app.appUrl = appUrl
         app.recentTag = app.lastest_tag;
 
         const uniqueTags = Array.from(new Set(app.tags));

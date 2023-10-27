@@ -1,7 +1,7 @@
 State.init({
   apps: [],
   isLoading: true,
-  selectedTab: props.tab,
+  selectedTab: props.tab || "Event Guide",
 });
 if (props.tab && props.tab !== state.selectedTab) {
   State.update({
@@ -30,8 +30,8 @@ function loadData() {
         };
         const appUrl = `${detailsUrl}${app.widget_name}`;
         const imgURL = `https://ipfs.near.social/ipfs/${image_cid}`;
-        
-        app.appUrl = appUrl
+
+        app.appUrl = appUrl;
         app.recentTag = app.lastest_tag;
 
         const uniqueTags = Array.from(new Set(app.tags));
@@ -338,7 +338,9 @@ return (
                             Help Spread the word and get more Apps in this
                             category to participate in the App Upvoting event,
                             instructions in the
-                            <Link href={`${appLibraryIndexUrl}?tab=Event+Guide`}>
+                            <Link
+                              href={`${appLibraryIndexUrl}?tab=Event+Guide`}
+                            >
                               Event Guide Section
                             </Link>
                             .<br></br> Explore in{" "}
@@ -377,6 +379,12 @@ return (
 
                 {selectedSubTab === "Everyone" && (
                   <>
+                    <P1>
+                      <H2>
+                        Earn NCONs and Help Decide the Featured App on B.O.S. 
+                      </H2>
+                    </P1>
+
                     <P1>
                       <H3>
                         <S1>🌟</S1> NEARCON APP QUEST: UPVOTE Your Favorite

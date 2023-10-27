@@ -300,6 +300,7 @@ const overlay = (
                 accountIdRank: props.accountIdRank || null,
                 accountId: accountId || props.accountId,
                 fromContext: props.fromContext,
+                onFollowed: props.onFollowed,
               }}
             />
           )}

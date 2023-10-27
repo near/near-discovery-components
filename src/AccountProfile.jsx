@@ -66,6 +66,7 @@ const VerifiedBadge = styled.div`
   left: 24px;
   top: 22px;
 `;
+
 const Name = styled.div`
   display: flex;
   gap: 6px;

@@ -172,8 +172,8 @@ return (
       </TagsWrapper>
     )}
 
-    {props.following !== null &&
-    props.followers !== null &&
+    {props.following !== null ||
+    props.followers !== null ||
     props.likers !== null ? (
       <Scores>
         {props.followers > 0 && (

@@ -107,7 +107,10 @@ useEffect(() => {
       }
       let data = result.body.data;
       if (data) {
-        const developerSince = data.eduohe_near_nearcon_2023_widget_activity_feed_widget_activity_aggregate.aggregate.min.block_timestamp;
+        const developerSince =
+          data
+            .eduohe_near_nearcon_2023_widget_activity_feed_widget_activity_aggregate
+            .aggregate.min.block_timestamp;
         State.update({
           developerSince: developerSince,
         });
@@ -145,7 +148,7 @@ function computeWeekLabel(weekDateString) {
 }
 
 function formatDate(date) {
-  return date.toISOString().split('T')[0];
+  return date.toISOString().split("T")[0];
 }
 
 const getComponentImpressions = () => {
@@ -164,12 +167,12 @@ const getComponentImpressions = () => {
       const weekly_chart_data_config = {
         tooltip: {
           trigger: "axis",
-          confine: true
+          confine: true,
         },
         grid: {
           left: "3%",
           right: "4%",
-          containLabel: true
+          containLabel: true,
         },
         xAxis: {
           type: "category",
@@ -177,24 +180,26 @@ const getComponentImpressions = () => {
           data: weekly_chart_data.map((r) => r.Week),
           axisLine: { show: false },
           axisTick: { show: false },
-          axisLabel: { show: false }
+          axisLabel: { show: false },
         },
         yAxis: {
           type: "value",
           splitLine: { show: false },
           axisLine: { show: false },
           axisTick: { show: false },
-          axisLabel: { show: false }
+          axisLabel: { show: false },
         },
-        series: [{
-          name: 'RPC Impressions',
-          type: 'line',
-          smooth: true,
-          data: weekly_chart_data.map((r) => r['RPC Impressions']),
-          areaStyle: {},
-          color: '#59e691',
-          showSymbol: false
-        }]
+        series: [
+          {
+            name: "RPC Impressions",
+            type: "line",
+            smooth: true,
+            data: weekly_chart_data.map((r) => r["RPC Impressions"]),
+            areaStyle: {},
+            color: "#59e691",
+            showSymbol: false,
+          },
+        ],
       };
 
       State.update({
@@ -207,7 +212,10 @@ const getComponentImpressions = () => {
       });
     }
   } catch (error) {
-    console.error("Error on fetching component impression data: ", error.message);
+    console.error(
+      "Error on fetching component impression data: ",
+      error.message
+    );
   }
 };
 
@@ -319,12 +327,12 @@ const Sidebar = styled.div`
 `;
 
 const SideBarContainer = styled.div`
- margin-top: -150px;
-@media (max-width: 995px) {
-  margin-top: 10px;
-  border-top: 1px solid #eceef0;
-}
-`
+  margin-top: -150px;
+  @media (max-width: 995px) {
+    margin-top: 10px;
+    border-top: 1px solid #eceef0;
+  }
+`;
 
 const SmallTitle = styled.h3`
   color: #687076;
@@ -402,8 +410,8 @@ const StatsText = styled.p`
 `;
 
 const GraphContainer = styled.div`
-display: flex;
-flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
   @media (min-width: 450px) {
     flex-direction: row;
@@ -411,9 +419,9 @@ flex-direction: column;
 `;
 
 const Graph = styled.div`
-display: flex;
-margin-top: -50px;
-margin-bottom: 20px;
+  display: flex;
+  margin-top: -50px;
+  margin-bottom: 20px;
   @media (min-width: 450px) {
     margin-left: 30px;
   }
@@ -460,7 +468,6 @@ return (
     </SummaryWrapper>
     <Content>
       <Wrapper>
-
         <Tabs>
           <TabsButton
             href={`${detailsUrl}&tab=about`}
@@ -554,8 +561,11 @@ return (
                 <span className="badge rounded-pill bg-secondary">
                   {state.developerSince ? (
                     <Widget
-                      src="${REPL_ACCOUNT}/widget/TimeAgoComponentDetailsPage"
-                      props={{ blockTimestamp: state.developerSince }}
+                      src="${REPL_ACCOUNT}/widget/TimeAgo"
+                      props={{
+                        alwaysRelative: true,
+                        blockTimestamp: state.developerSince,
+                      }}
                     />
                   ) : (
                     "..."

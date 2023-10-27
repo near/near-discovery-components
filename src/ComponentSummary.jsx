@@ -2,6 +2,7 @@ if (!props.src) return "";
 
 State.init({
   copiedShareUrl: false,
+  showVoteButton: false,
 });
 
 const src = props.src;
@@ -14,6 +15,16 @@ const appUrl = `/${src}`;
 const detailsUrl = `/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${src}`;
 const shareUrl = `https://${REPL_NEAR_URL}${detailsUrl}`;
 const size = props.size || "large";
+const componentDescMaxWords =  props.descMaxWords || 30;
+
+if (props.showDesc && metadata.description) {
+  const text = metadata.description.split(" ");
+  metadata.description = text.slice(0, componentDescMaxWords);
+  if (text.length >= componentDescMaxWords) {
+    metadata.description.push("...");
+  }
+  metadata.description = metadata.description.join(" ");
+}
 
 const primaryActions = {
   open: {
@@ -57,7 +68,7 @@ const Header = styled.div`
 `;
 
 const TagsWrapper = styled.div`
-  margin-bottom: 32px;
+  margin-bottom: 16px;
 `;
 
 const Actions = styled.div`
@@ -170,6 +181,199 @@ const Text = styled.p`
   }
 `;
 
+const votes = Social.index("vote", src);
+
+const dataLoading = votes === null;
+const votesByUsers = {};
+
+(votes || []).forEach((vote) => {
+  if (vote.value.type === "vote") {
+    votesByUsers[vote.accountId] = vote;
+  } else if (vote.value.type === "unvote") {
+    delete votesByUsers[vote.accountId];
+  }
+});
+
+if (state.hasVote === true) {
+  votesByUsers[context.accountId] = {
+    accountId: context.accountId,
+  };
+} else if (state.hasVote === false) {
+  delete votesByUsers[context.accountId];
+}
+
+const accountsWithVotes = Object.keys(votesByUsers);
+const voteCount = accountsWithVotes.length;
+const hasVote = context.accountId && !!votesByUsers[context.accountId];
+
+function checkNearConEventDate() {
+  const today = new Date();
+  const compareDate = new Date('2023-11-05T00:00:00');
+
+  if (today >= compareDate) {
+    return true
+  } else {
+    return false
+  }
+}
+
+function loadAppQuestData() {
+  if (state.apps.length > 0) return;
+
+  asyncFetch(
+    "https://storage.googleapis.com/databricks-near-query-runner/output/nearcon_apps/apps_qualified.json"
+  )
+    .then((res) => {
+        const apps = [JSON.parse(JSON.parse(res.body).data)];
+        if (!apps) return
+
+        const isAppSignedUpToNearConAppQuest = apps.some((app) => app.widget_name === src);
+        const showVoteButton = isAppSignedUpToNearConAppQuest && checkNearConEventDate()
+
+      State.update({
+        showVoteButton
+      });
+    })
+}
+
+loadAppQuestData();
+
+const VoteButton = styled.div`
+  line-height: 20px;
+  min-height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: left;
+  background: inherit;
+  color: inherit;
+  font-size: 16px;
+  .icon {
+    position: relative;
+    &:before {
+      margin: -8px;
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      border-radius: 50%;
+    }
+  }
+
+  .count {
+    margin-left: 8px;
+  }
+
+  &:not([disabled]) {
+    cursor: pointer;
+  }
+
+  &:not([disabled]):hover {
+    opacity: 1 !important;
+
+    .icon:before {
+      background: rgba(255, 215, 0, 0.1);
+    }
+  }
+  .upvoted {
+    color: #FFD700;
+  }
+
+  .loading {
+    @keyframes scaleAnimation {
+     0%, 100% {
+        transform: scale(1) rotate(0deg);
+      }
+      25% {
+        transform: scale(1.2) rotate(-15deg);
+      }
+      50% {
+        transform: scale(1) rotate(0deg);
+      }
+      75% {
+        transform: scale(1.2) rotate(15deg);
+      }
+    }
+
+    transform-origin: center;
+    animation: scaleAnimation 1s ease-in-out infinite;
+  }
+`;
+
+const voteClick = () => {
+  if (state.loading || dataLoading || !context.accountId) {
+    return;
+  }
+  State.update({
+    loading: true,
+  });
+  const type = "vote";
+  const data = {
+    index: {
+      vote: JSON.stringify({
+        key: src,
+        value: {
+          type,
+        },
+      }),
+      nearConAppQuest2023: JSON.stringify({
+        key: src,
+        value: {
+          type,
+        }
+      })
+    },
+  };
+
+  if (item.type === "social" && typeof item.path === "string") {
+    const keys = item.path.split("/");
+    if (keys.length > 0) {
+      data.graph = {
+        vote: {},
+      };
+      let root = data.graph.vote;
+      keys.slice(0, -1).forEach((key) => {
+        root = root[key] = {};
+      });
+      root[keys[keys.length - 1]] = hasVote ? null : "";
+    }
+  }
+
+  if (!hasVote && props.notifyAccountId) {
+    data.index.notify = JSON.stringify({
+      key: props.notifyAccountId,
+      value: {
+        type,
+        item,
+      },
+    });
+  }
+  Social.set(data, {
+    onCommit: () => State.update({ loading: false, hasVote: !hasVote }),
+    onCancel: () => State.update({ loading: false }),
+  });
+};
+
+const title = "Vote";
+
+const inner = (
+  <div className="d-inline-flex align-items-center">
+    <VoteButton
+      disabled={state.loading || dataLoading || !context.accountId}
+      title={title}
+      onClick={voteClick}
+    >
+      <span
+        className={`icon ${state.loading ? "loading " : ""}${hasVote ? "upvoted" : ""
+          }`}
+      >
+        {hasVote ? <i class="bi bi-hand-thumbs-up-fill" /> : <i className="bi bi-hand-thumbs-up"></i>}
+      </span>
+    </VoteButton>
+  </div>
+);
+
 return (
   <Wrapper>
     <Header size={size}>
@@ -190,6 +394,16 @@ return (
         <Text ellipsis>{src}</Text>
       </div>
     </Header>
+
+    {props.showDesc && (
+      <div>
+        {metadata.description ? (
+          <Markdown text={metadata.description} />
+        ) : (
+          <Text>This component has no description.</Text>
+        )}
+      </div>
+    )}
 
     {props.showTags && tags.length > 0 && (
       <TagsWrapper>
@@ -247,6 +461,16 @@ return (
           Share
         </Button>
       </OverlayTrigger>
+      {state.showVoteButton && <Button
+        type="button"
+        onClick={voteClick}
+      >
+        {inner}
+        Upvote
+        {context.accountId == accountId ? `(${voteCount})` : null}
+      </Button>
+      }
+
     </Actions>
   </Wrapper>
 );

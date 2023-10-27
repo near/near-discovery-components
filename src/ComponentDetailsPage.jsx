@@ -1,6 +1,16 @@
+const GRAPHQL_ENDPOINT = "https://near-queryapi.api.pagoda.co";
+
 State.init({
   copiedShareUrl: false,
   selectedTab: props.tab ?? "about",
+  isLoadingRpcImpressions: true,
+  componentImpressionsData: {
+    impressions: undefined,
+    weekly_chart_data_config: undefined,
+    executed_at: undefined,
+  },
+  developerSince: undefined,
+  numberOfComponentsPublished: 0,
 });
 
 if (props.tab && props.tab !== state.selectedTab) {
@@ -19,6 +29,95 @@ const metadata = data.metadata;
 const tags = Object.keys(metadata.tags || {});
 const detailsUrl = `/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${src}`;
 const shareUrl = `https://${REPL_NEAR_URL}${detailsUrl}`;
+const accountProfileDescription =
+  Social.getr(`${accountId}/profile`).description ?? "";
+const descMaxWords = 15;
+const componentDescMaxWords = 25;
+if (accountProfileDescription) {
+  const text = accountProfileDescription.split(" ");
+  accountProfileDescription = text.slice(0, descMaxWords);
+  if (text.length >= descMaxWords) {
+    accountProfileDescription.push("...");
+  }
+  accountProfileDescription = accountProfileDescription.join(" ");
+}
+
+function fetchGraphQL(operationsDoc, operationName, variables) {
+  return asyncFetch(`${GRAPHQL_ENDPOINT}/v1/graphql`, {
+    method: "POST",
+    headers: { "x-hasura-role": "eduohe_near" },
+    body: JSON.stringify({
+      query: operationsDoc,
+      variables: variables,
+      operationName: operationName,
+    }),
+  });
+}
+
+const indexerQueries = `
+  query GetWidgetCount {
+   eduohe_near_nearcon_2023_widget_activity_feed_widget_activity_aggregate(
+      where: {account_id: {_eq: "${accountId}"}}
+    ) {
+      aggregate {
+        count(distinct: true, columns: widget_name)
+      }
+    }
+  }
+  query GetDeveloperSince {
+  eduohe_near_nearcon_2023_widget_activity_feed_widget_activity_aggregate(
+      where: {account_id: {_eq: "${accountId}"}}
+    ) {
+      aggregate {
+        min {
+          block_timestamp
+        }
+      }
+    }
+  }
+`;
+
+useEffect(() => {
+  fetchGraphQL(indexerQueries, "GetWidgetCount", {}).then((result) => {
+    if (result.status === 200 && result.body) {
+      if (result.body.errors) {
+        console.log("error:", result.body.errors);
+        return;
+      }
+      let data = result.body.data;
+      if (data) {
+        const noComponents =
+          data
+            .eduohe_near_nearcon_2023_widget_activity_feed_widget_activity_aggregate
+            .aggregate.count;
+        State.update({
+          numberOfComponentsPublished: noComponents,
+        });
+      }
+    }
+  });
+}, []);
+
+useEffect(() => {
+  fetchGraphQL(indexerQueries, "GetDeveloperSince", {}).then((result) => {
+    if (result.status === 200 && result.body) {
+      if (result.body.errors) {
+        console.log("error:", result.body.errors);
+        return;
+      }
+      let data = result.body.data;
+      if (data) {
+        const developerSince =
+          data
+            .eduohe_near_nearcon_2023_widget_activity_feed_widget_activity_aggregate
+            .aggregate.min.block_timestamp;
+        State.update({
+          developerSince: developerSince,
+        });
+      }
+    }
+  });
+}, []);
 
 const dependencyMatch =
   code && code.matchAll(/<Widget[\s\S]*?src=.*?"(.+)"[\s\S]*?\/>/g);
@@ -34,6 +133,95 @@ const sourceCode = `
 ${code}
 \`\`\`
 `;
+
+const STORE = "storage.googleapis.com";
+const BUCKET = "databricks-near-query-runner";
+const BASE_URL = `https://${STORE}/${BUCKET}/output/near_bos_component_details/component_rpc_loads`;
+const dataset = `${BASE_URL}/${accountId}/widget/${widgetName}`;
+
+function computeWeekLabel(weekDateString) {
+  let startDate = new Date(weekDateString);
+  let endDate = new Date(startDate);
+  endDate.setDate(startDate.getDate() + 6);
+  let label = `${formatDate(startDate)} - ${formatDate(endDate)}`;
+  return label;
+}
+
+function formatDate(date) {
+  return date.toISOString().split("T")[0];
+}
+
+const getComponentImpressions = () => {
+  try {
+    const url = `${dataset}.json`;
+    const res = fetch(url);
+    if (res.ok) {
+      const parsedResults = JSON.parse(res.body);
+      const weekly_chart_data = parsedResults.data.rpc_loads
+        .sort((a, b) => new Date(a.week) - new Date(b.week))
+        .map((row) => ({
+          "RPC Impressions": row.number_of_rpc_loads,
+          Week: computeWeekLabel(row.week),
+        }));
+
+      const weekly_chart_data_config = {
+        tooltip: {
+          trigger: "axis",
+          confine: true,
+        },
+        grid: {
+          left: "3%",
+          right: "4%",
+          containLabel: true,
+        },
+        xAxis: {
+          type: "category",
+          boundaryGap: false,
+          data: weekly_chart_data.map((r) => r.Week),
+          axisLine: { show: false },
+          axisTick: { show: false },
+          axisLabel: { show: false },
+        },
+        yAxis: {
+          type: "value",
+          splitLine: { show: false },
+          axisLine: { show: false },
+          axisTick: { show: false },
+          axisLabel: { show: false },
+        },
+        series: [
+          {
+            name: "RPC Impressions",
+            type: "line",
+            smooth: true,
+            data: weekly_chart_data.map((r) => r["RPC Impressions"]),
+            areaStyle: {},
+            color: "#59e691",
+            showSymbol: false,
+          },
+        ],
+      };
+
+      State.update({
+        isLoadingRpcImpressions: false,
+        componentImpressionsData: {
+          impressions: parsedResults.data.total_rpc_loads,
+          weekly_chart_data_config,
+          executed_at: parsedResults.executed_at,
+        },
+      });
+    }
+  } catch (error) {
+    console.error(
+      "Error on fetching component impression data: ",
+      error.message
+    );
+  }
+};
+
+if (state.isLoadingRpcImpressions) {
+  getComponentImpressions();
+}
 
 const Wrapper = styled.div`
   padding-bottom: 48px;
@@ -92,6 +280,20 @@ const TabsButton = styled("Link")`
     height: 3px;
     background: #59e692;
   }
+
+  > span {
+    margin-right: 8px;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+
+    > span {
+      margin-right: 0;
+      margin-bottom: 8px;
+    }
+  }
 `;
 
 const Content = styled.div`
@@ -120,9 +322,15 @@ const Sidebar = styled.div`
   }
 
   @media (max-width: 995px) {
-    padding-bottom: 32px;
-    border-bottom: 1px solid #eceef0;
     grid-row: 1;
+  }
+`;
+
+const SideBarContainer = styled.div`
+  margin-top: -150px;
+  @media (max-width: 995px) {
+    margin-top: 10px;
+    border-top: 1px solid #eceef0;
   }
 `;
 
@@ -131,7 +339,7 @@ const SmallTitle = styled.h3`
   font-weight: 600;
   font-size: 12px;
   line-height: 15px;
-  margin-bottom: 32px;
+  margin-bottom: 20px;
   text-transform: uppercase;
 
   @media (max-width: 770px) {
@@ -162,8 +370,76 @@ const Text = styled.p`
   }
 `;
 
-const Dependency = styled.div`
+const Component = styled.div`
   margin-bottom: 24px;
+`;
+
+const Icon = styled.i`
+  font-size: 15px;
+  fill: currentColor;
+  padding-right: 5px;
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 25px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid #eceef0;
+`;
+
+const Stats = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const StatsBadge = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+`;
+
+const StatsText = styled.p`
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: "#11181C";
+  font-weight: ${(p) => (p.bold ? "600" : "400")};
+  font-size: ${(p) => (p.small ? "12px" : "14px")};
+  border-radius: 12px;
+`;
+
+const GraphContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: 450px) {
+    flex-direction: row;
+  }
+`;
+
+const Graph = styled.div`
+  display: flex;
+  margin-top: -50px;
+  margin-bottom: 20px;
+  @media (min-width: 450px) {
+    margin-left: 30px;
+  }
+`;
+const Bio = styled.div`
+  color: #11181c;
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 15px;
+  margin-top: 20px;
+
+  > *:last-child {
+    margin-bottom: 15 !important;
+  }
+
+  @media (max-width: 900px) {
+    margin-bottom: 15px;
+  }
 `;
 
 if (!exists) {
@@ -176,166 +452,194 @@ if (!exists) {
 }
 
 return (
-  <Wrapper>
+  <>
     <SummaryWrapper>
       <Widget
         src="${REPL_ACCOUNT}/widget/ComponentSummary"
         props={{
           primaryAction: "open",
           size: "large",
-          showTags: false,
+          showTags: true,
+          showDesc: true,
+          descMaxWords: componentDescMaxWords,
           src,
         }}
       />
     </SummaryWrapper>
+    <Content>
+      <Wrapper>
+        <Tabs>
+          <TabsButton
+            href={`${detailsUrl}&tab=about`}
+            selected={state.selectedTab === "about"}
+          >
+            <Icon className="bi bi-file-earmark-text" />
+            Read.me
+          </TabsButton>
+          <TabsButton
+            href={`${detailsUrl}&tab=source`}
+            selected={state.selectedTab === "source"}
+          >
+            <Icon className="ph ph-code" />
+            Source & Preview
+          </TabsButton>
+          <TabsButton
+            href={`${detailsUrl}&tab=discussion`}
+            selected={state.selectedTab === "discussion"}
+          >
+            <Icon className="bi bi-chat-text" />
+            Discussion
+          </TabsButton>
+        </Tabs>
 
-    <Tabs>
-      <TabsButton
-        href={`${detailsUrl}&tab=about`}
-        selected={state.selectedTab === "about"}
-      >
-        About
-      </TabsButton>
-
-      <TabsButton
-        href={`${detailsUrl}&tab=source`}
-        selected={state.selectedTab === "source"}
-      >
-        Source
-      </TabsButton>
-
-      <TabsButton
-        href={`${detailsUrl}&tab=history`}
-        selected={state.selectedTab === "history"}
-      >
-        History
-      </TabsButton>
-
-      <TabsButton
-        href={`${detailsUrl}&tab=discussion`}
-        selected={state.selectedTab === "discussion"}
-      >
-        Discussion
-      </TabsButton>
-    </Tabs>
-
-    {state.selectedTab === "about" && (
-      <Content>
-        <div>
-          {metadata.description ? (
-            <Markdown text={metadata.description} />
-          ) : (
-            <Text>This component has no description.</Text>
-          )}
-        </div>
-
-        <Sidebar>
-          {(tags.includes("Coming Soon") || tags.includes("coming-soon")) && (
+        {state.selectedTab === "about" && (
+          <Content noSidebar>
             <div>
-              <Widget
-                src="${REPL_ACCOUNT}/widget/WaitList"
-                props={{ formUrl: "http://eepurl.com/hXyUnf" }}
-              />
+              {metadata.description ? (
+                <Markdown text={metadata.description} />
+              ) : (
+                <Text>This component has no description.</Text>
+              )}
             </div>
-          )}
+          </Content>
+        )}
 
-          <div>
-            <SmallTitle>Developer</SmallTitle>
+        {state.selectedTab === "source" && (
+          <Content noSidebar>
             <Widget
-              src="${REPL_ACCOUNT}/widget/AccountProfile"
+              src="${REPL_ACCOUNT}/widget/ComponentHistory"
+              props={{ widgetPath: src }}
+            />
+          </Content>
+        )}
+
+        {state.selectedTab === "discussion" && (
+          <Content noSidebar>
+            <Widget
+              src="${REPL_ACCOUNT}/widget/NestedDiscussions"
               props={{
-                accountId: accountId,
+                identifier: src,
+                notifyAccountId: accountId,
+                parentComponent: "${REPL_ACCOUNT}/widget/ComponentDetailsPage",
+                parentParams: { tab: "discussion", src },
+                highlightComment: props.highlightComment,
               }}
             />
-          </div>
+          </Content>
+        )}
+      </Wrapper>
+      <Sidebar>
+        <SideBarContainer>
+          <SmallTitle style={{ "padding-top": "20px" }}>Developer</SmallTitle>
+          <Widget
+            src="${REPL_ACCOUNT}/widget/AccountProfile"
+            props={{
+              accountId: accountId,
+            }}
+          />
 
-          {tags.length > 0 && (
-            <div>
-              <SmallTitle>Tags</SmallTitle>
+          {accountProfileDescription && (
+            <Bio>
               <Widget
-                src="${REPL_ACCOUNT}/widget/Tags"
-                props={{
-                  tags,
-                }}
+                src="${REPL_ACCOUNT}/widget/SocialMarkdown"
+                props={{ text: accountProfileDescription }}
               />
-            </div>
+            </Bio>
           )}
-
-          {metadata.linktree?.website && (
-            <div>
-              <SmallTitle>Website</SmallTitle>
-              <TextLink
-                href={`https://${metadata.linktree.website}`}
-                target="_blank"
-              >
-                {metadata.linktree.website}
-                <i className="bi bi-box-arrow-up-right"></i>
-              </TextLink>
-            </div>
-          )}
-
-          <div>
-            <Text small>
-              <i className="bi bi-clock"></i>
+          <Container>
+            <Stats>
+              <StatsBadge>
+                <Icon className="ph ph-code" />
+                <span className="badge rounded-pill bg-secondary">
+                  {state.numberOfComponentsPublished
+                    ? state.numberOfComponentsPublished + " published"
+                    : "..."}
+                </span>
+              </StatsBadge>
+              <StatsBadge>
+                <Icon className="bi bi-calendar" />
+                <span className="badge rounded-pill bg-secondary">
+                  {state.developerSince ? (
+                    <Widget
+                      src="${REPL_ACCOUNT}/widget/TimeAgo"
+                      props={{
+                        alwaysRelative: true,
+                        blockTimestamp: state.developerSince,
+                      }}
+                    />
+                  ) : (
+                    "..."
+                  )}
+                </span>
+              </StatsBadge>
+            </Stats>
+          </Container>
+          <Container>
+            <SmallTitle>Stats</SmallTitle>
+            <GraphContainer>
+              <div style={{ display: "flex", "flex-direction": "column" }}>
+                <Text small style={{ "margin-bottom": "10px" }}>
+                  Impressions
+                </Text>
+                <Text medium bold style={{ "margin-bottom": "10px" }}>
+                  {state.componentImpressionsData.impressions ?? "..."}
+                </Text>
+              </div>
+              <Graph>
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/Chart"
+                  props={{
+                    definition:
+                      state.componentImpressionsData.weekly_chart_data_config,
+                    width: "180px",
+                    height: "100px",
+                  }}
+                />
+              </Graph>
+            </GraphContainer>
+            <Text small style={{ "margin-bottom": "10px" }}>
               Last updated
+            </Text>
+            <Text medium bold style={{ "margin-bottom": "10px" }}>
               <Widget
                 src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
                 props={{ keyPath: `${accountId}/widget/${widgetName}` }}
               />{" "}
               ago.
             </Text>
-          </div>
-        </Sidebar>
-      </Content>
-    )}
-
-    {state.selectedTab === "source" && (
-      <Content>
-        <Markdown text={sourceCode} />
-
-        <Sidebar>
-          <div>
-            <SmallTitle>Dependencies ({dependencySources.length})</SmallTitle>
-
+          </Container>
+          <Container>
+            <SmallTitle>DEPENDENCIES ({dependencySources.length})</SmallTitle>
             {dependencySources.length === 0 && (
               <Text>This component has no dependencies.</Text>
             )}
-
             {dependencySources.map((source) => (
-              <Dependency key={source}>
+              <Component key={source}>
                 <Widget
+                  key={source}
                   src="${REPL_ACCOUNT}/widget/ComponentProfile"
                   props={{ src: source }}
                 />
-              </Dependency>
+              </Component>
             ))}
-          </div>
-        </Sidebar>
-      </Content>
-    )}
-
-    {state.selectedTab === "history" && (
-      <Content noSidebar>
-        <Widget
-          src="${REPL_ACCOUNT}/widget/ComponentHistory"
-          props={{ widgetPath: src }}
-        />
-      </Content>
-    )}
-
-    {state.selectedTab === "discussion" && (
-      <Content>
-        <Widget
-          src="${REPL_ACCOUNT}/widget/NestedDiscussions"
-          props={{
-            identifier: src,
-            notifyAccountId: accountId,
-            parentComponent: "${REPL_ACCOUNT}/widget/ComponentDetailsPage",
-            parentParams: { tab: "discussion", src },
-            highlightComment: props.highlightComment,
-          }}
-        />
-      </Content>
-    )}
-  </Wrapper>
+            {!state.showAllDependencies && dependencySources.length > 5 && (
+              <Widget
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
+                props={{
+                  fill: "outline",
+                  variant: "secondary",
+                  label: "Show All",
+                  size: "small",
+                  style: { width: "30%" },
+                  onClick: () => {
+                    State.update({ showAllDependencies: true });
+                  },
+                }}
+              />
+            )}
+          </Container>
+        </SideBarContainer>
+      </Sidebar>
+    </Content>
+  </>
 );

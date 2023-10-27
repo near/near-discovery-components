@@ -58,32 +58,26 @@ function loadData() {
 loadData();
 
 const Wrapper = styled.div`
-  padding: 100px 0;
-  background: url("https://ipfs.near.social/ipfs/bafkreifbcebsx2gguifpzvd7skcctkdiujgu3gtahmdby4u6kajmavu5bq");
-  background-position: right top;
-  background-size: 100% auto;
-  background-repeat: no-repeat;
-
-  img {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-  }
-  @media (max-width: 1024px) {
-    padding: 50px 0;
-  }
-
-  @media (max-width: 800px) {
-    background-image: none;
-    padding: 2rem 0;
-  }
+  padding: 0 0 100px;
 `;
 
 const Container = styled.div`
   max-width: 1120px;
   margin: 0 auto;
   padding: 0 16px;
-  margin-top: 200px;
+`;
+
+const Banner = styled.div`
+  margin-bottom: 100px;
+
+  img {
+    display: block;
+    width: 100%;
+  }
+
+  @media (max-width: 1024px) {
+    margin-bottom: 2rem;
+  }
 `;
 
 const Main = styled.div`
@@ -127,6 +121,8 @@ const MenuLink = styled("Link")`
   padding: 0.5rem 1rem;
   border-radius: 7px;
   transition: background-color 0.3s;
+  white-space: nowrap;
+
   &:hover,
   &:focus {
     background-color: rgb(187 188 188);
@@ -288,6 +284,10 @@ const categories = [
 
 return (
   <Wrapper>
+    <Banner>
+      <img src="https://ipfs.near.social/ipfs/bafkreifbcebsx2gguifpzvd7skcctkdiujgu3gtahmdby4u6kajmavu5bq" />
+    </Banner>
+
     <Container>
       <Main>
         <Menu>

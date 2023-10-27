@@ -338,13 +338,13 @@ return (
                             Help Spread the word and get more Apps in this
                             category to participate in the App Upvoting event,
                             instructions in the
-                            <a href={`${appLibraryIndexUrl}?tab=Event+Guide`}>
+                            <Link href={`${appLibraryIndexUrl}?tab=Event+Guide`}>
                               Event Guide Section
-                            </a>
+                            </Link>
                             .<br></br> Explore in{" "}
-                            <a href="near.org/applications">
+                            <Link href="https://near.org/applications">
                               near.org/applications
-                            </a>
+                            </Link>
                             for all B.O.S. Apps in the meantime!
                           </div>
                         )}

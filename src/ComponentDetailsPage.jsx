@@ -106,13 +106,16 @@ useEffect(() => {
         return;
       }
       let data = result.body.data;
-      if (data) {
+      if (
+        data &&
+        data.eduohe_near_nearcon_2023_widget_activity_feed_widget_activity_aggregate
+      ) {
         const developerSince =
           data
             .eduohe_near_nearcon_2023_widget_activity_feed_widget_activity_aggregate
             .aggregate.min.block_timestamp;
         State.update({
-          developerSince: developerSince,
+          developerSince,
         });
       }
     }
@@ -327,7 +330,6 @@ const Sidebar = styled.div`
 `;
 
 const SideBarContainer = styled.div`
-  margin-top: -150px;
   @media (max-width: 995px) {
     margin-top: 10px;
     border-top: 1px solid #eceef0;
@@ -561,6 +563,7 @@ return (
                 <span className="badge rounded-pill bg-secondary">
                   {state.developerSince ? (
                     <Widget
+                      key="foo"
                       src="${REPL_ACCOUNT}/widget/TimeAgo"
                       props={{
                         alwaysRelative: true,
@@ -568,7 +571,7 @@ return (
                       }}
                     />
                   ) : (
-                    "..."
+                    <span>...</span>
                   )}
                 </span>
               </StatsBadge>

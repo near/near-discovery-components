@@ -68,7 +68,7 @@ return (
       />
     ) : (
       <Widget
-        src={`${REPL_ACCOUNT}/widget/Posts`}
+        src={`${REPL_ACCOUNT}/widget/ActivityFeeds.PostsFeedControls`}
         props={{
           GRAPHQL_ENDPOINT,
           accountsFollowing,

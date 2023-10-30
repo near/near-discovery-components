@@ -357,7 +357,7 @@ const inner = (
     >
       {nearcon_logo()}
       <span className={`icon ${state.loading ? "loading " : ""}`}>
-        {hasVote ? <> <i class="bi mr-4 bi-hand-thumbs-down-fill" /> Downvote </> : <> <i className="bi mr-4 bi-hand-thumbs-up"></i> Upvote </>}
+        {hasVote ? <> <i class="bi mx-2 bi-arrow-down-square" /> Downvote </> : <> <i className="bi mx-1 bi-arrow-up-square"></i> Upvote </>}
       </span>
     </VoteButton>
   </div>

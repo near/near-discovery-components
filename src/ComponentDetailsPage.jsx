@@ -437,8 +437,7 @@ const GraphContainer = styled.div`
 
 const Graph = styled.div`
   display: flex;
-  margin-top: -50px;
-  margin-bottom: 20px;
+  margin-top: -24px;
   @media (min-width: 450px) {
     margin-left: 30px;
   }

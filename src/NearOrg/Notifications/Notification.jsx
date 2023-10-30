@@ -116,6 +116,9 @@ const Desc = styled.span`
 
 const Left = styled.div`
   flex-grow: 1;
+  & a {
+    display: inline-block;
+  }
 `;
 
 const Right = styled.div``;

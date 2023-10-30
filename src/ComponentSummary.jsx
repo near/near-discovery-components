@@ -374,6 +374,19 @@ const inner = (
   </div>
 );
 
+function normalizeMarkdown(text) {
+  // convert headers to normal text (remove # symbols)
+  text = text.replace(/^#+\s*/gm, '');
+  // convert bold and italic to normal text (remove * and _ symbols)
+  text = text.replace(/(\*\*|__)(.*?)\1/g, '$2');
+  text = text.replace(/(\*|_)(.*?)\1/g, '$2');
+  // remove links
+  text = text.replace(/\[(.*?)\]\(.*?\)/g, '$1');
+  // remove images
+  text = text.replace(/!\[(.*?)\]\(.*?\)/g, '$1');
+  return text.trim();
+}
+
 return (
   <Wrapper>
     <Header size={size}>
@@ -396,9 +409,9 @@ return (
     </Header>
 
     {props.showDesc && (
-      <div>
+      <div style={{ paddingBottom: "10px" }}>
         {metadata.description ? (
-          <Markdown text={metadata.description} />
+          <Text>{normalizeMarkdown(metadata.description)}</Text>
         ) : (
           <Text>This component has no description.</Text>
         )}

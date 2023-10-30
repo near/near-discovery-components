@@ -33,14 +33,29 @@ const accountProfileDescription =
   Social.getr(`${accountId}/profile`).description ?? "";
 const descMaxWords = 15;
 const componentDescMaxWords = 25;
+
+function normalizeMarkdown(text) {
+  // convert headers to normal text (remove # symbols)
+  text = text.replace(/^#+\s*/gm, '');
+  // convert bold and italic to normal text (remove * and _ symbols)
+  text = text.replace(/(\*\*|__)(.*?)\1/g, '$2');
+  text = text.replace(/(\*|_)(.*?)\1/g, '$2');
+  // remove links
+  text = text.replace(/\[(.*?)\]\(.*?\)/g, '$1');
+  // remove images
+  text = text.replace(/!\[(.*?)\]\(.*?\)/g, '$1');
+  return text.trim();
+}
+
 if (accountProfileDescription) {
-  const text = accountProfileDescription.split(" ");
+  const text = normalizeMarkdown(accountProfileDescription).split(" ");
   accountProfileDescription = text.slice(0, descMaxWords);
   if (text.length >= descMaxWords) {
     accountProfileDescription.push("...");
   }
   accountProfileDescription = accountProfileDescription.join(" ");
 }
+
 
 function fetchGraphQL(operationsDoc, operationName, variables) {
   return asyncFetch(`${GRAPHQL_ENDPOINT}/v1/graphql`, {
@@ -543,10 +558,9 @@ return (
 
           {accountProfileDescription && (
             <Bio>
-              <Widget
-                src="${REPL_ACCOUNT}/widget/SocialMarkdown"
-                props={{ text: accountProfileDescription }}
-              />
+              <Text>
+                {accountProfileDescription}
+              </Text>
             </Bio>
           )}
           <Container>

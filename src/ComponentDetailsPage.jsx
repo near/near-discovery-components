@@ -209,7 +209,7 @@ const getComponentImpressions = () => {
         },
         series: [
           {
-            name: "RPC Impressions",
+            name: "Number of Views",
             type: "line",
             smooth: true,
             data: weekly_chart_data.map((r) => r["RPC Impressions"]),

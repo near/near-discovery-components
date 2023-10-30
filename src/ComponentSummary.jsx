@@ -434,7 +434,7 @@ return (
         {primaryActions[primaryAction].display}
       </ButtonLink>
 
-      <ButtonLink href={`/edit/${src}`}>
+      <ButtonLink href={`/sandbox/${src}`}>
         {context.accountId === accountId ? (
           <>
             <i className="bi bi-pencil-fill"></i> Edit

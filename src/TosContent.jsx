@@ -1,187 +1,181 @@
-//options: default, terms, privacy, community
-State.init({ show: "default", terms: null, privacy: null, community: null });
+let { tosDomainName, termsCid, privacyCid, expand } = props;
 
-const termsCid = "QmZ2vbq3crEb4AzaVZED85mHreccBR8r3XRy9Zjvb3gjBA";
-const privacyCid = "QmZ4R87C4RS85nvXYVAC1YXWdWCszRe3WCCi3FoGvbBPkZ";
-// const communityCid = "QmX8f9iiPJG6YtQQA2zZcwi7UF3PigwudnEzwfoLgArCyQ";
+const [terms, setTerms] = useState(null);
+const [privacy, setPrivacy] = useState(null);
+const [viewMode, setViewMode] = useState("default"); // one of: "default", "terms", "privacy", "community"
 
-// using web3.storage gateway since near.social is failing to resolve
-// NOTE: this gateway has a 200req/hr/ip rate limit
-// https://web3.storage/docs/concepts/w3link/#rate-limits
-// asyncFetch(`https://${termsCid}.ipfs.w3s.link/terms.md`).then((res) => {
-//   State.update({ terms: res.body });
-// });
-
-// now using infura
-asyncFetch(`https://alphanear.infura-ipfs.io/ipfs/${termsCid}`).then((res) => {
-  State.update({ terms: res.body });
-});
-asyncFetch(`https://alphanear.infura-ipfs.io/ipfs/${privacyCid}`).then(
-  (res) => {
-    State.update({ privacy: res.body });
+const fetchTerms = useCallback(() => {
+  try {
+    asyncFetch(`${tosDomainName}/ipfs/${termsCid}`).then((res) => {
+      setTerms(res.body);
+    });
+  } catch (error) {
+    console.error(`Error on fetching terms from ${tosDomainName}: `, error);
   }
-);
-// asyncFetch(`https://alphanear.infura-ipfs.io/ipfs/${communityCid}`).then(
-//   (res) => {
-//     State.update({ community: res.body });
-//   }
-// );
+}, [tosDomainName, termsCid]);
+
+const fetchPrivacy = useCallback(() => {
+  try {
+    asyncFetch(`${tosDomainName}/ipfs/${privacyCid}`).then((res) => {
+      setPrivacy(res.body);
+    });
+  } catch (error) {
+    console.error(`Error on fetching privacy from ${tosDomainName}: `, error);
+  }
+}, [tosDomainName, privacyCid]);
+
+useEffect(() => {
+  fetchTerms();
+  fetchPrivacy();
+}, [tosDomainName, termsCid, privacyCid]);
 
 const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${(p) => p.gap};
+  justify-content: center;
+`;
+
+const Title = styled.h3`
+  font: var(--text-l);
+  font-weight: 700;
+  color: var(--sand12);
+  margin-bottom: 0;
+`;
+
+const Description = styled.p`
+  font: var(--text-base);
+  color: var(--sand11);
+  margin-bottom: 0;
+
+  span {
+    font-weight: 600;
+  }
 `;
 
 const DocBox = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: 0.5rem;
-  border: solid 1px lightgrey;
+  border: 1px solid var(--sand6);
   border-radius: 0.75rem;
   padding: 1rem;
   cursor: pointer;
+  transition: all .2s ease-in-out;
+
   &:hover {
-    color: #26A65A;
-    border-color: #26A65A;
+    color: var(--violet8);
+    border-color: var(--violet9);
   }
 `;
 
 const DocTitle = styled.div`
-display: flex;
-flex-direction: row;
-column-gap: 0.5rem;
-font-weight: bold;
-align-items: center;
+  display: flex;
+  flex-direction: row;
+  column-gap: 0.5rem;
+  align-items: center;
+  font: var(--text-base);
+  color: var(--sand12);
+  font-weight: 700;
+
+  &:hover {
+    color: inherit;
+  }
 `;
 
 const DocSummary = styled.span`
-color: grey
+  color: var(--sand10);
 `;
 
 const Arrow = styled.i`
-  color: #26A65A;
+  color: var(--green11);
   font-size: 1.25rem;
-`;
+  transition: all .2s ease-in-out;
 
-// const DocFullDisplay = styled.div`
-//   display: flex;
-//   flex
-// `;
+  ${DocBox}:hover & {
+    color: var(--violet8);
+  }
+`;
 
 const DocContent = styled.div`
   overflow-y: scroll;
 `;
 
+const BackWrapper = styled.div`
+  display: inline-block;
+  position: sticky;
+  top: 0;
+  padding-bottom: 1.5rem;
+  background-color: var(--white);
+`;
+
+const DocumentSelector = ({ name, title, description }) => (
+  <DocBox
+    onClick={() => {
+      setViewMode(name);
+    }}
+  >
+    <DocTitle>
+      {title}
+      <Arrow className="ph ph-arrow-right" />
+    </DocTitle>
+    <DocSummary>
+      {description}
+    </DocSummary>
+  </DocBox>
+);
+
+const ViewDocument = () => {
+  if (viewMode === "default") return <></>
+  return (
+    <>
+      <BackWrapper>
+        <Widget
+          src="${REPL_ACCOUNT}/widget/DIG.Chip"
+          props={{
+            label: 'Back',
+            iconLeft: "ph ph-arrow-left",
+            onClick: () => setViewMode("default"),
+          }}
+        />
+      </BackWrapper>
+      {viewMode === "terms" && (
+        <DocContent>
+          {terms ? <Markdown text={terms} /> : <p>Loading...</p>}
+        </DocContent>
+      )}
+      {viewMode === "privacy" && (
+        <DocContent>
+          {privacy ? <Markdown text={privacy} /> : <p>Loading...</p>}
+        </DocContent>
+      )}
+    </>
+  )
+};
+
 return (
-  <Wrapper className="d-flex flex-column gap-3 justify-content-center">
-    {state.show === "default" && (
+  <Wrapper gap={viewMode === "default" ? "1rem" : 0}>
+    {viewMode === "default" && (
       <>
-        <h3>Terms of Service and Privacy Policy</h3>
-        <p>
+        <Title>Terms of Service and Privacy Policy</Title>
+        <Description>
           Please read and agree to the following terms and policies to continue
-          using alpha.near.org:
-        </p>
-        <DocBox
-          onClick={() => {
-            State.update({ show: "terms" });
-          }}
-        >
-          <DocTitle>
-            Terms of Service
-            <Arrow className="bi bi-arrow-right" />
-          </DocTitle>
-          <DocSummary>
-            Details on acceptable ways to engage with our software during Alpha
-            Testing
-          </DocSummary>
-        </DocBox>
-        <DocBox
-          onClick={() => {
-            State.update({ show: "privacy" });
-          }}
-        >
-          <DocTitle>
-            Privacy Policy
-            <Arrow className="bi bi-arrow-right" />
-          </DocTitle>
-          <DocSummary>
-            Details on our privacy policy during Alpha Testing
-          </DocSummary>
-        </DocBox>
-        {/*
-        <DocBox
-          onClick={() => {
-            State.update({ show: "community" });
-          }}
-        >
-          <DocTitle>
-            Community Guidelines
-            <Arrow className="bi bi-arrow-right" />
-          </DocTitle>
-          <DocSummary>Summary</DocSummary>
-        </DocBox>
-        */}
+          using <span>{`${REPL_NEAR_URL}`}</span>:
+        </Description>
+
+        <DocumentSelector
+          name="terms"
+          title="Terms of Service"
+          description="Details on acceptable ways to engage with our software"
+        />
+
+        <DocumentSelector
+          name="privacy"
+          title="Privacy Policy"
+          description="Details on our privacy policy"
+        />
       </>
     )}
-    {state.show === "terms" && (
-      <>
-        <button
-          onClick={() => {
-            State.update({ show: "default" });
-            props.expand(false);
-          }}
-          className="btn btn-outline-success"
-          style={{ width: "6rem" }}
-        >
-          <i className="bi bi-arrow-left" />
-          Back
-        </button>
-        <DocContent>
-          {state.terms ? <Markdown text={state.terms} /> : <p>Loading...</p>}
-        </DocContent>
-      </>
-    )}
-    {state.show === "privacy" && (
-      <>
-        <button
-          onClick={() => {
-            State.update({ show: "default" });
-          }}
-          className="btn btn-outline-success"
-          style={{ width: "6rem" }}
-        >
-          <i className="bi bi-arrow-left" />
-          Back
-        </button>
-        <DocContent>
-          {state.privacy ? (
-            <Markdown text={state.privacy} />
-          ) : (
-            <p>Loading...</p>
-          )}
-        </DocContent>
-      </>
-    )}
-    {/*
-    {state.show === "community" && (
-      <>
-        <button
-          onClick={() => {
-            State.update({ show: "default" });
-          }}
-          className="btn btn-outline-success"
-          style={{ width: "6rem" }}
-        >
-          <i className="bi bi-arrow-left" />
-          Back
-        </button>
-        <DocContent>
-          {state.community ? (
-            <Markdown text={state.community} />
-          ) : (
-            <p>Loading...</p>
-          )}
-        </DocContent>
-      </>
-    )}
-    */}
+    <ViewDocument />
   </Wrapper>
 );

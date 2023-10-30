@@ -51,7 +51,7 @@ const Dot = styled.span`
   padding: 0 8px 0 10px;
 `;
 
-const Button = styled.a`
+const Button = styled("Link")`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -116,6 +116,9 @@ const Desc = styled.span`
 
 const Left = styled.div`
   flex-grow: 1;
+  & a {
+    display: inline-block;
+  }
 `;
 
 const Right = styled.div``;
@@ -132,28 +135,28 @@ let postUrl = "";
 switch (type) {
   case "mention":
     accountId = props.initiator;
-    postUrl = `#/${REPL_ACCOUNT}/widget/NearOrg.Notifications.CommentPost?accountId=${accountId}&blockHeight=${blockHeight}`;
+    postUrl = `/${REPL_ACCOUNT}/widget/NearOrg.Notifications.CommentPost?accountId=${accountId}&blockHeight=${blockHeight}`;
     break;
   case "custom":
-    postUrl = `#/${value.widget}?${Object.entries(value.params || {})
+    postUrl = `/${value.widget}?${Object.entries(value.params || {})
       .map(([k, v]) => `${k}=${v}`)
       .join("&")}`;
     break;
   case "like":
     blockHeight = item.blockHeight;
     const pathAccountId = path.split("/")[0];
-    postUrl = `#/${REPL_ACCOUNT}/widget/PostPage?accountId=${pathAccountId}&blockHeight=${blockHeight}`;
+    postUrl = `/${REPL_ACCOUNT}/widget/PostPage?accountId=${pathAccountId}&blockHeight=${blockHeight}`;
     break;
   case "comment":
     accountId = props.initiator;
-    postUrl = `#/${REPL_ACCOUNT}/widget/PostPage?accountId=${accountId}&commentBlockHeight=${blockHeight}`;
+    postUrl = `/${REPL_ACCOUNT}/widget/PostPage?accountId=${accountId}&commentBlockHeight=${blockHeight}`;
     break;
   default:
-    postUrl = `#/${REPL_ACCOUNT}/widget/PostPage?accountId=${accountId}&blockHeight=${blockHeight}`;
+    postUrl = `/${REPL_ACCOUNT}/widget/PostPage?accountId=${accountId}&blockHeight=${blockHeight}`;
 }
 
 const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
-const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
+const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 const isComment = path.indexOf("/post/comment") > 0 || type === "comment";
 const isPost = !isComment && path.indexOf("/post/main") > 0;
 
@@ -212,7 +215,7 @@ return (
     <Icon>{iconType[type]}</Icon>
     <Content>
       <Left>
-        <a href={!props.onClick && profileUrl}>
+        <Link href={!props.onClick && profileUrl}>
           <ProfileOverlay>
             <Widget
               src="${REPL_ACCOUNT}/widget/DIG.Avatar"
@@ -223,15 +226,15 @@ return (
               }}
             />
           </ProfileOverlay>
-        </a>
+        </Link>
         <Text>
           <ProfileOverlay>
             <div style={{ "text-align": "center" }}>
-              <a href={!props.onClick && profileUrl}>
+              <Link href={!props.onClick && profileUrl}>
                 <Username>
                   {profile.name || accountId.split(".near")[0]}
                 </Username>
-              </a>
+              </Link>
               <Action>{notificationMessage[type]}</Action>
             </div>
           </ProfileOverlay>

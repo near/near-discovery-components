@@ -1,10 +1,10 @@
 const accountId = props.accountId || context.accountId;
 const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
-const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
+const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 const verifications = props.verifications;
 const showFlagAccountFeature = props.showFlagAccountFeature ?? false;
 
-const Wrapper = styled.a`
+const Wrapper = styled("Link")`
   display: inline-grid;
   width: 100%;
   align-items: center;
@@ -66,6 +66,7 @@ const VerifiedBadge = styled.div`
   left: 24px;
   top: 22px;
 `;
+
 const Name = styled.div`
   display: flex;
   gap: 6px;

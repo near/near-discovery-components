@@ -1,7 +1,7 @@
 const accountId = props.accountId;
 const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
 const tags = Object.keys(profile.tags || {});
-const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
+const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 
 const abbreviateNumber = (value) => {
   let newValue = value;
@@ -19,7 +19,7 @@ const abbreviateNumber = (value) => {
   return newValue;
 };
 
-const Avatar = styled.a`
+const Avatar = styled("Link")`
   width: 60px;
   height: 60px;
   flex-shrink: 0;
@@ -172,8 +172,8 @@ return (
       </TagsWrapper>
     )}
 
-    {props.following !== null &&
-    props.followers !== null &&
+    {props.following !== null ||
+    props.followers !== null ||
     props.likers !== null ? (
       <Scores>
         {props.followers > 0 && (

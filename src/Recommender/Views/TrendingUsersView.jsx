@@ -50,13 +50,17 @@ const RecommendedUsers = styled.div`
   padding-bottom: 100px;
 `;
 
+const NotEnoughData = styled.div`
+  width: 100vw;
+`;
+
 State.init({
   currentPage: 1,
   userData: [],
-  hasFetched: false,
-  isLoading: true,
+  isLoading: false,
   error: null,
   totalPages: 1,
+  hasLoaded: false,
 });
 
 const updateState = (data, totalPageNum) => {
@@ -64,12 +68,9 @@ const updateState = (data, totalPageNum) => {
     isLoading: false,
     userData: [...state.userData, ...data],
     totalPages: totalPageNum,
+    hasLoaded: true,
   });
 };
-
-const displayedUsers = props.returnElements
-  ? state.userData.slice(0, props.returnElements)
-  : state.userData;
 
 const passedContext = props.fromContext;
 const fromContext = { ...passedContext, scope: props.scope || null };
@@ -81,37 +82,38 @@ const algorithm = "trending_users";
 const dataset = `${BASE_URL}/${algorithm}`;
 
 const getRecommendedUsers = (page) => {
-  const url = `${dataset}_${page}.json`;
+  if (state.hasLoaded) return;
 
-  State.update({
-    hasFetched: true,
-  });
-
-  asyncFetch(url)
-    .then((res) => {
+  State.update({ isLoading: true });
+  try {
+    const url = `${dataset}_${page}.json`;
+    asyncFetch(url).then((res) => {
       if (res.ok) {
-        const parsedResults = JSON.parse(res.body);
-        const totalPageNum = parsedResults.total_pages || 10;
-        updateState(parsedResults.data, totalPageNum);
+        const data = JSON.parse(res.body);
+        const totalPageNum = data.total_pages || 28;
+        updateState(data.data, totalPageNum);
       } else {
-        throw res;
+        State.update({ isLoading: false, error: true, hasLoaded: true });
+        console.error(
+          "Error fetching data. Try reloading the page, or no data available."
+        );
       }
-    })
-    .catch((e) => {
-      State.update({ isLoading: false });
-      console.error("Error on fetching recommended users: ", error);
     });
+  } catch (error) {
+    State.update({ isLoading: false, error: true, hasLoaded: true });
+    console.error("Error on fetching recommended users: ", error.message);
+  }
 };
 
 const loadMore = () => {
   const nextPage = state.currentPage + 1;
   if (nextPage <= state.totalPages) {
-    State.update({ currentPage: nextPage });
+    State.update({ currentPage: nextPage, hasLoaded: false });
     getRecommendedUsers(nextPage);
   }
 };
 
-function returnProfileForUser(user) {
+const returnProfileForUser = (user) => {
   const rawImage =
     user.profile_image_1 || user.profile_image_2 || user.profile_image_3;
   const image =
@@ -135,9 +137,9 @@ function returnProfileForUser(user) {
   }
 
   return null;
-}
+};
 
-if (state.isLoading && !state.hasFetched) {
+if (!state.isLoading && !state.hasLoaded) {
   getRecommendedUsers(state.currentPage);
 }
 
@@ -147,22 +149,20 @@ if (state.error) {
 
 return (
   <RecommendedUsers>
-    {state.isLoading && displayedUsers.length == null && <p>Loading...</p>}
-    {(displayedUsers.length < 4 || displayedUsers == null) &&
-      state.isLoading &&
-      (props.scope == "friends" || props.scope === "similar") && (
-        <p>
-          Follow More Users to Unlock More Personalized Recommendations, See
-          Who’s
-          <a href="https://${REPL_NEAR_URL}/${REPL_ACCOUNT}/widget/PeoplePage?tab=trending">
-            Trending
-          </a>
-        </p>
-      )}
+    {state.isLoading && <p>Loading...</p>}
+    {!state.isLoading && state.error && (
+      <NotEnoughData>
+        404. Data not loading. Try again later.
+      </NotEnoughData>
+    )}
     {!props.sidebar && (
       <Profiles>
-        {state.userData.map((user, index) => (
-          <Profile key={index}>
+        {state.userData.map((user, rank) => (
+          <Profile
+            key={
+              user.recommended_profile || user.similar_profile || user.signer_id
+            }
+          >
             <Widget
               src="${REPL_ACCOUNT}/widget/Recommender.Account.AccountProfileLargeCard"
               props={{
@@ -170,7 +170,7 @@ return (
                   user.recommended_profile ||
                   user.similar_profile ||
                   user.signer_id,
-                accountIdRank: index + 1,
+                accountIdRank: rank + 1,
                 showTags: true,
                 showFollowerStats: true,
                 showFollowButton: state.multiSelectMode === false,
@@ -190,8 +190,8 @@ return (
     )}
     {props.sidebar && (
       <Profiles>
-        {state.userData.map((user, index) => (
-          <Profile key={index}>
+        {state.userData.map((user, rank) => (
+          <Profile key={rank}>
             <Widget
               src="${REPL_ACCOUNT}/widget/Recommender.Account.AccountProfileSidebar"
               props={{
@@ -199,7 +199,7 @@ return (
                   user.recommended_profile ||
                   user.similar_profile ||
                   user.signer_id,
-                accountIdRank: index + 1,
+                accountIdRank: rank + 1,
                 showTags: true,
                 showFollowerStats: true,
                 showFollowButton: state.multiSelectMode === false,

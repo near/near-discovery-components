@@ -14,7 +14,7 @@ const item = {
   blockHeight,
 };
 
-const link = `#/${REPL_MOB_2}/widget/MainPage.Post.Page?accountId=${accountId}&blockHeight=${blockHeight}`;
+const link = `/${REPL_MOB_2}/widget/MainPage.Post.Page?accountId=${accountId}&blockHeight=${blockHeight}`;
 
 const Post = styled.div`
   padding: 24px;

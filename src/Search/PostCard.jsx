@@ -72,7 +72,7 @@ const highlightWordInParagraph = (paragraph, word, charLimit) => {
   return newParagraph;
 };
 
-const Post = styled.a`
+const Post = styled("Link")`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -101,7 +101,7 @@ const Body = styled.div`
   text-overflow: ${(p) => (p.ellipsis ? "ellipsis" : "")};
 `;
 
-const ButtonLink = styled.a`
+const ButtonLink = styled("Link")`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -168,11 +168,11 @@ return (
           cursor: "pointer",
         }}
       >
-        <a href={postUrl}>
+        <Link href={postUrl}>
           <Text small bold>
             <i className="bi bi-arrow-right"></i>
           </Text>
-        </a>
+        </Link>
       </button>
     </ButtonLink>
   </Post>

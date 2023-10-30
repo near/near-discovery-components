@@ -7,7 +7,7 @@ const COMMIT_DISPLAY_LIMIT = 5;
 
 State.init({
   showAllCommits: false,
-  selectedTab: "code",
+  selectedTab: "render",
   blockHeight: props.blockHeight ? parseInt(props.blockHeight) : null,
 });
 
@@ -115,18 +115,6 @@ const Text = styled.p`
   color: var(--${(p) => p.color ?? "sand10"});
   margin: 0;
 
-  [href] {
-    color: var(--violet8);
-    &:hover {
-      color: var(--violet11);
-      text-decoration: none;
-    }
-    &:focus {
-      text-decoration: underline;
-      outline: none;
-    }
-  }
-
   ${(p) =>
     p.flex &&
     `
@@ -213,8 +201,8 @@ return (
   <Wrapper>
     <Sidebar>
       <Header>
-        <Text as="h2" size="text-xl" color="sand12" weight="500">
-          {blocksChanges.length} Commits
+        <Text as="h3" size="text-md" color="sand12" weight="400">
+          COMMITS ({blocksChanges.length})
         </Text>
       </Header>
 
@@ -224,7 +212,7 @@ return (
             0,
             state.showAllCommits ? blocksChanges.length : COMMIT_DISPLAY_LIMIT
           )
-          .map((blockHeight) => (
+          .map((blockHeight, key) => (
             <button
               type="button"
               data-selected={state.blockHeight == blockHeight}
@@ -233,7 +221,7 @@ return (
               }}
             >
               <Text as="span" size="text-s" weight="500" color="sand12">
-                #{blockHeight}
+                {key === 0 ? `#${blockHeight} (head)` : `#${blockHeight}`}
               </Text>
               <Text as="span" size="text-s">
                 {getTimestampFromBlockHeight(blockHeight)}
@@ -261,13 +249,7 @@ return (
 
     <Main>
       <Header>
-        <Text>
-          Changes in block{" "}
-          <Text as="span" color="sand12" weight="500">
-            #{state.blockHeight}:
-          </Text>
-        </Text>
-
+        <Text>Changes:</Text>
         <Badges>
           <Badge backgroundColor="green4" textColor="green11">
             +{state.lineCountInserted}

@@ -20,7 +20,6 @@ variant = variant ?? "primary";
 
 const conditionalAttributes = href
   ? {
-      as: "a",
       href,
     }
   : {
@@ -213,53 +212,57 @@ function returnColor(state, key) {
   return variants[variant][fill][state][key] || variants[variant][fill][key];
 }
 
-const Button = styled.button`
-  all: unset;
-  box-sizing: border-box;
-  position: relative;
+const ButtonWrapper = styled.div`
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: ${icon ? sizes[size].height : undefined};
-  height: ${sizes[size].height};
-  padding: ${icon ? "0" : `0 ${sizes[size].paddingX}`};
-  font: ${sizes[size].font};
-  font-weight: 600;
-  line-height: 1;
-  border-radius: 100px;
-  background: ${returnColor("default", "background")};
-  color: ${returnColor("default", "color")};
-  border: 1px solid ${returnColor("default", "border")};
-  box-shadow: 0 0 0 0px var(--violet4);
-  cursor: pointer;
-  transition: all 200ms;
-  text-decoration: none !important;
 
-  &:hover {
-    background: ${returnColor("hover", "background")};
-    color: ${returnColor("hover", "color")};
-    border: 1px solid ${returnColor("hover", "border")};
-  }
-  &:focus {
-    background: ${returnColor("focus", "background")};
-    color: ${returnColor("focus", "color")};
-    border: 1px solid ${returnColor("focus", "border")};
-    box-shadow: 0 0 0 4px var(--violet4);
-  }
-  &:active {
-    background: ${returnColor("active", "background")};
-    color: ${returnColor("active", "color")};
-    border: 1px solid ${returnColor("active", "border")};
-  }
+  button,
+  a {
+    all: unset;
+    box-sizing: border-box;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: ${icon ? sizes[size].height : undefined};
+    height: ${sizes[size].height};
+    padding: ${icon ? "0" : `0 ${sizes[size].paddingX}`};
+    font: ${sizes[size].font};
+    font-weight: 600;
+    line-height: 1;
+    border-radius: 100px;
+    background: ${returnColor("default", "background")};
+    color: ${returnColor("default", "color")};
+    border: 1px solid ${returnColor("default", "border")};
+    box-shadow: 0 0 0 0px var(--violet4);
+    cursor: pointer;
+    transition: all 200ms;
+    text-decoration: none !important;
 
-  ${loading &&
-  `
+    &:hover {
+      background: ${returnColor("hover", "background")};
+      color: ${returnColor("hover", "color")};
+      border: 1px solid ${returnColor("hover", "border")};
+    }
+    &:focus {
+      background: ${returnColor("focus", "background")};
+      color: ${returnColor("focus", "color")};
+      border: 1px solid ${returnColor("focus", "border")};
+      box-shadow: 0 0 0 4px var(--violet4);
+    }
+    &:active {
+      background: ${returnColor("active", "background")};
+      color: ${returnColor("active", "color")};
+      border: 1px solid ${returnColor("active", "border")};
+    }
+
+    ${loading &&
+    `
     pointer-events: none;
   `}
 
-  ${disabled &&
-  `
+    ${disabled &&
+    `
     opacity: 1;
     background: ${fill === "ghost" ? "hsla(0, 0%, 100%, 0)" : "var(--sand3)"};
     border-color: var(--sand3);
@@ -270,6 +273,7 @@ const Button = styled.button`
       color: var(--sand8) !important;
     }
   `}
+  }
 `;
 
 const Inner = styled.span`
@@ -314,19 +318,30 @@ const Spinner = styled.i`
   }
 `;
 
+const ButtonElement = ({ children, ...props }) => {
+  if (href) return <Link {...props}>{children}</Link>;
+  return <button {...props}>{children}</button>;
+};
+
 return (
-  <Button ref="forwardedRef" {...conditionalAttributes} {...forwardedProps}>
-    {loading && <Spinner className="ph-bold ph-circle-notch" />}
-    <Inner>
-      {icon ? (
-        <i className={icon} />
-      ) : (
-        <>
-          {iconLeft && <i className={iconLeft} />}
-          <Label>{label}</Label>
-          {iconRight && <i className={iconRight} />}
-        </>
-      )}
-    </Inner>
-  </Button>
+  <ButtonWrapper>
+    <ButtonElement
+      ref="forwardedRef"
+      {...conditionalAttributes}
+      {...forwardedProps}
+    >
+      {loading && <Spinner className="ph-bold ph-circle-notch" />}
+      <Inner>
+        {icon ? (
+          <i className={icon} />
+        ) : (
+          <>
+            {iconLeft && <i className={iconLeft} />}
+            <Label>{label}</Label>
+            {iconRight && <i className={iconRight} />}
+          </>
+        )}
+      </Inner>
+    </ButtonElement>
+  </ButtonWrapper>
 );

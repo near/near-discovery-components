@@ -3,7 +3,7 @@
 const accountId = props.accountId;
 const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
 const tags = Object.keys(profile.tags || {});
-const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
+const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 const verifications = props.verifications;
 const overlayStyles = props.overlayStyles;
 const side = props.side ?? "top";
@@ -300,6 +300,7 @@ const overlay = (
                 accountIdRank: props.accountIdRank || null,
                 accountId: accountId || props.accountId,
                 fromContext: props.fromContext,
+                onFollowed: props.onFollowed,
               }}
             />
           )}

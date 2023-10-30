@@ -32,7 +32,7 @@ const Text = styled.div`
   font-weight: 450;
 `;
 
-const TextLink = styled.a`
+const TextLink = styled("Link")`
   font-weight: 600;
 `;
 

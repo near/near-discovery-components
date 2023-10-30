@@ -1,5 +1,5 @@
-const componentsUrl = `#/${REPL_ACCOUNT}/widget/ComponentsPage`;
-const peopleUrl = `#/${REPL_ACCOUNT}/widget/PeoplePage`;
+const componentsUrl = `/${REPL_ACCOUNT}/widget/ComponentsPage`;
+const peopleUrl = `/${REPL_ACCOUNT}/widget/PeoplePage`;
 
 function onSearchChange({ result, term }) {
   if (term.trim()) {
@@ -79,17 +79,21 @@ const Text = styled.p`
     font-weight: 600;
     color: #11181c;
   }
+`;
 
-  &[href] {
+const TextLink = styled("Link")`
+  margin: 0;
+  line-height: 1.5rem;
+  font-size: 12px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  outline: none;
+  color: #006adc;
+
+  &:hover,
+  &:focus {
     color: #006adc;
-    outline: none;
-    font-weight: 600;
-
-    &:hover,
-    &:focus {
-      color: #006adc;
-      text-decoration: underline;
-    }
+    text-decoration: underline;
   }
 `;
 
@@ -129,9 +133,7 @@ return (
       <Group>
         <GroupHeader>
           <H3>People</H3>
-          <Text as="a" href={peopleUrl} small>
-            View All
-          </Text>
+          <TextLink href={peopleUrl}>View All</TextLink>
         </GroupHeader>
 
         <Items>
@@ -153,9 +155,7 @@ return (
       <Group>
         <GroupHeader>
           <H3>Components</H3>
-          <Text as="a" href={componentsUrl} small>
-            View All
-          </Text>
+          <TextLink href={componentsUrl}>View All</TextLink>
         </GroupHeader>
 
         <Items>

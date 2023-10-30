@@ -59,69 +59,64 @@ const RecommendedUsers = styled.div`
   padding-bottom: ${props.sidebar ? "12px" : "50px"};
 `;
 
+const NotEnoughData = styled.div`
+  width: 100%;
+`;
+
 State.init({
   currentPage: 1,
-  hasFetched: false,
-  isLoading: true,
+  isLoading: false,
+  displayedUsers: [],
+  allUsers: [],
   error: null,
   totalPages: 1,
-  displayedUsers: [],
+  hasLoaded: false,
+  returnElements: props.returnElements,
 });
 
 const updateState = (data, totalPageNum) => {
-  const users = [...state.displayedUsers, ...data];
-
   State.update({
     isLoading: false,
-    displayedUsers: props.returnElements
-      ? users.slice(0, props.returnElements)
-      : users,
+    allUsers: [...state.allUsers, ...data],
     totalPages: totalPageNum,
+    hasLoaded: true,
   });
 };
+
+State.update({
+  displayedUsers: state.returnElements
+    ? state.allUsers.slice(0, state.returnElements)
+    : state.allUsers,
+});
 
 const passedContext = props.fromContext;
-const fromContext = { ...passedContext, scope: props.scope };
-
-const STORE = "storage.googleapis.com";
-const BUCKET = "databricks-near-query-runner";
-const BASE_URL = `https://${STORE}/${BUCKET}/output/recommendations`;
-
-const accountId = props.accountId;
-const profileUrl = `#/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
+const fromContext = { ...passedContext, scope: props.scope || null };
 
 const getRecommendedUsers = (page) => {
-  const url = `${props.dataset}_${page}.json`;
+  if (state.hasLoaded) return;
 
-  State.update({
-    hasFetched: true,
-  });
-
-  asyncFetch(url)
-    .then((res) => {
+  State.update({ isLoading: true });
+  try {
+    const url = `${props.dataset}_${page}.json`;
+    asyncFetch(url).then((res) => {
       if (res.ok) {
-        const parsedResults = JSON.parse(res.body);
-        const totalPageNum = parsedResults.total_pages || 10;
-        updateState(parsedResults.data, totalPageNum);
+        const data = JSON.parse(res.body);
+        const totalPageNum = data.total_pages || 28;
+        updateState(data.data, totalPageNum);
       } else {
-        throw res;
+        State.update({ isLoading: false, error: true, hasLoaded: true });
+        console.error(
+          "Error fetching data. Try reloading the page, or no data available."
+        );
       }
-    })
-    .catch((e) => {
-      State.update({ isLoading: false });
-      console.error("Error on fetching recommended users: ", error);
     });
-};
-
-const loadMore = () => {
-  const nextPage = state.currentPage + 1;
-  if (nextPage <= state.totalPages) {
-    State.update({ currentPage: nextPage });
-    getRecommendedUsers(nextPage);
+  } catch (error) {
+    State.update({ isLoading: false, error: true, hasLoaded: true });
+    console.error("Error on fetching recommended users: ", error.message);
   }
 };
 
-if (state.isLoading && !state.hasFetched) {
+if (!state.isLoading) {
   getRecommendedUsers(state.currentPage);
 }
 
@@ -129,12 +124,34 @@ if (state.error) {
   console.error("Error, try again later", state.error);
 }
 
+const isAccountMatch = (user, accountId) =>
+  user.recommended_profile === accountId || user.similar_profile === accountId;
+
 const handleFollowed = (accountId) => {
-  const updatedUsers = state.displayedUsers.filter(
-    (user) => (user.recommended_profile || user.similar_profile) !== accountId
+  const updatedDisplayedUsers = state.displayedUsers.filter(
+    (user) => !isAccountMatch(user, accountId)
   );
+
+  const updatedAllUsers = state.allUsers.filter(
+    (user) => !isAccountMatch(user, accountId)
+  );
+
+  const nextUser = updatedAllUsers.find(
+    (user) =>
+      !updatedDisplayedUsers.some(
+        (displayedUser) =>
+          isAccountMatch(displayedUser, user.recommended_profile) ||
+          isAccountMatch(displayedUser, user.similar_profile)
+      )
+  );
+
+  if (nextUser) {
+    updatedDisplayedUsers.push(nextUser);
+  }
+
   State.update({
-    displayedUsers: updatedUsers,
+    allUsers: updatedAllUsers,
+    displayedUsers: updatedDisplayedUsers,
   });
 };
 
@@ -168,26 +185,22 @@ return (
   <RecommendedUsers>
     {state.isLoading && <p>Loading...</p>}
     <Profiles>
-      {!state.isLoading && state.displayedUsers.length < 4 ? (
-        <>
-          {!state.isLoading && (
-            <div>
-              Follow More Users to Unlock More Personalized Recommendations, See
-              Who’s
-              <a href="https://${REPL_NEAR_URL}/${REPL_ACCOUNT}/widget/PeoplePage?tab=trending">
-                Trending
-              </a>
-            </div>
-          )}
-        </>
+      {(!state.isLoading && displayedUsers.length < 3) || state.error ? (
+        <NotEnoughData>
+          Follow More Users to Unlock More Personalized Recommendations, See
+          Who’s
+          <Link href="https://${REPL_NEAR_URL}/${REPL_ACCOUNT}/widget/PeoplePage?tab=trending">
+            Trending
+          </Link>
+        </NotEnoughData>
       ) : (
-        state.displayedUsers.map((user, index) => (
+        state.displayedUsers.map((user, rank) => (
           <Profile key={user.recommended_profile || user.similar_profile}>
             <Widget
               src="${REPL_ACCOUNT}/widget/Recommender.Account.AccountProfileSidebar"
               props={{
                 accountId: user.recommended_profile || user.similar_profile,
-                accountIdRank: index + 1,
+                accountIdRank: rank + 1,
                 showTags: true,
                 showFollowerStats: true,
                 showFollowButton: state.multiSelectMode === false,
@@ -210,10 +223,5 @@ return (
         ))
       )}
     </Profiles>
-    {!props.returnElements && state.currentPage < state.totalPages ? (
-      <Button type="button" onClick={() => loadMore()}>
-        Load More
-      </Button>
-    ) : null}
   </RecommendedUsers>
 );

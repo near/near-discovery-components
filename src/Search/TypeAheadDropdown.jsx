@@ -132,18 +132,6 @@ const Text = styled.p`
     font-weight: 600;
     color: #11181c;
   }
-
-  &[href] {
-    color: #006adc;
-    outline: none;
-    font-weight: 600;
-
-    &:hover,
-    &:focus {
-      color: #006adc;
-      text-decoration: underline;
-    }
-  }
 `;
 
 const Items = styled.div`
@@ -171,7 +159,7 @@ const Tabs = styled.div`
   }
 `;
 
-const Button = styled.button`
+const ButtonLink = styled("Link")`
   background-color: transparent;
   border: none;
   font-size: 14px;
@@ -186,19 +174,19 @@ const Button = styled.button`
 `;
 
 const FixedFooter = styled.div`
-    text-align: right;
-    border-top: 1px solid rgba(96, 109, 122, 0.4);
-    bottom: 0;
-    padding-bottom:10px;
-    left: 16px;
-    right: 16px;
-    text-align:right
-    width: 100%;
-    justify-content:center;
-    padding: 16px 16px 16px 16px;
+  text-align: right;
+  border-top: 1px solid rgba(96, 109, 122, 0.4);
+  bottom: 0;
+  padding-bottom: 10px;
+  left: 16px;
+  right: 16px;
+  text-align: right;
+  width: 100%;
+  justify-content: center;
+  padding: 16px 16px 16px 16px;
 `;
 
-const TabsButton = styled.a`
+const TabsButton = styled("Link")`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -219,7 +207,7 @@ const TabsButton = styled.a`
   }
 
   &::after {
-    content: "";x
+    content: "";
     display: ${(p) => (p.selected ? "block" : "none")};
     position: absolute;
     bottom: 0;
@@ -975,15 +963,14 @@ return (
       </ScrollableContent>
 
       <FixedFooter>
-        <Button
+        <ButtonLink
           href={`${searchPageUrl}?term=${encodeURIComponent(props.term)}&tab=${
             state.selectedTab
           }`}
-          as="a"
         >
           {state.paginate?.hitsTotal > 0 &&
             ` See ${tabCount(state.selectedTab)} Results`}
-        </Button>
+        </ButtonLink>
       </FixedFooter>
 
       {!props.disableInsights && (

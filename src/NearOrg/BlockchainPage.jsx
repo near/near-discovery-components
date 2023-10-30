@@ -224,7 +224,7 @@ return (
           key="end-users"
           props={{
             content: (
-              <Flex direction="column" gap="80px" mobileGap="60px">
+              <Flex direction="column" gap="60px">
                 <Flex direction="column" gap="24px">
                   <Text size="text-xl" mobileSize="text-l" fontWeight="500">
                     Named addresses
@@ -254,20 +254,19 @@ return (
                     Every day more than 1M transactions are completed, with an
                     avg. block time of 1.2 second and an avg. fee of $0.0001.
                   </Text>
+                  <div>
+                    <Widget
+                      src="${REPL_ACCOUNT}/widget/DIG.Button"
+                      props={{
+                        href: "/signup",
+                        label: "Create Account",
+                        variant: "secondary",
+                        fill: "outline",
+                        size: "large",
+                      }}
+                    />
+                  </div>
                 </Flex>
-
-                <div>
-                  <Widget
-                    src="${REPL_ACCOUNT}/widget/DIG.Button"
-                    props={{
-                      href: "/signup",
-                      label: "Create Account",
-                      variant: "secondary",
-                      fill: "outline",
-                      size: "large",
-                    }}
-                  />
-                </div>
               </Flex>
             ),
             image: returnIpfsImage(ipfsImages.illustrations.endUsers),
@@ -293,7 +292,7 @@ return (
           key="developers"
           props={{
             content: (
-              <Flex direction="column" gap="80px" mobileGap="60px">
+              <Flex direction="column" gap="60px">
                 <Flex direction="column" gap="24px">
                   <Text size="text-xl" mobileSize="text-l" fontWeight="500">
                     Smart contracts
@@ -322,21 +321,20 @@ return (
                     Every time code runs on a smart contract, the contract
                     developer earns 30% of the burned gas.
                   </Text>
+                  <div>
+                    <Widget
+                      src="${REPL_ACCOUNT}/widget/DIG.Button"
+                      props={{
+                        href: "https://docs.near.org/concepts/welcome",
+                        target: "_blank",
+                        label: "Start Building",
+                        variant: "secondary",
+                        fill: "outline",
+                        size: "large",
+                      }}
+                    />
+                  </div>
                 </Flex>
-
-                <div>
-                  <Widget
-                    src="${REPL_ACCOUNT}/widget/DIG.Button"
-                    props={{
-                      href: "https://docs.near.org/concepts/welcome",
-                      target: "_blank",
-                      label: "Start Building",
-                      variant: "secondary",
-                      fill: "outline",
-                      size: "large",
-                    }}
-                  />
-                </div>
               </Flex>
             ),
             image: returnIpfsImage(ipfsImages.illustrations.developers),
@@ -350,9 +348,7 @@ return (
     <Section backgroundColor="#000000">
       <Container>
         <Flex direction="column" gap="24px">
-          <H2 style={{ color: "var(--white)", maxWidth: "600px" }}>
-            NEAR, a technical marvel
-          </H2>
+          <H2 style={{ color: "var(--white)" }}>NEAR, a technical marvel</H2>
           <Text
             size="text-2xl"
             mobileSize="text-l"
@@ -369,7 +365,7 @@ return (
           key="developers"
           props={{
             content: (
-              <Flex direction="column" gap="80px" mobileGap="60px">
+              <Flex direction="column" gap="60px">
                 <Flex direction="column" gap="24px">
                   <Text
                     color="white"

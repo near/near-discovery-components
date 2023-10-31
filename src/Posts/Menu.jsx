@@ -94,67 +94,78 @@ const moderateAccount = (account, action, messageKey) => {
     }
   });
 };
+
+const buildMenu = (accountId, blockHeight, parentFunctions) => {
+  const hideSubmenu = [
+    {
+      name: "Mute " + accountId,
+      iconLeft: "ph-bold ph-ear-slash",
+      onSelect: () =>
+          moderateAccount(accountId, "hide", "hideAccount"),
+    }
+  ];
+
+  const reportSubmenu = [
+    {
+      name: "Report " + accountId,
+      iconLeft: "ph-bold ph-warning-octagon",
+      onSelect: () =>
+          moderateAccount(accountId, "report", "reportAccount"),
+    },
+  ];
+
+  if(blockHeight) {
+    hideSubmenu.unshift({
+      name: "Hide this " + capitalizedContentType,
+      iconLeft: "ph-bold ph-eye-slash",
+      onSelect: () =>
+          moderateItem(accountId, blockHeight, "hide", "hideItem"),
+    });
+    reportSubmenu.unshift({
+      name: "Report this " + capitalizedContentType,
+      iconLeft: "ph-bold ph-warning-octagon",
+      onSelect: () =>
+          moderateItem(accountId, blockHeight, "report", "reportItem"),
+    });
+  }
+  return [
+    {
+      name: "Hide",
+      iconLeft: "ph-bold ph-eye-slash",
+      disabled: !context.accountId || context.accountId === accountId,
+      subMenuProps: {
+        items: hideSubmenu,
+      },
+    },
+    {
+      name: (
+          <>
+            <i
+                className="ph-bold ph-warning-octagon"
+                style={{ color: "#D95C4A" }}
+            />
+            <span style={{ color: "#D95C4A" }}>Report</span>
+          </>
+      ),
+      disabled: !context.accountId || context.accountId === accountId,
+      subMenuProps: {
+        items: reportSubmenu
+      },
+    },
+    // {
+    //   name: "Edit",
+    //   iconLeft: "ph-bold ph-pencil me-1",
+    //   onSelect: parentFunctions.toggleEdit,
+    //  },
+  ]
+}
+
 return (
   <Widget
     src="${REPL_ACCOUNT}/widget/DIG.DropdownMenu"
     props={{
       trigger: <i className="ph-bold ph-dots-three" />,
-      items: [
-        {
-          name: "Hide",
-          iconLeft: "ph-bold ph-eye-slash",
-          disabled: !context.accountId || context.accountId === accountId,
-          subMenuProps: {
-            items: [
-              {
-                name: "Hide this " + capitalizedContentType,
-                iconLeft: "ph-bold ph-eye-slash",
-                onSelect: () =>
-                  moderateItem(accountId, blockHeight, "hide", "hideItem"),
-              },
-              {
-                name: "Mute " + accountId,
-                iconLeft: "ph-bold ph-ear-slash",
-                onSelect: () =>
-                  moderateAccount(accountId, "hide", "hideAccount"),
-              },
-            ],
-          },
-        },
-        {
-          name: (
-            <>
-              <i
-                className="ph-bold ph-warning-octagon"
-                style={{ color: "#D95C4A" }}
-              />
-              <span style={{ color: "#D95C4A" }}>Report</span>
-            </>
-          ),
-          disabled: !context.accountId || context.accountId === accountId,
-          subMenuProps: {
-            items: [
-              {
-                name: "Report this " + capitalizedContentType,
-                iconLeft: "ph-bold ph-warning-octagon",
-                onSelect: () =>
-                  moderateItem(accountId, blockHeight, "report", "reportItem"),
-              },
-              {
-                name: "Report " + accountId,
-                iconLeft: "ph-bold ph-warning-octagon",
-                onSelect: () =>
-                  moderateAccount(accountId, "report", "reportAccount"),
-              },
-            ],
-          },
-        },
-        // {
-        //   name: "Edit",
-        //   iconLeft: "ph-bold ph-pencil me-1",
-        //   onSelect: parentFunctions.toggleEdit,
-        //  },
-      ],
+      items: buildMenu(accountId, blockHeight, parentFunctions),
     }}
   />
 );

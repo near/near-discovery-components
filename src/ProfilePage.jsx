@@ -163,7 +163,13 @@ if (profile === null) {
   return "Loading";
 }
 
-return (
+const feeds = ["all"];
+if(accountId !== context.accountId) {
+  feeds.push("mutual");
+}
+
+
+  return (
   <Wrapper>
     <BackgroundImage>
       {profile.backgroundImage && (
@@ -253,8 +259,8 @@ return (
             )}
 
             <Widget
-              src="${REPL_ACCOUNT}/widget/v1.Feed"
-              props={{ accounts: [accountId] }}
+              src="${REPL_ACCOUNT}/widget/ActivityFeeds.PostsFeedControls"
+              props={{ filteredAccountIds: accountId, showCompose: false, feeds: feeds}}
             />
           </>
         )}

@@ -259,7 +259,7 @@ if(accountId !== context.accountId) {
             )}
 
             <Widget
-              src="${REPL_ACCOUNT}/widget/ActivityFeeds.PostsFeedControls"
+              src="${REPL_ACCOUNT}/widget/ActivityFeeds.DetermineActivityFeed"
               props={{ filteredAccountIds: accountId, showCompose: false, feeds: feeds}}
             />
           </>

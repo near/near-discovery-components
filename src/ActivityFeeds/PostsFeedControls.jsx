@@ -10,12 +10,23 @@ State.init({
 const GRAPHQL_ENDPOINT =
   props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 const LIMIT = 10;
-const moderatorAccount = props?.moderatorAccount || "bosmod.near";
+const feeds = props.feeds ?? ["all", "following"];
+const feedLabels = {all: "All", following: "Following", mutual: "Mutual Activity"};
+const showCompose = props.showCompose ?? true;
+const filteredAccountIds = props.filteredAccountIds;
+
 const sortRaw = Storage.get("queryapi:feed-sort");
 const sort = sortRaw ?? (sortRaw === undefined ? "timedesc" : null);
 const initialSelectedTabRaw = Storage.privateGet("selectedTab");
-const initialSelectedTab =
+let initialSelectedTab =
   initialSelectedTabRaw ?? (initialSelectedTabRaw === undefined ? "all" : null);
+if(!feeds.includes(initialSelectedTab)) {
+    initialSelectedTab = feeds[0];
+}
+if(initialSelectedTab === "mutual" && !context.filteredAccountIds) {
+    initialSelectedTab = feeds[0];
+}
+
 const followGraph = context.accountId
   ? Social.keys(`${context.accountId}/graph/follow/*`, "final")
   : null;
@@ -105,7 +116,6 @@ const createQuery = (type) => {
     case "recentcommentdesc":
       querySortOption = `{ last_comment_timestamp: desc_nulls_last },`;
       break;
-    // More options...
     default:
       querySortOption = "";
   }
@@ -113,46 +123,43 @@ const createQuery = (type) => {
   let queryFilter = "";
   switch (type) {
     case "following":
+      let filteredAccountsFollowing = accountsFollowing;
+      if(filteredAccountIds) {
+        const filteredAccountList = filteredAccountIds.split(",");
+        filteredAccountsFollowing = filteredAccountList.filter((account) => accountsFollowing.includes(account));
+      }
       let queryAccountsString = accountsFollowing
         .map((account) => `"${account}"`)
         .join(", ");
-      queryFilter = `account_id: { _in: [${queryAccountsString}]}`;
+      queryFilter = `where: { account_id: { _in: [${queryAccountsString}]}},`;
       break;
-    // More options...
+
+    case "mutual":
+      let userAccount = context.accountId
+      queryFilter =
+          `where: { 
+          _and: [
+            {account_id: {_in: "${filteredAccountIds}"}},
+            {_or: [
+              {post_likes: {account_id: {_eq: "${userAccount}"}}},
+              {comments: {account_id: {_eq: "${userAccount}"}}}
+              ]
+            }
+          ]
+        }`;
+      break;
+
     default:
-      queryFilter = "";
+      if(filteredAccountIds) {
+        queryFilter = `where: {account_id: {_in: "${filteredAccountIds}"}}, `;
+      } else {
+        queryFilter =  "";
+      }
   }
 
-  const indexerQueries = `
-query GetPostsQuery($offset: Int, $limit: Int) {
-  dataplatform_near_social_feed_moderated_posts(order_by: [${querySortOption} { block_height: desc }], offset: $offset, limit: $limit) {
-    account_id
-    block_height
-    block_timestamp
-    content
-    receipt_id
-    accounts_liked
-    last_comment_timestamp
-    comments(order_by: {block_height: asc}) {
-      account_id
-      block_height
-      block_timestamp
-      content
-    }
-    verifications {
-      human_provider
-      human_valid_until
-      human_verification_level
-    }
-  }
-  dataplatform_near_social_feed_moderated_posts_aggregate {
-    aggregate {
-      count
-    }
-  }
-}
-query GetFollowingPosts($offset: Int, $limit: Int) {
-  dataplatform_near_social_feed_moderated_posts(where: {${queryFilter}}, order_by: [{ block_height: desc }], offset: $offset, limit: $limit) {
+  return `
+query FeedQuery($offset: Int, $limit: Int) {
+  dataplatform_near_social_feed_moderated_posts(${queryFilter} order_by: [${querySortOption} { block_height: desc }], offset: $offset, limit: $limit) {
     account_id
     block_height
     block_timestamp
@@ -173,20 +180,18 @@ query GetFollowingPosts($offset: Int, $limit: Int) {
     }
 
   }
-  dataplatform_near_social_feed_moderated_posts_aggregate(where: {${queryFilter}}) {
+  dataplatform_near_social_feed_moderated_posts_aggregate(${queryFilter} order_by: {id: asc}) {
     aggregate {
       count
     }
   }
 }
 `;
-  return indexerQueries;
 };
 
 const loadMorePosts = () => {
-  const queryName =
-    state.selectedTab === "following" ? "GetFollowingPosts" : "GetPostsQuery";
-  const type = state.selectedTab;
+  const type = state.selectedTab ?? "all";
+  const queryName = "FeedQuery";
 
   if (state.selectedTab === "following" && !accountsFollowing) {
     return;
@@ -384,32 +389,27 @@ return (
     <Content>
       {context.accountId && (
         <>
+        {showCompose && (
           <ComposeWrapper>
             <Widget src="${REPL_ACCOUNT}/widget/Posts.Compose" />
           </ComposeWrapper>
-
+        )}
+        {feeds.length > 1 && (
           <FilterWrapper>
             <PillSelect>
-              <PillSelectButton
-                type="button"
-                onClick={() => selectTab("all")}
-                selected={state.selectedTab === "all"}
-              >
-                All
-              </PillSelectButton>
-
-              <PillSelectButton
-                type="button"
-                onClick={() => selectTab("following")}
-                selected={state.selectedTab === "following"}
-              >
-                Following
-              </PillSelectButton>
+              {feeds.map((feed) => (
+                <PillSelectButton
+                  type="button"
+                  onClick={() => selectTab(feed)}
+                  selected={state.selectedTab === feed}
+                >
+                  {feedLabels[feed] ?? feed}
+                </PillSelectButton>
+              ))}
             </PillSelect>
           </FilterWrapper>
-
+        )}
           <SortContainer>
-            {state.selectedTab === "all" && (
               <Sort>
                 <span className="label">Sort by:</span>
                 <Widget
@@ -433,7 +433,6 @@ return (
                   }}
                 />
               </Sort>
-            )}
           </SortContainer>
         </>
       )}

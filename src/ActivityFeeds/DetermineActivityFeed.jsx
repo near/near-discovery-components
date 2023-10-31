@@ -71,7 +71,6 @@ return (
         src={`${REPL_ACCOUNT}/widget/ActivityFeeds.PostsFeedControls`}
         props={{
           GRAPHQL_ENDPOINT,
-          accountsFollowing,
           showFlagAccountFeature: true,
         }}
       />

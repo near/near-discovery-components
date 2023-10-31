@@ -164,8 +164,6 @@ function buildPostUrl(widgetName, linkProps) {
   }${linkPropsQuery}`;
 }
 
-console.log({props})
-
 switch (type) {
   case "mention":
     accountId = props.initiator;

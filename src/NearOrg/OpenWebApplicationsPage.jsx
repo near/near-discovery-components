@@ -368,7 +368,7 @@ return (
 
         <Widget
           src="${REPL_ACCOUNT}/widget/NearOrg.ContentWithImage"
-          key="end-users"
+          key="gateways"
           props={{
             content: (
               <Flex direction="column" gap="60px">
@@ -400,20 +400,21 @@ return (
                     Easily add social components to your app and keep your
                     audience engaged through web push notifications.
                   </Text>
-                  <div>
-                    <Widget
-                      src="${REPL_ACCOUNT}/widget/DIG.Button"
-                      props={{
-                        href: "https://github.com/near/create-near-app",
-                        target: "_blank",
-                        label: "Create Your App",
-                        variant: "secondary",
-                        fill: "outline",
-                        size: "large",
-                      }}
-                    />
-                  </div>
                 </Flex>
+
+                <div>
+                  <Widget
+                    src="${REPL_ACCOUNT}/widget/DIG.Button"
+                    props={{
+                      href: "https://github.com/near/create-near-app",
+                      target: "_blank",
+                      label: "Create Your App",
+                      variant: "secondary",
+                      fill: "outline",
+                      size: "large",
+                    }}
+                  />
+                </div>
               </Flex>
             ),
             image: returnIpfsImage(ipfsImages.illustrations.gateways),
@@ -492,7 +493,7 @@ return (
 
         <Widget
           src="${REPL_ACCOUNT}/widget/NearOrg.ContentWithImage"
-          key="developers"
+          key="building-blocks"
           props={{
             content: (
               <Flex direction="column" gap="60px">
@@ -539,21 +540,22 @@ return (
                     All components are stored on a NEAR contract, making
                     frontends highly reliable and censorship-resistant
                   </Text>
-                  <div>
-                    <Widget
-                      src="${REPL_ACCOUNT}/widget/DIG.Button"
-                      props={{
-                        href: "https://docs.near.org/bos/tutorial/quickstart",
-                        target: "_blank",
-                        label: "Start Building",
-                        variant: "secondary",
-                        fill: "outline",
-                        size: "large",
-                        className: "darkButton",
-                      }}
-                    />
-                  </div>
                 </Flex>
+
+                <div>
+                  <Widget
+                    src="${REPL_ACCOUNT}/widget/DIG.Button"
+                    props={{
+                      href: "https://docs.near.org/bos/tutorial/quickstart",
+                      target: "_blank",
+                      label: "Start Building",
+                      variant: "secondary",
+                      fill: "outline",
+                      size: "large",
+                      className: "darkButton",
+                    }}
+                  />
+                </div>
               </Flex>
             ),
             image: returnIpfsImage(ipfsImages.illustrations.buildingBlocks),

@@ -1,36 +1,7 @@
-const communityItems = [
-  {
-    name: "Validators",
-    description:
-      "Run your own node or chunk validator and become a part of a decentralized community safeguarding the protocol.",
-    icon: "ph-tree-structure",
-    url: "https://docs.near.org/concepts/basics/validators",
-    target: "_blank",
-  },
-  {
-    name: "NEAR Enhancement Proposals",
-    description:
-      "Engage in discussions about changes to the protocol’s specifications and standards. Share your voice in shaping NEAR’s future.",
-    icon: "ph-chats-circle",
-    url: "https://github.com/near/NEPs",
-    target: "_blank",
-  },
-  {
-    name: "Roadmap",
-    description:
-      "Follow the public roadmap and contribute to building the ecosystem",
-    icon: "ph-map-trifold",
-    url: "https://near.org/blog/near-q2-protocol-roadmap-update",
-    target: "_blank",
-  },
-];
-
 const ipfsImages = {
   illustrations: {
-    developers: "bafkreiaccoujoiwowiypzjyobdqyfeqweu32htcswc3ojvnesvtwfs5acm",
-    endUsers: "bafkreifew3ibskmcxicoa7bffleekg6kn3cwswyg5ht5shifbii6elwp2a",
-    technicalMarvel:
-      "bafkreieqsmwsffgrodbek3gbtjvxtwspkenesl6fivzrblxzojclba6dfa",
+    fastAuth: "bafkreidkr2s4fdnnm4f3xduwgnywyfwes3p6rtmpzac5l6xufpdivdvrva",
+    relayers: "bafkreibtzosgikkencpjv35bjdc2iyz4mwxo7qcb6irnsb4gwiljvshhne",
   },
 };
 
@@ -44,6 +15,24 @@ const Wrapper = styled.div`
   --section-gap: 120px;
   --text-hero: 500 72px/1 "FK Grotesk", "Mona Sans", sans-serif;
   margin-top: calc(var(--body-top-padding) * -1);
+
+  .darkButton {
+    color: #fff !important;
+    background: transparent !important;
+    border-color: #fff !important;
+    &:focus {
+      border-color: var(--violet9) !important;
+    }
+    &:hover {
+      color: #000 !important;
+      background: #fff !important;
+    }
+    &:active {
+      color: #000 !important;
+      background: var(--sand3) !important;
+      border-color: var(--sand3) !important;
+    }
+  }
 
   @media (max-width: 900px) {
     --section-gap: 80px;
@@ -171,33 +160,18 @@ const PatternContent = styled.div`
   }
 `;
 
-const IconCircle = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 64px;
-  height: 64px;
-  border-radius: 100%;
-  border: 1px solid var(--sand11);
-
-  i {
-    color: var(--sand11);
-    font-size: 32px;
-  }
-`;
-
 return (
   <Wrapper>
-    <Section backgroundColor="#00EC97" style={{ padding: "72px 0" }}>
+    <Section backgroundColor="#61E5E2" style={{ padding: "72px 0" }}>
       <Container center>
         <Pattern>
           <PatternContent>
             <Flex gap="32px" direction="column" alignItems="center">
-              <H1>The blockchain built for an open web</H1>
+              <H1>Secure & simple onboarding</H1>
 
               <Text size="text-l" mobileSize="text-base">
-                Created with simplicity in mind. NEAR is built from the ground
-                up to be performant, secure, scalable, and eco-friendly.
+                No seed phrase, no gas, no friction. Bring users on chain in
+                seconds with FastAuth and Relayers.
               </Text>
             </Flex>
           </PatternContent>
@@ -208,51 +182,52 @@ return (
     <Section backgroundColor="#F2F1EA">
       <Container>
         <Flex direction="column" gap="24px">
-          <H2>NEAR, the blockchain for end-users</H2>
+          <H2 style={{ maxWidth: "1016px" }}>
+            FastAuth: Web3 applications, familiar login
+          </H2>
           <Text
             size="text-2xl"
             mobileSize="text-l"
             style={{ maxWidth: "808px" }}
           >
-            NEAR brings users to the main stage, setting up Web3 for mass
-            adoption.
+            Creating a crypto wallet is not for everyone. With FastAuth,
+            leverage the power of Web3 without compromising on user experience.
           </Text>
         </Flex>
 
         <Widget
           src="${REPL_ACCOUNT}/widget/NearOrg.ContentWithImage"
-          key="end-users"
+          key="fast-auth"
           props={{
             content: (
               <Flex direction="column" gap="60px">
                 <Flex direction="column" gap="24px">
                   <Text size="text-xl" mobileSize="text-l" fontWeight="500">
-                    Named addresses
+                    Familiar login
                   </Text>
                   <Text>
-                    Ditch the random numbers and embrace user-friendly addresses
-                    that are easy to recall. Become 'yourself.near'.
+                    Forget recovery phrases, FastAuth seamlessly links your
+                    users’ emails directly to NEAR accounts.
                   </Text>
                 </Flex>
 
                 <Flex direction="column" gap="24px">
                   <Text size="text-xl" mobileSize="text-l" fontWeight="500">
-                    Unique key stream
+                    One Digital ID
                   </Text>
                   <Text>
-                    Accounts support multiple keys, each with distinct
-                    permissions. Give apps access to your account, ensuring your
-                    funds remain secure.
+                    Your users only need one email for FastAuth account login or
+                    recovery across all devices and applications.
                   </Text>
                 </Flex>
 
                 <Flex direction="column" gap="24px">
                   <Text size="text-xl" mobileSize="text-l" fontWeight="500">
-                    Inexpensive, blazing fast, and reliable
+                    Simple & secure
                   </Text>
                   <Text>
-                    Every day more than 1M transactions are completed, with an
-                    avg. block time of 1.2 second and an avg. fee of $0.0001.
+                    FastAuth accounts are kept safe through multi-party
+                    computation (MPC) on a decentralized network.
                   </Text>
                 </Flex>
 
@@ -260,77 +235,9 @@ return (
                   <Widget
                     src="${REPL_ACCOUNT}/widget/DIG.Button"
                     props={{
-                      href: "/signup",
-                      label: "Create Account",
-                      variant: "secondary",
-                      fill: "outline",
-                      size: "large",
-                    }}
-                  />
-                </div>
-              </Flex>
-            ),
-            image: returnIpfsImage(ipfsImages.illustrations.endUsers),
-            imageSide: "left",
-            alt: "A line drawing of a user avatar and the NEAR logo set behind the Create Account screen from FastAuth",
-          }}
-        />
-
-        <Flex direction="column" gap="24px">
-          <H2>NEAR, the blockchain for developers</H2>
-          <Text
-            size="text-2xl"
-            mobileSize="text-l"
-            style={{ maxWidth: "808px" }}
-          >
-            NEAR empowers developers to build open web apps and onboard users to
-            Web3.
-          </Text>
-        </Flex>
-
-        <Widget
-          src="${REPL_ACCOUNT}/widget/NearOrg.ContentWithImage"
-          key="developers"
-          props={{
-            content: (
-              <Flex direction="column" gap="60px">
-                <Flex direction="column" gap="24px">
-                  <Text size="text-xl" mobileSize="text-l" fontWeight="500">
-                    Smart contracts
-                  </Text>
-                  <Text>
-                    NEAR's WebAssembly runtime lets you craft smart contracts
-                    using well-known languages such as Javascript and Rust.
-                  </Text>
-                </Flex>
-
-                <Flex direction="column" gap="24px">
-                  <Text size="text-xl" mobileSize="text-l" fontWeight="500">
-                    Built-in account abstraction
-                  </Text>
-                  <Text>
-                    Cover gas fees for your users using built-in
-                    meta-transactions.
-                  </Text>
-                </Flex>
-
-                <Flex direction="column" gap="24px">
-                  <Text size="text-xl" mobileSize="text-l" fontWeight="500">
-                    Built-in developer incentive
-                  </Text>
-                  <Text>
-                    Every time code runs on a smart contract, the contract
-                    developer earns 30% of the burned gas.
-                  </Text>
-                </Flex>
-
-                <div>
-                  <Widget
-                    src="${REPL_ACCOUNT}/widget/DIG.Button"
-                    props={{
-                      href: "https://docs.near.org/concepts/welcome",
+                      href: "https://docs.near.org/tools/fastauth-sdk",
                       target: "_blank",
-                      label: "Start Building",
+                      label: "Read FastAuth Docs",
                       variant: "secondary",
                       fill: "outline",
                       size: "large",
@@ -339,9 +246,9 @@ return (
                 </div>
               </Flex>
             ),
-            image: returnIpfsImage(ipfsImages.illustrations.developers),
-            imageSide: "right",
-            alt: "A line drawing of two diamonds with arrows pointing toward each other set behind a console window with a code snippet",
+            image: returnIpfsImage(ipfsImages.illustrations.fastAuth),
+            imageSide: "left",
+            alt: "A line drawing of a key hole and the near logo set behind the FastAuth sign-in window",
           }}
         />
       </Container>
@@ -350,21 +257,23 @@ return (
     <Section backgroundColor="#000000">
       <Container>
         <Flex direction="column" gap="24px">
-          <H2 style={{ color: "var(--white)" }}>NEAR, a technical marvel</H2>
+          <H2 style={{ color: "var(--white)" }}>
+            Relayers: no crypto, no problem
+          </H2>
           <Text
             size="text-2xl"
             mobileSize="text-l"
             color="white"
             style={{ maxWidth: "808px" }}
           >
-            Built on years of research, NEAR’s efficient and robust protocol
-            stands as a true marvel of modern technology.
+            Obtaining cryptocurrencies to pay for transactions is the main
+            hurdle to Web3 adoption. Use relayers to cover costs for your users.
           </Text>
         </Flex>
 
         <Widget
           src="${REPL_ACCOUNT}/widget/NearOrg.ContentWithImage"
-          key="technical-marvel"
+          key="relayers"
           props={{
             content: (
               <Flex direction="column" gap="60px">
@@ -375,11 +284,11 @@ return (
                     mobileSize="text-l"
                     fontWeight="500"
                   >
-                    Horizontal scaling with sharding
+                    Cover gas for your users
                   </Text>
                   <Text color="white">
-                    NEAR's sharded design enables limitless scaling and robust
-                    resistance to traffic spikes.
+                    Let your users make transactions in NEAR without crypto by
+                    covering for their gas.
                   </Text>
                 </Flex>
 
@@ -390,11 +299,11 @@ return (
                     mobileSize="text-l"
                     fontWeight="500"
                   >
-                    Environmentally friendly
+                    Set your limits
                   </Text>
                   <Text color="white">
-                    Thanks to its proof-of-stake nature, NEAR consumes in a year
-                    the same energy that Bitcoin consumes in 3 minutes.
+                    Easily configure a wide array of permissions and expenditure
+                    rules to keep your budget in line.
                   </Text>
                 </Flex>
 
@@ -405,70 +314,39 @@ return (
                     mobileSize="text-l"
                     fontWeight="500"
                   >
-                    A chain you can trust
+                    Native support
                   </Text>
                   <Text color="white">
-                    10 million blocks created in a span of two years with 100%
-                    uptime.
+                    Relayers are based on meta-transactions, which are built-in
+                    at the protocol level.
                   </Text>
                 </Flex>
+
+                <div>
+                  <Widget
+                    src="${REPL_ACCOUNT}/widget/DIG.Button"
+                    props={{
+                      href: "https://docs.near.org/develop/relayers/build-relayer",
+                      target: "_blank",
+                      label: "Read Relayer Docs",
+                      variant: "secondary",
+                      fill: "outline",
+                      size: "large",
+                      className: "darkButton",
+                    }}
+                  />
+                </div>
               </Flex>
             ),
-            image: returnIpfsImage(ipfsImages.illustrations.technicalMarvel),
-            imageSide: "left",
-            alt: "A line drawing of a leaf, a flower, and two data towers all interconnected",
+            image: returnIpfsImage(ipfsImages.illustrations.relayers),
+            imageSide: "right",
+            alt: "A line drawing of the Relayer pathway starting at the user, to the transaction with the developer, and the developer paying the gas fee to NEAR",
           }}
         />
-
-        <Flex direction="column" gap="24px">
-          <H2 style={{ color: "var(--white)", maxWidth: "600px" }}>
-            Built for and by the community
-          </H2>
-          <Text
-            size="text-2xl"
-            mobileSize="text-l"
-            color="white"
-            style={{ maxWidth: "808px" }}
-          >
-            An ever evolving protocol with an active community of contributors.
-            Join us and help shape the future of the web.
-          </Text>
-        </Flex>
-
-        <Grid columns="1fr 1fr 1fr" gap="24px">
-          {communityItems.map((item) => (
-            <Widget
-              src="${REPL_ACCOUNT}/widget/NearOrg.Card"
-              key={item.name}
-              props={{
-                as: "a",
-                href: item.url,
-                target: item.target,
-                dark: true,
-                children: (
-                  <>
-                    <IconCircle>
-                      <i className={`ph-duotone ${item.icon}`} />
-                    </IconCircle>
-
-                    <Flex direction="column" gap="16px">
-                      <Text size="text-l" fontWeight="500" color="white">
-                        {item.name}
-                      </Text>
-                      <Text size="text-s" color="white">
-                        {item.description}
-                      </Text>
-                    </Flex>
-                  </>
-                ),
-              }}
-            />
-          ))}
-        </Grid>
       </Container>
     </Section>
 
-    <Section backgroundColor="#00EC97">
+    <Section backgroundColor="#61E5E2">
       <Container>
         <Flex direction="column" gap="50px" alignItems="center">
           <Flex
@@ -477,18 +355,21 @@ return (
             alignItems="center"
             style={{ textAlign: "center" }}
           >
-            <Text size="text-3xl" fontWeight="500">
-              The blockchain for everyone
+            <Text
+              size="text-3xl"
+              fontWeight="500"
+              style={{ maxWidth: "600px" }}
+            >
+              Get ready to embrace mass adoption
             </Text>
 
             <Text
               size="text-l"
               mobileSize="text-l"
-              style={{ maxWidth: "592px" }}
+              style={{ maxWidth: "600px" }}
             >
-              Blockchain has never been easier. Create your account and join a
-              thriving community of visionaries. Help build a new Internet,
-              where everyone counts.
+              No seed phrase, no gas. Bring users on chain in seconds with
+              FastAuth and Relayers.
             </Text>
           </Flex>
 
@@ -501,8 +382,9 @@ return (
             <Widget
               src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
-                href: "/signup",
-                label: "Create Account",
+                href: "https://docs.near.org/tools/fastauth-sdk",
+                target: "_blank",
+                label: "FastAuth",
                 variant: "secondary",
                 size: "large",
               }}
@@ -511,9 +393,9 @@ return (
             <Widget
               src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
-                href: "https://docs.near.org/concepts/welcome",
+                href: "https://docs.near.org/develop/relayers/build-relayer",
                 target: "_blank",
-                label: "Read Docs",
+                label: "Relayers",
                 variant: "primary",
                 size: "large",
               }}

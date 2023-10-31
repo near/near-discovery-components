@@ -1,36 +1,8 @@
-const communityItems = [
-  {
-    name: "Validators",
-    description:
-      "Run your own node or chunk validator and become a part of a decentralized community safeguarding the protocol.",
-    icon: "ph-tree-structure",
-    url: "https://docs.near.org/concepts/basics/validators",
-    target: "_blank",
-  },
-  {
-    name: "NEAR Enhancement Proposals",
-    description:
-      "Engage in discussions about changes to the protocol’s specifications and standards. Share your voice in shaping NEAR’s future.",
-    icon: "ph-chats-circle",
-    url: "https://github.com/near/NEPs",
-    target: "_blank",
-  },
-  {
-    name: "Roadmap",
-    description:
-      "Follow the public roadmap and contribute to building the ecosystem",
-    icon: "ph-map-trifold",
-    url: "https://near.org/blog/near-q2-protocol-roadmap-update",
-    target: "_blank",
-  },
-];
-
 const ipfsImages = {
   illustrations: {
-    developers: "bafkreiaccoujoiwowiypzjyobdqyfeqweu32htcswc3ojvnesvtwfs5acm",
-    endUsers: "bafkreifew3ibskmcxicoa7bffleekg6kn3cwswyg5ht5shifbii6elwp2a",
-    technicalMarvel:
-      "bafkreieqsmwsffgrodbek3gbtjvxtwspkenesl6fivzrblxzojclba6dfa",
+    bigQuery: "bafkreidvzhed5xtbswgzrcu4woho5jwql53wzagfmkafjcpxivmxv6tkcm",
+    queryApi: "bafkreie5lvklwktdgvxyachxn4zkwb4pzkroqfopsu4zcb4ffyu5urcm6a",
+    nearLake: "bafkreial6oat5r6howyc42xqgvwuicgs6yiaczywxm2t3reiclotww7slu",
   },
 };
 
@@ -44,6 +16,24 @@ const Wrapper = styled.div`
   --section-gap: 120px;
   --text-hero: 500 72px/1 "FK Grotesk", "Mona Sans", sans-serif;
   margin-top: calc(var(--body-top-padding) * -1);
+
+  .darkButton {
+    color: #fff !important;
+    background: transparent !important;
+    border-color: #fff !important;
+    &:focus {
+      border-color: var(--violet9) !important;
+    }
+    &:hover {
+      color: #000 !important;
+      background: #fff !important;
+    }
+    &:active {
+      color: #000 !important;
+      background: var(--sand3) !important;
+      border-color: var(--sand3) !important;
+    }
+  }
 
   @media (max-width: 900px) {
     --section-gap: 80px;
@@ -171,33 +161,19 @@ const PatternContent = styled.div`
   }
 `;
 
-const IconCircle = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 64px;
-  height: 64px;
-  border-radius: 100%;
-  border: 1px solid var(--sand11);
-
-  i {
-    color: var(--sand11);
-    font-size: 32px;
-  }
-`;
-
 return (
   <Wrapper>
-    <Section backgroundColor="#00EC97" style={{ padding: "72px 0" }}>
+    <Section backgroundColor="#F77A69" style={{ padding: "72px 0" }}>
       <Container center>
         <Pattern>
           <PatternContent>
             <Flex gap="32px" direction="column" alignItems="center">
-              <H1>The blockchain built for an open web</H1>
+              <H1>Effortless data indexing & management</H1>
 
               <Text size="text-l" mobileSize="text-base">
-                Created with simplicity in mind. NEAR is built from the ground
-                up to be performant, secure, scalable, and eco-friendly.
+                Choose the data solution that fits your needs. Access and
+                monitor on-chain data through public datasets, or scaffold your
+                own infrastructure.
               </Text>
             </Flex>
           </PatternContent>
@@ -208,51 +184,53 @@ return (
     <Section backgroundColor="#F2F1EA">
       <Container>
         <Flex direction="column" gap="24px">
-          <H2>NEAR, the blockchain for end-users</H2>
+          <H2 style={{ maxWidth: "1016px" }}>
+            BigQuery public dataset: all the data, zero setup
+          </H2>
           <Text
             size="text-2xl"
             mobileSize="text-l"
             style={{ maxWidth: "808px" }}
           >
-            NEAR brings users to the main stage, setting up Web3 for mass
-            adoption.
+            A large dataset with on-chain data publicly available on Google
+            Cloud Platform. Obtain near real-time blockchain data using simple
+            SQL queries.
           </Text>
         </Flex>
 
         <Widget
           src="${REPL_ACCOUNT}/widget/NearOrg.ContentWithImage"
-          key="end-users"
+          key="big-query"
           props={{
             content: (
               <Flex direction="column" gap="60px">
                 <Flex direction="column" gap="24px">
                   <Text size="text-xl" mobileSize="text-l" fontWeight="500">
-                    Named addresses
+                    Instant insights
                   </Text>
                   <Text>
-                    Ditch the random numbers and embrace user-friendly addresses
-                    that are easy to recall. Become 'yourself.near'.
+                    Historic on-chain data queried at scale. No need to run your
+                    own infrastructure.
                   </Text>
                 </Flex>
 
                 <Flex direction="column" gap="24px">
                   <Text size="text-xl" mobileSize="text-l" fontWeight="500">
-                    Unique key stream
+                    Cost-effective
                   </Text>
                   <Text>
-                    Accounts support multiple keys, each with distinct
-                    permissions. Give apps access to your account, ensuring your
-                    funds remain secure.
+                    Eliminate the need to store and process bulk NEAR Protocol
+                    data. Query as little or as much data as you like.
                   </Text>
                 </Flex>
 
                 <Flex direction="column" gap="24px">
                   <Text size="text-xl" mobileSize="text-l" fontWeight="500">
-                    Inexpensive, blazing fast, and reliable
+                    As easy as SQL
                   </Text>
                   <Text>
-                    Every day more than 1M transactions are completed, with an
-                    avg. block time of 1.2 second and an avg. fee of $0.0001.
+                    No prior experience with blockchain technology is required.
+                    Just bring a general knowledge of SQL to unlock insights.
                   </Text>
                 </Flex>
 
@@ -260,8 +238,9 @@ return (
                   <Widget
                     src="${REPL_ACCOUNT}/widget/DIG.Button"
                     props={{
-                      href: "/signup",
-                      label: "Create Account",
+                      href: "https://docs.near.org/bos/queryapi/big-query",
+                      target: "_blank",
+                      label: "Read BigQuery Docs",
                       variant: "secondary",
                       fill: "outline",
                       size: "large",
@@ -270,21 +249,96 @@ return (
                 </div>
               </Flex>
             ),
-            image: returnIpfsImage(ipfsImages.illustrations.endUsers),
+            image: returnIpfsImage(ipfsImages.illustrations.bigQuery),
             imageSide: "left",
-            alt: "A line drawing of a user avatar and the NEAR logo set behind the Create Account screen from FastAuth",
+            alt: "A line drawing of the BigQuery logo, a magnifying glass inside a hexagon with a bar graph inside the glass, set behind a console window with a code snippet",
           }}
         />
 
         <Flex direction="column" gap="24px">
-          <H2>NEAR, the blockchain for developers</H2>
+          <H2 style={{ maxWidth: "1016px" }}>QueryAPI: indexers made simple</H2>
           <Text
             size="text-2xl"
             mobileSize="text-l"
             style={{ maxWidth: "808px" }}
           >
-            NEAR empowers developers to build open web apps and onboard users to
-            Web3.
+            A fully managed solution to build indexer functions, extract
+            on-chain data, and easily query it using GraphQL endpoints and
+            subscriptions.
+          </Text>
+        </Flex>
+
+        <Widget
+          src="${REPL_ACCOUNT}/widget/NearOrg.ContentWithImage"
+          key="query-api"
+          props={{
+            content: (
+              <Flex direction="column" gap="60px">
+                <Flex direction="column" gap="24px">
+                  <Text size="text-xl" mobileSize="text-l" fontWeight="500">
+                    Your data, your way
+                  </Text>
+                  <Text>
+                    Decide how you want to store data. Design the tables and
+                    databases that better suit your needs.
+                  </Text>
+                </Flex>
+
+                <Flex direction="column" gap="24px">
+                  <Text size="text-xl" mobileSize="text-l" fontWeight="500">
+                    Indexers made simple
+                  </Text>
+                  <Text>
+                    Create the logic of your indexer and we will execute it for
+                    you. Forget about infrastructure—focus on solutions.
+                  </Text>
+                </Flex>
+
+                <Flex direction="column" gap="24px">
+                  <Text size="text-xl" mobileSize="text-l" fontWeight="500">
+                    Plug & play to your app
+                  </Text>
+                  <Text>
+                    Fetch your data from any application through our API.
+                    Leverage GraphQL to query exactly what you need.
+                  </Text>
+                </Flex>
+
+                <div>
+                  <Widget
+                    src="${REPL_ACCOUNT}/widget/DIG.Button"
+                    props={{
+                      href: "https://docs.near.org/bos/queryapi/intro",
+                      target: "_blank",
+                      label: "Read QueryAPI Docs",
+                      variant: "secondary",
+                      fill: "outline",
+                      size: "large",
+                    }}
+                  />
+                </div>
+              </Flex>
+            ),
+            image: returnIpfsImage(ipfsImages.illustrations.queryApi),
+            imageSide: "right",
+            alt: "A console window with a code snippet",
+          }}
+        />
+      </Container>
+    </Section>
+
+    <Section backgroundColor="#000000">
+      <Container>
+        <Flex direction="column" gap="24px">
+          <H2 style={{ color: "var(--white)" }}>NEAR Lake</H2>
+          <Text
+            size="text-2xl"
+            mobileSize="text-l"
+            color="white"
+            style={{ maxWidth: "808px" }}
+          >
+            A solution that watches over the NEAR network and stores all the
+            events for your easy access.
           </Text>
         </Flex>
 
@@ -295,32 +349,32 @@ return (
             content: (
               <Flex direction="column" gap="60px">
                 <Flex direction="column" gap="24px">
-                  <Text size="text-xl" mobileSize="text-l" fontWeight="500">
-                    Smart contracts
+                  <Text
+                    color="white"
+                    size="text-xl"
+                    mobileSize="text-l"
+                    fontWeight="500"
+                  >
+                    Cost-efficient solution
                   </Text>
-                  <Text>
-                    NEAR's WebAssembly runtime lets you craft smart contracts
-                    using well-known languages such as Javascript and Rust.
-                  </Text>
-                </Flex>
-
-                <Flex direction="column" gap="24px">
-                  <Text size="text-xl" mobileSize="text-l" fontWeight="500">
-                    Built-in account abstraction
-                  </Text>
-                  <Text>
-                    Cover gas fees for your users using built-in
-                    meta-transactions.
+                  <Text color="white">
+                    Cost-efficient solution for building self-hosted indexers in
+                    Rust, JavaScript, Python, Go and other languages
                   </Text>
                 </Flex>
 
                 <Flex direction="column" gap="24px">
-                  <Text size="text-xl" mobileSize="text-l" fontWeight="500">
-                    Built-in developer incentive
+                  <Text
+                    color="white"
+                    size="text-xl"
+                    mobileSize="text-l"
+                    fontWeight="500"
+                  >
+                    Streamlined data management
                   </Text>
-                  <Text>
-                    Every time code runs on a smart contract, the contract
-                    developer earns 30% of the burned gas.
+                  <Text color="white">
+                    Use NEAR Lake Framework to stream blocks to your server
+                    directly from NEAR Lake
                   </Text>
                 </Flex>
 
@@ -328,147 +382,27 @@ return (
                   <Widget
                     src="${REPL_ACCOUNT}/widget/DIG.Button"
                     props={{
-                      href: "https://docs.near.org/concepts/welcome",
+                      href: "https://docs.near.org/concepts/advanced/near-lake-framework",
                       target: "_blank",
-                      label: "Start Building",
+                      label: "Read NEAR Lake Docs",
                       variant: "secondary",
                       fill: "outline",
                       size: "large",
+                      className: "darkButton",
                     }}
                   />
                 </div>
               </Flex>
             ),
-            image: returnIpfsImage(ipfsImages.illustrations.developers),
-            imageSide: "right",
-            alt: "A line drawing of two diamonds with arrows pointing toward each other set behind a console window with a code snippet",
-          }}
-        />
-      </Container>
-    </Section>
-
-    <Section backgroundColor="#000000">
-      <Container>
-        <Flex direction="column" gap="24px">
-          <H2 style={{ color: "var(--white)" }}>NEAR, a technical marvel</H2>
-          <Text
-            size="text-2xl"
-            mobileSize="text-l"
-            color="white"
-            style={{ maxWidth: "808px" }}
-          >
-            Built on years of research, NEAR’s efficient and robust protocol
-            stands as a true marvel of modern technology.
-          </Text>
-        </Flex>
-
-        <Widget
-          src="${REPL_ACCOUNT}/widget/NearOrg.ContentWithImage"
-          key="technical-marvel"
-          props={{
-            content: (
-              <Flex direction="column" gap="60px">
-                <Flex direction="column" gap="24px">
-                  <Text
-                    color="white"
-                    size="text-xl"
-                    mobileSize="text-l"
-                    fontWeight="500"
-                  >
-                    Horizontal scaling with sharding
-                  </Text>
-                  <Text color="white">
-                    NEAR's sharded design enables limitless scaling and robust
-                    resistance to traffic spikes.
-                  </Text>
-                </Flex>
-
-                <Flex direction="column" gap="24px">
-                  <Text
-                    color="white"
-                    size="text-xl"
-                    mobileSize="text-l"
-                    fontWeight="500"
-                  >
-                    Environmentally friendly
-                  </Text>
-                  <Text color="white">
-                    Thanks to its proof-of-stake nature, NEAR consumes in a year
-                    the same energy that Bitcoin consumes in 3 minutes.
-                  </Text>
-                </Flex>
-
-                <Flex direction="column" gap="24px">
-                  <Text
-                    color="white"
-                    size="text-xl"
-                    mobileSize="text-l"
-                    fontWeight="500"
-                  >
-                    A chain you can trust
-                  </Text>
-                  <Text color="white">
-                    10 million blocks created in a span of two years with 100%
-                    uptime.
-                  </Text>
-                </Flex>
-              </Flex>
-            ),
-            image: returnIpfsImage(ipfsImages.illustrations.technicalMarvel),
+            image: returnIpfsImage(ipfsImages.illustrations.nearLake),
             imageSide: "left",
-            alt: "A line drawing of a leaf, a flower, and two data towers all interconnected",
+            alt: "Three squares each with a line drawing inside: a data tower, code brackets, and three wiggling lines representing water",
           }}
         />
-
-        <Flex direction="column" gap="24px">
-          <H2 style={{ color: "var(--white)", maxWidth: "600px" }}>
-            Built for and by the community
-          </H2>
-          <Text
-            size="text-2xl"
-            mobileSize="text-l"
-            color="white"
-            style={{ maxWidth: "808px" }}
-          >
-            An ever evolving protocol with an active community of contributors.
-            Join us and help shape the future of the web.
-          </Text>
-        </Flex>
-
-        <Grid columns="1fr 1fr 1fr" gap="24px">
-          {communityItems.map((item) => (
-            <Widget
-              src="${REPL_ACCOUNT}/widget/NearOrg.Card"
-              key={item.name}
-              props={{
-                as: "a",
-                href: item.url,
-                target: item.target,
-                dark: true,
-                children: (
-                  <>
-                    <IconCircle>
-                      <i className={`ph-duotone ${item.icon}`} />
-                    </IconCircle>
-
-                    <Flex direction="column" gap="16px">
-                      <Text size="text-l" fontWeight="500" color="white">
-                        {item.name}
-                      </Text>
-                      <Text size="text-s" color="white">
-                        {item.description}
-                      </Text>
-                    </Flex>
-                  </>
-                ),
-              }}
-            />
-          ))}
-        </Grid>
       </Container>
     </Section>
 
-    <Section backgroundColor="#00EC97">
+    <Section backgroundColor="#F77A69">
       <Container>
         <Flex direction="column" gap="50px" alignItems="center">
           <Flex
@@ -477,18 +411,22 @@ return (
             alignItems="center"
             style={{ textAlign: "center" }}
           >
-            <Text size="text-3xl" fontWeight="500">
-              The blockchain for everyone
+            <Text
+              size="text-3xl"
+              fontWeight="500"
+              style={{ maxWidth: "600px" }}
+            >
+              Unlock data for your App
             </Text>
 
             <Text
               size="text-l"
               mobileSize="text-l"
-              style={{ maxWidth: "592px" }}
+              style={{ maxWidth: "600px" }}
             >
-              Blockchain has never been easier. Create your account and join a
-              thriving community of visionaries. Help build a new Internet,
-              where everyone counts.
+              Use the solution that best fits your needs. Access data through
+              open databases, create and execute indexer logic, or run your own
+              infrastructure.
             </Text>
           </Flex>
 
@@ -501,8 +439,9 @@ return (
             <Widget
               src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
-                href: "/signup",
-                label: "Create Account",
+                href: "https://docs.near.org/bos/queryapi/big-query",
+                target: "_blank",
+                label: "BigQuery Docs",
                 variant: "secondary",
                 size: "large",
               }}
@@ -511,10 +450,22 @@ return (
             <Widget
               src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
-                href: "https://docs.near.org/concepts/welcome",
+                href: "https://docs.near.org/bos/queryapi/intro",
                 target: "_blank",
-                label: "Read Docs",
+                label: "QueryAPI Docs",
                 variant: "primary",
+                size: "large",
+              }}
+            />
+
+            <Widget
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
+              props={{
+                href: "https://docs.near.org/tools/indexing",
+                target: "_blank",
+                label: "Indexing Docs",
+                variant: "secondary",
+                fill: "outline",
                 size: "large",
               }}
             />

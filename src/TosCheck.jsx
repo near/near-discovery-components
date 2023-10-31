@@ -1,10 +1,9 @@
 const {
-  tosDomainName,
-  termsCid,
-  privacyCid,
+  termsDomainName,
+  privacyDomainName,
   tosName,
   logOut,
-  recordToC,
+  recordToC
 } = props;
 
 const acceptanceKey = tosName; // may change
@@ -107,10 +106,9 @@ if (
   }
 }
 
-const handleTermsAndPrivacyCheck = useCallback(
-  (value) => {
-    setAgreeIsChecked(value);
-  }, []);
+const handleTermsAndPrivacyCheck = useCallback((value) => {
+  setAgreeIsChecked(value);
+}, []);
 
 const handleConfirm = useCallback(() => {
   Social.set(
@@ -156,9 +154,8 @@ const TosContent = () => (
     <Widget
       src={tosName}
       props={{
-        tosDomainName,
-        termsCid,
-        privacyCid,
+        termsDomainName,
+        privacyDomainName,
       }}
     />
   </ContentWrapper>

@@ -1,33 +1,6 @@
-let { tosDomainName, termsCid, privacyCid, expand } = props;
+let { termsDomainName, privacyDomainName, compact } = props;
 
-const [terms, setTerms] = useState(null);
-const [privacy, setPrivacy] = useState(null);
 const [viewMode, setViewMode] = useState("default"); // one of: "default", "terms", "privacy", "community"
-
-const fetchTerms = useCallback(() => {
-  try {
-    asyncFetch(`${tosDomainName}/ipfs/${termsCid}`).then((res) => {
-      setTerms(res.body);
-    });
-  } catch (error) {
-    console.error(`Error on fetching terms from ${tosDomainName}: `, error);
-  }
-}, [tosDomainName, termsCid]);
-
-const fetchPrivacy = useCallback(() => {
-  try {
-    asyncFetch(`${tosDomainName}/ipfs/${privacyCid}`).then((res) => {
-      setPrivacy(res.body);
-    });
-  } catch (error) {
-    console.error(`Error on fetching privacy from ${tosDomainName}: `, error);
-  }
-}, [tosDomainName, privacyCid]);
-
-useEffect(() => {
-  fetchTerms();
-  fetchPrivacy();
-}, [tosDomainName, termsCid, privacyCid]);
 
 const Wrapper = styled.div`
   display: flex;
@@ -61,7 +34,7 @@ const DocBox = styled.div`
   border-radius: 0.75rem;
   padding: 1rem;
   cursor: pointer;
-  transition: all .2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 
   &:hover {
     color: var(--violet8);
@@ -90,7 +63,7 @@ const DocSummary = styled.span`
 const Arrow = styled.i`
   color: var(--green11);
   font-size: 1.25rem;
-  transition: all .2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 
   ${DocBox}:hover & {
     color: var(--violet8);
@@ -119,21 +92,19 @@ const DocumentSelector = ({ name, title, description }) => (
       {title}
       <Arrow className="ph ph-arrow-right" />
     </DocTitle>
-    <DocSummary>
-      {description}
-    </DocSummary>
+    <DocSummary>{description}</DocSummary>
   </DocBox>
 );
 
 const ViewDocument = () => {
-  if (viewMode === "default") return <></>
+  if (viewMode === "default") return <></>;
   return (
     <>
       <BackWrapper>
         <Widget
           src="${REPL_ACCOUNT}/widget/DIG.Chip"
           props={{
-            label: 'Back',
+            label: "Back",
             iconLeft: "ph ph-arrow-left",
             onClick: () => setViewMode("default"),
           }}
@@ -141,16 +112,22 @@ const ViewDocument = () => {
       </BackWrapper>
       {viewMode === "terms" && (
         <DocContent>
-          {terms ? <Markdown text={terms} /> : <p>Loading...</p>}
+          <Widget
+            src={`${REPL_ACCOUNT}/widget/NearOrg.TermsPage`}
+            props={{ termsDomainName, compact }}
+          />
         </DocContent>
       )}
       {viewMode === "privacy" && (
         <DocContent>
-          {privacy ? <Markdown text={privacy} /> : <p>Loading...</p>}
+          <Widget
+            src={`${REPL_ACCOUNT}/widget/NearOrg.PrivacyPage`}
+            props={{ privacyDomainName, compact }}
+          />
         </DocContent>
       )}
     </>
-  )
+  );
 };
 
 return (

@@ -511,8 +511,8 @@ return (
                 <Widget
                   src="${REPL_ACCOUNT}/widget/DIG.Button"
                   props={{
-                    href: "/onboarding",
-                    label: "Get Started",
+                    href: "/signup",
+                    label: "Create Account",
                     variant: "affirmative",
                     size: "large",
                   }}
@@ -634,8 +634,9 @@ return (
                 <Widget
                   src="${REPL_ACCOUNT}/widget/DIG.Button"
                   props={{
-                    href: "/onboarding",
-                    label: "Get Started",
+                    href: "https://docs.near.org",
+                    target: "_blank",
+                    label: "Read Docs",
                     variant: "secondary",
                     fill: "outline",
                     size: "large",

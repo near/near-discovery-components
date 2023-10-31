@@ -103,10 +103,13 @@ const sections = [
         title: "Data Infrastructure",
         url: "/data-infrastructure",
       },
-      {
-        title: "Data Availability",
-        url: "/data-availability",
-      },
+
+      // The following link should be uncommented and deployed on Nov 9th:
+
+      // {
+      //   title: "Data Availability",
+      //   url: "/data-availability",
+      // },
     ],
   },
   {

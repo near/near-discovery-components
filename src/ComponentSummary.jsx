@@ -26,6 +26,10 @@ if (props.showDesc && metadata.description) {
   metadata.description = metadata.description.join(" ");
 }
 
+const handleCloseMenu = () => {
+  props.onCloseMenu();
+};
+
 const primaryActions = {
   open: {
     display: "Open",
@@ -430,7 +434,7 @@ return (
     )}
 
     <Actions>
-      <ButtonLink primary href={primaryActions[primaryAction].url}>
+      <ButtonLink primary href={primaryActions[primaryAction].url} onClick={handleCloseMenu}>
         {primaryActions[primaryAction].display}
       </ButtonLink>
 

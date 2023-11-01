@@ -1,6 +1,6 @@
 const ipfsImages = {
   illustrations: {
-    l2: "bafkreibrnrddlct5wazr33yqdd3empn27ls7d5jxqytgufk73d6ce3tdcu",
+    l2: "bafkreiaqqz44yzagdcj3ubd3uteh2guh7fhbktdg26fw52bti5onu6zsxm",
   },
 };
 
@@ -161,7 +161,7 @@ const PatternContent = styled.div`
 
 return (
   <Wrapper>
-    <Section backgroundColor="#F77A69" style={{ padding: "72px 0" }}>
+    <Section backgroundColor="#F2F1EA" style={{ padding: "72px 0" }}>
       <Container center>
         <Pattern>
           <PatternContent>
@@ -178,7 +178,7 @@ return (
       </Container>
     </Section>
 
-    <Section backgroundColor="#F2F1EA">
+    <Section>
       <Container>
         <Flex direction="column" gap="24px">
           <H2 style={{ maxWidth: "1016px" }}>
@@ -251,6 +251,66 @@ return (
             alt: "A flow chart showing the relationships between the L2 and Data Availability (DA). On the L2, the Rollup node and Batcher feed into the NEAR Protocol on Data Availability. The proposal from the L2 feeds into Ethereum in the DA when then feeds back into the Rollup Node of the L2.",
           }}
         />
+      </Container>
+    </Section>
+
+    <Section backgroundColor="#F2F1EA">
+      <Container>
+        <Flex direction="column" gap="50px" alignItems="center">
+          <Flex
+            direction="column"
+            gap="20px"
+            alignItems="center"
+            style={{ textAlign: "center" }}
+          >
+            <Text
+              size="text-3xl"
+              fontWeight="500"
+              style={{ maxWidth: "600px" }}
+            >
+              Get started with NEAR's data availability layer
+            </Text>
+
+            <Text
+              size="text-l"
+              mobileSize="text-l"
+              style={{ maxWidth: "600px" }}
+            >
+              Efficiently store state data and commitments on a NEAR contract
+              for your L2 rollup.
+            </Text>
+          </Flex>
+
+          <Flex
+            gap="24px"
+            wrap="wrap"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Widget
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
+              props={{
+                href: "https://docs.near.org/data-availability",
+                target: "_blank",
+                label: "Read Docs",
+                variant: "secondary",
+                fill: "outline",
+                size: "large",
+              }}
+            />
+
+            <Widget
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
+              props={{
+                href: "https://forms.gle/LWJoTpTiCbSheUL26",
+                target: "_blank",
+                label: "Get Updates",
+                variant: "primary",
+                size: "large",
+              }}
+            />
+          </Flex>
+        </Flex>
       </Container>
     </Section>
 

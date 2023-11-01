@@ -1,11 +1,14 @@
-const { tosName, logOut, recordToC } = props;
-const acceptanceKey = tosName; // may change
+const {
+  termsDomainName,
+  privacyDomainName,
+  tosName,
+  logOut,
+  recordToC
+} = props;
 
-State.init({
-  hasCommittedAcceptance: false,
-  agreeIsChecked: false,
-  expand: false,
-});
+const acceptanceKey = tosName; // may change
+const [agreeIsChecked, setAgreeIsChecked] = useState(false);
+const [hasCommittedAcceptance, setCommittedAcceptance] = useState(false);
 
 // find all instances of the user agreeing to some version of the desired TOS
 const agreementsForUser = context.accountId
@@ -29,11 +32,22 @@ const latestTosVersion = tosPath.reduce((acc, curr) => {
 const Backdrop = styled.div`
   height: 100vh;
   width: 100vw;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--blackA3);
+  backdrop-filter: blur(4px);
   position: fixed;
   left: 0;
   top: 0;
   z-index: 1001;
+  animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  @keyframes overlayShow {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 `;
 
 const Modal = styled.div`
@@ -47,69 +61,29 @@ const Modal = styled.div`
   display: flex;
   row-gap: 1rem;
   flex-direction: column;
+  box-shadow: 0px 4px 8px 0px var(--blackA3), 0px 0px 0px 1px var(--blackA4);
 `;
 
-const ModalContent = styled.div`
+const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1 min-height 0;
   overflow-y: auto;
 `;
 
-const ModalFooter = styled.div`
+const TosFooter = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: 2rem;
 `;
 
-const AcceptSection = styled.div`
+const TosButtons = styled.div`
   display: flex;
   flex-direction: row;
   column-gap: 1rem;
-
-  .continue-button {
-    background: #59e692;
-    color: #09342e;
-    border-radius: 40px;
-    height: 40px;
-    padding: 0 35px;
-    font-weight: 600;
-    font-size: 14px;
-    border: none;
-    cursor: pointer;
-    transition: background 200ms, opacity 200ms;
-
-    &:hover,
-    &:focus {
-      background: rgb(112 242 164);
-      outline: none;
-    }
-
-    &:disabled {
-      opacity: 0.5;
-      pointer-events: none;
-    }
-  }
-`;
-
-const CheckWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
-  color: ${state.agreeIsChecked ? "#26A65A" : "inherit"};
 `;
-
-const CheckButton = styled.button`
-  border: none;
-  --bs-btn-hover-bg: transparent;
-  --bs-btn-active-bg: transparent;
-  --bs-btn-color: ${state.agreeIsChecked ? "#26A65A" : "black"};
-  --bs-btn-hover-color: ${state.agreeIsChecked ? "#26A65A" : "var(--bs-blue)"};
-`;
-
-const expand = (e) => {
-  State.update({ expand: e });
-};
 
 if (
   agreementsForUser.length === 0 ||
@@ -132,12 +106,35 @@ if (
   }
 }
 
+const handleTermsAndPrivacyCheck = useCallback((value) => {
+  setAgreeIsChecked(value);
+}, []);
+
+const handleConfirm = useCallback(() => {
+  Social.set(
+    {
+      index: {
+        tosAccept: JSON.stringify({
+          key: acceptanceKey,
+          value: latestTosVersion,
+        }),
+      },
+    },
+    {
+      onCommit: () => {
+        setCommittedAcceptance(true);
+      },
+    }
+  );
+}, []);
+
 // we check for existence of Index results because if no results are found
 // we get an empty array. This means that when the existence check fails
 // we are still loading and we do not want to potentially flash the modal
 // until we know for sure that it should be displayed
+
 const showTos =
-  !state.hasCommittedAcceptance &&
+  !hasCommittedAcceptance &&
   context.accountId &&
   latestTosVersion &&
   agreementsForUser &&
@@ -152,71 +149,58 @@ if (agreementsForUser && recordToC) {
   });
 }
 
+const TosContent = () => (
+  <ContentWrapper>
+    <Widget
+      src={tosName}
+      props={{
+        termsDomainName,
+        privacyDomainName,
+      }}
+    />
+  </ContentWrapper>
+);
+
+const TosActions = () => (
+  <TosFooter>
+    <Widget
+      src="${REPL_ACCOUNT}/widget/DIG.Checkbox"
+      props={{
+        id: "agree-terms-and-privacy",
+        label: "I agree to the Terms of Service and Privacy Policy",
+        checked: agreeIsChecked,
+        onCheckedChange: handleTermsAndPrivacyCheck,
+      }}
+    />
+    <TosButtons>
+      <Widget
+        src="${REPL_ACCOUNT}/widget/DIG.Button"
+        props={{
+          label: "Decline",
+          variant: "secondary",
+          onClick: logOut,
+        }}
+      />
+      <Widget
+        src="${REPL_ACCOUNT}/widget/DIG.Button"
+        props={{
+          label: "Continue",
+          variant: "affirmative",
+          disabled: !agreeIsChecked,
+          onClick: handleConfirm,
+        }}
+      />
+    </TosButtons>
+  </TosFooter>
+);
+
 return (
   <>
     {showTos && (
       <Backdrop className="d-flex">
         <Modal>
-          <ModalContent>
-            <Widget src={tosName} props={expand} />
-          </ModalContent>
-          <ModalFooter>
-            <CheckWrapper>
-              <CheckButton
-                onClick={() => {
-                  State.update({ agreeIsChecked: !state.agreeIsChecked });
-                }}
-                className="btn btn-outline-dark"
-              >
-                <div className="d-flex flex-row align-items-center gap-3">
-                  <i
-                    className={`bi bi-${
-                      state.agreeIsChecked ? "check-square" : "square"
-                    }`}
-                    style={{ fontSize: "1.5rem" }}
-                  />
-                  <span style={{ textAlign: "left" }}>
-                    I agree to the Terms of Service and Privacy Policy
-                  </span>
-                </div>
-              </CheckButton>
-            </CheckWrapper>
-            <AcceptSection>
-              <button
-                className="btn btn-outline-secondary"
-                style={{
-                  flexGrow: 1,
-                  flexBasis: "10rem",
-                  borderRadius: "1.25rem",
-                }}
-                onClick={logOut}
-              >
-                Decline
-              </button>
-              <CommitButton
-                style={{
-                  flexGrow: 1,
-                  flexBasis: "10rem",
-                  borderRadius: "1.25rem",
-                }}
-                className="continue-button"
-                disabled={!state.agreeIsChecked}
-                data={{
-                  index: {
-                    tosAccept: JSON.stringify({
-                      key: acceptanceKey,
-                      value: latestTosVersion,
-                    }),
-                  },
-                }}
-                onCommit={() => {
-                  State.update({ hasCommittedAcceptance: true });
-                }}
-              >
-                Continue
-              </CommitButton>
-            </AcceptSection>
-          </ModalFooter>
+          <TosContent />
+          <TosActions />
         </Modal>
       </Backdrop>
     )}

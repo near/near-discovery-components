@@ -212,7 +212,7 @@ const ContentGrid = styled.div`
 
 const P1 = styled.p`
   font-weight: 500;
-  font-size: 17px;
+  font-size: 18px;
   margin-bottom: 0;
   padding-bottom: 0.3rem;
 `;
@@ -456,35 +456,10 @@ return (
                     <P2>Dear NEAR BOS Developer Community,</P2>
 
                     <P2>
-                      The Pagoda product team launched the App Library this week
-                      to help B.O.S founders and developers showcase and promote
-                      their apps. The App Library is a page on near.org
-                      dedicated to spotlighting B.O.S-powered apps to increase
-                      their discoverability and engagement. With over 200
-                      applications powered by BOS and more than 11,000
-                      components now in the ecosystem, the App Library is
-                      designed to help users and community members find your
-                      applications and promote greater usage across the NEAR
-                      ecosystem.
-                    </P2>
-
-                    <P2>
                       <strong>
-                        To find the first group of featured apps on App Library,
-                        we are launching the App Upvoting Event as a NCON Bounty
-                        to invite all NEARCON attendees to upvote and decide who
-                        gets featured!
+                        Get ready to shine at NEARCON! 🌐 Win the chance to get
+                        featured on the App Library (near.org/applications)!
                       </strong>
-                    </P2>
-
-                    <P2>
-                      “NCON Bounties” is a Web3 gamified event experience for
-                      attendees to engage throughout the event. Attendees will
-                      earn NCON by completing Bounties and have the option to
-                      redeem NCON for food, merchandise, and more. Participants
-                      who decide to complete this special NCON Bounty will also
-                      help select the first group of featured apps in the B.O.S.
-                      App Library.
                     </P2>
 
                     <P1>
@@ -492,10 +467,7 @@ return (
                     </P1>
 
                     <P2>
-                      To ensure your dApp shines during this event, here&#39;s
-                      what you need to do. All of these steps are right in the
-                      B.O.S interface for those who want to participate: simply
-                      go to the Metadata page of your app and follow the
+                      Go to the Metadata page of your app and follow the
                       instructions below.
                     </P2>
                     <P3>
@@ -506,7 +478,7 @@ return (
                       Craft a compelling introduction to your dApp. Highlight
                       its unique features and value proposition. Pro tip: Add
                       screenshots to make your dApp visually appealing and easy
-                      to understand. (Description is required!)
+                      to understand. (Description is <strong>required</strong>!)
                     </P2>
 
                     <P3>
@@ -515,8 +487,8 @@ return (
 
                     <P2>
                       First, make sure to tag the component that holds the entry
-                      to your project experience as App. Then, choose the
-                      category that best represents your dApp&#45;
+                      to your project experience as <strong>App</strong>. Then,
+                      choose the category that best represents your dApp&#45;
                       <strong>Earn, Play, Develop, Engage</strong>. (Choosing
                       <strong>one of these four</strong> categories is{" "}
                       <strong>required</strong>! If you applied more than one of
@@ -545,27 +517,8 @@ return (
                     </P2>
 
                     <P1>
-                      <S1>✨</S1> Why Participate?
+                      <S1>🏆</S1> Rewards?
                     </P1>
-
-                    <P2>
-                      The App Library isn't just a catalog; it's an interactive
-                      platform that spotlights the capabilities of NEAR B.O.S.
-                      It will become the most visited page on near.org and
-                      serves as a gateway to the NEAR Ecosystem. By
-                      participating, you have the chance to feature prominently
-                      on the App Library and the NEAR homepage for the next
-                      three months, gaining exposure and recognition across the
-                      NEAR ecosystem and beyond.
-                    </P2>
-
-                    <P1>
-                      <S1>🏆</S1> What's the Payoff?
-                    </P1>
-
-                    <P2>
-                      Your active participation can lead to significant rewards:
-                    </P2>
 
                     <P3>
                       <strong>Top 8 Featured dApps:</strong>
@@ -574,8 +527,9 @@ return (
                     <P2>
                       The dApps with the highest number of upvotes from this
                       event will be showcased prominently on the landing page of
-                      the App Library for the next three months—putting your
-                      creation on the most visited page on near.org.
+                      the App Library(near.org/applications) and near.org
+                      homepage for the next three months—putting your creation
+                      on the most visited page on near.org.
                     </P2>
 
                     <P3>
@@ -594,15 +548,13 @@ return (
                     </P1>
 
                     <P2>
-                      <strong>
-                        Upvote Button Enabled 2 days Before NEARCON
-                      </strong>
-                      <br></br>2 days before NEARCON, you will see an upvote
-                      button appear on the details pages of your qualified Apps.
-                      Any users who have an account on near.org can now send
-                      their support by hitting that upvote button. This upvote
-                      button will be disabled two days after NEARCON and the Top
-                      8 will be announced shortly after.
+                      <strong>Upvote Button Enabled on Nov 3rd</strong>
+                      <br></br> On November 3rd, you will see an upvote button
+                      appear on the details pages of your qualified Apps. Any
+                      users who have an account on near.org can now send their
+                      support by hitting that upvote button. This upvote button
+                      will be disabled two days after NEARCON and the Top 8 will
+                      be announced shortly after.
                     </P2>
 
                     <P2>
@@ -641,12 +593,8 @@ return (
                       </ListItem>
                     </List>
                     <P2>
-                      The primary goal of the App Library is to celebrate the
-                      creativity and efforts of NEAR developers and founders. To
-                      increase visibility, boost engagement, and get valuable
-                      feedback from the whole NEAR community on your app, make
-                      sure to register your apps as qualified and participate in
-                      the App Upvoting NCON Bounty.
+                      🚀 Don't miss this chance to showcase your creativity!
+                      Register your apps now. Good luck! 🚀
                     </P2>
                   </>
                 )}

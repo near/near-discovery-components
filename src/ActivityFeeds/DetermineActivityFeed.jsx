@@ -62,16 +62,31 @@ fetchGraphQL(lastPostQuery, "IndexerQuery", {})
 return (
   <>
     {state.shouldFallback ? (
-      <Widget
-        src={`${REPL_ACCOUNT}/widget/v1.Posts`}
-        props={{ showFlagAccountFeature: true }}
-      />
+      <>
+      {props.filteredAccountIds ? (
+        <Widget
+          src={`${REPL_ACCOUNT}/widget/v1.Feed`}
+          props={{
+            showFlagAccountFeature: true,
+            accounts: props.filteredAccountIds
+          }}
+        />
+          ) : (
+        <Widget
+          src={`${REPL_ACCOUNT}/widget/v1.Posts`}
+          props={{
+            showFlagAccountFeature: true
+          }}
+        />
+      )}
+      </>
     ) : (
       <Widget
         src={`${REPL_ACCOUNT}/widget/ActivityFeeds.PostsFeedControls`}
         props={{
           GRAPHQL_ENDPOINT,
           showFlagAccountFeature: true,
+          ...props,
         }}
       />
     )}

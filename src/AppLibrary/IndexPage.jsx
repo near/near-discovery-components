@@ -19,13 +19,15 @@ function loadData() {
   if (state.categories.length > 0) return;
 
   asyncFetch(
-    "https://storage.googleapis.com/databricks-near-query-runner/output/app-store.json"
+    "https://storage.googleapis.com/databricks-near-query-runner/output/app-store-updated.json"
   )
     .then((res) => {
+      const data = JSON.parse(res.body);
+
       State.update({
-        categories: res.body.categories,
+        categories: data.data,
         isLoading: false,
-        selectedTab: state.selectedTab ?? res.body.categories[0].label,
+        selectedTab: state.selectedTab ?? data.data[0].label,
       });
     })
     .catch((error) => {

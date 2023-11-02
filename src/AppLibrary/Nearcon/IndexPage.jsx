@@ -32,6 +32,7 @@ function loadData() {
         const appUrl = `${detailsUrl}${app.widget_name}`;
         const imgURL = `https://ipfs.near.social/ipfs/${image_cid}`;
 
+        app.votes = app.num_votes;
         app.appUrl = appUrl;
         app.recentTag = app.lastest_tag;
 
@@ -269,6 +270,16 @@ const SubTabLink = styled.button`
   }
 `;
 
+const ChartContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  max-width: 1120px;
+  margin: 0 auto;
+  gap: 3px;
+`;
+
 const [selectedSubTab, setSelectedSubTab] = useState("Everyone");
 const isActive = (tabName) => selectedSubTab === tabName;
 
@@ -278,8 +289,7 @@ const categories = [
   "Play",
   "Develop",
   "Engage",
-  // TODO Add Stats Page
-  // "Stats",
+  "Stats",
 ];
 
 return (
@@ -360,6 +370,56 @@ return (
               }
               return null;
             })}
+            {state.selectedTab === "Stats" && state.apps.length > 0 && (
+              <Section style={{"margin-top": "20px"}}>
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.Charts.TopUpvotedApps"
+                  props={{ apps: state.apps, title: "Top 10 Apps by upvote" }}
+                />
+                <ChartContainer>
+                  <Widget
+                    src="${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.Charts.TopUpvotedApps"
+                    props={{
+                      apps: state.apps,
+                      title: "Most upvoted in Earn",
+                      categoryFilter: "earn",
+                      width: "400px",
+                      height: "300px",
+                    }}
+                  />
+                  <Widget
+                    src="${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.Charts.TopUpvotedApps"
+                    props={{
+                      apps: state.apps,
+                      title: "Most upvoted in Play",
+                      categoryFilter: "play",
+                      width: "400px",
+                      height: "300px",
+                    }}
+                  />
+                  <Widget
+                    src="${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.Charts.TopUpvotedApps"
+                    props={{
+                      apps: state.apps,
+                      title: "Most upvoted in Develop",
+                      categoryFilter: "develop",
+                      width: "400px",
+                      height: "300px",
+                    }}
+                  />
+                  <Widget
+                    src="${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.Charts.TopUpvotedApps"
+                    props={{
+                      apps: state.apps,
+                      title: "Most upvoted in Engage",
+                      categoryFilter: "engage",
+                      width: "400px",
+                      height: "300px",
+                    }}
+                  />
+                </ChartContainer>
+              </Section>
+            )}
             {state.selectedTab === "Event Guide" && (
               <Section>
                 <SubTabMenu>

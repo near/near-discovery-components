@@ -126,7 +126,7 @@ const handleConfirm = useCallback(() => {
       },
     }
   );
-}, []);
+}, [latestTosVersion]);
 
 // we check for existence of Index results because if no results are found
 // we get an empty array. This means that when the existence check fails

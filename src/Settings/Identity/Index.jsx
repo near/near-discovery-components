@@ -1,6 +1,7 @@
-const modalOpen = Storage.get("kyc-alert") ?? false;
+const fractalModal = Storage.get("fractal-alert") ?? null;
 
 const [showBanner, setShowBanner] = useState(false);
+const modalOpen = fractalModal?.alert ?? false;
 
 const Wrapper = styled.div`
   display: flex;
@@ -28,8 +29,6 @@ const Icon = styled.i`
 `;
 
 const bannerToggle = useCallback(() => setShowBanner(!showBanner), [showBanner]);
-
-console.log("idosCredentials: ", props.idosCredentials);
 
 return (
   <Wrapper>
@@ -66,7 +65,8 @@ return (
       src="${REPL_ACCOUNT}/widget/Settings.Identity.Alert"
       props={{
         open: modalOpen,
-        onOpenChange: () => Storage.set("kyc-alert", !modalOpen),
+        href: fractalModal?.href ?? null,
+        onOpenChange: () => Storage.set("fractal-alert", { alert: false, href: null }),
         onConfirm: () => {},
       }}
     />

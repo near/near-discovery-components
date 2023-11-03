@@ -1,6 +1,6 @@
-let { onCancel, onConfirm, ...forwardedProps } = props;
+let { onCancel, onConfirm, href, ...forwardedProps } = props;
 
-const idOSVerificationLink = "https://app.staging.sandbox.fractal.id/authorize?client_id=EJcoynygpubqr05TK6vMI--eq_iLHTXrvUFuLLAzfrs&redirect_uri=https%3A%2F%2Fnear.org%2Fnear%2Fwidget%2FProfilePage&response_type=code&scope=contact%3Aread%20verification.basic%3Aread%20verification.basic.details%3Aread%20verification.liveness%3Aread%20verification.liveness.details%3Aread%20verification.idos%3Aread%20verification.idos.details%3Aread%20verification.wallet-near%3Aread%20verification.wallet-near.details%3Aread";
+// const idOSVerificationLink = "https://app.staging.sandbox.fractal.id/authorize?client_id=EJcoynygpubqr05TK6vMI--eq_iLHTXrvUFuLLAzfrs&redirect_uri=https%3A%2F%2Fnear.org%2Fnear%2Fwidget%2FProfilePage&response_type=code&scope=contact%3Aread%20verification.basic%3Aread%20verification.basic.details%3Aread%20verification.liveness%3Aread%20verification.liveness.details%3Aread%20verification.idos%3Aread%20verification.idos.details%3Aread%20verification.wallet-near%3Aread%20verification.wallet-near.details%3Aread";
 
 const Wrapper = styled.div`
   display: flex;
@@ -78,7 +78,7 @@ const Confirm = () => (
       label: "Get started",
       variant: "primary",
       onClick: onConfirm,
-      href: idOSVerificationLink,
+      href,
       style: { width: "100%" },
     }}
   />

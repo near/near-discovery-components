@@ -1,7 +1,0 @@
-authtoken: 2X0Pj3OFEj0jxLbe0d3no7VzbWO_6ZvkNVdr2U5Vo8LZXJ7xf
-version: 2
-tunnels:
-  my_tunnel_name:
-    labels:
-      - edge=edghts_2X23XNZptw6YDWWDyYkvN7BIFEV
-    addr: http://localhost:3030

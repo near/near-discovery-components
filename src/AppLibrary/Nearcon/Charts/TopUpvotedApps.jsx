@@ -1,7 +1,7 @@
 const filterTag = props.categoryFilter || undefined;
 const topLimit = props.topLimit || 10;
 const title = props.title || undefined;
-const width = props.width || "600px";
+const width = props.width || "100vh";
 const height = props.height || "400px";
 
 State.init({
@@ -17,7 +17,7 @@ const createChartConfig = (apps) => {
     : apps;
   const topApps = filteredApps
     .filter((app) => app.votes > 0)
-    .sort((a, b) => b.votes - a.votes)
+    .sort((a, b) => a.votes - b.votes)
     .slice(0, topLimit);
   const appNames = topApps.map((app) => app.name);
   const appVotes = topApps.map((app) => app.votes);
@@ -57,6 +57,8 @@ const createChartConfig = (apps) => {
       axisLine: { show: false },
       axisTick: { show: false },
       axisLabel: { show: true },
+      max: 'dataMax',
+      minInterval: 1,
     },
     series: [
       {

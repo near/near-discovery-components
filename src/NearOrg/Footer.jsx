@@ -14,6 +14,7 @@ const Text = styled.p`
   font-weight: ${(p) => p.weight ?? "400"};
   color: ${(p) => p.color ?? "#000"};
   margin: 0;
+  white-space: nowrap;
 `;
 
 const Container = styled.div`
@@ -47,7 +48,7 @@ const LinkGrid = styled.div`
     font-size: 14px;
     line-height: 1.2;
     font-weight: 400;
-    color: var(--sand11);
+    color: var(--sand12);
     white-space: nowrap;
 
     &:hover,
@@ -87,32 +88,35 @@ const sections = [
     title: "Platform",
     links: [
       {
-        title: "Decentralized Front-Ends",
-        url: "https://docs.near.org/bos/components",
+        title: "The Blockchain",
+        url: "/blockchain",
       },
       {
-        title: "Decentralized Hosting",
-        url: "https://docs.near.org/bos/tutorial/bos-gateway",
+        title: "Open Web Applications",
+        url: "/open-web-applications",
       },
       {
-        title: "Data Platform",
-        url: "https://docs.near.org/concepts/data-flow/data-storage",
+        title: "Onboarding",
+        url: "/fast-auth-and-relayers",
       },
       {
-        title: "Fast Auth",
-        url: "https://docs.near.org/tools/fastauth-sdk",
+        title: "Data Infrastructure",
+        url: "/data-infrastructure",
       },
-      {
-        title: "NEAR Protocol",
-        url: "https://docs.near.org/concepts/web3/near",
-      },
+
+      // The following link should be uncommented and deployed on Nov 9th:
+
+      // {
+      //   title: "Data Availability",
+      //   url: "/data-availability",
+      // },
     ],
   },
   {
-    title: "Resources",
+    title: "Developer Resources",
     links: [
       {
-        title: "Documentation",
+        title: "Docs",
         url: "https://docs.near.org/",
       },
       {
@@ -120,41 +124,41 @@ const sections = [
         url: "/sandbox",
       },
       {
-        title: "Tutorials",
+        title: "Tools",
+        url: "https://docs.near.org/tools/welcome",
+      },
+      {
+        title: "Examples & Tutorials",
         url: "https://docs.near.org/bos/tutorial/quickstart",
       },
       {
         title: "GitHub",
         url: "https://github.com/near",
       },
+      {
+        title: "Standards & Proposals",
+        url: "https://github.com/near/NEPs",
+      },
+      {
+        title: "Technical Papers",
+        url: "https://docs.near.org/concepts/advanced/papers",
+      },
     ],
   },
   {
-    title: "Tools",
+    title: "Discover",
     links: [
       {
-        title: "Overview",
-        url: "https://docs.near.org/tools/welcome",
+        title: "Applications",
+        url: "/applications",
       },
       {
-        title: "VS Code Extension",
-        url: "https://docs.near.org/bos/dev/vscode",
+        title: "Components",
+        url: "/components",
       },
       {
-        title: "BOS Loader",
-        url: "https://docs.near.org/bos/dev/bos-loader",
-      },
-      {
-        title: "APIs",
-        url: "https://docs.near.org/bos/api/home",
-      },
-      {
-        title: "SDKs",
-        url: "https://docs.near.org/sdk/welcome",
-      },
-      {
-        title: "Command Line Tools",
-        url: "https://github.com/bos-cli-rs/bos-cli-rs",
+        title: "Gateways",
+        url: "/gateways",
       },
     ],
   },
@@ -166,16 +170,16 @@ const sections = [
         url: "/ecosystem",
       },
       {
+        title: "People",
+        url: "/people",
+      },
+      {
         title: "News",
         url: "/nearweekapp.near/widget/nearweek-news",
       },
       {
         title: "Events",
         url: "/events",
-      },
-      {
-        title: "People",
-        url: "/people",
       },
       {
         title: "Founders",
@@ -249,7 +253,7 @@ return (
       <LinkGrid>
         {sections.map((section) => (
           <div key={section.title}>
-            <Text size="16px" weight="500">
+            <Text size="12px" weight="450" color="var(--sand10)">
               {section.title}
             </Text>
 

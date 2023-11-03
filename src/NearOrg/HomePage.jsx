@@ -961,7 +961,7 @@ return (
               <Stats>
                 <div>
                   <Text>{stats.totalDevelopers}</Text>
-                  <Text>Active Developers</Text>
+                  <Text>Developers</Text>
                 </div>
 
                 <div>

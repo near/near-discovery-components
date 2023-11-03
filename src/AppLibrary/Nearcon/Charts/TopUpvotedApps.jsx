@@ -1,12 +1,12 @@
 const filterTag = props.categoryFilter || undefined;
 const topLimit = props.topLimit || 10;
 const title = props.title || undefined;
-const width = props.width || "100vh";
+const width = props.width || "100%";
 const height = props.height || "400px";
 
 State.init({
   isLoading: true,
-  apps: props.apps || [],
+  apps: props.appWithVoteData || [],
   NoDataAvalaible: false,
   chartConfig: undefined,
 });
@@ -19,7 +19,9 @@ const createChartConfig = (apps) => {
     .filter((app) => app.votes > 0)
     .sort((a, b) => a.votes - b.votes)
     .slice(0, topLimit);
-  const appNames = topApps.map((app) => app.name);
+  const appNames = topApps.map((app) =>
+    app.name ? app.name : app.widget_name.split("/")[2]
+  );
   const appVotes = topApps.map((app) => app.votes);
   if (topApps.length == 0) {
     State.update({
@@ -36,18 +38,14 @@ const createChartConfig = (apps) => {
     },
     grid: {
       left: "3%",
-      right: "4%",
-      containLabel: true,
+      right: "3%",
     },
     yAxis: {
       type: "category",
       data: appNames,
-      axisLine: { show: false },
+      axisLine: { show: true },
       axisTick: { show: false },
-      axisLabel: {
-        show: true,
-        nameTextStyle: { overflow: "break" },
-      },
+      axisLabel: { show: false },
       boundaryGap: true,
     },
     xAxis: {
@@ -57,15 +55,27 @@ const createChartConfig = (apps) => {
       axisLine: { show: false },
       axisTick: { show: false },
       axisLabel: { show: true },
-      max: 'dataMax',
+      max: "dataMax",
       minInterval: 1,
     },
     series: [
       {
-        name: "Votes",
+        name: "Upvotes",
         type: "bar",
         data: appVotes,
         color: "#59e691",
+        legendHoverLink: true,
+        label: {
+          show: true,
+          position: "inside",
+          color: "#000",
+          formatter: "{b}: {c} {a}",
+          overflow: "break",
+          fontFamily: "system-ui",
+          padding: [0, 0, 0, 50],
+          verticalAlign: "middle",
+          align: "center",
+        },
       },
     ],
   };
@@ -76,22 +86,16 @@ const loadChartData = () => {
   if (state.isLoading !== true || state.apps.length > 0) return;
   try {
     asyncFetch(
-      "https://storage.googleapis.com/databricks-near-query-runner/output/nearcon_apps/apps_qualified.json"
+      "https://storage.googleapis.com/databricks-near-query-runner/output/nearcon_apps/apps_qualified_upvoted.json"
     )
       .then((res) => {
         const apps = JSON.parse(res.body).data.map((app_raw) => {
           const app = JSON.parse(app_raw);
-
-          const appUrl = `${detailsUrl}${app.widget_name}`;
           app.votes = apps.num_votes;
-
-          app.appUrl = appUrl;
           app.recentTag = app.lastest_tag;
-
           const uniqueTags = Array.from(new Set(app.tags));
           app.tags = uniqueTags;
-
-          return { ...app, metadata };
+          return { ...app };
         });
         State.update({
           apps,
@@ -132,13 +136,13 @@ const GraphContainer = styled.div`
 
 const Graph = styled.div`
   display: flex;
-  margin-top: -50px;
   margin-bottom: 20px;
   flex-direction: column;
-  min-height: 100px;
-  min-width: 300px;
-  @media (min-width: 450px) {
-    margin-left: 30px;
+  width: 100%;
+  height: 100%;
+
+  @media (min-width: 1024px) {
+    width: ${width};
   }
 `;
 
@@ -147,6 +151,10 @@ const Title = styled.h3`
   font-weight: 700;
   color: var(--sand12);
   margin-bottom: 0;
+
+  @media (min-width: 450px) {
+    flex-direction: row;
+  }
 `;
 
 const Text = styled.p`
@@ -160,28 +168,32 @@ const Text = styled.p`
   white-space: nowrap;
   text-align: center;
   overflow: hidden;
+`;
 
-  i {
-    font-size: 16px;
-  }
+const LoaderContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-tems: center;
+  width: ${width};
+  height: ${height};
 `;
 
 const Loader = () => {
   return (
-    <div className="loader">
+    <LoaderContainer className="loader">
       <span
         className="spinner-grow spinner-grow-sm me-1"
         role="status"
         aria-hidden="true"
       />
       Loading ...
-    </div>
+    </LoaderContainer>
   );
 };
 
 return (
   <>
-    <Graph>
+    <Graph style={{ height: height }}>
       {title && <Title>{title}</Title>}
       {state.isLoading && <Loader />}
       {state.NoDataAvalaible && (

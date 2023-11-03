@@ -67,6 +67,7 @@ return (
         open: modalOpen,
         href: fractalModal?.href ?? null,
         onOpenChange: () => Storage.set("fractal-alert", { alert: false, href: null }),
+        onCancel: () => Storage.set("fractal-alert", { alert: false, href: null }),
         onConfirm: () => {},
       }}
     />

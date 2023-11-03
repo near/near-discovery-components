@@ -39,6 +39,15 @@ const ListItemWrapper = styled.div`
   gap: 6px;
 `;
 
+const ActionButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  alignItems: "stretch",
+  justifyContent: "stretch",
+`;
+
 const ListItem = ({ text }) => (
   <ListItemWrapper>
     <i className="ph ph-check" />
@@ -84,12 +93,13 @@ const Confirm = () => (
   />
 );
 
-const actionStyles = {
-  flexDirection: "column",
-  width: "100%",
-  alignItems: "stretch",
-  justifyContent: "stretch",
-};
+
+const ActionButtons = () => (
+  <ActionButtonWrapper>
+    <Cancel />
+    <Confirm />
+  </ActionButtonWrapper>
+);
 
 return (
   <Widget
@@ -97,9 +107,7 @@ return (
     props={{
       type: "alert",
       content: <Content />,
-      cancelButton: <Cancel />,
-      confirmButton: <Confirm />,
-      actionStyles,
+      actionButtons: <ActionButtons />,
       ...forwardedProps,
     }}
   />

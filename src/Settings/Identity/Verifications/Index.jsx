@@ -79,7 +79,7 @@ const verificationItems = [
     button: <CredentialButton onClick={() => Storage.set("fractal-alert", { alert: true, href: proofOfPersonhoodLink })} />,
   },
   {
-    id: "kyc",
+    id: "plus",
     title: "Know Your Customer (KYC)",
     text: "This verification helps other users trust transactions with your account. Choose from various providers to earn this verification badge.",
     icon: <IconSealCheck />,
@@ -88,7 +88,11 @@ const verificationItems = [
   },
 ];
 
-const verifiedItems = verificationItems.filter((item) => !item.verified);
+
+const verifiedItems =
+  verificationItems
+    .map((item) => idosCredentials && idosCredentials.find((cred) => cred.credential_type === item.id) ? { ...item, verified: true } : item)
+    .filter((item) => !item.verified);
 
 return (
   <Wrapper>

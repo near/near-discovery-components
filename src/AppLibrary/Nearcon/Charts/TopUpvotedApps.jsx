@@ -6,7 +6,7 @@ const height = props.height || "400px";
 
 State.init({
   isLoading: true,
-  apps: props.appWithVoteData || [],
+  apps: props.apps || [],
   NoDataAvalaible: false,
   chartConfig: undefined,
 });

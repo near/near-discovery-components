@@ -13,7 +13,7 @@ const appLibraryIndexUrl =
   "/${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.IndexPage";
 const detailsUrl = `/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=`;
 const selectedCategory = [];
-const targetTags = ["develop", "earn", "play", "engage"];
+const targetTags = ["uncategorized", "develop", "earn", "play", "engage"];
 
 function loadData() {
   if (state.apps.length > 0) return;
@@ -285,6 +285,7 @@ const isActive = (tabName) => selectedSubTab === tabName;
 
 const categories = [
   "Event Guide",
+  "Uncategorized",
   "Earn",
   "Play",
   "Develop",
@@ -320,11 +321,14 @@ return (
               const lowerCaseCategory = category.toLowerCase();
               if (targetTags.includes(lowerCaseCategory)) {
                 if (state.selectedTab === category) {
-                  const filteredApps = state.apps.filter(
-                    (item) =>
-                      item.recentTag &&
-                      item.recentTag.toLowerCase() === lowerCaseCategory
-                  );
+                  let filteredApps = state.apps;
+                  if (state.selectedTab !== "Uncategorized") {
+                    filteredApps = state.apps.filter(
+                      (item) =>
+                        item.recentTag &&
+                        item.recentTag.toLowerCase() === lowerCaseCategory
+                    );
+                  }
                   return (
                     <Section key={category}>
                       <ContentGrid gridEnabled={filteredApps.length > 0}>

@@ -7,7 +7,7 @@ const fromContext = props;
 
 State.init({
   currentPage: 0,
-  selectedTab: props.tab || "everyone",
+  selectedTab: props.tab ?? "trending",
 });
 
 if (props.tab && props.tab !== state.selectedTab) {

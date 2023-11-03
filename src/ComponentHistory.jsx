@@ -7,7 +7,7 @@ const COMMIT_DISPLAY_LIMIT = 5;
 
 State.init({
   showAllCommits: false,
-  selectedTab: "render",
+  selectedTab: "code",
   blockHeight: props.blockHeight ? parseInt(props.blockHeight) : null,
 });
 

@@ -136,7 +136,7 @@ async function getBlock(block: Block) {
             label,
           },
         };
-        context.graphql(
+        await context.graphql(
           `mutation insertReport($report: dataplatform_near_moderation_moderation_reporting_insert_input!) {
                         insert_dataplatform_near_moderation_moderation_reporting_one( object: $report
                         ) { group account_id moderated_account_id moderated_path moderated_blockheight label }

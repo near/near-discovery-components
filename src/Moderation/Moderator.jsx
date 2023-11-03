@@ -34,7 +34,7 @@ function overview() {
           </p>
         ) : (
           <>
-            <p>{moderatorAccount} you are NOT a moderator of this group.</p>
+            <p>{context.accountId} you are NOT a moderator of this group.</p>
             <p style={{ color: "grey", float: left, paddingRight: "2em" }}>
               When saving, ensure data is being written to moderator key. You
               may need to refresh your browser if you used "Pretend to be

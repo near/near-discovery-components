@@ -1,5 +1,6 @@
 const moderatorAccount = props?.moderatorAccount || "${REPL_MODERATOR}";
 const moderationStreamBase = props.moderationStream || moderatorAccount;
+const isModerator = context.accountId === moderatorAccount;
 
 const GRAPHQL_ENDPOINT =
   props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
@@ -18,7 +19,7 @@ const moderationDataFormat = (accountId, path, blockHeight) => {
   if (blockHeight) {
     value.blockHeight = parseInt(blockHeight);
   }
-  const moderationStream = moderationStreamBase + path;
+  const moderationStream = moderationStreamBase + (path ? path : "");
   return JSON.stringify({
     key: moderationStream,
     value: value,
@@ -54,7 +55,6 @@ query GetNeedsModeration($offset: Int, $limit: Int) {
     reporter_list
     block_timestamp
     content
-    receipt_id
     first_report_blockheight
     most_frequent_label
   }
@@ -153,6 +153,7 @@ const renderModeratedRow = (id, item) => {
   return { value: id, header, content: renderWidget };
 };
 
+const disabledMessage = "Button is disabled because you are not a moderator of this group.";
 const blockItemHelperText =
   "to no longer be shown in feeds that obey moderation. \n" +
   "Direct links will show a moderation message. \n" +
@@ -282,12 +283,13 @@ const renderItem = (item) => {
                 src="${REPL_ACCOUNT}/widget/Moderation.TogglingSetButton"
                 props={{
                   title: "Block " + pathToType(item.moderated_path),
+                  disabled: !isModerator,
                   iconLeft: "ph-bold ph-warning-octagon",
                   tooltip:
                     "Cause this " +
                     pathToType(item.moderated_path) +
                     " " +
-                    blockItemHelperText,
+                    blockItemHelperText + (isModerator ? "":  "\n" + disabledMessage),
                   data: {
                     index: {
                       moderate: moderationDataFormat(
@@ -309,8 +311,9 @@ const renderItem = (item) => {
               src="${REPL_ACCOUNT}/widget/Moderation.TogglingSetButton"
               props={{
                 title: "Moderate Account",
+                disabled: !isModerator,
                 iconLeft: "ph-bold ph-prohibit",
-                tooltip: blockAccountHelperText,
+                tooltip: blockAccountHelperText + (isModerator ? "":  "\n" + disabledMessage),
                 variant: "destructive",
                 fill: "outline",
                 data: {

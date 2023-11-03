@@ -11,41 +11,6 @@ State.init({
   chartConfig: undefined,
 });
 
-const IMPLICIT_ACCOUNT_MAX_LENGTH = 64;
-const isImplicitAccount = (accountId) =>
-  accountId &&
-  accountId.length === IMPLICIT_ACCOUNT_MAX_LENGTH &&
-  !accountId.includes(".");
-
-const ACCOUNT_ID_SEPARATOR = "...";
-
-const shortenAccountId = (id, startChars, endChars) => {
-  const numOfRemainingChars =
-    startChars + endChars + ACCOUNT_ID_SEPARATOR.length;
-  const isOutOfScope =
-    id.length < numOfRemainingChars ||
-    numOfRemainingChars > IMPLICIT_ACCOUNT_MAX_LENGTH;
-  const isInvalidCharCount = startChars < 1 || endChars < 1;
-
-  if (!isImplicitAccount(id) || isOutOfScope || isInvalidCharCount) {
-    return id;
-  }
-
-  return `${id.slice(0, startChars)}${ACCOUNT_ID_SEPARATOR}${id.slice(
-    id.length - endChars
-  )}`;
-};
-
-const shortenWidgetName = (widgetName, startChars, endChars) => {
-  const parts = widgetName.split("/");
-  if (parts.length < 3) return widgetName;
-
-  const accountId = parts[0];
-  const shortenedAccountId = shortenAccountId(accountId, startChars, endChars);
-
-  return `${shortenedAccountId}/${parts[1]}/${parts[2]}`;
-};
-
 const createChartConfig = (apps) => {
   const filteredApps = filterTag
     ? apps.filter((app) => app.tags && app.tags.includes(filterTag))
@@ -54,9 +19,7 @@ const createChartConfig = (apps) => {
     .filter((app) => app.votes > 0)
     .sort((a, b) => b.votes - a.votes)
     .slice(0, topLimit);
-  const appNames = topApps.map((app) =>
-    shortenWidgetName(app.widget_name, 4, 4)
-  );
+  const appNames = topApps.map((app) => app.name);
   const appVotes = topApps.map((app) => app.votes);
   if (topApps.length == 0) {
     State.update({
@@ -83,9 +46,7 @@ const createChartConfig = (apps) => {
       axisTick: { show: false },
       axisLabel: {
         show: true,
-        formatter: (value) => {
-          return value.length > 10 ? value.substring(0, 10) + "..." : value;
-        },
+        nameTextStyle: { overflow: "break" },
       },
       boundaryGap: true,
     },

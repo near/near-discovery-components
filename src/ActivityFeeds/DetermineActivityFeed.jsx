@@ -1,4 +1,4 @@
-const GRAPHQL_ENDPOINT = "https://near-queryapi.api.pagoda.co";
+const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT ?? "https://near-queryapi.api.pagoda.co";
 
 let lastPostSocialApi = Social.index("post", "main", {
   limit: 1,
@@ -25,7 +25,7 @@ function fetchGraphQL(operationsDoc, operationName, variables) {
 
 const lastPostQuery = `
 query IndexerQuery {
-  dataplatform_near_social_feed_moderated_posts( limit: 1, order_by: { block_height: desc }) {
+  dataplatform_near_social_feed_posts( limit: 1, order_by: { block_height: desc }) {
       block_height
   }
 }
@@ -36,12 +36,12 @@ fetchGraphQL(lastPostQuery, "IndexerQuery", {})
     if (
       feedIndexerResponse &&
       feedIndexerResponse.body.data
-        .dataplatform_near_social_feed_moderated_posts.length > 0
+        .dataplatform_near_social_feed_posts.length > 0
     ) {
       const nearSocialBlockHeight = lastPostSocialApi[0].blockHeight;
       const feedIndexerBlockHeight =
         feedIndexerResponse.body.data
-          .dataplatform_near_social_feed_moderated_posts[0].block_height;
+          .dataplatform_near_social_feed_posts[0].block_height;
 
       const lag = nearSocialBlockHeight - feedIndexerBlockHeight;
       let shouldFallback = lag > 2 || !feedIndexerBlockHeight;

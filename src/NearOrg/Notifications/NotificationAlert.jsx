@@ -48,6 +48,15 @@ const NoteText = styled.div`
   font-weight: 600;
 `;
 
+const ActionButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 12px;
+  width: 100%;
+  alignItems: "stretch",
+  justifyContent: "stretch",
+`;
+
 const Header = () => (
   <HeaderWrapper>
     <Img
@@ -74,10 +83,6 @@ const Description = () => (
   </>
 );
 
-const actionStyles = {
-  flexDirection: "column-reverse",
-};
-
 const iOSContentStyles = iOSDevice
   ? {
       top: "calc(100% - 225px)",
@@ -85,7 +90,7 @@ const iOSContentStyles = iOSDevice
     }
   : {};
 
-const CancelButton = ({ handleOnCancel }) => (
+const CancelButton = () => (
   <Widget
     src="${REPL_ACCOUNT}/widget/DIG.Button"
     props={{
@@ -99,7 +104,7 @@ const CancelButton = ({ handleOnCancel }) => (
   />
 );
 
-const ConfirmButton = ({ handleTurnOn }) => (
+const ConfirmButton = () => (
   <Widget
     src="${REPL_ACCOUNT}/widget/DIG.Button"
     props={{
@@ -112,6 +117,13 @@ const ConfirmButton = ({ handleTurnOn }) => (
   />
 );
 
+const ActionButtons = () => (
+  <ActionButtonWrapper>
+    <CancelButton />
+    <ConfirmButton />
+  </ActionButtonWrapper>
+);
+
 return (
   <Widget
     src="${REPL_ACCOUNT}/widget/DIG.Dialog"
@@ -119,10 +131,8 @@ return (
       type: "alert",
       title: <Header />,
       description: <Description />,
-      cancelButton: <CancelButton handleOnCancel={handleOnCancel} />,
-      confirmButton: <ConfirmButton handleTurnOn={handleTurnOn} />,
       open,
-      actionStyles,
+      actionButtons: <ActionButtons />,
       overlayColor: "var(--blackA11)",
       overlayBlur: "blur(4px)",
       onOpenChange,

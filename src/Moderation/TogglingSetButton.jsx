@@ -3,6 +3,7 @@ const title = props.title;
 const onCommit = props.onCommit;
 const onCancel = props.onCancel;
 const isSet = props.isSet ?? false;
+const disabled = props.disabled ?? false;
 
 if (!data || !title) {
   return "";
@@ -44,7 +45,7 @@ const renderButton = () => (
     src="near/widget/DIG.Button"
     props={{
       label: title,
-      disabled: !context.accountId || state.loading,
+      disabled: !context.accountId || state.loading || disabled,
       onClick: buttonClick,
       iconLeft: state.loading ? "bi-arrow-clockwise" : props.iconLeft,
       iconRight: state.loading ? "" : props.iconRight,

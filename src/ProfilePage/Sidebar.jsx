@@ -48,6 +48,28 @@ const contentModerationItem = {
   reportedBy: context.accountId,
 };
 
+const optimisticallyHideItem = (message) => {
+  State.update({
+    hasBeenFlaggedOptimistic: true,
+    showToast: true,
+    flaggedMessage: message,
+  });
+};
+const resolveHideItem = (message) => {
+  State.update({
+    hasBeenFlagged: true,
+    showToast: true,
+    flaggedMessage: message,
+  });
+};
+const cancelHideItem = () => {
+  State.update({
+    hasBeenFlaggedOptimistic: false,
+    showToast: false,
+    flaggedMessage: { header: "", detail: "" }
+  });
+}
+
 const Wrapper = styled.div`
   display: grid;
   gap: 40px;
@@ -242,34 +264,35 @@ return (
 
           {accountFollowsYou && <TextBadge>Follows You</TextBadge>}
         </div>
-        {accountId !== context.accountId && (
-          <Widget
-            src={`${REPL_ACCOUNT}/widget/DIG.Toast`}
-            props={{
-              type: "info",
-              title: "Flagged for moderation",
-              description:
-                "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
-              open: state.hasBeenFlagged,
-              onOpenChange: () => {
-                State.update({ hasBeenFlagged: false });
-              },
-              duration: 5000,
-              trigger: (
-                <div className="d-inline-block ms-auto">
-                  <Widget
-                    src="${REPL_ACCOUNT}/widget/FlagButton"
-                    props={{
-                      item: contentModerationItem,
-                      onFlag: () => {
-                        State.update({ hasBeenFlagged: true });
-                      },
-                    }}
-                  />
-                </div>
-              ),
-            }}
-          />
+        {accountId !== context.accountId &&
+          (<>
+            {state.showToast && (
+                <Widget
+                  src={`${REPL_ACCOUNT}/widget/DIG.Toast`}
+                  props={{
+                    type: "info",
+                    title: state.flaggedMessage.header,
+                    description: state.flaggedMessage.detail,
+                    open: state.showToast,
+                    onOpenChange: () => {
+                      State.update({showToast: false});
+                    },
+                    duration: 5000,
+                  }}
+                />
+              )}
+              <Widget
+                src="${REPL_ACCOUNT}/widget/Posts.Menu"
+                props={{
+                  accountId: accountId,
+                  parentFunctions: {
+                    optimisticallyHideItem,
+                    resolveHideItem,
+                    cancelHideItem,
+                  },
+                }}
+              />
+            </>
         )}
       </div>
 

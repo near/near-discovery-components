@@ -395,7 +395,7 @@ return (
               }
               return null;
             })}
-            {state.selectedTab === "Stats" && state.apps.length > 0 && (
+            {state.selectedTab === "Stats" && state.appsWithVoteData.length > 0 && (
               <Section style={{"margin-top": "20px"}}>
                 <Widget
                   src="${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.Charts.TopUpvotedApps"

@@ -10,12 +10,21 @@ const Wrapper = styled.div`
   gap: 24px;
   width: 264px;
   height: 100%;
+
+  @media (max-width: 1024px) {
+    border-right: none;
+    width: 100%;
+  }
 `;
 
 const Title = styled.h2`
-  font: var(text-l);
+  font: var(--text-l);
   font-weight: 600;
-  padding: 64px 24px 24px;
+  padding: 64px 0 24px;
+
+  @media (max-width: 1024px) {
+    padding: 0;
+  }
 `;
 
 const MenuItem = styled.div`
@@ -80,7 +89,7 @@ return (
   <Wrapper>
     <Title>Settings</Title>
 
-    {filteredMenuItems.map((item) => (
+    {filteredMenuItems.length > 1 && filteredMenuItems.map((item) => (
       <MenuItem
         key={`settings-${item.id}`}
         onClick={() => onClick(item.id)}

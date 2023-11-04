@@ -9,6 +9,10 @@ const Wrapper = styled.div`
   grid-template-columns: 264px minmax(0, 1fr);
   align-items: start;
   height: 100%;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
 `;
 
 const renderContent = () => {

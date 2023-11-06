@@ -166,70 +166,74 @@ async function getBlock(block: Block) {
     receiptId,
     likeContent,
   ) {
-    const like = JSON.parse(likeContent);
-    const likeAction = like.value.type; // like or unlike
-    const [itemAuthor, _, itemType] = like.key.path.split("/", 3);
-    const itemBlockHeight = like.key.blockHeight;
-    console.log("handling like", receiptId, accountId);
-    switch (itemType) {
-      case "main":
-        try {
-          const posts = await context.graphql(
-            `query getPosts($accountId: String = "$accountId", $blockHeight: numeric = "$blockHeight"){
-                            dataplatform_near_social_feed_posts(
-                                where: {
-                                    account_id: {_eq: $accountId},
-                                    block_height: {_eq: $blockHeight}
-                                },
-                                limit: 1
-                            ) {
-                                account_id
-                                accounts_liked
-                                block_height
-                                block_timestamp
-                                content
-                                id
-                            }
-                        }`,
-            {
-              accountId: itemAuthor,
-              blockHeight: itemBlockHeight,
-            },
-          );
-          if (posts.dataplatform_near_social_feed_posts.length == 0) {
-            return;
-          }
+    try {
+      const like = JSON.parse(likeContent);
+      const likeAction = like.value.type; // like or unlike
+      const [itemAuthor, _, itemType] = like.key.path.split("/", 3);
+      const itemBlockHeight = like.key.blockHeight;
+      console.log("handling like", receiptId, accountId);
+      switch (itemType) {
+        case "main":
+          try {
+            const posts = await context.graphql(
+              `query getPosts($accountId: String = "$accountId", $blockHeight: numeric = "$blockHeight"){
+                                dataplatform_near_social_feed_posts(
+                                    where: {
+                                        account_id: {_eq: $accountId},
+                                        block_height: {_eq: $blockHeight}
+                                    },
+                                    limit: 1
+                                ) {
+                                    account_id
+                                    accounts_liked
+                                    block_height
+                                    block_timestamp
+                                    content
+                                    id
+                                }
+                            }`,
+              {
+                accountId: itemAuthor,
+                blockHeight: itemBlockHeight,
+              },
+            );
+            if (posts.dataplatform_near_social_feed_posts.length == 0) {
+              return;
+            }
 
-          const post = posts.dataplatform_near_social_feed_posts[0];
-          switch (likeAction) {
-            case "like":
-              await _handlePostLike(
-                post.id,
-                accountId,
-                blockHeight,
-                blockTimestamp,
-                receiptId,
-              );
-              break;
-            case "unlike":
-            default:
-              await _handlePostUnlike(post.id, accountId);
-              break;
+            const post = posts.dataplatform_near_social_feed_posts[0];
+            switch (likeAction) {
+              case "like":
+                await _handlePostLike(
+                  post.id,
+                  accountId,
+                  blockHeight,
+                  blockTimestamp,
+                  receiptId,
+                );
+                break;
+              case "unlike":
+              default:
+                await _handlePostUnlike(post.id, accountId);
+                break;
+            }
+          } catch (e) {
+            console.log(
+              `Failed to store like to post ${itemAuthor}/${itemBlockHeight} as we don't have it stored in the first place.`,
+            );
           }
-        } catch (e) {
-          console.log(
-            `Failed to store like to post ${itemAuthor}/${itemBlockHeight} as we don't have it stored in the first place.`,
-          );
-        }
-        break;
-      case "comment":
-        // Comment
-        console.log(`Likes to comments are not supported yet. Skipping`);
-        break;
-      default:
-        // something else
-        console.log(`Got unsupported like type "${itemType}". Skipping...`);
-        break;
+          break;
+        case "comment":
+          // Comment
+          console.log(`Likes to comments are not supported yet. Skipping`);
+          break;
+        default:
+          // something else
+          console.log(`Got unsupported like type "${itemType}". Skipping...`);
+          break;
+      }
+    } catch (likeError) {
+      console.log("Error in handleLike", likeError);
     }
   }
 

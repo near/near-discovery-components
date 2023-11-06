@@ -1,5 +1,6 @@
 State.init({
   apps: [],
+  appsWithVoteData: [],
   isLoading: true,
   selectedTab: props.tab || "Event Guide",
 });
@@ -13,7 +14,7 @@ const appLibraryIndexUrl =
   "/${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.IndexPage";
 const detailsUrl = `/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=`;
 const selectedCategory = [];
-const targetTags = ["develop", "earn", "play", "engage"];
+const targetTags = ["uncategorized", "develop", "earn", "play", "engage"];
 
 function loadData() {
   if (state.apps.length > 0) return;
@@ -32,6 +33,7 @@ function loadData() {
         const appUrl = `${detailsUrl}${app.widget_name}`;
         const imgURL = `https://ipfs.near.social/ipfs/${image_cid}`;
 
+        app.votes = app.num_votes;
         app.appUrl = appUrl;
         app.recentTag = app.lastest_tag;
 
@@ -53,6 +55,27 @@ function loadData() {
       });
       console.error(error);
     });
+
+  // Load Upvote data
+  asyncFetch(
+    "https://storage.googleapis.com/databricks-near-query-runner/output/nearcon_apps/apps_qualified_upvoted.json"
+  )
+    .then((res) => {
+      const apps = JSON.parse(res.body).data.map((app_raw) => {
+        const app = JSON.parse(app_raw);
+        app.votes = app.widget_name.length;
+        app.recentTag = app.lastest_tag;
+        const uniqueTags = Array.from(new Set(app.tags));
+        app.tags = uniqueTags;
+        return { ...app };
+      });
+      State.update({
+        appsWithVoteData: apps,
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 }
 
 loadData();
@@ -62,7 +85,6 @@ const Wrapper = styled.div`
 `;
 
 const Container = styled.div`
-  max-width: 1120px;
   margin: 0 auto;
   padding: 0 16px;
 `;
@@ -269,17 +291,27 @@ const SubTabLink = styled.button`
   }
 `;
 
+const ChartContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  max-width: 1120px;
+  margin: 0 auto;
+  gap: 3px;
+`;
+
 const [selectedSubTab, setSelectedSubTab] = useState("Everyone");
 const isActive = (tabName) => selectedSubTab === tabName;
 
 const categories = [
   "Event Guide",
+  "Uncategorized",
   "Earn",
   "Play",
   "Develop",
   "Engage",
-  // TODO Add Stats Page
-  // "Stats",
+  "Stats",
 ];
 
 return (
@@ -310,11 +342,14 @@ return (
               const lowerCaseCategory = category.toLowerCase();
               if (targetTags.includes(lowerCaseCategory)) {
                 if (state.selectedTab === category) {
-                  const filteredApps = state.apps.filter(
-                    (item) =>
-                      item.recentTag &&
-                      item.recentTag.toLowerCase() === lowerCaseCategory
-                  );
+                  let filteredApps = state.apps;
+                  if (state.selectedTab !== "Uncategorized") {
+                    filteredApps = state.apps.filter(
+                      (item) =>
+                        item.recentTag &&
+                        item.recentTag.toLowerCase() === lowerCaseCategory
+                    );
+                  }
                   return (
                     <Section key={category}>
                       <ContentGrid gridEnabled={filteredApps.length > 0}>
@@ -360,6 +395,52 @@ return (
               }
               return null;
             })}
+            {state.selectedTab === "Stats" && state.appsWithVoteData.length > 0 && (
+              <Section style={{"margin-top": "20px"}}>
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.Charts.TopUpvotedApps"
+                  props={{ apps: state.appsWithVoteData, title: "Top 10 Apps by upvote" }}
+                />
+                <ChartContainer>
+                  <Widget
+                    src="${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.Charts.TopUpvotedApps"
+                    props={{
+                      apps: state.appsWithVoteData,
+                      title: "Most upvoted in Earn",
+                      categoryFilter: "earn",
+                      width: "400px",
+                    }}
+                  />
+                  <Widget
+                    src="${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.Charts.TopUpvotedApps"
+                    props={{
+                      apps: state.appsWithVoteData,
+                      title: "Most upvoted in Play",
+                      categoryFilter: "play",
+                      width: "400px",
+                    }}
+                  />
+                  <Widget
+                    src="${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.Charts.TopUpvotedApps"
+                    props={{
+                      apps: state.appsWithVoteData,
+                      title: "Most upvoted in Develop",
+                      categoryFilter: "develop",
+                      width: "400px",
+                    }}
+                  />
+                  <Widget
+                    src="${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.Charts.TopUpvotedApps"
+                    props={{
+                      apps: state.appsWithVoteData,
+                      title: "Most upvoted in Engage",
+                      categoryFilter: "engage",
+                      width: "400px",
+                    }}
+                  />
+                </ChartContainer>
+              </Section>
+            )}
             {state.selectedTab === "Event Guide" && (
               <Section>
                 <SubTabMenu>

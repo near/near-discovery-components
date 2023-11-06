@@ -11,6 +11,11 @@ const Card = styled.div`
   gap: 14px;
   box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.06),
     0px 1px 3px 0px rgba(16, 24, 40, 0.1);
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 const TextWrapper = styled.div`
@@ -18,6 +23,7 @@ const TextWrapper = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 6px;
+  flex: 1 1 auto;
 `;
 
 const Title = styled.h2`
@@ -35,6 +41,11 @@ const Text = styled.span`
   color: #667085;
 `;
 
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex: 0 0 auto;
+`;
+
 return (
   <Card>
     {icon}
@@ -42,6 +53,8 @@ return (
       {title && <Title>{title}</Title>}
       <Text>{text}</Text>
     </TextWrapper>
-    {button}
+    <ButtonWrapper>
+      {button}
+    </ButtonWrapper>
   </Card>
 );

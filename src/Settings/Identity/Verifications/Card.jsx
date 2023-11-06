@@ -23,6 +23,7 @@ const TextWrapper = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 6px;
+  flex: 1 1 auto;
 `;
 
 const Title = styled.h2`

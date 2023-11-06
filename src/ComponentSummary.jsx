@@ -228,7 +228,10 @@ function loadAppQuestData() {
     "https://storage.googleapis.com/databricks-near-query-runner/output/nearcon_apps/apps_qualified.json"
   )
     .then((res) => {
-        const apps = [JSON.parse(JSON.parse(res.body).data)];
+      const apps = JSON.parse(res.body).data.map((app_raw) => {
+        const app = JSON.parse(app_raw);
+        return { ...app };
+      });
         if (!apps) return
 
         const isAppSignedUpToNearConAppQuest = apps.some((app) => app.widget_name === src);

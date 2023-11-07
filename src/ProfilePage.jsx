@@ -29,6 +29,30 @@ if (props.tab && props.tab !== state.selectedTab) {
 const profile = props.profile ?? Social.getr(`${accountId}/profile`);
 const accountUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 
+const starredComponentsData = Social.keys(
+  `${accountId}/graph/star/*/widget/*`,
+  "final",
+  {
+    return_type: "BlockHeight",
+  }
+);
+let starredComponents = null;
+if (starredComponentsData) {
+  starredComponents = [];
+  const starredData = starredComponentsData[accountId]?.graph?.star ?? {};
+  Object.keys(starredData).forEach((authorAccountId) => {
+    Object.keys(starredData[authorAccountId].widget).forEach(
+      (componentName) => {
+        starredComponents.push({
+          accountId: authorAccountId,
+          componentName,
+        });
+      }
+    );
+  });
+}
+const starredComponentsCount = (starredComponents ?? []).length;
+
 const Wrapper = styled.div`
   padding-bottom: 48px;
 `;
@@ -164,12 +188,11 @@ if (profile === null) {
 }
 
 const feeds = ["all"];
-if(accountId !== context.accountId) {
+if (accountId !== context.accountId) {
   feeds.push("mutual");
 }
 
-
-  return (
+return (
   <Wrapper>
     <BackgroundImage>
       {profile.backgroundImage && (
@@ -210,6 +233,13 @@ if(accountId !== context.accountId) {
             selected={state.selectedTab === "apps"}
           >
             Components
+          </TabsButton>
+
+          <TabsButton
+            href={`${accountUrl}&tab=stars`}
+            selected={state.selectedTab === "stars"}
+          >
+            Stars ({starredComponentsCount})
           </TabsButton>
 
           <TabsButton
@@ -260,7 +290,11 @@ if(accountId !== context.accountId) {
 
             <Widget
               src="${REPL_ACCOUNT}/widget/ActivityFeeds.DetermineActivityFeed"
-              props={{ filteredAccountIds: accountId, showCompose: false, feeds: feeds}}
+              props={{
+                filteredAccountIds: accountId,
+                showCompose: false,
+                feeds: feeds,
+              }}
             />
           </>
         )}
@@ -301,6 +335,17 @@ if(accountId !== context.accountId) {
               network: context.networkId,
               language: "en",
               baseUrl: props.baseUrl,
+            }}
+          />
+        )}
+
+        {state.selectedTab === "stars" && (
+          <Widget
+            src="${REPL_ACCOUNT}/widget/ComponentCollection"
+            props={{
+              accountId,
+              components: starredComponents,
+              noDataText: "This account hasn't starred any components yet.",
             }}
           />
         )}

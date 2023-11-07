@@ -1,27 +1,30 @@
 const accountId = props.accountId || context.accountId;
+const didPassComponents = "components" in props;
 
 if (!accountId) return "";
 
 const limitPerPage = 20;
-let components = [];
+let components = props.components ?? null;
 
 State.init({
   currentPage: 0,
 });
 
-const data = Social.keys(`${accountId}/widget/*`, "final", {
-  return_type: "BlockHeight",
-});
+const data =
+  !didPassComponents &&
+  Social.keys(`${accountId}/widget/*`, "final", {
+    return_type: "BlockHeight",
+  });
 
 if (data) {
   components = [];
 
   Object.keys(data).forEach((accountId) => {
-    return Object.keys(data[accountId].widget).forEach((widgetName) => {
+    return Object.keys(data[accountId].widget).forEach((componentName) => {
       components.push({
         accountId,
-        widgetName,
-        blockHeight: data[accountId].widget[widgetName],
+        componentName,
+        blockHeight: data[accountId].widget[componentName],
       });
     });
   });
@@ -90,8 +93,14 @@ const Button = styled.button`
   }
 `;
 
-if (data !== null && components.length === 0) {
-  return <Text>This account hasn&apos;t published any components yet.</Text>;
+if (!components) return "Loading...";
+
+if (components.length === 0) {
+  return (
+    <Text>
+      {props.noDataText ?? "This account hasn't published any components yet."}
+    </Text>
+  );
 }
 
 return (
@@ -101,7 +110,7 @@ return (
         <Widget
           src="${REPL_ACCOUNT}/widget/ComponentCard"
           props={{
-            src: `${component.accountId}/widget/${component.widgetName}`,
+            src: `${component.accountId}/widget/${component.componentName}`,
             blockHeight: component.blockHeight,
           }}
         />

@@ -40,7 +40,7 @@ async function getBlock(block: Block) {
       console.log(`Post by ${accountId} has been added to the database`);
     } catch (e) {
       console.log(
-        `Failed to store post by ${accountId} to the database (perhaps it already stored)`
+        `Failed to store post by ${accountId} to the database (perhaps it is already stored)`
       );
     }
   }

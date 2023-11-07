@@ -34,10 +34,13 @@ const onClick = () => {
     return;
   }
 
+  // The following logic for generating the "data" object was copied from here:
+  // https://near.org/near/widget/ComponentDetailsPage?src=mob.near/widget/N.StarButton
+
   const type = isActive ? actionUndoName : actionName;
   const data = {
     index: {
-      star: JSON.stringify({
+      [actionName]: JSON.stringify({
         key: item,
         value: {
           type,

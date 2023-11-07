@@ -525,7 +525,11 @@ return (
           },
           notifyAccountId: accountId,
           button: (starCount, starIsActive, starOnClick) => (
-            <Button type="button" onClick={starOnClick}>
+            <Button
+              type="button"
+              onClick={starOnClick}
+              aria-label="Star this component"
+            >
               {starIsActive ? (
                 <i
                   className="bi bi-star-fill"

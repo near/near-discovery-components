@@ -56,7 +56,7 @@ const Thumbnail = styled.div`
 `;
 
 return (
-  <Wrapper href={`/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${props.src}`}>
+  <Wrapper target="_blank" href={`/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${props.src}`}>
     <Thumbnail>
       <Widget
         src="${REPL_MOB}/widget/Image"

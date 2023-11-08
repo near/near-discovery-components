@@ -235,7 +235,7 @@ return (
                   <Widget
                     src="${REPL_ACCOUNT}/widget/DIG.Button"
                     props={{
-                      href: "https://docs.near.org/data-availability/welcome",
+                      href: "https://github.com/near/rollup-data-availability#readme",
                       target: "_blank",
                       label: "Bootstrap Your L2",
                       variant: "secondary",
@@ -290,7 +290,7 @@ return (
             <Widget
               src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
-                href: "https://docs.near.org/data-availability/welcome",
+                href: "https://github.com/near/rollup-data-availability#readme",
                 target: "_blank",
                 label: "Read Docs",
                 variant: "secondary",

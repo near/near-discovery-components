@@ -1,7 +1,7 @@
-const fractalModal = Storage.get("fractal-alert") ?? null;
-
 const [showBanner, setShowBanner] = useState(false);
-const modalOpen = fractalModal?.alert ?? false;
+
+// const modalOpen = fractalModal?.alert ?? false;
+// const fractalModal = Storage.get("fractal-alert") ?? null;
 
 const Wrapper = styled.div`
   display: flex;
@@ -61,7 +61,8 @@ return (
       <Widget src="${REPL_ACCOUNT}/widget/Settings.Identity.Verifications.Index" props={{ ...props }} />
     )}
 
-    <Widget
+    {/* For some reson this modal won't fires up for KYC that's why we hide it for now */}
+    {/* <Widget
       src="${REPL_ACCOUNT}/widget/Settings.Identity.Alert"
       props={{
         open: modalOpen,
@@ -70,6 +71,6 @@ return (
         onCancel: () => Storage.set("fractal-alert", { alert: false, href: null }),
         onConfirm: () => {},
       }}
-    />
+    /> */}
   </Wrapper>
 );

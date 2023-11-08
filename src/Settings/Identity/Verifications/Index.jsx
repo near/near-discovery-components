@@ -54,7 +54,7 @@ const IconSealCheck = () => (
   </IconWrapper>
 );
 
-const CredentialButton = ({ href, disabled, onClick }) => (
+const CredentialButton = ({ href, onClick }) => (
   <Widget
     src="${REPL_ACCOUNT}/widget/DIG.Button"
     props={{
@@ -63,7 +63,7 @@ const CredentialButton = ({ href, disabled, onClick }) => (
       iconRight: "ph-bold ph-arrow-square-out",
       href,
       className: "ms-auto",
-      disabled: disabled ?? !context.accountId,
+      disabled: !context.accountId,
       onClick,
     }}
   />
@@ -76,7 +76,7 @@ const verificationItems = [
     text: "This verification helps other users know that you are not a bot. Choose from various providers to earn this verification badge.",
     icon: <IconSealUser />,
     verified: false,
-    button: <CredentialButton onClick={() => Storage.set("fractal-alert", { alert: true, href: proofOfPersonhoodLink })} />,
+    button: <CredentialButton href={proofOfPersonhoodLink} />,
   },
   {
     id: "plus",
@@ -84,7 +84,7 @@ const verificationItems = [
     text: "This verification helps other users trust transactions with your account. Choose from various providers to earn this verification badge.",
     icon: <IconSealCheck />,
     verified: false,
-    button: <CredentialButton onClick={() => Storage.set("fractal-alert", { alert: true, href: kycLink })} />,
+    button: <CredentialButton href={kycLink} />,
   },
 ];
 

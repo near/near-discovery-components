@@ -63,7 +63,7 @@ function loadData() {
     .then((res) => {
       const apps = JSON.parse(res.body).data.map((app_raw) => {
         const app = JSON.parse(app_raw);
-        app.votes = app.widget_name.length;
+        app.votes = app.num_votes;
         app.recentTag = app.lastest_tag;
         const uniqueTags = Array.from(new Set(app.tags));
         app.tags = uniqueTags;

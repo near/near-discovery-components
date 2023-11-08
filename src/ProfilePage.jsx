@@ -1,21 +1,8 @@
 const accountId = props.accountId ?? context.accountId;
-const isCustomProfile = props.isCustomProfile || false;
 if (!accountId) {
   return "No account ID";
 }
 
-// if it exists, render the accountId's custom profile component
-if (!isCustomProfile && Social.getr(`${accountId}/widget/ProfilePage`)) {
-  return (
-    <Widget
-      src={`${accountId}/widget/ProfilePage`}
-      props={{
-        accountId,
-        isCustomProfile: true,
-      }}
-    />
-  );
-}
 State.init({
   selectedTab: props.tab || "overview",
 });
@@ -164,12 +151,11 @@ if (profile === null) {
 }
 
 const feeds = ["all"];
-if(accountId !== context.accountId) {
+if (accountId !== context.accountId) {
   feeds.push("mutual");
 }
 
-
-  return (
+return (
   <Wrapper>
     <BackgroundImage>
       {profile.backgroundImage && (
@@ -260,7 +246,11 @@ if(accountId !== context.accountId) {
 
             <Widget
               src="${REPL_ACCOUNT}/widget/ActivityFeeds.DetermineActivityFeed"
-              props={{ filteredAccountIds: accountId, showCompose: false, feeds: feeds}}
+              props={{
+                filteredAccountIds: accountId,
+                showCompose: false,
+                feeds: feeds,
+              }}
             />
           </>
         )}

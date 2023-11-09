@@ -77,7 +77,9 @@ query IndexerQuery {
           const post = posts[0];
           let content = JSON.parse(post.content);
           if (post.accounts_liked.length !== 0) {
-            post.accounts_liked = JSON.parse(post.accounts_liked);
+            if(typeof post.accounts_liked === "string") {
+              post.accounts_liked = JSON.parse(post.accounts_liked);
+            }
           }
           const comments = post.comments;
           State.update({

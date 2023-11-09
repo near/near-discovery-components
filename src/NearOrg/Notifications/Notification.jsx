@@ -197,6 +197,7 @@ const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
 const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 const isComment = path.indexOf("/post/comment") > 0 || type === "comment";
 const isPost = !isComment && path.indexOf("/post/main") > 0;
+const notifyAccountId = accountId;
 
 let notificationMessage = {
   like: isPost ? "liked your post" : "liked your comment",
@@ -273,7 +274,7 @@ return (
         </Link>
         <Text>
           <ProfileOverlay>
-            <div style={{ "text-align": "center" }}>
+            <div style={{ }}>
               <Link href={!props.onClick && profileUrl}>
                 <Username>
                   {profile.name || accountId.split(".near")[0]}
@@ -294,6 +295,38 @@ return (
           </Timestamp>
         </Text>
         {/* <Desc>{desc}</Desc> */}
+        {type === "mention" || type === "devgovgigs/mention" ?
+        <Action>
+            <Widget
+            src="${REPL_ACCOUNT}/widget/v1.LikeButton"
+            props={{
+              item,
+              notifyAccountId,
+              likes: state.likes,
+            }}
+          />
+            <Widget
+            src="${REPL_ACCOUNT}/widget/CommentButton"
+            props={{
+              item,
+              onClick: () => State.update({ showReply: !state.showReply }),
+            }}
+          />
+          <Widget
+            src="${REPL_ACCOUNT}/widget/CopyUrlButton"
+            props={{
+              url: postUrl,
+            }}
+          />
+          <Widget
+            src="${REPL_ACCOUNT}/widget/ShareButton"
+            props={{
+              postType: "post",
+              url: postUrl,
+            }}
+          />
+          </Action>
+            : null }
       </Left>
       <Right>
         {(type === "follow" || type === "unfollow") && (

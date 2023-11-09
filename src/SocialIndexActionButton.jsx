@@ -1,6 +1,7 @@
 const { actionName, actionUndoName, item, notifyAccountId } = props;
 
 const [isActive, setIsActive] = useState(null);
+const [isProcessingAction, setIsProcessingAction] = useState(false);
 
 const actions = Social.index(actionName, item);
 const isLoading = !actions;
@@ -30,9 +31,12 @@ if (isActive !== null) {
 const count = Object.keys(actionsByUsers).length;
 
 const onClick = () => {
-  if (isLoading || !context.accountId) {
+  if (isProcessingAction || isLoading || !context.accountId) {
     return;
   }
+
+  setIsActive((currentIsActive) => !currentIsActive); // Optimistically update
+  setIsProcessingAction(true);
 
   // The following logic for generating the "data" object was copied from here:
   // https://near.org/near/widget/ComponentDetailsPage?src=mob.near/widget/N.StarButton
@@ -73,10 +77,12 @@ const onClick = () => {
     });
   }
 
-  setIsActive((currentIsActive) => !currentIsActive);
-
   Social.set(data, {
-    onCancel: () => setIsActive((currentIsActive) => !currentIsActive),
+    onCommit: () => setIsProcessingAction(false),
+    onCancel: () => {
+      setIsActive((currentIsActive) => !currentIsActive); // Undo optimistic update
+      setIsProcessingAction(false);
+    },
   });
 };
 

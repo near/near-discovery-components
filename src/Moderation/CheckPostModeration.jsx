@@ -27,7 +27,7 @@ const fetchGraphQL = (operationsDoc, operationName, variables, handleError) => {
     }),
   }).then((result) => {
     if (result.status === 200) {
-      if(result.body.data) {
+      if (result.body.data) {
         return result.body.data;
       }
     }
@@ -36,7 +36,7 @@ const fetchGraphQL = (operationsDoc, operationName, variables, handleError) => {
 };
 const handleError = (result) => {
   State.update({
-    loadingState: 'done',
+    loadingState: "done",
     isError: true,
   });
 };
@@ -115,50 +115,47 @@ const globalModerationHandler = (
   itemModerationKey,
   isCommentPost,
 ) => {
-      const moderationData = data.dataplatform_near_moderation_moderation_decisions;
-      if (moderationData.length > 0) {
-        const compactedModerationData =
-          moderationDataToCompactedFormat(moderationData);
-        if (
-          matchesModeration(compactedModerationData, itemModerationKey, {
-            account_id: itemAccountId,
-            block_height: itemBlockHeight,
-          })
-        ) {
-          if (isCommentPost) {
-            State.update({
-              loadingState: 'done',
-              moderated: true,
-              moderationData: compactedModerationData,
-              moderationType: "global",
-              moderationCommentPost: {
-                accountId: itemAccountId,
-                blockHeight: itemBlockHeight,
-              },
-            });
-          } else {
-            State.update({
-              loadingState: 'done',
-              moderated: true,
-              moderationData: compactedModerationData,
-              moderationType: "global",
-            });
-          }
-          return true;
-        } else {
-          return false;
-        }
+  const moderationData = data.dataplatform_near_moderation_moderation_decisions;
+  if (moderationData.length > 0) {
+    const compactedModerationData =
+      moderationDataToCompactedFormat(moderationData);
+    if (
+      matchesModeration(compactedModerationData, itemModerationKey, {
+        account_id: itemAccountId,
+        block_height: itemBlockHeight,
+      })
+    ) {
+      if (isCommentPost) {
+        State.update({
+          loadingState: "done",
+          moderated: true,
+          moderationData: compactedModerationData,
+          moderationType: "global",
+          moderationCommentPost: {
+            accountId: itemAccountId,
+            blockHeight: itemBlockHeight,
+          },
+        });
       } else {
-        return false;
+        State.update({
+          loadingState: "done",
+          moderated: true,
+          moderationData: compactedModerationData,
+          moderationType: "global",
+        });
       }
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
 };
 
 const commentPostModerationHandler = (data, selfModerationData) => {
-  if (
-    data.dataplatform_near_social_feed_comments.length > 0
-  ) {
-    const post =
-      data.dataplatform_near_social_feed_comments[0].post;
+  if (data.dataplatform_near_social_feed_comments.length > 0) {
+    const post = data.dataplatform_near_social_feed_comments[0].post;
     const postAccountId = post.account_id;
     const postBlockHeight = post.block_height;
 
@@ -170,7 +167,7 @@ const commentPostModerationHandler = (data, selfModerationData) => {
       })
     ) {
       State.update({
-        loadingState: 'done',
+        loadingState: "done",
         moderated: true,
         moderationData: selfModerationData,
         moderationType: "self",
@@ -178,14 +175,13 @@ const commentPostModerationHandler = (data, selfModerationData) => {
           accountId: postAccountId,
           blockHeight: postBlockHeight,
         },
-
       });
     } else {
       const checkPostModerationPromise = fetchGraphQL(
         moderationDecisionsQuery(postAccountId),
         "ModerationDecisions",
         {},
-          handleError,
+        handleError,
       );
       return checkPostModerationPromise.then((result) =>
         globalModerationHandler(
@@ -201,7 +197,7 @@ const commentPostModerationHandler = (data, selfModerationData) => {
 };
 
 State.init({
-  loadingState: 'none',
+  loadingState: "none",
   isError: false,
   moderated: false,
   moderationData: null,
@@ -211,13 +207,13 @@ State.init({
 });
 
 const selfModerationData = context.accountId
-    ? Social.getr(`${context.accountId}/moderate`, "optimistic") ?? false
-    : [];
+  ? Social.getr(`${context.accountId}/moderate`, "optimistic") ?? false
+  : [];
 State.update({ selfModerationData });
 
-if (state.selfModerationData && state.loadingState === 'none') {
+if (state.selfModerationData && state.loadingState === "none") {
   State.update({
-    loadingState: 'loading',
+    loadingState: "loading",
   });
 
   const itemBlockHeight = commentBlockHeight ? commentBlockHeight : blockHeight;
@@ -226,45 +222,41 @@ if (state.selfModerationData && state.loadingState === 'none') {
     : postsModerationKey;
   if (
     context.accountId &&
-    matchesModeration(
-      selfModerationData,
-      itemModerationKey,
-      {
-        account_id: props.accountId,
-        block_height: itemBlockHeight,
-      },
-    )
+    matchesModeration(selfModerationData, itemModerationKey, {
+      account_id: props.accountId,
+      block_height: itemBlockHeight,
+    })
   ) {
     State.update({
-      loadingState: 'done',
+      loadingState: "done",
       moderated: true,
       moderationData: selfModerationData,
       moderationType: "self",
     });
   } else {
     const decisionsPromise = fetchGraphQL(
-        moderationDecisionsQuery(accountId),
-        "ModerationDecisions",
-        {},
-        handleError,
+      moderationDecisionsQuery(accountId),
+      "ModerationDecisions",
+      {},
+      handleError,
     ).then((result) =>
-        globalModerationHandler(
-            result,
-            accountId,
-            itemBlockHeight,
-            itemModerationKey,
-        ),
+      globalModerationHandler(
+        result,
+        accountId,
+        itemBlockHeight,
+        itemModerationKey,
+      ),
     );
 
     let commentPostModerationPromise = null;
     if (commentBlockHeight) {
       commentPostModerationPromise = fetchGraphQL(
-          commentsPostQuery,
-          "CommentsPostQuery",
-          {},
-          handleError,
+        commentsPostQuery,
+        "CommentsPostQuery",
+        {},
+        handleError,
       ).then((result) =>
-          commentPostModerationHandler(result, selfModerationData),
+        commentPostModerationHandler(result, selfModerationData),
       );
     } else {
       commentPostModerationPromise = Promise.resolve();
@@ -272,7 +264,7 @@ if (state.selfModerationData && state.loadingState === 'none') {
     Promise.all([decisionsPromise, commentPostModerationPromise]).then(
       (_resultList) => {
         State.update({
-          loadingState: 'done',
+          loadingState: "done",
         });
       },
     );
@@ -306,16 +298,16 @@ if (state.moderated) {
 
 if (state.isError) {
   return (
-      <div className="alert alert-danger mx-3" role="alert">
-        Error loading data
-      </div>
+    <div className="alert alert-danger mx-3" role="alert">
+      Error loading data
+    </div>
   );
 }
-if(state.loadingState === 'done') {
+if (state.loadingState === "done") {
   return props.renderData(props);
 }
 return (
-    <div className="alert alert-info mx-3" role="alert">
-      Loading...
-    </div>
+  <div className="alert alert-info mx-3" role="alert">
+    Loading...
+  </div>
 );

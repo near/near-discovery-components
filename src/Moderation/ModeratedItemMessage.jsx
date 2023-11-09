@@ -14,7 +14,8 @@ if (
 ) {
   return (
     <div className="alert alert-info mx-3" role="alert">
-      Moderation message was not passed sufficient data. Properties are {JSON.stringify(props)}
+      Moderation message was not passed sufficient data. Properties are{" "}
+      {JSON.stringify(props)}
     </div>
   );
 }
@@ -27,7 +28,10 @@ if (typeof accountFound === "undefined") {
   );
 }
 
-if (typeof accountFound === "string" || typeof accountFound[""] !== "undefined") {
+if (
+  typeof accountFound === "string" ||
+  typeof accountFound[""] !== "undefined"
+) {
   const moderationAction =
     typeof accountFound === "string" ? accountFound : accountFound[""];
   const moderationLabel =
@@ -37,7 +41,8 @@ if (typeof accountFound === "string" || typeof accountFound[""] !== "undefined")
   return (
     <div className="alert alert-info mx-3" role="alert">
       {moderationType === "self"
-        ? "You moderated content from this account. Moderation type: " + moderationLabel
+        ? "You moderated content from this account. Moderation type: " +
+          moderationLabel
         : "Content from this account has been moderated."}
     </div>
   );

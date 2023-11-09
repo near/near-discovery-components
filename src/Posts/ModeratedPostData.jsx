@@ -120,15 +120,15 @@ const updateStateWithPost = (post) => {
 };
 
 State.init({
-  loadingState: 'none',
+  loadingState: "none",
   postNotFound: false,
   isError: false,
 });
 
 if (state.loadingState === "none") {
-    State.update({
-        loadingState: 'loading',
-    });
+  State.update({
+    loadingState: "loading",
+  });
   let query = postQuery;
   let queryName = "PostQuery";
   if (commentBlockHeight) {
@@ -160,17 +160,17 @@ if (commentBlockHeight) {
   postProps.highlightComment = { accountId, blockHeight: commentBlockHeight };
 }
 if (state.isError) {
-    return (
-        <div className="alert alert-danger mx-3" role="alert">
-            Error loading data
-        </div>
-    );
+  return (
+    <div className="alert alert-danger mx-3" role="alert">
+      Error loading data
+    </div>
+  );
 }
-if(state.loadingState === 'done') {
-    return renderPost(postProps);
+if (state.loadingState === "done") {
+  return renderPost(postProps);
 }
 return (
-    <div className="alert alert-info mx-3" role="alert">
-        Loading...
-    </div>
+  <div className="alert alert-info mx-3" role="alert">
+    Loading...
+  </div>
 );

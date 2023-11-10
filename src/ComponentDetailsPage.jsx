@@ -36,14 +36,14 @@ const componentDescMaxWords = 25;
 
 function normalizeMarkdown(text) {
   // convert headers to normal text (remove # symbols)
-  text = text.replace(/^#+\s*/gm, '');
+  text = text.replace(/^#+\s*/gm, "");
   // convert bold and italic to normal text (remove * and _ symbols)
-  text = text.replace(/(\*\*|__)(.*?)\1/g, '$2');
-  text = text.replace(/(\*|_)(.*?)\1/g, '$2');
+  text = text.replace(/(\*\*|__)(.*?)\1/g, "$2");
+  text = text.replace(/(\*|_)(.*?)\1/g, "$2");
   // remove links
-  text = text.replace(/\[(.*?)\]\(.*?\)/g, '$1');
+  text = text.replace(/\[(.*?)\]\(.*?\)/g, "$1");
   // remove images
-  text = text.replace(/!\[(.*?)\]\(.*?\)/g, '$1');
+  text = text.replace(/!\[(.*?)\]\(.*?\)/g, "$1");
   return text.trim();
 }
 
@@ -55,7 +55,6 @@ if (accountProfileDescription) {
   }
   accountProfileDescription = accountProfileDescription.join(" ");
 }
-
 
 function fetchGraphQL(operationsDoc, operationName, variables) {
   return asyncFetch(`${GRAPHQL_ENDPOINT}/v1/graphql`, {
@@ -546,7 +545,7 @@ return (
       </Wrapper>
       <Sidebar>
         <SideBarContainer>
-          <SmallTitle style={{ "padding-top": "20px" }}>Developer</SmallTitle>
+          <SmallTitle style={{ paddingTop: "20px" }}>Developer</SmallTitle>
 
           <Widget
             src="${REPL_ACCOUNT}/widget/AccountProfile"
@@ -557,9 +556,7 @@ return (
 
           {accountProfileDescription && (
             <Bio>
-              <Text>
-                {accountProfileDescription}
-              </Text>
+              <Text>{accountProfileDescription}</Text>
             </Bio>
           )}
           <Container>
@@ -594,11 +591,11 @@ return (
           <Container>
             <SmallTitle>Stats</SmallTitle>
             <GraphContainer>
-              <div style={{ display: "flex", "flex-direction": "column" }}>
-                <Text small style={{ "margin-bottom": "10px" }}>
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <Text small style={{ marginBottom: "10px" }}>
                   Impressions
                 </Text>
-                <Text medium bold style={{ "margin-bottom": "10px" }}>
+                <Text medium bold style={{ marginBottom: "10px" }}>
                   {state.componentImpressionsData.impressions ?? "..."}
                 </Text>
               </div>
@@ -616,10 +613,10 @@ return (
                 </Graph>
               )}
             </GraphContainer>
-            <Text small style={{ "margin-bottom": "10px" }}>
+            <Text small style={{ marginBottom: "10px" }}>
               Last updated
             </Text>
-            <Text medium bold style={{ "margin-bottom": "10px" }}>
+            <Text medium bold style={{ marginBottom: "10px" }}>
               <Widget
                 src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
                 props={{ keyPath: `${accountId}/widget/${widgetName}` }}

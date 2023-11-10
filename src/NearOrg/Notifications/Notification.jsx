@@ -1,4 +1,4 @@
-const Notification = styled.a`
+const Notification = styled.div`
   display: flex;
   padding: 16px 24px 16px 16px;
   align-items: flex-start;
@@ -7,7 +7,6 @@ const Notification = styled.a`
 
   &:hover {
     background: var(--sand-light-2, #f9f9f8);
-    text-decoration: none;
 
     & i {
       color: #604cc8;
@@ -15,12 +14,15 @@ const Notification = styled.a`
   }
 `;
 
-const Content = styled.div`
+const Content = styled.a`
   display: flex;
   flex-direction: inherit;
   align-items: flex-start;
   gap: 16px;
   flex: 1 0 0;
+  &:hover {
+    text-decoration: none;
+  }
 `;
 
 const Icon = styled.div`
@@ -131,6 +133,7 @@ const path = item.path || "";
 
 // Build notification
 let { blockHeight, accountId } = props;
+let { blockNotification } = props;
 let postUrl = "";
 
 // Construct DevGov postUrl
@@ -255,10 +258,41 @@ const iconType = {
   "devgovgigs/reply": <i className="ph ph-share-fat" />,
 };
 
+const [isModalOpen, setIsModalOpen] = useState(false);
+
+const buildMenu = () => {
+  return [
+    {
+      name: (
+        <>
+          <i
+              className="ph-bold ph-bell-simple-slash"
+              style={{ color: "#D95C4A" }}
+          />
+          <span style={{ color: "#D95C4A" }}>Block</span>
+        </>
+    ),
+      onSelect: toggleModal
+    }
+  ];
+};
+
+const toggleModal = () => {
+  setIsModalOpen(!isModalOpen);
+};
+
+const onClose = () => {
+  setIsModalOpen(false);
+}
+
+const onConfirm = async () => {
+  // blockNotification function
+};
+
 return (
-  <Notification className="notification-item" {...(actionable ? { href: postUrl } : {})}>
+  <Notification>
     <Icon>{iconType[type]}</Icon>
-    <Content>
+    <Content className="notification-item" {...(actionable ? { href: postUrl } : {})}>
       <Left>
         <Link href={!props.onClick && profileUrl}>
           <ProfileOverlay>
@@ -318,5 +352,35 @@ return (
         {actionable && <Button href={postUrl}>View</Button>}
       </Right>
     </Content>
+    <Widget
+          src="${REPL_ACCOUNT}/widget/DIG.DropdownMenu"
+          props={{
+            trigger: <i className="ph-bold ph-dots-three" />,
+            items: buildMenu(),
+          }}
+        />
+        {isModalOpen && (
+        <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Confirm Action</h5>
+                <button type="button" className="btn-close" onClick={onClose}></button>
+              </div>
+              <div className="modal-body">
+                <p>Do you want to stop receiving push notifications for {type}?</p>
+              </div>
+              <div className="modal-footer">
+              <button type="button" className="btn btn-success" onClick={onConfirm}>
+                  Confirm
+                </button>
+                <button type="button" className="btn btn-secondary" onClick={onClose}>
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        )}
   </Notification>
 );

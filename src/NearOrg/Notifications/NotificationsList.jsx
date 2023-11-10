@@ -16,6 +16,8 @@ const index = {
   },
 };
 
+let { blockNotification } = props;
+
 const renderItem = (item, i) => {
   if (i === 0) {
     Storage.set("lastBlockHeight", item.blockHeight);
@@ -25,7 +27,7 @@ const renderItem = (item, i) => {
     <Widget
       src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.Notification"
       key={i}
-      props={{ initiator, ...item }}
+      props={{ initiator, ...item, blockNotification }}
     />
   );
 };

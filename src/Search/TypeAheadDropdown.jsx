@@ -929,6 +929,10 @@ const encodeURIComponent = (text) => {
   return result.join("");
 };
 
+const handleCloseSearchMenu = () => {
+  props.closeSearch(false);
+}
+
 return (
   <div style={typeAheadContainer}>
     <Wrapper>
@@ -967,6 +971,7 @@ return (
           href={`${searchPageUrl}?term=${encodeURIComponent(props.term)}&tab=${
             state.selectedTab
           }`}
+          onClick={handleCloseSearchMenu}
         >
           {state.paginate?.hitsTotal > 0 &&
             ` See ${tabCount(state.selectedTab)} Results`}

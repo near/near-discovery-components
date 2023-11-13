@@ -8,16 +8,17 @@ const verifications = props.verifications;
 const overlayStyles = props.overlayStyles;
 const side = props.side ?? "top";
 
-State.init({
-  hasBeenFlagged: false,
-  showConfirmModal: false,
-});
+const [hasBeenFlagged, setHasBeenFlagged] = useState(false);
+const [showConfirmModal, setShowConfirmModal] = useState(false);
 
 const onReport = () => {
-  State.update({
-    showConfirmModal: false,
-    hasBeenFlagged: true,
-  });
+  setShowConfirmModal(false);
+  setHasBeenFlagged(true);
+};
+
+const onReportCancel = () => {
+  setShowConfirmModal(false);
+  setHasBeenFlagged(false);
 };
 
 const Wrapper = styled.span`
@@ -142,7 +143,7 @@ const overlay = (
               props={{
                 item: contentModerationItem,
                 onFlag: () => {
-                  State.update({ hasBeenFlagged: true });
+                  setHasBeenFlagged(true);
                 },
               }}
             />
@@ -154,7 +155,7 @@ const overlay = (
               src="${REPL_ACCOUNT}/widget/Flagged.Trigger"
               props={{
                 onClick: () => {
-                  State.update({ showConfirmModal: true });
+                  setShowConfirmModal(true);
                 },
               }}
             />
@@ -336,9 +337,9 @@ return (
           title: "Flagged for moderation",
           description:
             "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
-          open: state.hasBeenFlagged,
+          open: hasBeenFlagged,
           onOpenChange: () => {
-            State.update({ hasBeenFlagged: false });
+            setHasBeenFlagged(false);
           },
           duration: 5000,
         }}
@@ -347,11 +348,11 @@ return (
       <Widget
         src="${REPL_ACCOUNT}/widget/Flagged.Modal"
         props={{
-          open: state.showConfirmModal,
-          onOpenChange: handleModalClose,
+          open: showConfirmModal,
           reportedAccountId: props.accountId,
           contentModerationFlagValue: contentModerationItem,
           onReport,
+          onReportCancel,
         }}
       />
     </FlaggedWrapper>

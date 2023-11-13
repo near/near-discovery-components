@@ -1,5 +1,6 @@
 let {
   onReport,
+  onReportCancel,
   reportedAccountId,
   contentModerationFlagValue,
   ...forwardedProps
@@ -10,7 +11,7 @@ const socialSet = (index) =>
     onCommit: () => {
       onReport && onReport();
     },
-    onCancel: () => onOpenChange(false),
+    onCancel: () => { onReportCancel && onReportCancel() },
   });
 
 const reportAccount = () => {
@@ -41,6 +42,8 @@ const reportAccountWithPosts = () => {
   });
 };
 
+if (!forwardedProps.open) return <></>;
+
 return (
   <Widget
     src="${REPL_ACCOUNT}/widget/DIG.Dialog"
@@ -53,6 +56,7 @@ return (
       onCancel: reportAccount,
       onConfirm: reportAccountWithPosts,
       enableCloseButton: true,
+      onOpenChange: onReportCancel,
     }}
   />
 );

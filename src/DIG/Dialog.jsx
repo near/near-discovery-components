@@ -38,7 +38,7 @@ const Overlay = styled(`${variant}.Overlay`)`
   position: fixed;
   inset: 0;
   animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: 10000;
+  z-index: 1049;
 
   @keyframes overlayShow {
     from {
@@ -63,7 +63,7 @@ const Content = styled(`${variant}.Content`)`
   max-height: 85vh;
   padding: 24px;
   animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: 10005;
+  z-index: 1054;
   outline: none;
 
   @keyframes contentShow {
@@ -160,6 +160,8 @@ confirmButton = confirmButton ?? (
     }}
   />
 );
+
+if (!forwardedProps?.open) return <></>;
 
 return (
   <Root {...forwardedProps}>

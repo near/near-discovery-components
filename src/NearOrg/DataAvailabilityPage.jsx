@@ -189,7 +189,7 @@ return (
             mobileSize="text-l"
             style={{ maxWidth: "808px" }}
           >
-            Plug NEAR’s DA layer into your L2 framework and start storing proofs
+            Plug NEAR’s DA layer into your L2 framework and start publishing transaction data
             on a blockchain with a proven trajectory of 100% uptime over its
             lifetime.
           </Text>
@@ -235,7 +235,7 @@ return (
                   <Widget
                     src="${REPL_ACCOUNT}/widget/DIG.Button"
                     props={{
-                      href: "https://docs.near.org/data-availability",
+                      href: "https://docs.near.org/data-availability/welcome",
                       target: "_blank",
                       label: "Bootstrap Your L2",
                       variant: "secondary",
@@ -290,7 +290,7 @@ return (
             <Widget
               src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
-                href: "https://docs.near.org/data-availability",
+                href: "https://docs.near.org/data-availability/welcome",
                 target: "_blank",
                 label: "Read Docs",
                 variant: "secondary",

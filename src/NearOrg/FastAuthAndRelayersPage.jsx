@@ -326,7 +326,7 @@ return (
                   <Widget
                     src="${REPL_ACCOUNT}/widget/DIG.Button"
                     props={{
-                      href: "https://docs.near.org/develop/relayers/build-relayer",
+                      href: "https://github.com/near/pagoda-relayer-rs/tree/main#pagoda-relayer",
                       target: "_blank",
                       label: "Read Relayer Docs",
                       variant: "secondary",
@@ -393,7 +393,7 @@ return (
             <Widget
               src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
-                href: "https://docs.near.org/develop/relayers/build-relayer",
+                href: "https://github.com/near/pagoda-relayer-rs/tree/main#pagoda-relayer",
                 target: "_blank",
                 label: "Relayers",
                 variant: "primary",

@@ -141,17 +141,17 @@ function buildPostUrl(widgetName, linkProps) {
   linkProps = { ...linkProps };
 
   const nearDevGovGigsWidgetsAccountId =
-      props.nearDevGovGigsWidgetsAccountId ||
-      (context.widgetSrc ?? "devgovgigs.near").split("/", 1)[0];
+    props.nearDevGovGigsWidgetsAccountId ||
+    (context.widgetSrc ?? "devgovgigs.near").split("/", 1)[0];
 
   if (props.nearDevGovGigsContractAccountId) {
     linkProps.nearDevGovGigsContractAccountId =
-        props.nearDevGovGigsContractAccountId;
+      props.nearDevGovGigsContractAccountId;
   }
 
   if (props.nearDevGovGigsWidgetsAccountId) {
     linkProps.nearDevGovGigsWidgetsAccountId =
-        props.nearDevGovGigsWidgetsAccountId;
+      props.nearDevGovGigsWidgetsAccountId;
   }
 
   if (props.referral) {
@@ -159,12 +159,12 @@ function buildPostUrl(widgetName, linkProps) {
   }
 
   const linkPropsQuery = Object.entries(linkProps)
-      .filter(([_key, nullable]) => (nullable ?? null) !== null)
-      .map(([key, value]) => `${key}=${value}`)
-      .join("&");
+    .filter(([_key, nullable]) => (nullable ?? null) !== null)
+    .map(([key, value]) => `${key}=${value}`)
+    .join("&");
 
   return `/${nearDevGovGigsWidgetsAccountId}/widget/gigs-board.pages.${widgetName}${
-      linkPropsQuery ? "?" : ""
+    linkPropsQuery ? "?" : ""
   }${linkPropsQuery}`;
 }
 
@@ -187,12 +187,15 @@ switch (type) {
     accountId = props.initiator;
     postUrl = `/${REPL_ACCOUNT}/widget/PostPage?accountId=${accountId}&commentBlockHeight=${blockHeight}`;
     break;
+  case "star":
+    postUrl = `/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${item.path}`;
+    break;
   case "devgovgigs/mention":
   case "devgovgigs/edit":
   case "devgovgigs/reply":
   case "devgovgigs/like":
-    postUrl = buildPostUrl("Post",  { id: value.post })
-    break
+    postUrl = buildPostUrl("Post", { id: value.post });
+    break;
   default:
     postUrl = `/${REPL_ACCOUNT}/widget/PostPage?accountId=${accountId}&blockHeight=${blockHeight}`;
 }
@@ -209,10 +212,11 @@ let notificationMessage = {
   comment: "replied to your post",
   mention: "mentioned you in their post",
   poke: "poked you",
+  star: "starred your component",
   custom: value.message ?? "",
   "devgovgigs/mention": "mentioned you in their post",
   "devgovgigs/edit": "edited your",
-  "devgovgigs/reply":"replied to your post",
+  "devgovgigs/reply": "replied to your post",
   "devgovgigs/like": isPost ? "liked your post" : "liked your comment",
 };
 
@@ -220,12 +224,12 @@ const actionable =
   type === "like" ||
   type === "comment" ||
   type === "mention" ||
-  type === "devgovgigs/mention"||
+  type === "star" ||
+  type === "devgovgigs/mention" ||
   type === "devgovgigs/edit" ||
   type === "devgovgigs/reply" ||
-  type === "devgovgigs/like"||
+  type === "devgovgigs/like" ||
   type === "custom";
-
 
 // Assert is a valid type
 if (!(type in notificationMessage) || !notificationMessage[type]) return <></>;
@@ -251,9 +255,10 @@ const iconType = {
   comment: <i className="ph ph-share-fat" />,
   mention: <i className="ph ph-at" />,
   poke: <i className="ph ph-hand-pointing" />,
+  star: <i className="ph ph-star" />,
   custom: <i className="ph ph-" />,
-  "devgovgigs/like":<i className="ph ph-heart" />,
-  "devgovgigs/mention":  <i className="ph ph-at" />,
+  "devgovgigs/like": <i className="ph ph-heart" />,
+  "devgovgigs/mention": <i className="ph ph-at" />,
   "devgovgigs/edit": <i className="ph ph-pencil" />,
   "devgovgigs/reply": <i className="ph ph-share-fat" />,
 };

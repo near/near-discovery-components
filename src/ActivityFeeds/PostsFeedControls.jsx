@@ -81,7 +81,7 @@ const matchesModeration = (moderated, socialDBObjectType, item) => {
   if (typeof accountFound === "undefined") {
     return false;
   }
-  if (typeof accountFound === "string") {
+  if (typeof accountFound === "string" || accountFound[""]) {
     return true;
   }
   const moderatedItemsOfType = accountFound[socialDBObjectType];

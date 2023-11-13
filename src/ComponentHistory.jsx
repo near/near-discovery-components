@@ -33,16 +33,21 @@ function getTimestampFromBlockHeight(blockHeight) {
 }
 
 const Wrapper = styled.div`
-  display: grid;
-  grid-template-columns: 200px minmax(0, 1fr);
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+`;
+
+const Layout = styled.div`
+  display: flex;
   gap: 30px;
 
   @media (max-width: 980px) {
-    grid-template-columns: minmax(0, 1fr);
+    flex-direction: column;
   }
 `;
 
-const Header = styled.div`
+const CommitHeader = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -51,7 +56,14 @@ const Header = styled.div`
   margin-bottom: 30px;
 `;
 
-const Sidebar = styled.div``;
+const Sidebar = styled.div`
+  width: 170px;
+  flex-shrink: 0;
+
+  @media (max-width: 980px) {
+    width: 100%;
+  }
+`;
 
 const Commits = styled.div`
   background: var(--sand2);
@@ -104,6 +116,9 @@ const Commits = styled.div`
 `;
 
 const Main = styled.div`
+  width: 100%;
+  min-width: 0;
+
   pre > div {
     margin-top: 0 !important;
   }
@@ -199,125 +214,153 @@ if (!blocksChanges) {
 
 return (
   <Wrapper>
-    <Sidebar>
-      <Header>
-        <Text as="h3" size="text-md" color="sand12" weight="400">
-          COMMITS ({blocksChanges.length})
-        </Text>
-      </Header>
+    <PillSelect>
+      <PillSelectButton
+        type="button"
+        onClick={() =>
+          State.update({ selectedTab: "code", blockHeight: blocksChanges[0] })
+        }
+        selected={state.selectedTab === "code"}
+      >
+        <i className="ph-bold ph-code"></i>
+        Code
+      </PillSelectButton>
 
-      <Commits>
-        {blocksChanges
-          .slice(
-            0,
-            state.showAllCommits ? blocksChanges.length : COMMIT_DISPLAY_LIMIT
-          )
-          .map((blockHeight, key) => (
-            <button
-              type="button"
-              data-selected={state.blockHeight == blockHeight}
-              onClick={() => {
-                State.update({ blockHeight });
-              }}
-            >
-              <Text as="span" size="text-s" weight="500" color="sand12">
-                {key === 0 ? `#${blockHeight} (head)` : `#${blockHeight}`}
-              </Text>
-              <Text as="span" size="text-s">
-                {getTimestampFromBlockHeight(blockHeight)}
-              </Text>
-            </button>
-          ))}
-      </Commits>
+      <PillSelectButton
+        type="button"
+        onClick={() =>
+          State.update({ selectedTab: "render", blockHeight: blocksChanges[0] })
+        }
+        selected={state.selectedTab === "render"}
+      >
+        <i className="ph-bold ph-eye"></i>
+        Preview
+      </PillSelectButton>
 
-      {!state.showAllCommits && blocksChanges.length > COMMIT_DISPLAY_LIMIT && (
-        <Widget
-          src="${REPL_ACCOUNT}/widget/DIG.Button"
-          props={{
-            fill: "outline",
-            variant: "secondary",
-            label: "Show All Commits",
-            size: "small",
-            style: { width: "100%" },
-            onClick: () => {
-              State.update({ showAllCommits: true });
-            },
-          }}
-        />
-      )}
-    </Sidebar>
+      <PillSelectButton
+        type="button"
+        onClick={() => State.update({ selectedTab: "history" })}
+        selected={state.selectedTab === "history"}
+      >
+        <i className="ph-bold ph-clock-counter-clockwise"></i>
+        History
+      </PillSelectButton>
+    </PillSelect>
 
-    <Main>
-      <Header>
-        <Text>Changes:</Text>
-        <Badges>
-          <Badge backgroundColor="green4" textColor="green11">
-            +{state.lineCountInserted}
-          </Badge>
-          <Badge backgroundColor="red3" textColor="red11">
-            -{state.lineCountDeleted}
-          </Badge>
-        </Badges>
+    <Layout>
+      {state.selectedTab === "history" && (
+        <Sidebar>
+          <CommitHeader>
+            <Text as="h3" size="text-md" color="sand12" weight="400">
+              COMMITS ({blocksChanges.length})
+            </Text>
+          </CommitHeader>
 
-        <Text size="text-s" style={{ marginRight: "auto" }}>
-          {getTimestampFromBlockHeight(state.blockHeight)}
-        </Text>
-
-        <PillSelect>
-          <PillSelectButton
-            type="button"
-            onClick={() => State.update({ selectedTab: "code" })}
-            selected={state.selectedTab === "code"}
-          >
-            <i className="ph-bold ph-code"></i>
-            Code
-          </PillSelectButton>
-
-          <PillSelectButton
-            type="button"
-            onClick={() => State.update({ selectedTab: "render" })}
-            selected={state.selectedTab === "render"}
-          >
-            <i className="ph-bold ph-eye"></i>
-            Preview
-          </PillSelectButton>
-        </PillSelect>
-      </Header>
-
-      {state.selectedTab == "code" && (
-        <Widget
-          src={`bozon.near/widget/WidgetHistory.CodeHistory`}
-          key={`code-${state.blockHeight}`}
-          props={{
-            pathToWidget: props.widgetPath,
-            currentBlockHeight: state.blockHeight,
-            prevBlockHeight: blocksChanges[index + 1],
-            findUniqueResult: (
-              lineCountDeleted,
-              lineCountInserted,
-              lineCountCurrentCode,
-              lineCountPrevCode,
-              allLineCount
-            ) => {
-              if (
-                state.lineCountDeleted === undefined ||
-                state.lineCountInserted === undefined
+          <Commits>
+            {blocksChanges
+              .slice(
+                0,
+                state.showAllCommits
+                  ? blocksChanges.length
+                  : COMMIT_DISPLAY_LIMIT
               )
-                State.update({ lineCountDeleted, lineCountInserted });
-            },
-          }}
-        />
+              .map((blockHeight, key) => (
+                <button
+                  type="button"
+                  data-selected={state.blockHeight == blockHeight}
+                  onClick={() => {
+                    State.update({ blockHeight });
+                  }}
+                >
+                  <Text as="span" size="text-s" weight="500" color="sand12">
+                    {key === 0 ? `#${blockHeight} (head)` : `#${blockHeight}`}
+                  </Text>
+                  <Text as="span" size="text-xs">
+                    {getTimestampFromBlockHeight(blockHeight)}
+                  </Text>
+                </button>
+              ))}
+          </Commits>
+
+          {!state.showAllCommits &&
+            blocksChanges.length > COMMIT_DISPLAY_LIMIT && (
+              <Widget
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
+                props={{
+                  fill: "outline",
+                  variant: "secondary",
+                  label: "Show All Commits",
+                  size: "small",
+                  style: { width: "100%" },
+                  onClick: () => {
+                    State.update({ showAllCommits: true });
+                  },
+                }}
+              />
+            )}
+        </Sidebar>
       )}
 
-      {state.selectedTab == "render" && (
-        <div>
+      <Main>
+        {state.selectedTab === "history" && (
+          <CommitHeader>
+            <Text>Changes:</Text>
+            <Badges>
+              <Badge backgroundColor="green4" textColor="green11">
+                +{state.lineCountInserted}
+              </Badge>
+              <Badge backgroundColor="red3" textColor="red11">
+                -{state.lineCountDeleted}
+              </Badge>
+            </Badges>
+
+            <Text size="text-s" style={{ marginRight: "auto" }}>
+              {getTimestampFromBlockHeight(state.blockHeight)}
+            </Text>
+          </CommitHeader>
+        )}
+
+        {state.selectedTab === "code" && (
           <Widget
-            code={currentCode}
-            key={`preview-${state.blockHeight}`}
-            props={props}
+            src={`bozon.near/widget/WidgetHistory.CodeHistory`}
+            key={`code-${state.blockHeight}`}
+            props={{
+              pathToWidget: props.widgetPath,
+              currentBlockHeight: state.blockHeight,
+              prevBlockHeight: state.blockHeight,
+            }}
           />
-        </div>
-      )}
-    </Main>
+        )}
+
+        {state.selectedTab === "history" && (
+          <Widget
+            src={`bozon.near/widget/WidgetHistory.CodeHistory`}
+            key={`history-${state.blockHeight}`}
+            props={{
+              pathToWidget: props.widgetPath,
+              currentBlockHeight: state.blockHeight,
+              prevBlockHeight: blocksChanges[index + 1],
+              findUniqueResult: (lineCountDeleted, lineCountInserted) => {
+                if (
+                  state.lineCountDeleted === undefined ||
+                  state.lineCountInserted === undefined
+                )
+                  State.update({ lineCountDeleted, lineCountInserted });
+              },
+            }}
+          />
+        )}
+
+        {state.selectedTab === "render" && (
+          <div>
+            <Widget
+              code={currentCode}
+              key={`preview-${state.blockHeight}`}
+              props={props}
+            />
+          </div>
+        )}
+      </Main>
+    </Layout>
   </Wrapper>
 );

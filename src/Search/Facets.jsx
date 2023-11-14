@@ -111,7 +111,7 @@ const TabsButton = styled.button`
   font-size: 12px;
   padding: 8px 12px;
   position: relative;
-  color: ${(p) => (p.selected ? "#11181C" : "#687076")};
+  color: #687076;
   background: none;
   border: none;
   border-bottom: 2px solid transparent;

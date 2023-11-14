@@ -131,7 +131,6 @@ return (
                     label: "Full-time Jobs across the Ecosystem",
                     variant: "primary",
                     fill: "outline",
-                    as: "a",
                     target: "_blank",
                   }}
                 />
@@ -143,7 +142,6 @@ return (
                     label: "Become an ambassador or teacher",
                     variant: "primary",
                     fill: "outline",
-                    as: "a",
                     target: "_blank",
                   }}
                 />
@@ -197,7 +195,6 @@ return (
                     label: "View Bounties",
                     variant: "primary",
                     fill: "outline",
-                    as: "a",
                     target: "_blank",
                   }}
                 />

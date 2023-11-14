@@ -489,6 +489,10 @@ const onFacetClick = (facet) => {
   displayResultsByFacet(facet);
 };
 
+const handleCloseSearchMenu = () => {
+  props.focusChange(false);
+};
+
 const onSearchResultClick = ({
   searchPosition,
   queryID,
@@ -515,6 +519,8 @@ const onSearchResultClick = ({
     // This will trigger the Insights widget:
     State.update({ event });
   }, 100);
+
+  handleCloseSearchMenu();
 };
 
 const topmostAccounts = () => {
@@ -928,10 +934,6 @@ const encodeURIComponent = (text) => {
   }
   return result.join("");
 };
-
-const handleCloseSearchMenu = () => {
-  props.closeSearch(false);
-}
 
 return (
   <div style={typeAheadContainer}>

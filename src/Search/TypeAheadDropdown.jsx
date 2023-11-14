@@ -32,7 +32,6 @@ State.init({
 
 const typeAheadContainer = {
   width: "513px",
-  height: "458px",
   zIndex: "3",
   backgroundColor: "black",
   borderRadius: "10px",

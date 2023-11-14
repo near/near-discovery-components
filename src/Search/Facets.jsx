@@ -73,53 +73,22 @@ if (!state.initialized) {
   });
 }
 
-const FacetContainer =
-  props.facetContainerStyle ??
-  styled.ul`
-    padding: 16px 16px 0px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    list-style-type: none;
-    width: 100%;
-    height: 36px;
-  `;
-
-const FacetItem =
-  props.facetItemStyle ??
-  styled.li`
-    padding: 0 14px 0 14px;
-    border: 1px solid #d0d5dd !important;
-    background: #ffffff;
-    border-radius: 100px;
-
-    height: 32px;
-    text-align: center;
-    margin: auto 4px;
-    color: rgba(0, 0, 0, 0.87);
-    display: flex;
-    box-sizing: border-box;
-    align-items: center;
-    letter-spacing: 0.01071em;
-    line-height: 1.43;
-    font-size: 13px;
-    min-width: 32px;
-
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.04);
-      cursor: pointer;
-    }
-
-    &.selected {
-      background-color: rgba(0, 0, 0, 0.08);
-    }
-  `;
+const FacetContainer = styled.div`
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  list-style-type: none;
+  width: 100%;
+  margin: 0;
+  padding: 12px 0;
+`;
 
 const Tabs = styled.div`
   display: flex;
-  height: 36px;
   overflow: auto;
   scroll-behavior: smooth;
+  margin: 0;
+  gap: 4px;
 
   @media (max-width: 1024px) {
     margin-left: -12px;
@@ -132,50 +101,41 @@ const Tabs = styled.div`
   }
 `;
 
-const TabsButton =
-  props.tabButtonStyle ??
-  styled("Link")`
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    font-weight: 600;
-    font-size: 12px;
-    padding: 0 12px;
-    position: relative;
-    color: ${(p) => (p.selected ? "#11181C" : "#687076")};
-    background: none;
-    border: none;
-    outline: none;
-    text-align: center;
-    text-decoration: none !important;
-    flex: 1;
+const TabsButton = styled.button`
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: relative;
+  color: #687076;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  outline: none;
+  text-align: center;
+  text-decoration: none !important;
+  flex: 1;
 
-    &:hover {
-      color: #ffffff;
-      border-bottom: 2px solid #9799f8;
-    }
-
-    &::after {
-      content: "";
-      display: ${(p) => (p.selected ? "block" : "none")};
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: #59e692;
-    }
-  `;
+  &:hover,
+  &[data-selected="true"] {
+    color: #ffffff;
+    border-bottom-color: #9799f8;
+  }
+`;
 
 return (
   <FacetContainer>
     <Tabs>
       {facets.map((facet) => (
         <TabsButton
-          selected={state.selectedTab === facet}
+          type="button"
           onClick={() => onFacetClick(facet)}
           key={facet}
+          data-selected={state.selected[facet]}
         >
           {facet}
         </TabsButton>

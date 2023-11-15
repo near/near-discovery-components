@@ -295,7 +295,6 @@ return (
                       variant: "primary",
                       fill: "outline",
                       size: "large",
-                      as: "a",
                       target: "_blank",
                     }}
                   />
@@ -377,7 +376,6 @@ return (
                     variant: "primary",
                     fill: "outline",
                     size: "small",
-                    as: "a",
                     target: "_blank",
                   }}
                 />
@@ -417,7 +415,6 @@ return (
                     variant: "primary",
                     fill: "outline",
                     size: "small",
-                    as: "a",
                     target: "_blank",
                   }}
                 />
@@ -449,7 +446,6 @@ return (
                           variant: "primary",
                           fill: "outline",
                           size: "small",
-                          as: "a",
                           target: "_blank",
                         }}
                       />

@@ -406,7 +406,6 @@ return (
                               variant: "primary",
                               fill: "outline",
                               size: "small",
-                              as: "a",
                               target: "_blank",
                             }}
                           />

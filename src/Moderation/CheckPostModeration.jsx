@@ -207,11 +207,14 @@ State.init({
 });
 
 const selfModerationData = context.accountId
-  ? Social.getr(`${context.accountId}/moderate`, "optimistic") ?? false
+  ? Social.getr(`${context.accountId}/moderate`, "optimistic")
   : [];
 State.update({ selfModerationData });
 
-if (state.selfModerationData && state.loadingState === "none") {
+if (
+  (selfModerationData || typeof selfModerationData === "undefined") &&
+  state.loadingState === "none"
+) {
   State.update({
     loadingState: "loading",
   });

@@ -32,7 +32,6 @@ State.init({
 
 const typeAheadContainer = {
   width: "513px",
-  height: "458px",
   zIndex: "3",
   backgroundColor: "black",
   borderRadius: "10px",
@@ -489,6 +488,10 @@ const onFacetClick = (facet) => {
   displayResultsByFacet(facet);
 };
 
+const handleCloseSearchMenu = () => {
+  props.focusChange(false);
+};
+
 const onSearchResultClick = ({
   searchPosition,
   queryID,
@@ -515,6 +518,8 @@ const onSearchResultClick = ({
     // This will trigger the Insights widget:
     State.update({ event });
   }, 100);
+
+  handleCloseSearchMenu();
 };
 
 const topmostAccounts = () => {
@@ -967,6 +972,7 @@ return (
           href={`${searchPageUrl}?term=${encodeURIComponent(props.term)}&tab=${
             state.selectedTab
           }`}
+          onClick={handleCloseSearchMenu}
         >
           {state.paginate?.hitsTotal > 0 &&
             ` See ${tabCount(state.selectedTab)} Results`}

@@ -531,7 +531,6 @@ return (
               label: "Visit AwesomeNEAR",
               variant: "affirmative",
               size: "large",
-              as: "a",
               target: "_blank",
             }}
           />
@@ -582,7 +581,6 @@ return (
                   variant: "primary",
                   fill: "outline",
                   size: "large",
-                  as: "a",
                   target: "_blank",
                 }}
               />
@@ -615,7 +613,6 @@ return (
                   variant: "primary",
                   fill: "outline",
                   size: "large",
-                  as: "a",
                   target: "_blank",
                 }}
               />
@@ -648,7 +645,6 @@ return (
                   variant: "primary",
                   fill: "outline",
                   size: "large",
-                  as: "a",
                   target: "_blank",
                 }}
               />
@@ -689,7 +685,6 @@ return (
                     variant: "primary",
                     fill: "outline",
                     size: "large",
-                    as: "a",
                     target: "_blank",
                   }}
                 />
@@ -705,7 +700,6 @@ return (
                 label: "Browse DAOs on AstroDAO",
                 variant: "affirmative",
                 size: "large",
-                as: "a",
                 target: "_blank",
               }}
             />
@@ -756,7 +750,6 @@ return (
                   label: "Create a new DAO",
                   variant: "affirmative",
                   size: "large",
-                  as: "a",
                   target: "_blank",
                 }}
               />
@@ -878,7 +871,6 @@ return (
                       label: "Browse Governance Forum",
                       variant: "affirmative",
                       size: "large",
-                      as: "a",
                       target: "_blank",
                     }}
                   />
@@ -928,7 +920,6 @@ return (
                       label: "Read on Medium",
                       variant: "destructive",
                       size: "large",
-                      as: "a",
                       target: "_blank",
                     }}
                   />
@@ -1132,7 +1123,6 @@ return (
                     variant: "primary",
                     fill: "outline",
                     size: "large",
-                    as: "a",
                     target: "_blank",
                   }}
                 />
@@ -1177,7 +1167,6 @@ return (
                     variant: "primary",
                     fill: "outline",
                     size: "large",
-                    as: "a",
                     target: "_blank",
                   }}
                 />
@@ -1249,7 +1238,6 @@ return (
                   variant: "primary",
                   fill: "outline",
                   size: "large",
-                  as: "a",
                   target: "_blank",
                 }}
               />
@@ -1303,7 +1291,6 @@ return (
                         variant: "primary",
                         fill: "outline",
                         size: "large",
-                        as: "a",
                         target: "_blank",
                       }}
                     />
@@ -1379,7 +1366,6 @@ return (
                       variant: "primary",
                       fill: "outline",
                       size: "large",
-                      as: "a",
                       target: "_blank",
                     }}
                   />
@@ -1401,7 +1387,6 @@ return (
                       variant: "primary",
                       fill: "outline",
                       size: "large",
-                      as: "a",
                       target: "_blank",
                     }}
                   />
@@ -1417,7 +1402,6 @@ return (
                     variant: "primary",
                     fill: "outline",
                     size: "large",
-                    as: "a",
                     target: "_blank",
                   }}
                 />
@@ -1504,7 +1488,6 @@ return (
                 variant: "primary",
                 fill: "outline",
                 size: "large",
-                as: "a",
                 target: "_blank",
               }}
             />
@@ -1532,7 +1515,6 @@ return (
                 variant: "primary",
                 fill: "outline",
                 size: "large",
-                as: "a",
                 target: "_blank",
               }}
             />
@@ -1583,7 +1565,6 @@ return (
                   variant: "primary",
                   fill: "outline",
                   size: "large",
-                  as: "a",
                   target: "_blank",
                 }}
               />
@@ -1629,7 +1610,6 @@ return (
                       variant: "primary",
                       fill: "outline",
                       size: "large",
-                      as: "a",
                       target: "_blank",
                     }}
                   />
@@ -1686,7 +1666,6 @@ return (
                   variant: "primary",
                   fill: "outline",
                   size: "large",
-                  as: "a",
                   target: "_blank",
                 }}
               />
@@ -1732,7 +1711,6 @@ return (
                   variant: "primary",
                   fill: "outline",
                   size: "large",
-                  as: "a",
                   target: "_blank",
                 }}
               />
@@ -1804,7 +1782,6 @@ return (
                       variant: "primary",
                       fill: "outline",
                       size: "large",
-                      as: "a",
                       target: "_blank",
                     }}
                   />

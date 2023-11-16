@@ -3,7 +3,7 @@ let {
   isNotificationSupported,
   isPermisionGranted,
   isPushManagerSupported,
-  blockNotification,
+  manageNotification,
   handleTurnOn,
   handleOnCancel,
   getNotificationLocalStorage,
@@ -107,7 +107,7 @@ return (
 
     <Widget
       src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsList"
-      props={{ showLimit, showInBox, blockNotification }}
+      props={{ showLimit, showInBox, manageNotification }}
     />
   </Card>
 );

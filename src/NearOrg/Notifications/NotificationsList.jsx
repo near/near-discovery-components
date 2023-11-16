@@ -16,7 +16,7 @@ const index = {
   },
 };
 
-let { blockNotification } = props;
+let { manageNotification } = props;
 
 const renderItem = (item, i) => {
   if (i === 0) {
@@ -27,7 +27,7 @@ const renderItem = (item, i) => {
     <Widget
       src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.Notification"
       key={i}
-      props={{ initiator, ...item, blockNotification }}
+      props={{ initiator, ...item, manageNotification }}
     />
   );
 };

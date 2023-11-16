@@ -14,7 +14,7 @@ const Notification = styled.div`
   }
 `;
 
-const Content = styled.a`
+const Content = styled("Link")`
   display: flex;
   flex-direction: inherit;
   align-items: flex-start;
@@ -133,7 +133,7 @@ const path = item.path || "";
 
 // Build notification
 let { blockHeight, accountId } = props;
-let { blockNotification } = props;
+let { manageNotification } = props;
 let postUrl = "";
 
 // Construct DevGov postUrl
@@ -271,14 +271,14 @@ const buildMenu = () => {
       name: (
         <>
           <i
-              className="ph-bold ph-bell-simple-slash"
-              style={{ color: "#D95C4A" }}
+            className="ph-bold ph-bell-simple-slash"
+            style={{ color: "#D95C4A" }}
           />
           <span style={{ color: "#D95C4A" }}>Block</span>
         </>
-    ),
-      onSelect: toggleModal
-    }
+      ),
+      onSelect: toggleModal,
+    },
   ];
 };
 
@@ -288,16 +288,25 @@ const toggleModal = () => {
 
 const onClose = () => {
   setIsModalOpen(false);
-}
+};
 
 const onConfirm = async () => {
-  // blockNotification function
+  const block = true;
+  manageNotification(accountId, type, block);
 };
+
+const modalContent = () => (
+  <div>Do you want to stop receiving push notification for {type}</div>
+);
 
 return (
   <Notification>
     <Icon>{iconType[type]}</Icon>
-    <Content className="notification-item" {...(actionable ? { href: postUrl } : {})}>
+    <Content
+      className="notification-item"
+      as={actionable ? "Link" : "div"}
+      href={actionable && postUrl}
+    >
       <Left>
         <Link href={!props.onClick && profileUrl}>
           <ProfileOverlay>
@@ -358,34 +367,23 @@ return (
       </Right>
     </Content>
     <Widget
-          src="${REPL_ACCOUNT}/widget/DIG.DropdownMenu"
-          props={{
-            trigger: <i className="ph-bold ph-dots-three" />,
-            items: buildMenu(),
-          }}
-        />
-        {isModalOpen && (
-        <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Confirm Action</h5>
-                <button type="button" className="btn-close" onClick={onClose}></button>
-              </div>
-              <div className="modal-body">
-                <p>Do you want to stop receiving push notifications for {type}?</p>
-              </div>
-              <div className="modal-footer">
-              <button type="button" className="btn btn-success" onClick={onConfirm}>
-                  Confirm
-                </button>
-                <button type="button" className="btn btn-secondary" onClick={onClose}>
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        )}
+      src="${REPL_ACCOUNT}/widget/DIG.DropdownMenu"
+      props={{
+        trigger: <i className="ph-bold ph-dots-three" />,
+        items: buildMenu(),
+      }}
+    />
+    <Widget
+      src="${REPL_ACCOUNT}/widget/DIG.Dialog"
+      props={{
+        type: "alert",
+        title: <modalContent />,
+        cancelButtonText: "Cancel",
+        confirmButtonText: "Confirm",
+        onCancel: onClose,
+        onConfirm: onConfirm,
+        open: isModalOpen,
+      }}
+    />
   </Notification>
 );

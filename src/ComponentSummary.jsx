@@ -184,7 +184,6 @@ const Text = styled.p`
   }
 `;
 
-
 function normalizeMarkdown(text) {
   // convert headers to normal text (remove # symbols)
   text = text.replace(/^#+\s*/gm, "");
@@ -260,6 +259,36 @@ return (
           </>
         )}
       </ButtonLink>
+
+      <Widget
+        src="${REPL_ACCOUNT}/widget/SocialIndexActionButton"
+        props={{
+          actionName: "star",
+          actionUndoName: "unstar",
+          item: {
+            type: "social",
+            path: src,
+          },
+          notifyAccountId: accountId,
+          button: (starCount, starIsActive, starOnClick) => (
+            <Button
+              type="button"
+              onClick={starOnClick}
+              aria-label="Star this component"
+            >
+              {starIsActive ? (
+                <i
+                  className="bi bi-star-fill"
+                  style={{ color: "var(--amber10)" }}
+                />
+              ) : (
+                <i className="bi bi-star" />
+              )}{" "}
+              {starCount}
+            </Button>
+          ),
+        }}
+      />
 
       <ButtonLink href={`${detailsUrl}&tab=source`}>
         <i className="bi bi-code-square"></i>

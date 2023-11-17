@@ -313,17 +313,18 @@ const TabsButton = styled("Link")`
   }
 `;
 
-const Content = styled.div`
+const Layout = styled.div`
   display: grid;
-  grid-template-columns: ${(p) =>
-    p.noSidebar ? "1fr" : "minmax(0, 1fr) 336px"};
-  gap: 64px;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 30px;
 
-  @media (max-width: 995px) {
-    grid-template-columns: 1fr;
+  @media (max-width: 1200px) {
+    grid-template-columns: minmax(0, 1fr);
     gap: 24px;
   }
 `;
+
+const Content = styled.div``;
 
 const Sidebar = styled.div`
   > div {
@@ -467,7 +468,7 @@ if (!exists) {
 }
 
 return (
-  <>
+  <Wrapper>
     <SummaryWrapper>
       <Widget
         src="${REPL_ACCOUNT}/widget/ComponentSummary"
@@ -475,77 +476,76 @@ return (
           primaryAction: "open",
           size: "large",
           showTags: true,
-          showDesc: true,
           descMaxWords: componentDescMaxWords,
           src,
         }}
       />
     </SummaryWrapper>
-    <Content>
-      <Wrapper>
-        <Tabs>
-          <TabsButton
-            href={`${detailsUrl}&tab=source`}
-            selected={state.selectedTab === "source"}
-          >
-            <Icon className="ph ph-code" />
-            Source & Preview
-          </TabsButton>
-          <TabsButton
-            href={`${detailsUrl}&tab=about`}
-            selected={state.selectedTab === "about"}
-          >
-            <Icon className="bi bi-file-earmark-text" />
-            Read.me
-          </TabsButton>
-          <TabsButton
-            href={`${detailsUrl}&tab=discussion`}
-            selected={state.selectedTab === "discussion"}
-          >
-            <Icon className="bi bi-chat-text" />
-            Discussion
-          </TabsButton>
-        </Tabs>
 
-        {state.selectedTab === "about" && (
-          <Content noSidebar>
-            <div>
-              {metadata.description ? (
-                <Markdown text={metadata.description} />
-              ) : (
-                <Text>This component has no description.</Text>
-              )}
-            </div>
-          </Content>
-        )}
+    <Tabs>
+      <TabsButton
+        href={`${detailsUrl}&tab=source`}
+        selected={state.selectedTab === "source"}
+      >
+        <Icon className="ph ph-code" />
+        Source & Preview
+      </TabsButton>
+      <TabsButton
+        href={`${detailsUrl}&tab=about`}
+        selected={state.selectedTab === "about"}
+      >
+        <Icon className="bi bi-file-earmark-text" />
+        Read.me
+      </TabsButton>
+      <TabsButton
+        href={`${detailsUrl}&tab=discussion`}
+        selected={state.selectedTab === "discussion"}
+      >
+        <Icon className="bi bi-chat-text" />
+        Discussion
+      </TabsButton>
+    </Tabs>
 
-        {state.selectedTab === "source" && (
-          <Content noSidebar>
-            <Widget
-              src="${REPL_ACCOUNT}/widget/ComponentHistory"
-              props={{ widgetPath: src }}
-            />
-          </Content>
-        )}
+    <Layout>
+      {state.selectedTab === "about" && (
+        <Content>
+          <div>
+            {metadata.description ? (
+              <Markdown text={metadata.description} />
+            ) : (
+              <Text>This component has no description.</Text>
+            )}
+          </div>
+        </Content>
+      )}
 
-        {state.selectedTab === "discussion" && (
-          <Content noSidebar>
-            <Widget
-              src="${REPL_ACCOUNT}/widget/NestedDiscussions"
-              props={{
-                identifier: src,
-                notifyAccountId: accountId,
-                parentComponent: "${REPL_ACCOUNT}/widget/ComponentDetailsPage",
-                parentParams: { tab: "discussion", src },
-                highlightComment: props.highlightComment,
-              }}
-            />
-          </Content>
-        )}
-      </Wrapper>
+      {state.selectedTab === "source" && (
+        <Content>
+          <Widget
+            src="${REPL_ACCOUNT}/widget/ComponentHistory"
+            props={{ widgetPath: src }}
+          />
+        </Content>
+      )}
+
+      {state.selectedTab === "discussion" && (
+        <Content>
+          <Widget
+            src="${REPL_ACCOUNT}/widget/NestedDiscussions"
+            props={{
+              identifier: src,
+              notifyAccountId: accountId,
+              parentComponent: "${REPL_ACCOUNT}/widget/ComponentDetailsPage",
+              parentParams: { tab: "discussion", src },
+              highlightComment: props.highlightComment,
+            }}
+          />
+        </Content>
+      )}
+
       <Sidebar>
         <SideBarContainer>
-          <SmallTitle style={{ paddingTop: "20px" }}>Developer</SmallTitle>
+          <SmallTitle>Developer</SmallTitle>
 
           <Widget
             src="${REPL_ACCOUNT}/widget/AccountProfile"
@@ -559,6 +559,7 @@ return (
               <Text>{accountProfileDescription}</Text>
             </Bio>
           )}
+
           <Container>
             <Stats>
               <StatsBadge>
@@ -588,6 +589,7 @@ return (
               </StatsBadge>
             </Stats>
           </Container>
+
           <Container>
             <SmallTitle>Stats</SmallTitle>
             <GraphContainer>
@@ -624,6 +626,7 @@ return (
               ago.
             </Text>
           </Container>
+
           <Container>
             <SmallTitle>DEPENDENCIES ({dependencySources.length})</SmallTitle>
             {dependencySources.length === 0 && (
@@ -656,6 +659,6 @@ return (
           </Container>
         </SideBarContainer>
       </Sidebar>
-    </Content>
-  </>
+    </Layout>
+  </Wrapper>
 );

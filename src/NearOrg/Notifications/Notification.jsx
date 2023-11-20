@@ -132,8 +132,7 @@ const item = value?.item || {};
 const path = item.path || "";
 
 // Build notification
-let { blockHeight, accountId } = props;
-let { manageNotification } = props;
+let { blockHeight, accountId, manageNotification } = props;
 let postUrl = "";
 
 // Construct DevGov postUrl
@@ -295,10 +294,6 @@ const onConfirm = async () => {
   manageNotification(accountId, type, block);
 };
 
-const modalContent = () => (
-  <div>Do you want to stop receiving push notification for {type}</div>
-);
-
 return (
   <Notification>
     <Icon>{iconType[type]}</Icon>
@@ -377,7 +372,7 @@ return (
       src="${REPL_ACCOUNT}/widget/DIG.Dialog"
       props={{
         type: "alert",
-        title: <modalContent />,
+        title: `Do you want to stop receiving push notification for ${type}`,
         cancelButtonText: "Cancel",
         confirmButtonText: "Confirm",
         onCancel: onClose,

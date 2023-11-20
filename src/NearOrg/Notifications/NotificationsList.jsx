@@ -1,6 +1,7 @@
 const accountId = context.accountId;
 const showLimit = props?.showLimit;
 const showInBox = props?.showInBox;
+let { manageNotification } = props;
 
 if (!accountId) {
   return <></>;
@@ -15,8 +16,6 @@ const index = {
     subscribe: true,
   },
 };
-
-let { manageNotification } = props;
 
 const renderItem = (item, i) => {
   if (i === 0) {

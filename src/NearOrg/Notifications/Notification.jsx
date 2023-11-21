@@ -375,7 +375,7 @@ return (
       src="${REPL_ACCOUNT}/widget/DIG.Dialog"
       props={{
         type: "alert",
-        title: `Do you want to stop receiving push notification for ${type}`,
+        title: `Do you want to stop receiving push notification for ${type}?`,
         cancelButtonText: "Cancel",
         confirmButtonText: "Confirm",
         onCancel: onClose,

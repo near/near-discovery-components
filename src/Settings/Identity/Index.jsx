@@ -1,7 +1,11 @@
-const [showBanner, setShowBanner] = useState(false);
+const [showBanner, setShowBanner] = useState(true);
 
 // const modalOpen = fractalModal?.alert ?? false;
 // const fractalModal = Storage.get("fractal-alert") ?? null;
+
+const tooltipState = useMemo(() => props.showTooltip, [props.showTooltip]);
+const [idosData, setIdosData] = useState(null);
+const [showSuccessTooltip, setShowSuccessTooltip] = useState(tooltipState);
 
 const Wrapper = styled.div`
   display: flex;
@@ -29,6 +33,12 @@ const Icon = styled.i`
 `;
 
 const bannerToggle = useCallback(() => setShowBanner(!showBanner), [showBanner]);
+
+useEffect(() => {
+  if (!props.idosConnected && props.connectIdOS) {
+    props.connectIdOS()
+  }
+}, [props.idosConnected]);
 
 return (
   <Wrapper>
@@ -72,5 +82,22 @@ return (
         onConfirm: () => {},
       }}
     /> */}
+
+    {showSuccessTooltip && (
+      <Widget
+        src="${REPL_ACCOUNT}/widget/DIG.Toast"
+        props={{
+          type: "success",
+          title: "idOS connection successful",
+          description:
+            "idOS data view created. Your data will be displayed soon when your request has been reviewed and approved (approx 1 - 10 minutes).",
+          open: showSuccessTooltip,
+          onOpenChange: () => {
+            setShowSuccessTooltip(false);
+          },
+          duration: 10000,
+        }}
+      />
+    )}
   </Wrapper>
 );

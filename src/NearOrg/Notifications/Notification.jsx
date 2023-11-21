@@ -132,7 +132,7 @@ const item = value?.item || {};
 const path = item.path || "";
 
 // Build notification
-let { blockHeight, accountId, manageNotification } = props;
+let { blockHeight, accountId, manageNotification, permission } = props;
 let postUrl = "";
 
 // Construct DevGov postUrl
@@ -291,7 +291,8 @@ const onClose = () => {
 
 const onConfirm = async () => {
   const block = true;
-  manageNotification(accountId, type, block);
+  manageNotification(context.accountId, type, block);
+  setIsModalOpen(false);
 };
 
 return (
@@ -361,13 +362,15 @@ return (
         {actionable && <Button href={postUrl}>View</Button>}
       </Right>
     </Content>
-    <Widget
-      src="${REPL_ACCOUNT}/widget/DIG.DropdownMenu"
-      props={{
-        trigger: <i className="ph-bold ph-dots-three" />,
-        items: buildMenu(),
-      }}
-    />
+    {permission && (
+      <Widget
+        src="${REPL_ACCOUNT}/widget/DIG.DropdownMenu"
+        props={{
+          trigger: <i className="ph-bold ph-dots-three" />,
+          items: buildMenu(),
+        }}
+      />
+    )}
     <Widget
       src="${REPL_ACCOUNT}/widget/DIG.Dialog"
       props={{

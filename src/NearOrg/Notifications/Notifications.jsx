@@ -107,7 +107,7 @@ return (
 
     <Widget
       src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsList"
-      props={{ showLimit, showInBox, manageNotification }}
+      props={{ showLimit, showInBox, manageNotification, permission }}
     />
   </Card>
 );

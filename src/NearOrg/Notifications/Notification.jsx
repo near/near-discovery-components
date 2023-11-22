@@ -318,7 +318,7 @@ return (
         </Link>
         <Text>
           <ProfileOverlay>
-            <div style={{ "text-align": "center" }}>
+            <div>
               <Link href={!props.onClick && profileUrl}>
                 <Username>
                   {profile.name || accountId.split(".near")[0]}

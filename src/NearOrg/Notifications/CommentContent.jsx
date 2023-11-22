@@ -27,36 +27,13 @@ const item = {
 
 return (
   <>
-    <div className={`post ${highlight ? "bg-warning bg-opacity-10" : ""}`}>
-      <div className="left">
-        <Widget
-          loading=""
-          src="${REPL_MOB}/widget/MainPage.N.Post.Left"
-          props={{ accountId }}
-        />
-      </div>
-      <div className="right">
-        <Widget
-          loading={
-            <div
-              className="overflow-hidden w-100 placeholder-glow"
-              style={{ minHeight: "100px" }}
-            />
-          }
-          src="${REPL_MOB}/widget/MainPage.N.Post.Content"
-          props={{ content, raw }}
-        />
-        <div className="buttons d-flex justify-content-between">
-          <Widget
-            loading=""
-            src="${REPL_ACCOUNT}/widget/v1.LikeButton"
-            props={{
-              notifyAccountId,
-              item,
-            }}
-          />
-        </div>
-      </div>
-    </div>
+    {
+      <Widget
+        loading=""
+        src="${REPL_ACCOUNT}/widget/Comments.Comment"
+        props={{ accountId, blockHeight: item.blockHeight }}
+      />
+
+    }
   </>
 );

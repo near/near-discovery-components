@@ -4,6 +4,9 @@ const proofOfPersonhoodLink = "https://app.fractal.id/authorize?client_id=7woBwP
 
 const kycLink = "https://app.fractal.id/authorize?client_id=7woBwPtlpPAbHSlR_B314ewo1IThzI6dlWNQgW272gU&redirect_uri=https%3A%2F%2Fnear.org%2Fsettings&response_type=code&scope=contact%3Aread%20verification.basic%3Aread%20verification.basic.details%3Aread%20verification.liveness%3Aread%20verification.liveness.details%3Aread%20verification.uniq%3Aread%20verification.uniq.details%3Aread%20verification.wallet-near%3Aread%20verification.wallet-near.details%3Aread%20verification.wallet-near%3Aread%20verification.wallet-near.details%3Aread%20verification.idos%3Aread%20verification.idos.details%3Aread&user_role=person";
 
+const [modalOpen, setModalOpen] = useState(false);
+const [modalLink, setModalLink] = useState(null);
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -54,17 +57,19 @@ const IconSealCheck = () => (
   </IconWrapper>
 );
 
-const CredentialButton = ({ href, onClick }) => (
+const CredentialButton = ({ href }) => (
   <Widget
     src="${REPL_ACCOUNT}/widget/DIG.Button"
     props={{
       variant: "primary",
       label: "Add Credential",
       iconRight: "ph-bold ph-arrow-square-out",
-      href,
       className: "ms-auto",
       disabled: !context.accountId,
-      onClick,
+      onClick: () => {
+        setModalLink(href);
+        setModalOpen(!modalOpen)
+      },
     }}
   />
 );
@@ -128,6 +133,25 @@ return (
           }}
         />
       ))
+    )}
+
+    {modalOpen && (
+      <Widget
+        src="${REPL_ACCOUNT}/widget/Settings.Identity.Alert"
+        props={{
+          open: modalOpen,
+          href: modalLink,
+          onOpenChange: () => {
+            setModalLink(null);
+            setModalOpen(false);
+          },
+          onCancel: () => {
+            setModalLink(null);
+            setModalOpen(false);
+          },
+          onConfirm: () => {},
+        }}
+      />
     )}
   </Wrapper>
 );

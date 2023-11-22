@@ -1,11 +1,6 @@
 const [showBanner, setShowBanner] = useState(true);
-
-// const modalOpen = fractalModal?.alert ?? false;
-// const fractalModal = Storage.get("fractal-alert") ?? null;
-
-const tooltipState = useMemo(() => props.showTooltip, [props.showTooltip]);
 const [idosData, setIdosData] = useState(null);
-const [showSuccessTooltip, setShowSuccessTooltip] = useState(tooltipState);
+const [showSuccessTooltip, setShowSuccessTooltip] = useState(props.showTooltip);
 
 const Wrapper = styled.div`
   display: flex;
@@ -38,7 +33,7 @@ useEffect(() => {
   if (!props.idosConnected && props.connectIdOS) {
     props.connectIdOS()
   }
-}, [props.idosConnected]);
+}, [props.idosConnected, props.connectIdOS]);
 
 return (
   <Wrapper>
@@ -70,18 +65,6 @@ return (
     {props.idosConnected && (
       <Widget src="${REPL_ACCOUNT}/widget/Settings.Identity.Verifications.Index" props={{ ...props }} />
     )}
-
-    {/* For some reson this modal won't fires up for KYC that's why we hide it for now */}
-    {/* <Widget
-      src="${REPL_ACCOUNT}/widget/Settings.Identity.Alert"
-      props={{
-        open: modalOpen,
-        href: fractalModal?.href ?? null,
-        onOpenChange: () => Storage.set("fractal-alert", { alert: false, href: null }),
-        onCancel: () => Storage.set("fractal-alert", { alert: false, href: null }),
-        onConfirm: () => {},
-      }}
-    /> */}
 
     {showSuccessTooltip && (
       <Widget

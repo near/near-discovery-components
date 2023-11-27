@@ -95,6 +95,12 @@ const PreviewContent = styled.div`
 
 const SeeAll = styled.div`
   padding: 16px;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 12px;
+  width: 100%;
+  alignItems: "stretch",
+  justifyContent: "stretch",
 `;
 
 const Counter = ({ count }) => {
@@ -157,11 +163,15 @@ const Notification = ({ count, disabled }) => {
                 src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
                   href: "/notifications",
-                  fill: "outline",
                   variant: "secondary",
                   label: "See all",
                   size: "small",
-                  style: { width: "100%" },
+                  style: {
+                    width: "100%",
+                    color: "#604CCB",
+                    borderColor: "#E3E3E0",
+                    background: "#FDFDFC",
+                  },
                 }}
               />
             </SeeAll>

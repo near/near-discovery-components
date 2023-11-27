@@ -1,5 +1,6 @@
 // This component will be shown to users who have enabled notifications in browser settings
 let { label, handleOnClick, loading, disabled } = props;
+const isSwitchChecked = label === "Turn Off";
 
 const Card = styled.div`
   display: flex;
@@ -54,6 +55,42 @@ const Text = styled.div`
   line-height: 150%;
 `;
 
+const SwitchWrapper = styled.div`
+  cursor: pointer;
+
+  .SwitchRoot {
+    all: unset;
+    display: flex;
+    align-items: center;
+    width: 40px;
+    height: 15px;
+    background-color: #706f6c;
+    border-radius: 15px;
+    position: relative;
+    margin: 5px auto;
+
+    &[data-state="checked"] {
+      background-color: #37cd83;
+    }
+  }
+  .SwitchThumb {
+    all: unset;
+    display: block;
+    width: 21px;
+    height: 21px;
+    background-color: #ffffff;
+    border: 2px solid #706f6c;
+    border-radius: 50%;
+    transition: transform 100ms;
+    will-change: transform;
+
+    &[data-state="checked"] {
+      transform: translateX(19px);
+      border: 2px solid #37cd83;
+    }
+  }
+`;
+
 return (
   <Card>
     <Content>
@@ -68,15 +105,17 @@ return (
         </Text>
       </Wrapper>
     </Content>
-    <Widget
-      src="${REPL_ACCOUNT}/widget/DIG.Button"
-      props={{
-        label,
-        variant: "primary",
-        onClick: handleOnClick,
-        loading,
-        disabled,
-      }}
-    />
+    <SwitchWrapper>
+      <Switch.Root
+        data-state={isSwitchChecked ? "checked" : "unchecked"}
+        className="SwitchRoot"
+        onClick={handleOnClick}
+      >
+        <Switch.Thumb
+          data-state={isSwitchChecked ? "checked" : "unchecked"}
+          className="SwitchThumb"
+        />
+      </Switch.Root>
+    </SwitchWrapper>
   </Card>
 );

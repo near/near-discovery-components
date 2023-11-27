@@ -213,6 +213,8 @@ const renderComment = (a) => {
             a.account_id === props.highlightComment?.accountId &&
             a.block_height === props.highlightComment?.blockHeight,
           GRAPHQL_ENDPOINT,
+          notifyAccountId,
+          item
         }}
       />
     </div>

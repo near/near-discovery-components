@@ -1,6 +1,7 @@
 const accountId = context.accountId;
 const showLimit = props?.showLimit;
 const showInBox = props?.showInBox;
+let { manageNotification, permission } = props;
 
 if (!accountId) {
   return <></>;
@@ -25,7 +26,7 @@ const renderItem = (item, i) => {
     <Widget
       src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.Notification"
       key={i}
-      props={{ initiator, ...item }}
+      props={{ initiator, ...item, manageNotification, permission }}
     />
   );
 };

@@ -14,12 +14,15 @@ const Notification = styled.div`
   }
 `;
 
-const Content = styled.div`
+const Content = styled("Link")`
   display: flex;
   flex-direction: inherit;
   align-items: flex-start;
   gap: 16px;
   flex: 1 0 0;
+  &:hover {
+    text-decoration: none;
+  }
 `;
 
 const Icon = styled.div`
@@ -129,7 +132,7 @@ const item = value?.item || {};
 const path = item.path || "";
 
 // Build notification
-let { blockHeight, accountId } = props;
+let { blockHeight, accountId, manageNotification, permission } = props;
 let postUrl = "";
 
 // Construct DevGov postUrl
@@ -259,10 +262,47 @@ const iconType = {
   "devgovgigs/reply": <i className="ph ph-share-fat" />,
 };
 
+const [isModalOpen, setIsModalOpen] = useState(false);
+
+const buildMenu = () => {
+  return [
+    {
+      name: (
+        <>
+          <i
+            className="ph-bold ph-bell-simple-slash"
+            style={{ color: "#D95C4A" }}
+          />
+          <span style={{ color: "#D95C4A" }}>Block</span>
+        </>
+      ),
+      onSelect: toggleModal,
+    },
+  ];
+};
+
+const toggleModal = () => {
+  setIsModalOpen(!isModalOpen);
+};
+
+const onClose = () => {
+  setIsModalOpen(false);
+};
+
+const onConfirm = async () => {
+  const block = true;
+  manageNotification(context.accountId, type, block);
+  setIsModalOpen(false);
+};
+
 return (
-  <Notification className="notification-item">
+  <Notification>
     <Icon>{iconType[type]}</Icon>
-    <Content>
+    <Content
+      className="notification-item"
+      as={actionable ? "Link" : "div"}
+      href={actionable && postUrl}
+    >
       <Left>
         <Link href={!props.onClick && profileUrl}>
           <ProfileOverlay>
@@ -278,7 +318,7 @@ return (
         </Link>
         <Text>
           <ProfileOverlay>
-            <div style={{ "text-align": "center" }}>
+            <div>
               <Link href={!props.onClick && profileUrl}>
                 <Username>
                   {profile.name || accountId.split(".near")[0]}
@@ -322,5 +362,26 @@ return (
         {actionable && <Button href={postUrl}>View</Button>}
       </Right>
     </Content>
+    {permission && (
+      <Widget
+        src="${REPL_ACCOUNT}/widget/DIG.DropdownMenu"
+        props={{
+          trigger: <i className="ph-bold ph-dots-three" />,
+          items: buildMenu(),
+        }}
+      />
+    )}
+    <Widget
+      src="${REPL_ACCOUNT}/widget/DIG.Dialog"
+      props={{
+        type: "alert",
+        title: `Do you want to stop receiving push notification for ${type}?`,
+        cancelButtonText: "Cancel",
+        confirmButtonText: "Confirm",
+        onCancel: onClose,
+        onConfirm: onConfirm,
+        open: isModalOpen,
+      }}
+    />
   </Notification>
 );

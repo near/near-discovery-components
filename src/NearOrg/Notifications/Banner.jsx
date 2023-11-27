@@ -1,6 +1,14 @@
-let { handleTurnOn, handleOnCancel, radius, iOSDevice, iOSVersion, recomendedIOSVersion } = props;
+let {
+  handleTurnOn,
+  handleOnCancel,
+  radius,
+  iOSDevice,
+  iOSVersion,
+  recomendedIOSVersion,
+} = props;
 const showIosNoteText =
-  (iOSDevice && !iOSVersion) || (iOSDevice && iOSVersion && iOSVersion < recomendedIOSVersion);
+  (iOSDevice && !iOSVersion) ||
+  (iOSDevice && iOSVersion && iOSVersion < recomendedIOSVersion);
 
 const Card = styled.div`
   display: flex;
@@ -51,8 +59,8 @@ return (
       {showIosNoteText && (
         <Text small>
           <i className="ph-bold ph-info" />
-          Mobile browser push notifications are only supported on iOS "{recomendedIOSVersion}" or
-          greater.
+          Mobile browser push notifications are only supported on iOS "
+          {recomendedIOSVersion}" or greater.
         </Text>
       )}
       <Buttons>
@@ -62,6 +70,11 @@ return (
             label: "Turn on",
             variant: "primary",
             size: "default",
+            style: {
+              color: "#604CCB",
+              background: "#ffffff",
+              borderColor: "#ffffff",
+            },
             onClick: handleTurnOn,
           }}
         />
@@ -69,8 +82,11 @@ return (
           src="${REPL_ACCOUNT}/widget/DIG.Button"
           props={{
             label: "No thanks",
-            variant: "secondary",
             size: "default",
+            fill: "ghost",
+            style: {
+              color: "#ffffff",
+            },
             onClick: handleOnCancel,
           }}
         />

@@ -111,10 +111,15 @@ const Text = styled.div`
 
 const Desc = styled.span`
   font: var(--text-s);
-  color: #706f6c;
+  color: #999894;
   font-style: italic;
   border-left: 2px solid #e3e3e0;
   padding: 0 0 0 1rem;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
 `;
 
 const Left = styled.div`
@@ -218,6 +223,14 @@ let notificationMessage = {
   "devgovgigs/reply": "replied to your post",
   "devgovgigs/like": isPost ? "liked your post" : "liked your comment",
 };
+
+const contentPath = isPost
+  ? `${context.accountId}/post/main`
+  : `${accountId}/post/comment`;
+
+const contentDescription = JSON.parse(
+  Social.get(contentPath, blockHeight) ?? "null"
+);
 
 const actionable =
   type === "like" ||
@@ -338,7 +351,7 @@ return (
             />
           </Timestamp>
         </Text>
-        {/* <Desc>{desc}</Desc> */}
+        {actionable && <Desc>{contentDescription.text}</Desc>}
       </Left>
       <Right>
         {(type === "follow" || type === "unfollow") && (

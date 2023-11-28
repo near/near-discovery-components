@@ -139,7 +139,7 @@ let postUrl = "";
 function buildPostUrl(widgetName, linkProps) {
   linkProps = { ...linkProps };
 
-  const nearDevGovGigsWidgetsAccountId = "devhub.near";
+  const nearDevHubWidgetsAccountId = "devhub.near";
 
   if (props.referral) {
     linkProps.referral = props.referral;
@@ -150,7 +150,7 @@ function buildPostUrl(widgetName, linkProps) {
     .map(([key, value]) => `${key}=${value}`)
     .join("&");
 
-  return `/${nearDevGovGigsWidgetsAccountId}/widget/devhub.page.${widgetName}${
+  return `/${nearDevHubWidgetsAccountId}/widget/devhub.page.${widgetName}${
     linkPropsQuery ? "?" : ""
   }${linkPropsQuery}`;
 }

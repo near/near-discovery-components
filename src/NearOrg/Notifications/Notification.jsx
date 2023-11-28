@@ -139,19 +139,7 @@ let postUrl = "";
 function buildPostUrl(widgetName, linkProps) {
   linkProps = { ...linkProps };
 
-  const nearDevGovGigsWidgetsAccountId =
-    props.nearDevGovGigsWidgetsAccountId ||
-    (context.widgetSrc ?? "devgovgigs.near").split("/", 1)[0];
-
-  if (props.nearDevGovGigsContractAccountId) {
-    linkProps.nearDevGovGigsContractAccountId =
-      props.nearDevGovGigsContractAccountId;
-  }
-
-  if (props.nearDevGovGigsWidgetsAccountId) {
-    linkProps.nearDevGovGigsWidgetsAccountId =
-      props.nearDevGovGigsWidgetsAccountId;
-  }
+  const nearDevGovGigsWidgetsAccountId = "devhub.near";
 
   if (props.referral) {
     linkProps.referral = props.referral;
@@ -162,7 +150,7 @@ function buildPostUrl(widgetName, linkProps) {
     .map(([key, value]) => `${key}=${value}`)
     .join("&");
 
-  return `/${nearDevGovGigsWidgetsAccountId}/widget/gigs-board.pages.${widgetName}${
+  return `/${nearDevGovGigsWidgetsAccountId}/widget/devhub.page.${widgetName}${
     linkPropsQuery ? "?" : ""
   }${linkPropsQuery}`;
 }
@@ -193,7 +181,7 @@ switch (type) {
   case "devgovgigs/edit":
   case "devgovgigs/reply":
   case "devgovgigs/like":
-    postUrl = buildPostUrl("Post", { id: value.post });
+    postUrl = buildPostUrl("post", { id: value.post });
     break;
   default:
     postUrl = `/${REPL_ACCOUNT}/widget/PostPage?accountId=${accountId}&blockHeight=${blockHeight}`;

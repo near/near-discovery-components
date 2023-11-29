@@ -351,7 +351,7 @@ return (
             />
           </Timestamp>
         </Text>
-        {actionable && actionable && contentDescription.text != null && (
+        {actionable && contentDescription?.text && (
           <Desc>{contentDescription.text}</Desc>
         )}
       </Left>

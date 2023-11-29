@@ -1,3 +1,5 @@
+const { href } = VM.require("devhub.near/widget/core.lib.url") || (() => {});
+
 const Notification = styled.div`
   display: flex;
   padding: 16px 24px 16px 16px;
@@ -135,26 +137,6 @@ const path = item.path || "";
 let { blockHeight, accountId, manageNotification, permission } = props;
 let postUrl = "";
 
-// Construct DevGov postUrl
-function buildPostUrl(widgetName, linkProps) {
-  linkProps = { ...linkProps };
-
-  const nearDevHubWidgetsAccountId = "devhub.near";
-
-  if (props.referral) {
-    linkProps.referral = props.referral;
-  }
-
-  const linkPropsQuery = Object.entries(linkProps)
-    .filter(([_key, nullable]) => (nullable ?? null) !== null)
-    .map(([key, value]) => `${key}=${value}`)
-    .join("&");
-
-  return `/${nearDevHubWidgetsAccountId}/widget/devhub.page.${widgetName}${
-    linkPropsQuery ? "?" : ""
-  }${linkPropsQuery}`;
-}
-
 switch (type) {
   case "mention":
     accountId = props.initiator;
@@ -181,11 +163,13 @@ switch (type) {
   case "devgovgigs/edit":
   case "devgovgigs/reply":
   case "devgovgigs/like":
-  case "devhub/mention":
-  case "devhub/edit":
-  case "devhub/reply":
-  case "devhub/like":
-    postUrl = buildPostUrl("post", { id: value.post });
+    postUrl = href({
+      widgetSrc: "devhub.near/widget/app",
+      params: {
+        page: "post",
+        id: value.post,
+      },
+    });
     break;
   default:
     postUrl = `/${REPL_ACCOUNT}/widget/PostPage?accountId=${accountId}&blockHeight=${blockHeight}`;
@@ -206,13 +190,9 @@ let notificationMessage = {
   star: "starred your component",
   custom: value.message ?? "",
   "devgovgigs/mention": "mentioned you in their post",
-  "devhub/mention":"mentioned you in their post",
   "devgovgigs/edit": "edited your",
-  "devhub/edit": "edited your",
   "devgovgigs/reply": "replied to your post",
-  "devhub/reply": "replied to your post",
   "devgovgigs/like": isPost ? "liked your post" : "liked your comment",
-  "devhub/like": isPost ? "liked your post" : "liked your comment",
 };
 
 const actionable =
@@ -224,10 +204,6 @@ const actionable =
   type === "devgovgigs/edit" ||
   type === "devgovgigs/reply" ||
   type === "devgovgigs/like" ||
-  type === "devhub/mention" ||
-  type === "devhub/edit" ||
-  type === "devhub/reply" ||
-  type === "devhub/like" ||
   type === "custom";
 
 // Assert is a valid type
@@ -260,10 +236,6 @@ const iconType = {
   "devgovgigs/mention": <i className="ph ph-at" />,
   "devgovgigs/edit": <i className="ph ph-pencil" />,
   "devgovgigs/reply": <i className="ph ph-share-fat" />,
-  "devhub/like": <i className="ph ph-heart" />,
-  "devhub/mention": <i className="ph ph-at" />,
-  "devhub/edit": <i className="ph ph-pencil" />,
-  "devhub/reply": <i className="ph ph-share-fat" />,
 };
 
 const [isModalOpen, setIsModalOpen] = useState(false);

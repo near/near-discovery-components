@@ -95,11 +95,10 @@ const PreviewContent = styled.div`
 
 const SeeAll = styled.div`
   padding: 16px;
-  display: flex;
-  flex-direction: column-reverse;
-  width: 100%;
-  align-items: stretch;
-  justify-content: stretch;
+
+  div {
+    width: 100%;
+  }
 `;
 
 const Counter = ({ count }) => {

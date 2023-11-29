@@ -111,7 +111,7 @@ const Text = styled.div`
 
 const Desc = styled.span`
   font: var(--text-s);
-  color: #999894;
+  color: var(--sand11);
   font-style: italic;
   border-left: 2px solid #e3e3e0;
   padding: 0 0 0 1rem;
@@ -351,7 +351,9 @@ return (
             />
           </Timestamp>
         </Text>
-        {actionable && <Desc>{contentDescription.text}</Desc>}
+        {actionable && actionable && contentDescription.text != null && (
+          <Desc>{contentDescription.text}</Desc>
+        )}
       </Left>
       <Right>
         {(type === "follow" || type === "unfollow") && (

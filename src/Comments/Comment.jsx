@@ -5,6 +5,7 @@ const blockHeight =
   props.blockHeight === "now" ? "now" : parseInt(props.blockHeight);
 const highlight = !!props.highlight;
 const commentUrl = `https://${REPL_NEAR_URL}/s/c?a=${accountId}&b=${blockHeight}`;
+const item = props.item;
 
 State.init({
   hasBeenFlaggedOptimistic: false,
@@ -284,8 +285,8 @@ return (
             props={{
               initialText: `@${accountId}, `,
               notifyAccountId: extractNotifyAccountId(state.content.item),
-              item: state.content.item,
-              onComment: () => State.update({ showReply: false }),
+              item: item,
+              onComment: () => State.update({ showReply: false, }),
             }}
           />
         </div>

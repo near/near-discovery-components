@@ -175,8 +175,7 @@ return (
       children: AccountProfile,
       placement: props.overlayPlacement,
       verifications,
-      becauseYouFollow:
-        props.scope === "friends" ? props.becauseYouFollow : null,
+      becauseYouFollow: props.scope === "friends" ? props.becauseYouFollow : null,
       scope: props.scope || null,
       fromContext: props.fromContext,
       onFollowed: props.onFollowed,

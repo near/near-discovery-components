@@ -38,8 +38,7 @@ const Flex = styled.div`
     `
     @media (max-width: 900px) {
       flex-direction: column;
-      gap: ${(p) =>
-        p.mobileStack === true ? "var(--section-gap)" : p.mobileStack};
+      gap: ${(p) => (p.mobileStack === true ? "var(--section-gap)" : p.mobileStack)};
     }
   `}
 
@@ -48,8 +47,7 @@ const Flex = styled.div`
     `
     @media (max-width: 1050px) {
       flex-direction: column;
-      gap: ${(p) =>
-        p.tabletStack === true ? "var(--section-gap)" : p.tabletStack};
+      gap: ${(p) => (p.tabletStack === true ? "var(--section-gap)" : p.tabletStack)};
     }
   `}
 `;
@@ -57,11 +55,7 @@ const Flex = styled.div`
 return (
   <Wrapper>
     <Flex gap="var(--section-gap)" mobileStack="var(--medium-gap)">
-      <Flex
-        direction="column"
-        gap="var(--medium-gap)"
-        style={{ width: "100%" }}
-      >
+      <Flex direction="column" gap="var(--medium-gap)" style={{ width: "100%" }}>
         <Text size="text-2xl" fontWeight="600" color="sand12">
           Start learning
         </Text>
@@ -139,11 +133,7 @@ return (
         </Flex>
       </Flex>
 
-      <Flex
-        direction="column"
-        gap="var(--medium-gap)"
-        style={{ width: "100%" }}
-      >
+      <Flex direction="column" gap="var(--medium-gap)" style={{ width: "100%" }}>
         <Text size="text-2xl" fontWeight="600" color="sand12">
           Start building
         </Text>

@@ -30,10 +30,7 @@ if (data) {
   });
 
   components.sort((a, b) => b.blockHeight - a.blockHeight);
-  components = components.slice(
-    0,
-    state.currentPage * limitPerPage + limitPerPage
-  );
+  components = components.slice(0, state.currentPage * limitPerPage + limitPerPage);
 }
 
 const showLoadMoreButton = components.length % limitPerPage === 0;

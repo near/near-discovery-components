@@ -4,7 +4,7 @@ let {
   logOut,
   termsDomainName,
   privacyDomainName,
-  recordToC
+  recordToC,
 } = props;
 
 const tosName = props.tosName ?? "${REPL_ACCOUNT}/widget/TosContent";
@@ -19,7 +19,7 @@ return (
         termsDomainName,
         privacyDomainName,
         tosName,
-        recordToC
+        recordToC,
       }}
     />
 

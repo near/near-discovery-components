@@ -40,8 +40,7 @@ const Content = () => (
         src="${REPL_MOB}/widget/Image"
         props={{
           image: {
-            ipfs_cid:
-              "bafkreihz4e7buokkwptg5mnlsy56huj447xauzueclplqgv574tr7i2hki",
+            ipfs_cid: "bafkreihz4e7buokkwptg5mnlsy56huj447xauzueclplqgv574tr7i2hki",
           },
           alt: "add near to home screen",
         }}

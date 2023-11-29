@@ -97,9 +97,7 @@ return (
           <CategoryHeader>
             <H3>Friends of Friends</H3>
             <RetroLinkButton onClick={() => handleToggleList("list1")}>
-              {state.expandedList === "list1"
-                ? "Back to categories"
-                : "View all"}
+              {state.expandedList === "list1" ? "Back to categories" : "View all"}
             </RetroLinkButton>
           </CategoryHeader>
         )}
@@ -125,9 +123,7 @@ return (
           <CategoryHeader>
             <H3>Similar to you</H3>
             <RetroLinkButton onClick={() => handleToggleList("list2")}>
-              {state.expandedList === "list2"
-                ? "Back to categories"
-                : "View all"}
+              {state.expandedList === "list2" ? "Back to categories" : "View all"}
             </RetroLinkButton>
           </CategoryHeader>
         )}

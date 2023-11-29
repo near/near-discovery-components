@@ -276,9 +276,7 @@ const posts = (content, postType) => {
       text: post.content,
     };
     const headerStyling =
-      postType === "post"
-        ? "border rounded-4 p-3 pb-1"
-        : "pt-3 border-top pb-2";
+      postType === "post" ? "border rounded-4 p-3 pb-1" : "pt-3 border-top pb-2";
 
     posts.push({
       accountId,
@@ -365,9 +363,7 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
   // state with current near social isn't feasible.
   const updateStateAfterFetching = (facet) => {
     return (resp) => {
-      const { results, hitsTotal, hitsPerPage } = categorizeSearchHits(
-        resp.body
-      );
+      const { results, hitsTotal, hitsPerPage } = categorizeSearchHits(resp.body);
 
       if (facet === "People") {
         State.update({
@@ -384,7 +380,7 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
             hitsTotal,
             hitsPerPage,
             hits: components(results["app, widget"]).concat(
-              components(results["widget"])
+              components(results["widget"]),
             ),
             queryID: resp.body.queryID,
           },
@@ -404,7 +400,7 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
             hitsTotal,
             hitsPerPage,
             hits: posts(results["post"], "post").concat(
-              posts(results["comment, post"], "post-comment")
+              posts(results["comment, post"], "post-comment"),
             ),
             queryID: resp.body.queryID,
           },
@@ -492,14 +488,8 @@ const handleCloseSearchMenu = () => {
   props.focusChange(false);
 };
 
-const onSearchResultClick = ({
-  searchPosition,
-  queryID,
-  objectID,
-  eventName,
-}) => {
-  const position =
-    searchPosition + state.currentPage * state.paginate.hitsPerPage;
+const onSearchResultClick = ({ searchPosition, queryID, objectID, eventName }) => {
+  const position = searchPosition + state.currentPage * state.paginate.hitsPerPage;
   const event = {
     type: "clickedObjectIDsAfterSearch",
     data: {

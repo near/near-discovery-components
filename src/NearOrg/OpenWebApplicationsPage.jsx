@@ -10,8 +10,7 @@ const ipfsImages = {
     zkevm: "bafkreiagpsnpoljzjeqgt7n74lnmt5crgrka6kuqw56vmnrldmx4ziu67y",
   },
   illustrations: {
-    buildingBlocks:
-      "bafkreicoahoojfqqowcoeipizv4ogsjgsqtwzu4yhwgq7n3q4emxfj3wrq",
+    buildingBlocks: "bafkreicoahoojfqqowcoeipizv4ogsjgsqtwzu4yhwgq7n3q4emxfj3wrq",
     gateways: "bafkreifbr6xiittgl6f4ovubbgjtwmv3chishfzyjxjzj5ugpcyflubakm",
   },
 };
@@ -356,11 +355,7 @@ return (
       <Container>
         <Flex direction="column" gap="24px">
           <H2>Gateways: the doors to an open web</H2>
-          <Text
-            size="text-2xl"
-            mobileSize="text-l"
-            style={{ maxWidth: "808px" }}
-          >
+          <Text size="text-2xl" mobileSize="text-l" style={{ maxWidth: "808px" }}>
             Create multi-chain open web applications that feature seamless user
             onboarding.
           </Text>
@@ -377,8 +372,8 @@ return (
                     Supercharge the open web
                   </Text>
                   <Text>
-                    Augment your open web applications with thousands of
-                    composable multi-chain components.
+                    Augment your open web applications with thousands of composable
+                    multi-chain components.
                   </Text>
                 </Flex>
 
@@ -397,8 +392,8 @@ return (
                     Social from the get-go
                   </Text>
                   <Text>
-                    Easily add social components to your app and keep your
-                    audience engaged through web push notifications.
+                    Easily add social components to your app and keep your audience
+                    engaged through web push notifications.
                   </Text>
                 </Flex>
 
@@ -436,8 +431,8 @@ return (
               mobileAlignItems="flex-start"
             >
               <Text style={{ maxWidth: "598px", marginRight: "auto" }}>
-                See how developers are using gateways to create rich
-                multi-chain, open web applications
+                See how developers are using gateways to create rich multi-chain,
+                open web applications
               </Text>
               <Widget
                 src="${REPL_ACCOUNT}/widget/DIG.Button"
@@ -486,8 +481,7 @@ return (
             color="white"
             style={{ maxWidth: "808px" }}
           >
-            Explore, use, and share the building blocks for open web
-            applications.
+            Explore, use, and share the building blocks for open web applications.
           </Text>
         </Flex>
 
@@ -537,8 +531,8 @@ return (
                     Secured on-chain
                   </Text>
                   <Text color="white">
-                    All components are stored on a NEAR contract, making
-                    frontends highly reliable and censorship-resistant
+                    All components are stored on a NEAR contract, making frontends
+                    highly reliable and censorship-resistant
                   </Text>
                 </Flex>
 
@@ -566,12 +560,7 @@ return (
 
         <Flex direction="column" gap="60px">
           <Flex direction="column" gap="24px">
-            <Text
-              color="white"
-              size="text-xl"
-              mobileSize="text-l"
-              fontWeight="500"
-            >
+            <Text color="white" size="text-xl" mobileSize="text-l" fontWeight="500">
               A new and more open web
             </Text>
 
@@ -581,12 +570,9 @@ return (
               mobileStack
               mobileAlignItems="flex-start"
             >
-              <Text
-                color="white"
-                style={{ maxWidth: "598px", marginRight: "auto" }}
-              >
-                Break out of siloed, single-chain experiences and expand your
-                reach, all while getting the best of NEAR's speed, low cost, and
+              <Text color="white" style={{ maxWidth: "598px", marginRight: "auto" }}>
+                Break out of siloed, single-chain experiences and expand your reach,
+                all while getting the best of NEAR's speed, low cost, and
                 scalability.
               </Text>
               <Widget
@@ -655,31 +641,18 @@ return (
             alignItems="center"
             style={{ textAlign: "center" }}
           >
-            <Text
-              size="text-3xl"
-              fontWeight="500"
-              style={{ maxWidth: "600px" }}
-            >
+            <Text size="text-3xl" fontWeight="500" style={{ maxWidth: "600px" }}>
               Start your journey with an open web
             </Text>
 
-            <Text
-              size="text-l"
-              mobileSize="text-l"
-              style={{ maxWidth: "600px" }}
-            >
+            <Text size="text-l" mobileSize="text-l" style={{ maxWidth: "600px" }}>
               Build quickly with awesome resources and thousands of composable
-              components. Join a thriving community of developers building an
-              open web.
+              components. Join a thriving community of developers building an open
+              web.
             </Text>
           </Flex>
 
-          <Flex
-            gap="24px"
-            wrap="wrap"
-            alignItems="center"
-            justifyContent="center"
-          >
+          <Flex gap="24px" wrap="wrap" alignItems="center" justifyContent="center">
             <Widget
               src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{

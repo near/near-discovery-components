@@ -11,7 +11,7 @@ const followEdge = Social.keys(
   undefined,
   {
     values_only: true,
-  }
+  },
 );
 
 const inverseEdge = Social.keys(
@@ -19,7 +19,7 @@ const inverseEdge = Social.keys(
   undefined,
   {
     values_only: true,
-  }
+  },
 );
 
 const loading = followEdge === null || inverseEdge === null;

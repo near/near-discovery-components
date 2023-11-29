@@ -42,9 +42,7 @@ const handleError = (result) => {
 };
 
 const group = "near.org";
-const moderationDecisionsQuery = (
-  accountToCheck,
-) => `query ModerationDecisions {
+const moderationDecisionsQuery = (accountToCheck) => `query ModerationDecisions {
   dataplatform_near_moderation_moderation_decisions(
       where: {moderated_account_id: {_eq: "${accountToCheck}"}, group: {_eq: "${group}"}}) {
     moderated_account_id
@@ -85,12 +83,8 @@ const matchesModeration = (moderated, socialDBObjectType, item) => {
 const moderationDataToCompactedFormat = (moderationData) => {
   const moderated = {};
   moderationData.forEach((moderationDecision) => {
-    const {
-      moderated_account_id,
-      moderated_blockheight,
-      moderated_path,
-      label,
-    } = moderationDecision;
+    const { moderated_account_id, moderated_blockheight, moderated_path, label } =
+      moderationDecision;
     const modifiedPath = moderated_path?.replace(/\//g, ".");
     if (!moderated[moderated_account_id]) {
       moderated[moderated_account_id] = {};
@@ -101,8 +95,7 @@ const moderationDataToCompactedFormat = (moderationData) => {
     if (!modifiedPath || modifiedPath === "") {
       moderated[moderated_account_id] = label;
     } else {
-      moderated[moderated_account_id][modifiedPath][moderated_blockheight] =
-        label;
+      moderated[moderated_account_id][modifiedPath][moderated_blockheight] = label;
     }
   });
   return moderated;
@@ -117,8 +110,7 @@ const globalModerationHandler = (
 ) => {
   const moderationData = data.dataplatform_near_moderation_moderation_decisions;
   if (moderationData.length > 0) {
-    const compactedModerationData =
-      moderationDataToCompactedFormat(moderationData);
+    const compactedModerationData = moderationDataToCompactedFormat(moderationData);
     if (
       matchesModeration(compactedModerationData, itemModerationKey, {
         account_id: itemAccountId,
@@ -243,12 +235,7 @@ if (
       {},
       handleError,
     ).then((result) =>
-      globalModerationHandler(
-        result,
-        accountId,
-        itemBlockHeight,
-        itemModerationKey,
-      ),
+      globalModerationHandler(result, accountId, itemBlockHeight, itemModerationKey),
     );
 
     let commentPostModerationPromise = null;
@@ -258,9 +245,7 @@ if (
         "CommentsPostQuery",
         {},
         handleError,
-      ).then((result) =>
-        commentPostModerationHandler(result, selfModerationData),
-      );
+      ).then((result) => commentPostModerationHandler(result, selfModerationData));
     } else {
       commentPostModerationPromise = Promise.resolve();
     }

@@ -11,7 +11,7 @@ const GRAPHQL_ENDPOINT =
   props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 const LIMIT = 10;
 const feeds = props.feeds ?? ["all", "following"];
-const feedLabels = {all: "All", following: "Following", mutual: "Mutual Activity"};
+const feedLabels = { all: "All", following: "Following", mutual: "Mutual Activity" };
 const showCompose = props.showCompose ?? true;
 const filteredAccountIds = props.filteredAccountIds;
 
@@ -20,11 +20,11 @@ const sort = sortRaw ?? (sortRaw === undefined ? "timedesc" : null);
 const initialSelectedTabRaw = Storage.privateGet("selectedTab");
 let initialSelectedTab =
   initialSelectedTabRaw ?? (initialSelectedTabRaw === undefined ? "all" : null);
-if(!feeds.includes(initialSelectedTab)) {
-    initialSelectedTab = feeds[0];
+if (!feeds.includes(initialSelectedTab)) {
+  initialSelectedTab = feeds[0];
 }
-if(initialSelectedTab === "mutual" && !context.filteredAccountIds) {
-    initialSelectedTab = feeds[0];
+if (initialSelectedTab === "mutual" && !context.filteredAccountIds) {
+  initialSelectedTab = feeds[0];
 }
 
 const followGraph = context.accountId
@@ -85,7 +85,10 @@ const matchesModeration = (moderated, socialDBObjectType, item) => {
     return true;
   }
   const moderatedItemsOfType = accountFound[socialDBObjectType];
-  return moderatedItemsOfType && typeof moderatedItemsOfType[item.block_height] !== "undefined";
+  return (
+    moderatedItemsOfType &&
+    typeof moderatedItemsOfType[item.block_height] !== "undefined"
+  );
 };
 
 const shouldFilter = (item, socialDBObjectType) => {
@@ -124,9 +127,11 @@ const createQuery = (type) => {
   switch (type) {
     case "following":
       let filteredAccountsFollowing = accountsFollowing;
-      if(filteredAccountIds) {
+      if (filteredAccountIds) {
         const filteredAccountList = filteredAccountIds.split(",");
-        filteredAccountsFollowing = filteredAccountList.filter((account) => accountsFollowing.includes(account));
+        filteredAccountsFollowing = filteredAccountList.filter((account) =>
+          accountsFollowing.includes(account),
+        );
       }
       let queryAccountsString = accountsFollowing
         .map((account) => `"${account}"`)
@@ -135,9 +140,8 @@ const createQuery = (type) => {
       break;
 
     case "mutual":
-      let userAccount = context.accountId
-      queryFilter =
-          `where: { 
+      let userAccount = context.accountId;
+      queryFilter = `where: { 
           _and: [
             {account_id: {_in: "${filteredAccountIds}"}},
             {_or: [
@@ -150,10 +154,10 @@ const createQuery = (type) => {
       break;
 
     default:
-      if(filteredAccountIds) {
+      if (filteredAccountIds) {
         queryFilter = `where: {account_id: {_in: "${filteredAccountIds}"}}, `;
       } else {
-        queryFilter =  "";
+        queryFilter = "";
       }
   }
 
@@ -217,11 +221,13 @@ const loadMorePosts = () => {
           data.dataplatform_near_social_feed_moderated_posts_aggregate.aggregate
             .count;
         if (newPosts.length > 0) {
-          let filteredPosts = newPosts.filter((i) => !shouldFilter(i, postsModerationKey));
+          let filteredPosts = newPosts.filter(
+            (i) => !shouldFilter(i, postsModerationKey),
+          );
           filteredPosts = filteredPosts.map((post) => {
             const prevComments = post.comments;
             const filteredComments = prevComments.filter(
-              (comment) => !shouldFilter(comment, commentsModerationKey)
+              (comment) => !shouldFilter(comment, commentsModerationKey),
             );
             post.comments = filteredComments;
             return post;
@@ -389,50 +395,50 @@ return (
     <Content>
       {context.accountId && (
         <>
-        {showCompose && (
-          <ComposeWrapper>
-            <Widget src="${REPL_ACCOUNT}/widget/Posts.Compose" />
-          </ComposeWrapper>
-        )}
-        {feeds.length > 1 && (
-          <FilterWrapper>
-            <PillSelect>
-              {feeds.map((feed) => (
-                <PillSelectButton
-                  type="button"
-                  onClick={() => selectTab(feed)}
-                  selected={state.selectedTab === feed}
-                >
-                  {feedLabels[feed] ?? feed}
-                </PillSelectButton>
-              ))}
-            </PillSelect>
-          </FilterWrapper>
-        )}
+          {showCompose && (
+            <ComposeWrapper>
+              <Widget src="${REPL_ACCOUNT}/widget/Posts.Compose" />
+            </ComposeWrapper>
+          )}
+          {feeds.length > 1 && (
+            <FilterWrapper>
+              <PillSelect>
+                {feeds.map((feed) => (
+                  <PillSelectButton
+                    type="button"
+                    onClick={() => selectTab(feed)}
+                    selected={state.selectedTab === feed}
+                  >
+                    {feedLabels[feed] ?? feed}
+                  </PillSelectButton>
+                ))}
+              </PillSelect>
+            </FilterWrapper>
+          )}
           <SortContainer>
-              <Sort>
-                <span className="label">Sort by:</span>
-                <Widget
-                  src={`${REPL_ACCOUNT}/widget/Select`}
-                  props={{
-                    noLabel: true,
-                    value: { text: optionsMap[sort], value: sort },
-                    onChange: ({ value }) => {
-                      Storage.set("queryapi:feed-sort", value);
-                      State.update({
-                        posts: [],
-                        postsCountLeft: 0,
-                        sort: value,
-                      });
-                      loadMorePosts();
-                    },
-                    options: [
-                      { text: "Most Recent", value: "timedesc" },
-                      { text: "Recent Comments", value: "recentcommentdesc" },
-                    ],
-                  }}
-                />
-              </Sort>
+            <Sort>
+              <span className="label">Sort by:</span>
+              <Widget
+                src={`${REPL_ACCOUNT}/widget/Select`}
+                props={{
+                  noLabel: true,
+                  value: { text: optionsMap[sort], value: sort },
+                  onChange: ({ value }) => {
+                    Storage.set("queryapi:feed-sort", value);
+                    State.update({
+                      posts: [],
+                      postsCountLeft: 0,
+                      sort: value,
+                    });
+                    loadMorePosts();
+                  },
+                  options: [
+                    { text: "Most Recent", value: "timedesc" },
+                    { text: "Recent Comments", value: "recentcommentdesc" },
+                  ],
+                }}
+              />
+            </Sort>
           </SortContainer>
         </>
       )}

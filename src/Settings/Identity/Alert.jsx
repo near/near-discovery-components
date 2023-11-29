@@ -93,7 +93,6 @@ const Confirm = () => (
   />
 );
 
-
 const ActionButtons = () => (
   <ActionButtonWrapper>
     <Cancel />

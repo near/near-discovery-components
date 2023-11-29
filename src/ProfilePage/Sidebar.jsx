@@ -38,7 +38,7 @@ const accountFollowsYouData = Social.keys(
   undefined,
   {
     values_only: true,
-  }
+  },
 );
 const accountFollowsYou = Object.keys(accountFollowsYouData || {}).length > 0;
 
@@ -66,9 +66,9 @@ const cancelHideItem = () => {
   State.update({
     hasBeenFlaggedOptimistic: false,
     showToast: false,
-    flaggedMessage: { header: "", detail: "" }
+    flaggedMessage: { header: "", detail: "" },
   });
-}
+};
 
 const Wrapper = styled.div`
   display: grid;
@@ -134,7 +134,8 @@ const Avatar = styled.div`
   border: 3px solid #fff;
   overflow: hidden;
   border-radius: 100%;
-  box-shadow: 0px 12px 16px rgba(16, 24, 40, 0.08),
+  box-shadow:
+    0px 12px 16px rgba(16, 24, 40, 0.08),
     0px 4px 6px rgba(16, 24, 40, 0.03);
 
   img {
@@ -264,35 +265,35 @@ return (
 
           {accountFollowsYou && <TextBadge>Follows You</TextBadge>}
         </div>
-        {accountId !== context.accountId &&
-          (<>
+        {accountId !== context.accountId && (
+          <>
             {state.showToast && (
-                <Widget
-                  src={`${REPL_ACCOUNT}/widget/DIG.Toast`}
-                  props={{
-                    type: "info",
-                    title: state.flaggedMessage.header,
-                    description: state.flaggedMessage.detail,
-                    open: state.showToast,
-                    onOpenChange: () => {
-                      State.update({showToast: false});
-                    },
-                    duration: 5000,
-                  }}
-                />
-              )}
               <Widget
-                src="${REPL_ACCOUNT}/widget/Posts.Menu"
+                src={`${REPL_ACCOUNT}/widget/DIG.Toast`}
                 props={{
-                  accountId: accountId,
-                  parentFunctions: {
-                    optimisticallyHideItem,
-                    resolveHideItem,
-                    cancelHideItem,
+                  type: "info",
+                  title: state.flaggedMessage.header,
+                  description: state.flaggedMessage.detail,
+                  open: state.showToast,
+                  onOpenChange: () => {
+                    State.update({ showToast: false });
                   },
+                  duration: 5000,
                 }}
               />
-            </>
+            )}
+            <Widget
+              src="${REPL_ACCOUNT}/widget/Posts.Menu"
+              props={{
+                accountId: accountId,
+                parentFunctions: {
+                  optimisticallyHideItem,
+                  resolveHideItem,
+                  cancelHideItem,
+                },
+              }}
+            />
+          </>
         )}
       </div>
 
@@ -383,10 +384,7 @@ return (
       <Section>
         <SocialLinks>
           {profile.linktree.website && (
-            <TextLink
-              href={`https://${profile.linktree.website}`}
-              target="_blank"
-            >
+            <TextLink href={`https://${profile.linktree.website}`} target="_blank">
               <i className="bi bi-globe"></i> {profile.linktree.website}
             </TextLink>
           )}

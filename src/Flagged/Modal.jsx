@@ -11,7 +11,9 @@ const socialSet = (index) =>
     onCommit: () => {
       onReport && onReport();
     },
-    onCancel: () => { onReportCancel && onReportCancel() },
+    onCancel: () => {
+      onReportCancel && onReportCancel();
+    },
   });
 
 const reportAccount = () => {

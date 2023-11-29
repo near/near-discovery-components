@@ -16,7 +16,7 @@ const content =
   JSON.parse(
     edits.length
       ? Social.get(`${accountId}/edit/main`, edits.blockHeight)
-      : Social.get(`${accountId}/post/main`, blockHeight)
+      : Social.get(`${accountId}/post/main`, blockHeight),
   );
 
 const item = {

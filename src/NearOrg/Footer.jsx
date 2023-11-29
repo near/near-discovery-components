@@ -259,9 +259,7 @@ return (
                 <li key={link.title}>
                   <Link
                     href={link.url}
-                    target={
-                      link.url.indexOf("http") === 0 ? "_blank" : undefined
-                    }
+                    target={link.url.indexOf("http") === 0 ? "_blank" : undefined}
                   >
                     {link.title}
                   </Link>

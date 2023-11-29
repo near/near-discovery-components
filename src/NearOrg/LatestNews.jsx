@@ -15,11 +15,11 @@ const fetchData = (url) => {
 };
 
 const fetchDaoNews = fetchData(
-  "https://nearweek.com/api/md/dao-news?populate=deep&sort=createdAt:desc&pagination[pageSize]=3"
+  "https://nearweek.com/api/md/dao-news?populate=deep&sort=createdAt:desc&pagination[pageSize]=3",
 );
 
 const posts = [...(fetchDaoNews?.body.data ?? [])].sort(
-  (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
 );
 
 return props.children(posts);

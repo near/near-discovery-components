@@ -75,9 +75,6 @@ return (
       We continute to use the mob.near IndexFeed since it doesnt have moderation built in
       and we want this feed to show banned content
     */}
-    <Widget
-      src="${REPL_MOB_2}/widget/IndexFeed"
-      props={{ index, renderItem }}
-    />
+    <Widget src="${REPL_MOB_2}/widget/IndexFeed" props={{ index, renderItem }} />
   </div>
 );

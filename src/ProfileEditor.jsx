@@ -74,9 +74,7 @@ return (
           />
         </div>
         <div className="mb-2">
-          <CommitButton data={{ profile: state.profile }}>
-            Save profile
-          </CommitButton>
+          <CommitButton data={{ profile: state.profile }}>Save profile</CommitButton>
           <Link
             className="btn btn-outline-primary ms-2"
             href={`/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`}

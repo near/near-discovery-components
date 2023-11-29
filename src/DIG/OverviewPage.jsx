@@ -28,9 +28,7 @@ function returnExampleCodeForComponent(componentName) {
     Grab the first jsx code block in the description - we're assuming
     it's a valid example for now:
   */
-  const matches = component.metadata.description.match(
-    /```jsx([\s\S]*?)(?=```)/
-  );
+  const matches = component.metadata.description.match(/```jsx([\s\S]*?)(?=```)/);
 
   /*
     The example code in the descriptions have `src="near/widget/DIG...""`
@@ -39,7 +37,7 @@ function returnExampleCodeForComponent(componentName) {
   */
   const code = (matches[1] ?? "").replace(
     /src="near\/widget/g,
-    `src="${author}/widget`
+    `src="${author}/widget`,
   );
 
   if (code) {
@@ -165,9 +163,9 @@ return (
       <Text size="text-3xl">DIG Components</Text>
 
       <Text>
-        DIG (Decentralized Interface Guidelines) is a collection of UI
-        components that can be used to quickly build decentralized apps with a
-        consistent look and feel.
+        DIG (Decentralized Interface Guidelines) is a collection of UI components
+        that can be used to quickly build decentralized apps with a consistent look
+        and feel.
       </Text>
 
       <Main>

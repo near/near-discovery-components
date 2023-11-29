@@ -5,10 +5,7 @@ let totalComponents = 0;
 const componentsUrl = `/${REPL_ACCOUNT}/widget/ComponentsPage`;
 let recentAppPaths = [];
 
-const taggedData = Social.keys(
-  `*/widget/*/metadata/tags/${requiredTag}`,
-  "final"
-);
+const taggedData = Social.keys(`*/widget/*/metadata/tags/${requiredTag}`, "final");
 
 const blockHeights = Social.keys("*/widget/*", "final", {
   return_type: "BlockHeight",
@@ -41,8 +38,7 @@ if (blockHeights && taggedData) {
     .map((result) => `${result.accountId}/widget/${result.widgetName}`);
 }
 
-const componentData =
-  recentAppPaths.length > 0 ? Social.getr(recentAppPaths) : null;
+const componentData = recentAppPaths.length > 0 ? Social.getr(recentAppPaths) : null;
 
 if (componentData) {
   recentAppPaths.forEach((src) => {

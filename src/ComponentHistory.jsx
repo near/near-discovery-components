@@ -20,8 +20,7 @@ const historyBlocksRequest = Social.keys(`${props.widgetPath}`, "final", {
 if (historyBlocksRequest === null || currentCode === null) return "Loading...";
 
 const [widgetAccountId, _, widgetName] = props.widgetPath.split("/");
-let blocksChanges =
-  historyBlocksRequest[widgetAccountId]?.["widget"]?.[widgetName];
+let blocksChanges = historyBlocksRequest[widgetAccountId]?.["widget"]?.[widgetName];
 if (blocksChanges) blocksChanges = blocksChanges?.sort((a, b) => b - a);
 if (!state.blockHeight) State.update({ blockHeight: blocksChanges[0] });
 const index = blocksChanges.findIndex((el) => el == state.blockHeight);
@@ -260,9 +259,7 @@ return (
             {blocksChanges
               .slice(
                 0,
-                state.showAllCommits
-                  ? blocksChanges.length
-                  : COMMIT_DISPLAY_LIMIT
+                state.showAllCommits ? blocksChanges.length : COMMIT_DISPLAY_LIMIT,
               )
               .map((blockHeight, key) => (
                 <button
@@ -282,22 +279,21 @@ return (
               ))}
           </Commits>
 
-          {!state.showAllCommits &&
-            blocksChanges.length > COMMIT_DISPLAY_LIMIT && (
-              <Widget
-                src="${REPL_ACCOUNT}/widget/DIG.Button"
-                props={{
-                  fill: "outline",
-                  variant: "secondary",
-                  label: "Show All Commits",
-                  size: "small",
-                  style: { width: "100%" },
-                  onClick: () => {
-                    State.update({ showAllCommits: true });
-                  },
-                }}
-              />
-            )}
+          {!state.showAllCommits && blocksChanges.length > COMMIT_DISPLAY_LIMIT && (
+            <Widget
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
+              props={{
+                fill: "outline",
+                variant: "secondary",
+                label: "Show All Commits",
+                size: "small",
+                style: { width: "100%" },
+                onClick: () => {
+                  State.update({ showAllCommits: true });
+                },
+              }}
+            />
+          )}
         </Sidebar>
       )}
 

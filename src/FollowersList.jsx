@@ -15,7 +15,7 @@ if (followers === null) {
 
 followers = Object.entries(followers || {});
 followers.sort(
-  (a, b) => b.graph.follow[accountId][1] - a.graph.follow[accountId][1]
+  (a, b) => b.graph.follow[accountId][1] - a.graph.follow[accountId][1],
 );
 
 const Wrapper = styled.div`

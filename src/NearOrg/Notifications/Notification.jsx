@@ -141,8 +141,7 @@ function buildPostUrl(widgetName, linkProps) {
   linkProps = { ...linkProps };
 
   const nearDevGovGigsWidgetsAccountId =
-    props.nearDevGovGigsWidgetsAccountId ||
-    "devgovgigs.near";
+    props.nearDevGovGigsWidgetsAccountId || "devgovgigs.near";
 
   if (props.nearDevGovGigsContractAccountId) {
     linkProps.nearDevGovGigsContractAccountId =
@@ -150,8 +149,7 @@ function buildPostUrl(widgetName, linkProps) {
   }
 
   if (props.nearDevGovGigsWidgetsAccountId) {
-    linkProps.nearDevGovGigsWidgetsAccountId =
-      props.nearDevGovGigsWidgetsAccountId;
+    linkProps.nearDevGovGigsWidgetsAccountId = props.nearDevGovGigsWidgetsAccountId;
   }
 
   if (props.referral) {
@@ -270,10 +268,7 @@ const buildMenu = () => {
     {
       name: (
         <>
-          <i
-            className="ph-bold ph-bell-simple-slash"
-            style={{ color: "#D95C4A" }}
-          />
+          <i className="ph-bold ph-bell-simple-slash" style={{ color: "#D95C4A" }} />
           <span style={{ color: "#D95C4A" }}>Block</span>
         </>
       ),
@@ -321,9 +316,7 @@ return (
           <ProfileOverlay>
             <div>
               <Link href={!props.onClick && profileUrl}>
-                <Username>
-                  {profile.name || accountId.split(".near")[0]}
-                </Username>
+                <Username>{profile.name || accountId.split(".near")[0]}</Username>
               </Link>
               <Action>{notificationMessage[type]}</Action>
             </div>

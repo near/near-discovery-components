@@ -13,7 +13,7 @@ State.init({
 });
 
 const data = fetch(
-  `https://api.kitwallet.app/account/${accountId}/likelyNFTsFromBlock`
+  `https://api.kitwallet.app/account/${accountId}/likelyNFTsFromBlock`,
 );
 
 if (data.body?.list) {
@@ -34,10 +34,7 @@ if (data.body?.list) {
           contractId,
         });
 
-        allNfts = allNfts.slice(
-          0,
-          state.currentPage * limitPerPage + limitPerPage
-        );
+        allNfts = allNfts.slice(0, state.currentPage * limitPerPage + limitPerPage);
       });
     }
 
@@ -48,8 +45,7 @@ if (data.body?.list) {
 }
 
 const hasFinishedLoading = data.body?.list?.length === results.length;
-const showLoadMoreButton =
-  allNfts.length > 0 && allNfts.length % limitPerPage === 0;
+const showLoadMoreButton = allNfts.length > 0 && allNfts.length % limitPerPage === 0;
 
 const Wrapper = styled.div`
   display: flex;
@@ -74,7 +70,8 @@ const Card = styled("Link")`
   position: relative;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0px 12px 16px rgba(16, 24, 40, 0.08),
+  box-shadow:
+    0px 12px 16px rgba(16, 24, 40, 0.08),
     0px 4px 6px rgba(16, 24, 40, 0.03);
 
   .nft-thumbnail {

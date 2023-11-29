@@ -286,10 +286,7 @@ const overlay = (
           </RecommendedAvatars>
         </OverlayTagsWrapper>
       ) : (
-        <Widget
-          src="${REPL_ACCOUNT}/widget/Tags"
-          props={{ tags, scroll: true }}
-        />
+        <Widget src="${REPL_ACCOUNT}/widget/Tags" props={{ tags, scroll: true }} />
       )}
 
       {!!context.accountId && context.accountId !== props.accountId && (

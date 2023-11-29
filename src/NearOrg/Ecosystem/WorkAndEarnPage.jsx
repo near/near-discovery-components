@@ -50,8 +50,8 @@ const Flex = styled.div`
       p.mobileStack === true
         ? "var(--section-gap)"
         : p.mobileStack
-        ? p.mobileStack
-        : p.gap};
+          ? p.mobileStack
+          : p.gap};
   }
 `;
 const Section = styled.div`
@@ -95,8 +95,8 @@ return (
         <Flex gap="16px" direction="column" alignItems="start">
           <H1>Work & Earn</H1>
           <Text size="text-xl" color="sand12">
-            If Web3 and blockchain are the future then NEAR is the vehicle to
-            take you there. Jump in!
+            If Web3 and blockchain are the future then NEAR is the vehicle to take
+            you there. Jump in!
           </Text>
         </Flex>
       </Section>
@@ -118,9 +118,9 @@ return (
               </Text>
               <Text size="text-m" color="sand12">
                 Entities across the NEAR Collective are actively looking for
-                individuals to fill technical and non-technical roles. Click
-                below to find a full-time job aimed at professionals and
-                students or become an ambassador.
+                individuals to fill technical and non-technical roles. Click below to
+                find a full-time job aimed at professionals and students or become an
+                ambassador.
               </Text>
               <Flex gap="24px" alignItems="start" direction="column">
                 <Widget
@@ -174,17 +174,14 @@ return (
           </div>
           <div className="col">
             <Card background="transparent" border="none">
-              <SocialIcon
-                className="ph ph-chart-polar"
-                color="var(--violet7)"
-              />
+              <SocialIcon className="ph ph-chart-polar" color="var(--violet7)" />
               <Text size="text-xl" color="sand12" fontWeight="600">
                 Complete a bounty
               </Text>
               <Text size="text-m" color="sand12">
-                Want to help improve the NEAR ecosystem? Join our bounties
-                program. Collaborate with others in the community to solve
-                problems and earn rewards.
+                Want to help improve the NEAR ecosystem? Join our bounties program.
+                Collaborate with others in the community to solve problems and earn
+                rewards.
               </Text>
               <Flex gap="24px" alignItems="start" direction="column">
                 <Widget

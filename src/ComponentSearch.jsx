@@ -1,8 +1,6 @@
 const allMetadata =
-  Social.get(
-    ["*/widget/*/metadata/name", "*/widget/*/metadata/tags/*"],
-    "final"
-  ) || {};
+  Social.get(["*/widget/*/metadata/name", "*/widget/*/metadata/tags/*"], "final") ||
+  {};
 const keys = Social.keys(["*/widget/*"], "final", { values_only: true }) || {};
 
 const requiredTag = props.filterTag;
@@ -59,13 +57,12 @@ const _search = (term) => {
       if (requiredTag && !(metadata.tags && requiredTag in metadata.tags)) {
         return;
       }
-      const boosted =
-        boostedTag && metadata.tags && boostedTag in metadata.tags;
+      const boosted = boostedTag && metadata.tags && boostedTag in metadata.tags;
       const tags = Object.keys(metadata.tags || {}).slice(0, 10);
       const nameScore = computeScore(name);
       const tagsScore = Math.min(
         MaxSingleScore,
-        tags.map(computeScore).reduce((s, v) => s + v, 0)
+        tags.map(computeScore).reduce((s, v) => s + v, 0),
       );
       const score =
         (widgetSrcScore + componentIdScore + nameScore + tagsScore) / MaxScore;
@@ -84,7 +81,7 @@ const _search = (term) => {
   });
 
   matchedWidgets.sort(
-    (a, b) => (b.boosted ? 2 : 0) + b.score - (a.boosted ? 2 : 0) - a.score
+    (a, b) => (b.boosted ? 2 : 0) + b.score - (a.boosted ? 2 : 0) - a.score,
   );
   const result = matchedWidgets.slice(0, limit);
 

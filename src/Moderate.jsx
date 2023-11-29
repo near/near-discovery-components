@@ -6,7 +6,7 @@ const filterUserList = Social.get(
   "optimistic",
   {
     subscribe: true,
-  }
+  },
 );
 
 const filtered = filterUserList ? JSON.parse(filterUserList) : [];
@@ -48,7 +48,7 @@ return (
         data={{
           moderate: {
             users: filtered.concat(
-              state.inputContent.split(",").map((i) => i.trim())
+              state.inputContent.split(",").map((i) => i.trim()),
             ),
           },
         }}
@@ -60,9 +60,9 @@ return (
       </CommitButton>
     </div>
     <span style={{ color: "grey" }}>
-      When saving, ensure data is being written to moderator key. You may need
-      to refresh your browser if you used "Pretend to be another account" while
-      on this page
+      When saving, ensure data is being written to moderator key. You may need to
+      refresh your browser if you used "Pretend to be another account" while on this
+      page
     </span>
   </div>
 );

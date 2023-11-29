@@ -1,13 +1,5 @@
-let {
-  active,
-  disabled,
-  href,
-  iconLeft,
-  iconRight,
-  label,
-  type,
-  ...forwardedProps
-} = props;
+let { active, disabled, href, iconLeft, iconRight, label, type, ...forwardedProps } =
+  props;
 
 active = active ?? false;
 type = type ?? "button";

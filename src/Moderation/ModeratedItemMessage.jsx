@@ -28,16 +28,11 @@ if (typeof accountFound === "undefined") {
   );
 }
 
-if (
-  typeof accountFound === "string" ||
-  typeof accountFound[""] !== "undefined"
-) {
+if (typeof accountFound === "string" || typeof accountFound[""] !== "undefined") {
   const moderationAction =
     typeof accountFound === "string" ? accountFound : accountFound[""];
   const moderationLabel =
-    typeof moderationAction === "string"
-      ? moderationAction
-      : moderationAction.label;
+    typeof moderationAction === "string" ? moderationAction : moderationAction.label;
   return (
     <div className="alert alert-info mx-3" role="alert">
       {moderationType === "self"
@@ -57,9 +52,7 @@ if (moderatedItem && typeof moderatedItem[blockHeight] !== "undefined") {
   const contentLabel = contentTypeLabels[contentTypeKey] ?? contentTypeKey;
   const moderationAction = moderatedItem[blockHeight];
   const moderationLabel =
-    typeof moderationAction === "string"
-      ? moderationAction
-      : moderationAction.label;
+    typeof moderationAction === "string" ? moderationAction : moderationAction.label;
   return (
     <div className="alert alert-info mx-3" role="alert">
       {moderationType === "self"

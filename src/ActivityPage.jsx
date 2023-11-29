@@ -101,10 +101,7 @@ const TabsButton = styled("Link")`
 
 return (
   <Wrapper className="container-xl" negativeMargin={selectedTab === "posts"}>
-    <Tabs
-      halfMargin={selectedTab === "apps"}
-      noMargin={selectedTab === "posts"}
-    >
+    <Tabs halfMargin={selectedTab === "apps"} noMargin={selectedTab === "posts"}>
       <TabsButton
         href={`${activityUrl}?tab=posts`}
         selected={selectedTab === "posts"}
@@ -112,10 +109,7 @@ return (
         Posts
       </TabsButton>
 
-      <TabsButton
-        href={`${activityUrl}?tab=apps`}
-        selected={selectedTab === "apps"}
-      >
+      <TabsButton href={`${activityUrl}?tab=apps`} selected={selectedTab === "apps"}>
         Components
       </TabsButton>
 

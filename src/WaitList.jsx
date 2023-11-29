@@ -2,8 +2,7 @@ if (!props.formUrl) return "Missing prop: formUrl";
 
 const title = props.title ?? "Coming Soon";
 const description =
-  props.description ??
-  "Want to start using the fastest way to onboard in Web3?";
+  props.description ?? "Want to start using the fastest way to onboard in Web3?";
 
 const StyledMainContent = styled.div`
   display: flex;

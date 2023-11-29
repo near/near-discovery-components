@@ -307,8 +307,8 @@ return (
               <H1>Learn</H1>
 
               <Text size="text-l" mobileSize="text-base">
-                Gain an understanding of the open web and the role of NEAR in
-                that vision.
+                Gain an understanding of the open web and the role of NEAR in that
+                vision.
               </Text>
             </Flex>
           </PatternContent>
@@ -323,13 +323,9 @@ return (
 
           <Flex direction="column" gap="24px">
             <H2>Users have all the power in Web3</H2>
-            <Text
-              size="text-2xl"
-              mobileSize="text-l"
-              style={{ maxWidth: "808px" }}
-            >
-              The next iteration of the internet will give users more autonomy
-              over their data, assets, and creative license.
+            <Text size="text-2xl" mobileSize="text-l" style={{ maxWidth: "808px" }}>
+              The next iteration of the internet will give users more autonomy over
+              their data, assets, and creative license.
             </Text>
           </Flex>
         </Flex>
@@ -367,9 +363,7 @@ return (
     <Section backgroundColor="#161615">
       <Container>
         <Flex direction="column" gap="80px" mobileGap="40px">
-          <Text color="sand1">
-            What is the Blockchain Operating System (B.O.S)?
-          </Text>
+          <Text color="sand1">What is the Blockchain Operating System (B.O.S)?</Text>
 
           <Flex direction="column" gap="24px">
             <H2 style={{ color: "var(--white)", maxWidth: "600px" }}>
@@ -381,9 +375,9 @@ return (
               color="white"
               style={{ maxWidth: "808px" }}
             >
-              The B.O.S is an open-source platform that gives developers the
-              ability to build on any blockchain using familiar languages and a
-              broad set of components.
+              The B.O.S is an open-source platform that gives developers the ability
+              to build on any blockchain using familiar languages and a broad set of
+              components.
             </Text>
           </Flex>
         </Flex>
@@ -430,11 +424,7 @@ return (
             <H2 style={{ maxWidth: "1015px" }}>
               NEAR is the next generation of blockchains
             </H2>
-            <Text
-              size="text-2xl"
-              mobileSize="text-l"
-              style={{ maxWidth: "808px" }}
-            >
+            <Text size="text-2xl" mobileSize="text-l" style={{ maxWidth: "808px" }}>
               NEAR is a a layer 1 blockchain that uses a Proof-of-Stake (PoS)
               consensus mechanism and sharded architecture to scale transaction
               throughput.

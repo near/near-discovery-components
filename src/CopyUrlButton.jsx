@@ -19,17 +19,15 @@ const Button = styled.button`
     transition: color 200ms;
   }
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     outline: none;
-    color: #11181C;
+    color: #11181c;
   }
 `;
 
 return (
-  <OverlayTrigger
-    placement="top"
-    overlay={<Tooltip>Copy URL to clipboard</Tooltip>}
-  >
+  <OverlayTrigger placement="top" overlay={<Tooltip>Copy URL to clipboard</Tooltip>}>
     <Button
       type="button"
       aria-label="Copy URL to clipboard"

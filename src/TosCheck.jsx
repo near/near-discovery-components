@@ -1,10 +1,4 @@
-const {
-  termsDomainName,
-  privacyDomainName,
-  tosName,
-  logOut,
-  recordToC
-} = props;
+const { termsDomainName, privacyDomainName, tosName, logOut, recordToC } = props;
 
 const acceptanceKey = tosName; // may change
 const [agreeIsChecked, setAgreeIsChecked] = useState(false);
@@ -61,7 +55,9 @@ const Modal = styled.div`
   display: flex;
   row-gap: 1rem;
   flex-direction: column;
-  box-shadow: 0px 4px 8px 0px var(--blackA3), 0px 0px 0px 1px var(--blackA4);
+  box-shadow:
+    0px 4px 8px 0px var(--blackA3),
+    0px 0px 0px 1px var(--blackA4);
 `;
 
 const ContentWrapper = styled.div`
@@ -124,7 +120,7 @@ const handleConfirm = useCallback(() => {
       onCommit: () => {
         setCommittedAcceptance(true);
       },
-    }
+    },
   );
 }, [latestTosVersion]);
 

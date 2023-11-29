@@ -102,10 +102,7 @@ const viewRange = (currentPage) => {
 
   // Calculate left and right sibling index and make sure they are within range 1 and totalPageCount
   const leftSiblingIndex = Math.max(currentPage - siblingCount, 1);
-  const rightSiblingIndex = Math.min(
-    currentPage + siblingCount,
-    totalPageCount
-  );
+  const rightSiblingIndex = Math.min(currentPage + siblingCount, totalPageCount);
 
   // We do not show dots just when there is just one page number to be inserted between the extremes of sibling and the page limits i.e 1 and totalPageCount. Hence we are using leftSiblingIndex > 2 and rightSiblingIndex < totalPageCount - 2
   const shouldShowLeftDots = leftSiblingIndex > 2;
@@ -132,13 +129,7 @@ const viewRange = (currentPage) => {
   // Case 4: Both left and right dots to be shown
   if (shouldShowLeftDots && shouldShowRightDots) {
     let middleRange = range(leftSiblingIndex, rightSiblingIndex);
-    return [
-      firstPageIndex,
-      RANGE_ITEM,
-      ...middleRange,
-      RANGE_ITEM,
-      lastPageIndex,
-    ];
+    return [firstPageIndex, RANGE_ITEM, ...middleRange, RANGE_ITEM, lastPageIndex];
   }
 };
 

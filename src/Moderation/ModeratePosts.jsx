@@ -2,8 +2,7 @@
 
 const moderatorAccount = props?.moderatorAccount || "${REPL_MODERATOR}";
 const objectPath = "/post/main";
-const moderationStream =
-  (props.moderationStream || moderatorAccount) + objectPath;
+const moderationStream = (props.moderationStream || moderatorAccount) + objectPath;
 
 State.init({
   accountInput: "",

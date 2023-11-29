@@ -2,7 +2,7 @@ const profiles = Social.get(["*/profile/name", "*/profile/tags/*"], "final");
 
 const componentMetadata = Social.get(
   ["*/widget/*/metadata/name", "*/widget/*/metadata/tags/*"],
-  "final"
+  "final",
 );
 
 const componentKeys = Social.keys(["*/widget/*"], "final", {
@@ -58,8 +58,7 @@ const computeComponents = (terms) => {
       const widgetSrc = `${accountId}/widget/${componentId}`;
       const widgetSrcScore = computeScore(widgetSrc);
       const componentIdScore = computeScore(componentId);
-      const metadata =
-        componentMetadata[accountId].widget[componentId].metadata;
+      const metadata = componentMetadata[accountId].widget[componentId].metadata;
       const name = metadata.name || componentId;
 
       if (
@@ -70,14 +69,12 @@ const computeComponents = (terms) => {
       }
 
       const boosted =
-        boostedComponentTag &&
-        metadata.tags &&
-        boostedComponentTag in metadata.tags;
+        boostedComponentTag && metadata.tags && boostedComponentTag in metadata.tags;
       const tags = Object.keys(metadata.tags || {}).slice(0, 10);
       const nameScore = computeScore(name);
       const tagsScore = Math.min(
         MaxSingleScore,
-        tags.map(computeScore).reduce((s, v) => s + v, 0)
+        tags.map(computeScore).reduce((s, v) => s + v, 0),
       );
       const score =
         (widgetSrcScore + componentIdScore + nameScore + tagsScore) / MaxScore;
@@ -97,7 +94,7 @@ const computeComponents = (terms) => {
   });
 
   results.sort(
-    (a, b) => (b.boosted ? 2 : 0) + b.score - (a.boosted ? 2 : 0) - a.score
+    (a, b) => (b.boosted ? 2 : 0) + b.score - (a.boosted ? 2 : 0) - a.score,
   );
 
   return results.slice(0, limitPerGroup);
@@ -127,7 +124,7 @@ const computePeople = (terms) => {
     const nameScore = computeScore(name);
     const tagsScore = Math.min(
       20,
-      tags.map(computeScore).reduce((s, v) => s + v, 0)
+      tags.map(computeScore).reduce((s, v) => s + v, 0),
     );
     const score = (accountIdScore + nameScore + tagsScore) / MaxScore;
     if (score > 0) {
@@ -159,40 +156,41 @@ const Wrapper = styled.div`
   position: relative;
 
   .bi-search {
-      position: absolute;
-      top: 0;
-      left: 18px;
-      z-index: 100;
-      font-size: 14px;
-      line-height: 40px;
-      color: #687076;
+    position: absolute;
+    top: 0;
+    left: 18px;
+    z-index: 100;
+    font-size: 14px;
+    line-height: 40px;
+    color: #687076;
   }
 
   .input-group {
-      height: 100%;
+    height: 100%;
   }
 
   input {
-      padding: 0 14px 0 42px;
-      border: 1px solid #D0D5DD !important;
-      background: #FFFFFF;
-      border-radius: 100px;
+    padding: 0 14px 0 42px;
+    border: 1px solid #d0d5dd !important;
+    background: #ffffff;
+    border-radius: 100px;
   }
 
   button {
-      border-color: #D0D5DD !important;
-      border-radius: 0 100px 100px 0 !important;
-      border-left: none !important;
-      background: #fff !important;
-      color: #687076 !important;
+    border-color: #d0d5dd !important;
+    border-radius: 0 100px 100px 0 !important;
+    border-left: none !important;
+    background: #fff !important;
+    color: #687076 !important;
 
-      &:hover, &:focus {
-          color: #000 !important;
-      }
+    &:hover,
+    &:focus {
+      color: #000 !important;
+    }
   }
 
   @media (max-width: 500px) {
-      width: 100%;
+    width: 100%;
   }
 `;
 

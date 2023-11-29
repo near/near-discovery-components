@@ -3,16 +3,14 @@ const componentsUrl = "/${REPL_ACCOUNT}/widget/ComponentsPage";
 
 const featuredComponentListRes = Social.get(
   "${REPL_FEATURED_COMP_MANAGER}/listManager/FeaturedComponents",
-  "final"
+  "final",
 );
 const featuredComponentPaths = featuredComponentListRes
   ? JSON.parse(featuredComponentListRes)
   : [];
 
 const componentData =
-  featuredComponentPaths.length > 0
-    ? Social.getr(featuredComponentPaths)
-    : null;
+  featuredComponentPaths.length > 0 ? Social.getr(featuredComponentPaths) : null;
 
 if (componentData) {
   featuredComponentPaths.forEach((src) => {

@@ -274,10 +274,10 @@ const updateSearchHits = debounce(({ term, pageNumber, configs }) => {
       search: {
         profiles: profiles(results["profile"]),
         components: components(results["app, widget"]).concat(
-          components(results["widget"])
+          components(results["widget"]),
         ),
         postsAndComments: posts(results["post"], "post").concat(
-          posts(results["comment, post"], "post-comment")
+          posts(results["comment, post"], "post-comment"),
         ),
       },
       currentPage: pageNumber,
@@ -368,8 +368,7 @@ const onFacetClick = (facet) => {
 };
 
 const onSearchResultClick = ({ searchPosition, objectID, eventName }) => {
-  const position =
-    searchPosition + state.currentPage * state.paginate.hitsPerPage;
+  const position = searchPosition + state.currentPage * state.paginate.hitsPerPage;
   const event = {
     type: "clickedObjectIDsAfterSearch",
     data: {
@@ -398,9 +397,7 @@ return (
       ) : (
         <Header>
           <H1>Search</H1>
-          <H2>
-            Explore and find everything on the Blockchain Operating System
-          </H2>
+          <H2>Explore and find everything on the Blockchain Operating System</H2>
         </Header>
       ))}
 
@@ -502,9 +499,7 @@ return (
 
         <Items>
           {state.search.postsAndComments.map((post, i) => (
-            <Item
-              key={`${post.accountId}/${post.postType}/${post.blockHeight}`}
-            >
+            <Item key={`${post.accountId}/${post.postType}/${post.blockHeight}`}>
               <Widget
                 src="${REPL_ACCOUNT}/widget/Search.FullPage.PostCard"
                 props={{

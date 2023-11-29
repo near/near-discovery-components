@@ -72,7 +72,7 @@ return (
           data={{
             listManager: {
               [listName]: items.concat(
-                state.inputContent.split(",").map((i) => i.trim())
+                state.inputContent.split(",").map((i) => i.trim()),
               ),
             },
           }}
@@ -97,8 +97,8 @@ return (
       </div>
     )}
     <span style={{ color: "grey" }}>
-      To change ordering, use the Replace List functionality with the full
-      contents of the newly ordered list
+      To change ordering, use the Replace List functionality with the full contents
+      of the newly ordered list
     </span>
   </div>
 );

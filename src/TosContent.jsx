@@ -136,8 +136,8 @@ return (
       <>
         <Title>Terms of Service and Privacy Policy</Title>
         <Description>
-          Please read and agree to the following terms and policies to continue
-          using <span>{`${REPL_NEAR_URL}`}</span>:
+          Please read and agree to the following terms and policies to continue using{" "}
+          <span>{`${REPL_NEAR_URL}`}</span>:
         </Description>
 
         <DocumentSelector

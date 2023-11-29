@@ -70,8 +70,7 @@ const Header = () => (
 const Description = () => (
   <>
     <DescriptionWrapper showIosNoteText={showIosNoteText}>
-      Stay in the know on updates and activity. Customize your preferences
-      anytime.
+      Stay in the know on updates and activity. Customize your preferences anytime.
     </DescriptionWrapper>
     {showIosNoteText && (
       <NoteText>

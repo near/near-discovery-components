@@ -20,7 +20,7 @@ const createChartConfig = (apps) => {
     .sort((a, b) => a.votes - b.votes)
     .slice(0, topLimit);
   const appNames = topApps.map((app) =>
-    app.name ? app.name : app.widget_name.split("/")[2]
+    app.name ? app.name : app.widget_name.split("/")[2],
   );
   const appVotes = topApps.map((app) => app.votes);
   if (topApps.length == 0) {
@@ -86,7 +86,7 @@ const loadChartData = () => {
   if (state.isLoading !== true || state.apps.length > 0) return;
   try {
     asyncFetch(
-      "https://storage.googleapis.com/databricks-near-query-runner/output/nearcon_apps/apps_qualified_upvoted.json"
+      "https://storage.googleapis.com/databricks-near-query-runner/output/nearcon_apps/apps_qualified_upvoted.json",
     )
       .then((res) => {
         const apps = JSON.parse(res.body).data.map((app_raw) => {

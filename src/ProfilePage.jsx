@@ -21,21 +21,19 @@ const starredComponentsData = Social.keys(
   "final",
   {
     return_type: "BlockHeight",
-  }
+  },
 );
 let starredComponents = null;
 if (starredComponentsData) {
   starredComponents = [];
   const starredData = starredComponentsData[accountId]?.graph?.star ?? {};
   Object.keys(starredData).forEach((authorAccountId) => {
-    Object.keys(starredData[authorAccountId].widget).forEach(
-      (componentName) => {
-        starredComponents.push({
-          accountId: authorAccountId,
-          componentName,
-        });
-      }
-    );
+    Object.keys(starredData[authorAccountId].widget).forEach((componentName) => {
+      starredComponents.push({
+        accountId: authorAccountId,
+        componentName,
+      });
+    });
   });
 }
 const starredComponentsCount = (starredComponents ?? []).length;
@@ -287,10 +285,7 @@ return (
         )}
 
         {state.selectedTab === "nfts" && (
-          <Widget
-            src="${REPL_ACCOUNT}/widget/NFTCollection"
-            props={{ accountId }}
-          />
+          <Widget src="${REPL_ACCOUNT}/widget/NFTCollection" props={{ accountId }} />
         )}
 
         {state.selectedTab === "apps" && (
@@ -301,17 +296,11 @@ return (
         )}
 
         {state.selectedTab === "followers" && (
-          <Widget
-            src="${REPL_ACCOUNT}/widget/FollowersList"
-            props={{ accountId }}
-          />
+          <Widget src="${REPL_ACCOUNT}/widget/FollowersList" props={{ accountId }} />
         )}
 
         {state.selectedTab === "following" && (
-          <Widget
-            src="${REPL_ACCOUNT}/widget/FollowingList"
-            props={{ accountId }}
-          />
+          <Widget src="${REPL_ACCOUNT}/widget/FollowingList" props={{ accountId }} />
         )}
 
         {state.selectedTab === "explorer" && (

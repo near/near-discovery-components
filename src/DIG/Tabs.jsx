@@ -62,8 +62,8 @@ const Tab = styled("Tabs.Trigger")`
     p.size === "small"
       ? "var(--text-xs)"
       : p.size === "large"
-      ? "var(--text-base)"
-      : "var(--text-s)"};
+        ? "var(--text-base)"
+        : "var(--text-s)"};
   font-weight: 600;
 
   &:hover {
@@ -97,10 +97,10 @@ const Tab = styled("Tabs.Trigger")`
       padding: 8px 12px;
     `
         : size === "large"
-        ? `
+          ? `
       padding: 12px 18px;
     `
-        : `
+          : `
       padding: 7px 16px;
     `
     }
@@ -123,10 +123,10 @@ const Tab = styled("Tabs.Trigger")`
       padding: 10px 12px;
     `
         : size === "large"
-        ? `
+          ? `
       padding: 12px 18px;
     `
-        : `
+          : `
       padding: 10px 16px;
     `
     }
@@ -152,10 +152,10 @@ const Tab = styled("Tabs.Trigger")`
       padding: 10px 12px;
     `
         : size === "large"
-        ? `
+          ? `
       padding: 12px 20px;
     `
-        : `
+          : `
       padding: 10px 16px;
     `
     }

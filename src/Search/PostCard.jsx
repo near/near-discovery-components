@@ -13,8 +13,7 @@ if (content?.text && snipContent) {
 }
 const key = props.key ?? JSON.stringify(content);
 const postType = props.postType ?? "post";
-const postBlockHeight =
-  postType === "post" ? "blockHeight" : "commentBlockHeight";
+const postBlockHeight = postType === "post" ? "blockHeight" : "commentBlockHeight";
 const postUrl = `/${REPL_ACCOUNT}/widget/PostPage?accountId=${accountId}&${postBlockHeight}=${blockHeight}`;
 const onClick =
   props.onClick ??

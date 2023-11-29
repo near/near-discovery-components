@@ -137,8 +137,7 @@ const setLocalAfterModeration = (id) => {
 const renderModeratedRow = (id, item) => {
   const renderWidget = (
     <div>
-      {item.account_id} {item.moderated_path} {item.block_height} has been
-      moderated
+      {item.account_id} {item.moderated_path} {item.block_height} has been moderated
     </div>
   );
   const header = (
@@ -153,7 +152,8 @@ const renderModeratedRow = (id, item) => {
   return { value: id, header, content: renderWidget };
 };
 
-const disabledMessage = "Button is disabled because you are not a moderator of this group.";
+const disabledMessage =
+  "Button is disabled because you are not a moderator of this group.";
 const blockItemHelperText =
   "to no longer be shown in feeds that obey moderation. \n" +
   "Direct links will show a moderation message. \n" +
@@ -246,9 +246,7 @@ const renderItem = (item) => {
             src="near/widget/DIG.Tooltip"
             props={{
               content: (
-                <span style={{ whiteSpace: "pre-line" }}>
-                  {overviewTooltip}
-                </span>
+                <span style={{ whiteSpace: "pre-line" }}>{overviewTooltip}</span>
               ),
               trigger: pathToType(item.moderated_path),
             }}
@@ -267,8 +265,7 @@ const renderItem = (item) => {
                 <Widget
                   src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
                   props={{
-                    blockHeight:
-                      item.first_report_blockheight ?? item.block_height,
+                    blockHeight: item.first_report_blockheight ?? item.block_height,
                   }}
                 />
               ),
@@ -289,7 +286,8 @@ const renderItem = (item) => {
                     "Cause this " +
                     pathToType(item.moderated_path) +
                     " " +
-                    blockItemHelperText + (isModerator ? "":  "\n" + disabledMessage),
+                    blockItemHelperText +
+                    (isModerator ? "" : "\n" + disabledMessage),
                   data: {
                     index: {
                       moderate: moderationDataFormat(
@@ -313,7 +311,9 @@ const renderItem = (item) => {
                 title: "Moderate Account",
                 disabled: !isModerator,
                 iconLeft: "ph-bold ph-prohibit",
-                tooltip: blockAccountHelperText + (isModerator ? "":  "\n" + disabledMessage),
+                tooltip:
+                  blockAccountHelperText +
+                  (isModerator ? "" : "\n" + disabledMessage),
                 variant: "destructive",
                 fill: "outline",
                 data: {

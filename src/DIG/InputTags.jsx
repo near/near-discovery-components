@@ -32,11 +32,7 @@ function removeTag(tag) {
 }
 
 function handleOnKeyUp(e) {
-  if (
-    e.code === "Enter" ||
-    e.code === "Comma" ||
-    e.target.value.indexOf(",") > -1
-  ) {
+  if (e.code === "Enter" || e.code === "Comma" || e.target.value.indexOf(",") > -1) {
     addTag(e.target.value);
   }
 }

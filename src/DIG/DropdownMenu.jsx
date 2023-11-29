@@ -11,7 +11,9 @@ const Content = styled("DropdownMenu.Content")`
   background-color: white;
   border-radius: 6px;
   padding: 2px 0;
-  box-shadow: 0px 4px 8px 0px var(--blackA3), 0px 0px 0px 1px var(--blackA3);
+  box-shadow:
+    0px 4px 8px 0px var(--blackA3),
+    0px 0px 0px 1px var(--blackA3);
   animation-duration: 400ms;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
@@ -105,7 +107,9 @@ const SubMenuContent = styled("DropdownMenu.SubContent")`
   background-color: white;
   border-radius: 6px;
   padding: 4px 0;
-  box-shadow: 0px 4px 8px 0px var(--blackA3), 0px 0px 0px 1px var(--blackA3);
+  box-shadow:
+    0px 4px 8px 0px var(--blackA3),
+    0px 0px 0px 1px var(--blackA3);
   animation-duration: 400ms;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
@@ -217,11 +221,7 @@ const DropdownItems = (menu, isSection, noDivider) => (
             </SubMenu>
           </>
         ) : item.asSection ? (
-          <DropdownItems
-            {...item}
-            isSection={true}
-            noDivider={item.noDivider}
-          />
+          <DropdownItems {...item} isSection={true} noDivider={item.noDivider} />
         ) : (
           <>
             {item.subHeader && <Label subHeader>{item.subHeader}</Label>}
@@ -236,7 +236,7 @@ const DropdownItems = (menu, isSection, noDivider) => (
               <Divider />
             )}
           </>
-        )
+        ),
       )}
   </>
 );

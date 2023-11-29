@@ -5,9 +5,7 @@ const metadata =
   props.metadata ??
   Social.get(`${accountId}/widget/${widgetName}/metadata/**`, "final") ??
   {};
-const tags = props.metadata
-  ? props.metadata.tags
-  : Object.keys(metadata.tags || {});
+const tags = props.metadata ? props.metadata.tags : Object.keys(metadata.tags || {});
 
 const Card = styled.div`
   position: relative;

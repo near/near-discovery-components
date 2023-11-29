@@ -171,9 +171,9 @@ return (
               <H1>Effortless data indexing & management</H1>
 
               <Text size="text-l" mobileSize="text-base">
-                Choose the data solution that fits your needs. Access and
-                monitor on-chain data through public datasets, or scaffold your
-                own infrastructure.
+                Choose the data solution that fits your needs. Access and monitor
+                on-chain data through public datasets, or scaffold your own
+                infrastructure.
               </Text>
             </Flex>
           </PatternContent>
@@ -187,14 +187,9 @@ return (
           <H2 style={{ maxWidth: "1016px" }}>
             BigQuery public dataset: all the data, zero setup
           </H2>
-          <Text
-            size="text-2xl"
-            mobileSize="text-l"
-            style={{ maxWidth: "808px" }}
-          >
-            A large dataset with on-chain data publicly available on Google
-            Cloud Platform. Obtain near real-time blockchain data using simple
-            SQL queries.
+          <Text size="text-2xl" mobileSize="text-l" style={{ maxWidth: "808px" }}>
+            A large dataset with on-chain data publicly available on Google Cloud
+            Platform. Obtain near real-time blockchain data using simple SQL queries.
           </Text>
         </Flex>
 
@@ -209,8 +204,8 @@ return (
                     Instant insights
                   </Text>
                   <Text>
-                    Historic on-chain data queried at scale. No need to run your
-                    own infrastructure.
+                    Historic on-chain data queried at scale. No need to run your own
+                    infrastructure.
                   </Text>
                 </Flex>
 
@@ -219,8 +214,8 @@ return (
                     Cost-effective
                   </Text>
                   <Text>
-                    Eliminate the need to store and process bulk NEAR Protocol
-                    data. Query as little or as much data as you like.
+                    Eliminate the need to store and process bulk NEAR Protocol data.
+                    Query as little or as much data as you like.
                   </Text>
                 </Flex>
 
@@ -229,8 +224,8 @@ return (
                     As easy as SQL
                   </Text>
                   <Text>
-                    No prior experience with blockchain technology is required.
-                    Just bring a general knowledge of SQL to unlock insights.
+                    No prior experience with blockchain technology is required. Just
+                    bring a general knowledge of SQL to unlock insights.
                   </Text>
                 </Flex>
 
@@ -257,14 +252,9 @@ return (
 
         <Flex direction="column" gap="24px">
           <H2 style={{ maxWidth: "1016px" }}>QueryAPI: indexers made simple</H2>
-          <Text
-            size="text-2xl"
-            mobileSize="text-l"
-            style={{ maxWidth: "808px" }}
-          >
-            A fully managed solution to build indexer functions, extract
-            on-chain data, and easily query it using GraphQL endpoints and
-            subscriptions.
+          <Text size="text-2xl" mobileSize="text-l" style={{ maxWidth: "808px" }}>
+            A fully managed solution to build indexer functions, extract on-chain
+            data, and easily query it using GraphQL endpoints and subscriptions.
           </Text>
         </Flex>
 
@@ -289,8 +279,8 @@ return (
                     Indexers made simple
                   </Text>
                   <Text>
-                    Create the logic of your indexer and we will execute it for
-                    you. Forget about infrastructure—focus on solutions.
+                    Create the logic of your indexer and we will execute it for you.
+                    Forget about infrastructure—focus on solutions.
                   </Text>
                 </Flex>
 
@@ -299,8 +289,8 @@ return (
                     Plug & play to your app
                   </Text>
                   <Text>
-                    Fetch your data from any application through our API.
-                    Leverage GraphQL to query exactly what you need.
+                    Fetch your data from any application through our API. Leverage
+                    GraphQL to query exactly what you need.
                   </Text>
                 </Flex>
 
@@ -337,8 +327,8 @@ return (
             color="white"
             style={{ maxWidth: "808px" }}
           >
-            A solution that watches over the NEAR network and stores all the
-            events for your easy access.
+            A solution that watches over the NEAR network and stores all the events
+            for your easy access.
           </Text>
         </Flex>
 
@@ -373,8 +363,8 @@ return (
                     Streamlined data management
                   </Text>
                   <Text color="white">
-                    Use NEAR Lake Framework to stream blocks to your server
-                    directly from NEAR Lake
+                    Use NEAR Lake Framework to stream blocks to your server directly
+                    from NEAR Lake
                   </Text>
                 </Flex>
 
@@ -411,31 +401,18 @@ return (
             alignItems="center"
             style={{ textAlign: "center" }}
           >
-            <Text
-              size="text-3xl"
-              fontWeight="500"
-              style={{ maxWidth: "600px" }}
-            >
+            <Text size="text-3xl" fontWeight="500" style={{ maxWidth: "600px" }}>
               Unlock data for your App
             </Text>
 
-            <Text
-              size="text-l"
-              mobileSize="text-l"
-              style={{ maxWidth: "600px" }}
-            >
-              Use the solution that best fits your needs. Access data through
-              open databases, create and execute indexer logic, or run your own
+            <Text size="text-l" mobileSize="text-l" style={{ maxWidth: "600px" }}>
+              Use the solution that best fits your needs. Access data through open
+              databases, create and execute indexer logic, or run your own
               infrastructure.
             </Text>
           </Flex>
 
-          <Flex
-            gap="24px"
-            wrap="wrap"
-            alignItems="center"
-            justifyContent="center"
-          >
+          <Flex gap="24px" wrap="wrap" alignItems="center" justifyContent="center">
             <Widget
               src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{

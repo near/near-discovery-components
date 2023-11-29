@@ -39,9 +39,9 @@ const TextLink = styled("Link")`
 const IosNotification = () => (
   <Text>
     <i className="ph-bold ph-info" />
-    In order to enable Mobile Browser notifications on iOS, you will also need
-    to add near.org as a icon to your home screen. Click on the share icon, and
-    then tap on <b>"Add to Home Screen"</b>
+    In order to enable Mobile Browser notifications on iOS, you will also need to add
+    near.org as a icon to your home screen. Click on the share icon, and then tap on{" "}
+    <b>"Add to Home Screen"</b>
   </Text>
 );
 

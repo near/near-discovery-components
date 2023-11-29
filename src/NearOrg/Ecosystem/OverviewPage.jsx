@@ -76,8 +76,8 @@ const Flex = styled.div`
       p.mobileStack === true
         ? "var(--section-gap)"
         : p.mobileStack
-        ? p.mobileStack
-        : p.gap};
+          ? p.mobileStack
+          : p.gap};
   }
 `;
 const Section = styled.div`
@@ -175,28 +175,22 @@ const ipfsImages = {
   humanGuild: "bafkreia2q267cf7apo6r3o3uw35lpbrp43jb3c5udfgquee2clbkdbks4e",
   tenkDao: "bafkreiajzdfp6vwyfn27dfvplczqrp24ncuppt7qlvgpvvraks6vx234wu",
   unchainLogo: "bafkreiath5t7igknmarvotq7u6ly7gd6yfqygbuhueo6q4vwjdgc7vg32m",
-  ecosystemCommunity:
-    "bafkreih4l27eegfkvkr4t4hqvnwq2bsxw4rx6o74sty62mhyao2o6waiia",
-  ecosystemBanner:
-    "bafkreicbkkhc52wxqcrsva7d4rmg4zt2k4mcqcb2bax552yzk6zy37z2da",
+  ecosystemCommunity: "bafkreih4l27eegfkvkr4t4hqvnwq2bsxw4rx6o74sty62mhyao2o6waiia",
+  ecosystemBanner: "bafkreicbkkhc52wxqcrsva7d4rmg4zt2k4mcqcb2bax552yzk6zy37z2da",
   ecosystemBlog: "bafkreighn22rod4goppcqn4etb3ss27wg2o6xwjoi5i2rdidgtrwa6cyim",
   ecosystemVenue: "bafkreiavzhz2qks4rvucj5nkttv5izkvldirlhhsfvcs3vmpw22hjaqhfu",
-  ecosystemOwcLogo:
-    "bafkreiczr4ykowwpw46pilg5wuldpq6d7o6mlxydqr3p2vi5betdfs54wa",
+  ecosystemOwcLogo: "bafkreiczr4ykowwpw46pilg5wuldpq6d7o6mlxydqr3p2vi5betdfs54wa",
   fundingArrows: "bafkreict6kdekqm6u4nnneewrmnffr656uxvkv2vjkruyx4gl34w46fjxi",
   logoAurora: "bafkreieoq7wpdctcx42uywfdaoi4k3uq6rgodbjjz6mhz3qesrmaben2ju",
-  logoCreativeDao:
-    "bafkreictzvvz2irr7tr7fhkdne2i7xpr4mf7x5b5i2vhgoqdswb73lbyyu",
+  logoCreativeDao: "bafkreictzvvz2irr7tr7fhkdne2i7xpr4mf7x5b5i2vhgoqdswb73lbyyu",
   logoDevDao: "bafkreibvh3qys5z7qbekqqhmgump4iy32nw5wfvcyegejfs4gckrbqp7pq",
-  logoMarketingDao:
-    "bafkreifnwvfi7x5bzzxrjjvp7xbfqd3xpojtlohcgzrowtvyygogrt2emq",
+  logoMarketingDao: "bafkreifnwvfi7x5bzzxrjjvp7xbfqd3xpojtlohcgzrowtvyygogrt2emq",
   logoProximity: "bafkreiazqis67kprs5ofbdruktmtvtun4g4bb2nbrqpwxzocuz77io6vyy",
   logoOctopus: "bafkreibzcnifufde5ft6hx3qkwzxhzq66avfbholirvrmaf5jbojwqggey",
   logoFlux: "bafkreifqjofqj5v4a4cl5ycdpphgyna2qdzedrvxyrdivc2mpcwlgckqsy",
   ecosystemTechnicalBase:
     "bafkreifn5tsqnornzex2ezgretfgmqmv7y2f5faypzxk7pgzbuhsw4wrrq",
-  ecosystemCareer:
-    "bafkreiei3xbvnmjiwfffso7hp333uud3gto6x7ug7namypifq375mr63am",
+  ecosystemCareer: "bafkreiei3xbvnmjiwfffso7hp333uud3gto6x7ug7namypifq375mr63am",
   jsIcon: "bafkreih7lfumu4zbnwir5qcfzon3nam5oylsknialxei3udk3y56s4ogxu",
   rustIcon: "bafkreigxguerx7ifrt6homkapurh2apreyhhraubpyx4ilyupzzezjikfq",
   logoBitgo: "bafkreib7vssn35gqk3spmf26adnvjanw7r2q6b7fsxdgocrgihm7zc6jyi",
@@ -206,10 +200,8 @@ const ipfsImages = {
     "bafkreigdpe6rddrtrym6dzmuen4jjei7fvuitf2wrnehpllopto7obgjfu",
   logoSankore: "bafkreidkhx655kdwmtb4mhqrs36ynbp4xgu2jlysyddsro6cnf3nilxgey",
   nearLogoKorea: "bafkreigljspwl7cuqy54hbdcpxhabcgdy7ebmpmdaw7zvsjpa3t5karwci",
-  nearLogoBalkans:
-    "bafkreidbhhztr4z7u3oxt453jb5qt2x3ccwdrvoe656e4i75olsvrexp3u",
-  nearLogoVietnam:
-    "bafkreiaokaifsncqmq7ob6o7zgue2c6ao6a2e227ey4soa6daam6zzmcou",
+  nearLogoBalkans: "bafkreidbhhztr4z7u3oxt453jb5qt2x3ccwdrvoe656e4i75olsvrexp3u",
+  nearLogoVietnam: "bafkreiaokaifsncqmq7ob6o7zgue2c6ao6a2e227ey4soa6daam6zzmcou",
   nearLogoIndia: "bafkreignqxbsg7c4up2g56mxksqlm2pt5ilwfi75jng2h7kxfjnhnn3eym",
 };
 const fundingRows = {
@@ -437,16 +429,11 @@ return (
         <Flex gap="16px" direction="column" alignItems="center">
           <H1>Building the Open Web together</H1>
           <Text size="text-xl" color="sand12" style={{ maxWidth: "662px" }}>
-            Projects building on NEAR are at the center. The Ecosystem is
-            supporting them with everything they need to succeed.
+            Projects building on NEAR are at the center. The Ecosystem is supporting
+            them with everything they need to succeed.
           </Text>
         </Flex>
-        <Flex
-          gap="16px"
-          alignItems="center"
-          wrap="wrap"
-          justifyContent="center"
-        >
+        <Flex gap="16px" alignItems="center" wrap="wrap" justifyContent="center">
           {navLinks.map((nav) => (
             <TextLink key={nav.href} href={`#${nav.href}`}>
               {nav.name}
@@ -542,10 +529,10 @@ return (
           </Text>
           <Text size="text-xl" color="sand12">
             DAOs offer a new way for communities to collaborate. Members own the
-            organization and receive rewards in proportion to their
-            contributions. There are no bosses and no hierarchy. Instead, a
-            common purpose unites the participants. One way to think of a DAO is
-            a Facebook group with its own bank account.
+            organization and receive rewards in proportion to their contributions.
+            There are no bosses and no hierarchy. Instead, a common purpose unites
+            the participants. One way to think of a DAO is a Facebook group with its
+            own bank account.
           </Text>
         </Section>
 
@@ -567,9 +554,8 @@ return (
                   NEARWEEK
                 </Text>
                 <Text>
-                  NEARWEEK is a Web3 news & community platform. Community
-                  members earn rewards by submitting news items to the NEARWEEK
-                  DAO.
+                  NEARWEEK is a Web3 news & community platform. Community members
+                  earn rewards by submitting news items to the NEARWEEK DAO.
                 </Text>
               </Flex>
               <Widget
@@ -599,9 +585,9 @@ return (
                   Human Guild
                 </Text>
                 <Text>
-                  Human Guild awards grants to promising gaming projects
-                  building on NEAR and supports them in an advisory role along
-                  with other services.
+                  Human Guild awards grants to promising gaming projects building on
+                  NEAR and supports them in an advisory role along with other
+                  services.
                 </Text>
               </Flex>
               <Widget
@@ -632,8 +618,8 @@ return (
                 </Text>
                 <Text>
                   TenK DAO offers professional services to help artists build
-                  generative art projects. The DAO is compensated with a
-                  percentage of sales and royalties.
+                  generative art projects. The DAO is compensated with a percentage
+                  of sales and royalties.
                 </Text>
               </Flex>
               <Widget
@@ -665,16 +651,15 @@ return (
                 className="align-items-center align-items-md-start justify-content-center justify-content-md-start"
               >
                 <Text size="text-xl" fontWeight="600" color="sand12">
-                  How crypto became a major source of relief for embattled
-                  Ukraine
+                  How crypto became a major source of relief for embattled Ukraine
                 </Text>
                 <Text className="text-center text-md-start">
                   Created on AstroDAO, a DAO-launching platform built on NEAR,
-                  Unchain Fund raises funds for humanitarian efforts in in
-                  Ukraine, including evacuation, shelter, food, and more. In
-                  under a month, Unchain has collected over $7 million USD and
-                  counting across a range of cryptocurrencies including, BSC,
-                  ETH, Harmony, NEAR, and Polygon.
+                  Unchain Fund raises funds for humanitarian efforts in in Ukraine,
+                  including evacuation, shelter, food, and more. In under a month,
+                  Unchain has collected over $7 million USD and counting across a
+                  range of cryptocurrencies including, BSC, ETH, Harmony, NEAR, and
+                  Polygon.
                 </Text>
                 <Widget
                   src="${REPL_ACCOUNT}/widget/DIG.Button"
@@ -711,9 +696,8 @@ return (
               Looking for funding to start a project or DAO?
             </Text>
             <Text align="left">
-              The NEAR ecosystem has plenty of options available to fund
-              promising projects or initiatives that bring the ecosystem
-              forward.
+              The NEAR ecosystem has plenty of options available to fund promising
+              projects or initiatives that bring the ecosystem forward.
             </Text>
             <div>
               <Widget
@@ -735,11 +719,11 @@ return (
             </Text>
             <Text align="left">
               Whether you want to organize your annual tailgate party so you can
-              enjoy it more or manage the budget of your first film, you can set
-              up a DAO that supports your needs. Platforms like SputnikDAO and
-              AstroDAO are ways for organizations around the world to represent
-              membership, facilitate governance, make decisions, and interact
-              with other DAOs. Create your own DAO today!
+              enjoy it more or manage the budget of your first film, you can set up a
+              DAO that supports your needs. Platforms like SputnikDAO and AstroDAO
+              are ways for organizations around the world to represent membership,
+              facilitate governance, make decisions, and interact with other DAOs.
+              Create your own DAO today!
             </Text>
             <div>
               <Widget
@@ -767,8 +751,8 @@ return (
               </Text>
               <Text size="text-xl" color="sand12">
                 NEAR’s vibrant community is a globally distributed home for
-                developers, token holders, validators, and members supporting
-                the protocol’s platform, ecosystem, and applications.
+                developers, token holders, validators, and members supporting the
+                protocol’s platform, ecosystem, and applications.
               </Text>
               <Flex
                 gap="32px"
@@ -858,9 +842,9 @@ return (
                   Join the NEAR Governance Forum
                 </Text>
                 <Text size="text-xl" color="sand12">
-                  Here, NEAR Community members, developers, and the NEAR
-                  Foundation team come together to build something great and
-                  expand the NEAR ecosystem.
+                  Here, NEAR Community members, developers, and the NEAR Foundation
+                  team come together to build something great and expand the NEAR
+                  ecosystem.
                 </Text>
                 <div>
                   <Widget
@@ -1057,10 +1041,7 @@ return (
         </Flex>
         <div className="row justify-content-center text-center">
           <div className="col-md-3 col-12 align-items-center">
-            <SocialIcon
-              className="ph ph-circles-three-plus"
-              color="var(--red7)"
-            />
+            <SocialIcon className="ph ph-circles-three-plus" color="var(--red7)" />
             <Text size="text-m" color="sand12">
               Ecosystem Grants
             </Text>
@@ -1103,12 +1084,7 @@ return (
                 }}
               />
               <Flex direction="column" gap="8px">
-                <Text
-                  size="text-xl"
-                  fontWeight="600"
-                  color="sand12"
-                  align="left"
-                >
+                <Text size="text-xl" fontWeight="600" color="sand12" align="left">
                   {item.title}
                 </Text>
                 <Text color="sand12" align="left">
@@ -1147,12 +1123,7 @@ return (
                 }}
               />
               <Flex direction="column" gap="8px">
-                <Text
-                  size="text-xl"
-                  fontWeight="600"
-                  color="sand12"
-                  align="left"
-                >
+                <Text size="text-xl" fontWeight="600" color="sand12" align="left">
                   {item.title}
                 </Text>
                 <Text color="sand12" align="left">
@@ -1193,8 +1164,8 @@ return (
           Company builders
         </Text>
         <Text size="text-xl" color="sand12" align="center">
-          Join a company builder to get all the support you need from
-          experienced startup founders and other experts.
+          Join a company builder to get all the support you need from experienced
+          startup founders and other experts.
         </Text>
         <Flex gap="32px" mobileStack="32px">
           <Card
@@ -1224,10 +1195,10 @@ return (
                 Boost your project with OWC
               </Text>
               <Text color="white" className="text-center text-md-start">
-                Open Web Collective is a blockchain accelerator program
-                supporting entrepreneurs building the decentralized web. By
-                bringing together capital and seasoned advisors, OWC helps
-                founders de-risk, accelerate, and advance Web 3.0.
+                Open Web Collective is a blockchain accelerator program supporting
+                entrepreneurs building the decentralized web. By bringing together
+                capital and seasoned advisors, OWC helps founders de-risk,
+                accelerate, and advance Web 3.0.
               </Text>
               <Widget
                 src="${REPL_ACCOUNT}/widget/DIG.Button"
@@ -1326,12 +1297,7 @@ return (
         </div>
       </Section>
 
-      <Section
-        gap="24px"
-        center
-        className="mx-auto"
-        style={{ maxWidth: "1000px" }}
-      >
+      <Section gap="24px" center className="mx-auto" style={{ maxWidth: "1000px" }}>
         <Text size="text-3xl" color="sand12">
           NEAR’s core platform
         </Text>
@@ -1344,8 +1310,8 @@ return (
               Use familiar Programming Languages
             </Text>
             <Text size="text-l" color="sand12">
-              Write your smart contracts in the most used or most loved
-              language. No need to wrestle with Solidity or Vyper.
+              Write your smart contracts in the most used or most loved language. No
+              need to wrestle with Solidity or Vyper.
             </Text>
             <Section>
               <Flex gap="48px" mobileStack="32px" justifyContent="center">
@@ -1436,8 +1402,7 @@ return (
               Help yourself with excellent documentations
             </Text>
             <Text size="text-m" color="sand12">
-              Docs that answer almost any question. Loads of tutorials and
-              examples
+              Docs that answer almost any question. Loads of tutorials and examples
             </Text>
             <Widget
               src="${REPL_ACCOUNT}/widget/DIG.Button"
@@ -1476,8 +1441,8 @@ return (
             </Text>
             <Text size="text-m" color="sand12">
               Easily migrate your Solidity contracts to the Aurora EVM. Use the
-              Rainbow Bridge to transfer assets between Ethereum, NEAR and
-              Aurora EVM. EVM.
+              Rainbow Bridge to transfer assets between Ethereum, NEAR and Aurora
+              EVM. EVM.
             </Text>
             <Widget
               src="${REPL_ACCOUNT}/widget/DIG.Button"
@@ -1531,12 +1496,7 @@ return (
         </Text>
       </Section>
 
-      <Section
-        center
-        gap="24px"
-        className="mx-auto"
-        style={{ maxWidth: "1000px" }}
-      >
+      <Section center gap="24px" className="mx-auto" style={{ maxWidth: "1000px" }}>
         <Text size="text-3xl" color="sand12">
           RPC-Providers
         </Text>
@@ -1573,12 +1533,7 @@ return (
         </Flex>
       </Section>
 
-      <Section
-        center
-        gap="24px"
-        className="mx-auto"
-        style={{ maxWidth: "1000px" }}
-      >
+      <Section center gap="24px" className="mx-auto" style={{ maxWidth: "1000px" }}>
         <Text size="text-3xl" color="sand12">
           Storage
         </Text>
@@ -1632,12 +1587,7 @@ return (
         </div>
       </Section>
 
-      <Section
-        center
-        gap="24px"
-        className="mx-auto"
-        style={{ maxWidth: "1000px" }}
-      >
+      <Section center gap="24px" className="mx-auto" style={{ maxWidth: "1000px" }}>
         <Text size="text-3xl" color="sand12">
           Oracles
         </Text>
@@ -1674,12 +1624,7 @@ return (
         </Flex>
       </Section>
 
-      <Section
-        center
-        gap="24px"
-        className="mx-auto"
-        style={{ maxWidth: "1000px" }}
-      >
+      <Section center gap="24px" className="mx-auto" style={{ maxWidth: "1000px" }}>
         <Text size="text-3xl" color="sand12" fontWeight="600">
           Institutional custodians
         </Text>
@@ -1830,12 +1775,7 @@ return (
         </div>
       </Section>
 
-      <Section
-        gap="24px"
-        center
-        className="mx-auto"
-        style={{ maxWidth: "1000px" }}
-      >
+      <Section gap="24px" center className="mx-auto" style={{ maxWidth: "1000px" }}>
         <Text size="text-3xl" color="sand12">
           Career and earning opportunities
         </Text>

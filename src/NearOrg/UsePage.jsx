@@ -83,8 +83,7 @@ const Flex = styled.div`
     `
     @media (max-width: 900px) {
       flex-direction: column;
-      gap: ${(p) =>
-        p.mobileStack === true ? "var(--section-gap)" : p.mobileStack};
+      gap: ${(p) => (p.mobileStack === true ? "var(--section-gap)" : p.mobileStack)};
     }
   `}
 
@@ -93,8 +92,7 @@ const Flex = styled.div`
     `
     @media (max-width: 1050px) {
       flex-direction: column;
-      gap: ${(p) =>
-        p.tabletStack === true ? "var(--section-gap)" : p.tabletStack};
+      gap: ${(p) => (p.tabletStack === true ? "var(--section-gap)" : p.tabletStack)};
     }
   `}
 `;
@@ -299,8 +297,7 @@ return (
             Set up your account
           </Text>
           <Text size="text-l">
-            You need a wallet to use the web3. Choose a wallet that fits your
-            needs.
+            You need a wallet to use the web3. Choose a wallet that fits your needs.
           </Text>
         </Flex>
 
@@ -325,8 +322,8 @@ return (
               2. Create your account
             </Text>
             <Text>
-              Use your wallet to create the account, and create a backup to keep
-              it safe
+              Use your wallet to create the account, and create a backup to keep it
+              safe
             </Text>
           </Card>
 
@@ -367,8 +364,8 @@ return (
             Explore dApps built on NEAR
           </Text>
           <Text size="text-l">
-            All these new paradigms are enabled and ensured by the core
-            properties of the blockchain.
+            All these new paradigms are enabled and ensured by the core properties of
+            the blockchain.
           </Text>
         </Flex>
 
@@ -388,8 +385,8 @@ return (
             movement. This sector leverages how tokens are valued and exchanged
             without the barriers to access as with traditional finance. It
             illustrates the power of ownership by giving token holders complete
-            control of their assets, and allowing them pseudo-anonymity in how
-            they participate.
+            control of their assets, and allowing them pseudo-anonymity in how they
+            participate.
           </Text>
         </UseCase>
 
@@ -405,8 +402,7 @@ return (
               <TextLink href="https://www.ref.finance/" target="_blank">
                 Ref.Finance
               </TextLink>{" "}
-              is a community-led, multi-purpose DeFi platform built on NEAR
-              Protocol.
+              is a community-led, multi-purpose DeFi platform built on NEAR Protocol.
             </Text>
           </Flex>
         </Card>
@@ -449,13 +445,12 @@ return (
           </Text>
 
           <Text>
-            <b>Non-Fungible Tokens</b> are unique digital assets that are
-            fundamental to the idea of ownership in Web3. The assets you own are
-            recorded on the blockchain and are easily verifiable from anyone in
-            the world at any time. More importantly, they are immutable–no
-            authority can seize them. This powerful combination of transparency
-            and permanence, make NFTs a remarkable tool for various use cases
-            surrounding identity and ownership.
+            <b>Non-Fungible Tokens</b> are unique digital assets that are fundamental
+            to the idea of ownership in Web3. The assets you own are recorded on the
+            blockchain and are easily verifiable from anyone in the world at any
+            time. More importantly, they are immutable–no authority can seize them.
+            This powerful combination of transparency and permanence, make NFTs a
+            remarkable tool for various use cases surrounding identity and ownership.
           </Text>
         </UseCase>
 
@@ -472,9 +467,9 @@ return (
                 <TextLink href="https://www.seatlabnft.com/" target="_blank">
                   Seatlab
                 </TextLink>{" "}
-                is an NFT event ticketing marketplace helping artists foster
-                closer connections with fans, eliminating fraud and reducing the
-                impact of scalping.
+                is an NFT event ticketing marketplace helping artists foster closer
+                connections with fans, eliminating fraud and reducing the impact of
+                scalping.
               </Text>
             </Flex>
           </Card>
@@ -485,8 +480,7 @@ return (
             </a>
             <Flex direction="column" gap="8px">
               <Text size="text-xl" fontWeight="600" color="sand12">
-                Artists, Creators and Fans First. No Gatekeeping. No
-                Advertising.
+                Artists, Creators and Fans First. No Gatekeeping. No Advertising.
               </Text>
               <Text>
                 <TextLink href="https://www.tamastream.io/" target="_blank">
@@ -536,10 +530,9 @@ return (
           </Text>
 
           <Text>
-            <b>Community thrives in Web3,</b> and the projects helping users
-            freely interact and share information while maintaining ownership of
-            their data give a glimpse of how connection will evolve in the open
-            web.
+            <b>Community thrives in Web3,</b> and the projects helping users freely
+            interact and share information while maintaining ownership of their data
+            give a glimpse of how connection will evolve in the open web.
           </Text>
         </UseCase>
 
@@ -556,9 +549,9 @@ return (
                 <TextLink href="https://sweatco.in/" target="_blank">
                   Sweatcoin
                 </TextLink>{" "}
-                is a free app which rewards your daily steps with a
-                new-generation currency you can spend on cool products, donate
-                to charity or convert into SWEAT.
+                is a free app which rewards your daily steps with a new-generation
+                currency you can spend on cool products, donate to charity or convert
+                into SWEAT.
               </Text>
             </Flex>
           </Card>
@@ -576,9 +569,9 @@ return (
                 <TextLink href="https://blogchain.app/home" target="_blank">
                   Blogchain App
                 </TextLink>{" "}
-                is a publishing platform created for independent writers,
-                providing them with a decentralized, censorship-resistant, and
-                user-friendly space to engage and grow their audience.
+                is a publishing platform created for independent writers, providing
+                them with a decentralized, censorship-resistant, and user-friendly
+                space to engage and grow their audience.
               </Text>
             </Flex>
           </Card>
@@ -630,9 +623,9 @@ return (
               Today, our world is in crisis
             </Text>
             <Text color="white">
-              From climate change, to the increasing centralisation of power,
-              the existential threat of a global collapse demands global action
-              in every sector of society.
+              From climate change, to the increasing centralisation of power, the
+              existential threat of a global collapse demands global action in every
+              sector of society.
             </Text>
             <Widget
               src="${REPL_ACCOUNT}/widget/DIG.Button"
@@ -672,9 +665,7 @@ return (
           <Text as="h2" size="text-3xl" fontWeight="600" color="sand12">
             How Web3 on NEAR empowers you
           </Text>
-          <Text size="text-l">
-            The basis for an inclusive, fair and open world
-          </Text>
+          <Text size="text-l">The basis for an inclusive, fair and open world</Text>
         </Flex>
 
         <Flex gap="24px" mobileStack="24px">
@@ -749,20 +740,14 @@ return (
         center
       >
         <Flex direction="column" gap="16px" alignItems="center">
-          <Icon
-            color="violet11"
-            backgroundColor="violet3"
-            borderColor="violet5"
-          >
+          <Icon color="violet11" backgroundColor="violet3" borderColor="violet5">
             <i className="ph-duotone ph-user-circle" />
           </Icon>
 
           <Text as="h2" size="text-3xl" fontWeight="600" color="sand12">
             Regain Ownership
           </Text>
-          <Text size="text-l">
-            Take control of your assets, data and identity
-          </Text>
+          <Text size="text-l">Take control of your assets, data and identity</Text>
         </Flex>
 
         <Flex gap="24px" mobileStack="24px">
@@ -771,14 +756,13 @@ return (
               The Problem
             </Text>
             <Text>
-              On web2 platforms like Facebook, you need to hand over control of
-              your data and identity to these platforms. And they can harvest
-              all this data any way they like. They manipulate you to maximize
-              monetization. They control what content is on top of your feed and
-              what content gets silenced/censored. You don’t really own assets
-              on the platform, as they can arbitrarily decide to change the
-              rules etc. – Whether it is a blue checkmark on a social network or
-              a precious armor in an online game.
+              On web2 platforms like Facebook, you need to hand over control of your
+              data and identity to these platforms. And they can harvest all this
+              data any way they like. They manipulate you to maximize monetization.
+              They control what content is on top of your feed and what content gets
+              silenced/censored. You don’t really own assets on the platform, as they
+              can arbitrarily decide to change the rules etc. – Whether it is a blue
+              checkmark on a social network or a precious armor in an online game.
             </Text>
           </Card>
 
@@ -787,12 +771,11 @@ return (
               The Solution
             </Text>
             <Text>
-              In web3, you can stay in full control of your assets while using
-              dApps – nobody can suddenly take them away from you.
-              Blockchain-based apps are completely transparent, you can see what
-              happens with your data and how the assets you give control over
-              will be used. Nobody has the power to suddenly change the rules,
-              censor data or take assets away.
+              In web3, you can stay in full control of your assets while using dApps
+              – nobody can suddenly take them away from you. Blockchain-based apps
+              are completely transparent, you can see what happens with your data and
+              how the assets you give control over will be used. Nobody has the power
+              to suddenly change the rules, censor data or take assets away.
             </Text>
           </Card>
         </Flex>
@@ -812,9 +795,8 @@ return (
                 Non-custodial Wallets
               </Text>
               <Text>
-                Wallets (like MyNearWallet) give you (and only you) complete
-                control over your tokens, NFTs and other assets you own on the
-                NEAR network
+                Wallets (like MyNearWallet) give you (and only you) complete control
+                over your tokens, NFTs and other assets you own on the NEAR network
               </Text>
             </Flex>
             <Widget
@@ -840,8 +822,8 @@ return (
               </Text>
               <Text>
                 Few and Far enables creators to launch and monetize NFTs and for
-                buyers and sellers to securely custody assets and hold
-                self-sovereign identities.
+                buyers and sellers to securely custody assets and hold self-sovereign
+                identities.
               </Text>
             </Flex>
             <Widget
@@ -868,9 +850,9 @@ return (
               Self-sovereign identity
             </Text>
             <Text>
-              You will only need to reveal what is necessary about your
-              information to use a certain service. You control all aspects of
-              your identity and who gets access to which part of it when
+              You will only need to reveal what is necessary about your information
+              to use a certain service. You control all aspects of your identity and
+              who gets access to which part of it when
             </Text>
           </Card>
 
@@ -880,8 +862,8 @@ return (
             </Text>
             <Text>
               Will enable the owner to exercise full control of their ownership.
-              Selling a real estate for instance would not require a notary or
-              any other legal process.
+              Selling a real estate for instance would not require a notary or any
+              other legal process.
             </Text>
           </Card>
         </Flex>
@@ -897,8 +879,7 @@ return (
             Interact freely
           </Text>
           <Text size="text-l">
-            Exchange information and values without being manipulated or
-            controlled
+            Exchange information and values without being manipulated or controlled
           </Text>
         </Flex>
 
@@ -908,13 +889,13 @@ return (
               The Problem
             </Text>
             <Text>
-              Our interactions and relationships are increasingly surveilled.
-              Content can get censored and money transfers blocked. The big
-              social media platforms have total control over your interactions.
-              The result: Censorship of messages, nontransparent
-              filtering/prioritization of content, lock-in (you cannot take your
-              social graph with you). Current financial systems disenfranchise
-              the poorest and most vulnerable in the world.
+              Our interactions and relationships are increasingly surveilled. Content
+              can get censored and money transfers blocked. The big social media
+              platforms have total control over your interactions. The result:
+              Censorship of messages, nontransparent filtering/prioritization of
+              content, lock-in (you cannot take your social graph with you). Current
+              financial systems disenfranchise the poorest and most vulnerable in the
+              world.
             </Text>
           </Card>
 
@@ -925,9 +906,9 @@ return (
             <Text>
               In Web3, all interactions and value transfers can happen
               permissionlessly and cannot be censored or manipulated. With the
-              blockchain, we can create financial and social platforms that are
-              open to everyone. This enables freedom of speech in social
-              communities as well as providing financial sovereignty.
+              blockchain, we can create financial and social platforms that are open
+              to everyone. This enables freedom of speech in social communities as
+              well as providing financial sovereignty.
             </Text>
           </Card>
         </Flex>
@@ -949,8 +930,8 @@ return (
                 YouMinter
               </Text>
               <Text>
-                Community-owned social platform delivering NFTs feeds to your
-                mobile device, and rewards users who actively participate.
+                Community-owned social platform delivering NFTs feeds to your mobile
+                device, and rewards users who actively participate.
               </Text>
             </Flex>
             <Widget
@@ -975,9 +956,8 @@ return (
                 Niche
               </Text>
               <Text>
-                A social app like Instagram that leverages web3. Take a photo
-                and mint it as NFT with one click, share and sell it however you
-                like.
+                A social app like Instagram that leverages web3. Take a photo and
+                mint it as NFT with one click, share and sell it however you like.
               </Text>
             </Flex>
             <Widget
@@ -1004,8 +984,8 @@ return (
               One global social network, many clients
             </Text>
             <Text>
-              Imagine having your own universal social graph that you can use
-              for identity verification, apps, loans, credit scoring, and more.
+              Imagine having your own universal social graph that you can use for
+              identity verification, apps, loans, credit scoring, and more.
             </Text>
           </Card>
 
@@ -1014,8 +994,8 @@ return (
               New ways to get support for your passion
             </Text>
             <Text>
-              Rather than donating to the causes you champion, allow others to
-              invest in your efforts. The better you do, the better they do.
+              Rather than donating to the causes you champion, allow others to invest
+              in your efforts. The better you do, the better they do.
             </Text>
           </Card>
         </Flex>
@@ -1045,14 +1025,14 @@ return (
               The Problem
             </Text>
             <Text>
-              Today, social media shows us content that “keeps us on the hook”
-              to maximize their ad revenues. Many say this is a large
-              contributor to the increased divide in our society. Web2 services
-              are usually free for users – but real product on these platforms
-              are the users’ data, behavior and attention that is sold, usually
-              to advertising companies. The platform owner as middlemen is
-              reaping large profits from this, users do not get a share of the
-              value created besides the free service itself.
+              Today, social media shows us content that “keeps us on the hook” to
+              maximize their ad revenues. Many say this is a large contributor to the
+              increased divide in our society. Web2 services are usually free for
+              users – but real product on these platforms are the users’ data,
+              behavior and attention that is sold, usually to advertising companies.
+              The platform owner as middlemen is reaping large profits from this,
+              users do not get a share of the value created besides the free service
+              itself.
             </Text>
           </Card>
 
@@ -1061,29 +1041,28 @@ return (
               The Solution
             </Text>
             <Text>
-              In Web3 economies, everyone gets their fair share, and incentives
-              are fully transparent. Thereby, any collective can build its own
+              In Web3 economies, everyone gets their fair share, and incentives are
+              fully transparent. Thereby, any collective can build its own
               functioning economy, and any person with internet access has the
-              ability to participate. When the value creation and transfer
-              within an economy is determined by rules on the blockchain, this
-              cuts out the middleman that is controlling and monetizing today’s
-              centralized platform. The result is an economic model (a.k.a.
-              Tokenomics) that the community of users agree on.
+              ability to participate. When the value creation and transfer within an
+              economy is determined by rules on the blockchain, this cuts out the
+              middleman that is controlling and monetizing today’s centralized
+              platform. The result is an economic model (a.k.a. Tokenomics) that the
+              community of users agree on.
             </Text>
           </Card>
         </Flex>
 
         <Card gap="12px">
           <Text size="text-l" fontWeight="600" color="red8" flex>
-            <i className="ph-duotone ph-warning"></i>A word of caution: Do your
-            own research
+            <i className="ph-duotone ph-warning"></i>A word of caution: Do your own
+            research
           </Text>
           <Text>
             Not all economic models are sustainable: Some Web3 projects misuse
-            incentives to maximize growth of their platform, and this can lead
-            to unstable systems that result in crashes like the Terra/Luna/Anker
-            case. Be diligent and careful before putting your money into
-            projects.
+            incentives to maximize growth of their platform, and this can lead to
+            unstable systems that result in crashes like the Terra/Luna/Anker case.
+            Be diligent and careful before putting your money into projects.
           </Text>
         </Card>
 
@@ -1104,9 +1083,9 @@ return (
                 NEARWEEK
               </Text>
               <Text>
-                Anyone can suggest news articles on the blockchain, there is a
-                voting process to select the articles to be published and the
-                authors of the articles get compensated when published
+                Anyone can suggest news articles on the blockchain, there is a voting
+                process to select the articles to be published and the authors of the
+                articles get compensated when published
               </Text>
             </Flex>
             <Widget
@@ -1132,8 +1111,8 @@ return (
               </Text>
               <Text>
                 The SweatCoin app rewards your daily steps with a new-generation
-                currency you can spend on cool products, donate to charity or
-                convert into SWEAT.
+                currency you can spend on cool products, donate to charity or convert
+                into SWEAT.
               </Text>
             </Flex>
             <Widget
@@ -1160,9 +1139,9 @@ return (
               Gig economies without the corporate middlemen
             </Text>
             <Text>
-              Web3 rideshare apps and the gig economy will give service
-              providers the lion share of the revenue they created and more
-              flexibility, while passengers pay less for those services.
+              Web3 rideshare apps and the gig economy will give service providers the
+              lion share of the revenue they created and more flexibility, while
+              passengers pay less for those services.
             </Text>
           </Card>
 
@@ -1171,10 +1150,9 @@ return (
               Education revolution
             </Text>
             <Text>
-              Accredited education and the Learn2Earn economy will be available
-              to everyone, giving educators more autonomy and better pay while
-              providing students with high-quality education without a mountain
-              of debt.
+              Accredited education and the Learn2Earn economy will be available to
+              everyone, giving educators more autonomy and better pay while providing
+              students with high-quality education without a mountain of debt.
             </Text>
           </Card>
         </Flex>

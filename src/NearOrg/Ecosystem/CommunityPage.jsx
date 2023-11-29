@@ -46,8 +46,8 @@ const Flex = styled.div`
       p.mobileStack === true
         ? "var(--section-gap)"
         : p.mobileStack
-        ? p.mobileStack
-        : p.gap};
+          ? p.mobileStack
+          : p.gap};
   }
 `;
 const Section = styled.div`
@@ -92,8 +92,7 @@ function returnIpfsImage(cfid) {
 
 const ipfsImages = {
   logoCreatebase: "bafkreignv7fxrwquqr66wsow76amhghyrdd3k3ecb7up6dzem6vhz2cgki",
-  logoCypherpunkGuild:
-    "bafkreie25aa7gfb5u3p7bouxc6xknismfgtdtlt3yi7pqau3nqtksvvnsm",
+  logoCypherpunkGuild: "bafkreie25aa7gfb5u3p7bouxc6xknismfgtdtlt3yi7pqau3nqtksvvnsm",
   logo4NTSGuild: "bafkreifrjw7dyg7ff3jrvzq35napmpiwcxdt2wrmo4hkysma7scr3jwake",
 };
 
@@ -109,15 +108,13 @@ const involvedCards = [
     iconClassName: "ph ph-chart-pie-slice",
     iconColor: "red7",
     title: "Make an Impact",
-    content:
-      "Help give power (money, data, and governance) back to the people.",
+    content: "Help give power (money, data, and governance) back to the people.",
   },
   {
     iconClassName: "ph ph-hand-heart",
     iconColor: "cyan7",
     title: "Give Back",
-    content:
-      "When you contribute to building a better future, good things happen.",
+    content: "When you contribute to building a better future, good things happen.",
   },
   {
     iconClassName: "ph ph-chart-line-up",
@@ -132,8 +129,7 @@ const getStartedCards = [
     iconClassName: "ph ph-graduation-cap",
     iconColor: "violet7",
     title: "Education",
-    content:
-      "Learn the basics, explore the ecosystem, or dive deep into the tech.",
+    content: "Learn the basics, explore the ecosystem, or dive deep into the tech.",
     href: "https://near.org/learn/learn-more",
     hrefText: "See all Learn Resources",
     internal: false,
@@ -151,8 +147,7 @@ const getStartedCards = [
     iconClassName: "ph ph-check-square-offset",
     iconColor: "red7",
     title: "Community Events",
-    content:
-      "Worldwide opportunities to attend, participate, connect and more.",
+    content: "Worldwide opportunities to attend, participate, connect and more.",
     href: "https://near.events",
     hrefText: "Go to Events Site",
     internal: true,
@@ -267,8 +262,8 @@ return (
           Get Started
         </Text>
         <Text size="text-m" color="sand12">
-          The NEAR Community provides a number of ways for you to start
-          learning, earning, and growing.
+          The NEAR Community provides a number of ways for you to start learning,
+          earning, and growing.
         </Text>
 
         <div className="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-4">
@@ -322,9 +317,9 @@ return (
           Guilds: Opening the web through community initiatives.
         </Text>
         <Text size="text-m" color="sand12" style={{ maxWidth: "662px" }}>
-          Guilds are collectives that make up the greater NEAR community. Each
-          guild shares a specific vision and mission related to driving a more
-          open, interconnected, and consumer-empowered world.
+          Guilds are collectives that make up the greater NEAR community. Each guild
+          shares a specific vision and mission related to driving a more open,
+          interconnected, and consumer-empowered world.
         </Text>
         <Text size="text-l" color="sand12" style={{ maxWidth: "662px" }}>
           Featured Guilds

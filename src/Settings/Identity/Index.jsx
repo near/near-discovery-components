@@ -1,7 +1,6 @@
-const [showBanner, setShowBanner] = useState(false);
-
-// const modalOpen = fractalModal?.alert ?? false;
-// const fractalModal = Storage.get("fractal-alert") ?? null;
+const [showBanner, setShowBanner] = useState(true);
+const [idosData, setIdosData] = useState(null);
+const [showSuccessTooltip, setShowSuccessTooltip] = useState(props.showTooltip);
 
 const Wrapper = styled.div`
   display: flex;
@@ -29,6 +28,12 @@ const Icon = styled.i`
 `;
 
 const bannerToggle = useCallback(() => setShowBanner(!showBanner), [showBanner]);
+
+useEffect(() => {
+  if (!props.idosConnected && props.connectIdOS) {
+    props.connectIdOS()
+  }
+}, [props.idosConnected, props.connectIdOS]);
 
 return (
   <Wrapper>
@@ -61,16 +66,21 @@ return (
       <Widget src="${REPL_ACCOUNT}/widget/Settings.Identity.Verifications.Index" props={{ ...props }} />
     )}
 
-    {/* For some reson this modal won't fires up for KYC that's why we hide it for now */}
-    {/* <Widget
-      src="${REPL_ACCOUNT}/widget/Settings.Identity.Alert"
-      props={{
-        open: modalOpen,
-        href: fractalModal?.href ?? null,
-        onOpenChange: () => Storage.set("fractal-alert", { alert: false, href: null }),
-        onCancel: () => Storage.set("fractal-alert", { alert: false, href: null }),
-        onConfirm: () => {},
-      }}
-    /> */}
+    {showSuccessTooltip && (
+      <Widget
+        src="${REPL_ACCOUNT}/widget/DIG.Toast"
+        props={{
+          type: "success",
+          title: "idOS connection successful",
+          description:
+            "idOS data view created. Your data will be displayed soon when your request has been reviewed and approved (approx 1 - 10 minutes).",
+          open: showSuccessTooltip,
+          onOpenChange: () => {
+            setShowSuccessTooltip(false);
+          },
+          duration: 10000,
+        }}
+      />
+    )}
   </Wrapper>
 );

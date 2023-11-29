@@ -136,12 +136,13 @@ let { blockHeight, accountId, manageNotification, permission } = props;
 let postUrl = "";
 
 // Construct DevGov postUrl
+// TODO: refactor this method
 function buildPostUrl(widgetName, linkProps) {
   linkProps = { ...linkProps };
 
   const nearDevGovGigsWidgetsAccountId =
     props.nearDevGovGigsWidgetsAccountId ||
-    (context.widgetSrc ?? "devgovgigs.near").split("/", 1)[0];
+    "devgovgigs.near";
 
   if (props.nearDevGovGigsContractAccountId) {
     linkProps.nearDevGovGigsContractAccountId =

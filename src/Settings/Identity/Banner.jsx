@@ -34,6 +34,13 @@ const Card = styled.div`
   margin-bottom: 24px;
 `;
 
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+`;
+
 const Icon = styled.i`
   color: #697177;
   font-size: 20px;
@@ -45,6 +52,7 @@ const Icon = styled.i`
 `;
 
 const Text = styled.span`
+  font: var(--text-s);
   color: #1d1412;
 `;
 
@@ -57,15 +65,33 @@ return (
   <Wrapper open={open}>
     <Card>
       <Icon className="ph ph-info" />
-      <Text>
-        To ensure the privacy of your data, all credentials and preferences you
-        enter on this settings page will be securely stored in a decentralized
-        identity operating system (idOS). Learn more about idOS{" "}
-        <TextLink href={idOSLearnLink} target="_blank">
-          here
-        </TextLink>
-        .
-      </Text>
+      <Content>
+        <Text>
+          To ensure the privacy of your data, all credentials and preferences you
+          enter on this settings page will be securely stored in a decentralized
+          identity operating system (idOS). Learn more about idOS{" "}
+          <TextLink href={idOSLearnLink} target="_blank">
+            here
+          </TextLink>
+          .
+        </Text>
+
+        <Text>
+          To use idOS we recommend you to use next wallet providers:{" "}
+          <TextLink href="https://wallet.meteorwallet.app" target="_blank">
+            Meteor Wallet,
+          </TextLink>{" "}
+          <TextLink href="https://www.herewallet.app" target="_blank">
+            HERE Wallet,
+          </TextLink>{" "}
+          <TextLink href="https://wallet.nightly.app" target="_blank">
+            Nightly Wallet,
+          </TextLink>{" "}
+          <TextLink href="https://app.mynearwallet.com" target="_blank">
+            MyNearWallet
+          </TextLink>{" "}
+        </Text>
+      </Content>
       <Icon className="ph ph-x" type="button" onClick={onClick} />
     </Card>
   </Wrapper>

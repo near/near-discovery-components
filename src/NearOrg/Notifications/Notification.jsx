@@ -209,6 +209,11 @@ const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 const isComment = path.indexOf("/post/comment") > 0 || type === "comment";
 const isPost = !isComment && path.indexOf("/post/main") > 0;
 
+const getDevHubParentId = Near.view("devgovgigs.near", "get_parent_id", {
+  post_id: props.value.post,
+});
+const isDevHubPost = getDevHubParentId === null;
+
 let notificationMessage = {
   like: isPost ? "liked your post" : "liked your comment",
   follow: "followed you",
@@ -221,16 +226,25 @@ let notificationMessage = {
   "devgovgigs/mention": "mentioned you in their post",
   "devgovgigs/edit": "edited your",
   "devgovgigs/reply": "replied to your post",
-  "devgovgigs/like": isPost ? "liked your post" : "liked your comment",
+  "devgovgigs/like": isDevHubPost ? "liked your post" : "liked your comment",
 };
 
-const contentPath = isPost
-  ? `${context.accountId}/post/main`
-  : `${accountId}/post/comment`;
+const getContentPreview = () => {
+  if (type && type.startsWith("devgovgigs")) {
+    const getDevHubContent = Near.view("devgovgigs.near", "get_post", {
+      post_id: props.value.post,
+    });
+    return getDevHubContent.snapshot.description;
+  }
 
-const contentDescription = JSON.parse(
-  Social.get(contentPath, blockHeight) ?? "null"
-);
+  const contentPath = isPost
+    ? `${context.accountId}/post/main`
+    : `${accountId}/post/comment`;
+  const contentDescription = JSON.parse(
+    Social.get(contentPath, blockHeight) ?? "null"
+  );
+  return contentDescription.text;
+};
 
 const actionable =
   type === "like" ||
@@ -351,8 +365,8 @@ return (
             />
           </Timestamp>
         </Text>
-        {actionable && contentDescription?.text && (
-          <Desc>{contentDescription.text}</Desc>
+        {actionable && getContentPreview() && (
+          <Desc>{getContentPreview()}</Desc>
         )}
       </Left>
       <Right>

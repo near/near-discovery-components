@@ -72,7 +72,7 @@ return (
           data={{
             listManager: {
               [listName]: items.concat(
-                state.inputContent.split(",").map((i) => i.trim())
+                state.inputContent.split(",").map((i) => i.trim()),
               ),
             },
           }}

@@ -274,10 +274,10 @@ const updateSearchHits = debounce(({ term, pageNumber, configs }) => {
       search: {
         profiles: profiles(results["profile"]),
         components: components(results["app, widget"]).concat(
-          components(results["widget"])
+          components(results["widget"]),
         ),
         postsAndComments: posts(results["post"], "post").concat(
-          posts(results["comment, post"], "post-comment")
+          posts(results["comment, post"], "post-comment"),
         ),
       },
       currentPage: pageNumber,

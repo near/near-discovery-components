@@ -106,7 +106,7 @@ const getRecommendedUsers = (page) => {
       } else {
         State.update({ isLoading: false, error: true, hasLoaded: true });
         console.error(
-          "Error fetching data. Try reloading the page, or no data available."
+          "Error fetching data. Try reloading the page, or no data available.",
         );
       }
     });
@@ -129,11 +129,11 @@ const isAccountMatch = (user, accountId) =>
 
 const handleFollowed = (accountId) => {
   const updatedDisplayedUsers = state.displayedUsers.filter(
-    (user) => !isAccountMatch(user, accountId)
+    (user) => !isAccountMatch(user, accountId),
   );
 
   const updatedAllUsers = state.allUsers.filter(
-    (user) => !isAccountMatch(user, accountId)
+    (user) => !isAccountMatch(user, accountId),
   );
 
   const nextUser = updatedAllUsers.find(
@@ -141,8 +141,8 @@ const handleFollowed = (accountId) => {
       !updatedDisplayedUsers.some(
         (displayedUser) =>
           isAccountMatch(displayedUser, user.recommended_profile) ||
-          isAccountMatch(displayedUser, user.similar_profile)
-      )
+          isAccountMatch(displayedUser, user.similar_profile),
+      ),
   );
 
   if (nextUser) {
@@ -215,7 +215,7 @@ return (
                 fromContext: fromContext,
                 onFollowed: () =>
                   handleFollowed(
-                    user.recommended_profile || user.similar_profile
+                    user.recommended_profile || user.similar_profile,
                   ),
               }}
             />

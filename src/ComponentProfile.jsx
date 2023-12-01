@@ -1,7 +1,7 @@
 const [accountId, widget, widgetName] = props.src.split("/");
 const metadata = Social.get(
   `${accountId}/widget/${widgetName}/metadata/**`,
-  "final"
+  "final",
 );
 
 const Wrapper = styled("Link")`
@@ -56,7 +56,10 @@ const Thumbnail = styled.div`
 `;
 
 return (
-  <Wrapper target="_blank" href={`/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${props.src}`}>
+  <Wrapper
+    target="_blank"
+    href={`/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${props.src}`}
+  >
     <Thumbnail>
       <Widget
         src="${REPL_MOB}/widget/Image"

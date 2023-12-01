@@ -10,7 +10,10 @@ const fetchPrivacy = useCallback(() => {
       setPrivacy(res.body);
     });
   } catch (error) {
-    console.error(`Error on fetching privacy from ${privacyDomainName}: `, error);
+    console.error(
+      `Error on fetching privacy from ${privacyDomainName}: `,
+      error,
+    );
   }
 }, [privacyDomainName]);
 

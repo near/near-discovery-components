@@ -18,7 +18,8 @@ const [componentImpressionsData, setComponentImpressionsData] = useState({
   executed_at: undefined,
 });
 const [developerSince, setDeveloperSince] = useState(undefined);
-const [numberOfComponentsPublished, setNumberOfComponentsPublished] = useState(0);
+const [numberOfComponentsPublished, setNumberOfComponentsPublished] =
+  useState(0);
 const [showAllDependencies, setShowAllDependencies] = useState(false);
 
 const indexerQueries = `
@@ -55,11 +56,11 @@ const normalizeMarkdown = (text) => {
   // remove images
   text = text.replace(/!\[(.*?)\]\(.*?\)/g, "$1");
   return text.trim();
-}
+};
 
 const formatDate = (date) => {
   return date.toISOString().split("T")[0];
-}
+};
 
 const computeWeekLabel = (weekDateString) => {
   let startDate = new Date(weekDateString);
@@ -67,7 +68,7 @@ const computeWeekLabel = (weekDateString) => {
   endDate.setDate(startDate.getDate() + 6);
   let label = `${formatDate(startDate)} - ${formatDate(endDate)}`;
   return label;
-}
+};
 
 const getComponentImpressions = () => {
   try {
@@ -129,7 +130,7 @@ const getComponentImpressions = () => {
   } catch (error) {
     console.error(
       "Error on fetching component impression data: ",
-      error.message
+      error.message,
     );
   }
 };
@@ -277,7 +278,7 @@ let dependencySources = [...(dependencyMatch || [])]
   .map((r) => r[1])
   .filter((r) => !!r);
 dependencySources = dependencySources.filter(
-  (r, i) => dependencySources.indexOf(r) === i && r !== "(.+)"
+  (r, i) => dependencySources.indexOf(r) === i && r !== "(.+)",
 );
 
 const accountProfileDescription =
@@ -309,7 +310,7 @@ useEffect(() => {
           data
             .eduohe_near_nearcon_2023_widget_activity_feed_widget_activity_aggregate
             .aggregate.count;
-        setNumberOfComponentsPublished(noComponents)
+        setNumberOfComponentsPublished(noComponents);
       }
     }
   });
@@ -401,8 +402,7 @@ return (
               <Widget
                 src="${REPL_ACCOUNT}/widget/Chart"
                 props={{
-                  definition:
-                    componentImpressionsData.weekly_chart_data_config,
+                  definition: componentImpressionsData.weekly_chart_data_config,
                   width: "180px",
                   height: "100px",
                 }}
@@ -429,14 +429,17 @@ return (
         ) : (
           <ItemsWrapper>
             {dependencySources
-              .slice(0, showAllDependencies ? dependencySources.length : DEPENDANCY_MAX)
+              .slice(
+                0,
+                showAllDependencies ? dependencySources.length : DEPENDANCY_MAX,
+              )
               .map((source) => (
                 <Widget
                   key={source}
                   src="${REPL_ACCOUNT}/widget/ComponentProfile"
                   props={{ src: source }}
                 />
-            ))}
+              ))}
             {dependencySources.length > DEPENDANCY_MAX && (
               <Widget
                 src="${REPL_ACCOUNT}/widget/DIG.Button"

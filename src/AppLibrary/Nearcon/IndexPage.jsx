@@ -20,7 +20,7 @@ function loadData() {
   if (state.apps.length > 0) return;
 
   asyncFetch(
-    "https://storage.googleapis.com/databricks-near-query-runner/output/nearcon_apps/apps_qualified.json"
+    "https://storage.googleapis.com/databricks-near-query-runner/output/nearcon_apps/apps_qualified.json",
   )
     .then((res) => {
       const apps = JSON.parse(res.body).data.map((app_raw) => {
@@ -58,7 +58,7 @@ function loadData() {
 
   // Load Upvote data
   asyncFetch(
-    "https://storage.googleapis.com/databricks-near-query-runner/output/nearcon_apps/apps_qualified_upvoted.json"
+    "https://storage.googleapis.com/databricks-near-query-runner/output/nearcon_apps/apps_qualified_upvoted.json",
   )
     .then((res) => {
       const apps = JSON.parse(res.body).data.map((app_raw) => {
@@ -347,7 +347,7 @@ return (
                     filteredApps = state.apps.filter(
                       (item) =>
                         item.recentTag &&
-                        item.recentTag.toLowerCase() === lowerCaseCategory
+                        item.recentTag.toLowerCase() === lowerCaseCategory,
                     );
                   }
                   return (
@@ -395,52 +395,56 @@ return (
               }
               return null;
             })}
-            {state.selectedTab === "Stats" && state.appsWithVoteData.length > 0 && (
-              <Section style={{"margin-top": "20px"}}>
-                <Widget
-                  src="${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.Charts.TopUpvotedApps"
-                  props={{ apps: state.appsWithVoteData, title: "Top 10 Apps by upvote" }}
-                />
-                <ChartContainer>
+            {state.selectedTab === "Stats" &&
+              state.appsWithVoteData.length > 0 && (
+                <Section style={{ "margin-top": "20px" }}>
                   <Widget
                     src="${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.Charts.TopUpvotedApps"
                     props={{
                       apps: state.appsWithVoteData,
-                      title: "Most upvoted in Earn",
-                      categoryFilter: "earn",
-                      width: "400px",
+                      title: "Top 10 Apps by upvote",
                     }}
                   />
-                  <Widget
-                    src="${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.Charts.TopUpvotedApps"
-                    props={{
-                      apps: state.appsWithVoteData,
-                      title: "Most upvoted in Play",
-                      categoryFilter: "play",
-                      width: "400px",
-                    }}
-                  />
-                  <Widget
-                    src="${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.Charts.TopUpvotedApps"
-                    props={{
-                      apps: state.appsWithVoteData,
-                      title: "Most upvoted in Develop",
-                      categoryFilter: "develop",
-                      width: "400px",
-                    }}
-                  />
-                  <Widget
-                    src="${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.Charts.TopUpvotedApps"
-                    props={{
-                      apps: state.appsWithVoteData,
-                      title: "Most upvoted in Engage",
-                      categoryFilter: "engage",
-                      width: "400px",
-                    }}
-                  />
-                </ChartContainer>
-              </Section>
-            )}
+                  <ChartContainer>
+                    <Widget
+                      src="${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.Charts.TopUpvotedApps"
+                      props={{
+                        apps: state.appsWithVoteData,
+                        title: "Most upvoted in Earn",
+                        categoryFilter: "earn",
+                        width: "400px",
+                      }}
+                    />
+                    <Widget
+                      src="${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.Charts.TopUpvotedApps"
+                      props={{
+                        apps: state.appsWithVoteData,
+                        title: "Most upvoted in Play",
+                        categoryFilter: "play",
+                        width: "400px",
+                      }}
+                    />
+                    <Widget
+                      src="${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.Charts.TopUpvotedApps"
+                      props={{
+                        apps: state.appsWithVoteData,
+                        title: "Most upvoted in Develop",
+                        categoryFilter: "develop",
+                        width: "400px",
+                      }}
+                    />
+                    <Widget
+                      src="${REPL_ACCOUNT}/widget/AppLibrary.Nearcon.Charts.TopUpvotedApps"
+                      props={{
+                        apps: state.appsWithVoteData,
+                        title: "Most upvoted in Engage",
+                        categoryFilter: "engage",
+                        width: "400px",
+                      }}
+                    />
+                  </ChartContainer>
+                </Section>
+              )}
             {state.selectedTab === "Event Guide" && (
               <Section>
                 <SubTabMenu>

@@ -8,7 +8,7 @@ const allWidgetsHistoryChangesBlocks = Social.keys(
   "final",
   {
     return_type: "History",
-  }
+  },
 );
 
 if (allWidgetsHistoryChangesBlocks === null) return "Loading...";

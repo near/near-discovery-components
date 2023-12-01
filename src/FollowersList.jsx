@@ -15,7 +15,7 @@ if (followers === null) {
 
 followers = Object.entries(followers || {});
 followers.sort(
-  (a, b) => b.graph.follow[accountId][1] - a.graph.follow[accountId][1]
+  (a, b) => b.graph.follow[accountId][1] - a.graph.follow[accountId][1],
 );
 
 const Wrapper = styled.div`
@@ -47,8 +47,14 @@ return (
   <Wrapper>
     {followers.map(([accountId], i) => (
       <Item key={i}>
-        <Widget src="${REPL_ACCOUNT}/widget/AccountProfile" props={{ accountId }} />
-        <Widget src="${REPL_ACCOUNT}/widget/FollowButton" props={{ accountId }} />
+        <Widget
+          src="${REPL_ACCOUNT}/widget/AccountProfile"
+          props={{ accountId }}
+        />
+        <Widget
+          src="${REPL_ACCOUNT}/widget/FollowButton"
+          props={{ accountId }}
+        />
       </Item>
     ))}
   </Wrapper>

@@ -153,7 +153,8 @@ const renderModeratedRow = (id, item) => {
   return { value: id, header, content: renderWidget };
 };
 
-const disabledMessage = "Button is disabled because you are not a moderator of this group.";
+const disabledMessage =
+  "Button is disabled because you are not a moderator of this group.";
 const blockItemHelperText =
   "to no longer be shown in feeds that obey moderation. \n" +
   "Direct links will show a moderation message. \n" +
@@ -289,7 +290,8 @@ const renderItem = (item) => {
                     "Cause this " +
                     pathToType(item.moderated_path) +
                     " " +
-                    blockItemHelperText + (isModerator ? "":  "\n" + disabledMessage),
+                    blockItemHelperText +
+                    (isModerator ? "" : "\n" + disabledMessage),
                   data: {
                     index: {
                       moderate: moderationDataFormat(
@@ -313,7 +315,9 @@ const renderItem = (item) => {
                 title: "Moderate Account",
                 disabled: !isModerator,
                 iconLeft: "ph-bold ph-prohibit",
-                tooltip: blockAccountHelperText + (isModerator ? "":  "\n" + disabledMessage),
+                tooltip:
+                  blockAccountHelperText +
+                  (isModerator ? "" : "\n" + disabledMessage),
                 variant: "destructive",
                 fill: "outline",
                 data: {

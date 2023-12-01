@@ -13,7 +13,7 @@ State.init({
 });
 
 const data = fetch(
-  `https://api.kitwallet.app/account/${accountId}/likelyNFTsFromBlock`
+  `https://api.kitwallet.app/account/${accountId}/likelyNFTsFromBlock`,
 );
 
 if (data.body?.list) {
@@ -36,7 +36,7 @@ if (data.body?.list) {
 
         allNfts = allNfts.slice(
           0,
-          state.currentPage * limitPerPage + limitPerPage
+          state.currentPage * limitPerPage + limitPerPage,
         );
       });
     }
@@ -74,7 +74,8 @@ const Card = styled("Link")`
   position: relative;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0px 12px 16px rgba(16, 24, 40, 0.08),
+  box-shadow:
+    0px 12px 16px rgba(16, 24, 40, 0.08),
     0px 4px 6px rgba(16, 24, 40, 0.03);
 
   .nft-thumbnail {

@@ -16,7 +16,7 @@ const profiles =
   accountIds.length > 0
     ? Social.getr(
         accountIds.map((id) => `${id}/profile`),
-        "final"
+        "final",
       )
     : null;
 

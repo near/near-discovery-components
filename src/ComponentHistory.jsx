@@ -262,7 +262,7 @@ return (
                 0,
                 state.showAllCommits
                   ? blocksChanges.length
-                  : COMMIT_DISPLAY_LIMIT
+                  : COMMIT_DISPLAY_LIMIT,
               )
               .map((blockHeight, key) => (
                 <button

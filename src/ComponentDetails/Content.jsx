@@ -67,6 +67,4 @@ const ComponentTabsContent = () => {
   }
 };
 
-return (
-  <ComponentTabsContent />
-);
+return <ComponentTabsContent />;

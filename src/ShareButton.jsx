@@ -14,7 +14,7 @@ mailtoUrl.searchParams.set(
   "body",
   `Take a look this ${postType}.
 ${externalLink}
-`
+`,
 );
 
 const Button = styled.button`

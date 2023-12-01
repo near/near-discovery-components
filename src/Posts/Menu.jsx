@@ -3,7 +3,8 @@ const blockHeight = props.blockHeight;
 const parentFunctions = props.parentFunctions;
 const contentType = props.contentType || "post";
 const contentPath = props.contentPath || "/post/main";
-const capitalizedContentType = contentType.charAt(0).toUpperCase() + contentType.slice(1);
+const capitalizedContentType =
+  contentType.charAt(0).toUpperCase() + contentType.slice(1);
 
 const confirmationMessages = {
   savingData: {
@@ -52,16 +53,16 @@ const moderateItem = (account, block, action, messageKey) => {
       }),
     };
   }
-  if(parentFunctions.optimisticallyHideItem) {
-    parentFunctions.optimisticallyHideItem(confirmationMessages['savingData']);
+  if (parentFunctions.optimisticallyHideItem) {
+    parentFunctions.optimisticallyHideItem(confirmationMessages["savingData"]);
   }
   Social.set(data, {
     onCommit: () => {
       parentFunctions.resolveHideItem(confirmationMessages[messageKey]);
     },
     onCancel: () => {
-        parentFunctions.cancelHideItem();
-    }
+      parentFunctions.cancelHideItem();
+    },
   });
 };
 
@@ -82,8 +83,8 @@ const moderateAccount = (account, action, messageKey) => {
       }),
     };
   }
-  if(parentFunctions.optimisticallyHideItem) {
-    parentFunctions.optimisticallyHideItem(confirmationMessages['savingData']);
+  if (parentFunctions.optimisticallyHideItem) {
+    parentFunctions.optimisticallyHideItem(confirmationMessages["savingData"]);
   }
   Social.set(data, {
     onCommit: () => {
@@ -91,7 +92,7 @@ const moderateAccount = (account, action, messageKey) => {
     },
     onCancel: () => {
       parentFunctions.cancelHideItem();
-    }
+    },
   });
 };
 
@@ -100,32 +101,29 @@ const buildMenu = (accountId, blockHeight, parentFunctions) => {
     {
       name: "Mute " + accountId,
       iconLeft: "ph-bold ph-ear-slash",
-      onSelect: () =>
-          moderateAccount(accountId, "hide", "hideAccount"),
-    }
+      onSelect: () => moderateAccount(accountId, "hide", "hideAccount"),
+    },
   ];
 
   const reportSubmenu = [
     {
       name: "Report " + accountId,
       iconLeft: "ph-bold ph-warning-octagon",
-      onSelect: () =>
-          moderateAccount(accountId, "report", "reportAccount"),
+      onSelect: () => moderateAccount(accountId, "report", "reportAccount"),
     },
   ];
 
-  if(blockHeight) {
+  if (blockHeight) {
     hideSubmenu.unshift({
       name: "Hide this " + capitalizedContentType,
       iconLeft: "ph-bold ph-eye-slash",
-      onSelect: () =>
-          moderateItem(accountId, blockHeight, "hide", "hideItem"),
+      onSelect: () => moderateItem(accountId, blockHeight, "hide", "hideItem"),
     });
     reportSubmenu.unshift({
       name: "Report this " + capitalizedContentType,
       iconLeft: "ph-bold ph-warning-octagon",
       onSelect: () =>
-          moderateItem(accountId, blockHeight, "report", "reportItem"),
+        moderateItem(accountId, blockHeight, "report", "reportItem"),
     });
   }
   return [
@@ -139,17 +137,17 @@ const buildMenu = (accountId, blockHeight, parentFunctions) => {
     },
     {
       name: (
-          <>
-            <i
-                className="ph-bold ph-warning-octagon"
-                style={{ color: "#D95C4A" }}
-            />
-            <span style={{ color: "#D95C4A" }}>Report</span>
-          </>
+        <>
+          <i
+            className="ph-bold ph-warning-octagon"
+            style={{ color: "#D95C4A" }}
+          />
+          <span style={{ color: "#D95C4A" }}>Report</span>
+        </>
       ),
       disabled: !context.accountId || context.accountId === accountId,
       subMenuProps: {
-        items: reportSubmenu
+        items: reportSubmenu,
       },
     },
     // {
@@ -157,8 +155,8 @@ const buildMenu = (accountId, blockHeight, parentFunctions) => {
     //   iconLeft: "ph-bold ph-pencil me-1",
     //   onSelect: parentFunctions.toggleEdit,
     //  },
-  ]
-}
+  ];
+};
 
 return (
   <Widget

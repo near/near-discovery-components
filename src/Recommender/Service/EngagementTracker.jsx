@@ -37,8 +37,7 @@ const trackEngagement = () => {
       Authorization: auth,
     },
     method: "POST",
-  })
-    .catch((error) => console.log(error));
+  }).catch((error) => console.log(error));
 };
 
 props.onClick ? trackEngagement(props) : null;

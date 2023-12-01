@@ -15,7 +15,7 @@ let {
 
 if (forwardedProps.as) {
   throw new Error(
-    'Invalid prop "as" passed to DIG.Button. If you need to render an anchor instead of a button, simply pass a "href" prop.'
+    'Invalid prop "as" passed to DIG.Button. If you need to render an anchor instead of a button, simply pass a "href" prop.',
   );
 }
 

@@ -21,7 +21,7 @@ const starredComponentsData = Social.keys(
   "final",
   {
     return_type: "BlockHeight",
-  }
+  },
 );
 let starredComponents = null;
 if (starredComponentsData) {
@@ -34,7 +34,7 @@ if (starredComponentsData) {
           accountId: authorAccountId,
           componentName,
         });
-      }
+      },
     );
   });
 }

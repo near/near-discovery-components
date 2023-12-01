@@ -55,13 +55,14 @@ const LikeButton = styled.button`
     transition: color 200ms;
 
     &.bi-heart-fill {
-      color: #E5484D !important;
+      color: #e5484d !important;
     }
   }
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     outline: none;
-    color: #11181C;
+    color: #11181c;
   }
 `;
 

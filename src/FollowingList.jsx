@@ -45,8 +45,14 @@ return (
   <Wrapper>
     {following.map(([accountId], i) => (
       <Item key={i}>
-        <Widget src="${REPL_ACCOUNT}/widget/AccountProfile" props={{ accountId }} />
-        <Widget src="${REPL_ACCOUNT}/widget/FollowButton" props={{ accountId }} />
+        <Widget
+          src="${REPL_ACCOUNT}/widget/AccountProfile"
+          props={{ accountId }}
+        />
+        <Widget
+          src="${REPL_ACCOUNT}/widget/FollowButton"
+          props={{ accountId }}
+        />
       </Item>
     ))}
   </Wrapper>

@@ -98,7 +98,7 @@ const getRecommendedUsers = (page) => {
       } else {
         State.update({ isLoading: false, error: true, hasLoaded: true });
         console.error(
-          "Error fetching data. Try reloading the page, or no data available."
+          "Error fetching data. Try reloading the page, or no data available.",
         );
       }
     });

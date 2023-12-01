@@ -6,7 +6,7 @@ const filterUserList = Social.get(
   "optimistic",
   {
     subscribe: true,
-  }
+  },
 );
 
 const filtered = filterUserList ? JSON.parse(filterUserList) : [];
@@ -48,7 +48,7 @@ return (
         data={{
           moderate: {
             users: filtered.concat(
-              state.inputContent.split(",").map((i) => i.trim())
+              state.inputContent.split(",").map((i) => i.trim()),
             ),
           },
         }}

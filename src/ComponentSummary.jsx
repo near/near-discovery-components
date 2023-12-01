@@ -101,7 +101,8 @@ const Thumbnail = styled.div`
   border: 1px solid #eceef0;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0px 1px 3px rgba(16, 24, 40, 0.1),
+  box-shadow:
+    0px 1px 3px rgba(16, 24, 40, 0.1),
     0px 1px 2px rgba(16, 24, 40, 0.06);
 
   img {

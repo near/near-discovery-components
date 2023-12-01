@@ -23,15 +23,18 @@ const Title = styled.h1`
 
 const Icon = styled.i`
   color: #697177;
-  margin-left: .5rem;
+  margin-left: 0.5rem;
   cursor: pointer;
 `;
 
-const bannerToggle = useCallback(() => setShowBanner(!showBanner), [showBanner]);
+const bannerToggle = useCallback(
+  () => setShowBanner(!showBanner),
+  [showBanner],
+);
 
 useEffect(() => {
   if (!props.idosConnected && props.connectIdOS) {
-    props.connectIdOS()
+    props.connectIdOS();
   }
 }, [props.idosConnected, props.connectIdOS]);
 
@@ -63,7 +66,10 @@ return (
     )}
 
     {props.idosConnected && (
-      <Widget src="${REPL_ACCOUNT}/widget/Settings.Identity.Verifications.Index" props={{ ...props }} />
+      <Widget
+        src="${REPL_ACCOUNT}/widget/Settings.Identity.Verifications.Index"
+        props={{ ...props }}
+      />
     )}
 
     {showSuccessTooltip && (

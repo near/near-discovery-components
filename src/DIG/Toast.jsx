@@ -15,28 +15,30 @@ type = type ?? "info";
 const Root = styled("Toast.Root")`
   background-color: white;
   border-radius: 6px;
-  box-shadow: 0px 4px 8px 0px var(--blackA4), 0px 0px 0px 1px var(--blackA4);
+  box-shadow:
+    0px 4px 8px 0px var(--blackA4),
+    0px 0px 0px 1px var(--blackA4);
   padding: 16px;
   display: grid;
-  grid-template-areas: 'icon title action' 'icon description action' 'icon description action';
+  grid-template-areas: "icon title action" "icon description action" "icon description action";
   grid-template-columns: auto 1fr max-content;
   column-gap: 16px;
   align-items: center;
 
-  &[data-state='open'] {
+  &[data-state="open"] {
     animation: slideIn 150ms cubic-bezier(0.16, 1, 0.3, 1);
   }
-  &[data-state='closed'] {
+  &[data-state="closed"] {
     animation: hide 100ms ease-in;
   }
-  &[data-swipe='move'] {
+  &[data-swipe="move"] {
     transform: translateX(var(--radix-toast-swipe-move-x));
   }
-  &[data-swipe='cancel'] {
+  &[data-swipe="cancel"] {
     transform: translateX(0);
     transition: transform 200ms ease-out;
   }
-  &[data-swipe='end'] {
+  &[data-swipe="end"] {
     animation: swipeOut 100ms ease-out;
   }
 

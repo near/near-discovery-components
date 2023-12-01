@@ -10,7 +10,7 @@ if (componentsData) {
   Object.keys(componentsData).forEach((accountId) => {
     stats.totalDevelopers++;
     stats.totalComponents += Object.keys(
-      componentsData[accountId].widget
+      componentsData[accountId].widget,
     ).length;
   });
 }

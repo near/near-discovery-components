@@ -50,7 +50,7 @@ const FlagButton = () => (
           onCommit: () => {
             props.onFlag && props.onFlag();
           },
-        }
+        },
       );
     }}
   >
@@ -59,9 +59,7 @@ const FlagButton = () => (
 );
 
 if (disabled) {
-  return (
-    <FlagButton />
-  );
+  return <FlagButton />;
 }
 
 return (

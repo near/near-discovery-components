@@ -35,7 +35,9 @@ const MenuItem = styled.div`
   transition: 0.2s all;
   font-weight: 400;
 
-  ${(p) => p.active && `
+  ${(p) =>
+    p.active &&
+    `
     font-weight: 700;
   `}
 `;
@@ -89,15 +91,16 @@ return (
   <Wrapper>
     <Title>Settings</Title>
 
-    {filteredMenuItems.length > 1 && filteredMenuItems.map((item) => (
-      <MenuItem
-        key={`settings-${item.id}`}
-        onClick={() => onClick(item.id)}
-        active={activeTab === item.id}
-      >
-        <Icon className={item.icon} />
-        <Text>{item.label}</Text>
-      </MenuItem>
-    ))}
+    {filteredMenuItems.length > 1 &&
+      filteredMenuItems.map((item) => (
+        <MenuItem
+          key={`settings-${item.id}`}
+          onClick={() => onClick(item.id)}
+          active={activeTab === item.id}
+        >
+          <Icon className={item.icon} />
+          <Text>{item.label}</Text>
+        </MenuItem>
+      ))}
   </Wrapper>
 );

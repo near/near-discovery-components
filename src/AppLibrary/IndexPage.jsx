@@ -12,14 +12,14 @@ if (props.tab && props.tab !== state.selectedTab) {
 
 const appLibraryIndexUrl = "/${REPL_ACCOUNT}/widget/AppLibrary.IndexPage";
 const selectedCategory = state.categories.find(
-  (category) => category.label === state.selectedTab
+  (category) => category.label === state.selectedTab,
 );
 
 function loadData() {
   if (state.categories.length > 0) return;
 
   asyncFetch(
-    "https://storage.googleapis.com/databricks-near-query-runner/output/app-store-updated.json"
+    "https://storage.googleapis.com/databricks-near-query-runner/output/app-store-updated.json",
   )
     .then((res) => {
       const data = JSON.parse(res.body);

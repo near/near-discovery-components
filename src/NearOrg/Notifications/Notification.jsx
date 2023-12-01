@@ -141,8 +141,7 @@ function buildPostUrl(widgetName, linkProps) {
   linkProps = { ...linkProps };
 
   const nearDevGovGigsWidgetsAccountId =
-    props.nearDevGovGigsWidgetsAccountId ||
-    "devgovgigs.near";
+    props.nearDevGovGigsWidgetsAccountId || "devgovgigs.near";
 
   if (props.nearDevGovGigsContractAccountId) {
     linkProps.nearDevGovGigsContractAccountId =

@@ -70,7 +70,7 @@ return (
           <Section key={i}>
             <Widget src={src} />
           </Section>
-        )
+        ),
     )}
 
     <Section>

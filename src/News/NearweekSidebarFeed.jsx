@@ -24,7 +24,7 @@ if (indexedPosts?.length > 0) {
 
       if (isValid) {
         const timeResponse = fetch(
-          `https://api.near.social/time?blockHeight=${post.blockHeight}`
+          `https://api.near.social/time?blockHeight=${post.blockHeight}`,
         );
         let createdAt = "";
         if (timeResponse) {
@@ -55,7 +55,7 @@ const data = fetch(
       Authorization:
         "Bearer 15699f0723aa9fe9f655b1a94e450552476c08807f67b525b5a3c8011eecc8aee6d45923443620f17815b897858be058cd7bd89ddf23a28aabaecb178e7ebc55d380293beeb51a8ce87b40e1518ce4708e4d51a06b115f27fa64ab5cbee5a3511cec785d7ae6a155ecd05ac8196aadae3e9b8e9401b8df8d8b69904f7364f925",
     },
-  }
+  },
 );
 
 const cssFont = fetch("https://fonts.cdnfonts.com/css/hubot-sans").body;

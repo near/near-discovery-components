@@ -67,9 +67,9 @@ return (
       <Icon className="ph ph-info" />
       <Content>
         <Text>
-          To ensure the privacy of your data, all credentials and preferences you
-          enter on this settings page will be securely stored in a decentralized
-          identity operating system (idOS). Learn more about idOS{" "}
+          To ensure the privacy of your data, all credentials and preferences
+          you enter on this settings page will be securely stored in a
+          decentralized identity operating system (idOS). Learn more about idOS{" "}
           <TextLink href={idOSLearnLink} target="_blank">
             here
           </TextLink>

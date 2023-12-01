@@ -33,7 +33,6 @@ return (
         src="${REPL_ACCOUNT}/widget/Comments.Comment"
         props={{ accountId, blockHeight: item.blockHeight }}
       />
-
     }
   </>
 );

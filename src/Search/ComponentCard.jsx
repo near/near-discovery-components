@@ -1,7 +1,7 @@
 const [accountId, widget, widgetName] = props.src.split("/");
 const metadata = Social.get(
   `${accountId}/widget/${widgetName}/metadata/**`,
-  "final"
+  "final",
 );
 const detailsUrl = `/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${accountId}/widget/${widgetName}`;
 const appUrl = `/${accountId}/widget/${widgetName}`;

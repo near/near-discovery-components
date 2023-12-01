@@ -43,9 +43,9 @@ const cancelHideItem = () => {
   State.update({
     hasBeenFlaggedOptimistic: false,
     showToast: false,
-    flaggedMessage: { header: "", detail: "" }
+    flaggedMessage: { header: "", detail: "" },
   });
-}
+};
 if (!state.content && accountId && blockHeight !== "now") {
   const commentQuery = `
 query CommentQuery {
@@ -154,146 +154,147 @@ const Actions = styled.div`
 `;
 
 return (
-<>
-{state.showToast && (
-  <Widget
-    src={`${REPL_ACCOUNT}/widget/DIG.Toast`}
-    props={{
-      type: "info",
-      title: state.flaggedMessage.header,
-      description: state.flaggedMessage.detail,
-      open: state.showToast,
-      onOpenChange: () => {
-        State.update({showToast: false});
-      },
-      duration: 5000,
-    }}
-  />
-)}
-{!state.hasBeenFlagged && (
-  <Comment>
-    <Header>
-      <div className="row">
-        <div className="col-auto">
-          <Widget
-            src="${REPL_ACCOUNT}/widget/AccountProfile"
-            props={{
-              accountId,
-              avatarSize: "32px",
-              hideAccountId: true,
-              inlineContent: (
-                <>
-                  <Text as="span">･</Text>
-                  {blockHeight === "now" ? (
-                    "now"
-                  ) : (
-                    <Text>
-                      <Widget
-                        src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
-                        props={{ blockHeight }}
-                      />{" "}
-                      ago
-                    </Text>
-                  )}
-                </>
-              ),
-            }}
-          />
-        </div>
-        <div className="col-1">
-          <div style={{ position: "absolute", right: 0, top: "2px" }}>
-            <Widget
-              src="${REPL_ACCOUNT}/widget/Posts.Menu"
-              props={{
-                accountId: accountId,
-                blockHeight: blockHeight,
-                parentFunctions: {
-                  optimisticallyHideItem,
-                  resolveHideItem,
-                  cancelHideItem,
-                },
-                contentType: "comment",
-                contentPath: `/post/comment`,
-              }}
-            />
+  <>
+    {state.showToast && (
+      <Widget
+        src={`${REPL_ACCOUNT}/widget/DIG.Toast`}
+        props={{
+          type: "info",
+          title: state.flaggedMessage.header,
+          description: state.flaggedMessage.detail,
+          open: state.showToast,
+          onOpenChange: () => {
+            State.update({ showToast: false });
+          },
+          duration: 5000,
+        }}
+      />
+    )}
+    {!state.hasBeenFlagged && (
+      <Comment>
+        <Header>
+          <div className="row">
+            <div className="col-auto">
+              <Widget
+                src="${REPL_ACCOUNT}/widget/AccountProfile"
+                props={{
+                  accountId,
+                  avatarSize: "32px",
+                  hideAccountId: true,
+                  inlineContent: (
+                    <>
+                      <Text as="span">･</Text>
+                      {blockHeight === "now" ? (
+                        "now"
+                      ) : (
+                        <Text>
+                          <Widget
+                            src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
+                            props={{ blockHeight }}
+                          />{" "}
+                          ago
+                        </Text>
+                      )}
+                    </>
+                  ),
+                }}
+              />
+            </div>
+            <div className="col-1">
+              <div style={{ position: "absolute", right: 0, top: "2px" }}>
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/Posts.Menu"
+                  props={{
+                    accountId: accountId,
+                    blockHeight: blockHeight,
+                    parentFunctions: {
+                      optimisticallyHideItem,
+                      resolveHideItem,
+                      cancelHideItem,
+                    },
+                    contentType: "comment",
+                    contentPath: `/post/comment`,
+                  }}
+                />
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </Header>
+        </Header>
 
-  {!state.hasBeenFlaggedOptimistic && (
-    <Main>
-      {state.content && (
-      <Content>
-        {state.content.text && (
-          <Widget
-            src="${REPL_ACCOUNT}/widget/SocialMarkdown"
-            props={{ text: state.content.text }}
-          />
+        {!state.hasBeenFlaggedOptimistic && (
+          <Main>
+            {state.content && (
+              <Content>
+                {state.content.text && (
+                  <Widget
+                    src="${REPL_ACCOUNT}/widget/SocialMarkdown"
+                    props={{ text: state.content.text }}
+                  />
+                )}
+
+                {state.content.image && (
+                  <Widget
+                    src="${REPL_MOB}/widget/Image"
+                    props={{
+                      image: state.content.image,
+                    }}
+                  />
+                )}
+              </Content>
+            )}
+            {blockHeight !== "now" && (
+              <Actions>
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/v1.LikeButton"
+                  props={{
+                    item: {
+                      type: "social",
+                      path: `${accountId}/post/comment`,
+                      blockHeight,
+                    },
+                    notifyAccountId: state.notifyAccountId,
+                  }}
+                />
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/CommentButton"
+                  props={{
+                    hideCount: true,
+                    onClick: () =>
+                      State.update({ showReply: !state.showReply }),
+                  }}
+                />
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/CopyUrlButton"
+                  props={{
+                    url: commentUrl,
+                  }}
+                />
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/ShareButton"
+                  props={{
+                    postType: "comment",
+                    url: commentUrl,
+                  }}
+                />
+              </Actions>
+            )}
+
+            {state.showReply && (
+              <div className="mb-2">
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/Comments.Compose"
+                  props={{
+                    initialText: `@${accountId}, `,
+                    notifyAccountId: extractNotifyAccountId(state.content.item),
+                    item: item,
+                    onComment: () => State.update({ showReply: false }),
+                  }}
+                />
+              </div>
+            )}
+          </Main>
         )}
-
-        {state.content.image && (
-          <Widget
-            src="${REPL_MOB}/widget/Image"
-            props={{
-              image: state.content.image,
-            }}
-          />
-        )}
-      </Content>
-      )}
-      {blockHeight !== "now" && (
-        <Actions>
-          <Widget
-            src="${REPL_ACCOUNT}/widget/v1.LikeButton"
-            props={{
-              item: {
-                type: "social",
-                path: `${accountId}/post/comment`,
-                blockHeight,
-              },
-              notifyAccountId: state.notifyAccountId,
-            }}
-          />
-          <Widget
-            src="${REPL_ACCOUNT}/widget/CommentButton"
-            props={{
-              hideCount: true,
-              onClick: () => State.update({ showReply: !state.showReply }),
-            }}
-          />
-          <Widget
-            src="${REPL_ACCOUNT}/widget/CopyUrlButton"
-            props={{
-              url: commentUrl,
-            }}
-          />
-          <Widget
-            src="${REPL_ACCOUNT}/widget/ShareButton"
-            props={{
-              postType: "comment",
-              url: commentUrl,
-            }}
-          />
-        </Actions>
-      )}
-
-      {state.showReply && (
-        <div className="mb-2">
-          <Widget
-            src="${REPL_ACCOUNT}/widget/Comments.Compose"
-            props={{
-              initialText: `@${accountId}, `,
-              notifyAccountId: extractNotifyAccountId(state.content.item),
-              item: item,
-              onComment: () => State.update({ showReply: false, }),
-            }}
-          />
-        </div>
-      )}
-    </Main>
-  )}
-  </Comment>
-)}
-</>
+      </Comment>
+    )}
+  </>
 );

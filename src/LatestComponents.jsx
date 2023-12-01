@@ -7,7 +7,7 @@ let recentAppPaths = [];
 
 const taggedData = Social.keys(
   `*/widget/*/metadata/tags/${requiredTag}`,
-  "final"
+  "final",
 );
 
 const blockHeights = Social.keys("*/widget/*", "final", {

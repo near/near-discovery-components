@@ -189,9 +189,9 @@ return (
             mobileSize="text-l"
             style={{ maxWidth: "808px" }}
           >
-            Plug NEAR’s DA layer into your L2 framework and start publishing transaction data
-            on a blockchain with a proven trajectory of 100% uptime over its
-            lifetime.
+            Plug NEAR’s DA layer into your L2 framework and start publishing
+            transaction data on a blockchain with a proven trajectory of 100%
+            uptime over its lifetime.
           </Text>
         </Flex>
 

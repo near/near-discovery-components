@@ -29,7 +29,7 @@ function returnExampleCodeForComponent(componentName) {
     it's a valid example for now:
   */
   const matches = component.metadata.description.match(
-    /```jsx([\s\S]*?)(?=```)/
+    /```jsx([\s\S]*?)(?=```)/,
   );
 
   /*
@@ -39,7 +39,7 @@ function returnExampleCodeForComponent(componentName) {
   */
   const code = (matches[1] ?? "").replace(
     /src="near\/widget/g,
-    `src="${author}/widget`
+    `src="${author}/widget`,
   );
 
   if (code) {

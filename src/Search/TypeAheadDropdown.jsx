@@ -366,7 +366,7 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
   const updateStateAfterFetching = (facet) => {
     return (resp) => {
       const { results, hitsTotal, hitsPerPage } = categorizeSearchHits(
-        resp.body
+        resp.body,
       );
 
       if (facet === "People") {
@@ -384,7 +384,7 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
             hitsTotal,
             hitsPerPage,
             hits: components(results["app, widget"]).concat(
-              components(results["widget"])
+              components(results["widget"]),
             ),
             queryID: resp.body.queryID,
           },
@@ -404,7 +404,7 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
             hitsTotal,
             hitsPerPage,
             hits: posts(results["post"], "post").concat(
-              posts(results["comment, post"], "post-comment")
+              posts(results["comment, post"], "post-comment"),
             ),
             queryID: resp.body.queryID,
           },

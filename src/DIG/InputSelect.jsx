@@ -25,7 +25,9 @@ if (value) {
 const Content = styled("Select.Content")`
   background-color: var(--white);
   border-radius: 6px;
-  box-shadow: 0 4px 8px hsla(0, 0%, 0%, 0.06), 0 0 0 1px var(--sand4);
+  box-shadow:
+    0 4px 8px hsla(0, 0%, 0%, 0.06),
+    0 0 0 1px var(--sand4);
   min-width: 200px;
   max-width: var(--radix-select-trigger-width);
   max-height: var(--radix-select-content-available-height);

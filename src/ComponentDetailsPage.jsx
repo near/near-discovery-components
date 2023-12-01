@@ -123,7 +123,6 @@ if (tab && tab !== selectedTab) {
 
 return (
   <Wrapper>
-
     <Widget
       src="${REPL_ACCOUNT}/widget/ComponentSummary"
       props={{

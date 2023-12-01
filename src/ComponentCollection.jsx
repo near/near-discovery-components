@@ -32,7 +32,7 @@ if (data) {
   components.sort((a, b) => b.blockHeight - a.blockHeight);
   components = components.slice(
     0,
-    state.currentPage * limitPerPage + limitPerPage
+    state.currentPage * limitPerPage + limitPerPage,
   );
 }
 

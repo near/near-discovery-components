@@ -20,9 +20,10 @@ const CommentButton = styled.button`
     transition: color 200ms;
   }
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     outline: none;
-    color: #11181C;
+    color: #11181c;
   }
 `;
 

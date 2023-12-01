@@ -1,5 +1,5 @@
 const accountId = "near";
-const limit = porps.limit || 5;
+const limit = props.limit || 5;
 let posts = [];
 
 const indexedPosts = Social.index("post", "main", {

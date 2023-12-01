@@ -24,7 +24,7 @@ const parentPost = extractParentPost(item);
 return parentPost ? (
   <Widget
     src="${REPL_ACCOUNT}/widget/Posts.Post"
-    props={{ accountId, blockHeight: item.blockHeight }}
+    props={{ accountId: parentPost.accountId, blockHeight: item.blockHeight }}
   />
 ) : (
   <Widget

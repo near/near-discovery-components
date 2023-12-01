@@ -4,7 +4,7 @@ let posts = [];
 
 const indexedPosts = Social.index("post", "main", {
   accountId,
-  limit: 20,
+  limit: limit,
   order: "desc",
 });
 

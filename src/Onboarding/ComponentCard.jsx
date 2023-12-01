@@ -44,20 +44,13 @@ return (
     <Text>{`${accountId}/widget/${name}`}</Text>
 
     <div className="d-flex align-items-center g-3 mt-3">
-      <Text
-        as="div"
-        className="d-flex align-items-center"
-        title={`${props.commits.length || 0} commits`}
-      >
+      <Text as="div" className="d-flex align-items-center" title={`${props.commits.length || 0} commits`}>
         <i className="ph ph-git-commit" style={{ fontSize: "20px" }} />
         <span>{props.commits.length || 0}</span>
       </Text>
 
       <Text as="div" className="d-flex align-items-center">
-        <i
-          className="ph ph-dot"
-          style={{ fontSize: "20px", marginRight: 0, fontWeight: 600 }}
-        />
+        <i className="ph ph-dot" style={{ fontSize: "20px", marginRight: 0, fontWeight: 600 }} />
       </Text>
 
       <Text as="div" className="d-flex align-items-center">

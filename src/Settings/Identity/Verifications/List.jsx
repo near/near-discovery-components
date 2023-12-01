@@ -121,8 +121,7 @@ const CredentialType = ({ type }) => {
   );
 };
 
-if (!idosCredentials || (idosCredentials && idosCredentials.length === 0))
-  return <></>;
+if (!idosCredentials || (idosCredentials && idosCredentials.length === 0)) return <></>;
 
 return (
   <Wrapper>

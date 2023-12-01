@@ -41,9 +41,7 @@ const moderatedObjectsRaw = context.accountId
       order: "desc",
     }) ?? []
   : [];
-const moderatedObjects = moderatedObjectsRaw.filter(
-  (f) => f.accountId === moderatorAccount,
-);
+const moderatedObjects = moderatedObjectsRaw.filter((f) => f.accountId === moderatorAccount);
 const modifiedModerations = {}; // track update & delete operations
 
 return (
@@ -117,8 +115,7 @@ return (
                 label: f.value.label,
               };
             } else {
-              const label =
-                mod && mod.operation === "update" ? mod.label : f.value.label;
+              const label = mod && mod.operation === "update" ? mod.label : f.value.label;
               return (
                 <tr key={account}>
                   <td>{account}</td>

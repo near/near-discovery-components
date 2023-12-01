@@ -1,9 +1,7 @@
 const SEARCH_API_KEY = props.searchApiKey ?? "0e42c01107b8f555a41bcc0fa7f2a4df";
 const APPLICATION_ID = props.appId ?? "B6PI9UKKJT";
 const INDEX = props.index ?? "prod_near-social-feed";
-const API_URL =
-  props.apiUrl ??
-  `https://${APPLICATION_ID}-dsn.algolia.net/1/indexes/${INDEX}/query?`;
+const API_URL = props.apiUrl ?? `https://${APPLICATION_ID}-dsn.algolia.net/1/indexes/${INDEX}/query?`;
 const INITIAL_PAGE = props.initialPage ?? 0;
 const facets = props.facets ?? ["All", "People", "Apps", "Components", "Posts"];
 const tab = props.tab ?? "All";
@@ -275,8 +273,7 @@ const posts = (content, postType) => {
       type: "md",
       text: post.content,
     };
-    const headerStyling =
-      postType === "post" ? "border rounded-4 p-3 pb-1" : "pt-3 border-top pb-2";
+    const headerStyling = postType === "post" ? "border rounded-4 p-3 pb-1" : "pt-3 border-top pb-2";
 
     posts.push({
       accountId,
@@ -379,9 +376,7 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
           apps: {
             hitsTotal,
             hitsPerPage,
-            hits: components(results["app, widget"]).concat(
-              components(results["widget"]),
-            ),
+            hits: components(results["app, widget"]).concat(components(results["widget"])),
             queryID: resp.body.queryID,
           },
         });
@@ -399,9 +394,7 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
           postsAndComments: {
             hitsTotal,
             hitsPerPage,
-            hits: posts(results["post"], "post").concat(
-              posts(results["comment, post"], "post-comment"),
-            ),
+            hits: posts(results["post"], "post").concat(posts(results["comment, post"], "post-comment")),
             queryID: resp.body.queryID,
           },
         });
@@ -959,13 +952,10 @@ return (
 
       <FixedFooter>
         <ButtonLink
-          href={`${searchPageUrl}?term=${encodeURIComponent(props.term)}&tab=${
-            state.selectedTab
-          }`}
+          href={`${searchPageUrl}?term=${encodeURIComponent(props.term)}&tab=${state.selectedTab}`}
           onClick={handleCloseSearchMenu}
         >
-          {state.paginate?.hitsTotal > 0 &&
-            ` See ${tabCount(state.selectedTab)} Results`}
+          {state.paginate?.hitsTotal > 0 && ` See ${tabCount(state.selectedTab)} Results`}
         </ButtonLink>
       </FixedFooter>
 

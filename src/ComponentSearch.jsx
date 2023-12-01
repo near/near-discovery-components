@@ -1,6 +1,4 @@
-const allMetadata =
-  Social.get(["*/widget/*/metadata/name", "*/widget/*/metadata/tags/*"], "final") ||
-  {};
+const allMetadata = Social.get(["*/widget/*/metadata/name", "*/widget/*/metadata/tags/*"], "final") || {};
 const keys = Social.keys(["*/widget/*"], "final", { values_only: true }) || {};
 
 const requiredTag = props.filterTag;
@@ -64,8 +62,7 @@ const _search = (term) => {
         MaxSingleScore,
         tags.map(computeScore).reduce((s, v) => s + v, 0),
       );
-      const score =
-        (widgetSrcScore + componentIdScore + nameScore + tagsScore) / MaxScore;
+      const score = (widgetSrcScore + componentIdScore + nameScore + tagsScore) / MaxScore;
       if (score > 0) {
         matchedWidgets.push({
           score,
@@ -80,9 +77,7 @@ const _search = (term) => {
     });
   });
 
-  matchedWidgets.sort(
-    (a, b) => (b.boosted ? 2 : 0) + b.score - (a.boosted ? 2 : 0) - a.score,
-  );
+  matchedWidgets.sort((a, b) => (b.boosted ? 2 : 0) + b.score - (a.boosted ? 2 : 0) - a.score);
   const result = matchedWidgets.slice(0, limit);
 
   State.update({

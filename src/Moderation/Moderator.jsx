@@ -29,35 +29,28 @@ function overview() {
         <p>Welcome to Moderation for Group: {group}</p>
         {context.accountId === moderatorAccount ? (
           <p>
-            <span style={{ fontWeight: "bold" }}>{moderatorAccount}</span> you are a
-            Moderator of this group.
+            <span style={{ fontWeight: "bold" }}>{moderatorAccount}</span> you are a Moderator of this group.
           </p>
         ) : (
           <>
             <p>{context.accountId} you are NOT a moderator of this group.</p>
             <p style={{ color: "grey", float: left, paddingRight: "2em" }}>
-              When saving, ensure data is being written to moderator key. You may
-              need to refresh your browser if you used "Pretend to be another
-              account" while on this page
+              When saving, ensure data is being written to moderator key. You may need to refresh your browser if you
+              used "Pretend to be another account" while on this page
             </p>
           </>
         )}
         <div style={{ paddingLeft: "2em" }}>
           <p>
-            Moderating a post or comment will prevent users other than the posting
-            user from seeing it in near widgets (ones where the path starts with
-            /near/widget).
+            Moderating a post or comment will prevent users other than the posting user from seeing it in near widgets
+            (ones where the path starts with /near/widget).
           </p>
-          <p>
-            Moderating an account will apply moderation to all posts and comments
-            made by that account.
-          </p>
+          <p>Moderating an account will apply moderation to all posts and comments made by that account.</p>
         </div>
         <p>
-          The Flagged Feed (in Needs Moderation) is being phased out in favor of the
-          new reporting options and data. While widgets transition, some items may be
-          Flagged instead of Reported. These items can still be reviewed and manually
-          moderated (using the controls in the Previously Moderated section).
+          The Flagged Feed (in Needs Moderation) is being phased out in favor of the new reporting options and data.
+          While widgets transition, some items may be Flagged instead of Reported. These items can still be reviewed and
+          manually moderated (using the controls in the Previously Moderated section).
         </p>
       </Instructions>
     </div>
@@ -78,9 +71,7 @@ function needsModeration() {
             {
               name: "Reported",
               value: "needsModeration",
-              content: (
-                <Widget src="${REPL_ACCOUNT}/widget/Moderation.NeedsModeration" />
-              ),
+              content: <Widget src="${REPL_ACCOUNT}/widget/Moderation.NeedsModeration" />,
               icon: "ph ph-warning-octagon",
             },
             {

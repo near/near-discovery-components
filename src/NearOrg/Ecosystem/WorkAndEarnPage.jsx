@@ -46,12 +46,7 @@ const Flex = styled.div`
 
   @media (max-width: 900px) {
     flex-direction: ${(p) => (p.mobileStack ? "column" : p.direction ?? "row")};
-    gap: ${(p) =>
-      p.mobileStack === true
-        ? "var(--section-gap)"
-        : p.mobileStack
-          ? p.mobileStack
-          : p.gap};
+    gap: ${(p) => (p.mobileStack === true ? "var(--section-gap)" : p.mobileStack ? p.mobileStack : p.gap)};
   }
 `;
 const Section = styled.div`
@@ -95,8 +90,7 @@ return (
         <Flex gap="16px" direction="column" alignItems="start">
           <H1>Work & Earn</H1>
           <Text size="text-xl" color="sand12">
-            If Web3 and blockchain are the future then NEAR is the vehicle to take
-            you there. Jump in!
+            If Web3 and blockchain are the future then NEAR is the vehicle to take you there. Jump in!
           </Text>
         </Flex>
       </Section>
@@ -109,18 +103,14 @@ return (
         <div className="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-4">
           <div className="col">
             <Card background="transparent" border="none">
-              <SocialIcon
-                className="ph ph-list-magnifying-glass"
-                color="var(--cyan7)"
-              />
+              <SocialIcon className="ph ph-list-magnifying-glass" color="var(--cyan7)" />
               <Text size="text-xl" color="sand12" fontWeight="600">
                 Find a job
               </Text>
               <Text size="text-m" color="sand12">
-                Entities across the NEAR Collective are actively looking for
-                individuals to fill technical and non-technical roles. Click below to
-                find a full-time job aimed at professionals and students or become an
-                ambassador.
+                Entities across the NEAR Collective are actively looking for individuals to fill technical and
+                non-technical roles. Click below to find a full-time job aimed at professionals and students or become
+                an ambassador.
               </Text>
               <Flex gap="24px" alignItems="start" direction="column">
                 <Widget
@@ -155,8 +145,7 @@ return (
                 Get a grant for your project
               </Text>
               <Text size="text-m" color="sand12">
-                Want to build on NEAR? Our foundation has grants to help you get
-                started.
+                Want to build on NEAR? Our foundation has grants to help you get started.
               </Text>
               <Flex gap="24px" alignItems="start" direction="column">
                 <Widget
@@ -179,9 +168,8 @@ return (
                 Complete a bounty
               </Text>
               <Text size="text-m" color="sand12">
-                Want to help improve the NEAR ecosystem? Join our bounties program.
-                Collaborate with others in the community to solve problems and earn
-                rewards.
+                Want to help improve the NEAR ecosystem? Join our bounties program. Collaborate with others in the
+                community to solve problems and earn rewards.
               </Text>
               <Flex gap="24px" alignItems="start" direction="column">
                 <Widget

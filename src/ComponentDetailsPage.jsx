@@ -135,39 +135,24 @@ return (
     />
 
     <Tabs>
-      <TabsButton
-        href={`${detailsUrl}&tab=source`}
-        selected={selectedTab === "source"}
-      >
+      <TabsButton href={`${detailsUrl}&tab=source`} selected={selectedTab === "source"}>
         <Icon className="ph ph-code" />
         Source & Preview
       </TabsButton>
-      <TabsButton
-        href={`${detailsUrl}&tab=about`}
-        selected={selectedTab === "about"}
-      >
+      <TabsButton href={`${detailsUrl}&tab=about`} selected={selectedTab === "about"}>
         <Icon className="ph ph-file-text" />
         Read.me
       </TabsButton>
-      <TabsButton
-        href={`${detailsUrl}&tab=discussion`}
-        selected={selectedTab === "discussion"}
-      >
+      <TabsButton href={`${detailsUrl}&tab=discussion`} selected={selectedTab === "discussion"}>
         <Icon className="ph ph-chat-circle-text" />
         Discussion
       </TabsButton>
     </Tabs>
 
     <ContentWrapper>
-      <Widget
-        src="${REPL_ACCOUNT}/widget/ComponentDetails.Content"
-        props={{ src, selectedTab, highlightComment }}
-      />
+      <Widget src="${REPL_ACCOUNT}/widget/ComponentDetails.Content" props={{ src, selectedTab, highlightComment }} />
 
-      <Widget
-        src="${REPL_ACCOUNT}/widget/ComponentDetails.Sidebar"
-        props={{ src, selectedTab, highlightComment }}
-      />
+      <Widget src="${REPL_ACCOUNT}/widget/ComponentDetails.Sidebar" props={{ src, selectedTab, highlightComment }} />
     </ContentWrapper>
   </Wrapper>
 );

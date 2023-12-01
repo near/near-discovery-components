@@ -154,10 +154,7 @@ return (
   <PaginationContainer>
     {state.pageRanges &&
       state.pageRanges.map((pageNumber) => (
-        <PaginationItem
-          onClick={() => onClickPage(pageNumber)}
-          key={`page-${pageNumber}`}
-        >
+        <PaginationItem onClick={() => onClickPage(pageNumber)} key={`page-${pageNumber}`}>
           {pageNumber !== RANGE_ITEM ? pageNumber : <>&#8230;</>}
         </PaginationItem>
       ))}

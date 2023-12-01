@@ -93,11 +93,7 @@ return (
                   "now"
                 ) : (
                   <>
-                    <Widget
-                      src="${REPL_MOB_2}/widget/TimeAgo@97556750"
-                      props={{ blockHeight }}
-                    />{" "}
-                    ago
+                    <Widget src="${REPL_MOB_2}/widget/TimeAgo@97556750" props={{ blockHeight }} /> ago
                   </>
                 )}
               </Text>
@@ -109,12 +105,7 @@ return (
 
     <Body>
       <Content>
-        {content.text && (
-          <Widget
-            src="${REPL_ACCOUNT}/widget/SocialMarkdown"
-            props={{ text: content.text }}
-          />
-        )}
+        {content.text && <Widget src="${REPL_ACCOUNT}/widget/SocialMarkdown" props={{ text: content.text }} />}
 
         {content.image && (
           <Widget

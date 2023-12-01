@@ -40,8 +40,7 @@ const renderItem = (a) =>
           accountId: a.accountId,
           blockHeight: a.blockHeight,
           highlight:
-            a.accountId === props.highlightComment?.accountId &&
-            a.blockHeight === props.highlightComment?.blockHeight,
+            a.accountId === props.highlightComment?.accountId && a.blockHeight === props.highlightComment?.blockHeight,
           raw,
         }}
       />

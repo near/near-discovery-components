@@ -1,9 +1,6 @@
 const profiles = Social.get(["*/profile/name", "*/profile/tags/*"], "final");
 
-const componentMetadata = Social.get(
-  ["*/widget/*/metadata/name", "*/widget/*/metadata/tags/*"],
-  "final",
-);
+const componentMetadata = Social.get(["*/widget/*/metadata/name", "*/widget/*/metadata/tags/*"], "final");
 
 const componentKeys = Social.keys(["*/widget/*"], "final", {
   values_only: true,
@@ -61,23 +58,18 @@ const computeComponents = (terms) => {
       const metadata = componentMetadata[accountId].widget[componentId].metadata;
       const name = metadata.name || componentId;
 
-      if (
-        requiredComponentTag &&
-        !(metadata.tags && requiredComponentTag in metadata.tags)
-      ) {
+      if (requiredComponentTag && !(metadata.tags && requiredComponentTag in metadata.tags)) {
         return;
       }
 
-      const boosted =
-        boostedComponentTag && metadata.tags && boostedComponentTag in metadata.tags;
+      const boosted = boostedComponentTag && metadata.tags && boostedComponentTag in metadata.tags;
       const tags = Object.keys(metadata.tags || {}).slice(0, 10);
       const nameScore = computeScore(name);
       const tagsScore = Math.min(
         MaxSingleScore,
         tags.map(computeScore).reduce((s, v) => s + v, 0),
       );
-      const score =
-        (widgetSrcScore + componentIdScore + nameScore + tagsScore) / MaxScore;
+      const score = (widgetSrcScore + componentIdScore + nameScore + tagsScore) / MaxScore;
 
       if (score > 0) {
         results.push({
@@ -93,9 +85,7 @@ const computeComponents = (terms) => {
     });
   });
 
-  results.sort(
-    (a, b) => (b.boosted ? 2 : 0) + b.score - (a.boosted ? 2 : 0) - a.score,
-  );
+  results.sort((a, b) => (b.boosted ? 2 : 0) + b.score - (a.boosted ? 2 : 0) - a.score);
 
   return results.slice(0, limitPerGroup);
 };

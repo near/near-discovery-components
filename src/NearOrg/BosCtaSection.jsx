@@ -66,8 +66,8 @@ return (
           </Text>
 
           <Text size="text-l" mobileSize="text-l" style={{ maxWidth: "808px" }}>
-            Effortlessly create and distribute decentralized apps on any blockchain
-            with the Blockchain Operating System.
+            Effortlessly create and distribute decentralized apps on any blockchain with the Blockchain Operating
+            System.
           </Text>
         </Flex>
 

@@ -1,7 +1,6 @@
 const accountId = context.accountId;
 const moderatorAccount = props?.moderatorAccount || "${REPL_MODERATOR}";
-const notificationFeedSrc =
-  "${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsList";
+const notificationFeedSrc = "${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsList";
 
 const isLocalStorageSupported = props?.isLocalStorageSupported;
 const isNotificationSupported = props?.isNotificationSupported;

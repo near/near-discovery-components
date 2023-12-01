@@ -1,17 +1,4 @@
-let {
-  disabled,
-  fill,
-  href,
-  icon,
-  iconLeft,
-  iconRight,
-  label,
-  loading,
-  size,
-  type,
-  variant,
-  ...forwardedProps
-} = props;
+let { disabled, fill, href, icon, iconLeft, iconRight, label, loading, size, type, variant, ...forwardedProps } = props;
 
 if (forwardedProps.as) {
   throw new Error(

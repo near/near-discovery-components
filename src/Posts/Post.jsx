@@ -1,9 +1,7 @@
-const GRAPHQL_ENDPOINT =
-  props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
+const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 const accountId = props.accountId;
 const verifications = props.verifications;
-const blockHeight =
-  props.blockHeight === "now" ? "now" : parseInt(props.blockHeight);
+const blockHeight = props.blockHeight === "now" ? "now" : parseInt(props.blockHeight);
 const blockTimestamp = props.blockTimestamp;
 const notifyAccountId = accountId;
 const postUrl = `https://${REPL_NEAR_URL}/s/p?a=${accountId}&b=${blockHeight}`;
@@ -256,10 +254,7 @@ return (
                     <>
                       <Text as="span">･</Text>
                       <Text>
-                        <Widget
-                          src="${REPL_ACCOUNT}/widget/TimeAgo"
-                          props={{ blockHeight, blockTimestamp }}
-                        />
+                        <Widget src="${REPL_ACCOUNT}/widget/TimeAgo" props={{ blockHeight, blockTimestamp }} />
                       </Text>
                       {false && edits.length > 0 && <Text as="span">･ Edited</Text>}
                     </>
@@ -293,10 +288,7 @@ return (
             {state.content && (
               <Content>
                 {state.content.text && !state.editPost && (
-                  <Widget
-                    src="${REPL_ACCOUNT}/widget/SocialMarkdown"
-                    props={{ text: state.content.text }}
-                  />
+                  <Widget src="${REPL_ACCOUNT}/widget/SocialMarkdown" props={{ text: state.content.text }} />
                 )}
 
                 {state.editPost && (

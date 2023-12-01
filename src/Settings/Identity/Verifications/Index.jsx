@@ -99,8 +99,7 @@ const verificationItems = [
 
 const verifiedItems = verificationItems
   .map((item) =>
-    idosCredentials &&
-    idosCredentials.find((cred) => cred.credential_type === item.id)
+    idosCredentials && idosCredentials.find((cred) => cred.credential_type === item.id)
       ? { ...item, verified: true }
       : item,
   )

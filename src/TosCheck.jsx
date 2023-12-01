@@ -81,23 +81,14 @@ const TosButtons = styled.div`
   align-items: center;
 `;
 
-if (
-  agreementsForUser.length === 0 ||
-  agreementsForUser[agreementsForUser.length - 1].value < latestTosVersion
-) {
+if (agreementsForUser.length === 0 || agreementsForUser[agreementsForUser.length - 1].value < latestTosVersion) {
   const acceptJson = Near.view("social.near", "get", {
     keys: [context.accountId + "/index/tosAccept"],
   });
 
-  const latestAccept = acceptJson
-    ? JSON.parse(acceptJson[context.accountId]?.index?.tosAccept)
-    : undefined;
+  const latestAccept = acceptJson ? JSON.parse(acceptJson[context.accountId]?.index?.tosAccept) : undefined;
 
-  if (
-    latestAccept &&
-    latestAccept.key === acceptanceKey &&
-    latestAccept.value >= latestTosVersion
-  ) {
+  if (latestAccept && latestAccept.key === acceptanceKey && latestAccept.value >= latestTosVersion) {
     agreementsForUser = [...agreementsForUser, latestAccept];
   }
 }
@@ -134,8 +125,7 @@ const showTos =
   context.accountId &&
   latestTosVersion &&
   agreementsForUser &&
-  (!agreementsForUser.length ||
-    agreementsForUser[agreementsForUser.length - 1].value < latestTosVersion);
+  (!agreementsForUser.length || agreementsForUser[agreementsForUser.length - 1].value < latestTosVersion);
 
 if (agreementsForUser && recordToC) {
   recordToC({
@@ -202,8 +192,6 @@ return (
     )}
 
     {/* The following code is only needed to remain backwards compatible for the short term: */}
-    {props.targetComponent && (
-      <Widget src={props.targetComponent} props={props.targetProps} />
-    )}
+    {props.targetComponent && <Widget src={props.targetComponent} props={props.targetProps} />}
   </>
 );

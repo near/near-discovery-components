@@ -232,9 +232,7 @@ const DropdownItems = (menu, isSection, noDivider) => (
             ) : (
               <DropdownItem {...item} />
             )}
-            {isSection && !noDivider && menu?.items?.length === index + 1 && (
-              <Divider />
-            )}
+            {isSection && !noDivider && menu?.items?.length === index + 1 && <Divider />}
           </>
         ),
       )}

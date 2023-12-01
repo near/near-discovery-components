@@ -40,11 +40,7 @@ return (
         });
       }}
     >
-      {state.copiedShareUrl ? (
-        <i className="bi bi-check"></i>
-      ) : (
-        <i className="bi bi-link-45deg"></i>
-      )}
+      {state.copiedShareUrl ? <i className="bi bi-check"></i> : <i className="bi bi-link-45deg"></i>}
     </Button>
   </OverlayTrigger>
 );

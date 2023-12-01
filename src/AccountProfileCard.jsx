@@ -92,8 +92,7 @@ return (
           props={{
             image: profile.image,
             alt: profile.name,
-            fallbackUrl:
-              "https://ipfs.near.social/ipfs/bafkreibiyqabm3kl24gcb2oegb7pmwdi6wwrpui62iwb44l7uomnn3lhbi",
+            fallbackUrl: "https://ipfs.near.social/ipfs/bafkreibiyqabm3kl24gcb2oegb7pmwdi6wwrpui62iwb44l7uomnn3lhbi",
           }}
         />
       </Avatar>
@@ -108,20 +107,14 @@ return (
 
         {tags.length > 0 && (
           <TagsWrapper>
-            <Widget
-              src="${REPL_ACCOUNT}/widget/Tags"
-              props={{ tags, scroll: true }}
-            />
+            <Widget src="${REPL_ACCOUNT}/widget/Tags" props={{ tags, scroll: true }} />
           </TagsWrapper>
         )}
       </div>
     </CardLeft>
 
     {!!context.accountId && context.accountId !== props.accountId && (
-      <Widget
-        src="${REPL_ACCOUNT}/widget/FollowButton"
-        props={{ accountId: props.accountId }}
-      />
+      <Widget src="${REPL_ACCOUNT}/widget/FollowButton" props={{ accountId: props.accountId }} />
     )}
   </Card>
 );

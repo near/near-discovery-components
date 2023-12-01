@@ -140,12 +140,10 @@ let postUrl = "";
 function buildPostUrl(widgetName, linkProps) {
   linkProps = { ...linkProps };
 
-  const nearDevGovGigsWidgetsAccountId =
-    props.nearDevGovGigsWidgetsAccountId || "devgovgigs.near";
+  const nearDevGovGigsWidgetsAccountId = props.nearDevGovGigsWidgetsAccountId || "devgovgigs.near";
 
   if (props.nearDevGovGigsContractAccountId) {
-    linkProps.nearDevGovGigsContractAccountId =
-      props.nearDevGovGigsContractAccountId;
+    linkProps.nearDevGovGigsContractAccountId = props.nearDevGovGigsContractAccountId;
   }
 
   if (props.nearDevGovGigsWidgetsAccountId) {
@@ -294,11 +292,7 @@ const onConfirm = async () => {
 return (
   <Notification>
     <Icon>{iconType[type]}</Icon>
-    <Content
-      className="notification-item"
-      as={actionable ? "Link" : "div"}
-      href={actionable && postUrl}
-    >
+    <Content className="notification-item" as={actionable ? "Link" : "div"} href={actionable && postUrl}>
       <Left>
         <Link href={!props.onClick && profileUrl}>
           <ProfileOverlay>
@@ -326,20 +320,14 @@ return (
           <Timestamp>
             <Dot>·</Dot>
             {/* TODO: add title tag to show full time on hover */}
-            <Widget
-              src="${REPL_MOB_2}/widget/TimeAgo@97556750"
-              props={{ blockHeight: props.blockHeight }}
-            />
+            <Widget src="${REPL_MOB_2}/widget/TimeAgo@97556750" props={{ blockHeight: props.blockHeight }} />
           </Timestamp>
         </Text>
         {/* <Desc>{desc}</Desc> */}
       </Left>
       <Right>
         {(type === "follow" || type === "unfollow") && (
-          <Widget
-            src="${REPL_ACCOUNT}/widget/FollowButton"
-            props={{ accountId: props.accountId }}
-          />
+          <Widget src="${REPL_ACCOUNT}/widget/FollowButton" props={{ accountId: props.accountId }} />
         )}
 
         {type === "poke" && (

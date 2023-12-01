@@ -28,11 +28,7 @@ const CommentButton = styled.button`
 `;
 
 return (
-  <CommentButton
-    disabled={context.loading || !context.accountId}
-    title="Add Comment"
-    onClick={props.onClick}
-  >
+  <CommentButton disabled={context.loading || !context.accountId} title="Add Comment" onClick={props.onClick}>
     <i className="bi-chat" />
     {totalComments}
   </CommentButton>

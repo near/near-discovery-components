@@ -1,11 +1,4 @@
-let {
-  targetComponent,
-  targetProps,
-  logOut,
-  termsDomainName,
-  privacyDomainName,
-  recordToC,
-} = props;
+let { targetComponent, targetProps, logOut, termsDomainName, privacyDomainName, recordToC } = props;
 
 const tosName = props.tosName ?? "${REPL_ACCOUNT}/widget/TosContent";
 

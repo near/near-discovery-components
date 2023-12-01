@@ -42,12 +42,7 @@ const Flex = styled.div`
 
   @media (max-width: 900px) {
     flex-direction: ${(p) => (p.mobileStack ? "column" : p.direction ?? "row")};
-    gap: ${(p) =>
-      p.mobileStack === true
-        ? "var(--section-gap)"
-        : p.mobileStack
-          ? p.mobileStack
-          : p.gap};
+    gap: ${(p) => (p.mobileStack === true ? "var(--section-gap)" : p.mobileStack ? p.mobileStack : p.gap)};
   }
 `;
 const Section = styled.div`
@@ -101,8 +96,7 @@ const involvedCards = [
     iconClassName: "ph ph-binoculars",
     iconColor: "violet7",
     title: "Find your Tribe",
-    content:
-      "Make friends and connections pursuing a mission you’re passionate about.",
+    content: "Make friends and connections pursuing a mission you’re passionate about.",
   },
   {
     iconClassName: "ph ph-chart-pie-slice",
@@ -120,8 +114,7 @@ const involvedCards = [
     iconClassName: "ph ph-chart-line-up",
     iconColor: "green7",
     title: "Make a Living",
-    content:
-      "Work when you want, how you want, and get paid based on your contribution.",
+    content: "Work when you want, how you want, and get paid based on your contribution.",
   },
 ];
 const getStartedCards = [
@@ -163,8 +156,7 @@ const featuredGuildsCards = [
   {
     ipfsImage: ipfsImages.logoCypherpunkGuild,
     title: "Cypherpunk Guild",
-    content:
-      "A guild focussed on incentivizing builders to create privacy-enhancing technologies on NEAR.",
+    content: "A guild focussed on incentivizing builders to create privacy-enhancing technologies on NEAR.",
   },
   {
     ipfsImage: ipfsImages.logo4NTSGuild,
@@ -224,10 +216,8 @@ return (
         <Flex gap="16px" direction="column" alignItems="start">
           <H1>Community</H1>
           <Text size="text-xl" color="sand12" style={{ maxWidth: "662px" }}>
-            The NEAR community is a globally distributed home to innovators,
-            developers, and contributors supporting the protocol’s platform,
-            ecosystem, and applications. We’re all here to build a stronger
-            ecosystem.
+            The NEAR community is a globally distributed home to innovators, developers, and contributors supporting the
+            protocol’s platform, ecosystem, and applications. We’re all here to build a stronger ecosystem.
           </Text>
         </Flex>
       </Section>
@@ -241,10 +231,7 @@ return (
           {involvedCards.map((item) => (
             <div className="col">
               <Card center>
-                <SocialIcon
-                  className={item.iconClassName}
-                  color={`var(--${item.iconColor})`}
-                />
+                <SocialIcon className={item.iconClassName} color={`var(--${item.iconColor})`} />
                 <Text size="text-xl" color="sand12" fontWeight="600">
                   {item.title}
                 </Text>
@@ -262,18 +249,14 @@ return (
           Get Started
         </Text>
         <Text size="text-m" color="sand12">
-          The NEAR Community provides a number of ways for you to start learning,
-          earning, and growing.
+          The NEAR Community provides a number of ways for you to start learning, earning, and growing.
         </Text>
 
         <div className="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-4">
           {getStartedCards.map((item) => (
             <div className="col">
               <Card center style={{ height: "100%" }}>
-                <SocialIcon
-                  className={item.iconClassName}
-                  color={`var(--${item.iconColor})`}
-                />
+                <SocialIcon className={item.iconClassName} color={`var(--${item.iconColor})`} />
                 <Text size="text-xl" color="sand12" fontWeight="600">
                   {item.title}
                 </Text>
@@ -317,9 +300,8 @@ return (
           Guilds: Opening the web through community initiatives.
         </Text>
         <Text size="text-m" color="sand12" style={{ maxWidth: "662px" }}>
-          Guilds are collectives that make up the greater NEAR community. Each guild
-          shares a specific vision and mission related to driving a more open,
-          interconnected, and consumer-empowered world.
+          Guilds are collectives that make up the greater NEAR community. Each guild shares a specific vision and
+          mission related to driving a more open, interconnected, and consumer-empowered world.
         </Text>
         <Text size="text-l" color="sand12" style={{ maxWidth: "662px" }}>
           Featured Guilds
@@ -351,12 +333,7 @@ return (
       <Section background="linear-gradient(to right, hsla(0, 0%, 100%, 0), var(--sand3), hsla(0, 0%, 100%, 0))">
         <div className="row row-cols-md-3 row-cols-1 g-4">
           <div className="col">
-            <Card
-              background="transparent"
-              border="none"
-              padding="32px 0"
-              style={{ height: "100%" }}
-            >
+            <Card background="transparent" border="none" padding="32px 0" style={{ height: "100%" }}>
               <SocialIcon className="ph ph-video" color="var(--red7)" />
               <Text size="text-xl" color="sand12" fontWeight="600">
                 Watch
@@ -379,12 +356,7 @@ return (
           </div>
 
           <div className="col">
-            <Card
-              background="transparent"
-              border="none"
-              padding="32px 0"
-              style={{ height: "100%" }}
-            >
+            <Card background="transparent" border="none" padding="32px 0" style={{ height: "100%" }}>
               <SocialIcon className="ph ph-lightbulb" color="var(--violet7)" />
               <Text size="text-xl" color="sand12" fontWeight="600">
                 Read
@@ -418,12 +390,7 @@ return (
           </div>
 
           <div className="col">
-            <Card
-              background="transparent"
-              border="none"
-              padding="32px 0"
-              style={{ height: "100%" }}
-            >
+            <Card background="transparent" border="none" padding="32px 0" style={{ height: "100%" }}>
               <SocialIcon className="ph ph-chats" color="var(--cyan7)" />
               <Text size="text-xl" color="sand12" fontWeight="600">
                 Connect

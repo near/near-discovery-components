@@ -2,8 +2,7 @@ const postType = props.postType ?? "post";
 const externalLink = props.url;
 
 const clickbaitPrompt =
-  props.clickbaitPrompt ??
-  `Check out this ${postType} on @NEARProtocol\n#NEAR #BOS\n${externalLink}`;
+  props.clickbaitPrompt ?? `Check out this ${postType} on @NEARProtocol\n#NEAR #BOS\n${externalLink}`;
 
 const twitterUrl = new URL("https://twitter.com/intent/tweet");
 twitterUrl.searchParams.set("text", clickbaitPrompt);

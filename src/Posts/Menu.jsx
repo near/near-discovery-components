@@ -3,8 +3,7 @@ const blockHeight = props.blockHeight;
 const parentFunctions = props.parentFunctions;
 const contentType = props.contentType || "post";
 const contentPath = props.contentPath || "/post/main";
-const capitalizedContentType =
-  contentType.charAt(0).toUpperCase() + contentType.slice(1);
+const capitalizedContentType = contentType.charAt(0).toUpperCase() + contentType.slice(1);
 
 const confirmationMessages = {
   savingData: {
@@ -21,8 +20,7 @@ const confirmationMessages = {
   },
   reportItem: {
     header: capitalizedContentType + " Reported for Moderation",
-    detail:
-      "The item will no longer be shown to you and will be reviewed. Thanks for helping our Content Moderators.",
+    detail: "The item will no longer be shown to you and will be reviewed. Thanks for helping our Content Moderators.",
   },
   reportAccount: {
     header: "Account Reported for Moderation",

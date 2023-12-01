@@ -1,14 +1,4 @@
-let {
-  title,
-  description,
-  type,
-  trigger,
-  action,
-  open,
-  onOpenChange,
-  providerProps,
-  ...forwardedRootProps
-} = props;
+let { title, description, type, trigger, action, open, onOpenChange, providerProps, ...forwardedRootProps } = props;
 
 type = type ?? "info";
 

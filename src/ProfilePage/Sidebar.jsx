@@ -4,8 +4,7 @@ State.init({
 });
 
 const accountId = props.accountId;
-const profile =
-  props.profile || Social.get(`${accountId}/profile/**`, "final") || {};
+const profile = props.profile || Social.get(`${accountId}/profile/**`, "final") || {};
 const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 
 if (!accountId) {
@@ -27,19 +26,13 @@ const followers = Social.keys(`*/graph/follow/${accountId}`, "final", {
   return_type: "BlockHeight",
   values_only: true,
 });
-const followingCount = following
-  ? Object.keys(following[accountId].graph.follow || {}).length
-  : null;
+const followingCount = following ? Object.keys(following[accountId].graph.follow || {}).length : null;
 const followersCount = followers ? Object.keys(followers || {}).length : null;
 
 // Account follows you:
-const accountFollowsYouData = Social.keys(
-  `${accountId}/graph/follow/${context.accountId}`,
-  undefined,
-  {
-    values_only: true,
-  },
-);
+const accountFollowsYouData = Social.keys(`${accountId}/graph/follow/${context.accountId}`, undefined, {
+  values_only: true,
+});
 const accountFollowsYou = Object.keys(accountFollowsYouData || {}).length > 0;
 
 const contentModerationItem = {
@@ -251,8 +244,7 @@ return (
         props={{
           image: profile.image,
           alt: profile.name,
-          fallbackUrl:
-            "https://ipfs.near.social/ipfs/bafkreibiyqabm3kl24gcb2oegb7pmwdi6wwrpui62iwb44l7uomnn3lhbi",
+          fallbackUrl: "https://ipfs.near.social/ipfs/bafkreibiyqabm3kl24gcb2oegb7pmwdi6wwrpui62iwb44l7uomnn3lhbi",
         }}
       />
     </Avatar>
@@ -299,10 +291,7 @@ return (
 
       <Actions>
         {viewingOwnAccount ? (
-          <Link
-            className="button button--primary"
-            href="/${REPL_ACCOUNT}/widget/ProfileEditor"
-          >
+          <Link className="button button--primary" href="/${REPL_ACCOUNT}/widget/ProfileEditor">
             <i className="bi bi-pencil"></i>
             Edit Profile
           </Link>
@@ -328,10 +317,7 @@ return (
           <></>
         )}
 
-        <OverlayTrigger
-          placement="top"
-          overlay={<Tooltip>Copy URL to clipboard</Tooltip>}
-        >
+        <OverlayTrigger placement="top" overlay={<Tooltip>Copy URL to clipboard</Tooltip>}>
           <button
             className="button"
             type="button"
@@ -344,11 +330,7 @@ return (
               });
             }}
           >
-            {state.copiedShareUrl ? (
-              <i className="bi-16 bi bi-check"></i>
-            ) : (
-              <i className="bi-16 bi-link-45deg"></i>
-            )}
+            {state.copiedShareUrl ? <i className="bi-16 bi bi-check"></i> : <i className="bi-16 bi-link-45deg"></i>}
             Share
           </button>
         </OverlayTrigger>
@@ -390,28 +372,19 @@ return (
           )}
 
           {profile.linktree.github && (
-            <TextLink
-              href={`https://github.com/${profile.linktree.github}`}
-              target="_blank"
-            >
+            <TextLink href={`https://github.com/${profile.linktree.github}`} target="_blank">
               <i className="bi bi-github"></i> {profile.linktree.github}
             </TextLink>
           )}
 
           {profile.linktree.twitter && (
-            <TextLink
-              href={`https://twitter.com/${profile.linktree.twitter}`}
-              target="_blank"
-            >
+            <TextLink href={`https://twitter.com/${profile.linktree.twitter}`} target="_blank">
               <i className="bi bi-twitter"></i> {profile.linktree.twitter}
             </TextLink>
           )}
 
           {profile.linktree.telegram && (
-            <TextLink
-              href={`https://t.me/${profile.linktree.telegram}`}
-              target="_blank"
-            >
+            <TextLink href={`https://t.me/${profile.linktree.telegram}`} target="_blank">
               <i className="bi bi-telegram"></i> {profile.linktree.telegram}
             </TextLink>
           )}

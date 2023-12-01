@@ -7,8 +7,7 @@ State.init({
   sort: null,
 });
 
-const GRAPHQL_ENDPOINT =
-  props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
+const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 const LIMIT = 10;
 const feeds = props.feeds ?? ["all", "following"];
 const feedLabels = { all: "All", following: "Following", mutual: "Mutual Activity" };
@@ -18,8 +17,7 @@ const filteredAccountIds = props.filteredAccountIds;
 const sortRaw = Storage.get("queryapi:feed-sort");
 const sort = sortRaw ?? (sortRaw === undefined ? "timedesc" : null);
 const initialSelectedTabRaw = Storage.privateGet("selectedTab");
-let initialSelectedTab =
-  initialSelectedTabRaw ?? (initialSelectedTabRaw === undefined ? "all" : null);
+let initialSelectedTab = initialSelectedTabRaw ?? (initialSelectedTabRaw === undefined ? "all" : null);
 if (!feeds.includes(initialSelectedTab)) {
   initialSelectedTab = feeds[0];
 }
@@ -27,14 +25,9 @@ if (initialSelectedTab === "mutual" && !context.filteredAccountIds) {
   initialSelectedTab = feeds[0];
 }
 
-const followGraph = context.accountId
-  ? Social.keys(`${context.accountId}/graph/follow/*`, "final")
-  : null;
+const followGraph = context.accountId ? Social.keys(`${context.accountId}/graph/follow/*`, "final") : null;
 const accountsFollowing =
-  props.accountsFollowing ??
-  (followGraph
-    ? Object.keys(followGraph[context.accountId].graph.follow || {})
-    : null);
+  props.accountsFollowing ?? (followGraph ? Object.keys(followGraph[context.accountId].graph.follow || {}) : null);
 const isLoading = !state.initialized || state.isLoading;
 
 const optionsMap = {
@@ -70,9 +63,7 @@ const selfFlaggedPosts = context.accountId
 //     },
 //   }
 // }
-const selfModeration = context.accountId
-  ? Social.getr(`${context.accountId}/moderate`, "optimistic") ?? []
-  : [];
+const selfModeration = context.accountId ? Social.getr(`${context.accountId}/moderate`, "optimistic") ?? [] : [];
 const postsModerationKey = ".post.main";
 const commentsModerationKey = ".post.comment";
 const matchesModeration = (moderated, socialDBObjectType, item) => {
@@ -85,19 +76,13 @@ const matchesModeration = (moderated, socialDBObjectType, item) => {
     return true;
   }
   const moderatedItemsOfType = accountFound[socialDBObjectType];
-  return (
-    moderatedItemsOfType &&
-    typeof moderatedItemsOfType[item.block_height] !== "undefined"
-  );
+  return moderatedItemsOfType && typeof moderatedItemsOfType[item.block_height] !== "undefined";
 };
 
 const shouldFilter = (item, socialDBObjectType) => {
   return (
     selfFlaggedPosts.find((flagged) => {
-      return (
-        flagged?.value?.blockHeight === item.block_height &&
-        flagged?.value?.path.includes(item.account_id)
-      );
+      return flagged?.value?.blockHeight === item.block_height && flagged?.value?.path.includes(item.account_id);
     }) || matchesModeration(selfModeration, socialDBObjectType, item)
   );
 };
@@ -129,13 +114,9 @@ const createQuery = (type) => {
       let filteredAccountsFollowing = accountsFollowing;
       if (filteredAccountIds) {
         const filteredAccountList = filteredAccountIds.split(",");
-        filteredAccountsFollowing = filteredAccountList.filter((account) =>
-          accountsFollowing.includes(account),
-        );
+        filteredAccountsFollowing = filteredAccountList.filter((account) => accountsFollowing.includes(account));
       }
-      let queryAccountsString = accountsFollowing
-        .map((account) => `"${account}"`)
-        .join(", ");
+      let queryAccountsString = accountsFollowing.map((account) => `"${account}"`).join(", ");
       queryFilter = `where: { account_id: { _in: [${queryAccountsString}]}},`;
       break;
 
@@ -217,18 +198,12 @@ const loadMorePosts = () => {
       let data = result.body.data;
       if (data) {
         const newPosts = data.dataplatform_near_social_feed_moderated_posts;
-        const postsCountLeft =
-          data.dataplatform_near_social_feed_moderated_posts_aggregate.aggregate
-            .count;
+        const postsCountLeft = data.dataplatform_near_social_feed_moderated_posts_aggregate.aggregate.count;
         if (newPosts.length > 0) {
-          let filteredPosts = newPosts.filter(
-            (i) => !shouldFilter(i, postsModerationKey),
-          );
+          let filteredPosts = newPosts.filter((i) => !shouldFilter(i, postsModerationKey));
           filteredPosts = filteredPosts.map((post) => {
             const prevComments = post.comments;
-            const filteredComments = prevComments.filter(
-              (comment) => !shouldFilter(comment, commentsModerationKey),
-            );
+            const filteredComments = prevComments.filter((comment) => !shouldFilter(comment, commentsModerationKey));
             post.comments = filteredComments;
             return post;
           });
@@ -244,15 +219,9 @@ const loadMorePosts = () => {
   });
 };
 
-const hasMore =
-  state.postsCountLeft !== state.posts.length && state.posts.length > 0;
+const hasMore = state.postsCountLeft !== state.posts.length && state.posts.length > 0;
 
-if (
-  !state.initialized &&
-  initialSelectedTab &&
-  initialSelectedTab !== state.selectedTab &&
-  sort
-) {
+if (!state.initialized && initialSelectedTab && initialSelectedTab !== state.selectedTab && sort) {
   if (initialSelectedTab === "following" && !accountsFollowing) return null;
 
   State.update({ initialized: true, sort });
@@ -404,11 +373,7 @@ return (
             <FilterWrapper>
               <PillSelect>
                 {feeds.map((feed) => (
-                  <PillSelectButton
-                    type="button"
-                    onClick={() => selectTab(feed)}
-                    selected={state.selectedTab === feed}
-                  >
+                  <PillSelectButton type="button" onClick={() => selectTab(feed)} selected={state.selectedTab === feed}>
                     {feedLabels[feed] ?? feed}
                   </PillSelectButton>
                 ))}

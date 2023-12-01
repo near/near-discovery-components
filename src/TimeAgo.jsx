@@ -3,11 +3,7 @@ const { alwaysRelative, blockHeight, blockTimestamp } = props;
 if (!blockTimestamp) {
   return (
     <>
-      <Widget
-        src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
-        props={{ blockHeight }}
-      />{" "}
-      ago
+      <Widget src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}" props={{ blockHeight }} /> ago
     </>
   );
 }

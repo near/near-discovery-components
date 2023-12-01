@@ -142,9 +142,7 @@ return (
     )}
 
     {props.sidebar && (
-      <ButtonLink href="/${REPL_ACCOUNT}/widget/PeoplePage?tab=recommended">
-        View Recommended Profiles
-      </ButtonLink>
+      <ButtonLink href="/${REPL_ACCOUNT}/widget/PeoplePage?tab=recommended">View Recommended Profiles</ButtonLink>
     )}
   </RecommendationsView>
 );

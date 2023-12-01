@@ -24,8 +24,7 @@ return (
               Tags{" "}
               <span className="text-secondary">
                 {" "}
-                (add relevant tags to ensure the best discoverability of your
-                app/component)
+                (add relevant tags to ensure the best discoverability of your app/component)
               </span>
             </>
           ),

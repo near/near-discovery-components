@@ -42,12 +42,7 @@ const Flex = styled.div`
 
   @media (max-width: 900px) {
     flex-direction: ${(p) => (p.mobileStack ? "column" : p.direction ?? "row")};
-    gap: ${(p) =>
-      p.mobileStack === true
-        ? "var(--section-gap)"
-        : p.mobileStack
-          ? p.mobileStack
-          : p.gap};
+    gap: ${(p) => (p.mobileStack === true ? "var(--section-gap)" : p.mobileStack ? p.mobileStack : p.gap)};
   }
 `;
 const Section = styled.div`
@@ -267,8 +262,7 @@ const fundingHugeCards = [
     iconClassName: "ph ph-trend-up",
     iconColor: "violet8",
     title: "Accelerators and Incubators",
-    content:
-      "For projects and start-ups looking to join an incubator or accelerator",
+    content: "For projects and start-ups looking to join an incubator or accelerator",
     cards: acceleratorsCards,
   },
   {
@@ -286,8 +280,7 @@ const fundingHugeCards = [
     iconClassName: "ph ph-planet",
     iconColor: "cyan7",
     title: "Regional hubs",
-    content:
-      "If a project is based in the following regions they should apply via their respective Regional Hub.",
+    content: "If a project is based in the following regions they should apply via their respective Regional Hub.",
     cards: regionalHubCards,
   },
 ];
@@ -299,25 +292,19 @@ return (
         <Flex gap="16px" direction="column" alignItems="center">
           <H1>Get Funded. Build the Future.</H1>
           <Text size="text-xl" color="sand12" style={{ maxWidth: "662px" }}>
-            The NEAR ecosystem offers multiple funding options to support initiatives
-            aimed at decentralizing, growing, and innovating on NEAR.
+            The NEAR ecosystem offers multiple funding options to support initiatives aimed at decentralizing, growing,
+            and innovating on NEAR.
           </Text>
         </Flex>
       </Section>
 
       <Section center>
-        <Flex
-          gap="16px"
-          direction="column"
-          alignItems="stretch"
-          style={{ width: "100%" }}
-        >
+        <Flex gap="16px" direction="column" alignItems="stretch" style={{ width: "100%" }}>
           <Text size="text-3xl" color="sand12">
             Funding sources
           </Text>
           <Text size="text-xl" color="sand12">
-            We’ve helped hundreds of projects and teams realize their ideas, and
-            bring them to market.
+            We’ve helped hundreds of projects and teams realize their ideas, and bring them to market.
           </Text>
           <Widget
             src="${REPL_MOB}/widget/Image"
@@ -331,10 +318,7 @@ return (
             {fundingCards.map((item) => (
               <div className="col" key={item.key}>
                 <Card center>
-                  <SocialIcon
-                    className={item.iconClassName}
-                    color={`var(--${item.iconColor})`}
-                  />
+                  <SocialIcon className={item.iconClassName} color={`var(--${item.iconColor})`} />
                   <Text size="text-m" color="sand12">
                     {item.content}
                   </Text>
@@ -348,11 +332,7 @@ return (
       <Section gap="32px">
         {fundingHugeCards.map((card) => (
           <Card center key={card.key} id={card.id}>
-            <SocialIcon
-              className={card.iconClassName}
-              color={`var(--${card.iconColor})`}
-              size="32px"
-            />
+            <SocialIcon className={card.iconClassName} color={`var(--${card.iconColor})`} size="32px" />
             <Text size="text-3xl" color="sand12">
               {card.title}
             </Text>
@@ -376,12 +356,7 @@ return (
                       }}
                     />
                     <Flex gap="16px" direction="column" alignItems="start">
-                      <Text
-                        size="text-l"
-                        color="sand12"
-                        fontWeight="600"
-                        align="left"
-                      >
+                      <Text size="text-l" color="sand12" fontWeight="600" align="left">
                         {item.title}
                       </Text>
                       {item.content && (
@@ -405,12 +380,7 @@ return (
                           />
                         </div>
                       ) : (
-                        <Text
-                          size="text-m"
-                          color="sand12"
-                          align="left"
-                          fontWeight="600"
-                        >
+                        <Text size="text-m" color="sand12" align="left" fontWeight="600">
                           Comming Soon
                         </Text>
                       )}
@@ -428,9 +398,8 @@ return (
           What funding program is best for me?
         </Text>
         <Text size="text-xl" color="sand12" style={{ maxWidth: "662px" }}>
-          There are several options to get financial support for your idea – whether
-          it is a grant from an ecosystem fund, joining an accelerator, or getting
-          venture support through our Ecosystem partners.
+          There are several options to get financial support for your idea – whether it is a grant from an ecosystem
+          fund, joining an accelerator, or getting venture support through our Ecosystem partners.
         </Text>
         <Widget
           src="${REPL_MOB}/widget/Image"

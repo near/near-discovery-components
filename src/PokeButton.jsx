@@ -1,8 +1,4 @@
-if (
-  !props.accountId ||
-  !context.accountId ||
-  context.accountId === props.accountId
-) {
+if (!props.accountId || !context.accountId || context.accountId === props.accountId) {
   return "";
 }
 

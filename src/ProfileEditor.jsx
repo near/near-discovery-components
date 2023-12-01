@@ -42,8 +42,7 @@ return (
                 tags: {
                   label: "Tags",
                   tagsPattern: "*/profile/tags/*",
-                  placeholder:
-                    "rust, engineer, artist, humanguild, nft, learner, founder",
+                  placeholder: "rust, engineer, artist, humanguild, nft, learner, founder",
                 },
                 linktree: {
                   links: [
@@ -85,10 +84,7 @@ return (
       </div>
       <div className="col-lg-6">
         <div>
-          <Widget
-            src="${REPL_ACCOUNT}/widget/ProfilePage"
-            props={{ accountId, profile: state.profile }}
-          />
+          <Widget src="${REPL_ACCOUNT}/widget/ProfilePage" props={{ accountId, profile: state.profile }} />
         </div>
       </div>
     </div>

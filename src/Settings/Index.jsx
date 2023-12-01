@@ -26,10 +26,7 @@ const SettingsContent = () => {
     case "identity":
     default:
       return (
-        <Widget
-          src="${REPL_ACCOUNT}/widget/Settings.Identity.Index"
-          props={{ idosConnected, ...forwardedProps }}
-        />
+        <Widget src="${REPL_ACCOUNT}/widget/Settings.Identity.Index" props={{ idosConnected, ...forwardedProps }} />
       );
   }
 };

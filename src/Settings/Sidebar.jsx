@@ -93,11 +93,7 @@ return (
 
     {filteredMenuItems.length > 1 &&
       filteredMenuItems.map((item) => (
-        <MenuItem
-          key={`settings-${item.id}`}
-          onClick={() => onClick(item.id)}
-          active={activeTab === item.id}
-        >
+        <MenuItem key={`settings-${item.id}`} onClick={() => onClick(item.id)} active={activeTab === item.id}>
           <Icon className={item.icon} />
           <Text>{item.label}</Text>
         </MenuItem>

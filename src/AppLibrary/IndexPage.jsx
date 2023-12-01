@@ -11,16 +11,12 @@ if (props.tab && props.tab !== state.selectedTab) {
 }
 
 const appLibraryIndexUrl = "/${REPL_ACCOUNT}/widget/AppLibrary.IndexPage";
-const selectedCategory = state.categories.find(
-  (category) => category.label === state.selectedTab,
-);
+const selectedCategory = state.categories.find((category) => category.label === state.selectedTab);
 
 function loadData() {
   if (state.categories.length > 0) return;
 
-  asyncFetch(
-    "https://storage.googleapis.com/databricks-near-query-runner/output/app-store-updated.json",
-  )
+  asyncFetch("https://storage.googleapis.com/databricks-near-query-runner/output/app-store-updated.json")
     .then((res) => {
       const data = JSON.parse(res.body);
 
@@ -197,18 +193,13 @@ return (
             );
           })}
 
-          <MenuLink
-            href={`${appLibraryIndexUrl}?tab=Search`}
-            data-active={state.selectedTab === "Search"}
-          >
+          <MenuLink href={`${appLibraryIndexUrl}?tab=Search`} data-active={state.selectedTab === "Search"}>
             Search
           </MenuLink>
         </Menu>
 
         <Sections>
-          {state.selectedTab === "Search" && (
-            <Widget src="${REPL_ACCOUNT}/widget/AppLibrary.Search" />
-          )}
+          {state.selectedTab === "Search" && <Widget src="${REPL_ACCOUNT}/widget/AppLibrary.Search" />}
 
           {state.selectedTab !== "Search" && selectedCategory && (
             <>

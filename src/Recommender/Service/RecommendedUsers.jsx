@@ -38,9 +38,7 @@ const Profile = styled.div``;
 
 const Profiles = styled.div`
   display: grid;
-  grid-template-columns: ${props.gridCols
-    ? props.gridCols
-    : "repeat(4, minmax(0, 1fr))"};
+  grid-template-columns: ${props.gridCols ? props.gridCols : "repeat(4, minmax(0, 1fr))"};
   gap: 24px;
 
   @media (max-width: 1024px) {
@@ -84,9 +82,7 @@ const updateState = (data, totalPageNum) => {
 };
 
 State.update({
-  displayedUsers: state.returnElements
-    ? state.allUsers.slice(0, state.returnElements)
-    : state.allUsers,
+  displayedUsers: state.returnElements ? state.allUsers.slice(0, state.returnElements) : state.allUsers,
 });
 
 const passedContext = props.fromContext;
@@ -105,9 +101,7 @@ const getRecommendedUsers = (page) => {
         updateState(data.data, totalPageNum);
       } else {
         State.update({ isLoading: false, error: true, hasLoaded: true });
-        console.error(
-          "Error fetching data. Try reloading the page, or no data available.",
-        );
+        console.error("Error fetching data. Try reloading the page, or no data available.");
       }
     });
   } catch (error) {
@@ -128,13 +122,9 @@ const isAccountMatch = (user, accountId) =>
   user.recommended_profile === accountId || user.similar_profile === accountId;
 
 const handleFollowed = (accountId) => {
-  const updatedDisplayedUsers = state.displayedUsers.filter(
-    (user) => !isAccountMatch(user, accountId),
-  );
+  const updatedDisplayedUsers = state.displayedUsers.filter((user) => !isAccountMatch(user, accountId));
 
-  const updatedAllUsers = state.allUsers.filter(
-    (user) => !isAccountMatch(user, accountId),
-  );
+  const updatedAllUsers = state.allUsers.filter((user) => !isAccountMatch(user, accountId));
 
   const nextUser = updatedAllUsers.find(
     (user) =>
@@ -156,12 +146,8 @@ const handleFollowed = (accountId) => {
 };
 
 function returnProfileForUser(user) {
-  const rawImage =
-    user.profile_image_1 || user.profile_image_2 || user.profile_image_3;
-  const image =
-    rawImage && rawImage.indexOf("http") === 0
-      ? { url: rawImage }
-      : { ipfs_cid: rawImage };
+  const rawImage = user.profile_image_1 || user.profile_image_2 || user.profile_image_3;
+  const image = rawImage && rawImage.indexOf("http") === 0 ? { url: rawImage } : { ipfs_cid: rawImage };
   const name = user.profile_name ?? "";
   let tags = null;
 
@@ -188,9 +174,7 @@ return (
       {(!state.isLoading && displayedUsers.length < 3) || state.error ? (
         <NotEnoughData>
           Follow More Users to Unlock More Personalized Recommendations, See Who’s
-          <Link href="https://${REPL_NEAR_URL}/${REPL_ACCOUNT}/widget/PeoplePage?tab=trending">
-            Trending
-          </Link>
+          <Link href="https://${REPL_NEAR_URL}/${REPL_ACCOUNT}/widget/PeoplePage?tab=trending">Trending</Link>
         </NotEnoughData>
       ) : (
         state.displayedUsers.map((user, rank) => (
@@ -212,8 +196,7 @@ return (
                 sidebar: props.sidebar || null,
                 scope: props.scope || null,
                 fromContext: fromContext,
-                onFollowed: () =>
-                  handleFollowed(user.recommended_profile || user.similar_profile),
+                onFollowed: () => handleFollowed(user.recommended_profile || user.similar_profile),
               }}
             />
           </Profile>

@@ -18,9 +18,7 @@ const targetTags = ["uncategorized", "develop", "earn", "play", "engage"];
 function loadData() {
   if (state.apps.length > 0) return;
 
-  asyncFetch(
-    "https://storage.googleapis.com/databricks-near-query-runner/output/nearcon_apps/apps_qualified.json",
-  )
+  asyncFetch("https://storage.googleapis.com/databricks-near-query-runner/output/nearcon_apps/apps_qualified.json")
     .then((res) => {
       const apps = JSON.parse(res.body).data.map((app_raw) => {
         const app = JSON.parse(app_raw);
@@ -301,15 +299,7 @@ const ChartContainer = styled.div`
 const [selectedSubTab, setSelectedSubTab] = useState("Everyone");
 const isActive = (tabName) => selectedSubTab === tabName;
 
-const categories = [
-  "Event Guide",
-  "Uncategorized",
-  "Earn",
-  "Play",
-  "Develop",
-  "Engage",
-  "Stats",
-];
+const categories = ["Event Guide", "Uncategorized", "Earn", "Play", "Develop", "Engage", "Stats"];
 
 return (
   <Wrapper>
@@ -342,9 +332,7 @@ return (
                   let filteredApps = state.apps;
                   if (state.selectedTab !== "Uncategorized") {
                     filteredApps = state.apps.filter(
-                      (item) =>
-                        item.recentTag &&
-                        item.recentTag.toLowerCase() === lowerCaseCategory,
+                      (item) => item.recentTag && item.recentTag.toLowerCase() === lowerCaseCategory,
                     );
                   }
                   return (
@@ -369,16 +357,10 @@ return (
                         ) : (
                           <div>
                             {" "}
-                            Help Spread the word and get more Apps in this category
-                            to participate in the App Upvoting event, instructions in
-                            the
-                            <Link href={`${appLibraryIndexUrl}?tab=Event+Guide`}>
-                              Event Guide Section
-                            </Link>
-                            .<br></br> Explore in{" "}
-                            <Link href="https://near.org/applications">
-                              near.org/applications
-                            </Link>
+                            Help Spread the word and get more Apps in this category to participate in the App Upvoting
+                            event, instructions in the
+                            <Link href={`${appLibraryIndexUrl}?tab=Event+Guide`}>Event Guide Section</Link>.<br></br>{" "}
+                            Explore in <Link href="https://near.org/applications">near.org/applications</Link>
                             for all B.O.S. Apps in the meantime!
                           </div>
                         )}
@@ -466,15 +448,13 @@ return (
 
                     <P1>
                       <H3>
-                        <S1>🌟</S1> NCON Bounty - App Upvoting: Upvote Your Favorite
-                        App <S1>🚀</S1>
+                        <S1>🌟</S1> NCON Bounty - App Upvoting: Upvote Your Favorite App <S1>🚀</S1>
                       </H3>
                     </P1>
 
                     <P21>
-                      Welcome aboard to the NCON Bounty to help find the first group
-                      of featured Apps on B.O.S. Your upvotes decide the stars of the
-                      NEAR App Library for 3 months! Be part of the movement to shape
+                      Welcome aboard to the NCON Bounty to help find the first group of featured Apps on B.O.S. Your
+                      upvotes decide the stars of the NEAR App Library for 3 months! Be part of the movement to shape
                       the NEAR ecosystem and earn more NCONs!
                     </P21>
 
@@ -483,10 +463,8 @@ return (
                     </P1>
 
                     <P2>
-                      Discover innovation and influence the future! Your upvotes
-                      determine the top 8 dApps featured on the NEAR App Library
-                      landing page and the top 4 in each category for the next three
-                      months.
+                      Discover innovation and influence the future! Your upvotes determine the top 8 dApps featured on
+                      the NEAR App Library landing page and the top 4 in each category for the next three months.
                     </P2>
 
                     <P1>
@@ -494,8 +472,8 @@ return (
                     </P1>
 
                     <P2>
-                      Explore and find your favorite dApps.<br></br> Hit the Upvote
-                      button on the <strong>details page</strong>
+                      Explore and find your favorite dApps.<br></br> Hit the Upvote button on the{" "}
+                      <strong>details page</strong>
                       of your favorite apps!
                     </P2>
 
@@ -504,9 +482,8 @@ return (
                     </P1>
 
                     <P2>
-                      Share your favorite dApps on social media. Spread the word and
-                      invite others to participate. This is your opportunity to
-                      showcase what you love in the NEAR ecosystem.
+                      Share your favorite dApps on social media. Spread the word and invite others to participate. This
+                      is your opportunity to showcase what you love in the NEAR ecosystem.
                     </P2>
 
                     <P1>
@@ -518,14 +495,13 @@ return (
                 {selectedSubTab === "App Owners" && (
                   <>
                     <H2>
-                      <S1>🚀</S1> Get your Apps qualified to Participate in the NCON
-                      App Upvoting Event <S1>🚀</S1>
+                      <S1>🚀</S1> Get your Apps qualified to Participate in the NCON App Upvoting Event <S1>🚀</S1>
                     </H2>
 
                     <P2>
                       <Em>
-                        Attendees at NEARCON will be incentivized with NCON to upvote
-                        apps in the App Upvoting Bounty Page
+                        Attendees at NEARCON will be incentivized with NCON to upvote apps in the App Upvoting Bounty
+                        Page
                       </Em>
                     </P2>
 
@@ -533,8 +509,8 @@ return (
 
                     <P2>
                       <strong>
-                        Get ready to shine at NEARCON! 🌐 Win the chance to get
-                        featured on the App Library (near.org/applications)!
+                        Get ready to shine at NEARCON! 🌐 Win the chance to get featured on the App Library
+                        (near.org/applications)!
                       </strong>
                     </P2>
 
@@ -542,19 +518,15 @@ return (
                       <S1>👉</S1> How to Qualify and Get Your App Featured?
                     </P1>
 
-                    <P2>
-                      Go to the Metadata page of your app and follow the instructions
-                      below.
-                    </P2>
+                    <P2>Go to the Metadata page of your app and follow the instructions below.</P2>
                     <P3>
                       1. <strong>Create a Captivating Description:</strong>
                     </P3>
 
                     <P2>
-                      Craft a compelling introduction to your dApp. Highlight its
-                      unique features and value proposition. Pro tip: Add screenshots
-                      to make your dApp visually appealing and easy to understand.
-                      (Description is <strong>required</strong>!)
+                      Craft a compelling introduction to your dApp. Highlight its unique features and value proposition.
+                      Pro tip: Add screenshots to make your dApp visually appealing and easy to understand. (Description
+                      is <strong>required</strong>!)
                     </P2>
 
                     <P3>
@@ -562,22 +534,18 @@ return (
                     </P3>
 
                     <P2>
-                      First, make sure to tag the component that holds the entry to
-                      your project experience as <strong>App</strong>. Then, choose
-                      the category that best represents your dApp&#45;
+                      First, make sure to tag the component that holds the entry to your project experience as{" "}
+                      <strong>App</strong>. Then, choose the category that best represents your dApp&#45;
                       <strong>Earn, Play, Develop, Engage</strong>. (Choosing
-                      <strong>one of these four</strong> categories is{" "}
-                      <strong>required</strong>! If you applied more than one of
-                      these four tags, then we will only use the latest one you
-                      applied) Add additional tags for improved discoverability. Make
-                      it easy for users to find and appreciate your work.
+                      <strong>one of these four</strong> categories is <strong>required</strong>! If you applied more
+                      than one of these four tags, then we will only use the latest one you applied) Add additional tags
+                      for improved discoverability. Make it easy for users to find and appreciate your work.
                     </P2>
 
                     <P2>
                       <Em>
-                        (These categories are suggested from research around
-                        users&#39; needs, broken down by categories and industry app
-                        store benchmarks.)
+                        (These categories are suggested from research around users&#39; needs, broken down by categories
+                        and industry app store benchmarks.)
                       </Em>
                     </P2>
 
@@ -586,10 +554,9 @@ return (
                     </P3>
 
                     <P2>
-                      It's time to promote! Rally your community, spread the news
-                      across your networks, and encourage users to like and engage
-                      with your dApp. The more upvotes your app gets, the greater
-                      your chances of securing a top spot.
+                      It's time to promote! Rally your community, spread the news across your networks, and encourage
+                      users to like and engage with your dApp. The more upvotes your app gets, the greater your chances
+                      of securing a top spot.
                     </P2>
 
                     <P1>
@@ -601,11 +568,9 @@ return (
                     </P3>
 
                     <P2>
-                      The dApps with the highest number of upvotes from this event
-                      will be showcased prominently on the landing page of the App
-                      Library(near.org/applications) and near.org homepage for the
-                      next three months—putting your creation on the most visited
-                      page on near.org.
+                      The dApps with the highest number of upvotes from this event will be showcased prominently on the
+                      landing page of the App Library(near.org/applications) and near.org homepage for the next three
+                      months—putting your creation on the most visited page on near.org.
                     </P2>
 
                     <P3>
@@ -613,10 +578,9 @@ return (
                     </P3>
 
                     <P2>
-                      The top 4 dApps in each category will be prominently featured
-                      on category pages, such as Earn, Play, Develop, and Engage.
-                      This targeted exposure aligns with the core needs and use cases
-                      of the diverse NEAR user base.
+                      The top 4 dApps in each category will be prominently featured on category pages, such as Earn,
+                      Play, Develop, and Engage. This targeted exposure aligns with the core needs and use cases of the
+                      diverse NEAR user base.
                     </P2>
 
                     <P1>
@@ -625,25 +589,20 @@ return (
 
                     <P2>
                       <strong>Upvote Button Enabled on Nov 3rd</strong>
-                      <br></br> On November 3rd, you will see an upvote button appear
-                      on the details pages of your qualified Apps. Any users who have
-                      an account on near.org can now send their support by hitting
-                      that upvote button. This upvote button will be disabled two
-                      days after NEARCON and the Top 8 will be announced shortly
-                      after.
+                      <br></br> On November 3rd, you will see an upvote button appear on the details pages of your
+                      qualified Apps. Any users who have an account on near.org can now send their support by hitting
+                      that upvote button. This upvote button will be disabled two days after NEARCON and the Top 8 will
+                      be announced shortly after.
                     </P2>
 
                     <P2>
                       <strong>
-                        NEARCON attendees will be incentivized to engage with App
-                        Upvoting by earning NCON
+                        NEARCON attendees will be incentivized to engage with App Upvoting by earning NCON
                       </strong>
                       <br></br>
-                      QR code and event posters will be promoted at the NEARCON
-                      venues to encourage them to complete this Bounty. In addition,
-                      this Bounty will be part of the NCON product for NEARCON
-                      participants to earn more NCON, so we will make sure your dApps
-                      get plenty of exposure.
+                      QR code and event posters will be promoted at the NEARCON venues to encourage them to complete
+                      this Bounty. In addition, this Bounty will be part of the NCON product for NEARCON participants to
+                      earn more NCON, so we will make sure your dApps get plenty of exposure.
                     </P2>
 
                     <P1>
@@ -651,26 +610,16 @@ return (
                     </P1>
                     <List>
                       <ListItem>
-                        October 26: Submit your App for Qualification. App Upvoting
-                        Bounty Event Page available on near.org. Qualified Apps will
-                        be Fetched (Qualified Apps will be fetched continuously on
-                        one-hour intervals throughout the NEARCON event through
-                        November 13).
+                        October 26: Submit your App for Qualification. App Upvoting Bounty Event Page available on
+                        near.org. Qualified Apps will be Fetched (Qualified Apps will be fetched continuously on
+                        one-hour intervals throughout the NEARCON event through November 13).
                       </ListItem>
-                      <ListItem>
-                        November 3: Upvote button enabled + counters started
-                      </ListItem>
-                      <ListItem>
-                        November 13: Upvote disabled + results calculated
-                      </ListItem>
-                      <ListItem>
-                        November 17: Results display + feature apps updated on main
-                        App Library page.
-                      </ListItem>
+                      <ListItem>November 3: Upvote button enabled + counters started</ListItem>
+                      <ListItem>November 13: Upvote disabled + results calculated</ListItem>
+                      <ListItem>November 17: Results display + feature apps updated on main App Library page.</ListItem>
                     </List>
                     <P2>
-                      🚀 Don't miss this chance to showcase your creativity! Register
-                      your apps now. Good luck! 🚀
+                      🚀 Don't miss this chance to showcase your creativity! Register your apps now. Good luck! 🚀
                     </P2>
                   </>
                 )}

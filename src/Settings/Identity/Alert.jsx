@@ -13,8 +13,8 @@ const Wrapper = styled.div`
 const Img = styled.div`
   width: 40px;
   height: 40px;
-  background: url(https://ipfs.near.social/ipfs/bafkreifo4koaodxwbkws34aaymzfvlpznxjtwgk4til6i5334hwn4yj3sy)
-    center center / cover no-repeat;
+  background: url(https://ipfs.near.social/ipfs/bafkreifo4koaodxwbkws34aaymzfvlpznxjtwgk4til6i5334hwn4yj3sy) center
+    center / cover no-repeat;
   margin: 0 auto;
 `;
 

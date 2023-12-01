@@ -1,10 +1,4 @@
-let {
-  onReport,
-  onReportCancel,
-  reportedAccountId,
-  contentModerationFlagValue,
-  ...forwardedProps
-} = props;
+let { onReport, onReportCancel, reportedAccountId, contentModerationFlagValue, ...forwardedProps } = props;
 
 const socialSet = (index) =>
   Social.set(index, {

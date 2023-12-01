@@ -1,8 +1,6 @@
-const GRAPHQL_ENDPOINT =
-  props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
+const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 const accountId = props.accountId;
-const blockHeight =
-  props.blockHeight === "now" ? "now" : parseInt(props.blockHeight);
+const blockHeight = props.blockHeight === "now" ? "now" : parseInt(props.blockHeight);
 const highlight = !!props.highlight;
 const commentUrl = `https://${REPL_NEAR_URL}/s/c?a=${accountId}&b=${blockHeight}`;
 const item = props.item;
@@ -187,10 +185,7 @@ return (
                         "now"
                       ) : (
                         <Text>
-                          <Widget
-                            src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
-                            props={{ blockHeight }}
-                          />{" "}
+                          <Widget src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}" props={{ blockHeight }} />{" "}
                           ago
                         </Text>
                       )}
@@ -225,10 +220,7 @@ return (
             {state.content && (
               <Content>
                 {state.content.text && (
-                  <Widget
-                    src="${REPL_ACCOUNT}/widget/SocialMarkdown"
-                    props={{ text: state.content.text }}
-                  />
+                  <Widget src="${REPL_ACCOUNT}/widget/SocialMarkdown" props={{ text: state.content.text }} />
                 )}
 
                 {state.content.image && (

@@ -216,9 +216,7 @@ return (
     <PillSelect>
       <PillSelectButton
         type="button"
-        onClick={() =>
-          State.update({ selectedTab: "code", blockHeight: blocksChanges[0] })
-        }
+        onClick={() => State.update({ selectedTab: "code", blockHeight: blocksChanges[0] })}
         selected={state.selectedTab === "code"}
       >
         <i className="ph-bold ph-code"></i>
@@ -227,9 +225,7 @@ return (
 
       <PillSelectButton
         type="button"
-        onClick={() =>
-          State.update({ selectedTab: "render", blockHeight: blocksChanges[0] })
-        }
+        onClick={() => State.update({ selectedTab: "render", blockHeight: blocksChanges[0] })}
         selected={state.selectedTab === "render"}
       >
         <i className="ph-bold ph-eye"></i>
@@ -257,10 +253,7 @@ return (
 
           <Commits>
             {blocksChanges
-              .slice(
-                0,
-                state.showAllCommits ? blocksChanges.length : COMMIT_DISPLAY_LIMIT,
-              )
+              .slice(0, state.showAllCommits ? blocksChanges.length : COMMIT_DISPLAY_LIMIT)
               .map((blockHeight, key) => (
                 <button
                   type="button"
@@ -337,10 +330,7 @@ return (
               currentBlockHeight: state.blockHeight,
               prevBlockHeight: blocksChanges[index + 1],
               findUniqueResult: (lineCountDeleted, lineCountInserted) => {
-                if (
-                  state.lineCountDeleted === undefined ||
-                  state.lineCountInserted === undefined
-                )
+                if (state.lineCountDeleted === undefined || state.lineCountInserted === undefined)
                   State.update({ lineCountDeleted, lineCountInserted });
               },
             }}
@@ -349,11 +339,7 @@ return (
 
         {state.selectedTab === "render" && (
           <div>
-            <Widget
-              code={currentCode}
-              key={`preview-${state.blockHeight}`}
-              props={props}
-            />
+            <Widget code={currentCode} key={`preview-${state.blockHeight}`} props={props} />
           </div>
         )}
       </Main>

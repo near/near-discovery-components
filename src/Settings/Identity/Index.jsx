@@ -63,10 +63,7 @@ return (
     )}
 
     {props.idosConnected && (
-      <Widget
-        src="${REPL_ACCOUNT}/widget/Settings.Identity.Verifications.Index"
-        props={{ ...props }}
-      />
+      <Widget src="${REPL_ACCOUNT}/widget/Settings.Identity.Verifications.Index" props={{ ...props }} />
     )}
 
     {showSuccessTooltip && (

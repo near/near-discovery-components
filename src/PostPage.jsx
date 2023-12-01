@@ -10,17 +10,7 @@ const renderPost = (post) => {
   return <Widget src="${REPL_ACCOUNT}/widget/Posts.Post" props={{ ...post }} />;
 };
 const renderData = (dataProps) => {
-  return (
-    <Widget
-      src="${REPL_ACCOUNT}/widget/Posts.ModeratedPostData"
-      props={{ ...dataProps, renderPost }}
-    />
-  );
+  return <Widget src="${REPL_ACCOUNT}/widget/Posts.ModeratedPostData" props={{ ...dataProps, renderPost }} />;
 };
 
-return (
-  <Widget
-    src="${REPL_ACCOUNT}/widget/Moderation.CheckPostModeration"
-    props={{ ...props, renderData }}
-  />
-);
+return <Widget src="${REPL_ACCOUNT}/widget/Moderation.CheckPostModeration" props={{ ...props, renderData }} />;

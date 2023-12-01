@@ -18,8 +18,7 @@ const content = {
 };
 
 function extractMentions(text) {
-  const mentionRegex =
-    /@((?:(?:[a-z\d]+[-_])*[a-z\d]+\.)*(?:[a-z\d]+[-_])*[a-z\d]+)/gi;
+  const mentionRegex = /@((?:(?:[a-z\d]+[-_])*[a-z\d]+\.)*(?:[a-z\d]+[-_])*[a-z\d]+)/gi;
   mentionRegex.lastIndex = 0;
   const accountIds = new Set();
   for (const match of text.matchAll(mentionRegex)) {
@@ -68,9 +67,7 @@ function composeData() {
   });
 
   if (notifications.length) {
-    data.index.notify = JSON.stringify(
-      notifications.length > 1 ? notifications : notifications[0],
-    );
+    data.index.notify = JSON.stringify(notifications.length > 1 ? notifications : notifications[0]);
   }
 
   return data;
@@ -137,8 +134,7 @@ const Textarea = styled.div`
     height: unset;
     min-height: 164px;
     font: inherit;
-    padding: var(--padding) var(--padding) calc(40px + (var(--padding) * 2))
-      calc(40px + (var(--padding) * 2));
+    padding: var(--padding) var(--padding) calc(40px + (var(--padding) * 2)) calc(40px + (var(--padding) * 2));
     margin: 0;
     resize: none;
     background: none;
@@ -345,8 +341,7 @@ return (
             props={{
               image: profile.image,
               alt: profile.name,
-              fallbackUrl:
-                "https://ipfs.near.social/ipfs/bafkreibiyqabm3kl24gcb2oegb7pmwdi6wwrpui62iwb44l7uomnn3lhbi",
+              fallbackUrl: "https://ipfs.near.social/ipfs/bafkreibiyqabm3kl24gcb2oegb7pmwdi6wwrpui62iwb44l7uomnn3lhbi",
             }}
           />
         </Avatar>
@@ -387,12 +382,7 @@ return (
     )}
 
     <Actions>
-      {!state.showPreview && (
-        <IpfsImageUpload
-          image={state.image}
-          className="upload-image-button bi bi-image"
-        />
-      )}
+      {!state.showPreview && <IpfsImageUpload image={state.image} className="upload-image-button bi bi-image" />}
 
       <button
         type="button"
@@ -401,20 +391,10 @@ return (
         title={state.showPreview ? "Edit Post" : "Preview Post"}
         onClick={() => State.update({ showPreview: !state.showPreview })}
       >
-        {state.showPreview ? (
-          <i className="bi bi-pencil" />
-        ) : (
-          <i className="bi bi-eye-fill" />
-        )}
+        {state.showPreview ? <i className="bi bi-pencil" /> : <i className="bi bi-eye-fill" />}
       </button>
 
-      <CommitButton
-        disabled={!state.text}
-        force
-        data={composeData}
-        onCommit={onCommit}
-        className="commit-post-button"
-      >
+      <CommitButton disabled={!state.text} force data={composeData} onCommit={onCommit} className="commit-post-button">
         Post
       </CommitButton>
     </Actions>

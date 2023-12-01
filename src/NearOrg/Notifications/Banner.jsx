@@ -1,14 +1,5 @@
-let {
-  handleTurnOn,
-  handleOnCancel,
-  radius,
-  iOSDevice,
-  iOSVersion,
-  recomendedIOSVersion,
-} = props;
-const showIosNoteText =
-  (iOSDevice && !iOSVersion) ||
-  (iOSDevice && iOSVersion && iOSVersion < recomendedIOSVersion);
+let { handleTurnOn, handleOnCancel, radius, iOSDevice, iOSVersion, recomendedIOSVersion } = props;
+const showIosNoteText = (iOSDevice && !iOSVersion) || (iOSDevice && iOSVersion && iOSVersion < recomendedIOSVersion);
 
 const Card = styled.div`
   display: flex;
@@ -59,8 +50,7 @@ return (
       {showIosNoteText && (
         <Text small>
           <i className="ph-bold ph-info" />
-          Mobile browser push notifications are only supported on iOS "
-          {recomendedIOSVersion}" or greater.
+          Mobile browser push notifications are only supported on iOS "{recomendedIOSVersion}" or greater.
         </Text>
       )}
       <Buttons>

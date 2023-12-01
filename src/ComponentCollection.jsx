@@ -93,11 +93,7 @@ const Button = styled.button`
 if (!components) return "Loading...";
 
 if (components.length === 0) {
-  return (
-    <Text>
-      {props.noDataText ?? "This account hasn't published any components yet."}
-    </Text>
-  );
+  return <Text>{props.noDataText ?? "This account hasn't published any components yet."}</Text>;
 }
 
 return (
@@ -115,10 +111,7 @@ return (
     </Items>
 
     {showLoadMoreButton && (
-      <Button
-        type="button"
-        onClick={() => State.update({ currentPage: state.currentPage + 1 })}
-      >
+      <Button type="button" onClick={() => State.update({ currentPage: state.currentPage + 1 })}>
         Load More
       </Button>
     )}

@@ -1,7 +1,6 @@
 // Copy of old version of src/Posts/Post.jsx
 const accountId = props.accountId;
-const blockHeight =
-  props.blockHeight === "now" ? "now" : parseInt(props.blockHeight);
+const blockHeight = props.blockHeight === "now" ? "now" : parseInt(props.blockHeight);
 const subscribe = !!props.subscribe;
 const notifyAccountId = accountId;
 const postUrl = `https://${REPL_NEAR_URL}/s/p?a=${accountId}&b=${blockHeight}`;
@@ -112,10 +111,7 @@ return (
                       "now"
                     ) : (
                       <>
-                        <Widget
-                          src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
-                          props={{ blockHeight }}
-                        />{" "}
+                        <Widget src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}" props={{ blockHeight }} />{" "}
                         ago
                       </>
                     )}
@@ -148,10 +144,7 @@ return (
     <Body>
       <Content>
         {content.text && !state.editPost && (
-          <Widget
-            src="${REPL_ACCOUNT}/widget/SocialMarkdown"
-            props={{ text: content.text }}
-          />
+          <Widget src="${REPL_ACCOUNT}/widget/SocialMarkdown" props={{ text: content.text }} />
         )}
 
         {state.editPost && (

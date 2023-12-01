@@ -12,9 +12,7 @@ State.init({
   currentPage: 0,
 });
 
-const data = fetch(
-  `https://api.kitwallet.app/account/${accountId}/likelyNFTsFromBlock`,
-);
+const data = fetch(`https://api.kitwallet.app/account/${accountId}/likelyNFTsFromBlock`);
 
 if (data.body?.list) {
   allNfts = [];
@@ -130,17 +128,13 @@ return (
   <Wrapper>
     <Items>
       {allNfts.map((nft, i) => (
-        <Card
-          key={i}
-          href={`/${REPL_MOB_2}/widget/NftImage?tokenId=${nft.token_id}&contractId=${nft.contractId}`}
-        >
+        <Card key={i} href={`/${REPL_MOB_2}/widget/NftImage?tokenId=${nft.token_id}&contractId=${nft.contractId}`}>
           <Widget
             src="${REPL_MOB_2}/widget/NftImage"
             props={{
               nft: { tokenId: nft.token_id, contractId: nft.contractId },
               className: "nft-thumbnail",
-              fallbackUrl:
-                "https://ipfs.near.social/ipfs/bafkreihdiy3ec4epkkx7wc4wevssruen6b7f3oep5ylicnpnyyqzayvcry",
+              fallbackUrl: "https://ipfs.near.social/ipfs/bafkreihdiy3ec4epkkx7wc4wevssruen6b7f3oep5ylicnpnyyqzayvcry",
               alt: `NFT ${nft.contractId} ${nft.token_id}`,
             }}
           />
@@ -149,10 +143,7 @@ return (
     </Items>
 
     {showLoadMoreButton && (
-      <Button
-        type="button"
-        onClick={() => State.update({ currentPage: state.currentPage + 1 })}
-      >
+      <Button type="button" onClick={() => State.update({ currentPage: state.currentPage + 1 })}>
         Load More
       </Button>
     )}

@@ -8,11 +8,7 @@ const Tab = {
 };
 
 const origTab = () =>
-  image.nft.contractId || image.nft.tokenId
-    ? Tab.NFT
-    : !image.ipfs_cid && image.url
-      ? Tab.URL
-      : Tab.Upload;
+  image.nft.contractId || image.nft.tokenId ? Tab.NFT : !image.ipfs_cid && image.url ? Tab.URL : Tab.Upload;
 
 State.init({
   origImage: image,
@@ -140,28 +136,13 @@ return (
       </div>
       <div className={`${state.tab === Tab.NFT ? "" : "visually-hidden"}`}>
         NFT contract
-        <input
-          type="text"
-          id="contractId"
-          defaultValue={state.nft.contractId}
-          onChange={onNFTChange}
-        />
+        <input type="text" id="contractId" defaultValue={state.nft.contractId} onChange={onNFTChange} />
         NFT token id
-        <input
-          type="text"
-          id="tokenId"
-          defaultValue={state.nft.tokenId}
-          onChange={onNFTChange}
-        />
+        <input type="text" id="tokenId" defaultValue={state.nft.tokenId} onChange={onNFTChange} />
       </div>
       <div className={`${state.tab === Tab.URL ? "" : "visually-hidden"}`}>
         Image URL
-        <input
-          type="text"
-          id="url"
-          defaultValue={state.url}
-          onChange={onImageChange}
-        />
+        <input type="text" id="url" defaultValue={state.url} onChange={onImageChange} />
       </div>
     </div>
   </div>

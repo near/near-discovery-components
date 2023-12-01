@@ -112,18 +112,12 @@ const ViewDocument = () => {
       </BackWrapper>
       {viewMode === "terms" && (
         <DocContent>
-          <Widget
-            src={`${REPL_ACCOUNT}/widget/NearOrg.TermsPage`}
-            props={{ termsDomainName, compact }}
-          />
+          <Widget src={`${REPL_ACCOUNT}/widget/NearOrg.TermsPage`} props={{ termsDomainName, compact }} />
         </DocContent>
       )}
       {viewMode === "privacy" && (
         <DocContent>
-          <Widget
-            src={`${REPL_ACCOUNT}/widget/NearOrg.PrivacyPage`}
-            props={{ privacyDomainName, compact }}
-          />
+          <Widget src={`${REPL_ACCOUNT}/widget/NearOrg.PrivacyPage`} props={{ privacyDomainName, compact }} />
         </DocContent>
       )}
     </>
@@ -136,8 +130,7 @@ return (
       <>
         <Title>Terms of Service and Privacy Policy</Title>
         <Description>
-          Please read and agree to the following terms and policies to continue using{" "}
-          <span>{`${REPL_NEAR_URL}`}</span>:
+          Please read and agree to the following terms and policies to continue using <span>{`${REPL_NEAR_URL}`}</span>:
         </Description>
 
         <DocumentSelector
@@ -146,11 +139,7 @@ return (
           description="Details on acceptable ways to engage with our software"
         />
 
-        <DocumentSelector
-          name="privacy"
-          title="Privacy Policy"
-          description="Details on our privacy policy"
-        />
+        <DocumentSelector name="privacy" title="Privacy Policy" description="Details on our privacy policy" />
       </>
     )}
     <ViewDocument />

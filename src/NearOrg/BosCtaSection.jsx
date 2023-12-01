@@ -66,17 +66,12 @@ return (
           </Text>
 
           <Text size="text-l" mobileSize="text-l" style={{ maxWidth: "808px" }}>
-            Effortlessly create and distribute decentralized apps on any
-            blockchain with the Blockchain Operating System.
+            Effortlessly create and distribute decentralized apps on any blockchain with the Blockchain Operating
+            System.
           </Text>
         </Flex>
 
-        <Flex
-          gap="24px"
-          wrap="wrap"
-          alignItems="center"
-          justifyContent="center"
-        >
+        <Flex gap="24px" wrap="wrap" alignItems="center" justifyContent="center">
           <Widget
             src="${REPL_ACCOUNT}/widget/DIG.Button"
             props={{

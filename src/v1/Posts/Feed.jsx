@@ -33,8 +33,5 @@ const renderItem = (a) =>
   );
 
 return (
-  <Widget
-    src="${REPL_ACCOUNT}/widget/IndexFeed"
-    props={{ index, renderItem, moderatorAccount: "${REPL_MODERATOR}" }}
-  />
+  <Widget src="${REPL_ACCOUNT}/widget/IndexFeed" props={{ index, renderItem, moderatorAccount: "${REPL_MODERATOR}" }} />
 );

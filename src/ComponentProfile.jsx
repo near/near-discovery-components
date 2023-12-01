@@ -1,8 +1,5 @@
 const [accountId, widget, widgetName] = props.src.split("/");
-const metadata = Social.get(
-  `${accountId}/widget/${widgetName}/metadata/**`,
-  "final"
-);
+const metadata = Social.get(`${accountId}/widget/${widgetName}/metadata/**`, "final");
 
 const Wrapper = styled("Link")`
   display: grid;
@@ -62,8 +59,7 @@ return (
         src="${REPL_MOB}/widget/Image"
         props={{
           image: metadata.image,
-          fallbackUrl:
-            "https://ipfs.near.social/ipfs/bafkreifc4burlk35hxom3klq4mysmslfirj7slueenbj7ddwg7pc6ixomu",
+          fallbackUrl: "https://ipfs.near.social/ipfs/bafkreifc4burlk35hxom3klq4mysmslfirj7slueenbj7ddwg7pc6ixomu",
           alt: metadata.name,
         }}
       />

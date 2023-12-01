@@ -4,8 +4,7 @@ let totalApps = 0;
 let totalComponents = 0;
 const componentsUrl = "/${REPL_ACCOUNT}/widget/ComponentsPage";
 const searchRequiredTag = state.selectedTab === "apps" ? "app" : null;
-const searchPlaceholder =
-  state.selectedTab === "apps" ? "Search Apps" : "Search Components";
+const searchPlaceholder = state.selectedTab === "apps" ? "Search Apps" : "Search Components";
 
 State.init({
   currentPage: 0,
@@ -32,8 +31,7 @@ if (data) {
       totalComponents++;
 
       if (state.selectedTab === "apps") {
-        const hasAppTag =
-          tagsData[accountId].widget[widgetName]?.metadata?.tags["app"] === "";
+        const hasAppTag = tagsData[accountId].widget[widgetName]?.metadata?.tags["app"] === "";
         if (!hasAppTag) return;
         totalApps++;
       }
@@ -243,25 +241,17 @@ return (
 
     {!state.searchResults && (
       <Tabs>
-        <TabsButton
-          href={`${componentsUrl}?tab=all`}
-          selected={state.selectedTab === "all"}
-        >
+        <TabsButton href={`${componentsUrl}?tab=all`} selected={state.selectedTab === "all"}>
           All
         </TabsButton>
 
-        <TabsButton
-          href={`${componentsUrl}?tab=apps`}
-          selected={state.selectedTab === "apps"}
-        >
+        <TabsButton href={`${componentsUrl}?tab=apps`} selected={state.selectedTab === "apps"}>
           Apps
         </TabsButton>
       </Tabs>
     )}
 
-    {state.searchResults?.length === 0 && (
-      <Text>No components matched your search.</Text>
-    )}
+    {state.searchResults?.length === 0 && <Text>No components matched your search.</Text>}
 
     {items.length > 0 && (
       <Items>
@@ -280,10 +270,7 @@ return (
     )}
 
     {!state.searchResults && (
-      <Button
-        type="button"
-        onClick={() => State.update({ currentPage: state.currentPage + 1 })}
-      >
+      <Button type="button" onClick={() => State.update({ currentPage: state.currentPage + 1 })}>
         Load More
       </Button>
     )}

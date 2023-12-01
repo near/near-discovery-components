@@ -140,18 +140,14 @@ let postUrl = "";
 function buildPostUrl(widgetName, linkProps) {
   linkProps = { ...linkProps };
 
-  const nearDevGovGigsWidgetsAccountId =
-    props.nearDevGovGigsWidgetsAccountId ||
-    "devgovgigs.near";
+  const nearDevGovGigsWidgetsAccountId = props.nearDevGovGigsWidgetsAccountId || "devgovgigs.near";
 
   if (props.nearDevGovGigsContractAccountId) {
-    linkProps.nearDevGovGigsContractAccountId =
-      props.nearDevGovGigsContractAccountId;
+    linkProps.nearDevGovGigsContractAccountId = props.nearDevGovGigsContractAccountId;
   }
 
   if (props.nearDevGovGigsWidgetsAccountId) {
-    linkProps.nearDevGovGigsWidgetsAccountId =
-      props.nearDevGovGigsWidgetsAccountId;
+    linkProps.nearDevGovGigsWidgetsAccountId = props.nearDevGovGigsWidgetsAccountId;
   }
 
   if (props.referral) {
@@ -270,10 +266,7 @@ const buildMenu = () => {
     {
       name: (
         <>
-          <i
-            className="ph-bold ph-bell-simple-slash"
-            style={{ color: "#D95C4A" }}
-          />
+          <i className="ph-bold ph-bell-simple-slash" style={{ color: "#D95C4A" }} />
           <span style={{ color: "#D95C4A" }}>Block</span>
         </>
       ),
@@ -299,11 +292,7 @@ const onConfirm = async () => {
 return (
   <Notification>
     <Icon>{iconType[type]}</Icon>
-    <Content
-      className="notification-item"
-      as={actionable ? "Link" : "div"}
-      href={actionable && postUrl}
-    >
+    <Content className="notification-item" as={actionable ? "Link" : "div"} href={actionable && postUrl}>
       <Left>
         <Link href={!props.onClick && profileUrl}>
           <ProfileOverlay>
@@ -321,9 +310,7 @@ return (
           <ProfileOverlay>
             <div>
               <Link href={!props.onClick && profileUrl}>
-                <Username>
-                  {profile.name || accountId.split(".near")[0]}
-                </Username>
+                <Username>{profile.name || accountId.split(".near")[0]}</Username>
               </Link>
               <Action>{notificationMessage[type]}</Action>
             </div>
@@ -333,20 +320,14 @@ return (
           <Timestamp>
             <Dot>·</Dot>
             {/* TODO: add title tag to show full time on hover */}
-            <Widget
-              src="${REPL_MOB_2}/widget/TimeAgo@97556750"
-              props={{ blockHeight: props.blockHeight }}
-            />
+            <Widget src="${REPL_MOB_2}/widget/TimeAgo@97556750" props={{ blockHeight: props.blockHeight }} />
           </Timestamp>
         </Text>
         {/* <Desc>{desc}</Desc> */}
       </Left>
       <Right>
         {(type === "follow" || type === "unfollow") && (
-          <Widget
-            src="${REPL_ACCOUNT}/widget/FollowButton"
-            props={{ accountId: props.accountId }}
-          />
+          <Widget src="${REPL_ACCOUNT}/widget/FollowButton" props={{ accountId: props.accountId }} />
         )}
 
         {type === "poke" && (

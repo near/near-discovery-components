@@ -10,8 +10,7 @@ const ipfsImages = {
     zkevm: "bafkreiagpsnpoljzjeqgt7n74lnmt5crgrka6kuqw56vmnrldmx4ziu67y",
   },
   illustrations: {
-    buildingBlocks:
-      "bafkreicoahoojfqqowcoeipizv4ogsjgsqtwzu4yhwgq7n3q4emxfj3wrq",
+    buildingBlocks: "bafkreicoahoojfqqowcoeipizv4ogsjgsqtwzu4yhwgq7n3q4emxfj3wrq",
     gateways: "bafkreifbr6xiittgl6f4ovubbgjtwmv3chishfzyjxjzj5ugpcyflubakm",
   },
 };
@@ -35,8 +34,7 @@ const communityItems = [
   },
   {
     name: "Roadmap",
-    description:
-      "Follow the public roadmap and contribute to building the ecosystem",
+    description: "Follow the public roadmap and contribute to building the ecosystem",
     icon: "ph-map-trifold",
     url: "https://near.org/blog/near-q2-protocol-roadmap-update",
     target: "_blank",
@@ -85,8 +83,7 @@ const featuredApps = [
   {
     name: "NUI",
     accountId: "nearui.near",
-    description:
-      "A growing collection of beautifully designed B.O.S widgets - your building blocks for creating...",
+    description: "A growing collection of beautifully designed B.O.S widgets - your building blocks for creating...",
     ipfsImage: ipfsImages.apps.nui,
     url: "/near/widget/ComponentDetailsPage?src=nearui.near/widget/index",
   },
@@ -343,8 +340,8 @@ return (
               <H1>Building an open web</H1>
 
               <Text size="text-l" mobileSize="text-base">
-                Contribute to building a web where users own their data, voices
-                count, and everyone can be fairly rewarded for their effort.
+                Contribute to building a web where users own their data, voices count, and everyone can be fairly
+                rewarded for their effort.
               </Text>
             </Flex>
           </PatternContent>
@@ -356,13 +353,8 @@ return (
       <Container>
         <Flex direction="column" gap="24px">
           <H2>Gateways: the doors to an open web</H2>
-          <Text
-            size="text-2xl"
-            mobileSize="text-l"
-            style={{ maxWidth: "808px" }}
-          >
-            Create multi-chain open web applications that feature seamless user
-            onboarding.
+          <Text size="text-2xl" mobileSize="text-l" style={{ maxWidth: "808px" }}>
+            Create multi-chain open web applications that feature seamless user onboarding.
           </Text>
         </Flex>
 
@@ -376,10 +368,7 @@ return (
                   <Text size="text-xl" mobileSize="text-l" fontWeight="500">
                     Supercharge the open web
                   </Text>
-                  <Text>
-                    Augment your open web applications with thousands of
-                    composable multi-chain components.
-                  </Text>
+                  <Text>Augment your open web applications with thousands of composable multi-chain components.</Text>
                 </Flex>
 
                 <Flex direction="column" gap="24px">
@@ -387,8 +376,8 @@ return (
                     Seamless onboarding
                   </Text>
                   <Text>
-                    Empower users to login using only their email. Eliminate all
-                    onboarding friction to facilitate mass adoption.
+                    Empower users to login using only their email. Eliminate all onboarding friction to facilitate mass
+                    adoption.
                   </Text>
                 </Flex>
 
@@ -397,8 +386,8 @@ return (
                     Social from the get-go
                   </Text>
                   <Text>
-                    Easily add social components to your app and keep your
-                    audience engaged through web push notifications.
+                    Easily add social components to your app and keep your audience engaged through web push
+                    notifications.
                   </Text>
                 </Flex>
 
@@ -429,15 +418,9 @@ return (
               Example Gateways
             </Text>
 
-            <Flex
-              gap="24px"
-              alignItems="flex-end"
-              mobileStack
-              mobileAlignItems="flex-start"
-            >
+            <Flex gap="24px" alignItems="flex-end" mobileStack mobileAlignItems="flex-start">
               <Text style={{ maxWidth: "598px", marginRight: "auto" }}>
-                See how developers are using gateways to create rich
-                multi-chain, open web applications
+                See how developers are using gateways to create rich multi-chain, open web applications
               </Text>
               <Widget
                 src="${REPL_ACCOUNT}/widget/DIG.Button"
@@ -477,17 +460,9 @@ return (
     <Section backgroundColor="#000000">
       <Container>
         <Flex direction="column" gap="24px">
-          <H2 style={{ color: "var(--white)", maxWidth: "1015px" }}>
-            Components: the building blocks of an open web
-          </H2>
-          <Text
-            size="text-2xl"
-            mobileSize="text-l"
-            color="white"
-            style={{ maxWidth: "808px" }}
-          >
-            Explore, use, and share the building blocks for open web
-            applications.
+          <H2 style={{ color: "var(--white)", maxWidth: "1015px" }}>Components: the building blocks of an open web</H2>
+          <Text size="text-2xl" mobileSize="text-l" color="white" style={{ maxWidth: "808px" }}>
+            Explore, use, and share the building blocks for open web applications.
           </Text>
         </Flex>
 
@@ -498,47 +473,32 @@ return (
             content: (
               <Flex direction="column" gap="60px">
                 <Flex direction="column" gap="24px">
-                  <Text
-                    color="white"
-                    size="text-xl"
-                    mobileSize="text-l"
-                    fontWeight="500"
-                  >
+                  <Text color="white" size="text-xl" mobileSize="text-l" fontWeight="500">
                     10,000 components and climbing
                   </Text>
                   <Text color="white">
-                    Use an ever-growing library of components, providing
-                    functionality ranging from Social to DeFi and beyond.
+                    Use an ever-growing library of components, providing functionality ranging from Social to DeFi and
+                    beyond.
                   </Text>
                 </Flex>
 
                 <Flex direction="column" gap="24px">
-                  <Text
-                    color="white"
-                    size="text-xl"
-                    mobileSize="text-l"
-                    fontWeight="500"
-                  >
+                  <Text color="white" size="text-xl" mobileSize="text-l" fontWeight="500">
                     Decentralized frontends made simple
                   </Text>
                   <Text color="white">
-                    Use JSX syntax and a React-like library to easily build
-                    decentralized frontends using composable components.
+                    Use JSX syntax and a React-like library to easily build decentralized frontends using composable
+                    components.
                   </Text>
                 </Flex>
 
                 <Flex direction="column" gap="24px">
-                  <Text
-                    color="white"
-                    size="text-xl"
-                    mobileSize="text-l"
-                    fontWeight="500"
-                  >
+                  <Text color="white" size="text-xl" mobileSize="text-l" fontWeight="500">
                     Secured on-chain
                   </Text>
                   <Text color="white">
-                    All components are stored on a NEAR contract, making
-                    frontends highly reliable and censorship-resistant
+                    All components are stored on a NEAR contract, making frontends highly reliable and
+                    censorship-resistant
                   </Text>
                 </Flex>
 
@@ -566,28 +526,14 @@ return (
 
         <Flex direction="column" gap="60px">
           <Flex direction="column" gap="24px">
-            <Text
-              color="white"
-              size="text-xl"
-              mobileSize="text-l"
-              fontWeight="500"
-            >
+            <Text color="white" size="text-xl" mobileSize="text-l" fontWeight="500">
               A new and more open web
             </Text>
 
-            <Flex
-              gap="24px"
-              alignItems="flex-end"
-              mobileStack
-              mobileAlignItems="flex-start"
-            >
-              <Text
-                color="white"
-                style={{ maxWidth: "598px", marginRight: "auto" }}
-              >
-                Break out of siloed, single-chain experiences and expand your
-                reach, all while getting the best of NEAR's speed, low cost, and
-                scalability.
+            <Flex gap="24px" alignItems="flex-end" mobileStack mobileAlignItems="flex-start">
+              <Text color="white" style={{ maxWidth: "598px", marginRight: "auto" }}>
+                Break out of siloed, single-chain experiences and expand your reach, all while getting the best of
+                NEAR's speed, low cost, and scalability.
               </Text>
               <Widget
                 src="${REPL_ACCOUNT}/widget/DIG.Button"
@@ -649,37 +595,18 @@ return (
     <Section backgroundColor="#9797FF">
       <Container>
         <Flex direction="column" gap="50px" alignItems="center">
-          <Flex
-            direction="column"
-            gap="20px"
-            alignItems="center"
-            style={{ textAlign: "center" }}
-          >
-            <Text
-              size="text-3xl"
-              fontWeight="500"
-              style={{ maxWidth: "600px" }}
-            >
+          <Flex direction="column" gap="20px" alignItems="center" style={{ textAlign: "center" }}>
+            <Text size="text-3xl" fontWeight="500" style={{ maxWidth: "600px" }}>
               Start your journey with an open web
             </Text>
 
-            <Text
-              size="text-l"
-              mobileSize="text-l"
-              style={{ maxWidth: "600px" }}
-            >
-              Build quickly with awesome resources and thousands of composable
-              components. Join a thriving community of developers building an
-              open web.
+            <Text size="text-l" mobileSize="text-l" style={{ maxWidth: "600px" }}>
+              Build quickly with awesome resources and thousands of composable components. Join a thriving community of
+              developers building an open web.
             </Text>
           </Flex>
 
-          <Flex
-            gap="24px"
-            wrap="wrap"
-            alignItems="center"
-            justifyContent="center"
-          >
+          <Flex gap="24px" wrap="wrap" alignItems="center" justifyContent="center">
             <Widget
               src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{

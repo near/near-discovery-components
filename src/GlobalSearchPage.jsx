@@ -124,10 +124,9 @@ return (
       />
     </Search>
 
-    {state.searchResults?.components.length === 0 &&
-      state.searchResults?.people.length === 0 && (
-        <Text>No people or components matched your search.</Text>
-      )}
+    {state.searchResults?.components.length === 0 && state.searchResults?.people.length === 0 && (
+      <Text>No people or components matched your search.</Text>
+    )}
 
     {state.searchResults?.people.length > 0 && (
       <Group>

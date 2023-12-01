@@ -12,16 +12,12 @@ State.init({
 });
 
 const createChartConfig = (apps) => {
-  const filteredApps = filterTag
-    ? apps.filter((app) => app.tags && app.tags.includes(filterTag))
-    : apps;
+  const filteredApps = filterTag ? apps.filter((app) => app.tags && app.tags.includes(filterTag)) : apps;
   const topApps = filteredApps
     .filter((app) => app.votes > 0)
     .sort((a, b) => a.votes - b.votes)
     .slice(0, topLimit);
-  const appNames = topApps.map((app) =>
-    app.name ? app.name : app.widget_name.split("/")[2]
-  );
+  const appNames = topApps.map((app) => (app.name ? app.name : app.widget_name.split("/")[2]));
   const appVotes = topApps.map((app) => app.votes);
   if (topApps.length == 0) {
     State.update({
@@ -86,7 +82,7 @@ const loadChartData = () => {
   if (state.isLoading !== true || state.apps.length > 0) return;
   try {
     asyncFetch(
-      "https://storage.googleapis.com/databricks-near-query-runner/output/nearcon_apps/apps_qualified_upvoted.json"
+      "https://storage.googleapis.com/databricks-near-query-runner/output/nearcon_apps/apps_qualified_upvoted.json",
     )
       .then((res) => {
         const apps = JSON.parse(res.body).data.map((app_raw) => {
@@ -181,11 +177,7 @@ const LoaderContainer = styled.div`
 const Loader = () => {
   return (
     <LoaderContainer className="loader">
-      <span
-        className="spinner-grow spinner-grow-sm me-1"
-        role="status"
-        aria-hidden="true"
-      />
+      <span className="spinner-grow spinner-grow-sm me-1" role="status" aria-hidden="true" />
       Loading ...
     </LoaderContainer>
   );
@@ -196,9 +188,7 @@ return (
     <Graph style={{ height: height }}>
       {title && <Title>{title}</Title>}
       {state.isLoading && <Loader />}
-      {state.NoDataAvalaible && (
-        <Text> This category does not have data to show yet. </Text>
-      )}
+      {state.NoDataAvalaible && <Text> This category does not have data to show yet. </Text>}
       {!state.isLoading && !state.NoDataAvalaible && (
         <Widget
           src="${REPL_ACCOUNT}/widget/Chart"

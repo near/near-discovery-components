@@ -13,9 +13,7 @@ let {
   loading,
 } = props;
 
-const showIosNoteText =
-  (iOSDevice && !iOSVersion) ||
-  (iOSDevice && iOSVersion && iOSVersion < recomendedIOSVersion);
+const showIosNoteText = (iOSDevice && !iOSVersion) || (iOSDevice && iOSVersion && iOSVersion < recomendedIOSVersion);
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -70,14 +68,12 @@ const Header = () => (
 const Description = () => (
   <>
     <DescriptionWrapper showIosNoteText={showIosNoteText}>
-      Stay in the know on updates and activity. Customize your preferences
-      anytime.
+      Stay in the know on updates and activity. Customize your preferences anytime.
     </DescriptionWrapper>
     {showIosNoteText && (
       <NoteText>
         <i className="ph-bold ph-info" />
-        Mobile browser push notifications are only supported on iOS "
-        {recomendedIOSVersion}" or greater.
+        Mobile browser push notifications are only supported on iOS "{recomendedIOSVersion}" or greater.
       </NoteText>
     )}
   </>

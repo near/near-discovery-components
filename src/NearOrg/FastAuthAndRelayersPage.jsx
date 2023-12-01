@@ -170,8 +170,7 @@ return (
               <H1>Secure & simple onboarding</H1>
 
               <Text size="text-l" mobileSize="text-base">
-                No seed phrase, no gas, no friction. Bring users on chain in
-                seconds with FastAuth and Relayers.
+                No seed phrase, no gas, no friction. Bring users on chain in seconds with FastAuth and Relayers.
               </Text>
             </Flex>
           </PatternContent>
@@ -182,16 +181,10 @@ return (
     <Section backgroundColor="#F2F1EA">
       <Container>
         <Flex direction="column" gap="24px">
-          <H2 style={{ maxWidth: "1016px" }}>
-            FastAuth: Web3 applications, familiar login
-          </H2>
-          <Text
-            size="text-2xl"
-            mobileSize="text-l"
-            style={{ maxWidth: "808px" }}
-          >
-            Creating a crypto wallet is not for everyone. With FastAuth,
-            leverage the power of Web3 without compromising on user experience.
+          <H2 style={{ maxWidth: "1016px" }}>FastAuth: Web3 applications, familiar login</H2>
+          <Text size="text-2xl" mobileSize="text-l" style={{ maxWidth: "808px" }}>
+            Creating a crypto wallet is not for everyone. With FastAuth, leverage the power of Web3 without compromising
+            on user experience.
           </Text>
         </Flex>
 
@@ -206,8 +199,7 @@ return (
                     Familiar login
                   </Text>
                   <Text>
-                    Forget recovery phrases, FastAuth seamlessly links your
-                    users’ emails directly to NEAR accounts.
+                    Forget recovery phrases, FastAuth seamlessly links your users’ emails directly to NEAR accounts.
                   </Text>
                 </Flex>
 
@@ -216,8 +208,8 @@ return (
                     One Digital ID
                   </Text>
                   <Text>
-                    Your users only need one email for FastAuth account login or
-                    recovery across all devices and applications.
+                    Your users only need one email for FastAuth account login or recovery across all devices and
+                    applications.
                   </Text>
                 </Flex>
 
@@ -226,8 +218,7 @@ return (
                     Simple & secure
                   </Text>
                   <Text>
-                    FastAuth accounts are kept safe through multi-party
-                    computation (MPC) on a decentralized network.
+                    FastAuth accounts are kept safe through multi-party computation (MPC) on a decentralized network.
                   </Text>
                 </Flex>
 
@@ -257,17 +248,10 @@ return (
     <Section backgroundColor="#000000">
       <Container>
         <Flex direction="column" gap="24px">
-          <H2 style={{ color: "var(--white)" }}>
-            Relayers: no crypto, no problem
-          </H2>
-          <Text
-            size="text-2xl"
-            mobileSize="text-l"
-            color="white"
-            style={{ maxWidth: "808px" }}
-          >
-            Obtaining cryptocurrencies to pay for transactions is the main
-            hurdle to Web3 adoption. Use relayers to cover costs for your users.
+          <H2 style={{ color: "var(--white)" }}>Relayers: no crypto, no problem</H2>
+          <Text size="text-2xl" mobileSize="text-l" color="white" style={{ maxWidth: "808px" }}>
+            Obtaining cryptocurrencies to pay for transactions is the main hurdle to Web3 adoption. Use relayers to
+            cover costs for your users.
           </Text>
         </Flex>
 
@@ -278,47 +262,29 @@ return (
             content: (
               <Flex direction="column" gap="60px">
                 <Flex direction="column" gap="24px">
-                  <Text
-                    color="white"
-                    size="text-xl"
-                    mobileSize="text-l"
-                    fontWeight="500"
-                  >
+                  <Text color="white" size="text-xl" mobileSize="text-l" fontWeight="500">
                     Cover gas for your users
                   </Text>
                   <Text color="white">
-                    Let your users make transactions in NEAR without crypto by
-                    covering for their gas.
+                    Let your users make transactions in NEAR without crypto by covering for their gas.
                   </Text>
                 </Flex>
 
                 <Flex direction="column" gap="24px">
-                  <Text
-                    color="white"
-                    size="text-xl"
-                    mobileSize="text-l"
-                    fontWeight="500"
-                  >
+                  <Text color="white" size="text-xl" mobileSize="text-l" fontWeight="500">
                     Set your limits
                   </Text>
                   <Text color="white">
-                    Easily configure a wide array of permissions and expenditure
-                    rules to keep your budget in line.
+                    Easily configure a wide array of permissions and expenditure rules to keep your budget in line.
                   </Text>
                 </Flex>
 
                 <Flex direction="column" gap="24px">
-                  <Text
-                    color="white"
-                    size="text-xl"
-                    mobileSize="text-l"
-                    fontWeight="500"
-                  >
+                  <Text color="white" size="text-xl" mobileSize="text-l" fontWeight="500">
                     Native support
                   </Text>
                   <Text color="white">
-                    Relayers are based on meta-transactions, which are built-in
-                    at the protocol level.
+                    Relayers are based on meta-transactions, which are built-in at the protocol level.
                   </Text>
                 </Flex>
 
@@ -349,36 +315,17 @@ return (
     <Section backgroundColor="#61E5E2">
       <Container>
         <Flex direction="column" gap="50px" alignItems="center">
-          <Flex
-            direction="column"
-            gap="20px"
-            alignItems="center"
-            style={{ textAlign: "center" }}
-          >
-            <Text
-              size="text-3xl"
-              fontWeight="500"
-              style={{ maxWidth: "600px" }}
-            >
+          <Flex direction="column" gap="20px" alignItems="center" style={{ textAlign: "center" }}>
+            <Text size="text-3xl" fontWeight="500" style={{ maxWidth: "600px" }}>
               Get ready to embrace mass adoption
             </Text>
 
-            <Text
-              size="text-l"
-              mobileSize="text-l"
-              style={{ maxWidth: "600px" }}
-            >
-              No seed phrase, no gas. Bring users on chain in seconds with
-              FastAuth and Relayers.
+            <Text size="text-l" mobileSize="text-l" style={{ maxWidth: "600px" }}>
+              No seed phrase, no gas. Bring users on chain in seconds with FastAuth and Relayers.
             </Text>
           </Flex>
 
-          <Flex
-            gap="24px"
-            wrap="wrap"
-            alignItems="center"
-            justifyContent="center"
-          >
+          <Flex gap="24px" wrap="wrap" alignItems="center" justifyContent="center">
             <Widget
               src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{

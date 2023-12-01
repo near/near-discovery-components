@@ -11,8 +11,7 @@ State.init({
 });
 
 function extractMentions(text) {
-  const mentionRegex =
-    /@((?:(?:[a-z\d]+[-_])*[a-z\d]+\.)*(?:[a-z\d]+[-_])*[a-z\d]+)/gi;
+  const mentionRegex = /@((?:(?:[a-z\d]+[-_])*[a-z\d]+\.)*(?:[a-z\d]+[-_])*[a-z\d]+)/gi;
   mentionRegex.lastIndex = 0;
   const accountIds = new Set();
   for (const match of text.matchAll(mentionRegex)) {
@@ -76,9 +75,7 @@ function composeData() {
   }
 
   if (notifications.length) {
-    data.index.notify = JSON.stringify(
-      notifications.length > 1 ? notifications : notifications[0]
-    );
+    data.index.notify = JSON.stringify(notifications.length > 1 ? notifications : notifications[0]);
   }
 
   return data;
@@ -136,8 +133,7 @@ const Textarea = styled.div`
     height: unset;
     min-height: 124px;
     font: inherit;
-    padding: var(--padding) var(--padding) calc(40px + (var(--padding) * 2))
-      var(--padding);
+    padding: var(--padding) var(--padding) calc(40px + (var(--padding) * 2)) var(--padding);
     margin: 0;
     resize: none;
     background: none;
@@ -172,7 +168,9 @@ const Actions = styled.div`
     font-size: 14px;
     border: none;
     cursor: pointer;
-    transition: background 200ms, opacity 200ms;
+    transition:
+      background 200ms,
+      opacity 200ms;
 
     &:hover,
     &:focus {
@@ -198,7 +196,9 @@ const Actions = styled.div`
     font-size: 0;
     border: none;
     cursor: pointer;
-    transition: background 200ms, opacity 200ms;
+    transition:
+      background 200ms,
+      opacity 200ms;
 
     &::before {
       font-size: 16px;
@@ -273,18 +273,9 @@ return (
     )}
 
     <Actions>
-      <IpfsImageUpload
-        image={state.image}
-        className="upload-image-button bi bi-image"
-      />
+      <IpfsImageUpload image={state.image} className="upload-image-button bi bi-image" />
 
-      <CommitButton
-        disabled={!state.text}
-        force
-        data={composeData}
-        onCommit={onCommit}
-        className="commit-post-button"
-      >
+      <CommitButton disabled={!state.text} force data={composeData} onCommit={onCommit} className="commit-post-button">
         Reply
       </CommitButton>
     </Actions>

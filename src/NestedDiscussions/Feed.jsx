@@ -37,9 +37,6 @@ const renderItem = ({ accountId, blockHeight }) => (
 
 return (
   <>
-    <Widget
-      src="${REPL_ACCOUNT}/widget/IndexFeed"
-      props={{ index, renderItem, moderatorAccount, reverse: true }}
-    />
+    <Widget src="${REPL_ACCOUNT}/widget/IndexFeed" props={{ index, renderItem, moderatorAccount, reverse: true }} />
   </>
 );

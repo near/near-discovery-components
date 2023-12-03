@@ -135,43 +135,33 @@ const overlay = (
             props={{ accountId: props.accountId, profile, noOverlay: true }}
           />
         )}
-        {!props.showFlagAccountFeature &&
-          !!context.accountId &&
-          context.accountId !== props.accountId && (
-            <Widget
-              src="${REPL_ACCOUNT}/widget/FlagButton"
-              props={{
-                item: contentModerationItem,
-                onFlag: () => {
-                  setHasBeenFlagged(true);
-                },
-              }}
-            />
-          )}
-        {props.showFlagAccountFeature &&
-          !!context.accountId &&
-          context.accountId !== props.accountId && (
-            <Widget
-              src="${REPL_ACCOUNT}/widget/Flagged.Trigger"
-              props={{
-                onClick: () => {
-                  setShowConfirmModal(true);
-                },
-              }}
-            />
-          )}
+        {!props.showFlagAccountFeature && !!context.accountId && context.accountId !== props.accountId && (
+          <Widget
+            src="${REPL_ACCOUNT}/widget/FlagButton"
+            props={{
+              item: contentModerationItem,
+              onFlag: () => {
+                setHasBeenFlagged(true);
+              },
+            }}
+          />
+        )}
+        {props.showFlagAccountFeature && !!context.accountId && context.accountId !== props.accountId && (
+          <Widget
+            src="${REPL_ACCOUNT}/widget/Flagged.Trigger"
+            props={{
+              onClick: () => {
+                setShowConfirmModal(true);
+              },
+            }}
+          />
+        )}
       </div>
 
       {verifications && (
         <div style={{}}>
           <div>
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 30 30"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg width="20" height="20" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M27.2325 11.8525C26.7613 11.36 26.2738 10.8525 26.09 10.4062C25.92 9.9975 25.91 9.32 25.9 8.66375C25.8812 7.44375 25.8612 6.06125 24.9 5.1C23.9387 4.13875 22.5563 4.11875 21.3363 4.1C20.68 4.09 20.0025 4.08 19.5938 3.91C19.1488 3.72625 18.64 3.23875 18.1475 2.7675C17.285 1.93875 16.305 1 15 1C13.695 1 12.7162 1.93875 11.8525 2.7675C11.36 3.23875 10.8525 3.72625 10.4062 3.91C10 4.08 9.32 4.09 8.66375 4.1C7.44375 4.11875 6.06125 4.13875 5.1 5.1C4.13875 6.06125 4.125 7.44375 4.1 8.66375C4.09 9.32 4.08 9.9975 3.91 10.4062C3.72625 10.8512 3.23875 11.36 2.7675 11.8525C1.93875 12.715 1 13.695 1 15C1 16.305 1.93875 17.2837 2.7675 18.1475C3.23875 18.64 3.72625 19.1475 3.91 19.5938C4.08 20.0025 4.09 20.68 4.1 21.3363C4.11875 22.5563 4.13875 23.9387 5.1 24.9C6.06125 25.8612 7.44375 25.8812 8.66375 25.9C9.32 25.91 9.9975 25.92 10.4062 26.09C10.8512 26.2738 11.36 26.7612 11.8525 27.2325C12.715 28.0612 13.695 29 15 29C16.305 29 17.2837 28.0612 18.1475 27.2325C18.64 26.7612 19.1475 26.2738 19.5938 26.09C20.0025 25.92 20.68 25.91 21.3363 25.9C22.5563 25.8812 23.9387 25.8612 24.9 24.9C25.8612 23.9387 25.8812 22.5563 25.9 21.3363C25.91 20.68 25.92 20.0025 26.09 19.5938C26.2738 19.1488 26.7613 18.64 27.2325 18.1475C28.0613 17.285 29 16.305 29 15C29 13.695 28.0613 12.7162 27.2325 11.8525Z"
                 fill="white"
@@ -190,13 +180,7 @@ const overlay = (
           </div>
           {verifications.human_provider && (
             <div style={{ textAlign: "bottom" }}>
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 30 30"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+              <svg width="20" height="20" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M27.2325 11.8525C26.7613 11.36 26.2738 10.8525 26.09 10.4062C25.92 9.9975 25.91 9.32 25.9 8.66375C25.8812 7.44375 25.8612 6.06125 24.9 5.1C23.9387 4.13875 22.5563 4.11875 21.3363 4.1C20.68 4.09 20.0025 4.08 19.5938 3.91C19.1488 3.72625 18.64 3.23875 18.1475 2.7675C17.285 1.93875 16.305 1 15 1C13.695 1 12.7162 1.93875 11.8525 2.7675C11.36 3.23875 10.8525 3.72625 10.4062 3.91C10 4.08 9.32 4.09 8.66375 4.1C7.44375 4.11875 6.06125 4.13875 5.1 5.1C4.13875 6.06125 4.125 7.44375 4.1 8.66375C4.09 9.32 4.08 9.9975 3.91 10.4062C3.72625 10.8512 3.23875 11.36 2.7675 11.8525C1.93875 12.715 1 13.695 1 15C1 16.305 1.93875 17.2837 2.7675 18.1475C3.23875 18.64 3.72625 19.1475 3.91 19.5938C4.08 20.0025 4.09 20.68 4.1 21.3363C4.11875 22.5563 4.13875 23.9387 5.1 24.9C6.06125 25.8612 7.44375 25.8812 8.66375 25.9C9.32 25.91 9.9975 25.92 10.4062 26.09C10.8512 26.2738 11.36 26.7612 11.8525 27.2325C12.715 28.0612 13.695 29 15 29C16.305 29 17.2837 28.0612 18.1475 27.2325C18.64 26.7612 19.1475 26.2738 19.5938 26.09C20.0025 25.92 20.68 25.91 21.3363 25.9C22.5563 25.8812 23.9387 25.8612 24.9 24.9C25.8612 23.9387 25.8812 22.5563 25.9 21.3363C25.91 20.68 25.92 20.0025 26.09 19.5938C26.2738 19.1488 26.7613 18.64 27.2325 18.1475C28.0613 17.285 29 16.305 29 15C29 13.695 28.0613 12.7162 27.2325 11.8525Z"
                   fill="white"
@@ -219,10 +203,7 @@ const overlay = (
               </svg>
               <VerificationText secondary>
                 Human by{" "}
-                <a
-                  href={"https://" + verifications.human_provider + "/"}
-                  target="_new"
-                >
+                <a href={"https://" + verifications.human_provider + "/"} target="_new">
                   {verifications.human_provider}
                 </a>
               </VerificationText>
@@ -230,13 +211,7 @@ const overlay = (
           )}
           {verifications.kyc_provider && (
             <div>
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 30 30"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+              <svg width="20" height="20" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M27.2325 11.8525C26.7613 11.36 26.2738 10.8525 26.09 10.4062C25.92 9.9975 25.91 9.32 25.9 8.66375C25.8812 7.44375 25.8612 6.06125 24.9 5.1C23.9387 4.13875 22.5563 4.11875 21.3363 4.1C20.68 4.09 20.0025 4.08 19.5938 3.91C19.1488 3.72625 18.64 3.23875 18.1475 2.7675C17.285 1.93875 16.305 1 15 1C13.695 1 12.7162 1.93875 11.8525 2.7675C11.36 3.23875 10.8525 3.72625 10.4062 3.91C10 4.08 9.32 4.09 8.66375 4.1C7.44375 4.11875 6.06125 4.13875 5.1 5.1C4.13875 6.06125 4.125 7.44375 4.1 8.66375C4.09 9.32 4.08 9.9975 3.91 10.4062C3.72625 10.8512 3.23875 11.36 2.7675 11.8525C1.93875 12.715 1 13.695 1 15C1 16.305 1.93875 17.2837 2.7675 18.1475C3.23875 18.64 3.72625 19.1475 3.91 19.5938C4.08 20.0025 4.09 20.68 4.1 21.3363C4.11875 22.5563 4.13875 23.9387 5.1 24.9C6.06125 25.8612 7.44375 25.8812 8.66375 25.9C9.32 25.91 9.9975 25.92 10.4062 26.09C10.8512 26.2738 11.36 26.7612 11.8525 27.2325C12.715 28.0612 13.695 29 15 29C16.305 29 17.2837 28.0612 18.1475 27.2325C18.64 26.7612 19.1475 26.2738 19.5938 26.09C20.0025 25.92 20.68 25.91 21.3363 25.9C22.5563 25.8812 23.9387 25.8612 24.9 24.9C25.8612 23.9387 25.8812 22.5563 25.9 21.3363C25.91 20.68 25.92 20.0025 26.09 19.5938C26.2738 19.1488 26.7613 18.64 27.2325 18.1475C28.0613 17.285 29 16.305 29 15C29 13.695 28.0613 12.7162 27.2325 11.8525Z"
                   fill="white"
@@ -253,10 +228,7 @@ const overlay = (
               </svg>
               <VerificationText secondary>
                 KYC by{" "}
-                <a
-                  href={"https://" + verifications.kyc_provider + "/"}
-                  target="_new"
-                >
+                <a href={"https://" + verifications.kyc_provider + "/"} target="_new">
                   {verifications.kyc_provider}
                 </a>
               </VerificationText>
@@ -267,11 +239,7 @@ const overlay = (
 
       {props.scope === "friends" ? (
         <OverlayTagsWrapper>
-          <Widget
-            className="layout"
-            src="${REPL_ACCOUNT}/widget/Tags"
-            props={{ tags, scroll: true }}
-          />
+          <Widget className="layout" src="${REPL_ACCOUNT}/widget/Tags" props={{ tags, scroll: true }} />
           <RecommendedAvatars>
             <Widget
               src="${REPL_ACCOUNT}/widget/Recommender.Views.RecommendedAvatars"
@@ -280,16 +248,11 @@ const overlay = (
                 becauseYouFollow: props.becauseYouFollow,
               }}
             />
-            <AvatarCount>
-              {props.becauseYouFollow.length} friends following
-            </AvatarCount>
+            <AvatarCount>{props.becauseYouFollow.length} friends following</AvatarCount>
           </RecommendedAvatars>
         </OverlayTagsWrapper>
       ) : (
-        <Widget
-          src="${REPL_ACCOUNT}/widget/Tags"
-          props={{ tags, scroll: true }}
-        />
+        <Widget src="${REPL_ACCOUNT}/widget/Tags" props={{ tags, scroll: true }} />
       )}
 
       {!!context.accountId && context.accountId !== props.accountId && (
@@ -306,10 +269,7 @@ const overlay = (
             />
           )}
           {!props.sidebar && (
-            <Widget
-              src="${REPL_ACCOUNT}/widget/FollowButton"
-              props={{ accountId: props.accountId }}
-            />
+            <Widget src="${REPL_ACCOUNT}/widget/FollowButton" props={{ accountId: props.accountId }} />
           )}
         </FollowButtonWrapper>
       )}
@@ -335,8 +295,7 @@ return (
         props={{
           type: "info",
           title: "Flagged for moderation",
-          description:
-            "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
+          description: "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
           open: hasBeenFlagged,
           onOpenChange: () => {
             setHasBeenFlagged(false);

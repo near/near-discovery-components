@@ -5,10 +5,7 @@ let totalComponents = 0;
 const componentsUrl = `/${REPL_ACCOUNT}/widget/ComponentsPage`;
 let recentAppPaths = [];
 
-const taggedData = Social.keys(
-  `*/widget/*/metadata/tags/${requiredTag}`,
-  "final"
-);
+const taggedData = Social.keys(`*/widget/*/metadata/tags/${requiredTag}`, "final");
 
 const blockHeights = Social.keys("*/widget/*", "final", {
   return_type: "BlockHeight",
@@ -19,8 +16,7 @@ if (blockHeights && taggedData) {
 
   Object.keys(blockHeights).forEach((accountId) => {
     return Object.keys(blockHeights[accountId].widget).forEach((widgetName) => {
-      const hasRequiredTag =
-        taggedData[accountId]?.widget[widgetName]?.metadata?.tags?.app;
+      const hasRequiredTag = taggedData[accountId]?.widget[widgetName]?.metadata?.tags?.app;
 
       totalComponents++;
 
@@ -36,13 +32,10 @@ if (blockHeights && taggedData) {
 
   results.sort((a, b) => b.blockHeight - a.blockHeight);
 
-  recentAppPaths = results
-    .slice(0, limit)
-    .map((result) => `${result.accountId}/widget/${result.widgetName}`);
+  recentAppPaths = results.slice(0, limit).map((result) => `${result.accountId}/widget/${result.widgetName}`);
 }
 
-const componentData =
-  recentAppPaths.length > 0 ? Social.getr(recentAppPaths) : null;
+const componentData = recentAppPaths.length > 0 ? Social.getr(recentAppPaths) : null;
 
 if (componentData) {
   recentAppPaths.forEach((src) => {
@@ -147,8 +140,6 @@ return (
       ))}
     </Items>
 
-    <ButtonLink href={componentsUrl}>
-      View All Components ({totalComponents})
-    </ButtonLink>
+    <ButtonLink href={componentsUrl}>View All Components ({totalComponents})</ButtonLink>
   </Wrapper>
 );

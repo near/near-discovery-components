@@ -99,10 +99,7 @@ return (
       </IconWrapper>
       <Wrapper>
         <Title>Push notifications</Title>
-        <Text>
-          Push notifications are delivered in real-time to your enabled browser
-          or device.
-        </Text>
+        <Text>Push notifications are delivered in real-time to your enabled browser or device.</Text>
       </Wrapper>
     </Content>
     <SwitchWrapper>

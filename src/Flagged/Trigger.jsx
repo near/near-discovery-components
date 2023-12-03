@@ -27,10 +27,7 @@ const Button = styled.button`
 `;
 
 return (
-  <OverlayTrigger
-    placement="top"
-    overlay={<Tooltip>Flag for moderation</Tooltip>}
-  >
+  <OverlayTrigger placement="top" overlay={<Tooltip>Flag for moderation</Tooltip>}>
     <Button type="button" aria-label="Flag for moderation" onClick={onClick}>
       <i className="bi bi-flag"></i>
     </Button>

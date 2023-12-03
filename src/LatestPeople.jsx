@@ -16,9 +16,7 @@ const accountsWithProfileData =
 
 const limit = 5;
 const totalAccounts = Object.keys(accountsData || {}).length;
-const totalAccountsWithProfile = Object.keys(
-  accountsWithProfileData || {}
-).length;
+const totalAccountsWithProfile = Object.keys(accountsWithProfileData || {}).length;
 
 let accounts = Object.entries(accountsWithProfileData || {})
   .slice(totalAccountsWithProfile - limit, totalAccountsWithProfile)

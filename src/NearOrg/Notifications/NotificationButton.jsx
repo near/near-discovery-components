@@ -1,7 +1,6 @@
 const accountId = context.accountId;
 const moderatorAccount = props?.moderatorAccount || "${REPL_MODERATOR}";
-const notificationFeedSrc =
-  "${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsList";
+const notificationFeedSrc = "${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsList";
 
 const isLocalStorageSupported = props?.isLocalStorageSupported;
 const isNotificationSupported = props?.isNotificationSupported;
@@ -46,7 +45,8 @@ const PreviewWrapper = styled.div`
   position: absolute;
   border-radius: 6px;
   background: var(--white);
-  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.06),
+  box-shadow:
+    0px 4px 8px 0px rgba(0, 0, 0, 0.06),
     0px 0px 0px 1px rgba(0, 0, 0, 0.06);
   top: 70px;
   right: 68%;
@@ -194,7 +194,7 @@ const filterUsersRaw = Social.get(
   "optimistic",
   {
     subscribe: true,
-  }
+  },
 );
 
 if (filterUsers === null) {

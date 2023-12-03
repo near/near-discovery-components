@@ -13,9 +13,7 @@ State.init({
 
 function addTag(tag) {
   const values = tag.split(",");
-  const sanitizedValues = values
-    .map((value) => value.trim())
-    .filter((value) => !!value && tags.indexOf(value) === -1);
+  const sanitizedValues = values.map((value) => value.trim()).filter((value) => !!value && tags.indexOf(value) === -1);
 
   if (sanitizedValues.length > 0) {
     onTagsChange([...tags, ...sanitizedValues]);
@@ -32,11 +30,7 @@ function removeTag(tag) {
 }
 
 function handleOnKeyUp(e) {
-  if (
-    e.code === "Enter" ||
-    e.code === "Comma" ||
-    e.target.value.indexOf(",") > -1
-  ) {
+  if (e.code === "Enter" || e.code === "Comma" || e.target.value.indexOf(",") > -1) {
     addTag(e.target.value);
   }
 }

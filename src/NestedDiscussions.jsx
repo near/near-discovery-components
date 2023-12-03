@@ -21,8 +21,8 @@ const DiscussionContainer = styled.div`
 `;
 
 const ComposeWrapper = styled.div`
-  border-top: 1px solid #ECEEF0;
-  border-bottom: 1px solid #ECEEF0;
+  border-top: 1px solid #eceef0;
+  border-bottom: 1px solid #eceef0;
 `;
 
 const FeedWrapper = styled.div`

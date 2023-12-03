@@ -1,5 +1,4 @@
-let { debounceDelay, onInput, onQueryChange, placeholder, ...forwardedProps } =
-  props;
+let { debounceDelay, onInput, onQueryChange, placeholder, ...forwardedProps } = props;
 
 debounceDelay = debounceDelay ?? 300;
 
@@ -78,12 +77,7 @@ return (
     props={{
       iconLeft: "ph-bold ph-magnifying-glass",
       inputNodeRight: (
-        <ResetButton
-          type="button"
-          tabIndex={-1}
-          onClick={reset}
-          aria-label="Reset Input"
-        >
+        <ResetButton type="button" tabIndex={-1} onClick={reset} aria-label="Reset Input">
           <i className="ph-bold ph-x" />
         </ResetButton>
       ),

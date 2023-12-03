@@ -17,10 +17,7 @@ const Text = styled.p`
 
 const SourceTab = () => (
   <Wrapper>
-    <Widget
-      src="${REPL_ACCOUNT}/widget/ComponentHistory"
-      props={{ widgetPath: src }}
-    />
+    <Widget src="${REPL_ACCOUNT}/widget/ComponentHistory" props={{ widgetPath: src }} />
   </Wrapper>
 );
 

@@ -20,8 +20,7 @@ const historyBlocksRequest = Social.keys(`${props.widgetPath}`, "final", {
 if (historyBlocksRequest === null || currentCode === null) return "Loading...";
 
 const [widgetAccountId, _, widgetName] = props.widgetPath.split("/");
-let blocksChanges =
-  historyBlocksRequest[widgetAccountId]?.["widget"]?.[widgetName];
+let blocksChanges = historyBlocksRequest[widgetAccountId]?.["widget"]?.[widgetName];
 if (blocksChanges) blocksChanges = blocksChanges?.sort((a, b) => b - a);
 if (!state.blockHeight) State.update({ blockHeight: blocksChanges[0] });
 const index = blocksChanges.findIndex((el) => el == state.blockHeight);
@@ -217,9 +216,7 @@ return (
     <PillSelect>
       <PillSelectButton
         type="button"
-        onClick={() =>
-          State.update({ selectedTab: "code", blockHeight: blocksChanges[0] })
-        }
+        onClick={() => State.update({ selectedTab: "code", blockHeight: blocksChanges[0] })}
         selected={state.selectedTab === "code"}
       >
         <i className="ph-bold ph-code"></i>
@@ -228,9 +225,7 @@ return (
 
       <PillSelectButton
         type="button"
-        onClick={() =>
-          State.update({ selectedTab: "render", blockHeight: blocksChanges[0] })
-        }
+        onClick={() => State.update({ selectedTab: "render", blockHeight: blocksChanges[0] })}
         selected={state.selectedTab === "render"}
       >
         <i className="ph-bold ph-eye"></i>
@@ -258,12 +253,7 @@ return (
 
           <Commits>
             {blocksChanges
-              .slice(
-                0,
-                state.showAllCommits
-                  ? blocksChanges.length
-                  : COMMIT_DISPLAY_LIMIT
-              )
+              .slice(0, state.showAllCommits ? blocksChanges.length : COMMIT_DISPLAY_LIMIT)
               .map((blockHeight, key) => (
                 <button
                   type="button"
@@ -282,22 +272,21 @@ return (
               ))}
           </Commits>
 
-          {!state.showAllCommits &&
-            blocksChanges.length > COMMIT_DISPLAY_LIMIT && (
-              <Widget
-                src="${REPL_ACCOUNT}/widget/DIG.Button"
-                props={{
-                  fill: "outline",
-                  variant: "secondary",
-                  label: "Show All Commits",
-                  size: "small",
-                  style: { width: "100%" },
-                  onClick: () => {
-                    State.update({ showAllCommits: true });
-                  },
-                }}
-              />
-            )}
+          {!state.showAllCommits && blocksChanges.length > COMMIT_DISPLAY_LIMIT && (
+            <Widget
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
+              props={{
+                fill: "outline",
+                variant: "secondary",
+                label: "Show All Commits",
+                size: "small",
+                style: { width: "100%" },
+                onClick: () => {
+                  State.update({ showAllCommits: true });
+                },
+              }}
+            />
+          )}
         </Sidebar>
       )}
 
@@ -341,10 +330,7 @@ return (
               currentBlockHeight: state.blockHeight,
               prevBlockHeight: blocksChanges[index + 1],
               findUniqueResult: (lineCountDeleted, lineCountInserted) => {
-                if (
-                  state.lineCountDeleted === undefined ||
-                  state.lineCountInserted === undefined
-                )
+                if (state.lineCountDeleted === undefined || state.lineCountInserted === undefined)
                   State.update({ lineCountDeleted, lineCountInserted });
               },
             }}
@@ -353,11 +339,7 @@ return (
 
         {state.selectedTab === "render" && (
           <div>
-            <Widget
-              code={currentCode}
-              key={`preview-${state.blockHeight}`}
-              props={props}
-            />
+            <Widget code={currentCode} key={`preview-${state.blockHeight}`} props={props} />
           </div>
         )}
       </Main>

@@ -131,12 +131,7 @@ return (
   <FacetContainer>
     <Tabs>
       {facets.map((facet) => (
-        <TabsButton
-          type="button"
-          onClick={() => onFacetClick(facet)}
-          key={facet}
-          data-selected={state.selected[facet]}
-        >
+        <TabsButton type="button" onClick={() => onFacetClick(facet)} key={facet} data-selected={state.selected[facet]}>
           {facet}
         </TabsButton>
       ))}

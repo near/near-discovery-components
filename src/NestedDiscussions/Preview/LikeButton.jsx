@@ -30,8 +30,7 @@ if (state.hasLike === true) {
 
 const accountsWithLikes = Object.keys(likesByUsers);
 const hasLike = context.accountId && !!likesByUsers[context.accountId];
-const hasLikeOptimistic =
-  state.hasLikeOptimistic === undefined ? hasLike : state.hasLikeOptimistic;
+const hasLikeOptimistic = state.hasLikeOptimistic === undefined ? hasLike : state.hasLikeOptimistic;
 const totalLikes =
   accountsWithLikes.length +
   (hasLike === false && state.hasLikeOptimistic === true ? 1 : 0) -
@@ -56,13 +55,14 @@ const LikeButton = styled.button`
     transition: color 200ms;
 
     &.bi-heart-fill {
-      color: #E5484D !important;
+      color: #e5484d !important;
     }
   }
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     outline: none;
-    color: #11181C;
+    color: #11181c;
   }
 `;
 
@@ -111,11 +111,7 @@ const likeClick = () => {
 const title = hasLike ? "Unlike" : "Like";
 
 return (
-  <LikeButton
-    disabled={state.loading || dataLoading || !context.accountId}
-    title={title}
-    onClick={likeClick}
-  >
+  <LikeButton disabled={state.loading || dataLoading || !context.accountId} title={title} onClick={likeClick}>
     <i className={`${hasLikeOptimistic ? "bi-heart-fill" : "bi-heart"}`} />
     {totalLikes}
   </LikeButton>

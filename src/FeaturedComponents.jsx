@@ -1,18 +1,10 @@
 let components = [];
 const componentsUrl = "/${REPL_ACCOUNT}/widget/ComponentsPage";
 
-const featuredComponentListRes = Social.get(
-  "${REPL_FEATURED_COMP_MANAGER}/listManager/FeaturedComponents",
-  "final"
-);
-const featuredComponentPaths = featuredComponentListRes
-  ? JSON.parse(featuredComponentListRes)
-  : [];
+const featuredComponentListRes = Social.get("${REPL_FEATURED_COMP_MANAGER}/listManager/FeaturedComponents", "final");
+const featuredComponentPaths = featuredComponentListRes ? JSON.parse(featuredComponentListRes) : [];
 
-const componentData =
-  featuredComponentPaths.length > 0
-    ? Social.getr(featuredComponentPaths)
-    : null;
+const componentData = featuredComponentPaths.length > 0 ? Social.getr(featuredComponentPaths) : null;
 
 if (componentData) {
   featuredComponentPaths.forEach((src) => {
@@ -78,10 +70,7 @@ return (
     <Items>
       {components.map((component) => (
         <Item key={component.src}>
-          <Widget
-            src="${REPL_ACCOUNT}/widget/ComponentCard"
-            props={{ ...component, hideBlockHeightTimestamp: true }}
-          />
+          <Widget src="${REPL_ACCOUNT}/widget/ComponentCard" props={{ ...component, hideBlockHeightTimestamp: true }} />
         </Item>
       ))}
     </Items>

@@ -101,7 +101,8 @@ const Thumbnail = styled.div`
   border: 1px solid #eceef0;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0px 1px 3px rgba(16, 24, 40, 0.1),
+  box-shadow:
+    0px 1px 3px rgba(16, 24, 40, 0.1),
     0px 1px 2px rgba(16, 24, 40, 0.06);
 
   img {
@@ -205,8 +206,7 @@ return (
           src="${REPL_MOB}/widget/Image"
           props={{
             image: metadata.image,
-            fallbackUrl:
-              "https://ipfs.near.social/ipfs/bafkreifc4burlk35hxom3klq4mysmslfirj7slueenbj7ddwg7pc6ixomu",
+            fallbackUrl: "https://ipfs.near.social/ipfs/bafkreifc4burlk35hxom3klq4mysmslfirj7slueenbj7ddwg7pc6ixomu",
             alt: metadata.name,
           }}
         />
@@ -240,11 +240,7 @@ return (
     )}
 
     <Actions>
-      <ButtonLink
-        primary
-        href={primaryActions[primaryAction].url}
-        onClick={handleCloseMenu}
-      >
+      <ButtonLink primary href={primaryActions[primaryAction].url} onClick={handleCloseMenu}>
         {primaryActions[primaryAction].display}
       </ButtonLink>
 
@@ -271,16 +267,9 @@ return (
           },
           notifyAccountId: accountId,
           button: (starCount, starIsActive, starOnClick) => (
-            <Button
-              type="button"
-              onClick={starOnClick}
-              aria-label="Star this component"
-            >
+            <Button type="button" onClick={starOnClick} aria-label="Star this component">
               {starIsActive ? (
-                <i
-                  className="bi bi-star-fill"
-                  style={{ color: "var(--amber10)" }}
-                />
+                <i className="bi bi-star-fill" style={{ color: "var(--amber10)" }} />
               ) : (
                 <i className="bi bi-star" />
               )}{" "}
@@ -295,10 +284,7 @@ return (
         View Source
       </ButtonLink>
 
-      <OverlayTrigger
-        placement="top"
-        overlay={<Tooltip>Copy URL to clipboard</Tooltip>}
-      >
+      <OverlayTrigger placement="top" overlay={<Tooltip>Copy URL to clipboard</Tooltip>}>
         <Button
           type="button"
           onMouseLeave={() => {
@@ -310,11 +296,7 @@ return (
             });
           }}
         >
-          {state.copiedShareUrl ? (
-            <i className="bi bi-16 bi-check"></i>
-          ) : (
-            <i className="bi bi-16 bi-link-45deg"></i>
-          )}
+          {state.copiedShareUrl ? <i className="bi bi-16 bi-check"></i> : <i className="bi bi-16 bi-link-45deg"></i>}
           Share
         </Button>
       </OverlayTrigger>

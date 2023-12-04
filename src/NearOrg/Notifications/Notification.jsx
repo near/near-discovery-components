@@ -113,10 +113,15 @@ const Text = styled.div`
 
 const Desc = styled.span`
   font: var(--text-s);
-  color: #706f6c;
+  color: var(--sand11);
   font-style: italic;
   border-left: 2px solid #e3e3e0;
   padding: 0 0 0 1rem;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
 `;
 
 const Left = styled.div`
@@ -180,6 +185,11 @@ const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 const isComment = path.indexOf("/post/comment") > 0 || type === "comment";
 const isPost = !isComment && path.indexOf("/post/main") > 0;
 
+const getDevHubParentId = Near.view("devgovgigs.near", "get_parent_id", {
+  post_id: props.value.post,
+});
+const isDevHubPost = getDevHubParentId === null;
+
 let notificationMessage = {
   like: isPost ? "liked your post" : "liked your comment",
   follow: "followed you",
@@ -192,7 +202,24 @@ let notificationMessage = {
   "devgovgigs/mention": "mentioned you in their post",
   "devgovgigs/edit": "edited your",
   "devgovgigs/reply": "replied to your post",
-  "devgovgigs/like": isPost ? "liked your post" : "liked your comment",
+  "devgovgigs/like": isDevHubPost ? "liked your post" : "liked your comment",
+};
+
+const getContentPreview = () => {
+  if (type && type.startsWith("devgovgigs")) {
+    const getDevHubContent = Near.view("devgovgigs.near", "get_post", {
+      post_id: props.value.post,
+    });
+    return getDevHubContent.snapshot.description;
+  }
+
+  const contentPath = isPost
+    ? `${context.accountId}/post/main`
+    : `${accountId}/post/comment`;
+  const contentDescription = JSON.parse(
+    Social.get(contentPath, blockHeight) ?? "null"
+  );
+  return contentDescription.text;
 };
 
 const actionable =
@@ -245,10 +272,7 @@ const buildMenu = () => {
     {
       name: (
         <>
-          <i
-            className="ph-bold ph-bell-simple-slash"
-            style={{ color: "#D95C4A" }}
-          />
+          <i className="ph-bold ph-bell-simple-slash" style={{ color: "#D95C4A" }} />
           <span style={{ color: "#D95C4A" }}>Block</span>
         </>
       ),
@@ -274,11 +298,7 @@ const onConfirm = async () => {
 return (
   <Notification>
     <Icon>{iconType[type]}</Icon>
-    <Content
-      className="notification-item"
-      as={actionable ? "Link" : "div"}
-      href={actionable && postUrl}
-    >
+    <Content className="notification-item" as={actionable ? "Link" : "div"} href={actionable && postUrl}>
       <Left>
         <Link href={!props.onClick && profileUrl}>
           <ProfileOverlay>
@@ -296,9 +316,7 @@ return (
           <ProfileOverlay>
             <div>
               <Link href={!props.onClick && profileUrl}>
-                <Username>
-                  {profile.name || accountId.split(".near")[0]}
-                </Username>
+                <Username>{profile.name || accountId.split(".near")[0]}</Username>
               </Link>
               <Action>{notificationMessage[type]}</Action>
             </div>
@@ -308,20 +326,16 @@ return (
           <Timestamp>
             <Dot>·</Dot>
             {/* TODO: add title tag to show full time on hover */}
-            <Widget
-              src="${REPL_MOB_2}/widget/TimeAgo@97556750"
-              props={{ blockHeight: props.blockHeight }}
-            />
+            <Widget src="${REPL_MOB_2}/widget/TimeAgo@97556750" props={{ blockHeight: props.blockHeight }} />
           </Timestamp>
         </Text>
-        {/* <Desc>{desc}</Desc> */}
+        {actionable && getContentPreview() && (
+          <Desc>{getContentPreview()}</Desc>
+        )}
       </Left>
       <Right>
         {(type === "follow" || type === "unfollow") && (
-          <Widget
-            src="${REPL_ACCOUNT}/widget/FollowButton"
-            props={{ accountId: props.accountId }}
-          />
+          <Widget src="${REPL_ACCOUNT}/widget/FollowButton" props={{ accountId: props.accountId }} />
         )}
 
         {type === "poke" && (

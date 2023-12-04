@@ -50,7 +50,7 @@ const FlagButton = () => (
           onCommit: () => {
             props.onFlag && props.onFlag();
           },
-        }
+        },
       );
     }}
   >
@@ -59,16 +59,11 @@ const FlagButton = () => (
 );
 
 if (disabled) {
-  return (
-    <FlagButton />
-  );
+  return <FlagButton />;
 }
 
 return (
-  <OverlayTrigger
-    placement="top"
-    overlay={<Tooltip>Flag for moderation</Tooltip>}
-  >
+  <OverlayTrigger placement="top" overlay={<Tooltip>Flag for moderation</Tooltip>}>
     <FlagButton />
   </OverlayTrigger>
 );

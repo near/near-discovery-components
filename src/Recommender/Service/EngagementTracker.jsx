@@ -4,8 +4,7 @@ const api_url = `${dataplane}${uri}`;
 const auth = "Basic MlVub3dMd2lXRnc3YzM1QU11RUVkREVJa2RvOg=="; //prod
 
 const generateAnonId = (length) => {
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let result = "";
 
   for (let i = 0; i < length; i++) {
@@ -37,8 +36,7 @@ const trackEngagement = () => {
       Authorization: auth,
     },
     method: "POST",
-  })
-    .catch((error) => console.log(error));
+  }).catch((error) => console.log(error));
 };
 
 props.onClick ? trackEngagement(props) : null;

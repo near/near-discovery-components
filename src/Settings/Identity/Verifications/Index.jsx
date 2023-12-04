@@ -1,8 +1,10 @@
 const { idosCredentials, ...forwardedProps } = props;
 
-const proofOfPersonhoodLink = "https://app.fractal.id/authorize?client_id=7woBwPtlpPAbHSlR_B314ewo1IThzI6dlWNQgW272gU&redirect_uri=https%3A%2F%2Fnear.org%2Fsettings&response_type=code&scope=contact%3Aread%20verification.uniqueness%3Aread%20verification.uniqueness.details%3Aread%20verification.wallet-near%3Aread%20verification.wallet-near.details%3Aread%20verification.wallet-near%3Aread%20verification.wallet-near.details%3Aread%20verification.idos%3Aread%20verification.idos.details%3Aread&user_role=person";
+const proofOfPersonhoodLink =
+  "https://app.fractal.id/authorize?client_id=7woBwPtlpPAbHSlR_B314ewo1IThzI6dlWNQgW272gU&redirect_uri=https%3A%2F%2Fnear.org%2Fsettings&response_type=code&scope=contact%3Aread%20verification.uniqueness%3Aread%20verification.uniqueness.details%3Aread%20verification.wallet-near%3Aread%20verification.wallet-near.details%3Aread%20verification.wallet-near%3Aread%20verification.wallet-near.details%3Aread%20verification.idos%3Aread%20verification.idos.details%3Aread&user_role=person";
 
-const kycLink = "https://app.fractal.id/authorize?client_id=7woBwPtlpPAbHSlR_B314ewo1IThzI6dlWNQgW272gU&redirect_uri=https%3A%2F%2Fnear.org%2Fsettings&response_type=code&scope=contact%3Aread%20verification.basic%3Aread%20verification.basic.details%3Aread%20verification.liveness%3Aread%20verification.liveness.details%3Aread%20verification.uniq%3Aread%20verification.uniq.details%3Aread%20verification.wallet-near%3Aread%20verification.wallet-near.details%3Aread%20verification.wallet-near%3Aread%20verification.wallet-near.details%3Aread%20verification.idos%3Aread%20verification.idos.details%3Aread&user_role=person";
+const kycLink =
+  "https://app.fractal.id/authorize?client_id=7woBwPtlpPAbHSlR_B314ewo1IThzI6dlWNQgW272gU&redirect_uri=https%3A%2F%2Fnear.org%2Fsettings&response_type=code&scope=contact%3Aread%20verification.basic%3Aread%20verification.basic.details%3Aread%20verification.liveness%3Aread%20verification.liveness.details%3Aread%20verification.uniq%3Aread%20verification.uniq.details%3Aread%20verification.wallet-near%3Aread%20verification.wallet-near.details%3Aread%20verification.wallet-near%3Aread%20verification.wallet-near.details%3Aread%20verification.idos%3Aread%20verification.idos.details%3Aread&user_role=person";
 
 const [modalOpen, setModalOpen] = useState(false);
 const [modalLink, setModalLink] = useState(null);
@@ -36,7 +38,9 @@ const IconWrapper = styled.div`
 const Icon = styled.i`
   color: ${(p) => p.color ?? "var(--sand11)"};
   font-size: ${(p) => p.size ?? "20px"};
-  ${(p) => p.fit && `
+  ${(p) =>
+    p.fit &&
+    `
     position: absolute;
     top: 50%;
     left: 50%;
@@ -68,7 +72,7 @@ const CredentialButton = ({ href }) => (
       disabled: !context.accountId,
       onClick: () => {
         setModalLink(href);
-        setModalOpen(!modalOpen)
+        setModalOpen(!modalOpen);
       },
     }}
   />
@@ -93,11 +97,13 @@ const verificationItems = [
   },
 ];
 
-
-const verifiedItems =
-  verificationItems
-    .map((item) => idosCredentials && idosCredentials.find((cred) => cred.credential_type === item.id) ? { ...item, verified: true } : item)
-    .filter((item) => !item.verified);
+const verifiedItems = verificationItems
+  .map((item) =>
+    idosCredentials && idosCredentials.find((cred) => cred.credential_type === item.id)
+      ? { ...item, verified: true }
+      : item,
+  )
+  .filter((item) => !item.verified);
 
 return (
   <Wrapper>

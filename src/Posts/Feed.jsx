@@ -1,5 +1,4 @@
-const GRAPHQL_ENDPOINT =
-  props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
+const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 const loadMorePosts = props.loadMorePosts;
 const hasMore = props.hasMore || false;
 const posts = props.posts || [];
@@ -18,9 +17,7 @@ const TextLink = styled("Link")`
 
 function returnProfileForUser(post) {
   const image =
-    post.profile_image && post.profile_image.indexOf("http") === 0
-      ? { url: rawImage }
-      : { ipfs_cid: rawImage };
+    post.profile_image && post.profile_image.indexOf("http") === 0 ? { url: rawImage } : { ipfs_cid: rawImage };
   const name = post.profile_name ?? "";
   let tags = null;
 
@@ -86,11 +83,7 @@ return (
     initialLoad={false}
     loader={
       <div className="loader">
-        <span
-          className="spinner-grow spinner-grow-sm me-1"
-          role="status"
-          aria-hidden="true"
-        />
+        <span className="spinner-grow spinner-grow-sm me-1" role="status" aria-hidden="true" />
         Loading ...
       </div>
     }

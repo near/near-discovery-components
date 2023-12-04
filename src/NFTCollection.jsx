@@ -12,9 +12,7 @@ State.init({
   currentPage: 0,
 });
 
-const data = fetch(
-  `https://api.kitwallet.app/account/${accountId}/likelyNFTsFromBlock`
-);
+const data = fetch(`https://api.kitwallet.app/account/${accountId}/likelyNFTsFromBlock`);
 
 if (data.body?.list) {
   allNfts = [];
@@ -34,10 +32,7 @@ if (data.body?.list) {
           contractId,
         });
 
-        allNfts = allNfts.slice(
-          0,
-          state.currentPage * limitPerPage + limitPerPage
-        );
+        allNfts = allNfts.slice(0, state.currentPage * limitPerPage + limitPerPage);
       });
     }
 
@@ -48,8 +43,7 @@ if (data.body?.list) {
 }
 
 const hasFinishedLoading = data.body?.list?.length === results.length;
-const showLoadMoreButton =
-  allNfts.length > 0 && allNfts.length % limitPerPage === 0;
+const showLoadMoreButton = allNfts.length > 0 && allNfts.length % limitPerPage === 0;
 
 const Wrapper = styled.div`
   display: flex;
@@ -74,7 +68,8 @@ const Card = styled("Link")`
   position: relative;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0px 12px 16px rgba(16, 24, 40, 0.08),
+  box-shadow:
+    0px 12px 16px rgba(16, 24, 40, 0.08),
     0px 4px 6px rgba(16, 24, 40, 0.03);
 
   .nft-thumbnail {
@@ -133,17 +128,13 @@ return (
   <Wrapper>
     <Items>
       {allNfts.map((nft, i) => (
-        <Card
-          key={i}
-          href={`/${REPL_MOB_2}/widget/NftImage?tokenId=${nft.token_id}&contractId=${nft.contractId}`}
-        >
+        <Card key={i} href={`/${REPL_MOB_2}/widget/NftImage?tokenId=${nft.token_id}&contractId=${nft.contractId}`}>
           <Widget
             src="${REPL_MOB_2}/widget/NftImage"
             props={{
               nft: { tokenId: nft.token_id, contractId: nft.contractId },
               className: "nft-thumbnail",
-              fallbackUrl:
-                "https://ipfs.near.social/ipfs/bafkreihdiy3ec4epkkx7wc4wevssruen6b7f3oep5ylicnpnyyqzayvcry",
+              fallbackUrl: "https://ipfs.near.social/ipfs/bafkreihdiy3ec4epkkx7wc4wevssruen6b7f3oep5ylicnpnyyqzayvcry",
               alt: `NFT ${nft.contractId} ${nft.token_id}`,
             }}
           />
@@ -152,10 +143,7 @@ return (
     </Items>
 
     {showLoadMoreButton && (
-      <Button
-        type="button"
-        onClick={() => State.update({ currentPage: state.currentPage + 1 })}
-      >
+      <Button type="button" onClick={() => State.update({ currentPage: state.currentPage + 1 })}>
         Load More
       </Button>
     )}

@@ -26,7 +26,9 @@ const TableWrapper = styled.div`
   border-radius: 12px;
   border: 1px solid #eaecf0;
   background: #fff;
-  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.06), 0px 1px 3px 0px rgba(16, 24, 40, 0.10);
+  box-shadow:
+    0px 1px 2px 0px rgba(16, 24, 40, 0.06),
+    0px 1px 3px 0px rgba(16, 24, 40, 0.1);
 `;
 
 const Table = styled.table`
@@ -41,7 +43,7 @@ const Th = styled.th`
 
 const Td = styled.td`
   font: var(--text-s);
-  color: ${(p) => p.primary ? "var(--sand12)" : "var(--sand11)"};
+  color: ${(p) => (p.primary ? "var(--sand12)" : "var(--sand11)")};
   font-weight: 400;
   padding-top: 16px;
 `;
@@ -65,7 +67,9 @@ const IconWrapper = styled.div`
 const Icon = styled.i`
   color: ${(p) => p.color ?? "var(--sand11)"};
   font-size: ${(p) => p.size ?? "20px"};
-  ${(p) => p.fit && `
+  ${(p) =>
+    p.fit &&
+    `
     position: absolute;
     top: 50%;
     left: 50%;
@@ -89,21 +93,21 @@ const IconSealCheck = () => (
 const iconType = (type) => {
   switch (type) {
     case "human":
-      return ({
+      return {
         icon: <IconSealUser />,
-        text: "Verified Human"
-      });
+        text: "Verified Human",
+      };
     case "plus":
-      return ({
+      return {
         icon: <IconSealCheck />,
-        text: "KYC"
-      });
+        text: "KYC",
+      };
     case "basic":
     default:
-      return ({
+      return {
         icon: <i className="ph ph-user-circle" />,
-        text: "Basic"
-      });
+        text: "Basic",
+      };
   }
 };
 
@@ -117,7 +121,7 @@ const CredentialType = ({ type }) => {
   );
 };
 
-if (!idosCredentials || (idosCredentials && idosCredentials.length === 0)) return<></>;
+if (!idosCredentials || (idosCredentials && idosCredentials.length === 0)) return <></>;
 
 return (
   <Wrapper>
@@ -144,8 +148,6 @@ return (
           ))}
         </tbody>
       </Table>
-
     </TableWrapper>
-
   </Wrapper>
 );

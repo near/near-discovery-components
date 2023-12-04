@@ -127,7 +127,8 @@ const LargeCard = styled.div`
   z-index: 1070;
   background: #fff;
   border: 1px solid #eceef0;
-  box-shadow: 0px 1px 3px rgba(16, 24, 40, 0.1),
+  box-shadow:
+    0px 1px 3px rgba(16, 24, 40, 0.1),
     0px 1px 2px rgba(16, 24, 40, 0.06);
   overflow: hidden;
   padding: 24px 0px 13px;
@@ -153,17 +154,13 @@ return (
         accountId: props.accountId,
         accountIdRank: props.accountIdRank,
         fromContext: props.fromContext,
-        profileName:
-          props.profileName || profile.name || accountId.split(".near")[0],
+        profileName: props.profileName || profile.name || accountId.split(".near")[0],
         profileUrl: profileUrl,
       }}
     />
 
     <TagsWrapper>
-      <Widget
-        src="${REPL_ACCOUNT}/widget/Tags"
-        props={{ tags, scroll: true }}
-      />
+      <Widget src="${REPL_ACCOUNT}/widget/Tags" props={{ tags, scroll: true }} />
     </TagsWrapper>
 
     {tags.length == 0 && (
@@ -172,17 +169,11 @@ return (
       </TagsWrapper>
     )}
 
-    {props.following !== null ||
-    props.followers !== null ||
-    props.likers !== null ? (
+    {props.following !== null || props.followers !== null || props.likers !== null ? (
       <Scores>
         {props.followers > 0 && (
           <Score>
-            <OverlayTrigger
-              key={placement}
-              placement={placement}
-              overlay={<Tooltip>Followers</Tooltip>}
-            >
+            <OverlayTrigger key={placement} placement={placement} overlay={<Tooltip>Followers</Tooltip>}>
               <div>
                 <i className="bi bi-person"></i>
                 {abbreviateNumber(props.followers)}
@@ -192,11 +183,7 @@ return (
         )}
         {props.following > 0 && (
           <Score>
-            <OverlayTrigger
-              key={placement}
-              placement={placement}
-              overlay={<Tooltip>Following</Tooltip>}
-            >
+            <OverlayTrigger key={placement} placement={placement} overlay={<Tooltip>Following</Tooltip>}>
               <div>
                 <i className="bi bi-person-gear"></i>
                 {abbreviateNumber(props.following)}
@@ -206,11 +193,7 @@ return (
         )}
         {props.likers > 0 && (
           <Score>
-            <OverlayTrigger
-              key={placement}
-              placement={placement}
-              overlay={<Tooltip>Likes received</Tooltip>}
-            >
+            <OverlayTrigger key={placement} placement={placement} overlay={<Tooltip>Likes received</Tooltip>}>
               <div>
                 <i className="bi bi-heart"></i>
                 {abbreviateNumber(props.likers)}

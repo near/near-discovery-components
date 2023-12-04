@@ -42,12 +42,7 @@ const Flex = styled.div`
 
   @media (max-width: 900px) {
     flex-direction: ${(p) => (p.mobileStack ? "column" : p.direction ?? "row")};
-    gap: ${(p) =>
-      p.mobileStack === true
-        ? "var(--section-gap)"
-        : p.mobileStack
-        ? p.mobileStack
-        : p.gap};
+    gap: ${(p) => (p.mobileStack === true ? "var(--section-gap)" : p.mobileStack ? p.mobileStack : p.gap)};
   }
 `;
 const Section = styled.div`
@@ -95,20 +90,16 @@ const ipfsImages = {
   logoAurora: "bafkreieoq7wpdctcx42uywfdaoi4k3uq6rgodbjjz6mhz3qesrmaben2ju",
   logoProximity: "bafkreiazqis67kprs5ofbdruktmtvtun4g4bb2nbrqpwxzocuz77io6vyy",
   logoHumanGuild: "bafkreia2q267cf7apo6r3o3uw35lpbrp43jb3c5udfgquee2clbkdbks4e",
-  logoCypherpunkGuild:
-    "bafkreie25aa7gfb5u3p7bouxc6xknismfgtdtlt3yi7pqau3nqtksvvnsm",
+  logoCypherpunkGuild: "bafkreie25aa7gfb5u3p7bouxc6xknismfgtdtlt3yi7pqau3nqtksvvnsm",
   logoMintBase: "bafkreia3zulk3xrmwc6grqcpxavzug6odwgkwzd5magctxvq4jvalbnkcy",
   logoOctopus: "bafkreibzcnifufde5ft6hx3qkwzxhzq66avfbholirvrmaf5jbojwqggey",
   logoMetaWeb: "bafkreigalzrrkjyq755e45ryvrpragroneda3373assctbrnwjmgb4fzwe",
   logoOWC: "bafkreiarz2ffdpkuaoz6g7tvbp66lyoqqgwpvxtq3u4won46sjtuds6hqa",
-  logoStealthCapital:
-    "bafkreiac7dkdapj6bhiyusqs576is3b36ypbz6dimhugnrrhhv63i7pe6m",
+  logoStealthCapital: "bafkreiac7dkdapj6bhiyusqs576is3b36ypbz6dimhugnrrhhv63i7pe6m",
   logoLyric: "bafkreicjhngar5ybinywhql3msk6tqi5cckngaf2zywjeuw65umkoqtq34",
-  logoCreativeDao:
-    "bafkreictzvvz2irr7tr7fhkdne2i7xpr4mf7x5b5i2vhgoqdswb73lbyyu",
+  logoCreativeDao: "bafkreictzvvz2irr7tr7fhkdne2i7xpr4mf7x5b5i2vhgoqdswb73lbyyu",
   logoDevDao: "bafkreibvh3qys5z7qbekqqhmgump4iy32nw5wfvcyegejfs4gckrbqp7pq",
-  logoMarketingDao:
-    "bafkreifnwvfi7x5bzzxrjjvp7xbfqd3xpojtlohcgzrowtvyygogrt2emq",
+  logoMarketingDao: "bafkreifnwvfi7x5bzzxrjjvp7xbfqd3xpojtlohcgzrowtvyygogrt2emq",
   flagKenia: "bafkreib4flzpg3emzmsyw2dro5hcnsnqqfrfk7gd2dvvsjks2xcvo5rbxa",
   flagIndia: "bafkreicboijkmrugyrd26jhjvanxc7cnqxbvnhopdho76cyxer54b67ydy",
   flagBalcans: "bafkreicz6eqbngpv44endjeddfudaaooyw63iuzgmlog4stzrnpdkje4vi",
@@ -271,8 +262,7 @@ const fundingHugeCards = [
     iconClassName: "ph ph-trend-up",
     iconColor: "violet8",
     title: "Accelerators and Incubators",
-    content:
-      "For projects and start-ups looking to join an incubator or accelerator",
+    content: "For projects and start-ups looking to join an incubator or accelerator",
     cards: acceleratorsCards,
   },
   {
@@ -281,8 +271,7 @@ const fundingHugeCards = [
     iconClassName: "ph ph-users-four",
     iconColor: "red7",
     title: "Community-led DAOs",
-    content:
-      "Decentralized communities that support the growth of the ecosystem",
+    content: "Decentralized communities that support the growth of the ecosystem",
     cards: communityDaoCards,
   },
   {
@@ -291,8 +280,7 @@ const fundingHugeCards = [
     iconClassName: "ph ph-planet",
     iconColor: "cyan7",
     title: "Regional hubs",
-    content:
-      "If a project is based in the following regions they should apply via their respective Regional Hub.",
+    content: "If a project is based in the following regions they should apply via their respective Regional Hub.",
     cards: regionalHubCards,
   },
 ];
@@ -304,26 +292,19 @@ return (
         <Flex gap="16px" direction="column" alignItems="center">
           <H1>Get Funded. Build the Future.</H1>
           <Text size="text-xl" color="sand12" style={{ maxWidth: "662px" }}>
-            The NEAR ecosystem offers multiple funding options to support
-            initiatives aimed at decentralizing, growing, and innovating on
-            NEAR.
+            The NEAR ecosystem offers multiple funding options to support initiatives aimed at decentralizing, growing,
+            and innovating on NEAR.
           </Text>
         </Flex>
       </Section>
 
       <Section center>
-        <Flex
-          gap="16px"
-          direction="column"
-          alignItems="stretch"
-          style={{ width: "100%" }}
-        >
+        <Flex gap="16px" direction="column" alignItems="stretch" style={{ width: "100%" }}>
           <Text size="text-3xl" color="sand12">
             Funding sources
           </Text>
           <Text size="text-xl" color="sand12">
-            We’ve helped hundreds of projects and teams realize their ideas, and
-            bring them to market.
+            We’ve helped hundreds of projects and teams realize their ideas, and bring them to market.
           </Text>
           <Widget
             src="${REPL_MOB}/widget/Image"
@@ -337,10 +318,7 @@ return (
             {fundingCards.map((item) => (
               <div className="col" key={item.key}>
                 <Card center>
-                  <SocialIcon
-                    className={item.iconClassName}
-                    color={`var(--${item.iconColor})`}
-                  />
+                  <SocialIcon className={item.iconClassName} color={`var(--${item.iconColor})`} />
                   <Text size="text-m" color="sand12">
                     {item.content}
                   </Text>
@@ -354,11 +332,7 @@ return (
       <Section gap="32px">
         {fundingHugeCards.map((card) => (
           <Card center key={card.key} id={card.id}>
-            <SocialIcon
-              className={card.iconClassName}
-              color={`var(--${card.iconColor})`}
-              size="32px"
-            />
+            <SocialIcon className={card.iconClassName} color={`var(--${card.iconColor})`} size="32px" />
             <Text size="text-3xl" color="sand12">
               {card.title}
             </Text>
@@ -382,12 +356,7 @@ return (
                       }}
                     />
                     <Flex gap="16px" direction="column" alignItems="start">
-                      <Text
-                        size="text-l"
-                        color="sand12"
-                        fontWeight="600"
-                        align="left"
-                      >
+                      <Text size="text-l" color="sand12" fontWeight="600" align="left">
                         {item.title}
                       </Text>
                       {item.content && (
@@ -411,12 +380,7 @@ return (
                           />
                         </div>
                       ) : (
-                        <Text
-                          size="text-m"
-                          color="sand12"
-                          align="left"
-                          fontWeight="600"
-                        >
+                        <Text size="text-m" color="sand12" align="left" fontWeight="600">
                           Comming Soon
                         </Text>
                       )}
@@ -434,9 +398,8 @@ return (
           What funding program is best for me?
         </Text>
         <Text size="text-xl" color="sand12" style={{ maxWidth: "662px" }}>
-          There are several options to get financial support for your idea –
-          whether it is a grant from an ecosystem fund, joining an accelerator,
-          or getting venture support through our Ecosystem partners.
+          There are several options to get financial support for your idea – whether it is a grant from an ecosystem
+          fund, joining an accelerator, or getting venture support through our Ecosystem partners.
         </Text>
         <Widget
           src="${REPL_MOB}/widget/Image"

@@ -95,9 +95,7 @@ return (
             }}
           />
         </AvatarCount>
-        <AvatarCount className="hover-state2">
-          {props.becauseYouFollow.length} friends follow
-        </AvatarCount>
+        <AvatarCount className="hover-state2">{props.becauseYouFollow.length} friends follow</AvatarCount>
       </Wrapper>
     )}
     {props.scope == "similar" && (
@@ -115,10 +113,7 @@ return (
     {props.blockHeight && (
       <Text small style={{ marginLeft: "auto" }}>
         Joined{" "}
-        <Widget
-          src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
-          props={{ blockHeight: props.blockHeight }}
-        />{" "}
+        <Widget src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}" props={{ blockHeight: props.blockHeight }} />{" "}
         ago
       </Text>
     )}

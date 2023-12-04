@@ -51,8 +51,7 @@ return (
         src="${REPL_MOB}/widget/Image"
         props={{
           image: props.image,
-          fallbackUrl:
-            "https://ipfs.near.social/ipfs/bafkreifc4burlk35hxom3klq4mysmslfirj7slueenbj7ddwg7pc6ixomu",
+          fallbackUrl: "https://ipfs.near.social/ipfs/bafkreifc4burlk35hxom3klq4mysmslfirj7slueenbj7ddwg7pc6ixomu",
           alt: props.title,
         }}
       />

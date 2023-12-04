@@ -13,8 +13,7 @@ if (content?.text && snipContent) {
 }
 const key = props.key ?? JSON.stringify(content);
 const postType = props.postType ?? "post";
-const postBlockHeight =
-  postType === "post" ? "blockHeight" : "commentBlockHeight";
+const postBlockHeight = postType === "post" ? "blockHeight" : "commentBlockHeight";
 const postUrl = `/${REPL_ACCOUNT}/widget/PostPage?accountId=${accountId}&${postBlockHeight}=${blockHeight}`;
 const onClick =
   props.onClick ??
@@ -40,19 +39,13 @@ const highlightWordInParagraph = (paragraph, word, charLimit) => {
   let endIndex = wordIndex;
 
   // Expand the selection to the left
-  while (
-    startIndex > 0 &&
-    currentLength + words[startIndex - 1].length + 1 <= charLimit
-  ) {
+  while (startIndex > 0 && currentLength + words[startIndex - 1].length + 1 <= charLimit) {
     startIndex--;
     currentLength += words[startIndex].length + 1;
   }
 
   // Expand the selection to the right
-  while (
-    endIndex < words.length - 1 &&
-    currentLength + words[endIndex + 1].length + 1 <= charLimit
-  ) {
+  while (endIndex < words.length - 1 && currentLength + words[endIndex + 1].length + 1 <= charLimit) {
     endIndex++;
     currentLength += words[endIndex].length + 1;
   }

@@ -70,15 +70,12 @@ return (
           <Section key={i}>
             <Widget src={src} />
           </Section>
-        )
+        ),
     )}
 
     <Section>
       {context.accountId && (
-        <ButtonLink
-          key="edit"
-          href={"/${REPL_MOB_2}/widget/Welcome.RHS.Editor"}
-        >
+        <ButtonLink key="edit" href={"/${REPL_MOB_2}/widget/Welcome.RHS.Editor"}>
           <i className="bi bi-list" /> Edit Widgets
         </ButtonLink>
       )}

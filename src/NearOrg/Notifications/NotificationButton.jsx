@@ -95,6 +95,10 @@ const PreviewContent = styled.div`
 
 const SeeAll = styled.div`
   padding: 16px;
+
+  div {
+    width: 100%;
+  }
 `;
 
 const Counter = ({ count }) => {
@@ -157,11 +161,13 @@ const Notification = ({ count, disabled }) => {
                 src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
                   href: "/notifications",
+                  variant: "primary",
                   fill: "outline",
-                  variant: "secondary",
                   label: "See all",
                   size: "small",
-                  style: { width: "100%" },
+                  style: {
+                    width: "100%",
+                  },
                 }}
               />
             </SeeAll>

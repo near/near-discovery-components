@@ -59,7 +59,12 @@ return (
           props={{
             label: "Turn on",
             variant: "primary",
+            fill: "outline",
             size: "default",
+            style: {
+              color: "var(--violet8)",
+              background: "var(--white)",
+            },
             onClick: handleTurnOn,
           }}
         />
@@ -67,8 +72,13 @@ return (
           src="${REPL_ACCOUNT}/widget/DIG.Button"
           props={{
             label: "No thanks",
-            variant: "secondary",
+            variant: "primary",
             size: "default",
+            fill: "ghost",
+            style: {
+              color: "var(--white)",
+              background: "transparent",
+            },
             onClick: handleOnCancel,
           }}
         />

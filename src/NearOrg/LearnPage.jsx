@@ -25,8 +25,7 @@ const webThreeItems = [
   },
   {
     name: "How to open the web",
-    description:
-      "NEAR’s co-founder Illia Polosukhin presents the core thesis for NEAR’s vision to build the open web.",
+    description: "NEAR’s co-founder Illia Polosukhin presents the core thesis for NEAR’s vision to build the open web.",
     icon: "ph-video",
     url: "https://www.youtube.com/watch?v=s3lhhyNCRwU",
     target: "_blank",
@@ -52,8 +51,7 @@ const webThreeItems = [
 const bosItems = [
   {
     name: "B.O.S Documentation",
-    description:
-      "The one-stop shop for all developer documentation related to the Blockchain Operating System.",
+    description: "The one-stop shop for all developer documentation related to the Blockchain Operating System.",
     icon: "ph-file-doc",
     url: "https://docs.near.org/",
     target: "_blank",
@@ -68,8 +66,7 @@ const bosItems = [
   },
   {
     name: "Illia Announces the B.O.S",
-    description:
-      "NEAR’s co-founder, Illia Polosukhin announces the Blockchain Operating System at ETH Denver 2023.",
+    description: "NEAR’s co-founder, Illia Polosukhin announces the Blockchain Operating System at ETH Denver 2023.",
     icon: "ph-video",
     url: "https://www.youtube.com/watch?v=zpkkhCESPU4",
     target: "_blank",
@@ -92,8 +89,7 @@ const bosItems = [
   },
   {
     name: "The Blockchain Operating System Explained",
-    description:
-      "David Weinstein (Chief of Staff at NEAR Foundation) discusses NEAR's  Blockchain Operating System.",
+    description: "David Weinstein (Chief of Staff at NEAR Foundation) discusses NEAR's  Blockchain Operating System.",
     icon: "ph-video",
     url: "https://www.youtube.com/watch?v=eQbuS1Xb5dc",
     target: "_blank",
@@ -103,8 +99,7 @@ const bosItems = [
 const nearItems = [
   {
     name: "The NEAR White Paper",
-    description:
-      "Read the original white paper that was the origin of the NEAR Protocol.",
+    description: "Read the original white paper that was the origin of the NEAR Protocol.",
     icon: "ph-article",
     url: "https://pages.near.org/papers/the-official-near-white-paper/",
     target: "_blank",
@@ -142,8 +137,7 @@ const nearItems = [
   },
   {
     name: "Smart Contracts on NEAR",
-    description:
-      "Get started with documentation for building JavaScript and Rust Smart Contracts on NEAR Protocol.",
+    description: "Get started with documentation for building JavaScript and Rust Smart Contracts on NEAR Protocol.",
     icon: "ph-file-doc",
     url: "https://docs.near.org/concepts/basics/accounts/smartcontract",
     target: "_blank",
@@ -307,8 +301,7 @@ return (
               <H1>Learn</H1>
 
               <Text size="text-l" mobileSize="text-base">
-                Gain an understanding of the open web and the role of NEAR in
-                that vision.
+                Gain an understanding of the open web and the role of NEAR in that vision.
               </Text>
             </Flex>
           </PatternContent>
@@ -323,13 +316,9 @@ return (
 
           <Flex direction="column" gap="24px">
             <H2>Users have all the power in Web3</H2>
-            <Text
-              size="text-2xl"
-              mobileSize="text-l"
-              style={{ maxWidth: "808px" }}
-            >
-              The next iteration of the internet will give users more autonomy
-              over their data, assets, and creative license.
+            <Text size="text-2xl" mobileSize="text-l" style={{ maxWidth: "808px" }}>
+              The next iteration of the internet will give users more autonomy over their data, assets, and creative
+              license.
             </Text>
           </Flex>
         </Flex>
@@ -367,23 +356,13 @@ return (
     <Section backgroundColor="#161615">
       <Container>
         <Flex direction="column" gap="80px" mobileGap="40px">
-          <Text color="sand1">
-            What is the Blockchain Operating System (B.O.S)?
-          </Text>
+          <Text color="sand1">What is the Blockchain Operating System (B.O.S)?</Text>
 
           <Flex direction="column" gap="24px">
-            <H2 style={{ color: "var(--white)", maxWidth: "600px" }}>
-              The operating system for an open web
-            </H2>
-            <Text
-              size="text-2xl"
-              mobileSize="text-l"
-              color="white"
-              style={{ maxWidth: "808px" }}
-            >
-              The B.O.S is an open-source platform that gives developers the
-              ability to build on any blockchain using familiar languages and a
-              broad set of components.
+            <H2 style={{ color: "var(--white)", maxWidth: "600px" }}>The operating system for an open web</H2>
+            <Text size="text-2xl" mobileSize="text-l" color="white" style={{ maxWidth: "808px" }}>
+              The B.O.S is an open-source platform that gives developers the ability to build on any blockchain using
+              familiar languages and a broad set of components.
             </Text>
           </Flex>
         </Flex>
@@ -427,17 +406,10 @@ return (
           <Text>What is NEAR?</Text>
 
           <Flex direction="column" gap="24px">
-            <H2 style={{ maxWidth: "1015px" }}>
-              NEAR is the next generation of blockchains
-            </H2>
-            <Text
-              size="text-2xl"
-              mobileSize="text-l"
-              style={{ maxWidth: "808px" }}
-            >
-              NEAR is a a layer 1 blockchain that uses a Proof-of-Stake (PoS)
-              consensus mechanism and sharded architecture to scale transaction
-              throughput.
+            <H2 style={{ maxWidth: "1015px" }}>NEAR is the next generation of blockchains</H2>
+            <Text size="text-2xl" mobileSize="text-l" style={{ maxWidth: "808px" }}>
+              NEAR is a a layer 1 blockchain that uses a Proof-of-Stake (PoS) consensus mechanism and sharded
+              architecture to scale transaction throughput.
             </Text>
           </Flex>
         </Flex>

@@ -9,9 +9,7 @@ const componentsData = Social.keys("*/widget/*", "final", {
 if (componentsData) {
   Object.keys(componentsData).forEach((accountId) => {
     stats.totalDevelopers++;
-    stats.totalComponents += Object.keys(
-      componentsData[accountId].widget
-    ).length;
+    stats.totalComponents += Object.keys(componentsData[accountId].widget).length;
   });
 }
 const appComponentsData = Social.keys("*/widget/*/metadata/tags/app", "final");

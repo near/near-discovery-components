@@ -58,12 +58,7 @@ const Tab = styled("Tabs.Trigger")`
   transition: all 200ms;
   user-select: none;
   gap: ${(p) => (p.size === "small" ? ".375rem" : ".5rem")};
-  font: ${(p) =>
-    p.size === "small"
-      ? "var(--text-xs)"
-      : p.size === "large"
-      ? "var(--text-base)"
-      : "var(--text-s)"};
+  font: ${(p) => (p.size === "small" ? "var(--text-xs)" : p.size === "large" ? "var(--text-base)" : "var(--text-s)")};
   font-weight: 600;
 
   &:hover {
@@ -97,10 +92,10 @@ const Tab = styled("Tabs.Trigger")`
       padding: 8px 12px;
     `
         : size === "large"
-        ? `
+          ? `
       padding: 12px 18px;
     `
-        : `
+          : `
       padding: 7px 16px;
     `
     }
@@ -123,10 +118,10 @@ const Tab = styled("Tabs.Trigger")`
       padding: 10px 12px;
     `
         : size === "large"
-        ? `
+          ? `
       padding: 12px 18px;
     `
-        : `
+          : `
       padding: 10px 16px;
     `
     }
@@ -152,10 +147,10 @@ const Tab = styled("Tabs.Trigger")`
       padding: 10px 12px;
     `
         : size === "large"
-        ? `
+          ? `
       padding: 12px 20px;
     `
-        : `
+          : `
       padding: 10px 16px;
     `
     }
@@ -163,8 +158,7 @@ const Tab = styled("Tabs.Trigger")`
 `;
 
 const TabIcon = styled.i`
-  font-size: ${(p) =>
-    p.size === "small" ? "16px" : p.size === "large" ? "20px" : "18px"};
+  font-size: ${(p) => (p.size === "small" ? "16px" : p.size === "large" ? "20px" : "18px")};
   color: var(--sand10);
 
   ${Tab}[data-state="inactive"]:hover & {
@@ -215,24 +209,13 @@ if (items.length === 0) {
 }
 
 return (
-  <TabGroup
-    onValueChange={onValueChange}
-    value={state.activeTab}
-    {...forwardedProps}
-  >
+  <TabGroup onValueChange={onValueChange} value={state.activeTab} {...forwardedProps}>
     <TabList size={size}>
       {items.map((item) => (
-        <Tab
-          key={`tab_item_${item.name}`}
-          value={item.value}
-          disabled={item.disabled}
-          size={size}
-        >
+        <Tab key={`tab_item_${item.name}`} value={item.value} disabled={item.disabled} size={size}>
           {item.icon && <TabIcon size={size} className={item.icon} />}
           {item.name}
-          {item.count && variant !== "toggle" && (
-            <TabCounter size={size}>{item.count}</TabCounter>
-          )}
+          {item.count && variant !== "toggle" && <TabCounter size={size}>{item.count}</TabCounter>}
         </Tab>
       ))}
     </TabList>

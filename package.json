@@ -1,0 +1,25 @@
+{
+  "name": "near-discovery-components",
+  "version": "0.1.0",
+  "description": "This is a repository that holds the source code of all NEAR discovery components that the team maintains for near.org.",
+  "scripts": {
+    "prettier": "prettier --check --log-level warn 'src/**/*.{js,jsx,ts,tsx,json}'",
+    "prettier:write": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json}'",
+    "prepare": "is-ci || husky install && npm install commitizen -g",
+    "commit": "cz"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
+    "cz-conventional-changelog": "^3.3.0",
+    "husky": "^8.0.0",
+    "is-ci": "^3.0.1",
+    "prettier": "^3.1.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}

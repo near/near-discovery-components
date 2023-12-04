@@ -10,7 +10,7 @@ const filterUsersRaw = Social.get(
   "optimistic",
   {
     subscribe: true,
-  }
+  },
 );
 if (filterUsers === null) {
   // haven't loaded filter list yet, return early
@@ -54,10 +54,7 @@ const shouldFilter = (item) => {
           console.log("Found flagged item of unknown type: ", item);
           break;
       }
-      return (
-        flagged?.value?.blockHeight === item.blockHeight &&
-        flagged?.value?.path === itemPath
-      );
+      return flagged?.value?.blockHeight === item.blockHeight && flagged?.value?.path === itemPath;
     })
   );
 };
@@ -80,14 +77,10 @@ const cachedRenderItem = (item, i) => {
 };
 
 index.options = index.options || {};
-const initialRenderLimit =
-  props.initialRenderLimit ?? index.options.limit ?? 10;
+const initialRenderLimit = props.initialRenderLimit ?? index.options.limit ?? 10;
 const addDisplayCount = props.nextLimit ?? initialRenderLimit;
 
-index.options.limit = Math.min(
-  Math.max(initialRenderLimit + addDisplayCount * 2, index.options.limit ?? 0),
-  100
-);
+index.options.limit = Math.min(Math.max(initialRenderLimit + addDisplayCount * 2, index.options.limit ?? 0), 100);
 const reverse = !!props.reverse;
 
 let initialItems = Social.index(index.action, index.key, index.options);
@@ -112,11 +105,9 @@ const computeFetchFrom = (items, limit, previouslyFoundItems) => {
 };
 
 const mergeItems = (newItems) => {
-  const items = [
-    ...new Set(
-      [...newItems, ...(state.items || [])].map((i) => JSON.stringify(i))
-    ),
-  ].map((i) => JSON.parse(i));
+  const items = [...new Set([...newItems, ...(state.items || [])].map((i) => JSON.stringify(i)))].map((i) =>
+    JSON.parse(i),
+  );
   items.sort((a, b) => a.blockHeight - b.blockHeight);
   if (index.options.order === "desc") {
     items.reverse();
@@ -133,11 +124,7 @@ if (state.jInitialItems !== jInitialItems) {
       jInitialItems,
       items: initialItems,
       fetchFrom: false,
-      nextFetchFrom: computeFetchFrom(
-        initialItems,
-        index.options.limit,
-        initialFoundItems
-      ),
+      nextFetchFrom: computeFetchFrom(initialItems, index.options.limit, initialFoundItems),
       displayCount: initialRenderLimit,
       cachedItems: {},
     });
@@ -158,7 +145,7 @@ if (state.fetchFrom) {
       from: state.fetchFrom,
       subscribe: undefined,
       limit,
-    })
+    }),
   );
   if (newItems !== null) {
     const newFoundItems = !!newItems.length;
@@ -190,11 +177,7 @@ const makeMoreItems = () => {
 
 const loader = (
   <div className="loader" key={"loader"}>
-    <span
-      className="spinner-grow spinner-grow-sm me-1"
-      role="status"
-      aria-hidden="true"
-    />
+    <span className="spinner-grow spinner-grow-sm me-1" role="status" aria-hidden="true" />
     Loading ...
   </div>
 );
@@ -231,11 +214,7 @@ return props.manual ? (
     hasMore={state.displayCount < state.items.length}
     loader={
       <div className="loader">
-        <span
-          className="spinner-grow spinner-grow-sm me-1"
-          role="status"
-          aria-hidden="true"
-        />
+        <span className="spinner-grow spinner-grow-sm me-1" role="status" aria-hidden="true" />
         Loading ...
       </div>
     }

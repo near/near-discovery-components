@@ -36,13 +36,9 @@ if (data) {
   const result = [];
 
   Object.keys(data).forEach((accountId) => {
-    const isFollowing =
-      followingData &&
-      followingData[context.accountId]?.graph?.follow[accountId] === true;
+    const isFollowing = followingData && followingData[context.accountId]?.graph?.follow[accountId] === true;
 
-    const isFollower =
-      followersData &&
-      followersData[accountId]?.graph?.follow[context.accountId] === true;
+    const isFollower = followersData && followersData[accountId]?.graph?.follow[context.accountId] === true;
 
     if (
       state.selectedTab === "everyone" ||
@@ -71,8 +67,7 @@ function onSearchChange({ result, term }) {
 }
 
 const items = state.searchResults || people;
-const showLoadMoreButton =
-  !state.searchResults && people.length % limitPerPage === 0;
+const showLoadMoreButton = !state.searchResults && people.length % limitPerPage === 0;
 
 const Wrapper = styled.div`
   display: flex;
@@ -244,54 +239,35 @@ return (
 
     {!state.searchResults && (
       <Tabs>
-        <TabsButton
-          href={`${peopleUrl}?tab=everyone`}
-          selected={state.selectedTab === "everyone"}
-        >
+        <TabsButton href={`${peopleUrl}?tab=everyone`} selected={state.selectedTab === "everyone"}>
           Everyone
         </TabsButton>
 
         {context.accountId && (
-          <TabsButton
-            href={`${peopleUrl}?tab=following`}
-            selected={state.selectedTab === "following"}
-          >
+          <TabsButton href={`${peopleUrl}?tab=following`} selected={state.selectedTab === "following"}>
             Following
           </TabsButton>
         )}
 
         {context.accountId && (
-          <TabsButton
-            href={`${peopleUrl}?tab=followers`}
-            selected={state.selectedTab === "followers"}
-          >
+          <TabsButton href={`${peopleUrl}?tab=followers`} selected={state.selectedTab === "followers"}>
             Followers
           </TabsButton>
         )}
-        <TabsButton
-          href={`${peopleUrl}?tab=trending`}
-          selected={state.selectedTab === "trending"}
-        >
+        <TabsButton href={`${peopleUrl}?tab=trending`} selected={state.selectedTab === "trending"}>
           Trending
         </TabsButton>
         {context.accountId && (
-          <TabsButton
-            href={`${peopleUrl}?tab=recommended`}
-            selected={state.selectedTab === "recommended"}
-          >
+          <TabsButton href={`${peopleUrl}?tab=recommended`} selected={state.selectedTab === "recommended"}>
             Recommended
           </TabsButton>
         )}
       </Tabs>
     )}
 
-    {state.searchResults?.length === 0 && (
-      <Text>No people matched your search.</Text>
-    )}
+    {state.searchResults?.length === 0 && <Text>No people matched your search.</Text>}
 
-    {(state.selectedTab == "everyone" ||
-      state.selectedTab == "following" ||
-      state.selectedTab == "followers") &&
+    {(state.selectedTab == "everyone" || state.selectedTab == "following" || state.selectedTab == "followers") &&
       items.length > 0 && (
         <Items>
           {items.map((person, i) => (
@@ -333,14 +309,9 @@ return (
       />
     )}
 
-    {(state.selectedTab == "everyone" ||
-      state.selectedTab == "following" ||
-      state.selectedTab == "followers") &&
+    {(state.selectedTab == "everyone" || state.selectedTab == "following" || state.selectedTab == "followers") &&
       showLoadMoreButton && (
-        <Button
-          type="button"
-          onClick={() => State.update({ currentPage: state.currentPage + 1 })}
-        >
+        <Button type="button" onClick={() => State.update({ currentPage: state.currentPage + 1 })}>
           Load More
         </Button>
       )}

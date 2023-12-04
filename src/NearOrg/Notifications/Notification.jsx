@@ -14,12 +14,15 @@ const Notification = styled.div`
   }
 `;
 
-const Content = styled.div`
+const Content = styled("Link")`
   display: flex;
   flex-direction: inherit;
   align-items: flex-start;
   gap: 16px;
   flex: 1 0 0;
+  &:hover {
+    text-decoration: none;
+  }
 `;
 
 const Icon = styled.div`
@@ -108,10 +111,15 @@ const Text = styled.div`
 
 const Desc = styled.span`
   font: var(--text-s);
-  color: #706f6c;
+  color: var(--sand11);
   font-style: italic;
   border-left: 2px solid #e3e3e0;
   padding: 0 0 0 1rem;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
 `;
 
 const Left = styled.div`
@@ -129,25 +137,22 @@ const item = value?.item || {};
 const path = item.path || "";
 
 // Build notification
-let { blockHeight, accountId } = props;
+let { blockHeight, accountId, manageNotification, permission } = props;
 let postUrl = "";
 
 // Construct DevGov postUrl
+// TODO: refactor this method
 function buildPostUrl(widgetName, linkProps) {
   linkProps = { ...linkProps };
 
-  const nearDevGovGigsWidgetsAccountId =
-    props.nearDevGovGigsWidgetsAccountId ||
-    (context.widgetSrc ?? "devgovgigs.near").split("/", 1)[0];
+  const nearDevGovGigsWidgetsAccountId = props.nearDevGovGigsWidgetsAccountId || "devgovgigs.near";
 
   if (props.nearDevGovGigsContractAccountId) {
-    linkProps.nearDevGovGigsContractAccountId =
-      props.nearDevGovGigsContractAccountId;
+    linkProps.nearDevGovGigsContractAccountId = props.nearDevGovGigsContractAccountId;
   }
 
   if (props.nearDevGovGigsWidgetsAccountId) {
-    linkProps.nearDevGovGigsWidgetsAccountId =
-      props.nearDevGovGigsWidgetsAccountId;
+    linkProps.nearDevGovGigsWidgetsAccountId = props.nearDevGovGigsWidgetsAccountId;
   }
 
   if (props.referral) {
@@ -201,6 +206,11 @@ const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 const isComment = path.indexOf("/post/comment") > 0 || type === "comment";
 const isPost = !isComment && path.indexOf("/post/main") > 0;
 
+const getDevHubParentId = Near.view("devgovgigs.near", "get_parent_id", {
+  post_id: props.value.post,
+});
+const isDevHubPost = getDevHubParentId === null;
+
 let notificationMessage = {
   like: isPost ? "liked your post" : "liked your comment",
   follow: "followed you",
@@ -213,7 +223,24 @@ let notificationMessage = {
   "devgovgigs/mention": "mentioned you in their post",
   "devgovgigs/edit": "edited your",
   "devgovgigs/reply": "replied to your post",
-  "devgovgigs/like": isPost ? "liked your post" : "liked your comment",
+  "devgovgigs/like": isDevHubPost ? "liked your post" : "liked your comment",
+};
+
+const getContentPreview = () => {
+  if (type && type.startsWith("devgovgigs")) {
+    const getDevHubContent = Near.view("devgovgigs.near", "get_post", {
+      post_id: props.value.post,
+    });
+    return getDevHubContent.snapshot.description;
+  }
+
+  const contentPath = isPost
+    ? `${context.accountId}/post/main`
+    : `${accountId}/post/comment`;
+  const contentDescription = JSON.parse(
+    Social.get(contentPath, blockHeight) ?? "null"
+  );
+  return contentDescription.text;
 };
 
 const actionable =
@@ -259,10 +286,40 @@ const iconType = {
   "devgovgigs/reply": <i className="ph ph-share-fat" />,
 };
 
+const [isModalOpen, setIsModalOpen] = useState(false);
+
+const buildMenu = () => {
+  return [
+    {
+      name: (
+        <>
+          <i className="ph-bold ph-bell-simple-slash" style={{ color: "#D95C4A" }} />
+          <span style={{ color: "#D95C4A" }}>Block</span>
+        </>
+      ),
+      onSelect: toggleModal,
+    },
+  ];
+};
+
+const toggleModal = () => {
+  setIsModalOpen(!isModalOpen);
+};
+
+const onClose = () => {
+  setIsModalOpen(false);
+};
+
+const onConfirm = async () => {
+  const block = true;
+  manageNotification(context.accountId, type, block);
+  setIsModalOpen(false);
+};
+
 return (
-  <Notification className="notification-item">
+  <Notification>
     <Icon>{iconType[type]}</Icon>
-    <Content>
+    <Content className="notification-item" as={actionable ? "Link" : "div"} href={actionable && postUrl}>
       <Left>
         <Link href={!props.onClick && profileUrl}>
           <ProfileOverlay>
@@ -278,11 +335,9 @@ return (
         </Link>
         <Text>
           <ProfileOverlay>
-            <div style={{ "text-align": "center" }}>
+            <div>
               <Link href={!props.onClick && profileUrl}>
-                <Username>
-                  {profile.name || accountId.split(".near")[0]}
-                </Username>
+                <Username>{profile.name || accountId.split(".near")[0]}</Username>
               </Link>
               <Action>{notificationMessage[type]}</Action>
             </div>
@@ -292,20 +347,16 @@ return (
           <Timestamp>
             <Dot>·</Dot>
             {/* TODO: add title tag to show full time on hover */}
-            <Widget
-              src="${REPL_MOB_2}/widget/TimeAgo@97556750"
-              props={{ blockHeight: props.blockHeight }}
-            />
+            <Widget src="${REPL_MOB_2}/widget/TimeAgo@97556750" props={{ blockHeight: props.blockHeight }} />
           </Timestamp>
         </Text>
-        {/* <Desc>{desc}</Desc> */}
+        {actionable && getContentPreview() && (
+          <Desc>{getContentPreview()}</Desc>
+        )}
       </Left>
       <Right>
         {(type === "follow" || type === "unfollow") && (
-          <Widget
-            src="${REPL_ACCOUNT}/widget/FollowButton"
-            props={{ accountId: props.accountId }}
-          />
+          <Widget src="${REPL_ACCOUNT}/widget/FollowButton" props={{ accountId: props.accountId }} />
         )}
 
         {type === "poke" && (
@@ -322,5 +373,26 @@ return (
         {actionable && <Button href={postUrl}>View</Button>}
       </Right>
     </Content>
+    {permission && (
+      <Widget
+        src="${REPL_ACCOUNT}/widget/DIG.DropdownMenu"
+        props={{
+          trigger: <i className="ph-bold ph-dots-three" />,
+          items: buildMenu(),
+        }}
+      />
+    )}
+    <Widget
+      src="${REPL_ACCOUNT}/widget/DIG.Dialog"
+      props={{
+        type: "alert",
+        title: `Do you want to stop receiving push notification for ${type}?`,
+        cancelButtonText: "Cancel",
+        confirmButtonText: "Confirm",
+        onCancel: onClose,
+        onConfirm: onConfirm,
+        open: isModalOpen,
+      }}
+    />
   </Notification>
 );

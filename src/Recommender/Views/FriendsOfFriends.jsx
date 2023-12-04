@@ -72,9 +72,7 @@ const updateState = (data, totalPageNum) => {
   });
 };
 
-const displayedUsers = props.returnElements
-  ? state.userData.slice(0, props.returnElements)
-  : state.userData;
+const displayedUsers = props.returnElements ? state.userData.slice(0, props.returnElements) : state.userData;
 
 const passedContext = props.fromContext;
 const fromContext = { ...passedContext, scope: props.scope || null };
@@ -97,9 +95,7 @@ const getRecommendedUsers = (page) => {
         updateState(data.data, data.total_pages);
       } else {
         State.update({ isLoading: false, error: true, hasLoaded: true });
-        console.error(
-          "Error fetching data. Try reloading the page, or no data available."
-        );
+        console.error("Error fetching data. Try reloading the page, or no data available.");
       }
     });
   } catch (error) {
@@ -130,26 +126,16 @@ return (
     <Profiles>
       {!state.isLoading && displayedUsers.length < 4 && state.error ? (
         <NotEnoughData>
-          Follow More Users to Unlock More Personalized Recommendations, See
-          Who’s
-          <Link href="https://${REPL_NEAR_URL}/${REPL_ACCOUNT}/widget/PeoplePage?tab=trending">
-            Trending
-          </Link>
+          Follow More Users to Unlock More Personalized Recommendations, See Who’s
+          <Link href="https://${REPL_NEAR_URL}/${REPL_ACCOUNT}/widget/PeoplePage?tab=trending">Trending</Link>
         </NotEnoughData>
       ) : (
         displayedUsers.map((user, rank) => (
-          <Profile
-            key={
-              user.recommended_profile || user.similar_profile || user.signer_id
-            }
-          >
+          <Profile key={user.recommended_profile || user.similar_profile || user.signer_id}>
             <Widget
               src="${REPL_ACCOUNT}/widget/Recommender.Account.AccountProfileLargeCard"
               props={{
-                accountId:
-                  user.recommended_profile ||
-                  user.similar_profile ||
-                  user.signer_id,
+                accountId: user.recommended_profile || user.similar_profile || user.signer_id,
                 accountIdRank: rank + 1,
                 showTags: true,
                 showFollowerStats: true,

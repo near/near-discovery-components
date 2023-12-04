@@ -1,14 +1,9 @@
-const GRAPHQL_ENDPOINT =
-  props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
+const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 const accountId = props.accountId;
 const blockHeight = parseInt(props.blockHeight);
 const commentBlockHeight = parseInt(props.commentBlockHeight);
 
-if (
-  !props.accountId ||
-  !(props.blockHeight || props.commentBlockHeight) ||
-  !props.renderData
-) {
+if (!props.accountId || !(props.blockHeight || props.commentBlockHeight) || !props.renderData) {
   return (
     <div className="alert alert-danger mx-3" role="alert">
       Invalid link, one or more parameters are missing.
@@ -42,9 +37,7 @@ const handleError = (result) => {
 };
 
 const group = "near.org";
-const moderationDecisionsQuery = (
-  accountToCheck,
-) => `query ModerationDecisions {
+const moderationDecisionsQuery = (accountToCheck) => `query ModerationDecisions {
   dataplatform_near_moderation_moderation_decisions(
       where: {moderated_account_id: {_eq: "${accountToCheck}"}, group: {_eq: "${group}"}}) {
     moderated_account_id
@@ -77,20 +70,12 @@ const matchesModeration = (moderated, socialDBObjectType, item) => {
     return true;
   }
   const moderatedItemsOfType = accountFound[socialDBObjectType];
-  return (
-    moderatedItemsOfType &&
-    typeof moderatedItemsOfType[item.block_height] !== "undefined"
-  );
+  return moderatedItemsOfType && typeof moderatedItemsOfType[item.block_height] !== "undefined";
 };
 const moderationDataToCompactedFormat = (moderationData) => {
   const moderated = {};
   moderationData.forEach((moderationDecision) => {
-    const {
-      moderated_account_id,
-      moderated_blockheight,
-      moderated_path,
-      label,
-    } = moderationDecision;
+    const { moderated_account_id, moderated_blockheight, moderated_path, label } = moderationDecision;
     const modifiedPath = moderated_path?.replace(/\//g, ".");
     if (!moderated[moderated_account_id]) {
       moderated[moderated_account_id] = {};
@@ -101,24 +86,16 @@ const moderationDataToCompactedFormat = (moderationData) => {
     if (!modifiedPath || modifiedPath === "") {
       moderated[moderated_account_id] = label;
     } else {
-      moderated[moderated_account_id][modifiedPath][moderated_blockheight] =
-        label;
+      moderated[moderated_account_id][modifiedPath][moderated_blockheight] = label;
     }
   });
   return moderated;
 };
 
-const globalModerationHandler = (
-  data,
-  itemAccountId,
-  itemBlockHeight,
-  itemModerationKey,
-  isCommentPost,
-) => {
+const globalModerationHandler = (data, itemAccountId, itemBlockHeight, itemModerationKey, isCommentPost) => {
   const moderationData = data.dataplatform_near_moderation_moderation_decisions;
   if (moderationData.length > 0) {
-    const compactedModerationData =
-      moderationDataToCompactedFormat(moderationData);
+    const compactedModerationData = moderationDataToCompactedFormat(moderationData);
     if (
       matchesModeration(compactedModerationData, itemModerationKey, {
         account_id: itemAccountId,
@@ -184,13 +161,7 @@ const commentPostModerationHandler = (data, selfModerationData) => {
         handleError,
       );
       return checkPostModerationPromise.then((result) =>
-        globalModerationHandler(
-          result,
-          postAccountId,
-          postBlockHeight,
-          postsModerationKey,
-          true,
-        ),
+        globalModerationHandler(result, postAccountId, postBlockHeight, postsModerationKey, true),
       );
     }
   }
@@ -206,23 +177,16 @@ State.init({
   selfModerationData: null,
 });
 
-const selfModerationData = context.accountId
-  ? Social.getr(`${context.accountId}/moderate`, "optimistic")
-  : [];
+const selfModerationData = context.accountId ? Social.getr(`${context.accountId}/moderate`, "optimistic") : [];
 State.update({ selfModerationData });
 
-if (
-  (selfModerationData || typeof selfModerationData === "undefined") &&
-  state.loadingState === "none"
-) {
+if ((selfModerationData || typeof selfModerationData === "undefined") && state.loadingState === "none") {
   State.update({
     loadingState: "loading",
   });
 
   const itemBlockHeight = commentBlockHeight ? commentBlockHeight : blockHeight;
-  const itemModerationKey = commentBlockHeight
-    ? commentsModerationKey
-    : postsModerationKey;
+  const itemModerationKey = commentBlockHeight ? commentsModerationKey : postsModerationKey;
   if (
     context.accountId &&
     matchesModeration(selfModerationData, itemModerationKey, {
@@ -242,44 +206,28 @@ if (
       "ModerationDecisions",
       {},
       handleError,
-    ).then((result) =>
-      globalModerationHandler(
-        result,
-        accountId,
-        itemBlockHeight,
-        itemModerationKey,
-      ),
-    );
+    ).then((result) => globalModerationHandler(result, accountId, itemBlockHeight, itemModerationKey));
 
     let commentPostModerationPromise = null;
     if (commentBlockHeight) {
-      commentPostModerationPromise = fetchGraphQL(
-        commentsPostQuery,
-        "CommentsPostQuery",
-        {},
-        handleError,
-      ).then((result) =>
-        commentPostModerationHandler(result, selfModerationData),
+      commentPostModerationPromise = fetchGraphQL(commentsPostQuery, "CommentsPostQuery", {}, handleError).then(
+        (result) => commentPostModerationHandler(result, selfModerationData),
       );
     } else {
       commentPostModerationPromise = Promise.resolve();
     }
-    Promise.all([decisionsPromise, commentPostModerationPromise]).then(
-      (_resultList) => {
-        State.update({
-          loadingState: "done",
-        });
-      },
-    );
+    Promise.all([decisionsPromise, commentPostModerationPromise]).then((_resultList) => {
+      State.update({
+        loadingState: "done",
+      });
+    });
   }
 }
 
 if (state.moderated) {
   let accountId = props.accountId;
   let blockHeight = commentBlockHeight ? commentBlockHeight : props.blockHeight;
-  let contentTypeKey = commentBlockHeight
-    ? commentsModerationKey
-    : postsModerationKey;
+  let contentTypeKey = commentBlockHeight ? commentsModerationKey : postsModerationKey;
   if (state.moderationCommentPost) {
     accountId = state.moderationCommentPost.accountId;
     blockHeight = state.moderationCommentPost.blockHeight;

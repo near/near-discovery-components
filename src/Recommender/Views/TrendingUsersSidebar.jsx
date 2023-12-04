@@ -54,9 +54,7 @@ return (
     </TrendingUsersView>
     {props.sidebar && (
       <>
-        <ButtonLink href="/${REPL_ACCOUNT}/widget/PeoplePage?tab=trending">
-          View Trending Users
-        </ButtonLink>
+        <ButtonLink href="/${REPL_ACCOUNT}/widget/PeoplePage?tab=trending">View Trending Users</ButtonLink>
       </>
     )}
   </>

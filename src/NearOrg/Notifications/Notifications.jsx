@@ -3,6 +3,7 @@ let {
   isNotificationSupported,
   isPermisionGranted,
   isPushManagerSupported,
+  manageNotification,
   handleTurnOn,
   handleOnCancel,
   getNotificationLocalStorage,
@@ -20,8 +21,7 @@ showInBox = showInBox ?? false;
 
 const Header = styled.div`
   display: flex;
-  padding: ${(props) =>
-    props.showInBox ? "16px 16px 16px 24px" : "48px 16px 24px 16px"};
+  padding: ${(props) => (props.showInBox ? "16px 16px 16px 24px" : "48px 16px 24px 16px")};
   align-items: center;
   align-self: stretch;
 `;
@@ -106,7 +106,7 @@ return (
 
     <Widget
       src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsList"
-      props={{ showLimit, showInBox }}
+      props={{ showLimit, showInBox, manageNotification, permission }}
     />
   </Card>
 );

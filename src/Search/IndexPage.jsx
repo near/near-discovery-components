@@ -1,9 +1,7 @@
 const SEARCH_API_KEY = props.searchApiKey ?? "0e42c01107b8f555a41bcc0fa7f2a4df";
 const APPLICATION_ID = props.appId ?? "B6PI9UKKJT";
 const INDEX = props.index ?? "prod_near-social-feed";
-const API_URL =
-  props.apiUrl ??
-  `https://${APPLICATION_ID}-dsn.algolia.net/1/indexes/${INDEX}/query?`;
+const API_URL = props.apiUrl ?? `https://${APPLICATION_ID}-dsn.algolia.net/1/indexes/${INDEX}/query?`;
 const INITIAL_PAGE = props.initialPage ?? 0;
 const facets = props.facets ?? ["All", "People", "Apps", "Components", "Posts"];
 const tab = props.tab ?? "All";
@@ -176,9 +174,7 @@ const posts = (content, postType) => {
     if (post._highlightResult.content.matchLevel === "full") {
       // Use algolia provided snipped content:
       snipContent = false;
-      text = post._snippetResult.content.value
-        .replaceAll("<em>", "")
-        .replaceAll("</em>", "");
+      text = post._snippetResult.content.value.replaceAll("<em>", "").replaceAll("</em>", "");
     }
 
     const postContent = {
@@ -273,12 +269,8 @@ const updateSearchHits = debounce(({ term, pageNumber, configs }) => {
     State.update({
       search: {
         profiles: profiles(results["profile"]),
-        components: components(results["app, widget"]).concat(
-          components(results["widget"])
-        ),
-        postsAndComments: posts(results["post"], "post").concat(
-          posts(results["comment, post"], "post-comment")
-        ),
+        components: components(results["app, widget"]).concat(components(results["widget"])),
+        postsAndComments: posts(results["post"], "post").concat(posts(results["comment, post"], "post-comment")),
       },
       currentPage: pageNumber,
       paginate: {
@@ -368,8 +360,7 @@ const onFacetClick = (facet) => {
 };
 
 const onSearchResultClick = ({ searchPosition, objectID, eventName }) => {
-  const position =
-    searchPosition + state.currentPage * state.paginate.hitsPerPage;
+  const position = searchPosition + state.currentPage * state.paginate.hitsPerPage;
   const event = {
     type: "clickedObjectIDsAfterSearch",
     data: {
@@ -398,9 +389,7 @@ return (
       ) : (
         <Header>
           <H1>Search</H1>
-          <H2>
-            Explore and find everything on the Blockchain Operating System
-          </H2>
+          <H2>Explore and find everything on the Blockchain Operating System</H2>
         </Header>
       ))}
 
@@ -430,9 +419,7 @@ return (
       </Facets>
     )}
 
-    {state.paginate?.hitsTotal == 0 && (
-      <H2>No matches were found for "{state.term}".</H2>
-    )}
+    {state.paginate?.hitsTotal == 0 && <H2>No matches were found for "{state.term}".</H2>}
 
     {state.search?.profiles.length > 0 && (
       <Group>
@@ -502,9 +489,7 @@ return (
 
         <Items>
           {state.search.postsAndComments.map((post, i) => (
-            <Item
-              key={`${post.accountId}/${post.postType}/${post.blockHeight}`}
-            >
+            <Item key={`${post.accountId}/${post.postType}/${post.blockHeight}`}>
               <Widget
                 src="${REPL_ACCOUNT}/widget/Search.FullPage.PostCard"
                 props={{
@@ -527,18 +512,16 @@ return (
       </Group>
     )}
 
-    {showPagination &&
-      state.paginate &&
-      state.paginate.hitsTotal > state.paginate.hitsPerPage && (
-        <Widget
-          src="${REPL_ACCOUNT}/widget/Search.Paginate"
-          props={{
-            totalCount: state.paginate.hitsTotal,
-            pageSize: state.paginate.hitsPerPage,
-            onPageChange,
-          }}
-        />
-      )}
+    {showPagination && state.paginate && state.paginate.hitsTotal > state.paginate.hitsPerPage && (
+      <Widget
+        src="${REPL_ACCOUNT}/widget/Search.Paginate"
+        props={{
+          totalCount: state.paginate.hitsTotal,
+          pageSize: state.paginate.hitsPerPage,
+          onPageChange,
+        }}
+      />
+    )}
 
     {!props.disableInsights && (
       <Widget

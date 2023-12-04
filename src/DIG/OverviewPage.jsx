@@ -28,19 +28,14 @@ function returnExampleCodeForComponent(componentName) {
     Grab the first jsx code block in the description - we're assuming
     it's a valid example for now:
   */
-  const matches = component.metadata.description.match(
-    /```jsx([\s\S]*?)(?=```)/
-  );
+  const matches = component.metadata.description.match(/```jsx([\s\S]*?)(?=```)/);
 
   /*
     The example code in the descriptions have `src="near/widget/DIG...""`
     hardcoded, so we need to dynamically replace it with `author` to
     properly handle testnet and mainnet:
   */
-  const code = (matches[1] ?? "").replace(
-    /src="near\/widget/g,
-    `src="${author}/widget`
-  );
+  const code = (matches[1] ?? "").replace(/src="near\/widget/g, `src="${author}/widget`);
 
   if (code) {
     /*
@@ -165,9 +160,8 @@ return (
       <Text size="text-3xl">DIG Components</Text>
 
       <Text>
-        DIG (Decentralized Interface Guidelines) is a collection of UI
-        components that can be used to quickly build decentralized apps with a
-        consistent look and feel.
+        DIG (Decentralized Interface Guidelines) is a collection of UI components that can be used to quickly build
+        decentralized apps with a consistent look and feel.
       </Text>
 
       <Main>
@@ -188,9 +182,7 @@ return (
         {selectedComponent && (
           <Content>
             <ContentHeader>
-              <Text size="text-2xl">
-                {selectedComponentName.replace("DIG.", "")}
-              </Text>
+              <Text size="text-2xl">{selectedComponentName.replace("DIG.", "")}</Text>
 
               <Widget
                 src="${REPL_ACCOUNT}/widget/DIG.Button"
@@ -207,9 +199,7 @@ return (
 
             <Preview>
               {returnExampleCodeForComponent(selectedComponentName) ? (
-                <Widget
-                  code={returnExampleCodeForComponent(selectedComponentName)}
-                />
+                <Widget code={returnExampleCodeForComponent(selectedComponentName)} />
               ) : (
                 <Text>This component has no preview.</Text>
               )}

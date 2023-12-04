@@ -5,9 +5,7 @@ const parentParams = { ...props.parentParams };
 const highlightComment = props.highlightComment;
 const moderatorAccount = props.moderatorAccount || "${REPL_MODERATOR}";
 
-const { content } = JSON.parse(
-  Social.get(`${accountId}/discuss/main`, blockHeight)
-);
+const { content } = JSON.parse(Social.get(`${accountId}/discuss/main`, blockHeight));
 
 State.init({ hasBeenFlagged: false });
 
@@ -30,9 +28,7 @@ const indexKey = {
 
 const Post = styled.div`
   position: relative;
-  ${content.commentId == highlightComment
-    ? "border-left: 4px solid aqua; padding-left: 1rem;"
-    : ""}
+  ${content.commentId == highlightComment ? "border-left: 4px solid aqua; padding-left: 1rem;" : ""}
 
   &::before {
     content: "";
@@ -95,8 +91,7 @@ if (state.hasBeenFlagged) {
       props={{
         type: "info",
         title: "Flagged for moderation",
-        description:
-          "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
+        description: "Thanks for helping our Content Moderators. The item you flagged will be reviewed.",
         open: state.hasBeenFlagged,
         onOpenChange: () => {
           State.update({ hasBeenFlagged: false });
@@ -119,11 +114,7 @@ return (
             <>
               <Text as="span">･</Text>
               <Text>
-                <Widget
-                  src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
-                  props={{ blockHeight }}
-                />{" "}
-                ago
+                <Widget src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}" props={{ blockHeight }} /> ago
               </Text>
             </>
           ),
@@ -132,12 +123,7 @@ return (
     </Header>
     <Body>
       <Content>
-        {content.text && (
-          <Widget
-            src="${REPL_ACCOUNT}/widget/SocialMarkdown"
-            props={{ text: content.text }}
-          />
-        )}
+        {content.text && <Widget src="${REPL_ACCOUNT}/widget/SocialMarkdown" props={{ text: content.text }} />}
 
         {content.image && (
           <Widget

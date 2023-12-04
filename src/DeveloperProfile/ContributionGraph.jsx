@@ -54,8 +54,7 @@ useEffect(() => {
       componentAuthorId: accountId,
     })
       .then((result) => {
-        const versions =
-          result?.body?.data?.dataplatform_near_components_versions || [];
+        const versions = result?.body?.data?.dataplatform_near_components_versions || [];
 
         while (date.getTime() < now.getTime()) {
           let month = months.find((m) => m.date.getMonth() === date.getMonth());
@@ -118,7 +117,8 @@ const Wrapper = styled.div`
   gap: 40px;
   border-radius: 12px;
   padding: 24px;
-  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.06),
+  box-shadow:
+    0px 4px 8px 0px rgba(0, 0, 0, 0.06),
     0px 0px 0px 1px rgba(0, 0, 0, 0.06);
   background: var(--white);
   overflow: auto;
@@ -299,9 +299,7 @@ return (
           <Months>
             {months.map((month, monthIndex) => (
               <Month key={monthIndex}>
-                <Label>
-                  {month.date.toLocaleDateString([], { month: "short" })}
-                </Label>
+                <Label>{month.date.toLocaleDateString([], { month: "short" })}</Label>
 
                 <Days>
                   {month.days.map((day, dayIndex) => (
@@ -312,17 +310,8 @@ return (
                           props={{
                             content: (
                               <TooltipContent>
-                                <Text
-                                  size="text-xs"
-                                  color="sand11"
-                                  fontWeight={500}
-                                >
-                                  <Text
-                                    as="span"
-                                    size="text-xs"
-                                    color="violet10"
-                                    fontWeight={500}
-                                  >
+                                <Text size="text-xs" color="sand11" fontWeight={500}>
+                                  <Text as="span" size="text-xs" color="violet10" fontWeight={500}>
                                     {day.commits}
                                   </Text>{" "}
                                   contribution{day.commits === 1 ? "" : "s"} on{" "}
@@ -334,21 +323,12 @@ return (
                                   })}
                                 </Text>
 
-                                {(day.linesAdded > 0 ||
-                                  day.linesRemoved > 0) && (
+                                {(day.linesAdded > 0 || day.linesRemoved > 0) && (
                                   <TooltipContributionTotals>
-                                    <Text
-                                      size="text-xs"
-                                      color="green11"
-                                      fontWeight={500}
-                                    >
+                                    <Text size="text-xs" color="green11" fontWeight={500}>
                                       +{day.linesAdded}
                                     </Text>
-                                    <Text
-                                      size="text-xs"
-                                      color="red11"
-                                      fontWeight={500}
-                                    >
+                                    <Text size="text-xs" color="red11" fontWeight={500}>
                                       -{day.linesRemoved}
                                     </Text>
                                   </TooltipContributionTotals>
@@ -361,9 +341,7 @@ return (
                             rootProps: {
                               disableHoverableContent: true,
                             },
-                            trigger: (
-                              <Day data-level={Math.min(day.commits, 4)} />
-                            ),
+                            trigger: <Day data-level={Math.min(day.commits, 4)} />,
                           }}
                         />
                       ) : (
@@ -389,16 +367,11 @@ return (
       <Label style={{ paddingLeft: "4px" }}>More</Label>
     </Legend>
 
-    {!isLoading &&
-      accountId === context.accountId &&
-      totalContributions === 0 && (
-        <Message>
-          <i className="ph-duotone ph-info" />
-          <Text size="text-xs">
-            Publish a component on-chain to populate your graph with
-            contributions.
-          </Text>
-        </Message>
-      )}
+    {!isLoading && accountId === context.accountId && totalContributions === 0 && (
+      <Message>
+        <i className="ph-duotone ph-info" />
+        <Text size="text-xs">Publish a component on-chain to populate your graph with contributions.</Text>
+      </Message>
+    )}
   </Wrapper>
 );

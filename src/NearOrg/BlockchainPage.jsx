@@ -17,8 +17,7 @@ const communityItems = [
   },
   {
     name: "Roadmap",
-    description:
-      "Follow the public roadmap and contribute to building the ecosystem",
+    description: "Follow the public roadmap and contribute to building the ecosystem",
     icon: "ph-map-trifold",
     url: "https://near.org/blog/near-q2-protocol-roadmap-update",
     target: "_blank",
@@ -29,8 +28,7 @@ const ipfsImages = {
   illustrations: {
     developers: "bafkreiaccoujoiwowiypzjyobdqyfeqweu32htcswc3ojvnesvtwfs5acm",
     endUsers: "bafkreifew3ibskmcxicoa7bffleekg6kn3cwswyg5ht5shifbii6elwp2a",
-    technicalMarvel:
-      "bafkreieqsmwsffgrodbek3gbtjvxtwspkenesl6fivzrblxzojclba6dfa",
+    technicalMarvel: "bafkreieqsmwsffgrodbek3gbtjvxtwspkenesl6fivzrblxzojclba6dfa",
   },
 };
 
@@ -196,8 +194,8 @@ return (
               <H1>The blockchain built for an open web</H1>
 
               <Text size="text-l" mobileSize="text-base">
-                Created with simplicity in mind. NEAR is built from the ground
-                up to be performant, secure, scalable, and eco-friendly.
+                Created with simplicity in mind. NEAR is built from the ground up to be performant, secure, scalable,
+                and eco-friendly.
               </Text>
             </Flex>
           </PatternContent>
@@ -209,13 +207,8 @@ return (
       <Container>
         <Flex direction="column" gap="24px">
           <H2>NEAR, the blockchain for end-users</H2>
-          <Text
-            size="text-2xl"
-            mobileSize="text-l"
-            style={{ maxWidth: "808px" }}
-          >
-            NEAR brings users to the main stage, setting up Web3 for mass
-            adoption.
+          <Text size="text-2xl" mobileSize="text-l" style={{ maxWidth: "808px" }}>
+            NEAR brings users to the main stage, setting up Web3 for mass adoption.
           </Text>
         </Flex>
 
@@ -230,8 +223,8 @@ return (
                     Named addresses
                   </Text>
                   <Text>
-                    Ditch the random numbers and embrace user-friendly addresses
-                    that are easy to recall. Become 'yourself.near'.
+                    Ditch the random numbers and embrace user-friendly addresses that are easy to recall. Become
+                    'yourself.near'.
                   </Text>
                 </Flex>
 
@@ -240,9 +233,8 @@ return (
                     Unique key stream
                   </Text>
                   <Text>
-                    Accounts support multiple keys, each with distinct
-                    permissions. Give apps access to your account, ensuring your
-                    funds remain secure.
+                    Accounts support multiple keys, each with distinct permissions. Give apps access to your account,
+                    ensuring your funds remain secure.
                   </Text>
                 </Flex>
 
@@ -251,8 +243,8 @@ return (
                     Inexpensive, blazing fast, and reliable
                   </Text>
                   <Text>
-                    Every day more than 1M transactions are completed, with an
-                    avg. block time of 1.2 second and an avg. fee of $0.0001.
+                    Every day more than 1M transactions are completed, with an avg. block time of 1.2 second and an avg.
+                    fee of $0.0001.
                   </Text>
                 </Flex>
 
@@ -278,13 +270,8 @@ return (
 
         <Flex direction="column" gap="24px">
           <H2>NEAR, the blockchain for developers</H2>
-          <Text
-            size="text-2xl"
-            mobileSize="text-l"
-            style={{ maxWidth: "808px" }}
-          >
-            NEAR empowers developers to build open web apps and onboard users to
-            Web3.
+          <Text size="text-2xl" mobileSize="text-l" style={{ maxWidth: "808px" }}>
+            NEAR empowers developers to build open web apps and onboard users to Web3.
           </Text>
         </Flex>
 
@@ -299,8 +286,8 @@ return (
                     Smart contracts
                   </Text>
                   <Text>
-                    NEAR's WebAssembly runtime lets you craft smart contracts
-                    using well-known languages such as Javascript and Rust.
+                    NEAR's WebAssembly runtime lets you craft smart contracts using well-known languages such as
+                    Javascript and Rust.
                   </Text>
                 </Flex>
 
@@ -308,10 +295,7 @@ return (
                   <Text size="text-xl" mobileSize="text-l" fontWeight="500">
                     Built-in account abstraction
                   </Text>
-                  <Text>
-                    Cover gas fees for your users using built-in
-                    meta-transactions.
-                  </Text>
+                  <Text>Cover gas fees for your users using built-in meta-transactions.</Text>
                 </Flex>
 
                 <Flex direction="column" gap="24px">
@@ -319,8 +303,7 @@ return (
                     Built-in developer incentive
                   </Text>
                   <Text>
-                    Every time code runs on a smart contract, the contract
-                    developer earns 30% of the burned gas.
+                    Every time code runs on a smart contract, the contract developer earns 30% of the burned gas.
                   </Text>
                 </Flex>
 
@@ -351,14 +334,9 @@ return (
       <Container>
         <Flex direction="column" gap="24px">
           <H2 style={{ color: "var(--white)" }}>NEAR, a technical marvel</H2>
-          <Text
-            size="text-2xl"
-            mobileSize="text-l"
-            color="white"
-            style={{ maxWidth: "808px" }}
-          >
-            Built on years of research, NEAR’s efficient and robust protocol
-            stands as a true marvel of modern technology.
+          <Text size="text-2xl" mobileSize="text-l" color="white" style={{ maxWidth: "808px" }}>
+            Built on years of research, NEAR’s efficient and robust protocol stands as a true marvel of modern
+            technology.
           </Text>
         </Flex>
 
@@ -369,48 +347,29 @@ return (
             content: (
               <Flex direction="column" gap="60px">
                 <Flex direction="column" gap="24px">
-                  <Text
-                    color="white"
-                    size="text-xl"
-                    mobileSize="text-l"
-                    fontWeight="500"
-                  >
+                  <Text color="white" size="text-xl" mobileSize="text-l" fontWeight="500">
                     Horizontal scaling with sharding
                   </Text>
                   <Text color="white">
-                    NEAR's sharded design enables limitless scaling and robust
-                    resistance to traffic spikes.
+                    NEAR's sharded design enables limitless scaling and robust resistance to traffic spikes.
                   </Text>
                 </Flex>
 
                 <Flex direction="column" gap="24px">
-                  <Text
-                    color="white"
-                    size="text-xl"
-                    mobileSize="text-l"
-                    fontWeight="500"
-                  >
+                  <Text color="white" size="text-xl" mobileSize="text-l" fontWeight="500">
                     Environmentally friendly
                   </Text>
                   <Text color="white">
-                    Thanks to its proof-of-stake nature, NEAR consumes in a year
-                    the same energy that Bitcoin consumes in 3 minutes.
+                    Thanks to its proof-of-stake nature, NEAR consumes in a year the same energy that Bitcoin consumes
+                    in 3 minutes.
                   </Text>
                 </Flex>
 
                 <Flex direction="column" gap="24px">
-                  <Text
-                    color="white"
-                    size="text-xl"
-                    mobileSize="text-l"
-                    fontWeight="500"
-                  >
+                  <Text color="white" size="text-xl" mobileSize="text-l" fontWeight="500">
                     A chain you can trust
                   </Text>
-                  <Text color="white">
-                    10 million blocks created in a span of two years with 100%
-                    uptime.
-                  </Text>
+                  <Text color="white">10 million blocks created in a span of two years with 100% uptime.</Text>
                 </Flex>
               </Flex>
             ),
@@ -421,17 +380,10 @@ return (
         />
 
         <Flex direction="column" gap="24px">
-          <H2 style={{ color: "var(--white)", maxWidth: "600px" }}>
-            Built for and by the community
-          </H2>
-          <Text
-            size="text-2xl"
-            mobileSize="text-l"
-            color="white"
-            style={{ maxWidth: "808px" }}
-          >
-            An ever evolving protocol with an active community of contributors.
-            Join us and help shape the future of the web.
+          <H2 style={{ color: "var(--white)", maxWidth: "600px" }}>Built for and by the community</H2>
+          <Text size="text-2xl" mobileSize="text-l" color="white" style={{ maxWidth: "808px" }}>
+            An ever evolving protocol with an active community of contributors. Join us and help shape the future of the
+            web.
           </Text>
         </Flex>
 
@@ -471,33 +423,18 @@ return (
     <Section backgroundColor="#00EC97">
       <Container>
         <Flex direction="column" gap="50px" alignItems="center">
-          <Flex
-            direction="column"
-            gap="20px"
-            alignItems="center"
-            style={{ textAlign: "center" }}
-          >
+          <Flex direction="column" gap="20px" alignItems="center" style={{ textAlign: "center" }}>
             <Text size="text-3xl" fontWeight="500">
               The blockchain for everyone
             </Text>
 
-            <Text
-              size="text-l"
-              mobileSize="text-l"
-              style={{ maxWidth: "592px" }}
-            >
-              Blockchain has never been easier. Create your account and join a
-              thriving community of visionaries. Help build a new Internet,
-              where everyone counts.
+            <Text size="text-l" mobileSize="text-l" style={{ maxWidth: "592px" }}>
+              Blockchain has never been easier. Create your account and join a thriving community of visionaries. Help
+              build a new Internet, where everyone counts.
             </Text>
           </Flex>
 
-          <Flex
-            gap="24px"
-            wrap="wrap"
-            alignItems="center"
-            justifyContent="center"
-          >
+          <Flex gap="24px" wrap="wrap" alignItems="center" justifyContent="center">
             <Widget
               src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{

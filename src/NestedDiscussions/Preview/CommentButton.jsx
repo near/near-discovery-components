@@ -20,18 +20,15 @@ const CommentButton = styled.button`
     transition: color 200ms;
   }
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     outline: none;
-    color: #11181C;
+    color: #11181c;
   }
 `;
 
 return (
-  <CommentButton
-    disabled={context.loading || !context.accountId}
-    title="Add Comment"
-    onClick={props.onClick}
-  >
+  <CommentButton disabled={context.loading || !context.accountId} title="Add Comment" onClick={props.onClick}>
     <i className="bi-chat" />
     {totalComments}
   </CommentButton>

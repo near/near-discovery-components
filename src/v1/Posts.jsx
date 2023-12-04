@@ -136,11 +136,7 @@ return (
 
           <FilterWrapper>
             <PillSelect>
-              <PillSelectButton
-                type="button"
-                onClick={() => selectTab("all")}
-                selected={state.selectedTab === "all"}
-              >
+              <PillSelectButton type="button" onClick={() => selectTab("all")} selected={state.selectedTab === "all"}>
                 All
               </PillSelectButton>
 

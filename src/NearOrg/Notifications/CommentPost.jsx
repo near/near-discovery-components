@@ -1,9 +1,7 @@
 const accountId = props.accountId;
 const blockHeight = parseInt(props.blockHeight);
 
-const content = JSON.parse(
-  Social.get(`${accountId}/post/comment`, blockHeight) ?? "null"
-);
+const content = JSON.parse(Social.get(`${accountId}/post/comment`, blockHeight) ?? "null");
 if (content === null) {
   return "Loading";
 }
@@ -14,9 +12,7 @@ const extractParentPost = (item) => {
     return undefined;
   }
   const accountId = item.path.split("/")[0];
-  return `${accountId}/post/main` === item.path
-    ? { accountId, blockHeight: item.blockHeight }
-    : undefined;
+  return `${accountId}/post/main` === item.path ? { accountId, blockHeight: item.blockHeight } : undefined;
 };
 
 const parentPost = extractParentPost(item);

@@ -20,32 +20,33 @@ const Root = styled("Checkbox.Root")`
   box-shadow: 0 1px 2px 0 var(--blackA6);
   transition: inherit;
 
-  &:hover, :focus-within {
-      color: var(--violet8);
+  &:hover,
+  :focus-within {
+    color: var(--violet8);
 
-      & + label {
-          color: var(--violet8);
-      }
+    & + label {
+      color: var(--violet8);
+    }
   }
 
   &[aria-checked="true"] {
-      background-color: var(--violet9);
-      border-color: var(--violet8);
+    background-color: var(--violet9);
+    border-color: var(--violet8);
   }
 
   &[disabled] {
+    color: var(--sand8);
+    cursor: initial;
+
+    & + label {
       color: var(--sand8);
       cursor: initial;
-
-      & + label {
-          color: var(--sand8);
-          cursor: initial;
-      }
+    }
   }
 
   &:focus-within {
-      border-color: var(--violet8);
-      box-shadow: 0 0 0 4px var(--violet5);
+    border-color: var(--violet8);
+    box-shadow: 0 0 0 4px var(--violet5);
   }
 `;
 

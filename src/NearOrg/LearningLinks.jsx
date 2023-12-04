@@ -38,8 +38,7 @@ const Flex = styled.div`
     `
     @media (max-width: 900px) {
       flex-direction: column;
-      gap: ${(p) =>
-        p.mobileStack === true ? "var(--section-gap)" : p.mobileStack};
+      gap: ${(p) => (p.mobileStack === true ? "var(--section-gap)" : p.mobileStack)};
     }
   `}
 
@@ -48,8 +47,7 @@ const Flex = styled.div`
     `
     @media (max-width: 1050px) {
       flex-direction: column;
-      gap: ${(p) =>
-        p.tabletStack === true ? "var(--section-gap)" : p.tabletStack};
+      gap: ${(p) => (p.tabletStack === true ? "var(--section-gap)" : p.tabletStack)};
     }
   `}
 `;
@@ -57,20 +55,13 @@ const Flex = styled.div`
 return (
   <Wrapper>
     <Flex gap="var(--section-gap)" mobileStack="var(--medium-gap)">
-      <Flex
-        direction="column"
-        gap="var(--medium-gap)"
-        style={{ width: "100%" }}
-      >
+      <Flex direction="column" gap="var(--medium-gap)" style={{ width: "100%" }}>
         <Text size="text-2xl" fontWeight="600" color="sand12">
           Start learning
         </Text>
 
         <Flex gap="12px">
-          <i
-            className="ph-duotone ph-shapes"
-            style={{ color: "var(--sand10)", fontSize: "20px" }}
-          />
+          <i className="ph-duotone ph-shapes" style={{ color: "var(--sand10)", fontSize: "20px" }} />
           <Flex gap="12px" direction="column" alignItems="flex-start">
             <Text size="text-base" fontWeight="600" color="sand12">
               Learn about Web3 and NEAR
@@ -91,10 +82,7 @@ return (
         </Flex>
 
         <Flex gap="12px">
-          <i
-            className="ph-duotone ph-youtube-logo"
-            style={{ color: "var(--sand10)", fontSize: "20px" }}
-          />
+          <i className="ph-duotone ph-youtube-logo" style={{ color: "var(--sand10)", fontSize: "20px" }} />
           <Flex gap="12px" direction="column" alignItems="flex-start">
             <Text size="text-base" fontWeight="600" color="sand12">
               Watch NEAR on YouTube
@@ -115,10 +103,7 @@ return (
         </Flex>
 
         <Flex gap="12px">
-          <i
-            className="ph-duotone ph-chart-polar"
-            style={{ color: "var(--sand10)", fontSize: "20px" }}
-          />
+          <i className="ph-duotone ph-chart-polar" style={{ color: "var(--sand10)", fontSize: "20px" }} />
           <Flex gap="12px" direction="column" alignItems="flex-start">
             <Text size="text-base" fontWeight="600" color="sand12">
               Dive deeper
@@ -139,20 +124,13 @@ return (
         </Flex>
       </Flex>
 
-      <Flex
-        direction="column"
-        gap="var(--medium-gap)"
-        style={{ width: "100%" }}
-      >
+      <Flex direction="column" gap="var(--medium-gap)" style={{ width: "100%" }}>
         <Text size="text-2xl" fontWeight="600" color="sand12">
           Start building
         </Text>
 
         <Flex gap="12px">
-          <i
-            className="ph-duotone ph-graph"
-            style={{ color: "var(--sand10)", fontSize: "20px" }}
-          />
+          <i className="ph-duotone ph-graph" style={{ color: "var(--sand10)", fontSize: "20px" }} />
           <Flex gap="12px" direction="column" alignItems="flex-start">
             <Text size="text-base" fontWeight="600" color="sand12">
               Understand why to build on NEAR
@@ -173,10 +151,7 @@ return (
         </Flex>
 
         <Flex gap="12px">
-          <i
-            className="ph-duotone ph-git-fork"
-            style={{ color: "var(--sand10)", fontSize: "20px" }}
-          />
+          <i className="ph-duotone ph-git-fork" style={{ color: "var(--sand10)", fontSize: "20px" }} />
           <Flex gap="12px" direction="column" alignItems="flex-start">
             <Text size="text-base" fontWeight="600" color="sand12">
               Get an example running in minutes
@@ -197,10 +172,7 @@ return (
         </Flex>
 
         <Flex gap="12px">
-          <i
-            className="ph-duotone ph-terminal-window"
-            style={{ color: "var(--sand10)", fontSize: "20px" }}
-          />
+          <i className="ph-duotone ph-terminal-window" style={{ color: "var(--sand10)", fontSize: "20px" }} />
           <Flex gap="12px" direction="column" alignItems="flex-start">
             <Text size="text-base" fontWeight="600" color="sand12">
               Learn to code on NEAR

@@ -1,13 +1,8 @@
 const [accountId, unused, widgetName] = props.src.split("/");
 const appUrl = props.appUrl ?? `/${accountId}/widget/${widgetName}`;
 const accountUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
-const metadata =
-  props.metadata ??
-  Social.get(`${accountId}/widget/${widgetName}/metadata/**`, "final") ??
-  {};
-const tags = props.metadata
-  ? props.metadata.tags
-  : Object.keys(metadata.tags || {});
+const metadata = props.metadata ?? Social.get(`${accountId}/widget/${widgetName}/metadata/**`, "final") ?? {};
+const tags = props.metadata ? props.metadata.tags : Object.keys(metadata.tags || {});
 
 const Card = styled.div`
   position: relative;
@@ -121,8 +116,7 @@ return (
           src="${REPL_MOB}/widget/Image"
           props={{
             image: metadata.image,
-            fallbackUrl:
-              "https://ipfs.near.social/ipfs/bafkreifc4burlk35hxom3klq4mysmslfirj7slueenbj7ddwg7pc6ixomu",
+            fallbackUrl: "https://ipfs.near.social/ipfs/bafkreifc4burlk35hxom3klq4mysmslfirj7slueenbj7ddwg7pc6ixomu",
             alt: metadata.name,
           }}
         />

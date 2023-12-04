@@ -1,8 +1,6 @@
 const accountId = props.accountId;
 const blockHeight = parseInt(props.blockHeight);
-const content =
-  props.content ??
-  JSON.parse(Social.get(`${accountId}/post/comment`, blockHeight) ?? "null");
+const content = props.content ?? JSON.parse(Social.get(`${accountId}/post/comment`, blockHeight) ?? "null");
 const highlight = !!props.highlight;
 const raw = !!props.raw;
 const groupId = props.groupId;
@@ -33,7 +31,6 @@ return (
         src="${REPL_ACCOUNT}/widget/Comments.Comment"
         props={{ accountId, blockHeight: item.blockHeight, content: JSON.stringify(content) }}
       />
-
     }
   </>
 );

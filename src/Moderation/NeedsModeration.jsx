@@ -2,8 +2,7 @@ const moderatorAccount = props?.moderatorAccount || "${REPL_MODERATOR}";
 const moderationStreamBase = props.moderationStream || moderatorAccount;
 const isModerator = context.accountId === moderatorAccount;
 
-const GRAPHQL_ENDPOINT =
-  props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
+const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 const LIMIT = 25;
 State.init({
   items: [],
@@ -82,9 +81,7 @@ const loadItems = () => {
       let data = result.body.data;
       if (data) {
         const newItems = data.dataplatform_near_moderation_needs_moderation;
-        const itemsCountLeft =
-          data.dataplatform_near_moderation_needs_moderation_aggregate.aggregate
-            .count;
+        const itemsCountLeft = data.dataplatform_near_moderation_needs_moderation_aggregate.aggregate.count;
         if (newItems) {
           State.update({
             items: [...state.items, ...newItems],
@@ -107,8 +104,7 @@ if (state.loadingState === "loaded" && state.items.length === 0) {
   return <p>✨ No items need moderation 🎉</p>;
 }
 
-const hasMore =
-  state.loadingState === "loaded" && state.itemsCountLeft != state.items.length;
+const hasMore = state.loadingState === "loaded" && state.itemsCountLeft != state.items.length;
 
 const pathToType = (path) => {
   switch (path) {
@@ -137,16 +133,13 @@ const setLocalAfterModeration = (id) => {
 const renderModeratedRow = (id, item) => {
   const renderWidget = (
     <div>
-      {item.account_id} {item.moderated_path} {item.block_height} has been
-      moderated
+      {item.account_id} {item.moderated_path} {item.block_height} has been moderated
     </div>
   );
   const header = (
     <div key={id} style={{ width: "100%" }}>
       <div className="row">
-        <div className="col">
-          Moderation complete for {pathToType(item.moderated_path)}
-        </div>
+        <div className="col">Moderation complete for {pathToType(item.moderated_path)}</div>
       </div>
     </div>
   );
@@ -158,16 +151,13 @@ const blockItemHelperText =
   "to no longer be shown in feeds that obey moderation. \n" +
   "Direct links will show a moderation message. \n" +
   "The posting user will still see their content, with a moderation message.";
-const blockAccountHelperText =
-  "Cause all posts and comments by this user\n" + blockItemHelperText;
+const blockAccountHelperText = "Cause all posts and comments by this user\n" + blockItemHelperText;
 
 const renderItem = (item) => {
   const accountId = item.account_id;
   const blockHeight = item.block_height;
   const pathForId = item.moderated_path ?? "account";
-  const id = `${accountId}_${pathForId}_${
-    item.first_report_blockheight ?? blockHeight
-  }`;
+  const id = `${accountId}_${pathForId}_${item.first_report_blockheight ?? blockHeight}`;
 
   if (state.locallyModeratedItems[id]) {
     return renderModeratedRow(id, item);
@@ -245,18 +235,13 @@ const renderItem = (item) => {
           <Widget
             src="near/widget/DIG.Tooltip"
             props={{
-              content: (
-                <span style={{ whiteSpace: "pre-line" }}>
-                  {overviewTooltip}
-                </span>
-              ),
+              content: <span style={{ whiteSpace: "pre-line" }}>{overviewTooltip}</span>,
               trigger: pathToType(item.moderated_path),
             }}
           />
         </div>
         <div className="col-3">
-          {item.most_frequent_label} by {item.reporter_count}{" "}
-          {item.reporter_count > 0 ? "users" : "user"}
+          {item.most_frequent_label} by {item.reporter_count} {item.reporter_count > 0 ? "users" : "user"}
         </div>
         <div className="col-1">
           <Widget
@@ -267,8 +252,7 @@ const renderItem = (item) => {
                 <Widget
                   src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
                   props={{
-                    blockHeight:
-                      item.first_report_blockheight ?? item.block_height,
+                    blockHeight: item.first_report_blockheight ?? item.block_height,
                   }}
                 />
               ),
@@ -289,14 +273,11 @@ const renderItem = (item) => {
                     "Cause this " +
                     pathToType(item.moderated_path) +
                     " " +
-                    blockItemHelperText + (isModerator ? "":  "\n" + disabledMessage),
+                    blockItemHelperText +
+                    (isModerator ? "" : "\n" + disabledMessage),
                   data: {
                     index: {
-                      moderate: moderationDataFormat(
-                        accountId,
-                        item.moderated_path,
-                        blockHeight,
-                      ),
+                      moderate: moderationDataFormat(accountId, item.moderated_path, blockHeight),
                     },
                   },
                   onCommit: () => {
@@ -313,7 +294,7 @@ const renderItem = (item) => {
                 title: "Moderate Account",
                 disabled: !isModerator,
                 iconLeft: "ph-bold ph-prohibit",
-                tooltip: blockAccountHelperText + (isModerator ? "":  "\n" + disabledMessage),
+                tooltip: blockAccountHelperText + (isModerator ? "" : "\n" + disabledMessage),
                 variant: "destructive",
                 fill: "outline",
                 data: {
@@ -344,11 +325,7 @@ return (
     hasMore={hasMore}
     loader={
       <div className="loader">
-        <span
-          className="spinner-grow spinner-grow-sm me-1"
-          role="status"
-          aria-hidden="true"
-        />
+        <span className="spinner-grow spinner-grow-sm me-1" role="status" aria-hidden="true" />
         Loading ...
       </div>
     }

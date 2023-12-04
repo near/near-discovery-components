@@ -1,26 +1,14 @@
-if (
-  !props.accountId ||
-  !context.accountId ||
-  context.accountId === props.accountId
-) {
+if (!props.accountId || !context.accountId || context.accountId === props.accountId) {
   return "";
 }
 
-const followEdge = Social.keys(
-  `${context.accountId}/graph/follow/${props.accountId}`,
-  undefined,
-  {
-    values_only: true,
-  }
-);
+const followEdge = Social.keys(`${context.accountId}/graph/follow/${props.accountId}`, undefined, {
+  values_only: true,
+});
 
-const inverseEdge = Social.keys(
-  `${props.accountId}/graph/follow/${context.accountId}`,
-  undefined,
-  {
-    values_only: true,
-  }
-);
+const inverseEdge = Social.keys(`${props.accountId}/graph/follow/${context.accountId}`, undefined, {
+  values_only: true,
+});
 
 const loading = followEdge === null || inverseEdge === null;
 const isFollowing = Object.keys(followEdge || {}).length > 0;

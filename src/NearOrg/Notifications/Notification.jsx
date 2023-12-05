@@ -213,12 +213,8 @@ const getContentPreview = () => {
     return getDevHubContent.snapshot.description;
   }
 
-  const contentPath = isPost
-    ? `${context.accountId}/post/main`
-    : `${accountId}/post/comment`;
-  const contentDescription = JSON.parse(
-    Social.get(contentPath, blockHeight) ?? "null"
-  );
+  const contentPath = isPost ? `${context.accountId}/post/main` : `${accountId}/post/comment`;
+  const contentDescription = JSON.parse(Social.get(contentPath, blockHeight) ?? "null");
   return contentDescription.text;
 };
 
@@ -329,9 +325,7 @@ return (
             <Widget src="${REPL_MOB_2}/widget/TimeAgo@97556750" props={{ blockHeight: props.blockHeight }} />
           </Timestamp>
         </Text>
-        {actionable && getContentPreview() && (
-          <Desc>{getContentPreview()}</Desc>
-        )}
+        {actionable && getContentPreview() && <Desc>{getContentPreview()}</Desc>}
       </Left>
       <Right>
         {(type === "follow" || type === "unfollow") && (

@@ -108,10 +108,7 @@ return (
         className="SwitchRoot"
         onClick={handleOnClick}
       >
-        <Switch.Thumb
-          data-state={isSwitchChecked ? "checked" : "unchecked"}
-          className="SwitchThumb"
-        />
+        <Switch.Thumb data-state={isSwitchChecked ? "checked" : "unchecked"} className="SwitchThumb" />
       </Switch.Root>
     </SwitchWrapper>
   </Card>

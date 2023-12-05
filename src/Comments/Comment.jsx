@@ -273,9 +273,9 @@ return (
                     disabled: !context.accountId || context.accountId === accountId,
                     onFlag: () => {
                       State.update({ hasBeenFlagged: true });
-                },
-            }}
-          />
+                    },
+                  }}
+                />
               </Actions>
             )}
 

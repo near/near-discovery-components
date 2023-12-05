@@ -18,7 +18,14 @@ const extractParentPost = (item) => {
 const parentPost = extractParentPost(item);
 
 return parentPost ? (
-  <Widget src="${REPL_ACCOUNT}/widget/Posts.Post" props={{ accountId: parentPost.accountId, blockHeight: item.blockHeight, highlightComment: {accountId, blockHeight} }} />
+  <Widget
+    src="${REPL_ACCOUNT}/widget/Posts.Post"
+    props={{
+      accountId: parentPost.accountId,
+      blockHeight: item.blockHeight,
+      highlightComment: { accountId, blockHeight },
+    }}
+  />
 ) : (
   <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.CommentContent" props={props} />
 );

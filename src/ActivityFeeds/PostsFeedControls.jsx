@@ -3,6 +3,7 @@ State.init({
   isLoading: false,
   selectedTab: null,
   posts: [],
+  optimisticPosts: [],
   postsCountLeft: 0,
   sort: null,
 });
@@ -111,7 +112,7 @@ const createQuery = (type) => {
   let queryFilter = "";
   switch (type) {
     case "following":
-      let filteredAccountsFollowing = accountsFollowing;
+      let filteredAccountsFollowing = accountsFollowing ? accountsFollowing.push(context.accountId) : [];
       if (filteredAccountIds) {
         const filteredAccountList = filteredAccountIds.split(",");
         filteredAccountsFollowing = filteredAccountList.filter((account) => accountsFollowing.includes(account));
@@ -213,10 +214,49 @@ const loadMorePosts = () => {
             posts: [...state.posts, ...filteredPosts],
             postsCountLeft,
           });
+          checkForOptimisticPostsHaveBeenReceived(newPosts);
         }
       }
     }
   });
+};
+
+const clearOptimisticUpdate = () => {
+  Storage.set("optimisticPosts", []);
+  State.update({
+    optimisticPosts: [],
+  });
+};
+const optimisticallyUpdatePost = (post) => {
+  Storage.set("optimisticPosts", [post]);
+  State.update({
+    optimisticPosts: [post],
+  });
+};
+
+const checkForOptimisticPostsHaveBeenReceived = (posts) => {
+  const latestOptimisticPost =
+    (state.optimisticPosts && state.optimisticPosts[0]) ??
+    (Storage.get("optimisticPosts") && Storage.get("optimisticPosts")[0]);
+  if (!latestOptimisticPost) return;
+
+  const latestPostsByUser = posts.filter((p) => p.account_id === latestOptimisticPost.account_id) ?? [];
+
+  if (
+    latestOptimisticPost &&
+    latestPostsByUser &&
+    latestPostsByUser.find((p) => {
+      if (!p.content || !latestOptimisticPost.content) return false;
+      const postContent = typeof p.content === "string" ? JSON.parse(p.content) : props.content;
+      return (
+        postContent.type === latestOptimisticPost.content.type &&
+        (postContent.text === latestOptimisticPost.content.text ||
+          postContent.image === latestOptimisticPost.content.image)
+      );
+    })
+  ) {
+    clearOptimisticUpdate();
+  }
 };
 
 const hasMore = state.postsCountLeft !== state.posts.length && state.posts.length > 0;
@@ -226,6 +266,14 @@ if (!state.initialized && initialSelectedTab && initialSelectedTab !== state.sel
 
   State.update({ initialized: true, sort });
   selectTab(initialSelectedTab);
+}
+
+const optimisticPosts = Storage.get("optimisticPosts") ?? state.optimisticPosts ?? [];
+if (optimisticPosts.length > 0) {
+  const timestamp = optimisticPosts[0].block_timestamp;
+  if (!timestamp || Date.now() - timestamp / 1000000 > 60000) {
+    clearOptimisticUpdate();
+  }
 }
 
 const H2 = styled.h2`
@@ -239,7 +287,16 @@ const H2 = styled.h2`
     display: none;
   }
 `;
+const H3 = styled.h3`
+  font-size: 15px;
+  line-height: 8px;
+  color: #11181c;
+  margin: 0 0 12px;
 
+  @media (max-width: 1024px) {
+    display: none;
+  }
+`;
 const Content = styled.div`
   @media (max-width: 1024px) {
     > div:first-child {
@@ -356,6 +413,14 @@ const SortContainer = styled.div`
     padding: 12px;
   }
 `;
+const OptimisticUpdatePost = styled.div`
+  border-top: 1px solid #eceef0;
+  border-bottom: 1px solid #eceef0;
+  padding: 24px 24px 12px;
+  @media (max-width: 1024px) {
+    padding: 12px 0 0;
+  }
+`;
 
 return (
   <>
@@ -365,9 +430,36 @@ return (
       {context.accountId && (
         <>
           {showCompose && (
-            <ComposeWrapper>
-              <Widget src="${REPL_ACCOUNT}/widget/Posts.Compose" />
-            </ComposeWrapper>
+            <>
+              <ComposeWrapper>
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/Posts.Compose"
+                  props={{
+                    optimisticUpdateFn: optimisticallyUpdatePost,
+                    clearOptimisticUpdateFn: clearOptimisticUpdate,
+                  }}
+                />
+              </ComposeWrapper>
+              {optimisticPosts.map((item) => (
+                <OptimisticUpdatePost>
+                  <H3>Post awaiting Feed display</H3>
+                  <Widget
+                    src="${REPL_ACCOUNT}/widget/Posts.Post"
+                    props={{
+                      accountId: item.account_id,
+                      blockHeight: item.block_height,
+                      blockTimestamp: item.block_timestamp,
+                      content: item.content,
+                      comments: item.comments,
+                      likes: item.accounts_liked,
+                      GRAPHQL_ENDPOINT,
+                      verifications: item.verifications,
+                      showFlagAccountFeature: false,
+                    }}
+                  />
+                </OptimisticUpdatePost>
+              ))}
+            </>
           )}
           {feeds.length > 1 && (
             <FilterWrapper>

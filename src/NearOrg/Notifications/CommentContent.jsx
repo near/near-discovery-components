@@ -29,7 +29,7 @@ return (
       <Widget
         loading=""
         src="${REPL_ACCOUNT}/widget/Comments.Comment"
-        props={{ accountId, blockHeight: item.blockHeight }}
+        props={{ accountId, blockHeight: item.blockHeight, content: JSON.stringify(content) }}
       />
     }
   </>

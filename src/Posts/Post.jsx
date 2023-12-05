@@ -7,6 +7,11 @@ const notifyAccountId = accountId;
 const postUrl = `https://${REPL_NEAR_URL}/s/p?a=${accountId}&b=${blockHeight}`;
 const showFlagAccountFeature = props.showFlagAccountFeature;
 const profile = props.profile;
+const parsedContent = props.content
+  ? typeof props.content === "string"
+    ? JSON.parse(props.content)
+    : props.content
+  : undefined;
 
 State.init({
   hasBeenFlaggedOptimistic: false,
@@ -15,7 +20,7 @@ State.init({
   flaggedMessage: { header: "", detail: "" },
   postExists: true,
   comments: props.comments ?? undefined,
-  content: JSON.parse(props.content) ?? undefined,
+  content: parsedContent,
   likes: props.likes ?? undefined,
 });
 
@@ -343,6 +348,16 @@ return (
                   props={{
                     postType: "post",
                     url: postUrl,
+                  }}
+                />
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/FlagButton"
+                  props={{
+                    item,
+                    disabled: !context.accountId || context.accountId === accountId,
+                    onFlag: () => {
+                      State.update({ hasBeenFlagged: true });
+                    },
                   }}
                 />
               </Actions>

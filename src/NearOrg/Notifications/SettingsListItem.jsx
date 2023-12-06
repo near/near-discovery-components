@@ -64,13 +64,13 @@ const SwitchWrapper = styled.div`
     align-items: center;
     width: 40px;
     height: 15px;
-    background-color: #706f6c;
+    background-color: var(--sand11);
     border-radius: 15px;
     position: relative;
     margin: 5px auto;
 
     &[data-state="checked"] {
-      background-color: #37cd83;
+      background-color: var(--green10);
     }
   }
   .SwitchThumb {
@@ -78,15 +78,15 @@ const SwitchWrapper = styled.div`
     display: block;
     width: 21px;
     height: 21px;
-    background-color: #ffffff;
-    border: 2px solid #706f6c;
+    background-color: var(--white);
+    border: 2px solid var(--sand11);
     border-radius: 50%;
     transition: transform 100ms;
     will-change: transform;
 
     &[data-state="checked"] {
       transform: translateX(19px);
-      border: 2px solid #37cd83;
+      border: 2px solid var(--green10);
     }
   }
 `;
@@ -104,11 +104,13 @@ return (
     </Content>
     <SwitchWrapper>
       <Switch.Root
-        data-state={isSwitchChecked ? "checked" : "unchecked"}
+        checked={isSwitchChecked}
         className="SwitchRoot"
         onClick={handleOnClick}
       >
-        <Switch.Thumb data-state={isSwitchChecked ? "checked" : "unchecked"} className="SwitchThumb" />
+        <Switch.Thumb
+          className="SwitchThumb"
+        />
       </Switch.Root>
     </SwitchWrapper>
   </Card>

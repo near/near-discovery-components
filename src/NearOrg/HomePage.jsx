@@ -902,7 +902,7 @@ return (
 
                 <div>
                   <Text>{stats.totalComponents}</Text>
-                  <Text>OS Components</Text>
+                  <Text>OSS Components</Text>
                 </div>
 
                 <div>

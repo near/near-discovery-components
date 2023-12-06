@@ -103,14 +103,8 @@ return (
       </Wrapper>
     </Content>
     <SwitchWrapper>
-      <Switch.Root
-        checked={isSwitchChecked}
-        className="SwitchRoot"
-        onClick={handleOnClick}
-      >
-        <Switch.Thumb
-          className="SwitchThumb"
-        />
+      <Switch.Root checked={isSwitchChecked} className="SwitchRoot" onClick={handleOnClick}>
+        <Switch.Thumb className="SwitchThumb" />
       </Switch.Root>
     </SwitchWrapper>
   </Card>

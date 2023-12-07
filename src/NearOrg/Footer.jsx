@@ -203,6 +203,10 @@ const sections = [
         title: "Contact us",
         url: "https://pages.near.org/about/contact-us/",
       },
+      {
+        title: "Brand Toolkit",
+        url: "https://near.org/brand",
+      },
     ],
   },
   {

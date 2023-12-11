@@ -225,9 +225,6 @@ return (
             Followers
           </TabsButton>
 
-          <TabsButton href={`${accountUrl}&tab=explorer`} selected={state.selectedTab === "explorer"}>
-            Explorer
-          </TabsButton>
         </Tabs>
 
         {state.selectedTab === "overview" && (

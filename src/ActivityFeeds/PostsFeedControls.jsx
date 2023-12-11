@@ -3,38 +3,32 @@ State.init({
   isLoading: false,
   selectedTab: null,
   posts: [],
+  optimisticPosts: [],
   postsCountLeft: 0,
   sort: null,
 });
 
-const GRAPHQL_ENDPOINT =
-  props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
+const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 const LIMIT = 10;
 const feeds = props.feeds ?? ["all", "following"];
-const feedLabels = {all: "All", following: "Following", mutual: "Mutual Activity"};
+const feedLabels = { all: "All", following: "Following", mutual: "Mutual Activity" };
 const showCompose = props.showCompose ?? true;
 const filteredAccountIds = props.filteredAccountIds;
 
 const sortRaw = Storage.get("queryapi:feed-sort");
 const sort = sortRaw ?? (sortRaw === undefined ? "timedesc" : null);
 const initialSelectedTabRaw = Storage.privateGet("selectedTab");
-let initialSelectedTab =
-  initialSelectedTabRaw ?? (initialSelectedTabRaw === undefined ? "all" : null);
-if(!feeds.includes(initialSelectedTab)) {
-    initialSelectedTab = feeds[0];
+let initialSelectedTab = initialSelectedTabRaw ?? (initialSelectedTabRaw === undefined ? "all" : null);
+if (!feeds.includes(initialSelectedTab)) {
+  initialSelectedTab = feeds[0];
 }
-if(initialSelectedTab === "mutual" && !context.filteredAccountIds) {
-    initialSelectedTab = feeds[0];
+if (initialSelectedTab === "mutual" && !context.filteredAccountIds) {
+  initialSelectedTab = feeds[0];
 }
 
-const followGraph = context.accountId
-  ? Social.keys(`${context.accountId}/graph/follow/*`, "final")
-  : null;
+const followGraph = context.accountId ? Social.keys(`${context.accountId}/graph/follow/*`, "final") : null;
 const accountsFollowing =
-  props.accountsFollowing ??
-  (followGraph
-    ? Object.keys(followGraph[context.accountId].graph.follow || {})
-    : null);
+  props.accountsFollowing ?? (followGraph ? Object.keys(followGraph[context.accountId].graph.follow || {}) : null);
 const isLoading = !state.initialized || state.isLoading;
 
 const optionsMap = {
@@ -70,9 +64,7 @@ const selfFlaggedPosts = context.accountId
 //     },
 //   }
 // }
-const selfModeration = context.accountId
-  ? Social.getr(`${context.accountId}/moderate`, "optimistic") ?? []
-  : [];
+const selfModeration = context.accountId ? Social.getr(`${context.accountId}/moderate`, "optimistic") ?? [] : [];
 const postsModerationKey = ".post.main";
 const commentsModerationKey = ".post.comment";
 const matchesModeration = (moderated, socialDBObjectType, item) => {
@@ -91,10 +83,7 @@ const matchesModeration = (moderated, socialDBObjectType, item) => {
 const shouldFilter = (item, socialDBObjectType) => {
   return (
     selfFlaggedPosts.find((flagged) => {
-      return (
-        flagged?.value?.blockHeight === item.block_height &&
-        flagged?.value?.path.includes(item.account_id)
-      );
+      return flagged?.value?.blockHeight === item.block_height && flagged?.value?.path.includes(item.account_id);
     }) || matchesModeration(selfModeration, socialDBObjectType, item)
   );
 };
@@ -123,21 +112,18 @@ const createQuery = (type) => {
   let queryFilter = "";
   switch (type) {
     case "following":
-      let filteredAccountsFollowing = accountsFollowing;
-      if(filteredAccountIds) {
+      let filteredAccountsFollowing = accountsFollowing ? accountsFollowing.push(context.accountId) : [];
+      if (filteredAccountIds) {
         const filteredAccountList = filteredAccountIds.split(",");
         filteredAccountsFollowing = filteredAccountList.filter((account) => accountsFollowing.includes(account));
       }
-      let queryAccountsString = accountsFollowing
-        .map((account) => `"${account}"`)
-        .join(", ");
+      let queryAccountsString = accountsFollowing.map((account) => `"${account}"`).join(", ");
       queryFilter = `where: { account_id: { _in: [${queryAccountsString}]}},`;
       break;
 
     case "mutual":
-      let userAccount = context.accountId
-      queryFilter =
-          `where: { 
+      let userAccount = context.accountId;
+      queryFilter = `where: { 
           _and: [
             {account_id: {_in: "${filteredAccountIds}"}},
             {_or: [
@@ -150,10 +136,10 @@ const createQuery = (type) => {
       break;
 
     default:
-      if(filteredAccountIds) {
+      if (filteredAccountIds) {
         queryFilter = `where: {account_id: {_in: "${filteredAccountIds}"}}, `;
       } else {
-        queryFilter =  "";
+        queryFilter = "";
       }
   }
 
@@ -213,16 +199,12 @@ const loadMorePosts = () => {
       let data = result.body.data;
       if (data) {
         const newPosts = data.dataplatform_near_social_feed_moderated_posts;
-        const postsCountLeft =
-          data.dataplatform_near_social_feed_moderated_posts_aggregate.aggregate
-            .count;
+        const postsCountLeft = data.dataplatform_near_social_feed_moderated_posts_aggregate.aggregate.count;
         if (newPosts.length > 0) {
           let filteredPosts = newPosts.filter((i) => !shouldFilter(i, postsModerationKey));
           filteredPosts = filteredPosts.map((post) => {
             const prevComments = post.comments;
-            const filteredComments = prevComments.filter(
-              (comment) => !shouldFilter(comment, commentsModerationKey)
-            );
+            const filteredComments = prevComments.filter((comment) => !shouldFilter(comment, commentsModerationKey));
             post.comments = filteredComments;
             return post;
           });
@@ -232,25 +214,66 @@ const loadMorePosts = () => {
             posts: [...state.posts, ...filteredPosts],
             postsCountLeft,
           });
+          checkForOptimisticPostsHaveBeenReceived(newPosts);
         }
       }
     }
   });
 };
 
-const hasMore =
-  state.postsCountLeft !== state.posts.length && state.posts.length > 0;
+const clearOptimisticUpdate = () => {
+  Storage.set("optimisticPosts", []);
+  State.update({
+    optimisticPosts: [],
+  });
+};
+const optimisticallyUpdatePost = (post) => {
+  Storage.set("optimisticPosts", [post]);
+  State.update({
+    optimisticPosts: [post],
+  });
+};
 
-if (
-  !state.initialized &&
-  initialSelectedTab &&
-  initialSelectedTab !== state.selectedTab &&
-  sort
-) {
+const checkForOptimisticPostsHaveBeenReceived = (posts) => {
+  const latestOptimisticPost =
+    (state.optimisticPosts && state.optimisticPosts[0]) ??
+    (Storage.get("optimisticPosts") && Storage.get("optimisticPosts")[0]);
+  if (!latestOptimisticPost) return;
+
+  const latestPostsByUser = posts.filter((p) => p.account_id === latestOptimisticPost.account_id) ?? [];
+
+  if (
+    latestOptimisticPost &&
+    latestPostsByUser &&
+    latestPostsByUser.find((p) => {
+      if (!p.content || !latestOptimisticPost.content) return false;
+      const postContent = typeof p.content === "string" ? JSON.parse(p.content) : props.content;
+      return (
+        postContent.type === latestOptimisticPost.content.type &&
+        (postContent.text === latestOptimisticPost.content.text ||
+          postContent.image === latestOptimisticPost.content.image)
+      );
+    })
+  ) {
+    clearOptimisticUpdate();
+  }
+};
+
+const hasMore = state.postsCountLeft !== state.posts.length && state.posts.length > 0;
+
+if (!state.initialized && initialSelectedTab && initialSelectedTab !== state.selectedTab && sort) {
   if (initialSelectedTab === "following" && !accountsFollowing) return null;
 
   State.update({ initialized: true, sort });
   selectTab(initialSelectedTab);
+}
+
+const optimisticPosts = Storage.get("optimisticPosts") ?? state.optimisticPosts ?? [];
+if (optimisticPosts.length > 0) {
+  const timestamp = optimisticPosts[0].block_timestamp;
+  if (!timestamp || Date.now() - timestamp / 1000000 > 60000) {
+    clearOptimisticUpdate();
+  }
 }
 
 const H2 = styled.h2`
@@ -264,7 +287,16 @@ const H2 = styled.h2`
     display: none;
   }
 `;
+const H3 = styled.h3`
+  font-size: 15px;
+  line-height: 8px;
+  color: #11181c;
+  margin: 0 0 12px;
 
+  @media (max-width: 1024px) {
+    display: none;
+  }
+`;
 const Content = styled.div`
   @media (max-width: 1024px) {
     > div:first-child {
@@ -381,6 +413,14 @@ const SortContainer = styled.div`
     padding: 12px;
   }
 `;
+const OptimisticUpdatePost = styled.div`
+  border-top: 1px solid #eceef0;
+  border-bottom: 1px solid #eceef0;
+  padding: 24px 24px 12px;
+  @media (max-width: 1024px) {
+    padding: 12px 0 0;
+  }
+`;
 
 return (
   <>
@@ -389,50 +429,73 @@ return (
     <Content>
       {context.accountId && (
         <>
-        {showCompose && (
-          <ComposeWrapper>
-            <Widget src="${REPL_ACCOUNT}/widget/Posts.Compose" />
-          </ComposeWrapper>
-        )}
-        {feeds.length > 1 && (
-          <FilterWrapper>
-            <PillSelect>
-              {feeds.map((feed) => (
-                <PillSelectButton
-                  type="button"
-                  onClick={() => selectTab(feed)}
-                  selected={state.selectedTab === feed}
-                >
-                  {feedLabels[feed] ?? feed}
-                </PillSelectButton>
-              ))}
-            </PillSelect>
-          </FilterWrapper>
-        )}
-          <SortContainer>
-              <Sort>
-                <span className="label">Sort by:</span>
+          {showCompose && (
+            <>
+              <ComposeWrapper>
                 <Widget
-                  src={`${REPL_ACCOUNT}/widget/Select`}
+                  src="${REPL_ACCOUNT}/widget/Posts.Compose"
                   props={{
-                    noLabel: true,
-                    value: { text: optionsMap[sort], value: sort },
-                    onChange: ({ value }) => {
-                      Storage.set("queryapi:feed-sort", value);
-                      State.update({
-                        posts: [],
-                        postsCountLeft: 0,
-                        sort: value,
-                      });
-                      loadMorePosts();
-                    },
-                    options: [
-                      { text: "Most Recent", value: "timedesc" },
-                      { text: "Recent Comments", value: "recentcommentdesc" },
-                    ],
+                    optimisticUpdateFn: optimisticallyUpdatePost,
+                    clearOptimisticUpdateFn: clearOptimisticUpdate,
                   }}
                 />
-              </Sort>
+              </ComposeWrapper>
+              {optimisticPosts.map((item) => (
+                <OptimisticUpdatePost>
+                  <H3>Post awaiting Feed display</H3>
+                  <Widget
+                    src="${REPL_ACCOUNT}/widget/Posts.Post"
+                    props={{
+                      accountId: item.account_id,
+                      blockHeight: item.block_height,
+                      blockTimestamp: item.block_timestamp,
+                      content: item.content,
+                      comments: item.comments,
+                      likes: item.accounts_liked,
+                      GRAPHQL_ENDPOINT,
+                      verifications: item.verifications,
+                      showFlagAccountFeature: false,
+                    }}
+                  />
+                </OptimisticUpdatePost>
+              ))}
+            </>
+          )}
+          {feeds.length > 1 && (
+            <FilterWrapper>
+              <PillSelect>
+                {feeds.map((feed) => (
+                  <PillSelectButton type="button" onClick={() => selectTab(feed)} selected={state.selectedTab === feed}>
+                    {feedLabels[feed] ?? feed}
+                  </PillSelectButton>
+                ))}
+              </PillSelect>
+            </FilterWrapper>
+          )}
+          <SortContainer>
+            <Sort>
+              <span className="label">Sort by:</span>
+              <Widget
+                src={`${REPL_ACCOUNT}/widget/Select`}
+                props={{
+                  noLabel: true,
+                  value: { text: optionsMap[sort], value: sort },
+                  onChange: ({ value }) => {
+                    Storage.set("queryapi:feed-sort", value);
+                    State.update({
+                      posts: [],
+                      postsCountLeft: 0,
+                      sort: value,
+                    });
+                    loadMorePosts();
+                  },
+                  options: [
+                    { text: "Most Recent", value: "timedesc" },
+                    { text: "Recent Comments", value: "recentcommentdesc" },
+                  ],
+                }}
+              />
+            </Sort>
           </SortContainer>
         </>
       )}

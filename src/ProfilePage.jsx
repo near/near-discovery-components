@@ -16,26 +16,20 @@ if (props.tab && props.tab !== state.selectedTab) {
 const profile = props.profile ?? Social.getr(`${accountId}/profile`);
 const accountUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 
-const starredComponentsData = Social.keys(
-  `${accountId}/graph/star/*/widget/*`,
-  "final",
-  {
-    return_type: "BlockHeight",
-  }
-);
+const starredComponentsData = Social.keys(`${accountId}/graph/star/*/widget/*`, "final", {
+  return_type: "BlockHeight",
+});
 let starredComponents = null;
 if (starredComponentsData) {
   starredComponents = [];
   const starredData = starredComponentsData[accountId]?.graph?.star ?? {};
   Object.keys(starredData).forEach((authorAccountId) => {
-    Object.keys(starredData[authorAccountId].widget).forEach(
-      (componentName) => {
-        starredComponents.push({
-          accountId: authorAccountId,
-          componentName,
-        });
-      }
-    );
+    Object.keys(starredData[authorAccountId].widget).forEach((componentName) => {
+      starredComponents.push({
+        accountId: authorAccountId,
+        componentName,
+      });
+    });
   });
 }
 const starredComponentsCount = (starredComponents ?? []).length;
@@ -188,8 +182,7 @@ return (
           props={{
             image: profile.backgroundImage,
             alt: "profile background image",
-            fallbackUrl:
-              "https://ipfs.near.social/ipfs/bafkreibiyqabm3kl24gcb2oegb7pmwdi6wwrpui62iwb44l7uomnn3lhbi",
+            fallbackUrl: "https://ipfs.near.social/ipfs/bafkreibiyqabm3kl24gcb2oegb7pmwdi6wwrpui62iwb44l7uomnn3lhbi",
           }}
         />
       )}
@@ -208,52 +201,31 @@ return (
 
       <Content>
         <Tabs>
-          <TabsButton
-            href={`${accountUrl}&tab=overview`}
-            selected={state.selectedTab === "overview"}
-          >
+          <TabsButton href={`${accountUrl}&tab=overview`} selected={state.selectedTab === "overview"}>
             Overview
           </TabsButton>
 
-          <TabsButton
-            href={`${accountUrl}&tab=apps`}
-            selected={state.selectedTab === "apps"}
-          >
+          <TabsButton href={`${accountUrl}&tab=apps`} selected={state.selectedTab === "apps"}>
             Components
           </TabsButton>
 
-          <TabsButton
-            href={`${accountUrl}&tab=stars`}
-            selected={state.selectedTab === "stars"}
-          >
+          <TabsButton href={`${accountUrl}&tab=stars`} selected={state.selectedTab === "stars"}>
             Stars ({starredComponentsCount})
           </TabsButton>
 
-          <TabsButton
-            href={`${accountUrl}&tab=nfts`}
-            selected={state.selectedTab === "nfts"}
-          >
+          <TabsButton href={`${accountUrl}&tab=nfts`} selected={state.selectedTab === "nfts"}>
             NFTs
           </TabsButton>
 
-          <TabsButton
-            href={`${accountUrl}&tab=following`}
-            selected={state.selectedTab === "following"}
-          >
+          <TabsButton href={`${accountUrl}&tab=following`} selected={state.selectedTab === "following"}>
             Following
           </TabsButton>
 
-          <TabsButton
-            href={`${accountUrl}&tab=followers`}
-            selected={state.selectedTab === "followers"}
-          >
+          <TabsButton href={`${accountUrl}&tab=followers`} selected={state.selectedTab === "followers"}>
             Followers
           </TabsButton>
 
-          <TabsButton
-            href={`${accountUrl}&tab=explorer`}
-            selected={state.selectedTab === "explorer"}
-          >
+          <TabsButton href={`${accountUrl}&tab=explorer`} selected={state.selectedTab === "explorer"}>
             Explorer
           </TabsButton>
         </Tabs>
@@ -267,10 +239,7 @@ return (
                 </Title>
 
                 <Bio>
-                  <Widget
-                    src="${REPL_ACCOUNT}/widget/SocialMarkdown"
-                    props={{ text: profile.description }}
-                  />
+                  <Widget src="${REPL_ACCOUNT}/widget/SocialMarkdown" props={{ text: profile.description }} />
                 </Bio>
               </>
             )}
@@ -286,32 +255,18 @@ return (
           </>
         )}
 
-        {state.selectedTab === "nfts" && (
-          <Widget
-            src="${REPL_ACCOUNT}/widget/NFTCollection"
-            props={{ accountId }}
-          />
-        )}
+        {state.selectedTab === "nfts" && <Widget src="${REPL_ACCOUNT}/widget/NFTCollection" props={{ accountId }} />}
 
         {state.selectedTab === "apps" && (
-          <Widget
-            src="${REPL_ACCOUNT}/widget/ComponentCollection"
-            props={{ accountId }}
-          />
+          <Widget src="${REPL_ACCOUNT}/widget/ComponentCollection" props={{ accountId }} />
         )}
 
         {state.selectedTab === "followers" && (
-          <Widget
-            src="${REPL_ACCOUNT}/widget/FollowersList"
-            props={{ accountId }}
-          />
+          <Widget src="${REPL_ACCOUNT}/widget/FollowersList" props={{ accountId }} />
         )}
 
         {state.selectedTab === "following" && (
-          <Widget
-            src="${REPL_ACCOUNT}/widget/FollowingList"
-            props={{ accountId }}
-          />
+          <Widget src="${REPL_ACCOUNT}/widget/FollowingList" props={{ accountId }} />
         )}
 
         {state.selectedTab === "explorer" && (

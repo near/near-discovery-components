@@ -3,11 +3,7 @@ const { alwaysRelative, blockHeight, blockTimestamp } = props;
 if (!blockTimestamp) {
   return (
     <>
-      <Widget
-        src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
-        props={{ blockHeight }}
-      />{" "}
-      ago
+      <Widget src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}" props={{ blockHeight }} /> ago
     </>
   );
 }
@@ -40,19 +36,19 @@ const timeAgo = (diffMs) => {
   return diffMs < 60000
     ? `${(diffMs / 1000) | 0}s ago`
     : diffMs < 3600000
-    ? `${(diffMs / 60000) | 0}m ago`
-    : diffMs < 86400000
-    ? `${(diffMs / 3600000) | 0}h ago`
-    : date.getFullYear() === dateNow.getFullYear()
-    ? date.toLocaleString("en-US", {
-        month: "short",
-        day: "numeric",
-      })
-    : date.toLocaleString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      });
+      ? `${(diffMs / 60000) | 0}m ago`
+      : diffMs < 86400000
+        ? `${(diffMs / 3600000) | 0}h ago`
+        : date.getFullYear() === dateNow.getFullYear()
+          ? date.toLocaleString("en-US", {
+              month: "short",
+              day: "numeric",
+            })
+          : date.toLocaleString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            });
 };
 
 return <>{timeAgo(dateNow.getTime() - blockTimestampMs)}</>;

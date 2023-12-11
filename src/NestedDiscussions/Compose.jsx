@@ -26,8 +26,7 @@ const content = {
 };
 
 function extractMentions(text) {
-  const mentionRegex =
-    /@((?:(?:[a-z\d]+[-_])*[a-z\d]+\.)*(?:[a-z\d]+[-_])*[a-z\d]+)/gi;
+  const mentionRegex = /@((?:(?:[a-z\d]+[-_])*[a-z\d]+\.)*(?:[a-z\d]+[-_])*[a-z\d]+)/gi;
   mentionRegex.lastIndex = 0;
   const accountIds = new Set();
   for (const match of text.matchAll(mentionRegex)) {
@@ -92,9 +91,7 @@ function composeData() {
   notifications = notifications.concat(tag_notifications);
 
   if (notifications.length) {
-    data.index.notify = JSON.stringify(
-      notifications.length > 1 ? notifications : notifications[0]
-    );
+    data.index.notify = JSON.stringify(notifications.length > 1 ? notifications : notifications[0]);
   }
 
   return data;
@@ -182,7 +179,7 @@ const Textarea = styled.div`
   }
 
   &::after {
-    content: attr(data-value) ' ';
+    content: attr(data-value) " ";
     visibility: hidden;
     white-space: pre-wrap;
   }
@@ -200,7 +197,7 @@ const Textarea = styled.div`
     }
 
     &:focus {
-      box-shadow: inset 0 0 30px rgba(0,0,0,0.05);
+      box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.05);
     }
   }
 `;
@@ -244,8 +241,8 @@ const Actions = styled.div`
 
   .commit-post-button,
   .preview-post-button {
-    background: #59E692;
-    color: #09342E;
+    background: #59e692;
+    color: #09342e;
     border-radius: 40px;
     height: 40px;
     padding: 0 35px;
@@ -253,7 +250,9 @@ const Actions = styled.div`
     font-size: 14px;
     border: none;
     cursor: pointer;
-    transition: background 200ms, opacity 200ms;
+    transition:
+      background 200ms,
+      opacity 200ms;
 
     &:hover,
     &:focus {
@@ -268,8 +267,8 @@ const Actions = styled.div`
   }
 
   .preview-post-button {
-    color: #11181C;
-    background: #F1F3F5;
+    color: #11181c;
+    background: #f1f3f5;
     padding: 0;
     width: 40px;
 
@@ -284,15 +283,17 @@ const Actions = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #F1F3F5;
-    color: #11181C;
+    background: #f1f3f5;
+    color: #11181c;
     border-radius: 40px;
     height: 40px;
     min-width: 40px;
     font-size: 0;
     border: none;
     cursor: pointer;
-    transition: background 200ms, opacity 200ms;
+    transition:
+      background 200ms,
+      opacity 200ms;
 
     &::before {
       font-size: 16px;
@@ -365,8 +366,7 @@ return (
             props={{
               image: profile.image,
               alt: profile.name,
-              fallbackUrl:
-                "https://ipfs.near.social/ipfs/bafkreibiyqabm3kl24gcb2oegb7pmwdi6wwrpui62iwb44l7uomnn3lhbi",
+              fallbackUrl: "https://ipfs.near.social/ipfs/bafkreibiyqabm3kl24gcb2oegb7pmwdi6wwrpui62iwb44l7uomnn3lhbi",
             }}
           />
         </Avatar>
@@ -384,10 +384,7 @@ return (
           />
 
           <TextareaDescription>
-            <a
-              href="https://www.markdownguide.org/basic-syntax/"
-              target="_blank"
-            >
+            <a href="https://www.markdownguide.org/basic-syntax/" target="_blank">
               Markdown
             </a>
             is supported
@@ -410,12 +407,7 @@ return (
     )}
 
     <Actions>
-      {!state.showPreview && (
-        <IpfsImageUpload
-          image={state.image}
-          className="upload-image-button bi bi-image"
-        />
-      )}
+      {!state.showPreview && <IpfsImageUpload image={state.image} className="upload-image-button bi bi-image" />}
 
       <button
         type="button"
@@ -424,20 +416,10 @@ return (
         title={state.showPreview ? "Edit Post" : "Preview Post"}
         onClick={() => State.update({ showPreview: !state.showPreview })}
       >
-        {state.showPreview ? (
-          <i className="bi bi-pencil" />
-        ) : (
-          <i className="bi bi-eye-fill" />
-        )}
+        {state.showPreview ? <i className="bi bi-pencil" /> : <i className="bi bi-eye-fill" />}
       </button>
 
-      <CommitButton
-        disabled={!state.text}
-        force
-        data={composeData}
-        onCommit={onCommit}
-        className="commit-post-button"
-      >
+      <CommitButton disabled={!state.text} force data={composeData} onCommit={onCommit} className="commit-post-button">
         Post
       </CommitButton>
     </Actions>

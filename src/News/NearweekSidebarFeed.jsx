@@ -1,10 +1,10 @@
 const accountId = "near";
-const limit = 5;
+const limit = props.limit || 5;
 let posts = [];
 
 const indexedPosts = Social.index("post", "main", {
   accountId,
-  limit: 20,
+  limit: limit,
   order: "desc",
 });
 
@@ -23,9 +23,7 @@ if (indexedPosts?.length > 0) {
       const isValid = hasNewsTag && url.indexOf("https://") > -1;
 
       if (isValid) {
-        const timeResponse = fetch(
-          `https://api.near.social/time?blockHeight=${post.blockHeight}`
-        );
+        const timeResponse = fetch(`https://api.near.social/time?blockHeight=${post.blockHeight}`);
         let createdAt = "";
         if (timeResponse) {
           const timeMs = parseFloat(timeResponse.body);
@@ -45,18 +43,15 @@ if (indexedPosts?.length > 0) {
   });
 }
 
-const data = fetch(
-  "https://nearweek.com/api/md/dao-news?populate=deep&sort=createdAt:desc&pagination[pageSize]=5",
-  {
-    //subscribe: true,
-    method: "GET",
-    headers: {
-      Accept: "*/*",
-      Authorization:
-        "Bearer 15699f0723aa9fe9f655b1a94e450552476c08807f67b525b5a3c8011eecc8aee6d45923443620f17815b897858be058cd7bd89ddf23a28aabaecb178e7ebc55d380293beeb51a8ce87b40e1518ce4708e4d51a06b115f27fa64ab5cbee5a3511cec785d7ae6a155ecd05ac8196aadae3e9b8e9401b8df8d8b69904f7364f925",
-    },
-  }
-);
+const data = fetch("https://nearweek.com/api/md/dao-news?populate=deep&sort=createdAt:desc&pagination[pageSize]=5", {
+  //subscribe: true,
+  method: "GET",
+  headers: {
+    Accept: "*/*",
+    Authorization:
+      "Bearer 15699f0723aa9fe9f655b1a94e450552476c08807f67b525b5a3c8011eecc8aee6d45923443620f17815b897858be058cd7bd89ddf23a28aabaecb178e7ebc55d380293beeb51a8ce87b40e1518ce4708e4d51a06b115f27fa64ab5cbee5a3511cec785d7ae6a155ecd05ac8196aadae3e9b8e9401b8df8d8b69904f7364f925",
+  },
+});
 
 const cssFont = fetch("https://fonts.cdnfonts.com/css/hubot-sans").body;
 
@@ -89,13 +84,7 @@ const H2 = styled.h2`
 
 const ClockIconSVG = () => {
   return (
-    <svg
-      width="10"
-      height="10"
-      viewBox="0 0 10 10"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M4.91345 2.39779V5.19946H7.01471M9.11597 5.19946C9.11597 5.75134 9.00727 6.29782 8.79607 6.8077C8.58487 7.31757 8.27532 7.78085 7.88508 8.17109C7.49484 8.56133 7.03156 8.87088 6.52168 9.08208C6.01181 9.29328 5.46533 9.40198 4.91345 9.40198C4.36157 9.40198 3.81509 9.29328 3.30522 9.08208C2.79535 8.87088 2.33206 8.56133 1.94183 8.17109C1.55159 7.78085 1.24203 7.31757 1.03083 6.8077C0.819639 6.29782 0.710937 5.75134 0.710938 5.19946C0.710938 4.08489 1.1537 3.01596 1.94183 2.22784C2.72995 1.43971 3.79888 0.996948 4.91345 0.996948C6.02803 0.996948 7.09695 1.43971 7.88508 2.22784C8.6732 3.01596 9.11597 4.08489 9.11597 5.19946Z"
         stroke="#6F7679"
@@ -220,10 +209,10 @@ function dateToDays(date) {
     diffSec < 60000
       ? `${(diffSec / 1000) | 0}s`
       : diffSec < 3600000
-      ? `${(diffSec / 60000) | 0}m`
-      : diffSec < 86400000
-      ? `${(diffSec / 3600000) | 0}h`
-      : `${(diffSec / 86400000) | 0}d`;
+        ? `${(diffSec / 60000) | 0}m`
+        : diffSec < 86400000
+          ? `${(diffSec / 3600000) | 0}h`
+          : `${(diffSec / 86400000) | 0}d`;
 
   var d = new Date(date);
   return timeAgo(Date.now() - d.getTime());
@@ -241,26 +230,17 @@ return (
                 <CardImage width="78" height="78" src={item.thumbnail} alt="" />
                 <CardContent>
                   <CardTitle>
-                    <a
-                      href={item.url}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                    >
+                    <a href={item.url} target="_blank" rel="noreferrer noopener">
                       {item.title}
                     </a>
                   </CardTitle>
                   <CardFooter>
                     <Badges>
-                      {item.categories.length > 0 &&
-                        item.categories.map((category) => (
-                          <Badge>{category}</Badge>
-                        ))}
+                      {item.categories.length > 0 && item.categories.map((category) => <Badge>{category}</Badge>)}
                     </Badges>
                     <CardDate>
                       <ClockIconSVG />
-                      {item.createdAt
-                        ? `${dateToDays(item.createdAt)} ago`
-                        : ""}
+                      {item.createdAt ? `${dateToDays(item.createdAt)} ago` : ""}
                     </CardDate>
                   </CardFooter>
                 </CardContent>
@@ -268,10 +248,7 @@ return (
             </Card>
           ))}
         </Content>
-        <ButtonLink
-          href="https://near.org/nearweekapp.near/widget/nearweek-news"
-          target="_blank"
-        >
+        <ButtonLink href="https://near.org/nearweekapp.near/widget/nearweek-news" target="_blank">
           View All News
         </ButtonLink>
       </Wrapper>

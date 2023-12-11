@@ -2,6 +2,9 @@ if (!context.accountId) {
   return <></>;
 }
 
+const optimisticUpdateFn = props.optimisticUpdateFn;
+const clearOptimisticUpdateFn = props.clearOptimisticUpdateFn;
+
 State.init({
   image: {},
   text: "",
@@ -18,8 +21,7 @@ const content = {
 };
 
 function extractMentions(text) {
-  const mentionRegex =
-    /@((?:(?:[a-z\d]+[-_])*[a-z\d]+\.)*(?:[a-z\d]+[-_])*[a-z\d]+)/gi;
+  const mentionRegex = /@((?:(?:[a-z\d]+[-_])*[a-z\d]+\.)*(?:[a-z\d]+[-_])*[a-z\d]+)/gi;
   mentionRegex.lastIndex = 0;
   const accountIds = new Set();
   for (const match of text.matchAll(mentionRegex)) {
@@ -68,12 +70,30 @@ function composeData() {
   });
 
   if (notifications.length) {
-    data.index.notify = JSON.stringify(
-      notifications.length > 1 ? notifications : notifications[0]
-    );
+    data.index.notify = JSON.stringify(notifications.length > 1 ? notifications : notifications[0]);
   }
 
   return data;
+}
+
+function onCancel() {
+  if (clearOptimisticUpdateFn) {
+    clearOptimisticUpdateFn();
+  }
+}
+
+function onPostClick() {
+  if (optimisticUpdateFn) {
+    const post = {
+      account_id: context.accountId,
+      block_height: "now",
+      block_timestamp: Date.now() * 1000000,
+      content,
+      comments: [],
+      accounts_liked: [],
+    };
+    optimisticUpdateFn(post);
+  }
 }
 
 function onCommit() {
@@ -137,8 +157,7 @@ const Textarea = styled.div`
     height: unset;
     min-height: 164px;
     font: inherit;
-    padding: var(--padding) var(--padding) calc(40px + (var(--padding) * 2))
-      calc(40px + (var(--padding) * 2));
+    padding: var(--padding) var(--padding) calc(40px + (var(--padding) * 2)) calc(40px + (var(--padding) * 2));
     margin: 0;
     resize: none;
     background: none;
@@ -229,7 +248,9 @@ const Actions = styled.div`
     font-size: 14px;
     border: none;
     cursor: pointer;
-    transition: background 200ms, opacity 200ms;
+    transition:
+      background 200ms,
+      opacity 200ms;
 
     &:hover,
     &:focus {
@@ -268,7 +289,9 @@ const Actions = styled.div`
     font-size: 0;
     border: none;
     cursor: pointer;
-    transition: background 200ms, opacity 200ms;
+    transition:
+      background 200ms,
+      opacity 200ms;
 
     &::before {
       font-size: 16px;
@@ -341,8 +364,7 @@ return (
             props={{
               image: profile.image,
               alt: profile.name,
-              fallbackUrl:
-                "https://ipfs.near.social/ipfs/bafkreibiyqabm3kl24gcb2oegb7pmwdi6wwrpui62iwb44l7uomnn3lhbi",
+              fallbackUrl: "https://ipfs.near.social/ipfs/bafkreibiyqabm3kl24gcb2oegb7pmwdi6wwrpui62iwb44l7uomnn3lhbi",
             }}
           />
         </Avatar>
@@ -360,10 +382,7 @@ return (
           />
 
           <TextareaDescription>
-            <a
-              href="https://www.markdownguide.org/basic-syntax/"
-              target="_blank"
-            >
+            <a href="https://www.markdownguide.org/basic-syntax/" target="_blank">
               Markdown
             </a>
             is supported
@@ -386,12 +405,7 @@ return (
     )}
 
     <Actions>
-      {!state.showPreview && (
-        <IpfsImageUpload
-          image={state.image}
-          className="upload-image-button bi bi-image"
-        />
-      )}
+      {!state.showPreview && <IpfsImageUpload image={state.image} className="upload-image-button bi bi-image" />}
 
       <button
         type="button"
@@ -400,17 +414,15 @@ return (
         title={state.showPreview ? "Edit Post" : "Preview Post"}
         onClick={() => State.update({ showPreview: !state.showPreview })}
       >
-        {state.showPreview ? (
-          <i className="bi bi-pencil" />
-        ) : (
-          <i className="bi bi-eye-fill" />
-        )}
+        {state.showPreview ? <i className="bi bi-pencil" /> : <i className="bi bi-eye-fill" />}
       </button>
 
       <CommitButton
         disabled={!state.text}
         force
         data={composeData}
+        onCancel={onCancel}
+        onClick={onPostClick}
         onCommit={onCommit}
         className="commit-post-button"
       >

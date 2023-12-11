@@ -61,9 +61,7 @@ if (props.tooltip) {
     <Widget
       src="near/widget/DIG.Tooltip"
       props={{
-        content: (
-          <span style={{ whiteSpace: "pre-line" }}>{props.tooltip}</span>
-        ),
+        content: <span style={{ whiteSpace: "pre-line" }}>{props.tooltip}</span>,
         trigger: renderButton(),
       }}
     />

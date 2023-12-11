@@ -1,46 +1,44 @@
-State.init({
-  selectedComponentName: props.component,
-});
-
 const overviewPageUrl = "/${REPL_ACCOUNT}/widget/DIG.OverviewPage";
-const author = "${REPL_ACCOUNT}";
-const data = Social.get(`${author}/widget/**`) ?? {};
-const componentNames = Object.keys(data)
+const authorId = "${REPL_ACCOUNT}";
+const defaultData = {
+  [authorId]: {
+    widget: {},
+  },
+};
+
+const keysData = Social.keys(`${authorId}/widget/*`) ?? defaultData;
+const componentNames = Object.keys(keysData[authorId].widget)
   .filter((item) => {
     return item.indexOf("DIG.") > -1 && item.indexOf("OverviewPage") === -1;
   })
   .sort();
-const selectedComponentName = state.selectedComponentName ?? componentNames[0];
-const selectedComponent = data[selectedComponentName];
 
-if (props.component && props.component !== state.selectedComponentName) {
-  State.update({
-    selectedComponentName: props.component,
-  });
-}
+const data =
+  componentNames.length > 0
+    ? Social.get(componentNames.map((name) => `${authorId}/widget/${name}/**`)) ?? defaultData
+    : defaultData;
+const components = data[authorId].widget;
+
+const selectedComponentName = props.component ?? componentNames[0];
+const selectedComponent = components[selectedComponentName];
 
 function returnExampleCodeForComponent(componentName) {
   if (!componentName) return;
-  const component = data[componentName];
+  const component = components[componentName];
   if (!component?.metadata?.description) return;
 
   /*
     Grab the first jsx code block in the description - we're assuming
     it's a valid example for now:
   */
-  const matches = component.metadata.description.match(
-    /```jsx([\s\S]*?)(?=```)/
-  );
+  const matches = component.metadata.description.match(/```jsx([\s\S]*?)(?=```)/);
 
   /*
     The example code in the descriptions have `src="near/widget/DIG...""`
     hardcoded, so we need to dynamically replace it with `author` to
     properly handle testnet and mainnet:
   */
-  const code = (matches[1] ?? "").replace(
-    /src="near\/widget/g,
-    `src="${author}/widget`
-  );
+  const code = (matches[1] ?? "").replace(/src="near\/widget/g, `src="${authorId}/widget`);
 
   if (code) {
     /*
@@ -165,9 +163,8 @@ return (
       <Text size="text-3xl">DIG Components</Text>
 
       <Text>
-        DIG (Decentralized Interface Guidelines) is a collection of UI
-        components that can be used to quickly build decentralized apps with a
-        consistent look and feel.
+        DIG (Decentralized Interface Guidelines) is a collection of UI components that can be used to quickly build
+        decentralized apps with a consistent look and feel.
       </Text>
 
       <Main>
@@ -188,16 +185,14 @@ return (
         {selectedComponent && (
           <Content>
             <ContentHeader>
-              <Text size="text-2xl">
-                {selectedComponentName.replace("DIG.", "")}
-              </Text>
+              <Text size="text-2xl">{selectedComponentName.replace("DIG.", "")}</Text>
 
               <Widget
                 src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
                   label: "View Details",
                   iconRight: "ph-bold ph-arrow-right",
-                  href: `/${author}/widget/ComponentDetailsPage?src=${author}/widget/${selectedComponentName}`,
+                  href: `/${authorId}/widget/ComponentDetailsPage?src=${authorId}/widget/${selectedComponentName}`,
                   variant: "primary",
                   fill: "outline",
                   size: "small",
@@ -207,9 +202,7 @@ return (
 
             <Preview>
               {returnExampleCodeForComponent(selectedComponentName) ? (
-                <Widget
-                  code={returnExampleCodeForComponent(selectedComponentName)}
-                />
+                <Widget code={returnExampleCodeForComponent(selectedComponentName)} />
               ) : (
                 <Text>This component has no preview.</Text>
               )}

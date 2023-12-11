@@ -1,15 +1,10 @@
-const GRAPHQL_ENDPOINT =
-  props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
+const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 const accountId = props.accountId;
 const blockHeight = parseInt(props.blockHeight);
 const commentBlockHeight = parseInt(props.commentBlockHeight);
 const renderPost = props.renderPost;
 
-if (
-  !props.accountId ||
-  !(props.blockHeight || props.commentBlockHeight) ||
-  !props.renderData
-) {
+if (!props.accountId || !(props.blockHeight || props.commentBlockHeight) || !props.renderData) {
   return (
     <div className="alert alert-danger mx-3" role="alert">
       One or more properties are missing.
@@ -87,10 +82,7 @@ const postHandler = (result) => {
         ? "dataplatform_near_social_feed_moderated_comments"
         : "dataplatform_near_social_feed_moderated_posts";
       const collection = result.body.data[collectionName];
-      if (
-        collection.length == 0 ||
-        (commentBlockHeight && collection[0].post == null)
-      ) {
+      if (collection.length == 0 || (commentBlockHeight && collection[0].post == null)) {
         State.update({
           loadingState: "done",
           postNotFound: true,

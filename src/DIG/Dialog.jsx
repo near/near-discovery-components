@@ -53,7 +53,9 @@ const Overlay = styled(`${variant}.Overlay`)`
 const Content = styled(`${variant}.Content`)`
   background-color: white;
   border-radius: 6px;
-  box-shadow: 0px 4px 8px 0px var(--blackA3), 0px 0px 0px 1px var(--blackA4);
+  box-shadow:
+    0px 4px 8px 0px var(--blackA3),
+    0px 0px 0px 1px var(--blackA4);
   position: fixed;
   top: 50%;
   left: 50%;

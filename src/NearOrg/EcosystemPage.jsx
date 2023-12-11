@@ -157,8 +157,7 @@ return (
               <H1>Ecosystem</H1>
 
               <Text size="text-l" mobileSize="text-base">
-                Explore a vibrant ecosystem that supports developers, founders,
-                and contributors.
+                Explore a vibrant ecosystem that supports developers, founders, and contributors.
               </Text>
             </Flex>
           </PatternContent>
@@ -170,13 +169,9 @@ return (
       <Container>
         <Flex direction="column" gap="24px">
           <H2>Building the open web together</H2>
-          <Text
-            size="text-2xl"
-            mobileSize="text-l"
-            style={{ maxWidth: "808px" }}
-          >
-            Developers and Founders building on the B.O.S are at the center. The
-            Ecosystem is supporting them with everything they need to succeed.
+          <Text size="text-2xl" mobileSize="text-l" style={{ maxWidth: "808px" }}>
+            Developers and Founders building on the B.O.S are at the center. The Ecosystem is supporting them with
+            everything they need to succeed.
           </Text>
         </Flex>
 
@@ -190,8 +185,8 @@ return (
                   DevHub: The community for developers.
                 </Text>
                 <Text>
-                  DevHub is a decentralized community where NEAR developers can
-                  share ideas, match solutions, and access support and funding.
+                  DevHub is a decentralized community where NEAR developers can share ideas, match solutions, and access
+                  support and funding.
                 </Text>
                 <div>
                   <Widget
@@ -222,10 +217,7 @@ return (
                 <Text size="text-xl" mobileSize="text-l" fontWeight="500">
                   Horizon: The launchpad for founders.
                 </Text>
-                <Text>
-                  Horizons is an early stage accelerator for Web3 founders to
-                  build, connect, and grow.
-                </Text>
+                <Text>Horizons is an early stage accelerator for Web3 founders to build, connect, and grow.</Text>
                 <div>
                   <Widget
                     src="${REPL_ACCOUNT}/widget/DIG.Button"
@@ -253,13 +245,9 @@ return (
             content: (
               <>
                 <Text size="text-xl" mobileSize="text-l" fontWeight="500">
-                  NEAR Digital Collective (NDC): Decentralized Grassroots
-                  Governance
+                  NEAR Digital Collective (NDC): Decentralized Grassroots Governance
                 </Text>
-                <Text>
-                  The NDC is a grassroots, community-led movement to build
-                  decentralized governance on NEAR.
-                </Text>
+                <Text>The NDC is a grassroots, community-led movement to build decentralized governance on NEAR.</Text>
                 <div>
                   <Widget
                     src="${REPL_ACCOUNT}/widget/DIG.Button"

@@ -1,8 +1,4 @@
-if (
-  !props.accountId ||
-  !context.accountId ||
-  context.accountId === props.accountId
-) {
+if (!props.accountId || !context.accountId || context.accountId === props.accountId) {
   return "";
 }
 
@@ -37,14 +33,14 @@ const Wrapper = styled.div`
     line-height: 15px;
     text-align: center;
     cursor: pointer;
-    background: #FBFCFD;
-    border: 1px solid #D7DBDF;
+    background: #fbfcfd;
+    border: 1px solid #d7dbdf;
     color: ${props.primary ? "#006ADC" : "#11181C"} !important;
     white-space: nowrap;
 
     &:hover,
     &:focus {
-      background: #ECEDEE;
+      background: #ecedee;
       text-decoration: none;
       outline: none;
     }
@@ -52,7 +48,7 @@ const Wrapper = styled.div`
     i {
       display: inline-block;
       transform: rotate(90deg);
-      color: #7E868C;
+      color: #7e868c;
     }
   }
 `;

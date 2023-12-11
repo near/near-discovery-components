@@ -10,8 +10,7 @@ const ipfsImages = {
     ndc: "bafkreigqrtvkwu4uzjzg7nrv3ivsb2uthvcozici34loxumkpekz7weyly",
   },
   illustrations: {
-    betterWayToBuild:
-      "bafkreib6sp7aoovferwg4zfvekhxxmp6hdp4u7f2bgxupebntrfgrmjhbe",
+    betterWayToBuild: "bafkreib6sp7aoovferwg4zfvekhxxmp6hdp4u7f2bgxupebntrfgrmjhbe",
     code: "bafkreig2anu2f6j6kh7i26k2x7z75d72bn4vtsp2dusiin5pahwbjd3rvi",
     components: "bafkreiecfsfxzubbayv27se2pr2xcz4rugp5a5kscsfz5lvjykiomt3a4u",
     dapps: "bafkreihhuffoky3qywxmnnr7z7r2gdtjfab6tbx7f7ml2xvwldx76ggrni",
@@ -48,8 +47,7 @@ const featuredApps = [
   {
     name: "NUI",
     accountId: "nearui.near",
-    description:
-      " A growing collection of beautifully designed B.O.S widgets - your building blocks for creating...",
+    description: " A growing collection of beautifully designed B.O.S widgets - your building blocks for creating...",
     ipfsImage: ipfsImages.apps.nui,
     url: "/near/widget/ComponentDetailsPage?src=nearui.near/widget/index",
   },
@@ -103,23 +101,20 @@ const web3Teams = [
 const learnItems = [
   {
     name: "Docs",
-    description:
-      "Read the NEAR documentation and learn to build and publish blockchain applications.",
+    description: "Read the NEAR documentation and learn to build and publish blockchain applications.",
     icon: "ph-file-doc",
     url: "https://docs.near.org",
     target: "_blank",
   },
   {
     name: "Blog",
-    description:
-      "The latest news about the NEAR protocol and innovations from the community.",
+    description: "The latest news about the NEAR protocol and innovations from the community.",
     icon: "ph-newspaper-clipping",
     url: "/blog",
   },
   {
     name: "Learn Center",
-    description:
-      "Starter kit to learn about blockchain technology, web3, and the NEAR protocol.",
+    description: "Starter kit to learn about blockchain technology, web3, and the NEAR protocol.",
     icon: "ph-book-open-text",
     url: "/learn",
   },
@@ -135,15 +130,13 @@ const communityItems = [
   },
   {
     name: "Horizon",
-    description:
-      "Horizons is an early stage accelerator for Web3 founders to build, connect, and grow.",
+    description: "Horizons is an early stage accelerator for Web3 founders to build, connect, and grow.",
     ipfsImage: ipfsImages.community.horizon,
     url: "/horizon",
   },
   {
     name: "Near Digital Collective (NDC)",
-    description:
-      "The NDC is a grassroots, community-led movement to build decentralized governance on NEAR.",
+    description: "The NDC is a grassroots, community-led movement to build decentralized governance on NEAR.",
     ipfsImage: ipfsImages.community.ndc,
     url: "https://app.neardc.org/",
     target: "_blank",
@@ -316,11 +309,7 @@ const LogoLinksWrapper = styled.div`
       top: 0;
       width: 40px;
       height: 100%;
-      background: linear-gradient(
-        to right,
-        rgba(255, 255, 255, 0),
-        rgba(255, 255, 255, 1)
-      );
+      background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
     }
   }
 `;
@@ -492,8 +481,8 @@ return (
               </H1>
 
               <Text size="text-l" mobileSize="text-base">
-                Effortlessly create and distribute decentralized apps on any
-                blockchain with the Blockchain Operating System (B.O.S).
+                Effortlessly create and distribute decentralized apps on any blockchain with the Blockchain Operating
+                System (B.O.S).
               </Text>
 
               <Flex gap="24px">
@@ -569,14 +558,9 @@ return (
       <Container>
         <Flex direction="column" gap="24px">
           <H2>There's a better way to build.</H2>
-          <Text
-            size="text-2xl"
-            mobileSize="text-l"
-            style={{ maxWidth: "808px" }}
-          >
-            Imagine if the online experiences we use every day were more
-            transparent and resilient – shaped and controlled by their creators
-            and users.
+          <Text size="text-2xl" mobileSize="text-l" style={{ maxWidth: "808px" }}>
+            Imagine if the online experiences we use every day were more transparent and resilient – shaped and
+            controlled by their creators and users.
           </Text>
         </Flex>
 
@@ -600,10 +584,9 @@ return (
                 Truly developer owned.
               </Text>
               <Text>
-                Today, developers access web services through centralized
-                providers in exchange for control of their data and assets. In
-                contrast, Web3 services are public and open source, and you
-                alone hold the keys to your data.
+                Today, developers access web services through centralized providers in exchange for control of their
+                data and assets. In contrast, Web3 services are public and open source, and you alone hold the keys to
+                your data.
               </Text>
               <div>
                 <Widget
@@ -621,14 +604,11 @@ return (
 
             <Flex direction="column" gap="24px">
               <Text size="text-xl" mobileSize="text-l" fontWeight="500">
-                Application hosting with zero setup, fewer costs, & less
-                headaches.
+                Application hosting with zero setup, fewer costs, & less headaches.
               </Text>
               <Text>
-                No more jumping through hoops to reach your audience. B.O.S
-                enables you to host and serve your applications entirely on the
-                blockchain, eliminating reliance on traditional web hosting
-                services.
+                No more jumping through hoops to reach your audience. B.O.S enables you to host and serve your
+                applications entirely on the blockchain, eliminating reliance on traditional web hosting services.
               </Text>
               <div>
                 <Widget
@@ -653,16 +633,10 @@ return (
               A new & more open digital economy.
             </Text>
 
-            <Flex
-              gap="24px"
-              alignItems="flex-end"
-              mobileStack
-              mobileAlignItems="flex-start"
-            >
+            <Flex gap="24px" alignItems="flex-end" mobileStack mobileAlignItems="flex-start">
               <Text style={{ maxWidth: "598px", marginRight: "auto" }}>
-                Develop unique and powerful ways to earn, transact, and exercise
-                digital ownership through online experiences accessible to
-                anyone with an internet connection.
+                Develop unique and powerful ways to earn, transact, and exercise digital ownership through online
+                experiences accessible to anyone with an internet connection.
               </Text>
               <Widget
                 src="${REPL_ACCOUNT}/widget/DIG.Button"
@@ -720,15 +694,9 @@ return (
       <Container>
         <Flex direction="column" gap="24px">
           <H2 style={{ color: "var(--white)" }}>Web3 development made easy</H2>
-          <Text
-            size="text-2xl"
-            mobileSize="text-l"
-            color="white"
-            style={{ maxWidth: "808px" }}
-          >
-            Build great applications without the hassle of deciding between
-            platforms, finding the right tools, or learning new programming
-            languages.
+          <Text size="text-2xl" mobileSize="text-l" color="white" style={{ maxWidth: "808px" }}>
+            Build great applications without the hassle of deciding between platforms, finding the right tools, or
+            learning new programming languages.
           </Text>
         </Flex>
 
@@ -738,19 +706,11 @@ return (
           props={{
             content: (
               <>
-                <Text
-                  size="text-xl"
-                  mobileSize="text-l"
-                  fontWeight="500"
-                  color="white"
-                >
-                  Build faster with{" "}
-                  <span style={{ color: "#00EC97" }}>Javascript</span> &
-                  familiar developer tools.
+                <Text size="text-xl" mobileSize="text-l" fontWeight="500" color="white">
+                  Build faster with <span style={{ color: "#00EC97" }}>Javascript</span> & familiar developer tools.
                 </Text>
                 <Text color="white">
-                  Spend less time learning and more time building with the tools
-                  you already know and love.
+                  Spend less time learning and more time building with the tools you already know and love.
                 </Text>
                 <div>
                   <Widget
@@ -780,29 +740,19 @@ return (
           props={{
             content: (
               <>
-                <Text
-                  size="text-xl"
-                  mobileSize="text-l"
-                  fontWeight="500"
-                  color="white"
-                >
+                <Text size="text-xl" mobileSize="text-l" fontWeight="500" color="white">
                   Stop reinventing the wheel and leverage over{" "}
                   <Widget
                     src="${REPL_ACCOUNT}/widget/NearOrg.TotalStats"
                     props={{
-                      children: (stats) => (
-                        <span style={{ color: "#00EC97" }}>
-                          {stats.totalComponents}
-                        </span>
-                      ),
+                      children: (stats) => <span style={{ color: "#00EC97" }}>{stats.totalComponents}</span>,
                     }}
                   />
                   Web3 components.
                 </Text>
                 <Text color="white">
-                  Open-source components built with public blockchain data allow
-                  you to create rich user experiences without wasting time on
-                  backend configuration.
+                  Open-source components built with public blockchain data allow you to create rich user experiences
+                  without wasting time on backend configuration.
                 </Text>
                 <div>
                   <Widget
@@ -830,18 +780,12 @@ return (
           props={{
             content: (
               <>
-                <Text
-                  size="text-xl"
-                  mobileSize="text-l"
-                  fontWeight="500"
-                  color="white"
-                >
+                <Text size="text-xl" mobileSize="text-l" fontWeight="500" color="white">
                   Discover Web3 Open Source
                 </Text>
                 <Text color="white">
-                  Everything on B.O.S. is easy to discover and open source by
-                  default. See what others have built, learn faster, and gain
-                  inspiration.
+                  Everything on B.O.S. is easy to discover and open source by default. See what others have built, learn
+                  faster, and gain inspiration.
                 </Text>
                 <div>
                   <Widget
@@ -869,13 +813,8 @@ return (
       <Container>
         <Flex direction="column" gap="24px">
           <H2>Greater discoverability. Easier onboarding.</H2>
-          <Text
-            size="text-2xl"
-            mobileSize="text-l"
-            style={{ maxWidth: "808px" }}
-          >
-            Current Web3 experiences are siloed & inaccessible. They don’t have
-            to be.
+          <Text size="text-2xl" mobileSize="text-l" style={{ maxWidth: "808px" }}>
+            Current Web3 experiences are siloed & inaccessible. They don’t have to be.
           </Text>
         </Flex>
 
@@ -889,9 +828,8 @@ return (
                   Deploy anywhere, get discovered everywhere.
                 </Text>
                 <Text>
-                  Move beyond siloed, single-chain experiences and stop
-                  compromising your reach, all while getting the best of NEAR's
-                  speed, low cost, and scalability.
+                  Move beyond siloed, single-chain experiences and stop compromising your reach, all while getting the
+                  best of NEAR's speed, low cost, and scalability.
                 </Text>
                 <div>
                   <Widget
@@ -923,8 +861,8 @@ return (
                   Onboard new users in seconds, no crypto required.
                 </Text>
                 <Text>
-                  With FastAuth, onboarding to your decentralized application is
-                  even faster and easier than traditional web authentication.
+                  With FastAuth, onboarding to your decentralized application is even faster and easier than traditional
+                  web authentication.
                 </Text>
                 <div>
                   <Widget
@@ -950,9 +888,7 @@ return (
 
     <Section backgroundColor="#00EC97">
       <Container>
-        <H2 style={{ maxWidth: "1000px" }}>
-          Be part of a global open source community.
-        </H2>
+        <H2 style={{ maxWidth: "1000px" }}>Be part of a global open source community.</H2>
 
         <Widget
           src="${REPL_ACCOUNT}/widget/NearOrg.TotalStats"
@@ -966,7 +902,7 @@ return (
 
                 <div>
                   <Text>{stats.totalComponents}</Text>
-                  <Text>OS Components</Text>
+                  <Text>OSS Components</Text>
                 </div>
 
                 <div>
@@ -983,44 +919,24 @@ return (
     <Section backgroundColor="#161615" style={{ "--sand11": "#A1A09A" }}>
       <Container>
         <Flex direction="column" gap="24px">
-          <H2 style={{ color: "var(--white)" }}>
-            Learn, connect, & collaborate.
-          </H2>
-          <Text
-            size="text-2xl"
-            mobileSize="text-l"
-            color="white"
-            style={{ maxWidth: "808px" }}
-          >
-            Join a vibrant community of innovators and builders creating a more
-            open web.
+          <H2 style={{ color: "var(--white)" }}>Learn, connect, & collaborate.</H2>
+          <Text size="text-2xl" mobileSize="text-l" color="white" style={{ maxWidth: "808px" }}>
+            Join a vibrant community of innovators and builders creating a more open web.
           </Text>
         </Flex>
 
         <Flex direction="column" gap="24px" mobileGap="48px">
           <Flex direction="column" gap="24px">
             <Flex alignItems="center" gap="12px">
-              <i
-                className="ph-duotone ph-book-open-text"
-                style={{ color: "var(--white)", fontSize: "32px" }}
-              />
+              <i className="ph-duotone ph-book-open-text" style={{ color: "var(--white)", fontSize: "32px" }} />
               <Text size="text-xl" fontWeight="600" color="white">
                 Learn
               </Text>
             </Flex>
 
-            <Flex
-              gap="24px"
-              alignItems="flex-end"
-              mobileStack
-              mobileAlignItems="flex-start"
-            >
-              <Text
-                style={{ maxWidth: "393px", marginRight: "auto" }}
-                color="white"
-              >
-                Everything you need to know about NEAR from ongoing developments
-                to the latest updates.
+            <Flex gap="24px" alignItems="flex-end" mobileStack mobileAlignItems="flex-start">
+              <Text style={{ maxWidth: "393px", marginRight: "auto" }} color="white">
+                Everything you need to know about NEAR from ongoing developments to the latest updates.
               </Text>
             </Flex>
           </Flex>
@@ -1060,27 +976,15 @@ return (
         <Flex direction="column" gap="24px" mobileGap="48px">
           <Flex direction="column" gap="24px">
             <Flex alignItems="center" gap="12px">
-              <i
-                className="ph-duotone ph-users-three"
-                style={{ color: "var(--white)", fontSize: "32px" }}
-              />
+              <i className="ph-duotone ph-users-three" style={{ color: "var(--white)", fontSize: "32px" }} />
               <Text size="text-xl" fontWeight="600" color="white">
                 Community
               </Text>
             </Flex>
 
-            <Flex
-              gap="24px"
-              alignItems="flex-end"
-              mobileStack
-              mobileAlignItems="flex-start"
-            >
-              <Text
-                style={{ maxWidth: "393px", marginRight: "auto" }}
-                color="white"
-              >
-                Connect with people to help you on your journey across the open
-                web.
+            <Flex gap="24px" alignItems="flex-end" mobileStack mobileAlignItems="flex-start">
+              <Text style={{ maxWidth: "393px", marginRight: "auto" }} color="white">
+                Connect with people to help you on your journey across the open web.
               </Text>
 
               <Widget
@@ -1137,27 +1041,15 @@ return (
         <Flex direction="column" gap="24px" mobileGap="48px">
           <Flex direction="column" gap="24px">
             <Flex alignItems="center" gap="12px">
-              <i
-                className="ph-duotone ph-newspaper"
-                style={{ color: "var(--white)", fontSize: "32px" }}
-              />
+              <i className="ph-duotone ph-newspaper" style={{ color: "var(--white)", fontSize: "32px" }} />
               <Text size="text-xl" fontWeight="600" color="white">
                 News
               </Text>
             </Flex>
 
-            <Flex
-              gap="24px"
-              alignItems="flex-end"
-              mobileStack
-              mobileAlignItems="flex-start"
-            >
-              <Text
-                style={{ maxWidth: "393px", marginRight: "auto" }}
-                color="white"
-              >
-                Catch up on the latest news and announcements from around the
-                ecosystem.
+            <Flex gap="24px" alignItems="flex-end" mobileStack mobileAlignItems="flex-start">
+              <Text style={{ maxWidth: "393px", marginRight: "auto" }} color="white">
+                Catch up on the latest news and announcements from around the ecosystem.
               </Text>
 
               <Widget
@@ -1218,27 +1110,15 @@ return (
         <Flex direction="column" gap="24px" mobileGap="48px">
           <Flex direction="column" gap="24px">
             <Flex alignItems="center" gap="12px">
-              <i
-                className="ph-duotone ph-calendar-blank"
-                style={{ color: "var(--white)", fontSize: "32px" }}
-              />
+              <i className="ph-duotone ph-calendar-blank" style={{ color: "var(--white)", fontSize: "32px" }} />
               <Text size="text-xl" fontWeight="600" color="white">
                 Events
               </Text>
             </Flex>
 
-            <Flex
-              gap="24px"
-              alignItems="flex-end"
-              mobileStack
-              mobileAlignItems="flex-start"
-            >
-              <Text
-                style={{ maxWidth: "393px", marginRight: "auto" }}
-                color="white"
-              >
-                Join us at conferences, meetups, and more as we gather across
-                the globe.
+            <Flex gap="24px" alignItems="flex-end" mobileStack mobileAlignItems="flex-start">
+              <Text style={{ maxWidth: "393px", marginRight: "auto" }} color="white">
+                Join us at conferences, meetups, and more as we gather across the globe.
               </Text>
 
               <Widget
@@ -1261,50 +1141,22 @@ return (
                 children: (events) => (
                   <>
                     {events.map((event) => (
-                      <Article
-                        key={event.title}
-                        href={event.url}
-                        target="_blank"
-                        style={{ minWidth: 0 }}
-                      >
+                      <Article key={event.title} href={event.url} target="_blank" style={{ minWidth: 0 }}>
                         <ArticleImage>
                           <img src={event.thumbnail} />
                         </ArticleImage>
-                        <Text
-                          color="white"
-                          size="text-l"
-                          fontWeight="500"
-                          as="h3"
-                        >
+                        <Text color="white" size="text-l" fontWeight="500" as="h3">
                           {event.title}
                         </Text>
-                        <Flex
-                          alignItems="center"
-                          gap="32px"
-                          style={{ minWidth: 0 }}
-                        >
+                        <Flex alignItems="center" gap="32px" style={{ minWidth: 0 }}>
                           <Flex alignItems="center" gap="8px">
-                            <i
-                              className="ph-bold ph-calendar-blank"
-                              style={{ color: "var(--white)" }}
-                            />
-                            <Text
-                              color="sand11"
-                              size="text-s"
-                              style={{ whiteSpace: "nowrap" }}
-                            >
+                            <i className="ph-bold ph-calendar-blank" style={{ color: "var(--white)" }} />
+                            <Text color="sand11" size="text-s" style={{ whiteSpace: "nowrap" }}>
                               {event.date}
                             </Text>
                           </Flex>
-                          <Flex
-                            alignItems="center"
-                            gap="8px"
-                            style={{ minWidth: 0 }}
-                          >
-                            <i
-                              className="ph-bold ph-map-pin-line"
-                              style={{ color: "var(--white)" }}
-                            />
+                          <Flex alignItems="center" gap="8px" style={{ minWidth: 0 }}>
+                            <i className="ph-bold ph-map-pin-line" style={{ color: "var(--white)" }} />
                             <Text
                               color="sand11"
                               size="text-s"

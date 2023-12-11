@@ -42,8 +42,7 @@ return (
                 tags: {
                   label: "Tags",
                   tagsPattern: "*/profile/tags/*",
-                  placeholder:
-                    "rust, engineer, artist, humanguild, nft, learner, founder",
+                  placeholder: "rust, engineer, artist, humanguild, nft, learner, founder",
                 },
                 linktree: {
                   links: [
@@ -74,9 +73,7 @@ return (
           />
         </div>
         <div className="mb-2">
-          <CommitButton data={{ profile: state.profile }}>
-            Save profile
-          </CommitButton>
+          <CommitButton data={{ profile: state.profile }}>Save profile</CommitButton>
           <Link
             className="btn btn-outline-primary ms-2"
             href={`/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`}
@@ -87,10 +84,7 @@ return (
       </div>
       <div className="col-lg-6">
         <div>
-          <Widget
-            src="${REPL_ACCOUNT}/widget/ProfilePage"
-            props={{ accountId, profile: state.profile }}
-          />
+          <Widget src="${REPL_ACCOUNT}/widget/ProfilePage" props={{ accountId, profile: state.profile }} />
         </div>
       </div>
     </div>

@@ -203,6 +203,10 @@ const sections = [
         title: "Contact us",
         url: "https://pages.near.org/about/contact-us/",
       },
+      {
+        title: "Brand Toolkit",
+        url: "https://near.org/brand",
+      },
     ],
   },
   {
@@ -257,12 +261,7 @@ return (
             <ul>
               {section.links.map((link) => (
                 <li key={link.title}>
-                  <Link
-                    href={link.url}
-                    target={
-                      link.url.indexOf("http") === 0 ? "_blank" : undefined
-                    }
-                  >
+                  <Link href={link.url} target={link.url.indexOf("http") === 0 ? "_blank" : undefined}>
                     {link.title}
                   </Link>
                 </li>

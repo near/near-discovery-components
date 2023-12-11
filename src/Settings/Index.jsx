@@ -24,8 +24,10 @@ const SettingsContent = () => {
     case "notifications":
       return <div>Not implemented yet</div>;
     case "identity":
-      default:
-      return <Widget src="${REPL_ACCOUNT}/widget/Settings.Identity.Index" props={{ idosConnected, ...forwardedProps }} />;
+    default:
+      return (
+        <Widget src="${REPL_ACCOUNT}/widget/Settings.Identity.Index" props={{ idosConnected, ...forwardedProps }} />
+      );
   }
 };
 
@@ -39,7 +41,7 @@ const Sidebar = () => (
     src="${REPL_ACCOUNT}/widget/Settings.Sidebar"
     props={{
       onClick: handleMenuClick,
-      activeTab
+      activeTab,
     }}
   />
 );

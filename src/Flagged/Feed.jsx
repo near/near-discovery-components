@@ -18,18 +18,12 @@ const renderItem = (a) => {
   switch (item.path) {
     case `${accountId}/post/main`:
       renderWidget = (
-        <Widget
-          src="${REPL_ACCOUNT}/widget/Posts.Post"
-          props={{ accountId, blockHeight: item.blockHeight }}
-        />
+        <Widget src="${REPL_ACCOUNT}/widget/Posts.Post" props={{ accountId, blockHeight: item.blockHeight }} />
       );
       break;
     case `${accountId}/post/comment`:
       renderWidget = (
-        <Widget
-          src="${REPL_ACCOUNT}/widget/Comments.Comment"
-          props={{ accountId, blockHeight: item.blockHeight }}
-        />
+        <Widget src="${REPL_ACCOUNT}/widget/Comments.Comment" props={{ accountId, blockHeight: item.blockHeight }} />
       );
       break;
     case `${accountId}/discuss`:
@@ -52,16 +46,10 @@ const renderItem = (a) => {
       <div className="d-flex flex-row align-items-center">
         <div className="flex-grow-1 text-truncate">
           Reported by{" "}
-          <Widget
-            src="${REPL_MOB}/widget/ProfileLine"
-            props={{ accountId: a.accountId, hideAccountId: true }}
-          />
+          <Widget src="${REPL_MOB}/widget/ProfileLine" props={{ accountId: a.accountId, hideAccountId: true }} />
         </div>
         <div>
-          <Widget
-            src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
-            props={{ blockHeight: a.blockHeight }}
-          />
+          <Widget src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}" props={{ blockHeight: a.blockHeight }} />
         </div>
       </div>
       {renderWidget}
@@ -75,9 +63,6 @@ return (
       We continute to use the mob.near IndexFeed since it doesnt have moderation built in
       and we want this feed to show banned content
     */}
-    <Widget
-      src="${REPL_MOB_2}/widget/IndexFeed"
-      props={{ index, renderItem }}
-    />
+    <Widget src="${REPL_MOB_2}/widget/IndexFeed" props={{ index, renderItem }} />
   </div>
 );

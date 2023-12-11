@@ -169,8 +169,8 @@ return (
               <H1>An efficient and robust data availability layer</H1>
 
               <Text size="text-l" mobileSize="text-base">
-                Simplify and lower costs in your rollup network by using NEAR as
-                the Data Availability (DA) Layer in your Rollup Stack
+                Simplify and lower costs in your rollup network by using NEAR as the Data Availability (DA) Layer in
+                your Rollup Stack
               </Text>
             </Flex>
           </PatternContent>
@@ -181,17 +181,10 @@ return (
     <Section>
       <Container>
         <Flex direction="column" gap="24px">
-          <H2 style={{ maxWidth: "1016px" }}>
-            A data availability layer compatible with L2 frameworks
-          </H2>
-          <Text
-            size="text-2xl"
-            mobileSize="text-l"
-            style={{ maxWidth: "808px" }}
-          >
-            Plug NEAR’s DA layer into your L2 framework and start publishing transaction data
-            on a blockchain with a proven trajectory of 100% uptime over its
-            lifetime.
+          <H2 style={{ maxWidth: "1016px" }}>A data availability layer compatible with L2 frameworks</H2>
+          <Text size="text-2xl" mobileSize="text-l" style={{ maxWidth: "808px" }}>
+            Plug NEAR’s DA layer into your L2 framework and start publishing transaction data on a blockchain with a
+            proven trajectory of 100% uptime over its lifetime.
           </Text>
         </Flex>
 
@@ -206,8 +199,8 @@ return (
                     Drastically reduce your costs
                   </Text>
                   <Text>
-                    Storing calldata on NEAR Protocol is approximately 8000x
-                    cheaper than storing the same amount of data on Ethereum.
+                    Storing calldata on NEAR Protocol is approximately 8000x cheaper than storing the same amount of
+                    data on Ethereum.
                   </Text>
                 </Flex>
 
@@ -216,8 +209,8 @@ return (
                     Easily validate proofs
                   </Text>
                   <Text>
-                    A trustless off-chain light client for NEAR provides easy
-                    access to validate that rollup data was stored on-chain.
+                    A trustless off-chain light client for NEAR provides easy access to validate that rollup data was
+                    stored on-chain.
                   </Text>
                 </Flex>
 
@@ -225,10 +218,7 @@ return (
                   <Text size="text-xl" mobileSize="text-l" fontWeight="500">
                     Simple to interact with
                   </Text>
-                  <Text>
-                    NEAR readily provides an RPC to easily retrieve the on-chain
-                    data from anywhere
-                  </Text>
+                  <Text>NEAR readily provides an RPC to easily retrieve the on-chain data from anywhere</Text>
                 </Flex>
 
                 <div>
@@ -257,36 +247,17 @@ return (
     <Section backgroundColor="#F2F1EA">
       <Container>
         <Flex direction="column" gap="50px" alignItems="center">
-          <Flex
-            direction="column"
-            gap="20px"
-            alignItems="center"
-            style={{ textAlign: "center" }}
-          >
-            <Text
-              size="text-3xl"
-              fontWeight="500"
-              style={{ maxWidth: "600px" }}
-            >
+          <Flex direction="column" gap="20px" alignItems="center" style={{ textAlign: "center" }}>
+            <Text size="text-3xl" fontWeight="500" style={{ maxWidth: "600px" }}>
               Get started with NEAR's data availability layer
             </Text>
 
-            <Text
-              size="text-l"
-              mobileSize="text-l"
-              style={{ maxWidth: "600px" }}
-            >
-              Efficiently store state data and commitments on a NEAR contract
-              for your L2 rollup.
+            <Text size="text-l" mobileSize="text-l" style={{ maxWidth: "600px" }}>
+              Efficiently store state data and commitments on a NEAR contract for your L2 rollup.
             </Text>
           </Flex>
 
-          <Flex
-            gap="24px"
-            wrap="wrap"
-            alignItems="center"
-            justifyContent="center"
-          >
+          <Flex gap="24px" wrap="wrap" alignItems="center" justifyContent="center">
             <Widget
               src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{

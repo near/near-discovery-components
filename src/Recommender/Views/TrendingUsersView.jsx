@@ -94,9 +94,7 @@ const getRecommendedUsers = (page) => {
         updateState(data.data, totalPageNum);
       } else {
         State.update({ isLoading: false, error: true, hasLoaded: true });
-        console.error(
-          "Error fetching data. Try reloading the page, or no data available."
-        );
+        console.error("Error fetching data. Try reloading the page, or no data available.");
       }
     });
   } catch (error) {
@@ -114,12 +112,8 @@ const loadMore = () => {
 };
 
 const returnProfileForUser = (user) => {
-  const rawImage =
-    user.profile_image_1 || user.profile_image_2 || user.profile_image_3;
-  const image =
-    rawImage && rawImage.indexOf("http") === 0
-      ? { url: rawImage }
-      : { ipfs_cid: rawImage };
+  const rawImage = user.profile_image_1 || user.profile_image_2 || user.profile_image_3;
+  const image = rawImage && rawImage.indexOf("http") === 0 ? { url: rawImage } : { ipfs_cid: rawImage };
   const name = user.profile_name ?? "";
   let tags = null;
 
@@ -150,26 +144,15 @@ if (state.error) {
 return (
   <RecommendedUsers>
     {state.isLoading && <p>Loading...</p>}
-    {!state.isLoading && state.error && (
-      <NotEnoughData>
-        404. Data not loading. Try again later.
-      </NotEnoughData>
-    )}
+    {!state.isLoading && state.error && <NotEnoughData>404. Data not loading. Try again later.</NotEnoughData>}
     {!props.sidebar && (
       <Profiles>
         {state.userData.map((user, rank) => (
-          <Profile
-            key={
-              user.recommended_profile || user.similar_profile || user.signer_id
-            }
-          >
+          <Profile key={user.recommended_profile || user.similar_profile || user.signer_id}>
             <Widget
               src="${REPL_ACCOUNT}/widget/Recommender.Account.AccountProfileLargeCard"
               props={{
-                accountId:
-                  user.recommended_profile ||
-                  user.similar_profile ||
-                  user.signer_id,
+                accountId: user.recommended_profile || user.similar_profile || user.signer_id,
                 accountIdRank: rank + 1,
                 showTags: true,
                 showFollowerStats: true,
@@ -195,10 +178,7 @@ return (
             <Widget
               src="${REPL_ACCOUNT}/widget/Recommender.Account.AccountProfileSidebar"
               props={{
-                accountId:
-                  user.recommended_profile ||
-                  user.similar_profile ||
-                  user.signer_id,
+                accountId: user.recommended_profile || user.similar_profile || user.signer_id,
                 accountIdRank: rank + 1,
                 showTags: true,
                 showFollowerStats: true,

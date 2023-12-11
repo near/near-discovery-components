@@ -22,15 +22,13 @@ const MenuItem = styled.button`
   transition: 0.2s all;
   font-weight: 400;
   ${(p) =>
-    p.active && 
-      `color: var(--violet11);
-       font-weight: 700;`
-  }
+    p.active &&
+    `color: var(--violet11);
+       font-weight: 700;`}
   ${(p) =>
     p.disabled &&
-  `color: var(--sand8);
-   pointer-events: none;`
-  }
+    `color: var(--sand8);
+   pointer-events: none;`}
 `;
 
 const Text = styled.span`

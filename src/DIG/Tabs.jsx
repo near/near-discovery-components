@@ -1,4 +1,5 @@
 let { items, variant, size, ...forwardedProps } = props;
+console.log("items", items);
 
 // this prop is just for preview
 const previewItems = [

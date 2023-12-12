@@ -117,6 +117,17 @@ return (
             </>
           ),
         },
+        {
+          value: "6",
+          header: "COOKIE DETAILS",
+          content: (
+            <>
+              <p>
+                <a href="/near/widget/NearOrg.CookieDetails/">See details on all cookies in use on near.org her.e</a>
+              </p>
+            </>
+          ),
+        },
       ],
     }}
   />

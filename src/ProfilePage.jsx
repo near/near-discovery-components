@@ -224,7 +224,6 @@ return (
           <TabsButton href={`${accountUrl}&tab=followers`} selected={state.selectedTab === "followers"}>
             Followers
           </TabsButton>
-
         </Tabs>
 
         {state.selectedTab === "overview" && (
@@ -264,18 +263,6 @@ return (
 
         {state.selectedTab === "following" && (
           <Widget src="${REPL_ACCOUNT}/widget/FollowingList" props={{ accountId }} />
-        )}
-
-        {state.selectedTab === "explorer" && (
-          <Widget
-            src="${REPL_ACCOUNT}/widget/Explorer.Account"
-            props={{
-              accountId,
-              network: context.networkId,
-              language: "en",
-              baseUrl: props.baseUrl,
-            }}
-          />
         )}
 
         {state.selectedTab === "stars" && (

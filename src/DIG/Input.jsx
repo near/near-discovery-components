@@ -44,11 +44,7 @@ const InputWrapper = styled.div`
   border-radius: 6px;
   border: 1px solid var(--sand6);
   background: var(--sand1);
-  transition:
-    background-color 200ms,
-    border-color 200ms,
-    color 200ms,
-    box-shadow 200ms;
+  transition: background-color 200ms, border-color 200ms, color 200ms, box-shadow 200ms;
   flex-wrap: wrap;
 
   i {
@@ -162,9 +158,7 @@ const Input = styled.input`
   font: var(--text-base);
   outline: none !important;
   text-align: left;
-  transition:
-    color 200ms,
-    opacity 200ms;
+  transition: color 200ms, opacity 200ms;
 
   [data-textarea="true"] & {
     line-height: 1.5;

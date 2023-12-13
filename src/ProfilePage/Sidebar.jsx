@@ -127,9 +127,7 @@ const Avatar = styled.div`
   border: 3px solid #fff;
   overflow: hidden;
   border-radius: 100%;
-  box-shadow:
-    0px 12px 16px rgba(16, 24, 40, 0.08),
-    0px 4px 6px rgba(16, 24, 40, 0.03);
+  box-shadow: 0px 12px 16px rgba(16, 24, 40, 0.08), 0px 4px 6px rgba(16, 24, 40, 0.03);
 
   img {
     object-fit: cover;

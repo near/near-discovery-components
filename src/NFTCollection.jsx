@@ -68,9 +68,7 @@ const Card = styled("Link")`
   position: relative;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow:
-    0px 12px 16px rgba(16, 24, 40, 0.08),
-    0px 4px 6px rgba(16, 24, 40, 0.03);
+  box-shadow: 0px 12px 16px rgba(16, 24, 40, 0.08), 0px 4px 6px rgba(16, 24, 40, 0.03);
 
   .nft-thumbnail {
     position: absolute;

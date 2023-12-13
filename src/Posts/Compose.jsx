@@ -248,9 +248,7 @@ const Actions = styled.div`
     font-size: 14px;
     border: none;
     cursor: pointer;
-    transition:
-      background 200ms,
-      opacity 200ms;
+    transition: background 200ms, opacity 200ms;
 
     &:hover,
     &:focus {
@@ -289,9 +287,7 @@ const Actions = styled.div`
     font-size: 0;
     border: none;
     cursor: pointer;
-    transition:
-      background 200ms,
-      opacity 200ms;
+    transition: background 200ms, opacity 200ms;
 
     &::before {
       font-size: 16px;

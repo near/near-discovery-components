@@ -117,9 +117,7 @@ const Wrapper = styled.div`
   gap: 40px;
   border-radius: 12px;
   padding: 24px;
-  box-shadow:
-    0px 4px 8px 0px rgba(0, 0, 0, 0.06),
-    0px 0px 0px 1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.06), 0px 0px 0px 1px rgba(0, 0, 0, 0.06);
   background: var(--white);
   overflow: auto;
   scroll-behavior: smooth;

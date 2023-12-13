@@ -127,9 +127,7 @@ const LargeCard = styled.div`
   z-index: 1070;
   background: #fff;
   border: 1px solid #eceef0;
-  box-shadow:
-    0px 1px 3px rgba(16, 24, 40, 0.1),
-    0px 1px 2px rgba(16, 24, 40, 0.06);
+  box-shadow: 0px 1px 3px rgba(16, 24, 40, 0.1), 0px 1px 2px rgba(16, 24, 40, 0.06);
   overflow: hidden;
   padding: 24px 0px 13px;
 `;

@@ -5,9 +5,7 @@ type = type ?? "info";
 const Root = styled("Toast.Root")`
   background-color: white;
   border-radius: 6px;
-  box-shadow:
-    0px 4px 8px 0px var(--blackA4),
-    0px 0px 0px 1px var(--blackA4);
+  box-shadow: 0px 4px 8px 0px var(--blackA4), 0px 0px 0px 1px var(--blackA4);
   padding: 16px;
   display: grid;
   grid-template-areas: "icon title action" "icon description action" "icon description action";

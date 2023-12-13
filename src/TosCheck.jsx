@@ -55,9 +55,7 @@ const Modal = styled.div`
   display: flex;
   row-gap: 1rem;
   flex-direction: column;
-  box-shadow:
-    0px 4px 8px 0px var(--blackA3),
-    0px 0px 0px 1px var(--blackA4);
+  box-shadow: 0px 4px 8px 0px var(--blackA3), 0px 0px 0px 1px var(--blackA4);
 `;
 
 const ContentWrapper = styled.div`

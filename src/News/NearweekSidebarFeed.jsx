@@ -209,10 +209,10 @@ function dateToDays(date) {
     diffSec < 60000
       ? `${(diffSec / 1000) | 0}s`
       : diffSec < 3600000
-      ? `${(diffSec / 60000) | 0}m`
-      : diffSec < 86400000
-      ? `${(diffSec / 3600000) | 0}h`
-      : `${(diffSec / 86400000) | 0}d`;
+        ? `${(diffSec / 60000) | 0}m`
+        : diffSec < 86400000
+          ? `${(diffSec / 3600000) | 0}h`
+          : `${(diffSec / 86400000) | 0}d`;
 
   var d = new Date(date);
   return timeAgo(Date.now() - d.getTime());

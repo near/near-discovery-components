@@ -92,10 +92,10 @@ const Tab = styled("Tabs.Trigger")`
       padding: 8px 12px;
     `
         : size === "large"
-        ? `
+          ? `
       padding: 12px 18px;
     `
-        : `
+          : `
       padding: 7px 16px;
     `
     }
@@ -118,10 +118,10 @@ const Tab = styled("Tabs.Trigger")`
       padding: 10px 12px;
     `
         : size === "large"
-        ? `
+          ? `
       padding: 12px 18px;
     `
-        : `
+          : `
       padding: 10px 16px;
     `
     }
@@ -147,10 +147,10 @@ const Tab = styled("Tabs.Trigger")`
       padding: 10px 12px;
     `
         : size === "large"
-        ? `
+          ? `
       padding: 12px 20px;
     `
-        : `
+          : `
       padding: 10px 16px;
     `
     }

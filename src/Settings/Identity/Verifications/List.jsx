@@ -26,7 +26,9 @@ const TableWrapper = styled.div`
   border-radius: 12px;
   border: 1px solid #eaecf0;
   background: #fff;
-  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.06), 0px 1px 3px 0px rgba(16, 24, 40, 0.1);
+  box-shadow:
+    0px 1px 2px 0px rgba(16, 24, 40, 0.06),
+    0px 1px 3px 0px rgba(16, 24, 40, 0.1);
 `;
 
 const Table = styled.table`

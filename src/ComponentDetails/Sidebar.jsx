@@ -268,17 +268,11 @@ const ItemsWrapper = styled.div`
 `;
 
 const code = Social.get(`${accountId}/widget/${widgetName}`);
-const dependencyMatch =
-  code && code.matchAll(/<Widget[\s\S]*?src=.*?"(.+)"[\s\S]*?\/>/g);
-let dependencySources = [...(dependencyMatch || [])]
-  .map((r) => r[1])
-  .filter((r) => !!r);
-dependencySources = dependencySources.filter(
-  (r, i) => dependencySources.indexOf(r) === i && r !== "(.+)",
-);
+const dependencyMatch = code && code.matchAll(/<Widget[\s\S]*?src=.*?"(.+)"[\s\S]*?\/>/g);
+let dependencySources = [...(dependencyMatch || [])].map((r) => r[1]).filter((r) => !!r);
+dependencySources = dependencySources.filter((r, i) => dependencySources.indexOf(r) === i && r !== "(.+)");
 
-const accountProfileDescription =
-  Social.getr(`${accountId}/profile`).description ?? "";
+const accountProfileDescription = Social.getr(`${accountId}/profile`).description ?? "";
 
 if (accountProfileDescription) {
   const text = normalizeMarkdown(accountProfileDescription).split(" ");
@@ -303,9 +297,7 @@ useEffect(() => {
       let data = result.body.data;
       if (data) {
         const noComponents =
-          data
-            .eduohe_near_nearcon_2023_widget_activity_feed_widget_activity_aggregate
-            .aggregate.count;
+          data.eduohe_near_nearcon_2023_widget_activity_feed_widget_activity_aggregate.aggregate.count;
         setNumberOfComponentsPublished(noComponents);
       }
     }
@@ -320,14 +312,9 @@ useEffect(() => {
         return;
       }
       let data = result.body.data;
-      if (
-        data &&
-        data.eduohe_near_nearcon_2023_widget_activity_feed_widget_activity_aggregate
-      ) {
+      if (data && data.eduohe_near_nearcon_2023_widget_activity_feed_widget_activity_aggregate) {
         const developerSince =
-          data
-            .eduohe_near_nearcon_2023_widget_activity_feed_widget_activity_aggregate
-            .aggregate.min.block_timestamp;
+          data.eduohe_near_nearcon_2023_widget_activity_feed_widget_activity_aggregate.aggregate.min.block_timestamp;
         setDeveloperSince(developerSince);
       }
     }
@@ -357,9 +344,7 @@ return (
           <StatsBadge>
             <Icon className="ph ph-code" />
             <span className="badge rounded-pill bg-secondary">
-              {numberOfComponentsPublished
-                ? numberOfComponentsPublished + " published"
-                : "..."}
+              {numberOfComponentsPublished ? numberOfComponentsPublished + " published" : "..."}
             </span>
           </StatsBadge>
           <StatsBadge>
@@ -425,16 +410,9 @@ return (
         ) : (
           <ItemsWrapper>
             {dependencySources
-              .slice(
-                0,
-                showAllDependencies ? dependencySources.length : DEPENDANCY_MAX,
-              )
+              .slice(0, showAllDependencies ? dependencySources.length : DEPENDANCY_MAX)
               .map((source) => (
-                <Widget
-                  key={source}
-                  src="${REPL_ACCOUNT}/widget/ComponentProfile"
-                  props={{ src: source }}
-                />
+                <Widget key={source} src="${REPL_ACCOUNT}/widget/ComponentProfile" props={{ src: source }} />
               ))}
             {dependencySources.length > DEPENDANCY_MAX && (
               <Widget

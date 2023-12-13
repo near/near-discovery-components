@@ -1,3 +1,5 @@
+const { href } = VM.require("devhub.near/widget/core.lib.url") || (() => {});
+
 const Notification = styled.div`
   display: flex;
   padding: 16px 24px 16px 16px;
@@ -140,35 +142,6 @@ const path = item.path || "";
 let { blockHeight, accountId, manageNotification, permission } = props;
 let postUrl = "";
 
-// Construct DevGov postUrl
-// TODO: refactor this method
-function buildPostUrl(widgetName, linkProps) {
-  linkProps = { ...linkProps };
-
-  const nearDevGovGigsWidgetsAccountId = props.nearDevGovGigsWidgetsAccountId || "devgovgigs.near";
-
-  if (props.nearDevGovGigsContractAccountId) {
-    linkProps.nearDevGovGigsContractAccountId = props.nearDevGovGigsContractAccountId;
-  }
-
-  if (props.nearDevGovGigsWidgetsAccountId) {
-    linkProps.nearDevGovGigsWidgetsAccountId = props.nearDevGovGigsWidgetsAccountId;
-  }
-
-  if (props.referral) {
-    linkProps.referral = props.referral;
-  }
-
-  const linkPropsQuery = Object.entries(linkProps)
-    .filter(([_key, nullable]) => (nullable ?? null) !== null)
-    .map(([key, value]) => `${key}=${value}`)
-    .join("&");
-
-  return `/${nearDevGovGigsWidgetsAccountId}/widget/gigs-board.pages.${widgetName}${
-    linkPropsQuery ? "?" : ""
-  }${linkPropsQuery}`;
-}
-
 switch (type) {
   case "mention":
     accountId = props.initiator;
@@ -195,7 +168,13 @@ switch (type) {
   case "devgovgigs/edit":
   case "devgovgigs/reply":
   case "devgovgigs/like":
-    postUrl = buildPostUrl("Post", { id: value.post });
+    postUrl = href({
+      widgetSrc: "devhub.near/widget/app",
+      params: {
+        page: "post",
+        id: value.post,
+      },
+    });
     break;
   default:
     postUrl = `/${REPL_ACCOUNT}/widget/PostPage?accountId=${accountId}&blockHeight=${blockHeight}`;
@@ -234,12 +213,8 @@ const getContentPreview = () => {
     return getDevHubContent.snapshot.description;
   }
 
-  const contentPath = isPost
-    ? `${context.accountId}/post/main`
-    : `${accountId}/post/comment`;
-  const contentDescription = JSON.parse(
-    Social.get(contentPath, blockHeight) ?? "null"
-  );
+  const contentPath = isPost ? `${context.accountId}/post/main` : `${accountId}/post/comment`;
+  const contentDescription = JSON.parse(Social.get(contentPath, blockHeight) ?? "null");
   return contentDescription.text;
 };
 
@@ -350,9 +325,7 @@ return (
             <Widget src="${REPL_MOB_2}/widget/TimeAgo@97556750" props={{ blockHeight: props.blockHeight }} />
           </Timestamp>
         </Text>
-        {actionable && getContentPreview() && (
-          <Desc>{getContentPreview()}</Desc>
-        )}
+        {actionable && getContentPreview() && <Desc>{getContentPreview()}</Desc>}
       </Left>
       <Right>
         {(type === "follow" || type === "unfollow") && (

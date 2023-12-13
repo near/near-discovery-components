@@ -9,9 +9,6 @@ const kycLink =
 const [modalOpen, setModalOpen] = useState(false);
 const [modalLink, setModalLink] = useState(null);
 
-const [modalOpen, setModalOpen] = useState(false);
-const [modalLink, setModalLink] = useState(null);
-
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;

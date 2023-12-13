@@ -6,7 +6,25 @@ Components will be deployed to production automatically as they are merged into 
 
 Keep in mind that folders under `src` will be prepended to the component name when it's deployed. E.g. `src/post/comment.jsx` will be deployed as `post.comment`.
 
-*Note:* This repository is not compatible with the [VS Code Extension](https://docs.near.org/bos/dev/vscode) due to the [replacements](CONTRIBUTING.md#testing-across-multiple-environments) strategy featured in this repository.
+
+### Deployments Across Discovery Gateways
+#### tl;dr;
+>test.beta.near.org => discom-dev.testnet
+
+>test.near.org => discom.testnet
+
+>near.org => near TLA
+
+>beta.near.org => near TLA
+
+The [discovery gateway](https://github.com/near/near-discovery) deploys its main and develop branches across environments as follows
+- the `main` branch is deployed on [near.org](https://near.org), pointing to `mainnet` and [test.near.org](https://test.near.org) pointing to `testnet`
+- the `develop` branch is deployed to [beta.near.org](https://beta.near.org), pointing to `mainnet`, and [test.beta.near.org](https://test.beta.near.org), pointing to `testnet`
+
+This `discovery-components` repo deploys main and develop branches across accounts as follows
+- the `main` branch deploys components to the near top-level-acount for `mainnet` and `discom.testnet` for `testnet` except where indicated otherwise in replacements.[mainnet/testnet].json
+- the `develop` branch deploys components to `discom-dev.testnet` except where indicated otherwise in replacements.dev.json; there is currently no mainnet deployment for the develop branch.
+
 
 ## Contributing
 
@@ -15,6 +33,8 @@ Please review the [contribution guide](CONTRIBUTING.md)
 ## Local Development
 
 Please review the [Local development with BOS-Loader](CONTRIBUTING.md#local-development-with-bos-loader)
+
+*Note:* This repository is not compatible with the [VS Code Extension](https://docs.near.org/bos/dev/vscode) due to the [replacements](CONTRIBUTING.md#testing-across-multiple-environments) strategy featured in this repository.
 
 ## Troubleshooting Deployments
 

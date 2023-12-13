@@ -350,16 +350,6 @@ return (
                     url: postUrl,
                   }}
                 />
-                <Widget
-                  src="${REPL_ACCOUNT}/widget/FlagButton"
-                  props={{
-                    item,
-                    disabled: !context.accountId || context.accountId === accountId,
-                    onFlag: () => {
-                      State.update({ hasBeenFlagged: true });
-                    },
-                  }}
-                />
               </Actions>
             )}
             {state.showReply && (

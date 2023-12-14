@@ -67,7 +67,11 @@ async function getBlock(block: Block) {
 
       // Main worker method. checks all permutations of a given edit length for acceptance.
       function execEditLength() {
-        for (let diagonalPath = -1 * editLength; diagonalPath <= editLength; diagonalPath += 2) {
+        for (
+          let diagonalPath = -1 * editLength;
+          diagonalPath <= editLength;
+          diagonalPath += 2
+        ) {
           let basePath;
           let addPath = bestPath[diagonalPath - 1],
             removePath = bestPath[diagonalPath + 1],
@@ -97,11 +101,24 @@ async function getBlock(block: Block) {
             self.pushComponent(basePath.components, true, undefined);
           }
 
-          oldPos = self.extractCommon(basePath, newString, oldString, diagonalPath);
+          oldPos = self.extractCommon(
+            basePath,
+            newString,
+            oldString,
+            diagonalPath
+          );
 
           // If we have hit the end of both strings, then we are done
           if (basePath.newPos + 1 >= newLen && oldPos + 1 >= oldLen) {
-            return done(buildValues(self, basePath.components, newString, oldString, self.useLongestToken));
+            return done(
+              buildValues(
+                self,
+                basePath.components,
+                newString,
+                oldString,
+                self.useLongestToken
+              )
+            );
           } else {
             // Otherwise track this path as a potential candidate and continue.
             bestPath[diagonalPath] = basePath;
@@ -157,7 +174,11 @@ async function getBlock(block: Block) {
         newPos = basePath.newPos,
         oldPos = newPos - diagonalPath,
         commonCount = 0;
-      while (newPos + 1 < newLen && oldPos + 1 < oldLen && this.equals(newString[newPos + 1], oldString[oldPos + 1])) {
+      while (
+        newPos + 1 < newLen &&
+        oldPos + 1 < oldLen &&
+        this.equals(newString[newPos + 1], oldString[oldPos + 1])
+      ) {
         newPos++;
         oldPos++;
         commonCount++;
@@ -175,7 +196,11 @@ async function getBlock(block: Block) {
       if (this.options.comparator) {
         return this.options.comparator(left, right);
       } else {
-        return left === right || (this.options.ignoreCase && left.toLowerCase() === right.toLowerCase());
+        return (
+          left === right ||
+          (this.options.ignoreCase &&
+            left.toLowerCase() === right.toLowerCase())
+        );
       }
     },
     removeEmpty(array) {
@@ -198,7 +223,13 @@ async function getBlock(block: Block) {
     },
   };
 
-  function buildValues(diff, components, newString, oldString, useLongestToken) {
+  function buildValues(
+    diff,
+    components,
+    newString,
+    oldString,
+    useLongestToken
+  ) {
     let componentPos = 0,
       componentLen = components.length,
       newPos = 0,
@@ -216,7 +247,9 @@ async function getBlock(block: Block) {
 
           component.value = diff.join(value);
         } else {
-          component.value = diff.join(newString.slice(newPos, newPos + component.count));
+          component.value = diff.join(
+            newString.slice(newPos, newPos + component.count)
+          );
         }
         newPos += component.count;
 
@@ -225,7 +258,9 @@ async function getBlock(block: Block) {
           oldPos += component.count;
         }
       } else {
-        component.value = diff.join(oldString.slice(oldPos, oldPos + component.count));
+        component.value = diff.join(
+          oldString.slice(oldPos, oldPos + component.count)
+        );
         oldPos += component.count;
 
         // Reverse add and remove so removes are output first to match common convention
@@ -263,7 +298,7 @@ async function getBlock(block: Block) {
   const lineDiff = new Diff();
   lineDiff.tokenize = function (value) {
     let retLines = [],
-      linesAndNewlines = value.split(new RegExp("(\n|\r)"));
+      linesAndNewlines = value.split(new RegExp("(\\n|\r\\n)"));
 
     // Ignore the final empty token that occurs if the string ends with a new line
     if (!linesAndNewlines[linesAndNewlines.length - 1]) {
@@ -312,114 +347,140 @@ async function getBlock(block: Block) {
         }))
         .filter((functionCall) => {
           const accountId = Object.keys(functionCall.args.data)[0];
-          return Object.keys(functionCall.args.data[accountId]).includes("widget");
-        }),
+          return Object.keys(functionCall.args.data[accountId]).includes(
+            "widget"
+          );
+        })
     );
 
   if (componentUpdateTransactions.length > 0) {
     console.log("Found component development activity...");
 
     const blockHeight = block.header().height;
-    const blockTimestampMs = Math.floor(Number(block.header().timestampNanosec) / 1e6);
+    const blockTimestampMs = Math.floor(
+      Number(block.header().timestampNanosec) / 1e6
+    );
 
     /*
-          In the rare case that the same component was updated more than once in the same block,
-          we'll run through the transactions sequentially. This assumes that "componentUpdateTransactions"
-          matches the order in which the end users executed those actions on the blockchain.
-        */
+      In the rare case that the same component was updated more than once in the same block,
+      we'll run through the transactions sequentially. This assumes that "componentUpdateTransactions"
+      matches the order in which the end users executed those actions on the blockchain.
+    */
 
     for (const transaction of componentUpdateTransactions) {
       try {
         const receiptId = transaction.receiptId;
         const componentAuthorId = Object.keys(transaction.args.data)[0];
-        const rawComponentData = transaction.args.data[componentAuthorId]["widget"] || {};
-        const componentName = Object.keys(rawComponentData)[0];
+        const rawComponentData =
+          transaction.args.data[componentAuthorId]["widget"] || {};
+        const componentNames = Object.keys(rawComponentData);
 
-        if (!componentName) {
-          console.log("Skipping development activity due to missing component name", transaction.args.data);
-          continue;
-        }
+        /*
+          CLI tools are able to publish multiple component changes within a single transaction,
+          so we need to itterate over each. This means a single receiptId can have multiple 
+          components that were changed for an account.
+        */
 
-        const componentData = rawComponentData[componentName];
-        const code = componentData[""] || "";
-        let previousCode = "";
-        let linesAdded = 0;
-        let linesRemoved = 0;
+        for (const componentName of componentNames) {
+          if (!componentName) {
+            console.log(
+              "Skipping development activity due to missing component name",
+              transaction.args.data
+            );
+            continue;
+          }
 
-        const rawGraphqlResponse = await context.graphql(
-          `query PreviousVersionQuery($componentAuthorId: String, $componentName: String) {
-                        dataplatform_near_components_versions(
-                            limit: 1
-                            where: {component_author_id: {_eq: $componentAuthorId}, component_name: {_eq: $componentName}}
-                            order_by: {id: desc}
-                        ) {
-                            id
-                            code
-                        }
-                    }
-                    `,
-          {
-            componentAuthorId,
-            componentName,
-          },
-        );
+          const componentData = rawComponentData[componentName];
 
-        const previousVersions = rawGraphqlResponse?.dataplatform_near_components_versions ?? [];
+          if (!componentData) {
+            console.log(
+              `Skipping development activity due to missing component data for: componentAuthorId=${componentAuthorId}, componentName=${componentName}`,
+              transaction.args.data
+            );
+            continue;
+          }
 
-        if (previousVersions[0]) {
-          console.log(
-            `Found previous version for: componentAuthorId=${componentAuthorId}, componentName=${componentName}`,
+          const code = componentData[""] || "";
+          let previousCode = "";
+          let linesAdded = 0;
+          let linesRemoved = 0;
+
+          const rawGraphqlResponse = await context.graphql(
+            `query PreviousVersionQuery($componentAuthorId: String, $componentName: String, $blockHeight: Int) {
+              dataplatform_near_components_versions(
+                limit: 1
+                where: {component_author_id: {_eq: $componentAuthorId}, component_name: {_eq: $componentName}, block_height: {_lt: $blockHeight}}
+                order_by: {block_height: desc}
+              ) {
+                id
+                code
+              }
+            }`,
+            {
+              componentAuthorId,
+              componentName,
+              blockHeight,
+            }
           );
-          previousCode = previousVersions[0].code || "";
-        } else {
+
+          const previousVersions =
+            rawGraphqlResponse?.dataplatform_near_components_versions ?? [];
+
+          if (previousVersions[0]) {
+            console.log(
+              `Found previous version for: componentAuthorId=${componentAuthorId}, componentName=${componentName}`
+            );
+            previousCode = previousVersions[0].code || "";
+          } else {
+            console.log(
+              `Did not find previous version for: componentAuthorId=${componentAuthorId}, componentName=${componentName}`
+            );
+          }
+
+          const diff = lineDiff.diff(previousCode, code, {
+            ignoreWhitespace: true,
+          });
+
+          diff.forEach((result) => {
+            if (result.added) linesAdded += result.count;
+            if (result.removed) linesRemoved += result.count;
+          });
+
+          const version = {
+            block_height: blockHeight,
+            block_timestamp_ms: blockTimestampMs,
+            code,
+            component_author_id: componentAuthorId,
+            component_name: componentName,
+            lines_added: linesAdded,
+            lines_removed: linesRemoved,
+            receipt_id: receiptId,
+          };
+
           console.log(
-            `Did not find previous version for: componentAuthorId=${componentAuthorId}, componentName=${componentName}`,
+            `Attempting to insert component version record for: componentAuthorId=${componentAuthorId}, componentName=${componentName}`
+          );
+
+          await context.db.Versions.upsert(
+            version,
+            ["receipt_id", "component_name", "component_author_id"],
+            [
+              "block_height",
+              "block_timestamp_ms",
+              "code",
+              "lines_added",
+              "lines_removed",
+            ]
+          );
+
+          console.log(
+            `Successfully inserted component version record for: componentAuthorId=${componentAuthorId}, componentName=${componentName}`
           );
         }
-
-        const diff = lineDiff.diff(previousCode, code, {
-          ignoreWhitespace: true,
-        });
-
-        diff.forEach((result) => {
-          if (result.added) linesAdded += result.count;
-          if (result.removed) linesRemoved += result.count;
-        });
-
-        const version = {
-          block_height: blockHeight,
-          block_timestamp_ms: blockTimestampMs,
-          code,
-          component_author_id: componentAuthorId,
-          component_name: componentName,
-          lines_added: linesAdded,
-          lines_removed: linesRemoved,
-          receipt_id: receiptId,
-        };
-
-        console.log(
-          `Attempting to insert component version record for: componentAuthorId=${componentAuthorId}, componentName=${componentName}`,
-        );
-
-        await context.db.Versions.upsert(
-          version,
-          ["receipt_id"],
-          [
-            "block_height",
-            "block_timestamp_ms",
-            "code",
-            "component_author_id",
-            "component_name",
-            "lines_added",
-            "lines_removed",
-          ],
-        );
-
-        console.log(
-          `Successfully inserted component version record for: componentAuthorId=${componentAuthorId}, componentName=${componentName}`,
-        );
       } catch (err) {
-        console.log(`Error processing component version receipt at blockHeight=${blockHeight}: ${err}`);
+        console.log(
+          `Error processing component version receipt at blockHeight=${blockHeight}: ${err}`
+        );
         throw err;
       }
     }

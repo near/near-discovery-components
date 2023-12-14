@@ -18,6 +18,8 @@ const content = {
   type: "md",
   image: state.image.cid ? { ipfs_cid: state.image.cid } : undefined,
   text: state.text,
+  mentionInput: "", // text next to @ tag
+  mentionsArray: [], // all the mentions in the description
 };
 
 function extractMentions(text) {
@@ -104,14 +106,43 @@ function onCommit() {
 }
 
 function textareaInputHandler(value) {
-  const showAccountAutocomplete = /@[\w][^\s]*$/.test(value);
-  State.update({ text: value, showAccountAutocomplete });
+  const words = value.split(/\s+/);
+  const allMentiones = words
+    .filter((word) => word.startsWith("@"))
+    .map((mention) => mention.slice(1));
+  const newMentiones = allMentiones.filter(
+    (item) => !state.mentionsArray.includes(item)
+  );
+
+  State.update((lastKnownState) => ({
+    ...lastKnownState,
+    text: value,
+    showAccountAutocomplete: newMentiones?.length > 0,
+    mentionsArray: allMentiones,
+    mentionInput: newMentiones?.[0] ?? "",
+  }));
 }
 
 function autoCompleteAccountId(id) {
-  let text = state.text.replace(/[\s]{0,1}@[^\s]*$/, "");
-  text = `${text} @${id}`.trim() + " ";
-  State.update({ text, showAccountAutocomplete: false });
+  // to make sure we update the @ at correct index
+  let currentIndex = 0;
+  const updatedDescription = state.text.replace(
+    /(?:^|\s)(@[^\s]*)/g,
+    (match) => {
+      if (currentIndex === state.mentionsArray.indexOf(state.mentionInput)) {
+        currentIndex++;
+        return ` @${id}`;
+      } else {
+        currentIndex++;
+        return match;
+      }
+    }
+  );
+  State.update((lastKnownState) => ({
+    ...lastKnownState,
+    text: updatedDescription,
+    showAccountAutocomplete: false,
+  }));
 }
 
 const Wrapper = styled.div`
@@ -396,7 +427,7 @@ return (
         <Widget
           src="${REPL_ACCOUNT}/widget/AccountAutocomplete"
           props={{
-            term: state.text.split("@").pop(),
+            term: state.mentionInput,
             onSelect: autoCompleteAccountId,
             onClose: () => State.update({ showAccountAutocomplete: false }),
           }}

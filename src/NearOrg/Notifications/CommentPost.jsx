@@ -15,17 +15,25 @@ const extractParentPost = (item) => {
   return `${accountId}/post/main` === item.path ? { accountId, blockHeight: item.blockHeight } : undefined;
 };
 
+const PostWrapper = styled.div`
+  width: fit-content;
+`;
+
 const parentPost = extractParentPost(item);
 
-return parentPost ? (
-  <Widget
-    src="${REPL_ACCOUNT}/widget/Posts.Post"
-    props={{
-      accountId: parentPost.accountId,
-      blockHeight: item.blockHeight,
-      highlightComment: { accountId, blockHeight },
-    }}
-  />
-) : (
-  <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.CommentContent" props={props} />
+return (
+  <PostWrapper>
+    {parentPost ? (
+      <Widget
+        src={`${REPL_ACCOUNT}/widget/Posts.Post`}
+        props={{
+          accountId: parentPost.accountId,
+          blockHeight: item.blockHeight,
+          highlightComment: { accountId, blockHeight },
+        }}
+      />
+    ) : (
+      <Widget src={`${REPL_ACCOUNT}/widget/NearOrg.Notifications.CommentContent`} props={props} />
+    )}
+  </PostWrapper>
 );

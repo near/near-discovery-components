@@ -1,6 +1,7 @@
 const ipfsImages = {
   illustrations: {
     l2: "bafkreiaqqz44yzagdcj3ubd3uteh2guh7fhbktdg26fw52bti5onu6zsxm",
+    dac: "bafkreigijormam2bufufztlvs2swnjnnzj3es7lcx3snmjdvwqd7y46ulm",
   },
 };
 
@@ -159,6 +160,43 @@ const PatternContent = styled.div`
   }
 `;
 
+const DacImageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 1224px;
+  width: 90vw;
+  margin: var(--section-gap) auto;
+  margin-bottom: 0px;
+
+  border-radius: 8px;
+  overflow: hidden;
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  [data-image-side="right"] & {
+    order: 2;
+  }
+
+  @media (max-width: 834px) {
+    max-width: 100%;
+    order: unset !important;
+    margin-top: var(--section-gap);
+    margin-bottom: var(--section-gap);
+  }
+
+  @media (max-width: 900px) {
+    margin-top: var(--section-gap);
+    margin-bottom: var(--section-gap);
+  }
+`;
+
 return (
   <Wrapper>
     <Section backgroundColor="#F2F1EA" style={{ padding: "72px 0" }}>
@@ -177,6 +215,18 @@ return (
         </Pattern>
       </Container>
     </Section>
+
+    <DacImageWrapper>
+      <Widget
+        src="${REPL_MOB}/widget/Image"
+        props={{
+          image: {
+            ipfs_cid: ipfsImages.illustrations.dac,
+          },
+          alt: "A data availability chart showing comparisons between NEAR, Celestia, Ethereum with proto-danksharding, and ethereum without proto-danksharding.",
+        }}
+      />
+    </DacImageWrapper>
 
     <Section>
       <Container>

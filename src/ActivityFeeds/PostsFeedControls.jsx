@@ -6,6 +6,9 @@ State.init({
   optimisticPosts: [],
   postsCountLeft: 0,
   sort: null,
+  newUnseenPosts: [],
+  initialQueryTime: null,
+  feedInterval: null,
 });
 
 const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
@@ -43,7 +46,7 @@ const selectTab = (selectedTab) => {
     postsCountLeft: 0,
     selectedTab,
   });
-  loadMorePosts();
+  loadMorePosts(false);
 };
 
 // get the full list of posts that the current user has flagged so
@@ -99,7 +102,7 @@ function fetchGraphQL(operationsDoc, operationName, variables) {
   });
 }
 
-const createQuery = (type) => {
+const createQuery = (type, isUpdate) => {
   let querySortOption = "";
   switch (state.sort) {
     case "recentcommentdesc":
@@ -110,6 +113,13 @@ const createQuery = (type) => {
   }
 
   let queryFilter = "";
+  let timeOperation = "_lte";
+  if (isUpdate) {
+    timeOperation = "_gt";
+  }
+
+  const queryTime = (state.initialQueryTime ? state.initialQueryTime : Date.now()) * 1000000;
+
   switch (type) {
     case "following":
       let filteredAccountsFollowing = accountsFollowing ? accountsFollowing.push(context.accountId) : [];
@@ -118,7 +128,12 @@ const createQuery = (type) => {
         filteredAccountsFollowing = filteredAccountList.filter((account) => accountsFollowing.includes(account));
       }
       let queryAccountsString = accountsFollowing.map((account) => `"${account}"`).join(", ");
-      queryFilter = `where: { account_id: { _in: [${queryAccountsString}]}},`;
+      queryFilter = `where: 
+        _and: [
+            { account_id: { _in: [${queryAccountsString}]}
+            {block_timestamp: {${timeOperation}: ${queryTime}}}
+        ]
+        },`;
       break;
 
     case "mutual":
@@ -130,16 +145,26 @@ const createQuery = (type) => {
               {post_likes: {account_id: {_eq: "${userAccount}"}}},
               {comments: {account_id: {_eq: "${userAccount}"}}}
               ]
-            }
+            },
+            {block_timestamp: {${timeOperation}: ${queryTime}}}            
           ]
         }`;
       break;
 
     default:
       if (filteredAccountIds) {
-        queryFilter = `where: {account_id: {_in: "${filteredAccountIds}"}}, `;
+        queryFilter = `where: {
+          _and: [
+            {account_id: {_in: "${filteredAccountIds}"}},
+            {block_timestamp: {${timeOperation}: ${queryTime}}}
+          ]
+        }, `;
       } else {
-        queryFilter = "";
+        queryFilter = `where: {
+          _and: [
+            {block_timestamp: {${timeOperation}: ${queryTime}}}
+          ]
+        }, `;
       }
   }
 
@@ -175,7 +200,7 @@ query FeedQuery($offset: Int, $limit: Int) {
 `;
 };
 
-const loadMorePosts = () => {
+const loadMorePosts = (isUpdate) => {
   const type = state.selectedTab ?? "all";
   const queryName = "FeedQuery";
 
@@ -187,8 +212,9 @@ const loadMorePosts = () => {
     isLoading: true,
   });
 
-  fetchGraphQL(createQuery(type), queryName, {
-    offset: state.posts.length,
+  const offset = isUpdate ? 0 : state.posts.length;
+  fetchGraphQL(createQuery(type, isUpdate), queryName, {
+    offset: offset,
     limit: LIMIT,
   }).then((result) => {
     if (result.status === 200 && result.body) {
@@ -209,11 +235,22 @@ const loadMorePosts = () => {
             return post;
           });
 
-          State.update({
-            isLoading: false,
-            posts: [...state.posts, ...filteredPosts],
-            postsCountLeft,
-          });
+          if (isUpdate) {
+            State.update({
+              newUnseenPosts: filteredPosts,
+            });
+          } else {
+            State.update({
+              isLoading: false,
+              posts: [...state.posts, ...filteredPosts],
+              postsCountLeft,
+            });
+            if (state.initialQueryTime === null) {
+              State.update({
+                initialQueryTime: Math.floor(filteredPosts[0].block_timestamp / 1000000),
+              });
+            }
+          }
           checkForOptimisticPostsHaveBeenReceived(newPosts);
         }
       }
@@ -258,6 +295,34 @@ const checkForOptimisticPostsHaveBeenReceived = (posts) => {
     clearOptimisticUpdate();
   }
 };
+
+const displayNewPosts = () => {
+  if (state.newUnseenPosts.length > 0) {
+    const initialQueryTime = Math.floor(state.newUnseenPosts[0].block_timestamp / 1000000);
+    State.update({
+      posts: [...state.newUnseenPosts, ...state.posts],
+      newUnseenPosts: [],
+      initialQueryTime,
+    });
+    // stop and restart the feed interval to reset the query time
+    clearInterval(state.feedInterval);
+    startFeedUpdates();
+  }
+};
+const startFeedUpdates = () => {
+  if (state.feedInterval) return;
+  const feedInterval = setInterval(() => {
+    updateFeed();
+  }, 5000);
+  State.update({ feedInterval });
+};
+
+const stopFeedUpdates = () => {
+  clearInterval(state.feedInterval);
+};
+const updateFeed = () => loadMorePosts(true);
+
+startFeedUpdates();
 
 const hasMore = state.postsCountLeft !== state.posts.length && state.posts.length > 0;
 
@@ -421,6 +486,10 @@ const OptimisticUpdatePost = styled.div`
     padding: 12px 0 0;
   }
 `;
+const NewActivity = styled.div`
+  text-align: right;
+  padding: 0px 10px;
+`;
 
 return (
   <>
@@ -461,42 +530,72 @@ return (
               ))}
             </>
           )}
-          {feeds.length > 1 && (
-            <FilterWrapper>
-              <PillSelect>
-                {feeds.map((feed) => (
-                  <PillSelectButton type="button" onClick={() => selectTab(feed)} selected={state.selectedTab === feed}>
-                    {feedLabels[feed] ?? feed}
-                  </PillSelectButton>
-                ))}
-              </PillSelect>
-            </FilterWrapper>
-          )}
-          <SortContainer>
-            <Sort>
-              <span className="label">Sort by:</span>
-              <Widget
-                src={`${REPL_ACCOUNT}/widget/Select`}
-                props={{
-                  noLabel: true,
-                  value: { text: optionsMap[sort], value: sort },
-                  onChange: ({ value }) => {
-                    Storage.set("queryapi:feed-sort", value);
-                    State.update({
-                      posts: [],
-                      postsCountLeft: 0,
-                      sort: value,
-                    });
-                    loadMorePosts();
-                  },
-                  options: [
-                    { text: "Most Recent", value: "timedesc" },
-                    { text: "Recent Comments", value: "recentcommentdesc" },
-                  ],
-                }}
-              />
-            </Sort>
-          </SortContainer>
+          <div className="row">
+            <div className="col">
+              {feeds.length > 1 && (
+                <FilterWrapper>
+                  <PillSelect>
+                    {feeds.map((feed) => (
+                      <PillSelectButton
+                        type="button"
+                        onClick={() => selectTab(feed)}
+                        selected={state.selectedTab === feed}
+                      >
+                        {feedLabels[feed] ?? feed}
+                      </PillSelectButton>
+                    ))}
+                  </PillSelect>
+                </FilterWrapper>
+              )}
+            </div>
+            <div className="col">
+              <SortContainer>
+                <Sort>
+                  <Widget
+                    src={`${REPL_ACCOUNT}/widget/Select`}
+                    props={{
+                      noLabel: true,
+                      value: { text: optionsMap[sort], value: sort },
+                      onChange: ({ value }) => {
+                        Storage.set("queryapi:feed-sort", value);
+                        State.update({
+                          posts: [],
+                          postsCountLeft: 0,
+                          sort: value,
+                        });
+                        loadMorePosts(false);
+                      },
+                      options: [
+                        { text: "Latest", value: "timedesc" },
+                        { text: "Last Commented", value: "recentcommentdesc" },
+                      ],
+                      border: "none",
+                    }}
+                  />
+                </Sort>
+              </SortContainer>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col"></div>
+            <div className="col">
+              {state.newUnseenPosts.length > 0 && (
+                <NewActivity>
+                  <Widget
+                    src="near/widget/DIG.Button"
+                    props={{
+                      label: `Refresh (${state.newUnseenPosts.length} New)`,
+                      onClick: displayNewPosts,
+                      iconLeft: "bi-arrow-clockwise",
+                      variant: "secondary",
+                      fill: "ghost",
+                      size: "small",
+                    }}
+                  />
+                </NewActivity>
+              )}
+            </div>
+          </div>
         </>
       )}
 
@@ -508,7 +607,7 @@ return (
             isLoading,
             loadMorePosts: () => {
               if (!isLoading) {
-                loadMorePosts();
+                loadMorePosts(false);
               }
             },
             posts: state.posts,

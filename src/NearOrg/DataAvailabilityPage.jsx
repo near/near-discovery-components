@@ -3,6 +3,15 @@ const ipfsImages = {
     l2: "bafkreiaqqz44yzagdcj3ubd3uteh2guh7fhbktdg26fw52bti5onu6zsxm",
     dac: "bafkreigijormam2bufufztlvs2swnjnnzj3es7lcx3snmjdvwqd7y46ulm",
   },
+  logos: {
+    cosmose: "bafkreifx5onoiyip7mwogdnzmv7ilirkw2fyzvegrvxbmzf6bcbzuwbmbu",
+    dropt: "bafkreihjdirbdiuoiqlcmpp7gnjnvkm3bfol7mtetyaldtgnvgrprpdbba",
+    icc: "bafkreibygllbcqh3e3qkcrim2noa4wwev36af34rk6gw2rpogp53lwkbg4",
+    marblex: "bafkreigaqwyom4knnvjdvsgmfbef5adp5k6no4prdudiog3pypiqddoyum",
+    sailgp: "bafkreifoxofuz4mkoopodvrdb44g5lva4w5p46iexccovj4c62x6ihoj2i",
+    shemaroo: "bafkreigoulx5h4u43xj4332bidnkn4dzbw5qgrcar6wf7yoewnrxfyjfle",
+    sweatcoin: "bafkreigztaapfbvnfzrw4oap6zi7us4drcbx2wt3broi4n3u4nzfyrtxcy",
+  },
 };
 
 function returnIpfsImage(cfid) {
@@ -160,42 +169,120 @@ const PatternContent = styled.div`
   }
 `;
 
-const DacImageWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  max-width: 1224px;
-  width: 90vw;
-  margin: var(--section-gap) auto;
-  margin-bottom: 0px;
-
-  border-radius: 8px;
-  overflow: hidden;
-
-  img {
-    display: block;
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-  }
-
-  [data-image-side="right"] & {
-    order: 2;
-  }
-
-  @media (max-width: 834px) {
-    max-width: 100%;
-    order: unset !important;
-    margin-top: var(--section-gap);
-    margin-bottom: var(--section-gap);
-  }
+const LogoText = styled.p`
+  font: var(--${(p) => p.size ?? "text-base"});
+  font-weight: ${(p) => p.fontWeight} !important;
+  color: var(--${(p) => p.color ?? "sand12"});
+  margin: 0;
 
   @media (max-width: 900px) {
-    margin-top: var(--section-gap);
-    margin-bottom: var(--section-gap);
+    font: var(--${(p) => p.mobileSize ?? p.size ?? "text-base"});
   }
 `;
+
+const LogoLinksWrapper = styled.div`
+  margin-top: 40px;
+  width: 100%;
+  position: relative;
+
+  @media (max-width: 1170px) {
+    &::before {
+      content: "";
+      display: block;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 40px;
+      height: 100%;
+      background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+    }
+  }
+`;
+
+const LogoLinksScroll = styled.div`
+  overflow: auto;
+  scroll-behavior: smooth;
+  width: 100%;
+  text-align: center;
+  padding: 0 24px;
+
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
+
+  @media (max-width: 1170px) {
+    padding-right: 40px;
+  }
+`;
+
+const LogoLinks = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 60px;
+
+  a {
+    display: block;
+    height: 24px;
+    color: var(--sand10);
+
+    img {
+      display: block;
+      margin: 0 auto;
+      height: 100%;
+    }
+  }
+
+  @media (max-width: 800px) {
+    gap: 40px;
+  }
+`;
+
+const web3Teams = [
+  {
+    url: "https://cosmose.co",
+    name: "Cosmose AI",
+    ipfsImage: ipfsImages.logos.cosmose,
+    height: "38px",
+  },
+  {
+    url: "https://dropt.io",
+    name: "Dropt",
+    ipfsImage: ipfsImages.logos.dropt,
+    height: "35px",
+  },
+  {
+    url: "https://www.icc-cricket.com",
+    name: "ICC",
+    ipfsImage: ipfsImages.logos.icc,
+    height: "24px",
+  },
+  {
+    url: "https://www.marblex.io",
+    name: "Marblex",
+    ipfsImage: ipfsImages.logos.marblex,
+    height: "16px",
+  },
+  {
+    url: "https://sailgp.com",
+    name: "Sail GP",
+    ipfsImage: ipfsImages.logos.sailgp,
+    height: "16px",
+  },
+  {
+    url: "https://www.shemarooent.com",
+    name: "Shemaroo",
+    ipfsImage: ipfsImages.logos.shemaroo,
+    height: "38px",
+  },
+  {
+    url: "https://sweatco.in",
+    name: "Sweatcoin",
+    ipfsImage: ipfsImages.logos.sweatcoin,
+    height: "24px",
+  },
+];
 
 return (
   <Wrapper>
@@ -216,18 +303,6 @@ return (
       </Container>
     </Section>
 
-    <DacImageWrapper>
-      <Widget
-        src="${REPL_MOB}/widget/Image"
-        props={{
-          image: {
-            ipfs_cid: ipfsImages.illustrations.dac,
-          },
-          alt: "A data availability chart showing comparisons between NEAR, Celestia, Ethereum with proto-danksharding, and ethereum without proto-danksharding.",
-        }}
-      />
-    </DacImageWrapper>
-
     <Section>
       <Container>
         <Flex direction="column" gap="24px">
@@ -237,6 +312,19 @@ return (
             proven trajectory of 100% uptime over its lifetime.
           </Text>
         </Flex>
+
+        
+      {/* This will be uncommented once we get the updated image from the design team */}
+      {/* <Widget
+        src="${REPL_MOB}/widget/Image"
+        props={{
+          image: {
+            ipfs_cid: ipfsImages.illustrations.dac,
+          },
+          alt: "A data availability chart showing comparisons between NEAR, Celestia, Ethereum with proto-danksharding, and ethereum without proto-danksharding.",
+        }}
+      /> */}
+    
 
         <Widget
           src="${REPL_ACCOUNT}/widget/NearOrg.ContentWithImage"
@@ -292,6 +380,50 @@ return (
           }}
         />
       </Container>
+    </Section>
+
+    <Section >
+        {/* <Teams> */}
+          <LogoText
+            size="text-xs"
+            fontWeight="700"
+            color="sand11"
+            style={{
+              textTransform: "uppercase",
+              letterSpacing: "2px",
+              padding: "0 24px",
+              textAlign: "center",
+            }}
+          >
+            Trusted by forward thinking teams
+          </LogoText>
+
+          <LogoLinksWrapper>
+            <LogoLinksScroll>
+              <LogoLinks>
+                {web3Teams.map((team) => {
+                  return (
+                    <a
+                      href={team.url}
+                      target="_blank"
+                      title={team.name}
+                      style={{ height: team.height }}
+                      key={team.name}
+                    >
+                      <Widget
+                        src="${REPL_MOB}/widget/Image"
+                        props={{
+                          image: returnIpfsImage(team.ipfsImage),
+                          alt: team.name,
+                        }}
+                      />
+                    </a>
+                  );
+                })}
+              </LogoLinks>
+            </LogoLinksScroll>
+          </LogoLinksWrapper>
+        {/* </Teams> */}
     </Section>
 
     <Section backgroundColor="#F2F1EA">

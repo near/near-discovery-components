@@ -242,7 +242,7 @@ const LogoLinks = styled.div`
 const web3Teams = [
   {
     url: "https://cosmose.co",
-    name: "Cosmose AI",
+    name: "Caldera",
     ipfsImage: ipfsImages.logos.cosmose,
     height: "38px",
   },

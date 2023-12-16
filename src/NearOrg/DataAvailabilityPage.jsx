@@ -313,9 +313,8 @@ return (
           </Text>
         </Flex>
 
-        
-      {/* This will be uncommented once we get the updated image from the design team */}
-      {/* <Widget
+        {/* This will be uncommented once we get the updated image from the design team */}
+        {/* <Widget
         src="${REPL_MOB}/widget/Image"
         props={{
           image: {
@@ -324,7 +323,6 @@ return (
           alt: "A data availability chart showing comparisons between NEAR, Celestia, Ethereum with proto-danksharding, and ethereum without proto-danksharding.",
         }}
       /> */}
-    
 
         <Widget
           src="${REPL_ACCOUNT}/widget/NearOrg.ContentWithImage"
@@ -382,48 +380,42 @@ return (
       </Container>
     </Section>
 
-    <Section >
-        {/* <Teams> */}
-          <LogoText
-            size="text-xs"
-            fontWeight="700"
-            color="sand11"
-            style={{
-              textTransform: "uppercase",
-              letterSpacing: "2px",
-              padding: "0 24px",
-              textAlign: "center",
-            }}
-          >
-            Trusted by forward thinking teams
-          </LogoText>
+    <Section>
+      {/* <Teams> */}
+      <LogoText
+        size="text-xs"
+        fontWeight="700"
+        color="sand11"
+        style={{
+          textTransform: "uppercase",
+          letterSpacing: "2px",
+          padding: "0 24px",
+          textAlign: "center",
+        }}
+      >
+        Trusted by forward thinking teams
+      </LogoText>
 
-          <LogoLinksWrapper>
-            <LogoLinksScroll>
-              <LogoLinks>
-                {web3Teams.map((team) => {
-                  return (
-                    <a
-                      href={team.url}
-                      target="_blank"
-                      title={team.name}
-                      style={{ height: team.height }}
-                      key={team.name}
-                    >
-                      <Widget
-                        src="${REPL_MOB}/widget/Image"
-                        props={{
-                          image: returnIpfsImage(team.ipfsImage),
-                          alt: team.name,
-                        }}
-                      />
-                    </a>
-                  );
-                })}
-              </LogoLinks>
-            </LogoLinksScroll>
-          </LogoLinksWrapper>
-        {/* </Teams> */}
+      <LogoLinksWrapper>
+        <LogoLinksScroll>
+          <LogoLinks>
+            {web3Teams.map((team) => {
+              return (
+                <a href={team.url} target="_blank" title={team.name} style={{ height: team.height }} key={team.name}>
+                  <Widget
+                    src="${REPL_MOB}/widget/Image"
+                    props={{
+                      image: returnIpfsImage(team.ipfsImage),
+                      alt: team.name,
+                    }}
+                  />
+                </a>
+              );
+            })}
+          </LogoLinks>
+        </LogoLinksScroll>
+      </LogoLinksWrapper>
+      {/* </Teams> */}
     </Section>
 
     <Section backgroundColor="#F2F1EA">

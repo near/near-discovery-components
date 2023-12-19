@@ -17,6 +17,7 @@ const Content = styled("DropdownMenu.Content")`
   animation-duration: 400ms;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
+  z-index: 99999; //To show before navigation
 
   &[data-side="bottom"] {
     animation-name: slideUpAndFade;

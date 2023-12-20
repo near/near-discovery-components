@@ -1,7 +1,7 @@
 const ipfsImages = {
   illustrations: {
     l2: "bafkreiaqqz44yzagdcj3ubd3uteh2guh7fhbktdg26fw52bti5onu6zsxm",
-    dac: "bafkreiaoly7r3ztbjlqjbqcjtkslazfai2ujv3y6utyph4ebq746izikqa",
+    dac: "bafkreifkselhtl5p2lwjzzpzii6xcdkywwn47gxzulhir7vtn52hv4g5oe",
   },
   logos: {
     caldera: "bafkreib4iwhvtg3hutal3sacnehne7iiispxtzxsucl6yb7j6vtfjdsmou",

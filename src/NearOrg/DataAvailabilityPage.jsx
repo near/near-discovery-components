@@ -241,66 +241,6 @@ const LogoLinks = styled.div`
   }
 `;
 
-// const LogoLinksWrapper = styled.div`
-//   margin-top: 40px;
-//   width: 100%;
-//   position: relative;
-
-//   @media (max-width: 1170px) {
-//     &::before {
-//       content: "";
-//       display: block;
-//       position: absolute;
-//       right: 0;
-//       top: 0;
-//       width: 40px;
-//       height: 100%;
-//       background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
-//     }
-//   }
-// `;
-
-// const LogoLinksScroll = styled.div`
-//   overflow: auto;
-//   scroll-behavior: smooth;
-//   width: 100%;
-//   text-align: center;
-//   padding: 0 24px;
-
-//   -ms-overflow-style: none; /* Internet Explorer 10+ */
-//   scrollbar-width: none; /* Firefox */
-//   &::-webkit-scrollbar {
-//     display: none; /* Safari and Chrome */
-//   }
-
-//   @media (max-width: 1170px) {
-//     padding-right: 40px;
-//   }
-// `;
-
-// const LogoLinks = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   gap: 60px;
-
-//   a {
-//     display: block;
-//     height: 24px;
-//     color: var(--sand10);
-
-//     img {
-//       display: block;
-//       margin: 0 auto;
-//       height: 100%;
-//     }
-//   }
-
-//   @media (max-width: 800px) {
-//     gap: 40px;
-//   }
-// `;
-
 const web3Teams = [
   {
     url: "https://caldera.xyz",
@@ -387,7 +327,6 @@ return (
           </Text>
         </Flex>
 
-        {/* This will be uncommented once we get the updated image from the design team */}
         <Widget
           src="${REPL_MOB}/widget/Image"
           props={{

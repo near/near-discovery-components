@@ -3,10 +3,7 @@ if (!context.accountId || !props.term) return <></>;
 let results = [];
 const filterAccounts = props.filterAccounts ?? []; //  hide certain accounts from the list
 const profilesData = Social.get("*/profile/name", "final") || {};
-const followingData = Social.get(
-  `${context.accountId}/graph/follow/**`,
-  "final"
-);
+const followingData = Social.get(`${context.accountId}/graph/follow/**`, "final");
 if (!profilesData) return <></>;
 const profiles = Object.entries(profilesData);
 const term = (props.term || "").replace(/\W/g, "").toLowerCase();

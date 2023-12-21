@@ -1,6 +1,18 @@
 const ipfsImages = {
   illustrations: {
     l2: "bafkreiaqqz44yzagdcj3ubd3uteh2guh7fhbktdg26fw52bti5onu6zsxm",
+    dac: "bafkreifkselhtl5p2lwjzzpzii6xcdkywwn47gxzulhir7vtn52hv4g5oe",
+  },
+  logos: {
+    caldera: "bafkreib4iwhvtg3hutal3sacnehne7iiispxtzxsucl6yb7j6vtfjdsmou",
+    dymension: "bafkreifyazhbdnbckyieag6a4ezm7mchncln4uoxv3x7v5uvcnewtz5shu",
+    fluent: "bafkreiblc2o3x5uwjm4kiywzxkhpulykfmmvulvdqhy4odh6huzlzb4pi4",
+    movementLabs: "bafkreifeghlktv3jscosqr6653jky2k4ti7vgyssgzc4tsxbznhboh3pyy",
+    starknet: "bafkreifteo2upl2sdubzcluygnijnt46dmdegv7tbygeciwv66zzjoatcu",
+    vistara: "bafkreiecvztsb3iiyhh4lfjfzgh2xdvfoacl5izgw4keowjfmff44o7fdi",
+    altlayer: "bafkreig3mrzesoettretv2dhnxtgy22wubasgifzx4smybyldzbk35e3fm",
+    optimism: "bafkreidwitx5hu6hivyn3exi34moyea7livf6zfqk2dcny3z62ive7fpou",
+    arbitrum: "bafkreibff556aanawcdwlpbelqnzns35gqmxcsll5k4acyynyrvibcljpu",
   },
 };
 
@@ -159,6 +171,133 @@ const PatternContent = styled.div`
   }
 `;
 
+const LogoText = styled.p`
+  font: var(--${(p) => p.size ?? "text-base"});
+  font-weight: ${(p) => p.fontWeight} !important;
+  color: var(--${(p) => p.color ?? "sand12"});
+  margin: 0;
+
+  @media (max-width: 900px) {
+    font: var(--${(p) => p.mobileSize ?? p.size ?? "text-base"});
+  }
+`;
+
+const LogoLinksWrapper = styled.div`
+  margin-top: 40px;
+  width: 100%;
+  position: relative;
+
+  @media (max-width: 1170px) {
+    &::before {
+      content: "";
+      display: block;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 40px;
+      height: 100%;
+      background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+    }
+  }
+`;
+
+const LogoLinksScroll = styled.div`
+  overflow: auto;
+  scroll-behavior: smooth;
+  width: 100%;
+  text-align: center;
+  padding: 0 24px;
+
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
+
+  @media (max-width: 1170px) {
+    padding-right: 40px;
+  }
+`;
+
+const LogoLinks = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 60px;
+
+  a {
+    display: block;
+    height: 24px;
+    color: var(--sand10);
+
+    img {
+      display: block;
+      margin: 0 auto;
+      height: 100%;
+    }
+  }
+
+  @media (max-width: 800px) {
+    gap: 40px;
+  }
+`;
+
+const web3Teams = [
+  {
+    url: "https://caldera.xyz",
+    name: "Caldera",
+    ipfsImage: ipfsImages.logos.caldera,
+    height: "28px",
+  },
+  {
+    url: "https://dymension.xyz",
+    name: "Dymension",
+    ipfsImage: ipfsImages.logos.dymension,
+    height: "28px",
+  },
+  {
+    url: "https://fluentlabs.xyz",
+    name: "Fluent",
+    ipfsImage: ipfsImages.logos.fluent,
+    height: "24px",
+  },
+  {
+    url: "https://movementlabs.xyz",
+    name: "Movement Labs",
+    ipfsImage: ipfsImages.logos.movementLabs,
+    height: "16px",
+  },
+  {
+    url: "https://www.starknet.io",
+    name: "Starknet",
+    ipfsImage: ipfsImages.logos.starknet,
+    height: "16px",
+  },
+  {
+    url: "https://docs.vistara.dev",
+    name: "Vistara",
+    ipfsImage: ipfsImages.logos.vistara,
+    height: "29px",
+  },
+  {
+    url: "https://altlayer.io",
+    name: "Altlayer",
+    ipfsImage: ipfsImages.logos.altlayer,
+    height: "29px",
+  },
+  {
+    url: "https://www.optimism.io",
+    name: "Optimism",
+    ipfsImage: ipfsImages.logos.optimism,
+    height: "29px",
+  },
+  {
+    url: "https://arbitrum.io",
+    name: "Arbitrum",
+    ipfsImage: ipfsImages.logos.arbitrum,
+    height: "29px",
+  },
+];
+
 return (
   <Wrapper>
     <Section backgroundColor="#F2F1EA" style={{ padding: "72px 0" }}>
@@ -187,6 +326,16 @@ return (
             proven trajectory of 100% uptime over its lifetime.
           </Text>
         </Flex>
+
+        <Widget
+          src="${REPL_MOB}/widget/Image"
+          props={{
+            image: {
+              ipfs_cid: ipfsImages.illustrations.dac,
+            },
+            alt: "A data availability chart showing comparisons between NEAR, Celestia, Ethereum with proto-danksharding, and ethereum without proto-danksharding.",
+          }}
+        />
 
         <Widget
           src="${REPL_ACCOUNT}/widget/NearOrg.ContentWithImage"
@@ -242,6 +391,50 @@ return (
           }}
         />
       </Container>
+    </Section>
+
+    <Section>
+      {/* <Teams> */}
+      <LogoText
+        size="text-xs"
+        fontWeight="700"
+        color="sand11"
+        style={{
+          textTransform: "uppercase",
+          letterSpacing: "2px",
+          padding: "0 24px",
+          textAlign: "center",
+        }}
+      >
+        Trusted by forward thinking teams
+      </LogoText>
+
+      <LogoLinksWrapper>
+        <LogoLinksScroll>
+          <LogoLinks>
+            {web3Teams.map((team) => {
+              return (
+                <a
+                  href={team.url}
+                  target="_blank"
+                  title={team.name}
+                  style={{ height: team.height, display: "inline-block" }}
+                  key={team.name}
+                >
+                  <Widget
+                    src="${REPL_MOB}/widget/Image"
+                    props={{
+                      image: returnIpfsImage(team.ipfsImage),
+                      alt: team.name,
+                    }}
+                  />
+                </a>
+              );
+            })}
+          </LogoLinks>
+        </LogoLinksScroll>
+      </LogoLinksWrapper>
+      {/* </Teams> */}
     </Section>
 
     <Section backgroundColor="#F2F1EA">

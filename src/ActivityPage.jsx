@@ -134,12 +134,7 @@ return (
       </Section>
 
       <Section negativeMargin primary active={selectedTab === "posts"}>
-        <Widget
-          src={`${REPL_ACCOUNT}/widget/ActivityFeeds.DetermineActivityFeed`}
-          props={{
-            shouldFallback: props.shouldFallback,
-          }}
-        />
+        <Widget src={`${REPL_ACCOUNT}/widget/ActivityFeeds.DetermineActivityFeed`} />
       </Section>
 
       <Section active={selectedTab === "explore"}>

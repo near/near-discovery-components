@@ -1,13 +1,3 @@
-State.init({
-  initialized: false,
-  isLoading: false,
-  selectedTab: null,
-  posts: [],
-  optimisticPosts: [],
-  postsCountLeft: 0,
-  sort: null,
-});
-
 const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 const LIMIT = 10;
 const feeds = props.feeds ?? ["all", "following"];
@@ -29,21 +19,30 @@ if (initialSelectedTab === "mutual" && !context.filteredAccountIds) {
 const followGraph = context.accountId ? Social.keys(`${context.accountId}/graph/follow/*`, "final") : null;
 const accountsFollowing =
   props.accountsFollowing ?? (followGraph ? Object.keys(followGraph[context.accountId].graph.follow || {}) : null);
-const isLoading = !state.initialized || state.isLoading;
 
 const optionsMap = {
   timedesc: "Most Recent",
   recentcommentdesc: "Recent Comments",
 };
 
-const selectTab = (selectedTab) => {
-  Storage.privateSet("selectedTab", selectedTab);
-  State.update({
-    posts: [],
-    postsCountLeft: 0,
-    selectedTab,
-  });
-  loadMorePosts();
+const selectTab = (newTab) => {
+  stopFeedUpdates();
+  setInitialQueryTime(null);
+  Storage.privateSet("selectedTab", newTab);
+  setIsLoading(true);
+  setNewUnseenPosts([]);
+  setPostsData({ posts: [], postsCountLeft: 0 });
+  setSelectedTab(newTab);
+};
+
+const selectSort = (newSort) => {
+  stopFeedUpdates();
+  setInitialQueryTime(null);
+  Storage.set("queryapi:feed-sort", newSort);
+  setIsLoading(true);
+  setNewUnseenPosts([]);
+  setPostsData({ posts: [], postsCountLeft: 0 });
+  setSortState(newSort);
 };
 
 // get the full list of posts that the current user has flagged so
@@ -99,9 +98,9 @@ function fetchGraphQL(operationsDoc, operationName, variables) {
   });
 }
 
-const createQuery = (type) => {
+const createQuery = (type, isUpdate) => {
   let querySortOption = "";
-  switch (state.sort) {
+  switch (sortState) {
     case "recentcommentdesc":
       querySortOption = `{ last_comment_timestamp: desc_nulls_last },`;
       break;
@@ -110,6 +109,13 @@ const createQuery = (type) => {
   }
 
   let queryFilter = "";
+  let timeOperation = "_lte";
+  if (isUpdate) {
+    timeOperation = "_gt";
+  }
+
+  const queryTime = initialQueryTime ? initialQueryTime : Date.now() * 1000000;
+
   switch (type) {
     case "following":
       let filteredAccountsFollowing = accountsFollowing ? accountsFollowing.push(context.accountId) : [];
@@ -118,7 +124,12 @@ const createQuery = (type) => {
         filteredAccountsFollowing = filteredAccountList.filter((account) => accountsFollowing.includes(account));
       }
       let queryAccountsString = accountsFollowing.map((account) => `"${account}"`).join(", ");
-      queryFilter = `where: { account_id: { _in: [${queryAccountsString}]}},`;
+      queryFilter = `where: {
+        _and: [
+            { account_id: { _in: [${queryAccountsString}]} },
+            {block_timestamp: {${timeOperation}: ${queryTime}}}
+        ]
+        },`;
       break;
 
     case "mutual":
@@ -130,16 +141,26 @@ const createQuery = (type) => {
               {post_likes: {account_id: {_eq: "${userAccount}"}}},
               {comments: {account_id: {_eq: "${userAccount}"}}}
               ]
-            }
+            },
+            {block_timestamp: {${timeOperation}: ${queryTime}}}            
           ]
         }`;
       break;
 
     default:
       if (filteredAccountIds) {
-        queryFilter = `where: {account_id: {_in: "${filteredAccountIds}"}}, `;
+        queryFilter = `where: {
+          _and: [
+            {account_id: {_in: "${filteredAccountIds}"}},
+            {block_timestamp: {${timeOperation}: ${queryTime}}}
+          ]
+        }, `;
       } else {
-        queryFilter = "";
+        queryFilter = `where: {
+          _and: [
+            {block_timestamp: {${timeOperation}: ${queryTime}}}
+          ]
+        }, `;
       }
   }
 
@@ -175,20 +196,23 @@ query FeedQuery($offset: Int, $limit: Int) {
 `;
 };
 
-const loadMorePosts = () => {
-  const type = state.selectedTab ?? "all";
+const loadMorePosts = (isUpdate) => {
+  if (!selectedTab) {
+    return;
+  }
   const queryName = "FeedQuery";
 
-  if (state.selectedTab === "following" && !accountsFollowing) {
+  if (selectedTab === "following" && !accountsFollowing) {
     return;
   }
 
-  State.update({
-    isLoading: true,
-  });
-
-  fetchGraphQL(createQuery(type), queryName, {
-    offset: state.posts.length,
+  if (!isUpdate) {
+    setIsLoading(true);
+  }
+  const offset = isUpdate ? 0 : postsData.posts.length;
+  const limit = isUpdate ? 100 : LIMIT;
+  fetchGraphQL(createQuery(selectedTab, isUpdate), queryName, {
+    offset: offset,
     limit: LIMIT,
   }).then((result) => {
     if (result.status === 200 && result.body) {
@@ -209,34 +233,38 @@ const loadMorePosts = () => {
             return post;
           });
 
-          State.update({
-            isLoading: false,
-            posts: [...state.posts, ...filteredPosts],
-            postsCountLeft,
-          });
+          if (isUpdate) {
+            setNewUnseenPosts(filteredPosts);
+          } else {
+            setPostsData({
+              posts: [...postsData.posts, ...filteredPosts],
+              postsCountLeft,
+            });
+            setIsLoading(false);
+          }
           checkForOptimisticPostsHaveBeenReceived(newPosts);
         }
       }
+    }
+    if (!isUpdate && initialQueryTime === null) {
+      const newTime = postsData.posts && postsData.posts[0] ? postsData.posts[0].block_timestamp : Date.now() * 1000000;
+      setInitialQueryTime(newTime + 1000);
     }
   });
 };
 
 const clearOptimisticUpdate = () => {
   Storage.set("optimisticPosts", []);
-  State.update({
-    optimisticPosts: [],
-  });
+  setOptimisticPostsState([]);
 };
 const optimisticallyUpdatePost = (post) => {
   Storage.set("optimisticPosts", [post]);
-  State.update({
-    optimisticPosts: [post],
-  });
+  setOptimisticPostsState([post]);
 };
 
 const checkForOptimisticPostsHaveBeenReceived = (posts) => {
   const latestOptimisticPost =
-    (state.optimisticPosts && state.optimisticPosts[0]) ??
+    (optimisticPostsState && optimisticPostsState[0]) ??
     (Storage.get("optimisticPosts") && Storage.get("optimisticPosts")[0]);
   if (!latestOptimisticPost) return;
 
@@ -259,16 +287,67 @@ const checkForOptimisticPostsHaveBeenReceived = (posts) => {
   }
 };
 
-const hasMore = state.postsCountLeft !== state.posts.length && state.posts.length > 0;
+const displayNewPosts = () => {
+  if (newUnseenPosts.length > 0) {
+    stopFeedUpdates();
+    const initialQueryTime = newUnseenPosts[0].block_timestamp + 1000; // timestamp is getting rounded by 3 digits
+    const newTotalCount = postsData.postsCountLeft + newUnseenPosts.length;
+    setPostsData({
+      posts: [...newUnseenPosts, ...postsData.posts],
+      postsCountLeft: newTotalCount,
+    });
+    setNewUnseenPosts([]);
+    setInitialQueryTime(initialQueryTime);
+  }
+};
+const startFeedUpdates = () => {
+  if (initialQueryTime === null) return;
 
-if (!state.initialized && initialSelectedTab && initialSelectedTab !== state.selectedTab && sort) {
-  if (initialSelectedTab === "following" && !accountsFollowing) return null;
+  clearInterval(feedInterval);
+  const newFeedInterval = setInterval(() => {
+    loadMorePosts(true);
+  }, 5000);
+  setFeedInterval(newFeedInterval);
+};
 
-  State.update({ initialized: true, sort });
-  selectTab(initialSelectedTab);
+const stopFeedUpdates = () => {
+  clearInterval(feedInterval);
+};
+
+const [initialized, setInitialized] = useState(false);
+const [sortState, setSortState] = useState(false);
+const [selectedTab, setSelectedTab] = useState(false);
+const [optimisticPostsState, setOptimisticPostsState] = useState([]);
+const [initialQueryTime, setInitialQueryTime] = useState(null);
+const [feedInterval, setFeedInterval] = useState(null);
+const [newUnseenPosts, setNewUnseenPosts] = useState([]);
+const [postsData, setPostsData] = useState({ posts: [], postsCountLeft: 0 });
+const [isLoading, setIsLoading] = useState(false);
+
+useEffect(() => {
+  loadMorePosts(false);
+}, [selectedTab]);
+useEffect(() => {
+  loadMorePosts(false);
+}, [sortState]);
+useEffect(() => {
+  if (initialQueryTime === null) {
+    clearInterval(feedInterval);
+  } else {
+    startFeedUpdates();
+  }
+}, [initialQueryTime]);
+
+const hasMore = postsData.postsCountLeft !== postsData.posts.length && postsData.posts.length > 0;
+
+if (!initialized && initialSelectedTab && initialSelectedTab !== selectedTab && sort) {
+  setInitialized(true);
+  Storage.privateSet("selectedTab", selectedTab);
+  setSortState(sort);
+  setSelectedTab(initialSelectedTab);
 }
 
-const optimisticPosts = Storage.get("optimisticPosts") ?? state.optimisticPosts ?? [];
+const optimisticPosts = Storage.get("optimisticPosts") ?? optimisticPostsState ?? [];
 if (optimisticPosts.length > 0) {
   const timestamp = optimisticPosts[0].block_timestamp;
   if (!timestamp || Date.now() - timestamp / 1000000 > 60000) {
@@ -421,6 +500,14 @@ const OptimisticUpdatePost = styled.div`
     padding: 12px 0 0;
   }
 `;
+const NewActivity = styled.div`
+  text-align: right;
+  padding: 0px 10px;
+`;
+
+if (!selectedTab) {
+  return "Loading feeds...";
+}
 
 return (
   <>
@@ -461,42 +548,60 @@ return (
               ))}
             </>
           )}
-          {feeds.length > 1 && (
-            <FilterWrapper>
-              <PillSelect>
-                {feeds.map((feed) => (
-                  <PillSelectButton type="button" onClick={() => selectTab(feed)} selected={state.selectedTab === feed}>
-                    {feedLabels[feed] ?? feed}
-                  </PillSelectButton>
-                ))}
-              </PillSelect>
-            </FilterWrapper>
-          )}
-          <SortContainer>
-            <Sort>
-              <span className="label">Sort by:</span>
-              <Widget
-                src={`${REPL_ACCOUNT}/widget/Select`}
-                props={{
-                  noLabel: true,
-                  value: { text: optionsMap[sort], value: sort },
-                  onChange: ({ value }) => {
-                    Storage.set("queryapi:feed-sort", value);
-                    State.update({
-                      posts: [],
-                      postsCountLeft: 0,
-                      sort: value,
-                    });
-                    loadMorePosts();
-                  },
-                  options: [
-                    { text: "Most Recent", value: "timedesc" },
-                    { text: "Recent Comments", value: "recentcommentdesc" },
-                  ],
-                }}
-              />
-            </Sort>
-          </SortContainer>
+          <div className="row">
+            <div className="col">
+              {feeds.length > 1 && (
+                <FilterWrapper>
+                  <PillSelect>
+                    {feeds.map((feed) => (
+                      <PillSelectButton type="button" onClick={() => selectTab(feed)} selected={selectedTab === feed}>
+                        {feedLabels[feed] ?? feed}
+                      </PillSelectButton>
+                    ))}
+                  </PillSelect>
+                </FilterWrapper>
+              )}
+            </div>
+            <div className="col">
+              <SortContainer>
+                <Sort>
+                  <Widget
+                    src={`${REPL_ACCOUNT}/widget/Select`}
+                    props={{
+                      noLabel: true,
+                      value: { text: optionsMap[sort], value: sort },
+                      onChange: ({ value }) => selectSort(value),
+                      options: [
+                        { text: "Latest", value: "timedesc" },
+                        { text: "Last Commented", value: "recentcommentdesc" },
+                      ],
+                      border: "none",
+                    }}
+                  />
+                </Sort>
+              </SortContainer>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col"></div>
+            <div className="col">
+              {newUnseenPosts.length > 0 && (
+                <NewActivity>
+                  <Widget
+                    src="near/widget/DIG.Button"
+                    props={{
+                      label: `Refresh (${newUnseenPosts.length} New)`,
+                      onClick: displayNewPosts,
+                      iconLeft: "bi-arrow-clockwise",
+                      variant: "secondary",
+                      fill: "ghost",
+                      size: "small",
+                    }}
+                  />
+                </NewActivity>
+              )}
+            </div>
+          </div>
         </>
       )}
 
@@ -508,10 +613,10 @@ return (
             isLoading,
             loadMorePosts: () => {
               if (!isLoading) {
-                loadMorePosts();
+                loadMorePosts(false);
               }
             },
-            posts: state.posts,
+            posts: postsData.posts,
             showFlagAccountFeature: props.showFlagAccountFeature,
           }}
         />

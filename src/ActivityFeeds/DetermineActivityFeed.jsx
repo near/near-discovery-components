@@ -5,9 +5,13 @@ let lastPostSocialApi = Social.index("post", "main", {
   order: "desc",
 });
 
+if (lastPostSocialApi == null) {
+  return "Loading...";
+}
+
 State.init({
   // If QueryAPI Feed is lagging behind Social API, fallback to old widget.
-  shouldFallback: props.shouldFallback === "true" || props.shouldFallback === true,
+  shouldFallback: false,
 });
 
 function fetchGraphQL(operationsDoc, operationName, variables) {
@@ -38,14 +42,20 @@ fetchGraphQL(lastPostQuery, "IndexerQuery", {})
 
       const lag = nearSocialBlockHeight - feedIndexerBlockHeight;
       let shouldFallback = lag > 2 || !feedIndexerBlockHeight;
-      State.update({ shouldFallback });
+      if (shouldFallback === true) {
+        console.log(
+          "Falling back to Social index feed. Block difference is: ",
+          nearSocialBlockHeight - feedIndexerBlockHeight,
+        );
+        State.update({ shouldFallback });
+      }
     } else {
-      console.log("Falling back to old widget.");
+      console.log("Falling back to Social index feed. No QueryApi data received.");
       State.update({ shouldFallback: true });
     }
   })
   .catch((error) => {
-    console.log("Error while fetching GraphQL(falling back to old widget): ", error);
+    console.log("Error while fetching QueryApi feed (falling back to index feed): ", error);
     State.update({ shouldFallback: true });
   });
 

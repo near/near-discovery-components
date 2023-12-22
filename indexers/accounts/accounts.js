@@ -122,6 +122,12 @@ async function getBlock(block: Block) {
               return;
             }
             const accountId = Object.keys(functionCall.args.data)[0];
+            if (!functionCall.args.data[accountId]) {
+              console.log(
+                `Set operation did not have data for account ${accountId}`
+              );
+              return;
+            }
             return Object.keys(functionCall.args.data[accountId]).includes(
               "profile"
             );

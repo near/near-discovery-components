@@ -107,9 +107,6 @@ query IndexerQuery {
 
 const Post = styled.div`
   position: relative;
-  div[data-radix-popper-content-wrapper] {
-    z-index: 99999 !important;  //to override the inline popover auto index
-  }
   &::before {
     content: "";
     display: block;

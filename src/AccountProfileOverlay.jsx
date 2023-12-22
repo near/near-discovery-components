@@ -39,6 +39,7 @@ const HoverCardContent = styled("HoverCard.Content")`
   animation: fadeIn 200ms 100ms forwards;
   opacity: 0;
   pointer-events: none;
+  z-index: 1001;
 
   @keyframes fadeIn {
     0% {

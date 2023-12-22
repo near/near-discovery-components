@@ -107,7 +107,6 @@ query IndexerQuery {
 
 const Post = styled.div`
   position: relative;
-
   &::before {
     content: "";
     display: block;

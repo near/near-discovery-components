@@ -123,7 +123,9 @@ return (
           content: (
             <>
               <p>
-                <a href="/${REPL_ACCOUNT}/widget/NearOrg.CookieDetails/">See details on all cookies in use on near.org here</a>
+                <a href="/${REPL_ACCOUNT}/widget/NearOrg.CookieDetails/">
+                  See details on all cookies in use on near.org here
+                </a>
               </p>
             </>
           ),

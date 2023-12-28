@@ -311,7 +311,7 @@ return (
 
         {state.selectedTab === "code" && (
           <Widget
-            src={`bozon.near/widget/WidgetHistory.CodeHistory`}
+            src={`${REPL_BOZON}/widget/WidgetHistory.CodeHistory`}
             key={`code-${state.blockHeight}`}
             props={{
               pathToWidget: props.widgetPath,
@@ -323,7 +323,7 @@ return (
 
         {state.selectedTab === "history" && (
           <Widget
-            src={`bozon.near/widget/WidgetHistory.CodeHistory`}
+            src={`${REPL_BOZON}/widget/WidgetHistory.CodeHistory`}
             key={`history-${state.blockHeight}`}
             props={{
               pathToWidget: props.widgetPath,

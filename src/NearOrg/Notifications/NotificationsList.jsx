@@ -18,7 +18,7 @@ const renderItem = (item, i) => {
   return (
     <Widget
       src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.Notification"
-      key={JSON.stringify(item)}
+      key={`${initiator}-${item.blockHeight}-${i}`}
       props={{ initiator, ...item, manageNotification, permission }}
     />
   );

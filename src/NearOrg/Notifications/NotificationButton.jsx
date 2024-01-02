@@ -1,20 +1,22 @@
 const accountId = context.accountId;
-const moderatorAccount = props?.moderatorAccount || "${REPL_MODERATOR}";
 const notificationFeedSrc = "${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsList";
 
-const isLocalStorageSupported = props?.isLocalStorageSupported;
-const isNotificationSupported = props?.isNotificationSupported;
-const isPermisionGranted = props?.isPermisionGranted;
-const isPushManagerSupported = props?.isPushManagerSupported;
-const handleTurnOn = props?.handleTurnOn;
-const handleOnCancel = props?.handleOnCancel;
-const getNotificationLocalStorage = props?.getNotificationLocalStorage;
-const handleOnCancelBanner = props?.handleOnCancelBanner;
-const mobileView = props?.mobileView;
+let {
+  isLocalStorageSupported,
+  isNotificationSupported,
+  isPermisionGranted,
+  isPushManagerSupported,
+  handleTurnOn,
+  handleOnCancel,
+  getNotificationLocalStorage,
+  handleOnCancelBanner,
+  mobileView,
+  moderatorAccount,
+} = props;
 
-State.init({
-  open: false,
-});
+moderatorAccount = moderatorAccount ?? "${REPL_MODERATOR}";
+
+const [previewOpen, setPreviewOpen] = useState(false);
 
 const Wrapper = styled.div``;
 
@@ -117,7 +119,7 @@ const Button = ({ count }) => {
           variant: "secondary",
           style: { width: "45px", height: "45px" },
           href: "/notifications",
-          onClick: () => State.update({ open: !!state.open }),
+          onClick: () => setPreviewOpen(false),
         }}
       />
       <Counter count={count} />
@@ -131,13 +133,13 @@ const Notification = ({ count, disabled }) => {
   }
   return (
     <Wrapper
-      onMouseEnter={() => State.update({ open: true })}
-      onMouseLeave={() => State.update({ open: false })}
-      onClick={() => State.update({ open: false })}
+      onMouseEnter={() => setPreviewOpen(true)}
+      onMouseLeave={() => setPreviewOpen(false)}
+      onClick={() => setPreviewOpen(false)}
     >
       <Button count={count} />
-      <PreviewWrapper data-state={state.open}>
-        {state.open && (
+      <PreviewWrapper data-state={previewOpen}>
+        {previewOpen && (
           <PreviewContent>
             <Widget
               src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.Notifications"

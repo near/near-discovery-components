@@ -359,7 +359,14 @@ async function getBlock(block: Block) {
             return;
           }
           const accountId = Object.keys(functionCall.args.data)[0];
-          return Object.keys(functionCall.args.data[accountId]).includes(
+          const accountData = functionCall.args.data[accountId];
+          if (!accountData) {
+            console.log(
+              "Set operation did not have arg data for accountId in expected format"
+            );
+            return;
+          }
+          return Object.keys(accountData).includes(
             "widget"
           );
         })

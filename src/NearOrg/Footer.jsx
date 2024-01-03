@@ -207,6 +207,14 @@ const sections = [
         title: "Brand Toolkit",
         url: "https://near.org/brand",
       },
+      {
+        title: "Privacy",
+        url: "https://near.org/privacy",
+      },
+      {
+        title: "Terms of Use",
+        url: "https://near.org/terms",
+      },
     ],
   },
   {

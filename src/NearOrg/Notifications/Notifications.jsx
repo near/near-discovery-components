@@ -56,6 +56,11 @@ const Card = styled.div`
       border-top: none;
     }
   }
+
+  // hide default button from IndexFeed in favor of custom button
+  .btn.btn-primary {
+    display: none;
+  }
 `;
 
 const bannerNotNowTS = getNotificationLocalStorage()?.bannerNotNowTS;
@@ -106,7 +111,7 @@ return (
 
     <Widget
       src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsList"
-      props={{ showLimit, showInBox, manageNotification, permission }}
+      props={{ showLimit, manageNotification, permission }}
     />
   </Card>
 );

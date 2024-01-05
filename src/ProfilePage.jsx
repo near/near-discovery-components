@@ -39,14 +39,9 @@ const Wrapper = styled.div`
 `;
 
 const Main = styled.div`
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   gap: 40px;
-  grid-template-columns: 352px minmax(0, 1fr);
-  align-items: start;
-
-  @media (max-width: 1024px) {
-    grid-template-columns: minmax(0, 1fr);
-  }
 `;
 
 const BackgroundImage = styled.div`
@@ -76,6 +71,7 @@ const SidebarWrapper = styled.div`
   position: relative;
   z-index: 5;
   margin-top: -55px;
+  min-width: 352px;
 
   @media (max-width: 1024px) {
     margin-top: -40px;
@@ -83,6 +79,9 @@ const SidebarWrapper = styled.div`
 `;
 
 const Content = styled.div`
+  min-width: fit-content;
+  flex-grow: 1;
+
   .post {
     padding-left: 0;
     padding-right: 0;
@@ -132,6 +131,7 @@ const TabsButton = styled("Link")`
   outline: none;
   text-align: center;
   text-decoration: none !important;
+  white-space: nowrap;
 
   &:hover {
     color: #11181c;

@@ -1,6 +1,9 @@
 const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 
 const indexerAccount = props.indexerAccount || "dataplatform.near";
+const indexerFilter = props.indexerFilter || null;
+const fullFilter = indexerFilter ? indexerAccount + "/" + indexerFilter : indexerAccount;
+
 const [statuses, setIndexerStatuses] = useState([]);
 const [errors, setErrors] = useState("");
 function fetchGraphQL(operationsDoc, operationName, variables) {
@@ -15,7 +18,7 @@ function fetchGraphQL(operationsDoc, operationName, variables) {
   });
 }
 const query = `query MyQuery {
-  indexer_state(where: {function_name: {_like: "${indexerAccount}%"}}) {
+  indexer_state(where: {function_name: {_like: "${fullFilter}%"}}) {
     current_historical_block_height
     status
     current_block_height
@@ -64,7 +67,9 @@ return (
     <StatusTable>
       <thead>
         <tr>
-          <TableHeader>Indexers {indexerAccount}</TableHeader>
+          <TableHeader>
+            Indexers {indexerAccount} {indexerFilter}
+          </TableHeader>
           <TableHeader>Status</TableHeader>
           <TableHeader>Current Block Height</TableHeader>
           <TableHeader>Current Historical Block Height</TableHeader>

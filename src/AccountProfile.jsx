@@ -3,7 +3,33 @@ const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
 const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 const verifications = props.verifications;
 const showFlagAccountFeature = props.showFlagAccountFeature ?? false;
+const profile = props.profile;
 
+function returnProfileForUser(user) {
+  const rawImage =
+    user.profile_image_1 || user.profile_image_2 || user.profile_image_3;
+  const image =
+    rawImage && rawImage.indexOf("http") === 0
+      ? { url: rawImage }
+      : { ipfs_cid: rawImage };
+  const name = user.profile_name ?? "";
+  let tags = null;
+
+  if (user.profile_tags) {
+    tags = {};
+    user.profile_tags.forEach((tag) => (tags[tag] = ""));
+  }
+
+  if (image && tags) {
+    return {
+      image,
+      name,
+      tags,
+    };
+  }
+
+  return null;
+}
 const Wrapper = styled("Link")`
   display: inline-grid;
   width: 100%;

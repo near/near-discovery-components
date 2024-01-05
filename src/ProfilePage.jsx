@@ -164,6 +164,10 @@ const Bio = styled.div`
   }
 `;
 
+const ContributionGraphWrapper = styled.div`
+  margin: 0 0 48px;
+`;
+
 if (profile === null) {
   return "Loading";
 }
@@ -239,6 +243,10 @@ return (
                 </Bio>
               </>
             )}
+
+            <ContributionGraphWrapper>
+              <Widget src="${REPL_ACCOUNT}/widget/DeveloperProfile.ContributionGraph" props={{ accountId }} />
+            </ContributionGraphWrapper>
 
             <Widget
               src="${REPL_ACCOUNT}/widget/ActivityFeeds.DetermineActivityFeed"

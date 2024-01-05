@@ -1,5 +1,6 @@
 const accountId = props.accountId || context.accountId;
-const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
+const blockHeight = props.blockHeight;
+const blockTimestamp = props.blockTimestamp;
 const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 const verifications = props.verifications;
 const showFlagAccountFeature = props.showFlagAccountFeature ?? false;
@@ -148,9 +149,9 @@ const AccountProfile = (
           <Text small style={{ marginLeft: "auto" }}>
             Joined{" "}
             <Widget
-              src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
-              props={{ blockHeight: props.blockHeight }}
-            />{" "}
+              src="${REPL_ACCOUNT}/widget/TimeAgo"
+              props={{ blockHeight, blockTimestamp }}
+            />
             ago
           </Text>
         )}
@@ -168,7 +169,7 @@ return (
     src="${REPL_ACCOUNT}/widget/AccountProfileOverlay"
     props={{
       accountId: props.accountId,
-      profile,
+      profile: returnProfileForUser(profile),
       children: AccountProfile,
       placement: props.overlayPlacement,
       verifications,

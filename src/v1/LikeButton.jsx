@@ -84,7 +84,7 @@ const likeClick = () => {
     },
   };
 
-  if (!hasLike && props.notifyAccountId) {
+  if (!hasLike && props.notifyAccountId && props.notifyAccountId !== context.accountId) {
     data.index.notify = JSON.stringify({
       key: props.notifyAccountId,
       value: {

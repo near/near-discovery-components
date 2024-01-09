@@ -11,7 +11,7 @@ State.init({
   showToast: false,
   flaggedMessage: { header: "", detail: "" },
   content: JSON.parse(props.content) ?? undefined,
-  notifyAccountId: undefined,
+  notifyAccountId: accountId,
 });
 
 const extractNotifyAccountId = (parentItem) => {

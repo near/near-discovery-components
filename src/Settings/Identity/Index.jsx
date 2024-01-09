@@ -50,7 +50,15 @@ return (
       }}
     />
 
-    {!props.idosConnected && (
+    <Widget
+      src="${REPL_ACCOUNT}/widget/Settings.Identity.Onboarding.Cards"
+      props={{
+        idosConnected: props.idosConnected,
+        connectIdOS: props.connectIdOS,
+      }}
+    />
+
+    {/* {!props.idosConnected && (
       <Widget
         src="${REPL_ACCOUNT}/widget/DIG.Button"
         props={{
@@ -60,7 +68,7 @@ return (
           onClick: props.connectIdOS,
         }}
       />
-    )}
+    )} */}
 
     {props.idosConnected && (
       <Widget src="${REPL_ACCOUNT}/widget/Settings.Identity.Verifications.Index" props={{ ...props }} />

@@ -4,15 +4,11 @@ const blockTimestamp = props.blockTimestamp;
 const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 const verifications = props.verifications;
 const showFlagAccountFeature = props.showFlagAccountFeature ?? false;
-const profile = props.profile;
+const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
 
 function returnProfileForUser(user) {
-  const rawImage =
-    user.profile_image_1 || user.profile_image_2 || user.profile_image_3;
-  const image =
-    rawImage && rawImage.indexOf("http") === 0
-      ? { url: rawImage }
-      : { ipfs_cid: rawImage };
+  const rawImage = user.profile_image_1 || user.profile_image_2 || user.profile_image_3;
+  const image = rawImage && rawImage.indexOf("http") === 0 ? { url: rawImage } : { ipfs_cid: rawImage };
   const name = user.profile_name ?? "";
   let tags = null;
 
@@ -147,11 +143,7 @@ const AccountProfile = (
 
         {props.blockHeight && (
           <Text small style={{ marginLeft: "auto" }}>
-            Joined{" "}
-            <Widget
-              src="${REPL_ACCOUNT}/widget/TimeAgo"
-              props={{ blockHeight, blockTimestamp }}
-            />
+            Joined <Widget src="${REPL_ACCOUNT}/widget/TimeAgo" props={{ blockHeight, blockTimestamp }} />
             ago
           </Text>
         )}

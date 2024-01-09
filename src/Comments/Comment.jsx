@@ -14,6 +14,14 @@ State.init({
   notifyAccountId: accountId,
 });
 
+const extractNotifyAccountId = (parentItem) => {
+  if (!parentItem || parentItem.type !== "social" || !parentItem.path) {
+    return undefined;
+  }
+  const accountId = parentItem.path.split("/")[0];
+  return `${accountId}/post/main` === parentItem.path ? accountId : undefined;
+};
+
 const optimisticallyHideItem = (message) => {
   // State change here prevents Social.set from firing
   // State.update({
@@ -267,7 +275,7 @@ return (
                   src="${REPL_ACCOUNT}/widget/Comments.Compose"
                   props={{
                     initialText: `@${accountId}, `,
-                    notifyAccountId: accountId,
+                    notifyAccountId: extractNotifyAccountId(state.content.item),
                     item: item,
                     onComment: () => State.update({ showReply: false }),
                   }}

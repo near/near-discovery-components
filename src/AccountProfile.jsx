@@ -1,9 +1,32 @@
 const accountId = props.accountId || context.accountId;
-const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
+const blockHeight = props.blockHeight;
+const blockTimestamp = props.blockTimestamp;
 const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 const verifications = props.verifications;
 const showFlagAccountFeature = props.showFlagAccountFeature ?? false;
+const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
 
+function returnProfileForUser(user) {
+  const rawImage = user.profile_image_1 || user.profile_image_2 || user.profile_image_3;
+  const image = rawImage && rawImage.indexOf("http") === 0 ? { url: rawImage } : { ipfs_cid: rawImage };
+  const name = user.profile_name ?? "";
+  let tags = null;
+
+  if (user.profile_tags) {
+    tags = {};
+    user.profile_tags.forEach((tag) => (tags[tag] = ""));
+  }
+
+  if (image && tags) {
+    return {
+      image,
+      name,
+      tags,
+    };
+  }
+
+  return null;
+}
 const Wrapper = styled("Link")`
   display: inline-grid;
   width: 100%;
@@ -120,11 +143,7 @@ const AccountProfile = (
 
         {props.blockHeight && (
           <Text small style={{ marginLeft: "auto" }}>
-            Joined{" "}
-            <Widget
-              src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
-              props={{ blockHeight: props.blockHeight }}
-            />{" "}
+            Joined <Widget src="${REPL_ACCOUNT}/widget/TimeAgo" props={{ blockHeight, blockTimestamp }} />
             ago
           </Text>
         )}
@@ -142,7 +161,7 @@ return (
     src="${REPL_ACCOUNT}/widget/AccountProfileOverlay"
     props={{
       accountId: props.accountId,
-      profile,
+      profile: returnProfileForUser(profile),
       children: AccountProfile,
       placement: props.overlayPlacement,
       verifications,

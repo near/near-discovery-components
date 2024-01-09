@@ -1,5 +1,4 @@
 const [showBanner, setShowBanner] = useState(true);
-const [idosData, setIdosData] = useState(null);
 const [showSuccessTooltip, setShowSuccessTooltip] = useState(props.showTooltip);
 
 const Wrapper = styled.div`
@@ -50,25 +49,17 @@ return (
       }}
     />
 
-    <Widget
-      src="${REPL_ACCOUNT}/widget/Settings.Identity.Onboarding.Cards"
-      props={{
-        idosConnected: props.idosConnected,
-        connectIdOS: props.connectIdOS,
-      }}
-    />
-
-    {/* {!props.idosConnected && (
+    {!props.idosConnected && (
       <Widget
-        src="${REPL_ACCOUNT}/widget/DIG.Button"
+        src="${REPL_ACCOUNT}/widget/Settings.Identity.Onboarding.Cards"
         props={{
-          variant: "primary",
-          label: "Connect to idOS",
-          disabled: disabled ?? !context.accountId,
-          onClick: props.connectIdOS,
+          idosConnected: props.idosConnected,
+          connectIdOS: props.connectIdOS,
+          walletImages: props.walletImages,
+          connectedWallet: props.connectedWallet,
         }}
       />
-    )} */}
+    )}
 
     {props.idosConnected && (
       <Widget src="${REPL_ACCOUNT}/widget/Settings.Identity.Verifications.Index" props={{ ...props }} />

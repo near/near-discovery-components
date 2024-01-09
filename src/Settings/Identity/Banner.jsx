@@ -1,7 +1,5 @@
 let { open, onClick } = props;
 
-const idOSLearnLink = "https://idos-1.gitbook.io/idos-docs";
-
 const Wrapper = styled.div`
   display: ${(p) => (p.open ? "flex" : "none")};
   align-items: start;
@@ -66,30 +64,7 @@ return (
     <Card>
       <Icon className="ph ph-info" />
       <Content>
-        <Text>
-          To ensure the privacy of your data, all credentials and preferences you enter on this settings page will be
-          securely stored in a decentralized identity operating system (idOS). Learn more about idOS{" "}
-          <TextLink href={idOSLearnLink} target="_blank">
-            here
-          </TextLink>
-          .
-        </Text>
-
-        <Text>
-          To use idOS we recommend you to use next wallet providers:{" "}
-          <TextLink href="https://wallet.meteorwallet.app" target="_blank">
-            Meteor Wallet,
-          </TextLink>{" "}
-          <TextLink href="https://www.herewallet.app" target="_blank">
-            HERE Wallet,
-          </TextLink>{" "}
-          <TextLink href="https://wallet.nightly.app" target="_blank">
-            Nightly Wallet,
-          </TextLink>{" "}
-          <TextLink href="https://app.mynearwallet.com" target="_blank">
-            MyNearWallet
-          </TextLink>{" "}
-        </Text>
+        <Text>To begin using and displaying identity data in your settings, completed the onboarding steps below.</Text>
       </Content>
       <Icon className="ph ph-x" type="button" onClick={onClick} />
     </Card>

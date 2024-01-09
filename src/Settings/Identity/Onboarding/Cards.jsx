@@ -1,4 +1,4 @@
-let { idosConnected, connectIdOS } = props;
+let { idosConnected, connectIdOS, walletImages, connectedWallet } = props;
 
 const idOSLearnLink = "https://idos-1.gitbook.io/idos-docs";
 
@@ -42,6 +42,51 @@ const Title = styled.h4`
   font-weight: 700;
 `;
 
+const ImagesWrapper = styled.div`
+  display: flex;
+  gap: 16px;
+  flex: 1 0 auto;
+`;
+
+const WalletImageWrapper = styled.div`
+  display: flex;
+  width: 60px;
+  height: 60px;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: 50%;
+  background: var(--white);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  opacity: ${(p) => (p.active ? "1" : "0.5")};
+  transform: ${(p) => (p.active ? "scale(1.3)" : "scale(1)")};
+  margin: auto 0;
+`;
+
+const WalletImage = styled.img`
+  width: 55px;
+  height: 55px;
+  padding: 4px;
+`;
+
+const Checkmark = styled.i`
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  display: block;
+  background: var(--green8);
+  border-radius: 50%;
+  color: var(--white);
+  font-size: 12px;
+  padding: 4px;
+`;
+
+const TextWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
 const Text = styled.span`
   font: var(--text-base);
   color: ${(p) => p.color};
@@ -50,13 +95,12 @@ const Text = styled.span`
 const TextLink = styled("Link")`
   color: var(--violet8);
   text-decoration: underline;
+  font-weight: 700;
 `;
 
 const ImageWrapper = styled.div`
   padding: 0 24px;
 `;
-
-// https://ipfs.near.social/ipfs/bafkreigb7fwbwomsi2hg3to5tbapsnl43vfp6qdctnqhv5w4et7q5oqtnq
 
 return (
   <Wrapper>
@@ -65,6 +109,14 @@ return (
         1
       </Step>
       <Title>Log into idOS compatible wallet</Title>
+      <ImagesWrapper>
+        {walletImages.map((image) => (
+          <WalletImageWrapper key={image.name} active={connectedWallet === image.name} title={image.name}>
+            <WalletImage src={image.src} alt={image.name} />
+            {connectedWallet === image.name && <Checkmark className="ph-bold ph-check" />}
+          </WalletImageWrapper>
+        ))}
+      </ImagesWrapper>
     </Card>
 
     <Card background="#0d0d0f">
@@ -83,14 +135,18 @@ return (
           }}
         />
       </ImageWrapper>
-      <Text color="var(--sand10)">
-        All your credentials and preferences on this settings page will be securely stored in a decentralized identity
-        operating system (idOS). To view your data, sign up or sign in.
-        <br /> Learn more about idOS
-        <TextLink href={idOSLearnLink} target="_blank">
-          here
-        </TextLink>
-      </Text>
+      <TextWrapper>
+        <Text color="var(--sand10)">
+          All your credentials and preferences on this settings page will be securely stored in a decentralized identity
+          operating system (idOS). To view your data, sign up or sign in.
+        </Text>
+        <Text color="var(--sand10)">
+          Learn more about idOS
+          <TextLink href={idOSLearnLink} target="_blank">
+            here
+          </TextLink>
+        </Text>
+      </TextWrapper>
       {!idosConnected && (
         <Widget
           src="${REPL_ACCOUNT}/widget/DIG.Button"

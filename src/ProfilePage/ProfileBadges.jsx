@@ -124,9 +124,9 @@ if (state.verifications) {
           </svg>
           <VerificationText secondary>
             Human by{" "}
-            <a href={"https://" + state.verifications.human_provider + "/"} target="_new">
+            <Link href={`https://${state.verifications.human_provider}/`} target="_blank">
               {state.verifications.human_provider}
-            </a>
+            </Link>
           </VerificationText>
         </div>
       )}

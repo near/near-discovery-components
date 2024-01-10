@@ -1,3 +1,5 @@
+let { idosConnected, connectIdOS, walletImages, connectedWallet, ...forwardedProps } = props;
+
 const [showBanner, setShowBanner] = useState(true);
 const [showSuccessTooltip, setShowSuccessTooltip] = useState(props.showTooltip);
 
@@ -29,10 +31,10 @@ const Icon = styled.i`
 const bannerToggle = useCallback(() => setShowBanner(!showBanner), [showBanner]);
 
 useEffect(() => {
-  if (!props.idosConnected && props.connectIdOS) {
-    props.connectIdOS();
+  if (!idosConnected && connectIdOS) {
+    connectIdOS();
   }
-}, [props.idosConnected, props.connectIdOS]);
+}, [idosConnected, connectIdOS]);
 
 return (
   <Wrapper>
@@ -49,20 +51,20 @@ return (
       }}
     />
 
-    {!props.idosConnected && (
+    {!idosConnected && (
       <Widget
         src="${REPL_ACCOUNT}/widget/Settings.Identity.Onboarding.Cards"
         props={{
-          idosConnected: props.idosConnected,
-          connectIdOS: props.connectIdOS,
-          walletImages: props.walletImages,
-          connectedWallet: props.connectedWallet,
+          idosConnected,
+          connectIdOS,
+          walletImages,
+          connectedWallet,
         }}
       />
     )}
 
     {props.idosConnected && (
-      <Widget src="${REPL_ACCOUNT}/widget/Settings.Identity.Verifications.Index" props={{ ...props }} />
+      <Widget src="${REPL_ACCOUNT}/widget/Settings.Identity.Verifications.Index" props={{ ...forwardedProps }} />
     )}
 
     {showSuccessTooltip && (

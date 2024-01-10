@@ -1,6 +1,8 @@
 let { idosConnected, connectIdOS, walletImages, connectedWallet } = props;
 
 const idOSLearnLink = "https://idos-1.gitbook.io/idos-docs";
+const createAccountUrl =
+  "https://app.fractal.id/authorize?client_id=PXAbBxPErSPMXiKmMYQ3ged8Qxwqg1Px7ymhsuhaGP4&redirect_uri=https%3A%2F%2Fnear.org%2Fsettings&response_type=code&scope=contact%3Aread%20verification.uniqueness%3Aread%20verification.uniqueness.details%3Aread%20verification.idos%3Aread%20verification.idos.details%3Aread%20verification.wallet-near%3Aread%20verification.wallet-near.details%3Aread";
 
 const Wrapper = styled.div`
   display: grid;
@@ -117,6 +119,15 @@ return (
           </WalletImageWrapper>
         ))}
       </ImagesWrapper>
+      <Widget
+        src="${REPL_ACCOUNT}/widget/DIG.Button"
+        props={{
+          variant: "primary",
+          label: "Sign In",
+          disabled: context.accountId,
+          href: "/signin",
+        }}
+      />
     </Card>
 
     <Card background="#0d0d0f">
@@ -147,17 +158,24 @@ return (
           </TextLink>
         </Text>
       </TextWrapper>
-      {!idosConnected && (
-        <Widget
-          src="${REPL_ACCOUNT}/widget/DIG.Button"
-          props={{
-            variant: "affirmative",
-            label: "Sign In",
-            disabled: !context.accountId,
-            onClick: connectIdOS,
-          }}
-        />
-      )}
+      <Widget
+        src="${REPL_ACCOUNT}/widget/DIG.Button"
+        props={{
+          variant: "affirmative",
+          label: "Sign In",
+          disabled: !context.accountId || idosConnected,
+          onClick: connectIdOS,
+        }}
+      />
+      <Widget
+        src="${REPL_ACCOUNT}/widget/DIG.Button"
+        props={{
+          variant: "ghost",
+          label: "Sign Up",
+          disabled: !context.accountId || idosConnected,
+          href: createAccountUrl,
+        }}
+      />
     </Card>
   </Wrapper>
 );

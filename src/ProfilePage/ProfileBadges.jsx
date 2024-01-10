@@ -149,9 +149,9 @@ if (state.verifications) {
           </svg>
           <VerificationText secondary>
             KYC by{" "}
-            <a href={"https://" + state.verifications.kyc_provider + "/"} target="_new">
+            <Link href={`https://${state.verifications.kyc_provider}/`} target="_blank">
               {state.verifications.kyc_provider}
-            </a>
+            </Link>
           </VerificationText>
         </div>
       )}

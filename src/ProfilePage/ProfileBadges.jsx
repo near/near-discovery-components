@@ -1,10 +1,12 @@
 const accountId = props.accountId;
+// if props.verifications passed in then fetching the verifications from the graphql is ignored
+const verifications = props.verifications;
 if (!accountId || !context.accountId) return null;
 
 const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 State.init({
-  verifications: null,
-  loadingState: "none",
+  verifications: verifications ?? null,
+  loadingState: verifications ? "loaded" : "none",
 });
 
 const fetchGraphQL = (operationsDoc, operationName, variables) => {

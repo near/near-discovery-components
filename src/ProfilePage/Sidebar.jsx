@@ -236,6 +236,10 @@ const FollowButtonWrapper = styled.div`
   }
 `;
 
+const Verifications = styled.div`
+  padding: 0;
+`;
+
 return (
   <Wrapper>
     <Avatar>
@@ -335,6 +339,9 @@ return (
           </button>
         </OverlayTrigger>
       </Actions>
+      <Verifications>
+        <Widget src="${REPL_ACCOUNT}/widget/ProfilePage.ProfileBadges" props={{ accountId }} />
+      </Verifications>
     </Section>
 
     {tags.length > 0 && (

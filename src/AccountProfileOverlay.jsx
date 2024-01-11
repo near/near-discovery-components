@@ -160,37 +160,7 @@ const overlay = (
       </div>
 
       {verifications && (
-        <div style={{}}>
-          <div>
-            <Widget src="${REPL_ACCOUNT}/widget/Settings.Identity.Verifications.Icon" props={{ type: "base" }} />
-            <VerificationText>Verified User</VerificationText>
-          </div>
-          {verifications.human_provider && (
-            <div style={{ textAlign: "bottom" }}>
-              <Widget
-                src="${REPL_ACCOUNT}/widget/Settings.Identity.Verifications.Icon"
-                props={{ type: "i-am-human" }}
-              />
-              <VerificationText secondary>
-                Human by{" "}
-                <Link href={`https://${verifications.human_provider}/`} target="_blank">
-                  {verifications.human_provider}
-                </Link>
-              </VerificationText>
-            </div>
-          )}
-          {verifications.kyc_provider && (
-            <div>
-              <Widget src="${REPL_ACCOUNT}/widget/Settings.Identity.Verifications.Icon" props={{ type: "kyc" }} />
-              <VerificationText secondary>
-                KYC by{" "}
-                <Link href={`https://${verifications.kyc_provider}/`} target="_blank">
-                  {verifications.kyc_provider}
-                </Link>
-              </VerificationText>
-            </div>
-          )}
-        </div>
+        <Widget src="${REPL_ACCOUNT}/widget/ProfilePage.ProfileBadges" props={{ accountId, verifications }} />
       )}
 
       {props.scope === "friends" ? (

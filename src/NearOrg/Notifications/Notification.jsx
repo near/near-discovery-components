@@ -149,7 +149,7 @@ const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 const ordinaryNotification = ["follow", "unfollow", "poke"].indexOf(type) >= 0;
 
 // Assert is a valid type
-const notificationMessageByType = createNotificationMessage(type, path, post, message);
+const notificationMessageByType = createNotificationMessage && createNotificationMessage(type, path, post, message);
 if (!notificationMessageByType) return "";
 
 const previewContent = getNotificationContent(type, path, post, context, accountId, blockHeight);

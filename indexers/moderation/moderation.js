@@ -54,6 +54,18 @@ async function getBlock(block: Block) {
         args: base64decode(functionCallOperation.args),
       }))
       .filter((functionCall) => {
+        if (
+            !functionCall ||
+            !functionCall.args ||
+            !functionCall.args.data ||
+            !Object.keys(functionCall.args.data) ||
+            !Object.keys(functionCall.args.data)[0]
+        ) {
+          console.log(
+              "Set operation did not have arg data in expected format"
+          );
+          return;
+        }
         const accountId = Object.keys(functionCall.args.data)[0];
         return (
           functionCall.args.data[accountId].moderate ||

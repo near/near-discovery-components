@@ -298,7 +298,7 @@ async function getBlock(block: Block) {
   const lineDiff = new Diff();
   lineDiff.tokenize = function (value) {
     let retLines = [],
-      linesAndNewlines = value.split(new RegExp("(\\n|\r\\n)"));
+    linesAndNewlines = value.split(new RegExp("(\\n|\r\\n)"));
 
     // Ignore the final empty token that occurs if the string ends with a new line
     if (!linesAndNewlines[linesAndNewlines.length - 1]) {
@@ -327,8 +327,14 @@ async function getBlock(block: Block) {
   // =============================
 
   function base64decode(encodedValue) {
-    let buff = Buffer.from(encodedValue, "base64");
-    return JSON.parse(buff.toString("utf-8"));
+    try {
+      const buff = Buffer.from(encodedValue, "base64");
+      const str = buff.toString("utf-8").replace(/\\xa0/g, ' ');
+      return JSON.parse(str);
+    }
+    catch (error) {
+      console.log('Error parsing JSON - skipping data for "functionCallOperation.args"', error);
+    }
   }
 
   const SOCIAL_DB = "social.near";
@@ -347,19 +353,26 @@ async function getBlock(block: Block) {
         }))
         .filter((functionCall) => {
           if (
-              !functionCall ||
-              !functionCall.args ||
-              !functionCall.args.data ||
-              !Object.keys(functionCall.args.data) ||
-              !Object.keys(functionCall.args.data)[0]
+            !functionCall ||
+            !functionCall.args ||
+            !functionCall.args.data ||
+            !Object.keys(functionCall.args.data) ||
+            !Object.keys(functionCall.args.data)[0]
           ) {
             console.log(
-                "Set operation did not have arg data in expected format"
+              "Set operation did not have arg data in expected format"
             );
             return;
           }
           const accountId = Object.keys(functionCall.args.data)[0];
-          return Object.keys(functionCall.args.data[accountId]).includes(
+          const accountData = functionCall.args.data[accountId];
+          if (!accountData) {
+            console.log(
+              "Set operation did not have arg data for accountId in expected format"
+            );
+            return;
+          }
+          return Object.keys(accountData).includes(
             "widget"
           );
         })
@@ -412,6 +425,8 @@ async function getBlock(block: Block) {
             continue;
           }
 
+          const metadata = componentData["metadata"];
+
           const code = componentData[""] || "";
           let previousCode = "";
           let linesAdded = 0;
@@ -458,6 +473,13 @@ async function getBlock(block: Block) {
             if (result.removed) linesRemoved += result.count;
           });
 
+          let forkSource = metadata?.fork_of ? metadata?.fork_of.split('@')[0]: null;
+          let forkBlockHeight = metadata?.fork_of ? metadata?.fork_of.split('@')[1]: null;
+          if (forkSource === `${componentAuthorId}/widget/${componentName}`) {
+            forkSource = null;
+            forkBlockHeight = null;
+          }
+
           const version = {
             block_height: blockHeight,
             block_timestamp_ms: blockTimestampMs,
@@ -467,6 +489,13 @@ async function getBlock(block: Block) {
             lines_added: linesAdded,
             lines_removed: linesRemoved,
             receipt_id: receiptId,
+            name: metadata?.name,
+            image_ipfs_cid: metadata?.image?.ipfs_cid,
+            description: metadata?.description,
+            fork_of_source: forkSource,
+            fork_of_block_height: forkBlockHeight,
+            tags: metadata?.tags ? Object.keys(metadata.tags).join(',') : null,
+            website: metadata?.website
           };
 
           console.log(
@@ -482,6 +511,13 @@ async function getBlock(block: Block) {
               "code",
               "lines_added",
               "lines_removed",
+              "name",
+              "image_ipfs_cid",
+              "description",
+              "fork_of_source",
+              "fork_of_block_height",
+              "tags",
+              "website"
             ]
           );
 

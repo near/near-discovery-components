@@ -243,19 +243,19 @@ const LogoLinks = styled.div`
 
 const web3Teams = [
   {
-    url: "https://caldera.xyz",
+    url: "https://docs.caldera.xyz/about/alternative-da",
     name: "Caldera",
     ipfsImage: ipfsImages.logos.caldera,
     height: "28px",
   },
   {
-    url: "https://dymension.xyz",
+    url: "https://docs.dymension.xyz/build/adv-guide/roller-adv/da-light-client",
     name: "Dymension",
     ipfsImage: ipfsImages.logos.dymension,
     height: "28px",
   },
   {
-    url: "https://fluentlabs.xyz",
+    url: "https://docs.fluentlabs.xyz/learn/introduction/what-is-fluent#app-deployment-models",
     name: "Fluent",
     ipfsImage: ipfsImages.logos.fluent,
     height: "24px",
@@ -267,31 +267,31 @@ const web3Teams = [
     height: "16px",
   },
   {
-    url: "https://www.starknet.io",
+    url: "https://docs.starknet.io/documentation/architecture_and_concepts/Network_Architecture/on-chain-data/",
     name: "Starknet",
     ipfsImage: ipfsImages.logos.starknet,
     height: "16px",
   },
   {
-    url: "https://docs.vistara.dev",
+    url: "https://docs.vistara.dev/rollups/create-a-rollup#get-started",
     name: "Vistara",
     ipfsImage: ipfsImages.logos.vistara,
     height: "29px",
   },
   {
-    url: "https://altlayer.io",
+    url: "https://docs.altlayer.io/altlayer-documentation/core-features-of-altlayers-in-house-rollup-stack/modular",
     name: "Altlayer",
     ipfsImage: ipfsImages.logos.altlayer,
     height: "29px",
   },
   {
-    url: "https://www.optimism.io",
+    url: "https://docs.optimism.io/builders/chain-operators/hacks/data-availability#overview",
     name: "Optimism",
     ipfsImage: ipfsImages.logos.optimism,
     height: "29px",
   },
   {
-    url: "https://arbitrum.io",
+    url: "https://docs.arbitrum.io/inside-anytrust#data-availability-servers",
     name: "Arbitrum",
     ipfsImage: ipfsImages.logos.arbitrum,
     height: "29px",

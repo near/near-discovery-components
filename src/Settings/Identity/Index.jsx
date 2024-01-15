@@ -31,10 +31,10 @@ const Icon = styled.i`
 const bannerToggle = useCallback(() => setShowBanner(!showBanner), [showBanner]);
 
 useEffect(() => {
-  if (!idosConnected && connectIdOS) {
+  if (connectIdOS) {
     connectIdOS();
   }
-}, [idosConnected, connectIdOS]);
+}, [connectIdOS]);
 
 return (
   <Wrapper>

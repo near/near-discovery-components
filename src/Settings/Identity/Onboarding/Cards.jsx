@@ -163,14 +163,14 @@ return (
         props={{
           variant: "affirmative",
           label: "Sign In",
-          disabled: !context.accountId || idosConnected,
+          // disabled: !context.accountId || idosConnected,
           onClick: connectIdOS,
         }}
       />
       <Widget
         src="${REPL_ACCOUNT}/widget/DIG.Button"
         props={{
-          variant: "ghost",
+          variant: "secondary",
           label: "Sign Up",
           disabled: !context.accountId || idosConnected,
           href: createAccountUrl,

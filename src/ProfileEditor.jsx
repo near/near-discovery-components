@@ -84,7 +84,7 @@ return (
       </div>
       <div className="col-lg-6">
         <div>
-          <Widget src="${REPL_ACCOUNT}/widget/ProfilePage" props={{ accountId, profile: state.profile }} />
+          <Widget src="${REPL_ACCOUNT}/widget/ProfilePage" props={{ accountId, profile: state.profile, stack: true }} />
         </div>
       </div>
     </div>

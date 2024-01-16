@@ -285,12 +285,6 @@ const web3Teams = [
     height: "29px",
   },
   {
-    url: "https://docs.optimism.io/builders/chain-operators/hacks/data-availability#overview",
-    name: "Optimism",
-    ipfsImage: ipfsImages.logos.optimism,
-    height: "29px",
-  },
-  {
     url: "https://docs.arbitrum.io/inside-anytrust#data-availability-servers",
     name: "Arbitrum",
     ipfsImage: ipfsImages.logos.arbitrum,

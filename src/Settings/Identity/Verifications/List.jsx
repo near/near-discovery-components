@@ -79,14 +79,13 @@ const Icon = styled.i`
 
 const IconSealUser = () => (
   <IconWrapper background="#f1eefe">
-    <Icon className="ph-fill ph-seal" color="#7C66DC" size="18px" />
-    <Icon className="ph-bold ph-user" color="var(--white)" size="8px" fit />
+    <Widget src="${REPL_ACCOUNT}/widget/Settings.Identity.Verifications.Icon" props={{ type: "i-am-human" }} />
   </IconWrapper>
 );
 
 const IconSealCheck = () => (
   <IconWrapper background="#e5fbeb">
-    <Icon className="ph-fill ph-seal-check" color="#3cb179" size="18px" />
+    <Widget src="${REPL_ACCOUNT}/widget/Settings.Identity.Verifications.Icon" props={{ type: "kyc" }} />
   </IconWrapper>
 );
 

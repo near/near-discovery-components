@@ -31,7 +31,7 @@ async function getBlock(block: Block) {
     let call = calls[index];
     console.log("call", call);
     try {
-      if (call.args.token_spec) {
+      if (call && call.args && call.args.token_spec) {
         const accountId = call.args.token_spec[0][0];
         const issuance = call.args.token_spec[0][1][0];
         if (accountId && issuance) {

@@ -38,26 +38,20 @@ const IconWrapper = styled.div`
 const Icon = styled.i`
   color: ${(p) => p.color ?? "var(--sand11)"};
   font-size: ${(p) => p.size ?? "20px"};
-  ${(p) =>
-    p.fit &&
-    `
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  `}
 `;
 
 const IconSealUser = () => (
   <IconWrapper background="#f1eefe">
-    <Icon className="ph-fill ph-seal" color="#7C66DC" size="28px" />
-    <Icon className="ph-bold ph-user" color="var(--white)" size="14px" fit />
+    <Widget
+      src="${REPL_ACCOUNT}/widget/Settings.Identity.Verifications.Icon"
+      props={{ type: "i-am-human", size: 28 }}
+    />
   </IconWrapper>
 );
 
 const IconSealCheck = () => (
   <IconWrapper background="#e5fbeb">
-    <Icon className="ph-fill ph-seal-check" color="#3cb179" size="28px" />
+    <Widget src="${REPL_ACCOUNT}/widget/Settings.Identity.Verifications.Icon" props={{ type: "kyc", size: 28 }} />
   </IconWrapper>
 );
 

@@ -501,8 +501,6 @@ const onSearchResultClick = ({ searchPosition, queryID, objectID, eventName }) =
     // This will trigger the Insights widget:
     State.update({ event });
   }, 100);
-
-  handleCloseSearchMenu();
 };
 
 const topmostAccounts = () => {
@@ -519,7 +517,7 @@ const topmostAccounts = () => {
   }
 
   return output.map((profile) => (
-    <Item key={profile.accountId}>
+    <Item key={profile.accountId} onClick={handleCloseSearchMenu}>
       <Widget
         src="${REPL_ACCOUNT}/widget/Search.DropdownAccountCard"
         props={{
@@ -580,7 +578,7 @@ const topmostComponents = (apps) => {
   const queryID = apps ? state.apps.queryID : state.components.queryID;
   const eventName = apps ? "App" : "Component";
   return output.map((component, i) => (
-    <Item key={`${component.accountId}/widget/${component.widgetName}`}>
+    <Item key={`${component.accountId}/widget/${component.widgetName}`} onClick={handleCloseSearchMenu}>
       <Widget
         src="${REPL_ACCOUNT}/widget/Search.ComponentCard"
         props={{
@@ -612,7 +610,7 @@ const topmostPosts = () => {
   }
 
   return output.map((post, i) => (
-    <Item key={`${post.accountId}/${post.postType}/${post.blockHeight}`}>
+    <Item key={`${post.accountId}/${post.postType}/${post.blockHeight}`} onClick={handleCloseSearchMenu}>
       <Widget
         src="${REPL_ACCOUNT}/widget/Search.PostCard"
         props={{

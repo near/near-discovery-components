@@ -28,8 +28,6 @@ const Icon = styled.i`
   cursor: pointer;
 `;
 
-const bannerToggle = useCallback(() => setShowBanner(!showBanner), [showBanner]);
-
 useEffect(() => {
   if (connectIdOS) {
     connectIdOS();
@@ -38,20 +36,7 @@ useEffect(() => {
 
 return (
   <Wrapper>
-    <Title>
-      Identity &amp; data privacy
-      {!idosConnected && <Icon className="ph ph-info" onClick={bannerToggle} />}
-    </Title>
-
-    {!idosConnected && (
-      <Widget
-        src="${REPL_ACCOUNT}/widget/Settings.Identity.Banner"
-        props={{
-          open: showBanner,
-          onClick: bannerToggle,
-        }}
-      />
-    )}
+    <Title>Identity &amp; data privacy</Title>
 
     {!idosConnected && (
       <Widget

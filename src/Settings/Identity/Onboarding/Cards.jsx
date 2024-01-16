@@ -149,7 +149,7 @@ return (
       <TextWrapper>
         <Text color="var(--sand10)">
           All your credentials and preferences on this settings page will be securely stored in a decentralized identity
-          operating system (idOS). To view your data, sign up or sign in.
+          operating system (idOS). Sign in to view your data.
         </Text>
         <Text color="var(--sand10)">
           Learn more about idOS
@@ -163,15 +163,6 @@ return (
         props={{
           variant: "affirmative",
           label: "Sign In",
-          // disabled: !context.accountId || idosConnected,
-          onClick: connectIdOS,
-        }}
-      />
-      <Widget
-        src="${REPL_ACCOUNT}/widget/DIG.Button"
-        props={{
-          variant: "secondary",
-          label: "Sign Up",
           disabled: !context.accountId || idosConnected,
           href: createAccountUrl,
         }}

@@ -40,16 +40,18 @@ return (
   <Wrapper>
     <Title>
       Identity &amp; data privacy
-      <Icon className="ph ph-info" onClick={bannerToggle} />
+      {!idosConnected && <Icon className="ph ph-info" onClick={bannerToggle} />}
     </Title>
 
-    <Widget
-      src="${REPL_ACCOUNT}/widget/Settings.Identity.Banner"
-      props={{
-        open: showBanner,
-        onClick: bannerToggle,
-      }}
-    />
+    {!idosConnected && (
+      <Widget
+        src="${REPL_ACCOUNT}/widget/Settings.Identity.Banner"
+        props={{
+          open: showBanner,
+          onClick: bannerToggle,
+        }}
+      />
+    )}
 
     {!idosConnected && (
       <Widget

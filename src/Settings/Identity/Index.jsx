@@ -1,5 +1,6 @@
+let { idosConnected, connectIdOS, walletImages, connectedWallet, ...forwardedProps } = props;
+
 const [showBanner, setShowBanner] = useState(true);
-const [idosData, setIdosData] = useState(null);
 const [showSuccessTooltip, setShowSuccessTooltip] = useState(props.showTooltip);
 
 const Wrapper = styled.div`
@@ -27,43 +28,30 @@ const Icon = styled.i`
   cursor: pointer;
 `;
 
-const bannerToggle = useCallback(() => setShowBanner(!showBanner), [showBanner]);
-
 useEffect(() => {
-  if (!props.idosConnected && props.connectIdOS) {
-    props.connectIdOS();
+  if (connectIdOS) {
+    connectIdOS();
   }
-}, [props.idosConnected, props.connectIdOS]);
+}, [connectIdOS]);
 
 return (
   <Wrapper>
-    <Title>
-      Identity &amp; data privacy
-      <Icon className="ph ph-info" onClick={bannerToggle} />
-    </Title>
+    <Title>Identity &amp; data privacy</Title>
 
-    <Widget
-      src="${REPL_ACCOUNT}/widget/Settings.Identity.Banner"
-      props={{
-        open: showBanner,
-        onClick: bannerToggle,
-      }}
-    />
-
-    {!props.idosConnected && (
+    {!idosConnected && (
       <Widget
-        src="${REPL_ACCOUNT}/widget/DIG.Button"
+        src="${REPL_ACCOUNT}/widget/Settings.Identity.Onboarding.Cards"
         props={{
-          variant: "primary",
-          label: "Connect to idOS",
-          disabled: disabled ?? !context.accountId,
-          onClick: props.connectIdOS,
+          idosConnected,
+          connectIdOS,
+          walletImages,
+          connectedWallet,
         }}
       />
     )}
 
     {props.idosConnected && (
-      <Widget src="${REPL_ACCOUNT}/widget/Settings.Identity.Verifications.Index" props={{ ...props }} />
+      <Widget src="${REPL_ACCOUNT}/widget/Settings.Identity.Verifications.Index" props={{ ...forwardedProps }} />
     )}
 
     {showSuccessTooltip && (

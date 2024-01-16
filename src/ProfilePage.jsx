@@ -39,9 +39,13 @@ const Wrapper = styled.div`
 `;
 
 const Main = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: ${props.stack ? "minmax(0, 1fr)" : "min-content minmax(0, 1fr)"};
   gap: 40px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
 `;
 
 const BackgroundImage = styled.div`
@@ -79,9 +83,6 @@ const SidebarWrapper = styled.div`
 `;
 
 const Content = styled.div`
-  min-width: fit-content;
-  flex-grow: 1;
-
   .post {
     padding-left: 0;
     padding-right: 0;

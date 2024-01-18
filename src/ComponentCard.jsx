@@ -18,7 +18,7 @@ const Card = styled.div`
 `;
 
 const CardBody = styled.div`
-  padding: 16px;
+  padding: 16px 16px 4px 16px;
   display: flex;
   gap: 16px;
   align-items: center;
@@ -58,6 +58,22 @@ const CardTag = styled.p`
     margin-right: 3px;
   }
 `;
+
+const CardMetaDataContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  padding: 0 16px;
+  font-size: 18px;
+  column-gap: 14px;
+  position: relative;
+  height: 30px;
+`;
+
+const MetaDataItem = styled.div`
+  display: flex;
+  column-gap: 14px;
+  color: #687076;
+`
 
 const TextLink = styled("Link")`
   display: block;
@@ -192,9 +208,18 @@ return (
             />
           </TagsWrapper>
         )}
+
       </CardContent>
     </CardBody>
 
+    {props?.metadata?.star_count >= 0 && props?.metadata?.fork_count >= 0 && (
+        <CardMetaDataContainer>
+        <MetaDataItem><i className="bi bi-star" style={{ height: "18px", width:"18px" }}></i> <p>{props.metadata.star_count === 0 ? '-' : props.metadata.star_count}</p></MetaDataItem>
+        <MetaDataItem><i className="bi bi-git"  style={{ height: "18px", width:"18px" }}></i> <p>{props.metadata.fork_count  === 0 ? '-' : props.metadata.fork_count}</p></MetaDataItem>
+        </CardMetaDataContainer>
+    )}
+    
+    
     {!props.hideButtons && (
       <CardFooter>
         <ButtonLink href={detailsUrl}>View Details</ButtonLink>

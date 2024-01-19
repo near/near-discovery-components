@@ -1,7 +1,9 @@
-const type = props.type;
-const open = props.open;
-const closeModal = props.closeModal;
-const submitClick = props.submitClick;
+let {
+  type,
+  open,
+  closeModal,
+  submitClick
+} = props;
 
 const submitAndClose = (reason) => {
   submitClick(reason);
@@ -89,9 +91,9 @@ const buildDialog = (reasons, descriptions) => {
       <div className="d-flex flex-row gap-2">
         <InfoText>
           <i className="ph-bold ph-info" /> Unsure? Review our community{" "}
-          <a href="https://near.org/terms" target="_blank">
+          <Link href="https://near.org/terms" target="_blank">
             content policies.
-          </a>
+          </Link>
           .
         </InfoText>
       </div>
@@ -141,7 +143,7 @@ return (
     props={{
       type: "dialog",
       description: buildContent(type),
-      onCancel: closeModal,
+      onOpenChange: closeModal,
       open,
       contentStyles: dialogStyles,
       actionButtons: <></>,

@@ -16,7 +16,7 @@ import { Block } from "@near-lake/primitives";
 async function getBlock(block: Block) {
   const ACCOUNT_NAME = "dataplaform_near";
   const INDEXER_NAME = `${ACCOUNT_NAME}_components`;
-  const INFO_TABLE = `${INDEXER_NAME}_metadata`;
+  const METADATA_TABLE = `${INDEXER_NAME}_metadata`;
   const VERSION_TABLE = `${INDEXER_NAME}_versions`;
   //dataplatform_near_components
 
@@ -62,7 +62,7 @@ async function getBlock(block: Block) {
         maxEditLength = Math.min(maxEditLength, options.maxEditLength);
       }
 
-      let bestPath = [{ newPos: -1, component_0: [] }];
+      let bestPath = [{ newPos: -1, components: [] }];
 
       // Seed editLength = 0, i.e. the content starts with the same values
       let oldPos = this.extractCommon(bestPath[0], newString, oldString, 0);
@@ -100,11 +100,11 @@ async function getBlock(block: Block) {
           // and does not pass the bounds of the diff graph
           if (!canAdd || (canRemove && addPath.newPos < removePath.newPos)) {
             basePath = clonePath(removePath);
-            self.pushComponent(basePath.component_0, undefined, true);
+            self.pushComponent(basePath.components, undefined, true);
           } else {
             basePath = addPath; // No need to clone, we've pulled it from the list
             basePath.newPos++;
-            self.pushComponent(basePath.component_0, true, undefined);
+            self.pushComponent(basePath.components, true, undefined);
           }
 
           oldPos = self.extractCommon(
@@ -119,7 +119,7 @@ async function getBlock(block: Block) {
             return done(
               buildValues(
                 self,
-                basePath.component_0,
+                basePath.components,
                 newString,
                 oldString,
                 self.useLongestToken
@@ -160,18 +160,18 @@ async function getBlock(block: Block) {
       }
     },
 
-    pushComponent(component_0, added, removed) {
-      let last = component_0[component_0.length - 1];
+    pushComponent(components, added, removed) {
+      let last = components[components.length - 1];
       if (last && last.added === added && last.removed === removed) {
         // We need to clone here as the component clone operation is just
         // as shallow array clone
-        component_0[component_0.length - 1] = {
+        components[components.length - 1] = {
           count: last.count + 1,
           added: added,
           removed: removed,
         };
       } else {
-        component_0.push({ count: 1, added: added, removed: removed });
+        components.push({ count: 1, added: added, removed: removed });
       }
     },
     extractCommon(basePath, newString, oldString, diagonalPath) {
@@ -191,7 +191,7 @@ async function getBlock(block: Block) {
       }
 
       if (commonCount) {
-        basePath.component_0.push({ count: commonCount });
+        basePath.components.push({ count: commonCount });
       }
 
       basePath.newPos = newPos;
@@ -231,18 +231,18 @@ async function getBlock(block: Block) {
 
   function buildValues(
     diff,
-    component_0,
+    components,
     newString,
     oldString,
     useLongestToken
   ) {
     let componentPos = 0,
-      componentLen = component_0.length,
+      componentLen = components.length,
       newPos = 0,
       oldPos = 0;
 
     for (; componentPos < componentLen; componentPos++) {
-      let component = component_0[componentPos];
+      let component = components[componentPos];
       if (!component.removed) {
         if (!component.added && useLongestToken) {
           let value = newString.slice(newPos, newPos + component.count);
@@ -272,10 +272,10 @@ async function getBlock(block: Block) {
         // Reverse add and remove so removes are output first to match common convention
         // The diffing algorithm is tied to add then remove output and this is the simplest
         // route to get the desired output with minimal overhead.
-        if (componentPos && component_0[componentPos - 1].added) {
-          let tmp = component_0[componentPos - 1];
-          component_0[componentPos - 1] = component_0[componentPos];
-          component_0[componentPos] = tmp;
+        if (componentPos && components[componentPos - 1].added) {
+          let tmp = components[componentPos - 1];
+          components[componentPos - 1] = components[componentPos];
+          components[componentPos] = tmp;
         }
       }
     }
@@ -283,22 +283,22 @@ async function getBlock(block: Block) {
     // Special case handle for when one terminal is ignored (i.e. whitespace).
     // For this case we merge the terminal into the prior string and drop the change.
     // This is only available for string mode.
-    let lastComponent = component_0[componentLen - 1];
+    let lastComponent = components[componentLen - 1];
     if (
       componentLen > 1 &&
       typeof lastComponent.value === "string" &&
       (lastComponent.added || lastComponent.removed) &&
       diff.equals("", lastComponent.value)
     ) {
-      component_0[componentLen - 2].value += lastComponent.value;
-      component_0.pop();
+      components[componentLen - 2].value += lastComponent.value;
+      components.pop();
     }
 
-    return component_0;
+    return components;
   }
 
   function clonePath(path) {
-    return { newPos: path.newPos, component_0: path.component_0.slice(0) };
+    return { newPos: path.newPos, components: path.components.slice(0) };
   }
 
   const lineDiff = new Diff();
@@ -478,8 +478,8 @@ async function getBlock(block: Block) {
 
         if (forkSource) {
           const rawGraphqlResponseForkSource = await context.graphql(
-            `query PreviousInfoQuery($forkSource: String, $componentName: String) {
-                ${INFO_TABLE}(
+            `query PreviousMetaDataQuery($forkSource: String, $componentName: String) {
+                ${METADATA_TABLE}(
                   limit: 1
                   where: {component_id: {_eq: $forkSource}, component_name: {_eq: $componentName}}
                 ) {
@@ -499,7 +499,7 @@ async function getBlock(block: Block) {
             }
           );
 
-          const previousInfoRawResponse = rawGraphqlResponseForkSource[INFO_TABLE] ?? [];
+          const previousInfoRawResponse = rawGraphqlResponseForkSource[METADATA_TABLE] ?? [];
 
           if (previousInfoRawResponse && previousInfoRawResponse.length && previousInfoRawResponse[0]) {
             const { block_height, block_timestamp_ms, component_author_id, code, component_name, fork_count, star_count } = previousInfoRawResponse[0];
@@ -524,7 +524,7 @@ async function getBlock(block: Block) {
                 component_name,
               }
 
-              await context.db.Info.upsert([source_info], ["component_id"], ["fork_count"]);
+              await context.db.Metadata.upsert([source_info], ["component_id"], ["fork_count"]);
 
               console.log(
                 `Successfully updated source metadata record for: component_id=${forkSource}`
@@ -577,7 +577,7 @@ async function getBlock(block: Block) {
             ]
           ),
 
-          context.db.Info.upsert(
+          context.db.Metadata.upsert(
             [target_info],
             ["component_id"],
             [
@@ -628,8 +628,8 @@ async function getBlock(block: Block) {
       if (component_id && (transaction_value === STAR_TRANSACTION_TYPE || transaction_value === UNSTAR_TRANSACTION_TYPE)) {
 
         const rawGraphqlResponseStarData = await context.graphql(
-          `query PreviousInfoQuery($component_id: String) {
-                    ${INFO_TABLE}(
+          `query PreviousMetadataQuery($component_id: String) {
+                    ${METADATA_TABLE}(
                       limit: 1
                       where: {component_id: {_eq: $component_id}}
                     ) {
@@ -648,7 +648,7 @@ async function getBlock(block: Block) {
           }
         );
 
-        const previousInfoRawResponse = rawGraphqlResponseStarData[INFO_TABLE] ?? [];
+        const previousInfoRawResponse = rawGraphqlResponseStarData[METADATA_TABLE] ?? [];
 
         if (previousInfoRawResponse && previousInfoRawResponse.length && previousInfoRawResponse[0]) {
           const { block_height, block_timestamp_ms, code, component_author_id, component_id, fork_count, star_count, component_name, } = previousInfoRawResponse[0];
@@ -674,7 +674,7 @@ async function getBlock(block: Block) {
               component_name,
             }
 
-            await context.db.Info.upsert([source_info], ["component_id"], ["star_count"]);
+            await context.db.Metadata.upsert([source_info], ["component_id"], ["star_count"]);
 
             console.log(
               `Successfully updated source star count metadata record for: component_id=${component_id} on type=${transaction_value}`

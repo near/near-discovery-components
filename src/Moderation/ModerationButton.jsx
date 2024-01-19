@@ -1,7 +1,4 @@
-const buildData = props.buildData;
-const title = props.title;
-const onCommit = props.onCommit;
-const onCancel = props.onCancel;
+const { buildData, title, onCommit } = props;
 const isSet = props.isSet ?? false;
 const disabled = props.disabled ?? false;
 const type = props.type ?? "content";
@@ -15,7 +12,7 @@ State.init({
   isSetOptimistic: isSet,
 });
 
-const submitClick = (reason) => {
+const submitClick = (event, reason) => {
   if (state.loading) {
     return;
   }
@@ -36,17 +33,19 @@ const submitClick = (reason) => {
         loading: false,
         isSetOptimistic: !state.isSetOptimistic,
       });
-      onCancel();
     },
   });
+  if (event) event.preventDefault();
 };
 
 const [showModal, setShowModal] = useState(false);
-const showReportModal = () => {
+const showReportModal = (e) => {
   setShowModal(true);
+  if (e) e.preventDefault();
 };
-const closeModal = () => {
+const closeModal = (e) => {
   setShowModal(false);
+  if (e) e.preventDefault();
 };
 
 const renderButton = () => (

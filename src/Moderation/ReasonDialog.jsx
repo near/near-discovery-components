@@ -1,13 +1,8 @@
-let {
-  type,
-  open,
-  closeModal,
-  submitClick
-} = props;
+let { type, open, closeModal, submitClick } = props;
 
-const submitAndClose = (reason) => {
-  submitClick(reason);
-  closeModal();
+const submitAndClose = (event, reason) => {
+  closeModal(event);
+  submitClick(event, reason);
 };
 
 const buildContentReportOptions = () => {
@@ -75,7 +70,7 @@ const buildDialog = (reasons, descriptions) => {
                   variant: "secondary",
                   fill: "ghost",
                   size: "large",
-                  onClick: () => submitAndClose(reason),
+                  onClick: (e) => submitAndClose(e, reason),
                   label: (
                     <ButtonLabel>
                       <Reason>{reasons[reason]}</Reason>

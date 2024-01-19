@@ -16,7 +16,7 @@ import { Block } from "@near-lake/primitives";
 async function getBlock(block: Block) {
   const ACCOUNT_NAME = "dataplaform_near";
   const INDEXER_NAME = `${ACCOUNT_NAME}_components`;
-  const INFO_TABLE = `${INDEXER_NAME}_info`;
+  const INFO_TABLE = `${INDEXER_NAME}_metadata`;
   const VERSION_TABLE = `${INDEXER_NAME}_versions`;
   //dataplatform_near_components
 
@@ -527,7 +527,7 @@ async function getBlock(block: Block) {
               await context.db.Info.upsert([source_info], ["component_id"], ["fork_count"]);
 
               console.log(
-                `Successfully updated source info record for: component_id=${forkSource}`
+                `Successfully updated source metadata record for: component_id=${forkSource}`
               );
 
             }
@@ -601,7 +601,7 @@ async function getBlock(block: Block) {
           `Successfully inserted component version record for: componentAuthorId=${componentAuthorId}, componentName=${componentName}`
         );
         console.log(
-          `Successfully inserted component info record for: componentAuthorId=${componentAuthorId}, componentName=${componentName}`
+          `Successfully inserted component metadata record for: componentAuthorId=${componentAuthorId}, componentName=${componentName}`
         );
       }
     }
@@ -677,13 +677,13 @@ async function getBlock(block: Block) {
             await context.db.Info.upsert([source_info], ["component_id"], ["star_count"]);
 
             console.log(
-              `Successfully updated source star count info record for: component_id=${component_id} on type=${transaction_value}`
+              `Successfully updated source star count metadata record for: component_id=${component_id} on type=${transaction_value}`
             );
 
           }
         }
       } else {
-        console.log('one or more pieces of essential info missing to increment/decrement star count: star_type is', star_type, ' component_id: ', component_id);
+        console.log('one or more pieces of essential metadata missing to increment/decrement star count: star_type is', star_type, ' component_id: ', component_id);
       }
     }
   }

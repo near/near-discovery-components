@@ -12,7 +12,7 @@ CREATE TABLE
   );
 
 CREATE TABLE 
-  "info" (
+  "metadata" (
     "component_id" VARCHAR PRIMARY KEY,
     "block_height" INT NOT NULL,
     "block_timestamp_ms" BIGINT NOT NULL,
@@ -39,7 +39,7 @@ CREATE INDEX
   idx_versions_block_height ON versions (block_height);
 
 CREATE INDEX
-  idx_info_fork_of ON info (fork_of_source);
+  idx_info_fork_of ON metadata (fork_of_source);
 
 CREATE INDEX
-  idx_info_component_author_id ON info (component_author_id);
+  idx_info_component_author_id ON metadata (component_author_id);

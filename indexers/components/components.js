@@ -333,8 +333,14 @@ async function getBlock(block: Block) {
   // =============================
 
   function base64decode(encodedValue) {
-    let buff = Buffer.from(encodedValue, "base64");
-    return JSON.parse(buff.toString("utf-8"));
+    try {
+      const buff = Buffer.from(encodedValue, "base64");
+      const str = buff.toString("utf-8").replace(/\\xa0/g, ' ');
+      return JSON.parse(str);
+    }
+    catch (error) {
+      console.log('Error parsing JSON - skipping data for "functionCallOperation.args"', error);
+    }
   }
 
   const SOCIAL_DB = "social.near";
@@ -402,6 +408,12 @@ async function getBlock(block: Block) {
       }
       const accountId = Object.keys(functionCall.args.data)[0];
       const data_keys = Object.keys(functionCall.args.data[accountId]);
+      if (!data_keys) {
+        console.log(
+          "Set operation did not have arg data for accountId in expected format"
+        );
+        return;
+      }
 
       const has_index = data_keys.includes("index");
       let index_wrapper = null;

@@ -1,4 +1,5 @@
 import { Block } from "@near-lake/primitives";
+
 /**
  * Note: We only support javascript at the moment. We will support Rust, Typescript in a further release.
  */
@@ -13,11 +14,16 @@ import { Block } from "@near-lake/primitives";
  * @param {block} Block - A Near Protocol Block
  */
 async function getBlock(block: Block) {
+  const ACCOUNT_NAME = "dataplaform_near";
+  const INDEXER_NAME = `${ACCOUNT_NAME}_components`;
+  const INFO_TABLE = `${INDEXER_NAME}_info`;
+  const VERSION_TABLE = `${INDEXER_NAME}_versions`;
+  //dataplatform_near_components
+
   // =============================
   // Begin inclusion of diff library: https://github.com/kpdecker/jsdiff
   // =============================
-
-  function Diff() {}
+  function Diff() { }
 
   Diff.prototype = {
     diff(oldString, newString, options = {}) {
@@ -56,7 +62,7 @@ async function getBlock(block: Block) {
         maxEditLength = Math.min(maxEditLength, options.maxEditLength);
       }
 
-      let bestPath = [{ newPos: -1, components: [] }];
+      let bestPath = [{ newPos: -1, component_0: [] }];
 
       // Seed editLength = 0, i.e. the content starts with the same values
       let oldPos = this.extractCommon(bestPath[0], newString, oldString, 0);
@@ -94,11 +100,11 @@ async function getBlock(block: Block) {
           // and does not pass the bounds of the diff graph
           if (!canAdd || (canRemove && addPath.newPos < removePath.newPos)) {
             basePath = clonePath(removePath);
-            self.pushComponent(basePath.components, undefined, true);
+            self.pushComponent(basePath.component_0, undefined, true);
           } else {
             basePath = addPath; // No need to clone, we've pulled it from the list
             basePath.newPos++;
-            self.pushComponent(basePath.components, true, undefined);
+            self.pushComponent(basePath.component_0, true, undefined);
           }
 
           oldPos = self.extractCommon(
@@ -113,7 +119,7 @@ async function getBlock(block: Block) {
             return done(
               buildValues(
                 self,
-                basePath.components,
+                basePath.component_0,
                 newString,
                 oldString,
                 self.useLongestToken
@@ -154,18 +160,18 @@ async function getBlock(block: Block) {
       }
     },
 
-    pushComponent(components, added, removed) {
-      let last = components[components.length - 1];
+    pushComponent(component_0, added, removed) {
+      let last = component_0[component_0.length - 1];
       if (last && last.added === added && last.removed === removed) {
         // We need to clone here as the component clone operation is just
         // as shallow array clone
-        components[components.length - 1] = {
+        component_0[component_0.length - 1] = {
           count: last.count + 1,
           added: added,
           removed: removed,
         };
       } else {
-        components.push({ count: 1, added: added, removed: removed });
+        component_0.push({ count: 1, added: added, removed: removed });
       }
     },
     extractCommon(basePath, newString, oldString, diagonalPath) {
@@ -185,7 +191,7 @@ async function getBlock(block: Block) {
       }
 
       if (commonCount) {
-        basePath.components.push({ count: commonCount });
+        basePath.component_0.push({ count: commonCount });
       }
 
       basePath.newPos = newPos;
@@ -225,18 +231,18 @@ async function getBlock(block: Block) {
 
   function buildValues(
     diff,
-    components,
+    component_0,
     newString,
     oldString,
     useLongestToken
   ) {
     let componentPos = 0,
-      componentLen = components.length,
+      componentLen = component_0.length,
       newPos = 0,
       oldPos = 0;
 
     for (; componentPos < componentLen; componentPos++) {
-      let component = components[componentPos];
+      let component = component_0[componentPos];
       if (!component.removed) {
         if (!component.added && useLongestToken) {
           let value = newString.slice(newPos, newPos + component.count);
@@ -266,10 +272,10 @@ async function getBlock(block: Block) {
         // Reverse add and remove so removes are output first to match common convention
         // The diffing algorithm is tied to add then remove output and this is the simplest
         // route to get the desired output with minimal overhead.
-        if (componentPos && components[componentPos - 1].added) {
-          let tmp = components[componentPos - 1];
-          components[componentPos - 1] = components[componentPos];
-          components[componentPos] = tmp;
+        if (componentPos && component_0[componentPos - 1].added) {
+          let tmp = component_0[componentPos - 1];
+          component_0[componentPos - 1] = component_0[componentPos];
+          component_0[componentPos] = tmp;
         }
       }
     }
@@ -277,28 +283,28 @@ async function getBlock(block: Block) {
     // Special case handle for when one terminal is ignored (i.e. whitespace).
     // For this case we merge the terminal into the prior string and drop the change.
     // This is only available for string mode.
-    let lastComponent = components[componentLen - 1];
+    let lastComponent = component_0[componentLen - 1];
     if (
       componentLen > 1 &&
       typeof lastComponent.value === "string" &&
       (lastComponent.added || lastComponent.removed) &&
       diff.equals("", lastComponent.value)
     ) {
-      components[componentLen - 2].value += lastComponent.value;
-      components.pop();
+      component_0[componentLen - 2].value += lastComponent.value;
+      component_0.pop();
     }
 
-    return components;
+    return component_0;
   }
 
   function clonePath(path) {
-    return { newPos: path.newPos, components: path.components.slice(0) };
+    return { newPos: path.newPos, component_0: path.component_0.slice(0) };
   }
 
   const lineDiff = new Diff();
   lineDiff.tokenize = function (value) {
     let retLines = [],
-    linesAndNewlines = value.split(new RegExp("(\\n|\r\\n)"));
+      linesAndNewlines = value.split(new RegExp("(\\n|\r\\n)"));
 
     // Ignore the final empty token that occurs if the string ends with a new line
     if (!linesAndNewlines[linesAndNewlines.length - 1]) {
@@ -327,19 +333,13 @@ async function getBlock(block: Block) {
   // =============================
 
   function base64decode(encodedValue) {
-    try {
-      const buff = Buffer.from(encodedValue, "base64");
-      const str = buff.toString("utf-8").replace(/\\xa0/g, ' ');
-      return JSON.parse(str);
-    }
-    catch (error) {
-      console.log('Error parsing JSON - skipping data for "functionCallOperation.args"', error);
-    }
+    let buff = Buffer.from(encodedValue, "base64");
+    return JSON.parse(buff.toString("utf-8"));
   }
 
   const SOCIAL_DB = "social.near";
 
-  const componentUpdateTransactions = block
+  const nearSocialActions = block
     .actions()
     .filter((action) => action.receiverId === SOCIAL_DB)
     .flatMap((action) =>
@@ -351,90 +351,96 @@ async function getBlock(block: Block) {
           args: base64decode(functionCallOperation.args),
           receiptId: action.receiptId,
         }))
-        .filter((functionCall) => {
-          if (
-            !functionCall ||
-            !functionCall.args ||
-            !functionCall.args.data ||
-            !Object.keys(functionCall.args.data) ||
-            !Object.keys(functionCall.args.data)[0]
-          ) {
-            console.log(
-              "Set operation did not have arg data in expected format"
-            );
-            return;
-          }
-          const accountId = Object.keys(functionCall.args.data)[0];
-          const accountData = functionCall.args.data[accountId];
-          if (!accountData) {
-            console.log(
-              "Set operation did not have arg data for accountId in expected format"
-            );
-            return;
-          }
-          return Object.keys(accountData).includes(
-            "widget"
-          );
-        })
+        .filter((a) =>
+          block
+            .receipts()
+            .find((r) => r.receiptId === a.receiptId)
+            .status.hasOwnProperty("SuccessValue")
+        )
     );
 
+  const componentUpdateTransactions = nearSocialActions.filter(
+    (functionCall) => {
+      if (
+        !functionCall ||
+        !functionCall.args ||
+        !functionCall.args.data ||
+        !Object.keys(functionCall.args.data) ||
+        !Object.keys(functionCall.args.data)[0]
+      ) {
+        console.log(
+          "Set operation did not have arg data in expected format"
+        );
+        return;
+      }
+      const accountId = Object.keys(functionCall.args.data)[0];
+      const accountData = functionCall.args.data[accountId];
+      if (!accountData) {
+        console.log(
+          "Set operation did not have arg data for accountId in expected format"
+        );
+        return;
+      }
+      return Object.keys(accountData).includes(
+        "widget"
+      );
+    });
+
+  const componentStarTransactions = nearSocialActions.filter(
+    (functionCall) => {
+      if (
+        !functionCall ||
+        !functionCall.args ||
+        !functionCall.args.data ||
+        !Object.keys(functionCall.args.data) ||
+        !Object.keys(functionCall.args.data)[0]
+      ) {
+        console.log(
+          "Set operation did not have arg data in expected format"
+        );
+        return;
+      }
+      const accountId = Object.keys(functionCall.args.data)[0];
+      const data_keys = Object.keys(functionCall.args.data[accountId]);
+
+      const has_index = data_keys.includes("index");
+      let index_wrapper = null;
+      if (has_index) index_wrapper = functionCall.args.data[accountId]
+      return (has_index && index_wrapper?.index?.star);
+    });
+
   if (componentUpdateTransactions.length > 0) {
-    console.log("Found component development activity...");
 
     const blockHeight = block.header().height;
     const blockTimestampMs = Math.floor(
       Number(block.header().timestampNanosec) / 1e6
     );
 
-    /*
-      In the rare case that the same component was updated more than once in the same block,
-      we'll run through the transactions sequentially. This assumes that "componentUpdateTransactions"
-      matches the order in which the end users executed those actions on the blockchain.
-    */
-
     for (const transaction of componentUpdateTransactions) {
-      try {
-        const receiptId = transaction.receiptId;
-        const componentAuthorId = Object.keys(transaction.args.data)[0];
-        const rawComponentData =
-          transaction.args.data[componentAuthorId]["widget"] || {};
-        const componentNames = Object.keys(rawComponentData);
+      const receiptId = transaction.receiptId;
+      const componentAuthorId = Object.keys(transaction.args.data)[0];
+      const rawComponentData =
+        transaction.args.data[componentAuthorId]["widget"] || {};
+      const componentNames = Object.keys(rawComponentData);
 
-        /*
-          CLI tools are able to publish multiple component changes within a single transaction,
-          so we need to itterate over each. This means a single receiptId can have multiple 
-          components that were changed for an account.
-        */
+      for (const componentName of componentNames) {
+        if (
+          !componentName ||
+          !Object.keys(rawComponentData).length ||
+          !rawComponentData[componentName]
+        )
+          continue;
 
-        for (const componentName of componentNames) {
-          if (!componentName) {
-            console.log(
-              "Skipping development activity due to missing component name",
-              transaction.args.data
-            );
-            continue;
-          }
+        const metadata = rawComponentData[componentName]["metadata"];
+        const code = rawComponentData[componentName][""] || "";
 
-          const componentData = rawComponentData[componentName];
+        let previousCode = "";
+        let linesAdded = 0;
+        let linesRemoved = 0;
 
-          if (!componentData) {
-            console.log(
-              `Skipping development activity due to missing component data for: componentAuthorId=${componentAuthorId}, componentName=${componentName}`,
-              transaction.args.data
-            );
-            continue;
-          }
-
-          const metadata = componentData["metadata"];
-
-          const code = componentData[""] || "";
-          let previousCode = "";
-          let linesAdded = 0;
-          let linesRemoved = 0;
-
-          const rawGraphqlResponse = await context.graphql(
-            `query PreviousVersionQuery($componentAuthorId: String, $componentName: String, $blockHeight: Int) {
-              dataplatform_near_components_versions(
+        const rawGraphqlResponse = await context.graphql(
+          `query PreviousVersionQuery($componentAuthorId: String, $componentName: String, $blockHeight: Int) {
+              ${VERSION_TABLE}(
                 limit: 1
                 where: {component_author_id: {_eq: $componentAuthorId}, component_name: {_eq: $componentName}, block_height: {_lt: $blockHeight}}
                 order_by: {block_height: desc}
@@ -443,67 +449,124 @@ async function getBlock(block: Block) {
                 code
               }
             }`,
+          {
+            componentAuthorId,
+            componentName,
+            blockHeight,
+          }
+        );
+
+        const previousVersions = rawGraphqlResponse[VERSION_TABLE] ?? [];
+        previousCode = previousVersions[0] ? previousVersions[0].code : "";
+        const diff = lineDiff.diff(previousCode, code, { ignoreWhitespace: true, });
+
+        diff.forEach((result) => {
+          if (result.added) linesAdded += result.count;
+          if (result.removed) linesRemoved += result.count;
+        });
+
+        let forkSource = metadata?.fork_of
+          ? metadata?.fork_of.split("@")[0]
+          : null;
+        let forkBlockHeight = metadata?.fork_of
+          ? metadata?.fork_of.split("@")[1]
+          : null;
+        if (forkSource === `${componentAuthorId}/widget/${componentName}`) {
+          forkSource = null;
+          forkBlockHeight = null;
+        }
+
+        if (forkSource) {
+          const rawGraphqlResponseForkSource = await context.graphql(
+            `query PreviousInfoQuery($forkSource: String, $componentName: String) {
+                ${INFO_TABLE}(
+                  limit: 1
+                  where: {component_id: {_eq: $forkSource}, component_name: {_eq: $componentName}}
+                ) {
+                  block_height
+                  block_timestamp_ms
+                  code
+                  component_author_id
+                  component_id
+                  fork_count
+                  star_count
+                  component_name
+                }
+              }`,
             {
-              componentAuthorId,
-              componentName,
-              blockHeight,
+              forkSource,
+              componentName
             }
           );
 
-          const previousVersions =
-            rawGraphqlResponse?.dataplatform_near_components_versions ?? [];
+          const previousInfoRawResponse = rawGraphqlResponseForkSource[INFO_TABLE] ?? [];
 
-          if (previousVersions[0]) {
-            console.log(
-              `Found previous version for: componentAuthorId=${componentAuthorId}, componentName=${componentName}`
-            );
-            previousCode = previousVersions[0].code || "";
-          } else {
-            console.log(
-              `Did not find previous version for: componentAuthorId=${componentAuthorId}, componentName=${componentName}`
-            );
+          if (previousInfoRawResponse && previousInfoRawResponse.length && previousInfoRawResponse[0]) {
+            const { block_height, block_timestamp_ms, component_author_id, code, component_name, fork_count, star_count } = previousInfoRawResponse[0];
+            if (
+              block_height &&
+              block_timestamp_ms &&
+              component_author_id &&
+              code &&
+              component_name
+            ) {
+
+              const sourceForkCount = fork_count + 1;
+
+              const source_info = {
+                block_height,
+                block_timestamp_ms,
+                code,
+                component_author_id,
+                component_id: forkSource,
+                fork_count: sourceForkCount,
+                star_count,
+                component_name,
+              }
+
+              await context.db.Info.upsert([source_info], ["component_id"], ["fork_count"]);
+
+              console.log(
+                `Successfully updated source info record for: component_id=${forkSource}`
+              );
+
+            }
           }
+        }
 
-          const diff = lineDiff.diff(previousCode, code, {
-            ignoreWhitespace: true,
-          });
+        const target_version = {
+          block_height: blockHeight,
+          block_timestamp_ms: blockTimestampMs,
+          code,
+          component_author_id: componentAuthorId,
+          component_name: componentName,
+          lines_added: linesAdded,
+          lines_removed: linesRemoved,
+          receipt_id: receiptId,
+        };
 
-          diff.forEach((result) => {
-            if (result.added) linesAdded += result.count;
-            if (result.removed) linesRemoved += result.count;
-          });
+        const target_info = {
+          component_id: `${componentAuthorId}/widget/${componentName}`,
+          block_height: blockHeight,
+          block_timestamp_ms: blockTimestampMs,
+          code,
+          component_author_id: componentAuthorId,
+          component_name: componentName,
+          star_count: 0,
+          fork_count: 0,
+          name: metadata?.name,
+          image_ipfs_cid: metadata?.image?.ipfs_cid,
+          description: metadata?.description,
+          fork_of_source: forkSource,
+          fork_of_block_height: forkBlockHeight,
+          tags: metadata?.tags ? Object.keys(metadata.tags).join(",") : null,
+          website: metadata?.website,
+        };
 
-          let forkSource = metadata?.fork_of ? metadata?.fork_of.split('@')[0]: null;
-          let forkBlockHeight = metadata?.fork_of ? metadata?.fork_of.split('@')[1]: null;
-          if (forkSource === `${componentAuthorId}/widget/${componentName}`) {
-            forkSource = null;
-            forkBlockHeight = null;
-          }
+        await Promise.all([
 
-          const version = {
-            block_height: blockHeight,
-            block_timestamp_ms: blockTimestampMs,
-            code,
-            component_author_id: componentAuthorId,
-            component_name: componentName,
-            lines_added: linesAdded,
-            lines_removed: linesRemoved,
-            receipt_id: receiptId,
-            name: metadata?.name,
-            image_ipfs_cid: metadata?.image?.ipfs_cid,
-            description: metadata?.description,
-            fork_of_source: forkSource,
-            fork_of_block_height: forkBlockHeight,
-            tags: metadata?.tags ? Object.keys(metadata.tags).join(',') : null,
-            website: metadata?.website
-          };
-
-          console.log(
-            `Attempting to insert component version record for: componentAuthorId=${componentAuthorId}, componentName=${componentName}`
-          );
-
-          await context.db.Versions.upsert(
-            version,
+          context.db.Versions.upsert(
+            [target_version],
             ["receipt_id", "component_name", "component_author_id"],
             [
               "block_height",
@@ -511,25 +574,116 @@ async function getBlock(block: Block) {
               "code",
               "lines_added",
               "lines_removed",
+            ]
+          ),
+
+          context.db.Info.upsert(
+            [target_info],
+            ["component_id"],
+            [
+              "block_height",
+              "block_timestamp_ms",
+              "code",
+              "star_count",
+              "fork_count",
               "name",
               "image_ipfs_cid",
               "description",
               "fork_of_source",
               "fork_of_block_height",
               "tags",
-              "website"
+              "website",
             ]
-          );
+          ),
+        ]);
 
-          console.log(
-            `Successfully inserted component version record for: componentAuthorId=${componentAuthorId}, componentName=${componentName}`
-          );
-        }
-      } catch (err) {
         console.log(
-          `Error processing component version receipt at blockHeight=${blockHeight}: ${err}`
+          `Successfully inserted component version record for: componentAuthorId=${componentAuthorId}, componentName=${componentName}`
         );
-        throw err;
+        console.log(
+          `Successfully inserted component info record for: componentAuthorId=${componentAuthorId}, componentName=${componentName}`
+        );
+      }
+    }
+  }
+
+  //Star
+  if (componentStarTransactions.length > 0) {
+    const STAR_TRANSACTION_TYPE = 'star';
+    const UNSTAR_TRANSACTION_TYPE = 'unstar';
+
+    for (const transaction of componentStarTransactions) {
+      const componentAuthorId = Object.keys(transaction.args.data)[0];
+      const rawComponentData = transaction.args.data[componentAuthorId]["index"] || {};
+      const rawStarData = rawComponentData?.star || {};
+      if (!rawStarData || !Object.keys(rawStarData).length) return;
+
+      const star_type = typeof rawStarData === 'string' ? JSON.parse(rawStarData) : rawStarData;
+      if (!star_type) return;
+
+
+      const transaction_value = star_type?.value?.type;
+      const component_id = star_type?.key?.path;
+
+      if (component_id && (transaction_value === STAR_TRANSACTION_TYPE || transaction_value === UNSTAR_TRANSACTION_TYPE)) {
+
+        const rawGraphqlResponseStarData = await context.graphql(
+          `query PreviousInfoQuery($component_id: String) {
+                    ${INFO_TABLE}(
+                      limit: 1
+                      where: {component_id: {_eq: $component_id}}
+                    ) {
+                      block_height
+                      block_timestamp_ms
+                      code
+                      component_author_id
+                      component_id
+                      fork_count
+                      star_count
+                      component_name
+                    }
+                  }`,
+          {
+            component_id,
+          }
+        );
+
+        const previousInfoRawResponse = rawGraphqlResponseStarData[INFO_TABLE] ?? [];
+
+        if (previousInfoRawResponse && previousInfoRawResponse.length && previousInfoRawResponse[0]) {
+          const { block_height, block_timestamp_ms, code, component_author_id, component_id, fork_count, star_count, component_name, } = previousInfoRawResponse[0];
+          if (
+            block_height &&
+            block_timestamp_ms &&
+            component_author_id &&
+            code &&
+            component_name
+          ) {
+
+            let sourceStarCount = transaction_value === STAR_TRANSACTION_TYPE ? star_count + 1 : star_count - 1;
+            if (sourceStarCount < 0) sourceStarCount = 0;
+
+            const source_info = {
+              block_height,
+              block_timestamp_ms,
+              code,
+              component_author_id,
+              component_id,
+              fork_count,
+              star_count: sourceStarCount,
+              component_name,
+            }
+
+            await context.db.Info.upsert([source_info], ["component_id"], ["star_count"]);
+
+            console.log(
+              `Successfully updated source star count info record for: component_id=${component_id} on type=${transaction_value}`
+            );
+
+          }
+        }
+      } else {
+        console.log('one or more pieces of essential info missing to increment/decrement star count: star_type is', star_type, ' component_id: ', component_id);
       }
     }
   }

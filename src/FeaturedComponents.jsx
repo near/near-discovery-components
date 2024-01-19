@@ -34,15 +34,14 @@ function fetchGraphQL(operationsDoc, operationName, variables) {
   });
 }
 
-const createQuery = (accountsFollowing) => {
-  console.log(accountsFollowing); //['roshaan.near', 'calebjacob.near']
-  // console.log('expected format', ["roshaan.near", "calebjacob.near"])
+const createQuery = () => {
+  console.log(accountsFollowing); //["roshaan.near", "calebjacob.near", "potlock.near"]
   return `
-  query ComponentFollowingQuery {
+  query ComponentFollowingQuery($accountsFollowing: [String], $limit: Int) {
     kevin0_near_component_01_info(
-      where: {component_author_id: {_in: ["roshaan.near", "calebjacob.near", "potlock.near"]}}
+      where: {component_author_id: {_in: $accountsFollowing}}
       order_by: {block_height: desc}
-      limit: ${LIMIT}
+      limit: $limit,
     ) {
       component_author_id
       fork_count
@@ -57,7 +56,7 @@ const createQuery = (accountsFollowing) => {
       description
       website
     }
-  }
+}
     `;
   };
   
@@ -79,7 +78,10 @@ const renderComponents = (sortOption) => {
   } else if (sortOption === "followed") {
   const queryName = "ComponentFollowingQuery";
 
-  fetchGraphQL(createQuery(accountsFollowing), queryName,{} )
+  fetchGraphQL(createQuery(), queryName, {
+    accountsFollowing: accountsFollowing,
+    limit: LIMIT,
+  } )
   .then((result) => {
       if (result.status === 200 && result.body) {
         if (result.body.errors) { 

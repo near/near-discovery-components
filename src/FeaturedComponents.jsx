@@ -1,4 +1,5 @@
 const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
+const LIMIT = 8;
 const componentsUrl = "/${REPL_ACCOUNT}/widget/ComponentsPage";
 
 const sortRaw = Storage.get("queryapi:component-feed-sort");
@@ -8,7 +9,6 @@ const [components, setComponents] = useState([]);
 const [isLoading, setIsLoading] = useState(false);
 const [sortOption, setSortOption] = useState('');
 
-console.log(' sort options: ',sortOption);
 const featuredComponentListRes = Social.get("${REPL_FEATURED_COMP_MANAGER}/listManager/FeaturedComponents", "final");
 const featuredComponentPaths = featuredComponentListRes ? JSON.parse(featuredComponentListRes) : [];
 const componentData = featuredComponentPaths.length > 0 ? Social.getr(featuredComponentPaths) : null;
@@ -16,6 +16,11 @@ const componentData = featuredComponentPaths.length > 0 ? Social.getr(featuredCo
 const followGraph = context.accountId ? Social.keys(`${context.accountId}/graph/follow/*`, "final") : null;
 const accountsFollowing =
   props.accountsFollowing ?? (followGraph ? Object.keys(followGraph[context.accountId].graph.follow || {}) : null);
+
+const optionsMap = {
+    featured: "Featured",
+    followed: "From Followed",
+};
 
 function fetchGraphQL(operationsDoc, operationName, variables) {
   return asyncFetch(`${GRAPHQL_ENDPOINT}/v1/graphql`, {
@@ -30,15 +35,14 @@ function fetchGraphQL(operationsDoc, operationName, variables) {
 }
 
 const createQuery = (accountsFollowing) => {
-  const limit = 8;
   console.log(accountsFollowing); //['roshaan.near', 'calebjacob.near']
-  console.log('expected format', ["roshaan.near", "calebjacob.near"])
+  // console.log('expected format', ["roshaan.near", "calebjacob.near"])
   return `
   query ComponentFollowingQuery {
     kevin0_near_component_01_info(
-      where: {component_author_id: {_in: ["roshaan.near", "calebjacob.near"]}}
+      where: {component_author_id: {_in: ["roshaan.near", "calebjacob.near", "potlock.near"]}}
       order_by: {block_height: desc}
-      limit: ${limit}
+      limit: ${LIMIT}
     ) {
       component_author_id
       fork_count
@@ -100,7 +104,13 @@ const renderComponents = (sortOption) => {
               description,
               website,
             } = component;
+            console.log('tags here', tags);
             
+            if(tags){
+              tags.forEach((tag) => {
+
+              });
+            }
             const component_container ={
               "metadata": {
                 "name": component_name,
@@ -112,7 +122,8 @@ const renderComponents = (sortOption) => {
                   "ipfs_cid": image_ipfs_cid
                 },
                 "tags": {
-                  "app": "" //TODO: FIND FORMAT OF TAGS WITH AN FOLLOWED ITEM WITH TAGS
+                  "app": "" ,//TODO: FIND FORMAT OF TAGS WITH AN FOLLOWED ITEM WITH TAGS
+                  "dog": "12321" 
                 },
                 "star_count": star_count,
                 "fork_count": fork_count,
@@ -178,15 +189,22 @@ return (
   <Wrapper>
     <Header>
       <H2>Components</H2>
-      <select
-          value={sortOption}
-          onChange={(event) => {
-            setSortOption(event.target.value);
-            Storage.set("queryapi:component-feed-sort", event.target.value);
-          }}>
-          <option value="featured">Featured </option>
-          <option value="followed">From Followed</option>
-        </select>
+        <Widget
+          src={`${REPL_ACCOUNT}/widget/Select`}
+          props={{
+            noLabel: true,
+            value: { text: optionsMap[intialSortOption], value: intialSortOption },
+            onChange: ({ value }) => {
+              setSortOption(value);
+              Storage.set("queryapi:component-feed-sort", value);
+            },
+            options: [
+              { text: "Featured", value: "featured" },
+              { text: "From Followed", value: "followed" },
+            ],
+            border: "none",
+          }}
+        />
     </Header>
     <Items>
     {console.log(isLoading)}

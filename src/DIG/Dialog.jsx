@@ -202,7 +202,7 @@ return (
         )}
       </ActionWrapper>
       {(type === "dialog" || enableCloseButton) && (
-        <CloseButtonWrapper>
+        <CloseButtonWrapper onClick={onCancel}>
           <Close>
             <i className="ph ph-x" />
           </Close>

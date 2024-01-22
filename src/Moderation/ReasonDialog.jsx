@@ -63,7 +63,7 @@ const buildDialog = (reasons, descriptions) => {
       <div className="d-flex flex-column gap-3">
         {Object.keys(reasons).map((reason) => {
           return (
-            <div className="d-flex flex-row gap-2">
+            <div className="d-flex flex-row gap-2" key={reason}>
               <Widget
                 src="near/widget/DIG.Button"
                 props={{

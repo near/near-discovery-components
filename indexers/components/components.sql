@@ -1,7 +1,7 @@
 CREATE TABLE
   "versions" (
     "id" SERIAL PRIMARY KEY,
-    "block_height" INT NOT NULL,
+    "block_height" BIGINT NOT NULL,
     "block_timestamp_ms" BIGINT NOT NULL,
     "code" VARCHAR NOT NULL,
     "component_author_id" VARCHAR NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE
 CREATE TABLE 
   "metadata" (
     "component_id" VARCHAR PRIMARY KEY,
-    "block_height" INT NOT NULL,
+    "block_height" BIGINT NOT NULL,
     "block_timestamp_ms" BIGINT NOT NULL,
     "code" VARCHAR NOT NULL,
     "component_author_id" VARCHAR NOT NULL,

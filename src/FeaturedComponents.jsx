@@ -35,7 +35,6 @@ function fetchGraphQL(operationsDoc, operationName, variables) {
 }
 
 const createQuery = () => {
-  console.log(accountsFollowing); //["roshaan.near", "calebjacob.near", "potlock.near"]
   return `
   query ComponentFollowingQuery($accountsFollowing: [String], $limit: Int) {
     kevin0_near_component_01_info(
@@ -148,7 +147,6 @@ useEffect(() => {
 }, [sortOption]);
 
 useEffect(() => {
-  console.log(intialSortOption);
   setSortOption(intialSortOption);
 }, [intialSortOption]);
 
@@ -209,7 +207,6 @@ return (
         />
     </Header>
     <Items>
-    {console.log(isLoading)}
     {!isLoading && components.map((component) => (
           <Item key={component.src}>
             <Widget src="${REPL_ACCOUNT}/widget/ComponentCard" props={{ ...component, hideBlockHeightTimestamp: true }} />

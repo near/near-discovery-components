@@ -1,6 +1,4 @@
-const accountId = props.accountId;
-const blockHeight = props.blockHeight;
-const parentFunctions = props.parentFunctions;
+const { accountId, blockHeight, parentFunctions } = props;
 const contentType = props.contentType || "post";
 const contentPath = props.contentPath || "/post/main";
 const capitalizedContentType = contentType.charAt(0).toUpperCase() + contentType.slice(1);
@@ -28,59 +26,44 @@ const confirmationMessages = {
       "All content from this account will no longer be shown to you and will be reviewed. Thanks for helping our Content Moderators.",
   },
 };
-const moderateItem = (account, block, action, messageKey) => {
+
+const moderate = (account, block, messageKey, action) => {
   const modifiedContentPath = contentPath.replace(/\//g, ".");
-  const data = {
-    moderate: {
-      [account]: {
+
+  const dataValue = block
+    ? {
         [modifiedContentPath]: {
           [block]: action,
         },
-      },
+      }
+    : action;
+
+  const data = {
+    moderate: {
+      [account]: dataValue,
     },
   };
-  if (action === "report") {
-    data.index = {
-      moderation: JSON.stringify({
-        key: "reported",
-        value: {
+
+  if (action !== "hide") {
+    const indexValue = block
+      ? {
           path: `${account}${contentPath}`,
           blockHeight: block,
           label: action,
-        },
-      }),
-    };
-  }
-  if (parentFunctions.optimisticallyHideItem) {
-    parentFunctions.optimisticallyHideItem(confirmationMessages["savingData"]);
-  }
-  Social.set(data, {
-    onCommit: () => {
-      parentFunctions.resolveHideItem(confirmationMessages[messageKey]);
-    },
-    onCancel: () => {
-      parentFunctions.cancelHideItem();
-    },
-  });
-};
+        }
+      : {
+          path: account,
+          label: action,
+        };
 
-const moderateAccount = (account, action, messageKey) => {
-  const data = {
-    moderate: {
-      [account]: action,
-    },
-  };
-  if (action === "report") {
     data.index = {
       moderation: JSON.stringify({
         key: "reported",
-        value: {
-          path: account,
-          label: action,
-        },
+        value: indexValue,
       }),
     };
   }
+
   if (parentFunctions.optimisticallyHideItem) {
     parentFunctions.optimisticallyHideItem(confirmationMessages["savingData"]);
   }
@@ -94,12 +77,12 @@ const moderateAccount = (account, action, messageKey) => {
   });
 };
 
-const buildMenu = (accountId, blockHeight, parentFunctions) => {
+const buildMenu = (accountId, blockHeight) => {
   const hideSubmenu = [
     {
       name: "Mute " + accountId,
       iconLeft: "ph-bold ph-ear-slash",
-      onSelect: () => moderateAccount(accountId, "hide", "hideAccount"),
+      onSelect: () => moderate(accountId, null, "hideAccount", "hide"),
     },
   ];
 
@@ -107,7 +90,7 @@ const buildMenu = (accountId, blockHeight, parentFunctions) => {
     {
       name: "Report " + accountId,
       iconLeft: "ph-bold ph-warning-octagon",
-      onSelect: () => moderateAccount(accountId, "report", "reportAccount"),
+      onSelect: () => showReportModal("Account"),
     },
   ];
 
@@ -115,12 +98,12 @@ const buildMenu = (accountId, blockHeight, parentFunctions) => {
     hideSubmenu.unshift({
       name: "Hide this " + capitalizedContentType,
       iconLeft: "ph-bold ph-eye-slash",
-      onSelect: () => moderateItem(accountId, blockHeight, "hide", "hideItem"),
+      onSelect: () => moderate(accountId, blockHeight, "hideItem", "hide"),
     });
     reportSubmenu.unshift({
       name: "Report this " + capitalizedContentType,
       iconLeft: "ph-bold ph-warning-octagon",
-      onSelect: () => moderateItem(accountId, blockHeight, "report", "reportItem"),
+      onSelect: () => showReportModal(capitalizedContentType),
     });
   }
   return [
@@ -152,12 +135,39 @@ const buildMenu = (accountId, blockHeight, parentFunctions) => {
   ];
 };
 
+// when set, value is the type of content to moderate (Account, Post or Comment)
+const [showModal, setShowModal] = useState(null);
+const showReportModal = (type) => {
+  setShowModal(type);
+};
+const closeModal = () => {
+  setShowModal(false);
+};
+const submitClick = (type, event, reason) => {
+  if (type === "Account") {
+    moderate(accountId, null, "reportAccount", reason);
+  } else {
+    moderate(accountId, blockHeight, "reportItem", reason);
+  }
+};
+
 return (
-  <Widget
-    src="${REPL_ACCOUNT}/widget/DIG.DropdownMenu"
-    props={{
-      trigger: <i className="ph-bold ph-dots-three" />,
-      items: buildMenu(accountId, blockHeight, parentFunctions),
-    }}
-  />
+  <>
+    <Widget
+      src="${REPL_ACCOUNT}/widget/DIG.DropdownMenu"
+      props={{
+        trigger: <i className="ph-bold ph-dots-three" />,
+        items: buildMenu(accountId, blockHeight),
+      }}
+    />
+    <Widget
+      src="${REPL_ACCOUNT}/widget/Moderation.ReasonDialog"
+      props={{
+        closeModal,
+        open: showModal,
+        submitClick: submitClick.bind(null, showModal),
+        type: showModal,
+      }}
+    />
+  </>
 );

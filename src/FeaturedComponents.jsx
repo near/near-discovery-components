@@ -25,7 +25,7 @@ const optionsMap = {
 function fetchGraphQL(operationsDoc, operationName, variables) {
   return asyncFetch(`${GRAPHQL_ENDPOINT}/v1/graphql`, {
     method: "POST",
-    headers: { "x-hasura-role": "kevin0_near" },
+    headers: { "x-hasura-role": "dataplatform_near" },
     body: JSON.stringify({
       query: operationsDoc,
       variables: variables,
@@ -37,7 +37,7 @@ function fetchGraphQL(operationsDoc, operationName, variables) {
 const createQuery = () => {
   return `
   query ComponentFollowingQuery($accountsFollowing: [String], $limit: Int) {
-    kevin0_near_component_01_info(
+    dataplatform_near_components_metadata(
       where: {component_author_id: {_in: $accountsFollowing}}
       order_by: {block_height: desc}
       limit: $limit,
@@ -82,6 +82,7 @@ const renderComponents = (sortOption) => {
     limit: LIMIT,
   } )
   .then((result) => {
+    console.log(result)
       if (result.status === 200 && result.body) {
         if (result.body.errors) { 
           console.log("error:", result.body.errors);
@@ -89,7 +90,7 @@ const renderComponents = (sortOption) => {
         }
         let data = result.body.data;
         if (data) {
-          const components_item = data.kevin0_near_component_01_info;
+          const components_item = data.dataplatform_near_components_metadata;
           
           components_item.forEach((component) => {
             const {

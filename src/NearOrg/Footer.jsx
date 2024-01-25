@@ -215,6 +215,10 @@ const sections = [
         title: "Terms of Use",
         url: "https://near.org/terms",
       },
+      {
+        title: "Cookie Policy",
+        url: "https://near.org/cookies",
+      },
     ],
   },
   {

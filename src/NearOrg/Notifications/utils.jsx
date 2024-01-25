@@ -77,7 +77,11 @@ function createNotificationLink(notificationType, notificationValue, authorAccou
         .map(([k, v]) => `${k}=${v}`)
         .join("&")}`;
     case "like":
+      const isComment = path.indexOf("/post/comment") > 0 || notificationType === "comment";
       const pathAccountId = path.split("/")[0];
+      if (isComment) {
+        return `${pathPrefix}/NearOrg.Notifications.CommentPost?accountId=${pathAccountId}&blockHeight=${likeAtBlockHeight}`;
+      }
       return `${pathPrefix}/PostPage?accountId=${pathAccountId}&blockHeight=${likeAtBlockHeight}`;
     case "comment":
       return `${pathPrefix}/PostPage?accountId=${authorAccountId}&commentBlockHeight=${blockHeight}`;

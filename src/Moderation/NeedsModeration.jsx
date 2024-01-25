@@ -12,17 +12,22 @@ State.init({
   locallyModeratedItems: {},
 });
 
-const moderationDataFormat = (accountId, path, blockHeight) => {
-  let value = { label: "moderate" };
+const moderationDataFormat = (accountId, path, blockHeight, reason) => {
+  let value = { label: reason };
   value.path = accountId + (path ? path : "");
   if (blockHeight) {
     value.blockHeight = parseInt(blockHeight);
   }
   const moderationStream = moderationStreamBase + (path ? path : "");
-  return JSON.stringify({
+  const indexData = JSON.stringify({
     key: moderationStream,
     value: value,
   });
+  return {
+    index: {
+      moderate: indexData,
+    },
+  };
 };
 
 const fetchGraphQL = (operationsDoc, operationName, variables) => {
@@ -115,6 +120,7 @@ const pathToType = (path) => {
     case `/discuss`:
       return "Discussion";
     case null:
+    case "account":
       return "Account";
     default:
       return "Unhandled Content Type" + path;
@@ -260,11 +266,11 @@ const renderItem = (item) => {
           />
         </div>
 
-        <div className="col-lg-7" style={{ textAlign: "right" }}>
+        <div className="col" style={{ textAlign: "right" }}>
           {item.moderated_path != null && (
             <span>
               <Widget
-                src="${REPL_ACCOUNT}/widget/Moderation.TogglingSetButton"
+                src="${REPL_ACCOUNT}/widget/Moderation.ModerationButton"
                 props={{
                   title: "Block " + pathToType(item.moderated_path),
                   disabled: !isModerator,
@@ -275,11 +281,8 @@ const renderItem = (item) => {
                     " " +
                     blockItemHelperText +
                     (isModerator ? "" : "\n" + disabledMessage),
-                  data: {
-                    index: {
-                      moderate: moderationDataFormat(accountId, item.moderated_path, blockHeight),
-                    },
-                  },
+                  type: pathToType(item.moderated_path),
+                  buildData: moderationDataFormat.bind(null, accountId, item.moderated_path, blockHeight),
                   onCommit: () => {
                     setLocalAfterModeration(id);
                   },
@@ -289,7 +292,7 @@ const renderItem = (item) => {
           )}
           <span style={{ marginLeft: "20px" }}>
             <Widget
-              src="${REPL_ACCOUNT}/widget/Moderation.TogglingSetButton"
+              src="${REPL_ACCOUNT}/widget/Moderation.ModerationButton"
               props={{
                 title: "Moderate Account",
                 disabled: !isModerator,
@@ -297,11 +300,8 @@ const renderItem = (item) => {
                 tooltip: blockAccountHelperText + (isModerator ? "" : "\n" + disabledMessage),
                 variant: "destructive",
                 fill: "outline",
-                data: {
-                  index: {
-                    moderate: moderationDataFormat(accountId),
-                  },
-                },
+                type: pathToType("account"),
+                buildData: moderationDataFormat.bind(null, accountId, null, null),
                 onCommit: () => {
                   setLocalAfterModeration(id);
                 },
@@ -318,24 +318,38 @@ const renderItem = (item) => {
 const renderedItems = state.items.map(renderItem);
 
 return (
-  <InfiniteScroll
-    className="mb-5"
-    pageStart={0}
-    loadMore={loadItems}
-    hasMore={hasMore}
-    loader={
-      <div className="loader">
-        <span className="spinner-grow spinner-grow-sm me-1" role="status" aria-hidden="true" />
-        Loading ...
+  <>
+    <div className="row">
+      <div className="col-1" style={{ paddingLeft: "20px" }}>
+        Type
       </div>
-    }
-  >
-    <Widget
-      src="near/widget/DIG.Accordion"
-      props={{
-        type: "multiple",
-        items: renderedItems,
-      }}
-    />
-  </InfiniteScroll>
+      <div className="col-3" style={{ paddingLeft: "20px" }}>
+        # of Reports
+      </div>
+      <div className="col-2">Date First reported</div>
+      <div className="col" style={{ textAlign: "center" }}>
+        Actions
+      </div>
+    </div>
+    <InfiniteScroll
+      className="mb-5"
+      pageStart={0}
+      loadMore={loadItems}
+      hasMore={hasMore}
+      loader={
+        <div className="loader">
+          <span className="spinner-grow spinner-grow-sm me-1" role="status" aria-hidden="true" />
+          Loading ...
+        </div>
+      }
+    >
+      <Widget
+        src="near/widget/DIG.Accordion"
+        props={{
+          type: "multiple",
+          items: renderedItems,
+        }}
+      />
+    </InfiniteScroll>
+  </>
 );

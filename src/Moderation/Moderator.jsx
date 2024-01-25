@@ -52,6 +52,31 @@ function overview() {
           While widgets transition, some items may be Flagged instead of Reported. These items can still be reviewed and
           manually moderated (using the controls in the Previously Moderated section).
         </p>
+        <hr />
+        <h4>Post Moderation Categories</h4>
+        <p>
+          <ul>
+            <li>Spam: Repeated, unwanted, or unsolicited actions.</li>
+            <li>Hate, Bullying or Harassment: Discrimination, threats, or targeted intimidation.</li>
+            <li>Nudity or Suggestive Content: Explicit or inappropriate visuals or text.</li>
+            <li>Frauds or Scams: Deceptive practices or misleading offers.</li>
+            <li>Illegal Content: Promotion or distribution of illegal activities.</li>
+            <li>Copyright Violation: Unauthorized use of copyrighted material.</li>
+            <li>Other: Content that doesn't fit the above categories.</li>
+          </ul>
+        </p>
+        <h4>Account Moderation Categories</h4>
+        <p>
+          <ul>
+            <li>Bot or Automated Actions: Non-human activities or automated interactions.</li>
+            <li>Impersonation: Posing as another individual or a notable entity.</li>
+            <li>
+              Inappropriate Profile Information: Deceptive bios, inappropriate profile visuals, or misleading details.
+            </li>
+            <li>Posting Inappropriate Content: Continuous sharing of explicit, misleading, or harmful content.</li>
+            <li>Other: Issues not addressed by the above categories.</li>
+          </ul>
+        </p>
       </Instructions>
     </div>
   );

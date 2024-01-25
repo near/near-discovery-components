@@ -43,12 +43,13 @@ CREATE INDEX
     );
 
 CREATE VIEW dataplatform_near_moderation.unmoderated_reports as
-SELECT min(report_blockheight) as first_report_blockheight, count(account_id) as reporter_count,
+SELECT min(report_blockheight) as first_report_blockheight, count(distinct account_id) as reporter_count,
        array(select account_id from dataplatform_near_moderation.moderation_reporting rl
              WHERE ((rl.moderated_account_id = r.moderated_account_id)
-                        AND ((rl.moderated_path IS NULL) OR
+                        AND ((r.moderated_path IS NULL AND rl.moderated_path IS NULL) OR
                              ((rl.moderated_path = r.moderated_path) AND (rl.moderated_blockheight = r.moderated_blockheight))))
-             limit 5) as reporter_list,
+             AND rl.label != 'hide'
+             group by account_id limit 5) as reporter_list,
        moderated_account_id, moderated_path, moderated_blockheight,
        mode() within group (order by label) as most_frequent_label --  most prevalent label
 FROM dataplatform_near_moderation.moderation_reporting r

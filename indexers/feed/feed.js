@@ -1,0 +1,1 @@
+// This indexer holds views and does no indexing itself

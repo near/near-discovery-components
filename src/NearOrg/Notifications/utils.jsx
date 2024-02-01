@@ -39,9 +39,12 @@ function createNotificationMessage(notificationType, path, postValue, customMess
   }
 }
 
-function getNotificationContent(notificationType, path, postValue, context, accountId, blockHeight) {
+function getNotificationContent(notificationType, notificationValue, path, postValue, context, accountId, blockHeight) {
   // Do not show content for these notification types
   // as they are not having any content
+  let { item } = notificationValue;
+  let { blockHeight: likeAtBlockHeight } = item;
+
   if (["follow", "unfollow", "poke"].indexOf(notificationType) >= 0) return null;
 
   const isComment = path.indexOf("/post/comment") > 0 || notificationType === "comment";
@@ -53,8 +56,12 @@ function getNotificationContent(notificationType, path, postValue, context, acco
     });
     return getDevHubContent.snapshot.description;
   }
-  const contentPath = isPost ? `${context.accountId}/post/main` : `${accountId}/post/comment`;
-  const contentDescription = JSON.parse(Social.get(contentPath, blockHeight) ?? "null");
+
+  const commentAuthorAccountId = notificationType === "like" ? context.accountId : accountId;
+  const contentBlockHeight = notificationType === "like" ? likeAtBlockHeight : blockHeight;
+
+  const contentPath = isPost ? `${context.accountId}/post/main` : `${commentAuthorAccountId}/post/comment`;
+  const contentDescription = JSON.parse(Social.get(contentPath, contentBlockHeight) ?? "null");
   return contentDescription.text;
 }
 
@@ -77,7 +84,11 @@ function createNotificationLink(notificationType, notificationValue, authorAccou
         .map(([k, v]) => `${k}=${v}`)
         .join("&")}`;
     case "like":
+      const isComment = path.indexOf("/post/comment") > 0 || notificationType === "comment";
       const pathAccountId = path.split("/")[0];
+      if (isComment) {
+        return `${pathPrefix}/NearOrg.Notifications.CommentPost?accountId=${pathAccountId}&blockHeight=${likeAtBlockHeight}`;
+      }
       return `${pathPrefix}/PostPage?accountId=${pathAccountId}&blockHeight=${likeAtBlockHeight}`;
     case "comment":
       return `${pathPrefix}/PostPage?accountId=${authorAccountId}&commentBlockHeight=${blockHeight}`;

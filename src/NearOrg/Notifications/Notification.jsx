@@ -153,7 +153,7 @@ const ordinaryNotification = ["follow", "unfollow", "poke"].indexOf(type) >= 0;
 const notificationMessageByType = createNotificationMessage && createNotificationMessage(type, path, post, message);
 if (!notificationMessageByType) return "";
 
-const previewContent = getNotificationContent(type, path, post, context, accountId, blockHeight);
+const previewContent = getNotificationContent(type, value, path, post, context, accountId, blockHeight);
 const postUrl = createNotificationLink(type, value, props.initiator, accountId, blockHeight);
 const iconClassName = getNotificationIconClassName(type);
 

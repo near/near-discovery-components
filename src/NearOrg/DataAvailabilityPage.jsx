@@ -8,11 +8,12 @@ const ipfsImages = {
     dymension: "bafkreifyazhbdnbckyieag6a4ezm7mchncln4uoxv3x7v5uvcnewtz5shu",
     fluent: "bafkreiblc2o3x5uwjm4kiywzxkhpulykfmmvulvdqhy4odh6huzlzb4pi4",
     movementLabs: "bafkreifeghlktv3jscosqr6653jky2k4ti7vgyssgzc4tsxbznhboh3pyy",
+    polygon: "bafkreig5ubh27cnjindiujnmyrwa2uft24bcrmgibzwlma4nqsommrcd4u",
+    arbitrum: "bafkreibff556aanawcdwlpbelqnzns35gqmxcsll5k4acyynyrvibcljpu",
     starknet: "bafkreifteo2upl2sdubzcluygnijnt46dmdegv7tbygeciwv66zzjoatcu",
     vistara: "bafkreiecvztsb3iiyhh4lfjfzgh2xdvfoacl5izgw4keowjfmff44o7fdi",
     altlayer: "bafkreig3mrzesoettretv2dhnxtgy22wubasgifzx4smybyldzbk35e3fm",
     optimism: "bafkreidwitx5hu6hivyn3exi34moyea7livf6zfqk2dcny3z62ive7fpou",
-    arbitrum: "bafkreibff556aanawcdwlpbelqnzns35gqmxcsll5k4acyynyrvibcljpu",
   },
 };
 
@@ -258,19 +259,31 @@ const web3Teams = [
     url: "https://docs.fluentlabs.xyz/learn/introduction/what-is-fluent#app-deployment-models",
     name: "Fluent",
     ipfsImage: ipfsImages.logos.fluent,
-    height: "24px",
+    height: "29px",
   },
   {
     url: "https://movementlabs.xyz",
     name: "Movement Labs",
     ipfsImage: ipfsImages.logos.movementLabs,
-    height: "16px",
+    height: "24px",
+  },
+  {
+    url: "https://polygon.technology/polygon-cdk",
+    name: "Polygon",
+    ipfsImage: ipfsImages.logos.polygon,
+    height: "29px",
+  },
+  {
+    url: "https://docs.arbitrum.io/inside-anytrust#data-availability-servers",
+    name: "Arbitrum",
+    ipfsImage: ipfsImages.logos.arbitrum,
+    height: "29px",
   },
   {
     url: "https://docs.starknet.io/documentation/architecture_and_concepts/Network_Architecture/on-chain-data/",
     name: "Starknet",
     ipfsImage: ipfsImages.logos.starknet,
-    height: "16px",
+    height: "29px",
   },
   {
     url: "https://docs.vistara.dev/rollups/create-a-rollup#get-started",
@@ -282,12 +295,6 @@ const web3Teams = [
     url: "https://docs.altlayer.io/altlayer-documentation/core-features-of-altlayers-in-house-rollup-stack/modular",
     name: "Altlayer",
     ipfsImage: ipfsImages.logos.altlayer,
-    height: "29px",
-  },
-  {
-    url: "https://docs.arbitrum.io/inside-anytrust#data-availability-servers",
-    name: "Arbitrum",
-    ipfsImage: ipfsImages.logos.arbitrum,
     height: "29px",
   },
 ];

@@ -25,7 +25,7 @@ const fetchGraphQL = (operationsDoc, operationName, variables) => {
 };
 
 const postQuery = `query PostQuery {
-  dataplatform_near_social_feed_moderated_posts(
+  dataplatform_near_feed_moderated_posts(
     order_by: {block_height: desc}
     where: {_and: {block_height: {_eq: ${props.blockHeight}}, account_id: {_eq: "${props.accountId}"}}}
   ) {
@@ -44,7 +44,7 @@ const postQuery = `query PostQuery {
   }
 }`;
 const commentQuery = `query ParentPostByComment {
-  dataplatform_near_social_feed_moderated_comments(
+  dataplatform_near_feed_moderated_comments(
     where: {_and: {account_id: {_eq: "${accountId}"}, block_height: {_eq: ${commentBlockHeight}}}}
   ) {
     post {
@@ -79,8 +79,8 @@ const postHandler = (result) => {
   if (result.status === 200) {
     if (result.body.data) {
       const collectionName = commentBlockHeight
-        ? "dataplatform_near_social_feed_moderated_comments"
-        : "dataplatform_near_social_feed_moderated_posts";
+        ? "dataplatform_near_feed_moderated_comments"
+        : "dataplatform_near_feed_moderated_posts";
       const collection = result.body.data[collectionName];
       if (collection.length == 0 || (commentBlockHeight && collection[0].post == null)) {
         State.update({

@@ -234,6 +234,7 @@ const renderItem = (item) => {
   }
 
   const overviewTooltip = accountId + (blockHeight ? " " + blockHeight : "");
+  const reporterList = item.reporter_list ? item.reporter_list.join(", ") : "";
   const header = (
     <div key={id} style={{ width: "100%" }}>
       <div className="row">
@@ -247,7 +248,14 @@ const renderItem = (item) => {
           />
         </div>
         <div className="col-3">
-          {item.most_frequent_label} by {item.reporter_count} {item.reporter_count > 0 ? "users" : "user"}
+          {item.most_frequent_label} by
+          <Widget
+            src="near/widget/DIG.Tooltip"
+            props={{
+              content: reporterList,
+              trigger: ` ${item.reporter_count} ${item.reporter_count > 0 ? "users" : "user"}`,
+            }}
+          />
         </div>
         <div className="col-1">
           <Widget

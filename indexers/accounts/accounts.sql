@@ -9,5 +9,6 @@ CREATE TABLE
     "background_image" text,
     "horizon_tnc" boolean,
     "linktree" text,
+    "tags" text,
     PRIMARY KEY ("account_id")
   )

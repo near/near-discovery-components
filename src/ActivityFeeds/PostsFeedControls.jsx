@@ -134,7 +134,7 @@ const createQuery = (type, isUpdate) => {
 
     case "mutual":
       let userAccount = context.accountId;
-      queryFilter = `where: { 
+      queryFilter = `where: {
           _and: [
             {account_id: {_in: "${filteredAccountIds}"}},
             {_or: [
@@ -142,7 +142,7 @@ const createQuery = (type, isUpdate) => {
               {comments: {account_id: {_eq: "${userAccount}"}}}
               ]
             },
-            {block_timestamp: {${timeOperation}: ${queryTime}}}            
+            {block_timestamp: {${timeOperation}: ${queryTime}}}
           ]
         }`;
       break;
@@ -185,6 +185,11 @@ query FeedQuery($offset: Int, $limit: Int) {
       human_valid_until
       human_verification_level
     }
+    account {
+      profile_name: name
+      profile_image: image
+      profile_tags: tags
+    }
   }
   dataplatform_near_feed_moderated_posts_aggregate(${queryFilter} order_by: {id: asc}) {
     aggregate {
@@ -221,20 +226,27 @@ const loadMorePosts = (isUpdate) => {
       }
       let data = result.body.data;
       if (data) {
+        // console.log("data: ", data);
         const newPosts = data.dataplatform_near_feed_moderated_posts;
         const postsCountLeft = data.dataplatform_near_feed_moderated_posts_aggregate.aggregate.count;
         if (newPosts.length > 0) {
           let filteredPosts = newPosts.filter((i) => !shouldFilter(i, postsModerationKey));
           filteredPosts = filteredPosts.map((post) => {
-            const prevComments = post.comments;
+            const { account, ...rest } = post;
+            console.log("account: ", account);
+            const prevComments = rest.comments;
             const filteredComments = prevComments.filter((comment) => !shouldFilter(comment, commentsModerationKey));
-            post.comments = filteredComments;
-            return post;
+            rest.comments = filteredComments;
+            rest.profile_name = account?.profile_name;
+            rest.profile_image = account?.profile_image ? JSON.parse(account.profile_image ?? "") : null;
+            rest.profile_tags = account?.profile_tags ? JSON.parse(account.profile_tags) : null;
+            return rest;
           });
 
           if (isUpdate) {
             setNewUnseenPosts(filteredPosts);
           } else {
+            // console.log("postsData: ", postsData, "filteredPosts: ", filteredPosts);
             setPostsData({
               posts: [...postsData.posts, ...filteredPosts],
               postsCountLeft,

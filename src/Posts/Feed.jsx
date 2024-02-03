@@ -16,8 +16,7 @@ const TextLink = styled("Link")`
 `;
 
 function returnProfileForUser(post) {
-  const image =
-    post.profile_image && post.profile_image.indexOf("http") === 0 ? { url: rawImage } : { ipfs_cid: rawImage };
+  const image = post.profile_image ?? null;
   const name = post.profile_name ?? "";
   let tags = null;
 
@@ -25,6 +24,8 @@ function returnProfileForUser(post) {
     tags = {};
     post.profile_tags.forEach((tag) => (tags[tag] = ""));
   }
+
+  console.log("image: ", image);
 
   if (image && tags) {
     return {
@@ -41,6 +42,7 @@ const renderItem = (item) => {
   if (item.accounts_liked.length !== 0) {
     item.accounts_liked = JSON.parse(item.accounts_liked);
   }
+  console.log("item", item);
   return (
     <Post className="post" key={item.block_height + "_" + item.account_id}>
       <Widget

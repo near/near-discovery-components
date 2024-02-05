@@ -14,6 +14,7 @@ const ipfsImages = {
     vistara: "bafkreiecvztsb3iiyhh4lfjfzgh2xdvfoacl5izgw4keowjfmff44o7fdi",
     altlayer: "bafkreig3mrzesoettretv2dhnxtgy22wubasgifzx4smybyldzbk35e3fm",
     optimism: "bafkreidwitx5hu6hivyn3exi34moyea7livf6zfqk2dcny3z62ive7fpou",
+    zeeve: "bafkreigwtxjuraug4l2rltpoy4wau6gaom6e52fwgyqfpdsh2t6voe6ypm",
   },
 };
 
@@ -187,6 +188,7 @@ const LogoLinksWrapper = styled.div`
   margin-top: 40px;
   width: 100%;
   position: relative;
+  text-align: center;
 
   @media (max-width: 1170px) {
     &::before {
@@ -202,28 +204,11 @@ const LogoLinksWrapper = styled.div`
   }
 `;
 
-const LogoLinksScroll = styled.div`
-  overflow: auto;
-  scroll-behavior: smooth;
-  width: 100%;
-  text-align: center;
-  padding: 0 24px;
-
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
-  scrollbar-width: none; /* Firefox */
-  &::-webkit-scrollbar {
-    display: none; /* Safari and Chrome */
-  }
-
-  @media (max-width: 1170px) {
-    padding-right: 40px;
-  }
-`;
-
 const LogoLinks = styled.div`
   display: inline-flex;
   align-items: center;
   gap: 60px;
+  padding: 16px 24px;
 
   a {
     display: block;
@@ -242,7 +227,52 @@ const LogoLinks = styled.div`
   }
 `;
 
+const web3Teams2 = [
+  // {
+  //   url: "https://docs.optimism.io/builders/chain-operators/hacks/data-availability#overview",
+  //   name: "Optimism",
+  //   ipfsImage: ipfsImages.logos.optimism,
+  //   height: "29px",
+  // },
+  {
+    url: "https://polygon.technology/polygon-cdk",
+    name: "Polygon",
+    ipfsImage: ipfsImages.logos.polygon,
+    height: "29px",
+  },
+  {
+    url: "https://docs.starknet.io/documentation/architecture_and_concepts/Network_Architecture/on-chain-data/",
+    name: "Starknet",
+    ipfsImage: ipfsImages.logos.starknet,
+    height: "29px",
+  },
+  {
+    url: "https://docs.vistara.dev/rollups/create-a-rollup#get-started",
+    name: "Vistara",
+    ipfsImage: ipfsImages.logos.vistara,
+    height: "29px",
+  },
+  {
+    url: "https://www.zeeve.io/blog/zeeve-raas-partners-with-near-da-to-power-ethereum-rollup-builders-with-efficient-data-availability/",
+    name: "Zeeve",
+    ipfsImage: ipfsImages.logos.zeeve,
+    height: "29px",
+  },
+];
+
 const web3Teams = [
+  {
+    url: "https://docs.altlayer.io/altlayer-documentation/core-features-of-altlayers-in-house-rollup-stack/modular",
+    name: "Altlayer",
+    ipfsImage: ipfsImages.logos.altlayer,
+    height: "29px",
+  },
+  {
+    url: "https://docs.arbitrum.io/inside-anytrust#data-availability-servers",
+    name: "Arbitrum",
+    ipfsImage: ipfsImages.logos.arbitrum,
+    height: "29px",
+  },
   {
     url: "https://docs.caldera.xyz/about/alternative-da",
     name: "Caldera",
@@ -266,36 +296,6 @@ const web3Teams = [
     name: "Movement Labs",
     ipfsImage: ipfsImages.logos.movementLabs,
     height: "24px",
-  },
-  {
-    url: "https://polygon.technology/polygon-cdk",
-    name: "Polygon",
-    ipfsImage: ipfsImages.logos.polygon,
-    height: "29px",
-  },
-  {
-    url: "https://docs.arbitrum.io/inside-anytrust#data-availability-servers",
-    name: "Arbitrum",
-    ipfsImage: ipfsImages.logos.arbitrum,
-    height: "29px",
-  },
-  {
-    url: "https://docs.starknet.io/documentation/architecture_and_concepts/Network_Architecture/on-chain-data/",
-    name: "Starknet",
-    ipfsImage: ipfsImages.logos.starknet,
-    height: "29px",
-  },
-  {
-    url: "https://docs.vistara.dev/rollups/create-a-rollup#get-started",
-    name: "Vistara",
-    ipfsImage: ipfsImages.logos.vistara,
-    height: "29px",
-  },
-  {
-    url: "https://docs.altlayer.io/altlayer-documentation/core-features-of-altlayers-in-house-rollup-stack/modular",
-    name: "Altlayer",
-    ipfsImage: ipfsImages.logos.altlayer,
-    height: "29px",
   },
 ];
 
@@ -411,29 +411,42 @@ return (
       </LogoText>
 
       <LogoLinksWrapper>
-        <LogoLinksScroll>
-          <LogoLinks>
-            {web3Teams.map((team) => {
-              return (
-                <a
-                  href={team.url}
-                  target="_blank"
-                  title={team.name}
-                  style={{ height: team.height, display: "inline-block" }}
-                  key={team.name}
-                >
-                  <Widget
-                    src="${REPL_MOB}/widget/Image"
-                    props={{
-                      image: returnIpfsImage(team.ipfsImage),
-                      alt: team.name,
-                    }}
-                  />
-                </a>
-              );
-            })}
-          </LogoLinks>
-        </LogoLinksScroll>
+        <LogoLinks>
+          {web3Teams.map((team) => {
+            return (
+              <a
+                href={team.url}
+                target="_blank"
+                title={team.name}
+                style={{ height: team.height, display: "inline-block" }}
+                key={team.name}
+              >
+                <Widget
+                  src="${REPL_MOB}/widget/Image"
+                  props={{
+                    image: returnIpfsImage(team.ipfsImage),
+                    alt: team.name,
+                  }}
+                />
+              </a>
+            );
+          })}
+        </LogoLinks>
+        <LogoLinks>
+          {web3Teams2.map((team) => {
+            return (
+              <a href={team.url} target="_blank" title={team.name} style={{ height: team.height }} key={team.name}>
+                <Widget
+                  src="${REPL_MOB}/widget/Image"
+                  props={{
+                    image: returnIpfsImage(team.ipfsImage),
+                    alt: team.name,
+                  }}
+                />
+              </a>
+            );
+          })}
+        </LogoLinks>
       </LogoLinksWrapper>
       {/* </Teams> */}
     </Section>

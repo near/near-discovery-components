@@ -2,7 +2,7 @@
 name: New DIG Component
 about: Add a new component to the DIG component library.
 title: "[New Component] Component Name"
-labels: product design
+labels: ''
 assignees: ''
 
 ---

@@ -55,8 +55,7 @@ const createQuery = () => {
       description
       website
     }
-}
-    `;
+  }`;
   };
   
 const renderComponents = (sortOption) => {
@@ -81,8 +80,7 @@ const renderComponents = (sortOption) => {
     accountsFollowing: accountsFollowing,
     limit: LIMIT,
   } )
-  .then((result) => {
-    console.log(result)
+  .then((result) => {    
       if (result.status === 200 && result.body) {
         if (result.body.errors) { 
           console.log("error:", result.body.errors);
@@ -106,13 +104,16 @@ const renderComponents = (sortOption) => {
               description,
               website,
             } = component;
-            console.log('tags here', tags);
             
+            const tagObject = {};
             if(tags){
-              tags.forEach((tag) => {
-
+              const tagsArray = tags.split(',');
+              const tags = tagsArray.map((tag) => {
+                tag.trim();
+                tagObject[tag] = '';
               });
             }
+
             const component_container ={
               "metadata": {
                 "name": component_name,
@@ -123,16 +124,12 @@ const renderComponents = (sortOption) => {
                 "image": {
                   "ipfs_cid": image_ipfs_cid
                 },
-                "tags": {
-                  "app": "" ,//TODO: FIND FORMAT OF TAGS WITH AN FOLLOWED ITEM WITH TAGS
-                  "dog": "12321" 
-                },
+                "tags": tagObject,
                 "star_count": star_count,
                 "fork_count": fork_count,
               },
               "src": component_id,
             }
-
             componentContainer.push(component_container);
           });
           setComponents(componentContainer);

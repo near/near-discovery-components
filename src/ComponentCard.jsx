@@ -17,6 +17,11 @@ const Card = styled.div`
   overflow: hidden;
 `;
 
+const Icon = styled.i`
+  height: 18px;
+  width: 18px;
+`
+
 const CardBody = styled.div`
   padding: 16px;
   display: flex;
@@ -214,8 +219,8 @@ return (
 
     {props?.metadata?.star_count >= 0 && props?.metadata?.fork_count >= 0 && (
         <CardMetaDataContainer>
-        <MetaDataItem><i className="bi bi-star" style={{ height: "18px", width:"18px" }}></i> <p>{props.metadata.star_count === 0 ? '-' : props.metadata.star_count}</p></MetaDataItem>
-        <MetaDataItem><i className="bi bi-git"  style={{ height: "18px", width:"18px" }}></i> <p>{props.metadata.fork_count  === 0 ? '-' : props.metadata.fork_count}</p></MetaDataItem>
+        <MetaDataItem><Icon className="bi bi-star"></Icon> <p>{props.metadata.star_count === 0 ? '-' : props.metadata.star_count}</p></MetaDataItem>
+        <MetaDataItem><Icon className="bi bi-git"></Icon> <p>{props.metadata.fork_count  === 0 ? '-' : props.metadata.fork_count}</p></MetaDataItem>
         </CardMetaDataContainer>
     )}
     

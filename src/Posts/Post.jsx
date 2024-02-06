@@ -225,6 +225,10 @@ const renderComment = (a) => {
 
 const renderedComments = state.comments.map(renderComment);
 
+const addNewCommentFn = (newComment) => {
+  State.update(state.comments.push(newComment));
+};
+
 return (
   <>
     {state.showToast && (
@@ -359,6 +363,7 @@ return (
                     notifyAccountId,
                     item,
                     onComment: () => State.update({ showReply: false }),
+                    newAddedComment: addNewCommentFn,
                   }}
                 />
               </div>

@@ -403,14 +403,6 @@ const nearHubsCards = [
     href: "https://nearvietnamhub.org",
     hrefText: "Visit NEAR Vietman",
   },
-  {
-    ipfsImage: ipfsImages.nearLogoIndia,
-    title: "NEAR India",
-    content:
-      "The NEAR India Hub provides resources and support for developers, entrepreneurs, and businesses in India who want to use or build on NEAR in India.",
-    href: "https://nearindiahub.com",
-    hrefText: "Visit NEAR India ",
-  },
 ];
 
 return (

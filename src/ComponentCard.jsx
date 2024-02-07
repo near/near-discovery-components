@@ -180,8 +180,8 @@ return (
         ago
       </CardTag>
     )}
-
-    <CardBody style={{padding : props.metadata?.star_count>=0 && props.metadata.fork_count>=0 && '16px 16px 4px 16px'}}>
+    
+    <CardBody style={{padding : props.metadata?.star_count>0 && props.metadata.fork_count>0 && '16px 16px 4px 16px'}}>
       <Thumbnail href={detailsUrl}>
         <Widget
           src="${REPL_MOB}/widget/Image"
@@ -217,10 +217,10 @@ return (
       </CardContent>
     </CardBody>
 
-    {props?.metadata?.star_count >= 0 && props?.metadata?.fork_count >= 0 && (
+    {(props?.metadata?.star_count > 0 || props?.metadata?.fork_count > 0) && (
         <CardMetaDataContainer>
-        <MetaDataItem><Icon className="bi bi-star"></Icon> <p>{props.metadata.star_count === 0 ? '-' : props.metadata.star_count}</p></MetaDataItem>
-        <MetaDataItem><Icon className="bi bi-git"></Icon> <p>{props.metadata.fork_count  === 0 ? '-' : props.metadata.fork_count}</p></MetaDataItem>
+       <MetaDataItem><i class="ph ph-star"></i> <p>{props.metadata.star_count === 0 ? '-' : props.metadata.star_count}</p></MetaDataItem>
+       <MetaDataItem><i class="ph ph-git-fork"></i><p>{props.metadata.fork_count  === 0 ? '-' : props.metadata.fork_count}</p></MetaDataItem>
         </CardMetaDataContainer>
     )}
     

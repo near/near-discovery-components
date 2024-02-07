@@ -180,8 +180,8 @@ return (
         ago
       </CardTag>
     )}
-    
-    <CardBody style={{padding : props.metadata?.star_count>0 && props.metadata.fork_count>0 && '16px 16px 4px 16px'}}>
+
+    <CardBody style={{padding : (props.metadata?.star_count>0 || props.metadata.fork_count>0) && '16px 16px 4px 16px'}}>
       <Thumbnail href={detailsUrl}>
         <Widget
           src="${REPL_MOB}/widget/Image"

@@ -19,9 +19,15 @@ const ipfsImages = {
     placeholder: "bafkreid7abzwnzk3qrniq7mnnl4blhka7k5nk62m3u7afqnqdxowmrkdu4",
   },
   logos: {
+    alibaba: "bafkreibjmnm5mu5sdauregztl2bsin2a633gdfmrydviyqkyf5rpjfbg64",
+    arbitrum: "bafkreibff556aanawcdwlpbelqnzns35gqmxcsll5k4acyynyrvibcljpu",
     cosmose: "bafkreifx5onoiyip7mwogdnzmv7ilirkw2fyzvegrvxbmzf6bcbzuwbmbu",
     dropt: "bafkreihjdirbdiuoiqlcmpp7gnjnvkm3bfol7mtetyaldtgnvgrprpdbba",
+    eigenLayer: "bafkreid44xmemwrym532jybhwqwrvlbzchxfxyrkcivns5qtmpeym7cmbe",
     icc: "bafkreibygllbcqh3e3qkcrim2noa4wwev36af34rk6gw2rpogp53lwkbg4",
+    google: "bafkreie7ewwxbvcv4hgztuj5uwk5i4siirqnxbo2c5g2nt72iaty6lnpje",
+    optimism: "bafkreidwitx5hu6hivyn3exi34moyea7livf6zfqk2dcny3z62ive7fpou",
+    polygon: "bafkreig5ubh27cnjindiujnmyrwa2uft24bcrmgibzwlma4nqsommrcd4u",
     marblex: "bafkreigaqwyom4knnvjdvsgmfbef5adp5k6no4prdudiog3pypiqddoyum",
     sailgp: "bafkreifoxofuz4mkoopodvrdb44g5lva4w5p46iexccovj4c62x6ihoj2i",
     shemaroo: "bafkreigoulx5h4u43xj4332bidnkn4dzbw5qgrcar6wf7yoewnrxfyjfle",
@@ -53,30 +59,12 @@ const featuredApps = [
   },
 ];
 
-const web3Teams = [
-  {
-    url: "https://cosmose.co",
-    name: "Cosmose AI",
-    ipfsImage: ipfsImages.logos.cosmose,
-    height: "38px",
-  },
+const web3Teams2 = [
   {
     url: "https://dropt.io",
     name: "Dropt",
     ipfsImage: ipfsImages.logos.dropt,
     height: "35px",
-  },
-  {
-    url: "https://www.icc-cricket.com",
-    name: "ICC",
-    ipfsImage: ipfsImages.logos.icc,
-    height: "24px",
-  },
-  {
-    url: "https://www.marblex.io",
-    name: "Marblex",
-    ipfsImage: ipfsImages.logos.marblex,
-    height: "16px",
   },
   {
     url: "https://sailgp.com",
@@ -91,11 +79,68 @@ const web3Teams = [
     height: "38px",
   },
   {
+    url: "https://www.marblex.io",
+    name: "Marblex",
+    ipfsImage: ipfsImages.logos.marblex,
+    height: "16px",
+  },
+  {
+    url: "https://polygon.technology/polygon-cdk",
+    name: "Polygon",
+    ipfsImage: ipfsImages.logos.polygon,
+    height: "38px",
+  },
+  {
     url: "https://sweatco.in",
     name: "Sweatcoin",
     ipfsImage: ipfsImages.logos.sweatcoin,
     height: "24px",
   },
+];
+
+const web3Teams = [
+  {
+    url: "https://alibabacloud.com/",
+    name: "Alibaba",
+    ipfsImage: ipfsImages.logos.alibaba,
+    height: "38px",
+  },
+  {
+    url: "https://docs.arbitrum.io/inside-anytrust#data-availability-servers",
+    name: "Arbitrum",
+    ipfsImage: ipfsImages.logos.arbitrum,
+    height: "38px",
+  },
+  {
+    url: "https://cosmose.co",
+    name: "Cosmose AI",
+    ipfsImage: ipfsImages.logos.cosmose,
+    height: "38px",
+  },
+  {
+    url: "https://docs.eigenlayer.xyz/eigenda-guides/eigenda-overview",
+    name: "EigenLayer",
+    ipfsImage: ipfsImages.logos.eigenLayer,
+    height: "38px",
+  },
+  {
+    url: "https://google.com",
+    name: "Google",
+    ipfsImage: ipfsImages.logos.google,
+    height: "38px",
+  },
+  {
+    url: "https://www.icc-cricket.com",
+    name: "ICC",
+    ipfsImage: ipfsImages.logos.icc,
+    height: "24px",
+  },
+  //{
+  //  url: "https://docs.optimism.io/builders/chain-operators/hacks/data-availability#overview",
+  //  name: "Optimism",
+  //  ipfsImage: ipfsImages.logos.optimism,
+  //  height: "38px",
+  //},
 ];
 
 const learnItems = [
@@ -314,28 +359,11 @@ const LogoLinksWrapper = styled.div`
   }
 `;
 
-const LogoLinksScroll = styled.div`
-  overflow: auto;
-  scroll-behavior: smooth;
-  width: 100%;
-  text-align: center;
-  padding: 0 24px;
-
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
-  scrollbar-width: none; /* Firefox */
-  &::-webkit-scrollbar {
-    display: none; /* Safari and Chrome */
-  }
-
-  @media (max-width: 1170px) {
-    padding-right: 40px;
-  }
-`;
-
 const LogoLinks = styled.div`
   display: inline-flex;
   align-items: center;
   gap: 60px;
+  padding: 16px 24px;
 
   a {
     display: block;
@@ -474,15 +502,11 @@ return (
         <Pattern>
           <PatternContent>
             <Flex gap="32px" direction="column" alignItems="center">
-              <H1>
-                The OS for an
-                <br />
-                open web
-              </H1>
+              <H1>Blockchains, Abstracted.</H1>
 
               <Text size="text-l" mobileSize="text-base">
-                Effortlessly create and distribute decentralized apps on any blockchain with the Blockchain Operating
-                System (B.O.S).
+                NEAR is the chain abstraction stack, empowering builders to create apps that scale to billions of users
+                and across all blockchains.
               </Text>
 
               <Flex gap="24px">
@@ -526,29 +550,36 @@ return (
           </Text>
 
           <LogoLinksWrapper>
-            <LogoLinksScroll>
-              <LogoLinks>
-                {web3Teams.map((team) => {
-                  return (
-                    <a
-                      href={team.url}
-                      target="_blank"
-                      title={team.name}
-                      style={{ height: team.height }}
-                      key={team.name}
-                    >
-                      <Widget
-                        src="${REPL_MOB}/widget/Image"
-                        props={{
-                          image: returnIpfsImage(team.ipfsImage),
-                          alt: team.name,
-                        }}
-                      />
-                    </a>
-                  );
-                })}
-              </LogoLinks>
-            </LogoLinksScroll>
+            <LogoLinks>
+              {web3Teams.map((team) => {
+                return (
+                  <a href={team.url} target="_blank" title={team.name} style={{ height: team.height }} key={team.name}>
+                    <Widget
+                      src="${REPL_MOB}/widget/Image"
+                      props={{
+                        image: returnIpfsImage(team.ipfsImage),
+                        alt: team.name,
+                      }}
+                    />
+                  </a>
+                );
+              })}
+            </LogoLinks>
+            <LogoLinks>
+              {web3Teams2.map((team) => {
+                return (
+                  <a href={team.url} target="_blank" title={team.name} style={{ height: team.height }} key={team.name}>
+                    <Widget
+                      src="${REPL_MOB}/widget/Image"
+                      props={{
+                        image: returnIpfsImage(team.ipfsImage),
+                        alt: team.name,
+                      }}
+                    />
+                  </a>
+                );
+              })}
+            </LogoLinks>
           </LogoLinksWrapper>
         </Teams>
       </Container>

@@ -185,10 +185,10 @@ query FeedQuery($offset: Int, $limit: Int) {
       human_valid_until
       human_verification_level
     }
-    account {
-      profile_name: name
-      profile_image: image
-      profile_tags: tags
+    profile: account {
+      name
+      image
+      tags
     }
   }
   dataplatform_near_feed_moderated_posts_aggregate(${queryFilter} order_by: {id: asc}) {
@@ -226,27 +226,28 @@ const loadMorePosts = (isUpdate) => {
       }
       let data = result.body.data;
       if (data) {
-        // console.log("data: ", data);
         const newPosts = data.dataplatform_near_feed_moderated_posts;
         const postsCountLeft = data.dataplatform_near_feed_moderated_posts_aggregate.aggregate.count;
         if (newPosts.length > 0) {
           let filteredPosts = newPosts.filter((i) => !shouldFilter(i, postsModerationKey));
           filteredPosts = filteredPosts.map((post) => {
-            const { account, ...rest } = post;
-            console.log("account: ", account);
-            const prevComments = rest.comments;
+            const { profile, ...postProps } = post;
+            const image = profile?.image ? JSON.parse(profile.image ?? "") : null;
+            const tags = profile?.tags ? JSON.parse(profile.tags ?? "") : null;
+            const prevComments = postProps.comments;
             const filteredComments = prevComments.filter((comment) => !shouldFilter(comment, commentsModerationKey));
-            rest.comments = filteredComments;
-            rest.profile_name = account?.profile_name;
-            rest.profile_image = account?.profile_image ? JSON.parse(account.profile_image ?? "") : null;
-            rest.profile_tags = account?.profile_tags ? JSON.parse(account.profile_tags) : null;
-            return rest;
+            postProps.comments = filteredComments;
+            postProps.profile = {
+              name: profile?.name,
+              image,
+              tags,
+            };
+            return postProps;
           });
 
           if (isUpdate) {
             setNewUnseenPosts(filteredPosts);
           } else {
-            // console.log("postsData: ", postsData, "filteredPosts: ", filteredPosts);
             setPostsData({
               posts: [...postsData.posts, ...filteredPosts],
               postsCountLeft,

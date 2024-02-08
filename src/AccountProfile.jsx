@@ -4,29 +4,42 @@ const blockTimestamp = props.blockTimestamp;
 const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 const verifications = props.verifications;
 const showFlagAccountFeature = props.showFlagAccountFeature ?? false;
-const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
+console.log(accountId, "AccountProfile profile: ", props.profile);
+// const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
+const profile = props.profile;
+const chainProfile = Social.get(`${accountId}/profile/**`, "final");
+console.log(accountId, "AccountProfile chainProfile: ", chainProfile);
 
-function returnProfileForUser(user) {
-  const rawImage = user.profile_image_1 || user.profile_image_2 || user.profile_image_3;
-  const image = rawImage && rawImage.indexOf("http") === 0 ? { url: rawImage } : { ipfs_cid: rawImage };
-  const name = user.profile_name ?? "";
-  let tags = null;
+// function returnProfileForUser(user) {
+//   // check if user has an array of tags
+//   let tags = null;
+//   if (user.profile_tags && Array.isArray(user.profile_tags)) {
+//     tags = {};
+//     user.profile_tags.forEach((tag) => (tags[tag] = ""));
+//   }
+//   if (user.profile_image && tags) {
+//     return {
+//       image: user.profile_image,
+//       name: user.profile_name,
+//       tags: user.profile_tags ?? tags,
+//     };
+//   }
+//   // this lines below is for backward compatibility
+//   const rawImage = user.profile_image_1 || user.profile_image_2 || user.profile_image_3;
+//   const image = rawImage && rawImage.indexOf("http") === 0 ? { url: rawImage } : { ipfs_cid: rawImage };
+//   const name = user.profile_name ?? "";
 
-  if (user.profile_tags) {
-    tags = {};
-    user.profile_tags.forEach((tag) => (tags[tag] = ""));
-  }
+//   console.log("returnProfileForUser image: ", image, "tags: ", tags, "name: ", name);
+//   if (image && tags) {
+//     return {
+//       image,
+//       name,
+//       tags,
+//     };
+//   }
 
-  if (image && tags) {
-    return {
-      image,
-      name,
-      tags,
-    };
-  }
-
-  return null;
-}
+//   return null;
+// }
 const Wrapper = styled("Link")`
   display: inline-grid;
   width: 100%;
@@ -147,7 +160,8 @@ return (
     src="${REPL_ACCOUNT}/widget/AccountProfileOverlay"
     props={{
       accountId: props.accountId,
-      profile: returnProfileForUser(profile),
+      // profile: returnProfileForUser(profile),
+      profile: profile,
       children: AccountProfile,
       placement: props.overlayPlacement,
       verifications,

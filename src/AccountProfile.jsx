@@ -1,45 +1,11 @@
-const accountId = props.accountId || context.accountId;
-const blockHeight = props.blockHeight;
-const blockTimestamp = props.blockTimestamp;
+let { accountId, blockHeight, blockTimestamp, profile, verifications, showFlagAccountFeature } = props;
+
+accountId = accountId || context.accountId;
+showFlagAccountFeature = showFlagAccountFeature ?? false;
+profile = profile || Social.get(`${accountId}/profile/**`, "final");
+
 const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
-const verifications = props.verifications;
-const showFlagAccountFeature = props.showFlagAccountFeature ?? false;
-console.log(accountId, "AccountProfile profile: ", props.profile);
-// const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
-const profile = props.profile;
-const chainProfile = Social.get(`${accountId}/profile/**`, "final");
-console.log(accountId, "AccountProfile chainProfile: ", chainProfile);
 
-// function returnProfileForUser(user) {
-//   // check if user has an array of tags
-//   let tags = null;
-//   if (user.profile_tags && Array.isArray(user.profile_tags)) {
-//     tags = {};
-//     user.profile_tags.forEach((tag) => (tags[tag] = ""));
-//   }
-//   if (user.profile_image && tags) {
-//     return {
-//       image: user.profile_image,
-//       name: user.profile_name,
-//       tags: user.profile_tags ?? tags,
-//     };
-//   }
-//   // this lines below is for backward compatibility
-//   const rawImage = user.profile_image_1 || user.profile_image_2 || user.profile_image_3;
-//   const image = rawImage && rawImage.indexOf("http") === 0 ? { url: rawImage } : { ipfs_cid: rawImage };
-//   const name = user.profile_name ?? "";
-
-//   console.log("returnProfileForUser image: ", image, "tags: ", tags, "name: ", name);
-//   if (image && tags) {
-//     return {
-//       image,
-//       name,
-//       tags,
-//     };
-//   }
-
-//   return null;
-// }
 const Wrapper = styled("Link")`
   display: inline-grid;
   width: 100%;
@@ -159,9 +125,8 @@ return (
   <Widget
     src="${REPL_ACCOUNT}/widget/AccountProfileOverlay"
     props={{
-      accountId: props.accountId,
-      // profile: returnProfileForUser(profile),
-      profile: profile,
+      accountId,
+      profile,
       children: AccountProfile,
       placement: props.overlayPlacement,
       verifications,

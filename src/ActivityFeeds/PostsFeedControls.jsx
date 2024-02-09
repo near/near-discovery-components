@@ -231,18 +231,17 @@ const loadMorePosts = (isUpdate) => {
         if (newPosts.length > 0) {
           let filteredPosts = newPosts.filter((i) => !shouldFilter(i, postsModerationKey));
           filteredPosts = filteredPosts.map((post) => {
-            const { profile, ...postProps } = post;
-            const image = profile?.image ? JSON.parse(profile.image ?? "") : null;
-            const tags = profile?.tags ? JSON.parse(profile.tags ?? "") : null;
-            const prevComments = postProps.comments;
+            const image = post.profile?.image ? JSON.parse(post.profile.image ?? "") : null;
+            const tags = post.profile?.tags ? JSON.parse(post.profile.tags ?? "") : null;
+            const prevComments = post.comments;
             const filteredComments = prevComments.filter((comment) => !shouldFilter(comment, commentsModerationKey));
-            postProps.comments = filteredComments;
-            postProps.profile = {
-              name: profile?.name,
+            post.comments = filteredComments;
+            post.profile = {
+              name: post.profile?.name,
               image,
               tags,
             };
-            return postProps;
+            return post;
           });
 
           if (isUpdate) {

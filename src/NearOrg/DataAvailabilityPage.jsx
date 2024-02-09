@@ -207,6 +207,8 @@ const LogoLinksWrapper = styled.div`
 const LogoLinks = styled.div`
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 60px;
   padding: 16px 24px;
 
@@ -298,6 +300,8 @@ const web3Teams = [
     height: "24px",
   },
 ];
+
+const web3TeamsCombined = [...web3Teams, ...web3Teams2];
 
 return (
   <Wrapper>
@@ -412,40 +416,23 @@ return (
 
       <LogoLinksWrapper>
         <LogoLinks>
-          {web3Teams.map((team) => {
-            return (
-              <a
-                href={team.url}
-                target="_blank"
-                title={team.name}
-                style={{ height: team.height, display: "inline-block" }}
-                key={team.name}
-              >
-                <Widget
-                  src="${REPL_MOB}/widget/Image"
-                  props={{
-                    image: returnIpfsImage(team.ipfsImage),
-                    alt: team.name,
-                  }}
-                />
-              </a>
-            );
-          })}
-        </LogoLinks>
-        <LogoLinks>
-          {web3Teams2.map((team) => {
-            return (
-              <a href={team.url} target="_blank" title={team.name} style={{ height: team.height }} key={team.name}>
-                <Widget
-                  src="${REPL_MOB}/widget/Image"
-                  props={{
-                    image: returnIpfsImage(team.ipfsImage),
-                    alt: team.name,
-                  }}
-                />
-              </a>
-            );
-          })}
+          {web3TeamsCombined.map((team) => (
+            <Link
+              href={team.url}
+              target="_blank"
+              title={team.name}
+              style={{ height: team.height, display: "inline-block" }}
+              key={team.name}
+            >
+              <Widget
+                src="${REPL_MOB}/widget/Image"
+                props={{
+                  image: returnIpfsImage(team.ipfsImage),
+                  alt: team.name,
+                }}
+              />
+            </Link>
+          ))}
         </LogoLinks>
       </LogoLinksWrapper>
       {/* </Teams> */}

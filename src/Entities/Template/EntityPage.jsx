@@ -12,6 +12,19 @@ const entityTable = "metadata";
 const user = "dataplatform_near";
 const collection = `${user}_${entityIndexer}_${entityTable}`;
 const buildQueries = (searchKey, sort) => {
+  const queryFilter = searchKey ? `name: {_ilike: "%${searchKey}%"}` : "";
+  let querySortOption = "";
+  switch (sort) {
+    case "z-a":
+      querySortOption = `{ component_name: desc },`;
+      break;
+    case "a-z":
+      querySortOption = `{ component_name: asc },`;
+      break;
+    default:
+      querySortOption = "{ block_height: desc },";
+  }
+
   return `
 query ListQuery($offset: Int, $limit: Int) {
   ${collection}(

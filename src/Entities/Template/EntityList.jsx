@@ -93,34 +93,6 @@ const Items = styled.div`
 
 const Item = styled.div``;
 
-const Button = styled.button`
-  display: block;
-  width: 100%;
-  padding: 8px;
-  height: 32px;
-  background: #fbfcfd;
-  border: 1px solid #d7dbdf;
-  border-radius: 50px;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 15px;
-  text-align: center;
-  cursor: pointer;
-  color: #11181c !important;
-  margin: 0;
-
-  &:hover,
-  &:focus {
-    background: #ecedee;
-    text-decoration: none;
-    outline: none;
-  }
-
-  span {
-    color: #687076 !important;
-  }
-`;
-
 return (
   <Wrapper className="container-xl">
     <Header>

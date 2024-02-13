@@ -307,16 +307,42 @@ return (
                 your Rollup Stack
               </Text>
 
-              <Widget
-                src="${REPL_ACCOUNT}/widget/DIG.Button"
-                props={{
-                  href: "https://pages.near.org/blog/why-near-data-availability",
-                  target: "_blank",
-                  label: "Intro to NEAR DA",
-                  variant: "primary",
-                  size: "large",
-                }}
-              />
+              <Flex gap="24px" wrap="wrap" alignItems="center" justifyContent="center">
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/DIG.Button"
+                  props={{
+                    href: "https://docs.near.org/data-availability/welcome",
+                    target: "_blank",
+                    label: "Read Docs",
+                    variant: "secondary",
+                    fill: "outline",
+                    size: "large",
+                  }}
+                />
+
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/DIG.Button"
+                  props={{
+                    href: "https://forms.gle/LWJoTpTiCbSheUL26",
+                    target: "_blank",
+                    label: "Get Updates",
+                    variant: "primary",
+                    size: "large",
+                  }}
+                />
+
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/DIG.Button"
+                  props={{
+                    href: "https://pages.near.org/blog/why-near-data-availability/",
+                    target: "_blank",
+                    label: "Intro to NEAR DA",
+                    variant: "secondary",
+                    fill: "outline",
+                    size: "large",
+                  }}
+                />
+              </Flex>
             </Flex>
           </PatternContent>
         </Pattern>

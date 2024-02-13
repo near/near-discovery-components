@@ -15,6 +15,7 @@ const ipfsImages = {
     altlayer: "bafkreig3mrzesoettretv2dhnxtgy22wubasgifzx4smybyldzbk35e3fm",
     optimism: "bafkreidwitx5hu6hivyn3exi34moyea7livf6zfqk2dcny3z62ive7fpou",
     zeeve: "bafkreigwtxjuraug4l2rltpoy4wau6gaom6e52fwgyqfpdsh2t6voe6ypm",
+    web3Game: "bafkreidbmy27gngqsz5opzy5dbhd7jdrnzt5r2e5grcpiad77zgjc4e6ki",
   },
 };
 
@@ -229,13 +230,13 @@ const LogoLinks = styled.div`
   }
 `;
 
-const web3Teams2 = [
-  // {
-  //   url: "https://docs.optimism.io/builders/chain-operators/hacks/data-availability#overview",
-  //   name: "Optimism",
-  //   ipfsImage: ipfsImages.logos.optimism,
-  //   height: "29px",
-  // },
+const web3Teams1 = [
+  {
+    url: "https://docs.arbitrum.io/inside-anytrust#data-availability-servers",
+    name: "Arbitrum",
+    ipfsImage: ipfsImages.logos.arbitrum,
+    height: "29px",
+  },
   {
     url: "https://polygon.technology/polygon-cdk",
     name: "Polygon",
@@ -249,30 +250,18 @@ const web3Teams2 = [
     height: "29px",
   },
   {
-    url: "https://docs.vistara.dev/rollups/create-a-rollup#get-started",
-    name: "Vistara",
-    ipfsImage: ipfsImages.logos.vistara,
-    height: "29px",
-  },
-  {
-    url: "https://www.zeeve.io/blog/zeeve-raas-partners-with-near-da-to-power-ethereum-rollup-builders-with-efficient-data-availability/",
-    name: "Zeeve",
-    ipfsImage: ipfsImages.logos.zeeve,
-    height: "29px",
+    url: "https://movementlabs.xyz",
+    name: "Movement Labs",
+    ipfsImage: ipfsImages.logos.movementLabs,
+    height: "24px",
   },
 ];
 
-const web3Teams = [
+const web3Teams2 = [
   {
     url: "https://docs.altlayer.io/altlayer-documentation/core-features-of-altlayers-in-house-rollup-stack/modular",
     name: "Altlayer",
     ipfsImage: ipfsImages.logos.altlayer,
-    height: "29px",
-  },
-  {
-    url: "https://docs.arbitrum.io/inside-anytrust#data-availability-servers",
-    name: "Arbitrum",
-    ipfsImage: ipfsImages.logos.arbitrum,
     height: "29px",
   },
   {
@@ -288,20 +277,21 @@ const web3Teams = [
     height: "28px",
   },
   {
-    url: "https://docs.fluentlabs.xyz/learn/introduction/what-is-fluent#app-deployment-models",
-    name: "Fluent",
-    ipfsImage: ipfsImages.logos.fluent,
+    url: "https://www.zeeve.io/blog/zeeve-raas-partners-with-near-da-to-power-ethereum-rollup-builders-with-efficient-data-availability/",
+    name: "Zeeve",
+    ipfsImage: ipfsImages.logos.zeeve,
     height: "29px",
-  },
-  {
-    url: "https://movementlabs.xyz",
-    name: "Movement Labs",
-    ipfsImage: ipfsImages.logos.movementLabs,
-    height: "24px",
   },
 ];
 
-const web3TeamsCombined = [...web3Teams, ...web3Teams2];
+const web3Teams3 = [
+  {
+    url: "https://web3games.com",
+    name: "Web3Game",
+    ipfsImage: ipfsImages.logos.web3Game,
+    height: "28px",
+  },
+];
 
 return (
   <Wrapper>
@@ -316,10 +306,164 @@ return (
                 Simplify and lower costs in your rollup network by using NEAR as the Data Availability (DA) Layer in
                 your Rollup Stack
               </Text>
+
+              <Flex gap="24px" wrap="wrap" alignItems="center" justifyContent="center">
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/DIG.Button"
+                  props={{
+                    href: "https://docs.near.org/data-availability/welcome",
+                    target: "_blank",
+                    label: "Read Docs",
+                    variant: "secondary",
+                    fill: "outline",
+                    size: "large",
+                  }}
+                />
+
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/DIG.Button"
+                  props={{
+                    href: "https://forms.gle/LWJoTpTiCbSheUL26",
+                    target: "_blank",
+                    label: "Get Updates",
+                    variant: "primary",
+                    size: "large",
+                  }}
+                />
+
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/DIG.Button"
+                  props={{
+                    href: "https://pages.near.org/blog/why-near-data-availability/",
+                    target: "_blank",
+                    label: "Intro to NEAR DA",
+                    variant: "secondary",
+                    fill: "outline",
+                    size: "large",
+                  }}
+                />
+              </Flex>
             </Flex>
           </PatternContent>
         </Pattern>
       </Container>
+    </Section>
+
+    <Section>
+      {/* <Teams> */}
+
+      <Flex gap="16px" direction="column" alignItems="center" style={{ textAlign: "center" }}>
+        <Text size="text-3xl" fontWeight="500" style={{ maxWidth: "600px" }}>
+          Trusted by forward thinking teams
+        </Text>
+        <LogoText
+          size="text-xs"
+          fontWeight="700"
+          color="sand11"
+          style={{
+            textTransform: "uppercase",
+            letterSpacing: "2px",
+            textAlign: "center",
+            marginTop: "60px",
+          }}
+        >
+          Frameworks
+        </LogoText>
+
+        <LogoLinksWrapper>
+          <LogoLinks>
+            {web3Teams1.map((team) => (
+              <Link
+                href={team.url}
+                target="_blank"
+                title={team.name}
+                style={{ height: team.height, display: "inline-block" }}
+                key={team.name}
+              >
+                <Widget
+                  src="${REPL_MOB}/widget/Image"
+                  props={{
+                    image: returnIpfsImage(team.ipfsImage),
+                    alt: team.name,
+                  }}
+                />
+              </Link>
+            ))}
+          </LogoLinks>
+        </LogoLinksWrapper>
+
+        <LogoText
+          size="text-xs"
+          fontWeight="700"
+          color="sand11"
+          style={{
+            textTransform: "uppercase",
+            letterSpacing: "2px",
+            textAlign: "center",
+            marginTop: "60px",
+          }}
+        >
+          Rollups as a Service
+        </LogoText>
+
+        <LogoLinksWrapper>
+          <LogoLinks>
+            {web3Teams2.map((team) => (
+              <Link
+                href={team.url}
+                target="_blank"
+                title={team.name}
+                style={{ height: team.height, display: "inline-block" }}
+                key={team.name}
+              >
+                <Widget
+                  src="${REPL_MOB}/widget/Image"
+                  props={{
+                    image: returnIpfsImage(team.ipfsImage),
+                    alt: team.name,
+                  }}
+                />
+              </Link>
+            ))}
+          </LogoLinks>
+        </LogoLinksWrapper>
+
+        <LogoText
+          size="text-xs"
+          fontWeight="700"
+          color="sand11"
+          style={{
+            textTransform: "uppercase",
+            letterSpacing: "2px",
+            textAlign: "center",
+            marginTop: "60px",
+          }}
+        >
+          Rollups
+        </LogoText>
+
+        <LogoLinksWrapper>
+          <LogoLinks>
+            {web3Teams3.map((team) => (
+              <Link
+                href={team.url}
+                target="_blank"
+                title={team.name}
+                style={{ height: team.height, display: "inline-block" }}
+                key={team.name}
+              >
+                <Widget
+                  src="${REPL_MOB}/widget/Image"
+                  props={{
+                    image: returnIpfsImage(team.ipfsImage),
+                    alt: team.name,
+                  }}
+                />
+              </Link>
+            ))}
+          </LogoLinks>
+        </LogoLinksWrapper>
+      </Flex>
     </Section>
 
     <Section>
@@ -398,46 +542,6 @@ return (
       </Container>
     </Section>
 
-    <Section>
-      {/* <Teams> */}
-      <LogoText
-        size="text-xs"
-        fontWeight="700"
-        color="sand11"
-        style={{
-          textTransform: "uppercase",
-          letterSpacing: "2px",
-          padding: "0 24px",
-          textAlign: "center",
-        }}
-      >
-        Trusted by forward thinking teams
-      </LogoText>
-
-      <LogoLinksWrapper>
-        <LogoLinks>
-          {web3TeamsCombined.map((team) => (
-            <Link
-              href={team.url}
-              target="_blank"
-              title={team.name}
-              style={{ height: team.height, display: "inline-block" }}
-              key={team.name}
-            >
-              <Widget
-                src="${REPL_MOB}/widget/Image"
-                props={{
-                  image: returnIpfsImage(team.ipfsImage),
-                  alt: team.name,
-                }}
-              />
-            </Link>
-          ))}
-        </LogoLinks>
-      </LogoLinksWrapper>
-      {/* </Teams> */}
-    </Section>
-
     <Section backgroundColor="#F2F1EA">
       <Container>
         <Flex direction="column" gap="50px" alignItems="center">
@@ -471,6 +575,18 @@ return (
                 target: "_blank",
                 label: "Get Updates",
                 variant: "primary",
+                size: "large",
+              }}
+            />
+
+            <Widget
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
+              props={{
+                href: "https://pages.near.org/blog/why-near-data-availability/",
+                target: "_blank",
+                label: "Intro to NEAR DA",
+                variant: "secondary",
+                fill: "outline",
                 size: "large",
               }}
             />

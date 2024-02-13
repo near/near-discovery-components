@@ -15,6 +15,7 @@ const ipfsImages = {
     altlayer: "bafkreig3mrzesoettretv2dhnxtgy22wubasgifzx4smybyldzbk35e3fm",
     optimism: "bafkreidwitx5hu6hivyn3exi34moyea7livf6zfqk2dcny3z62ive7fpou",
     zeeve: "bafkreigwtxjuraug4l2rltpoy4wau6gaom6e52fwgyqfpdsh2t6voe6ypm",
+    web3Game: "bafkreidbmy27gngqsz5opzy5dbhd7jdrnzt5r2e5grcpiad77zgjc4e6ki",
   },
 };
 
@@ -229,78 +230,6 @@ const LogoLinks = styled.div`
   }
 `;
 
-// const web3Teams2 = [
-//   // {
-//   //   url: "https://docs.optimism.io/builders/chain-operators/hacks/data-availability#overview",
-//   //   name: "Optimism",
-//   //   ipfsImage: ipfsImages.logos.optimism,
-//   //   height: "29px",
-//   // },
-//   {
-//     url: "https://polygon.technology/polygon-cdk",
-//     name: "Polygon",
-//     ipfsImage: ipfsImages.logos.polygon,
-//     height: "29px",
-//   },
-//   {
-//     url: "https://docs.starknet.io/documentation/architecture_and_concepts/Network_Architecture/on-chain-data/",
-//     name: "Starknet",
-//     ipfsImage: ipfsImages.logos.starknet,
-//     height: "29px",
-//   },
-//   {
-//     url: "https://docs.vistara.dev/rollups/create-a-rollup#get-started",
-//     name: "Vistara",
-//     ipfsImage: ipfsImages.logos.vistara,
-//     height: "29px",
-//   },
-//   {
-//     url: "https://www.zeeve.io/blog/zeeve-raas-partners-with-near-da-to-power-ethereum-rollup-builders-with-efficient-data-availability/",
-//     name: "Zeeve",
-//     ipfsImage: ipfsImages.logos.zeeve,
-//     height: "29px",
-//   },
-// ];
-
-// const web3Teams = [
-//   {
-//     url: "https://docs.altlayer.io/altlayer-documentation/core-features-of-altlayers-in-house-rollup-stack/modular",
-//     name: "Altlayer",
-//     ipfsImage: ipfsImages.logos.altlayer,
-//     height: "29px",
-//   },
-//   {
-//     url: "https://docs.arbitrum.io/inside-anytrust#data-availability-servers",
-//     name: "Arbitrum",
-//     ipfsImage: ipfsImages.logos.arbitrum,
-//     height: "29px",
-//   },
-//   {
-//     url: "https://docs.caldera.xyz/about/alternative-da",
-//     name: "Caldera",
-//     ipfsImage: ipfsImages.logos.caldera,
-//     height: "28px",
-//   },
-//   {
-//     url: "https://docs.dymension.xyz/build/adv-guide/roller-adv/da-light-client",
-//     name: "Dymension",
-//     ipfsImage: ipfsImages.logos.dymension,
-//     height: "28px",
-//   },
-//   {
-//     url: "https://docs.fluentlabs.xyz/learn/introduction/what-is-fluent#app-deployment-models",
-//     name: "Fluent",
-//     ipfsImage: ipfsImages.logos.fluent,
-//     height: "29px",
-//   },
-//   {
-//     url: "https://movementlabs.xyz",
-//     name: "Movement Labs",
-//     ipfsImage: ipfsImages.logos.movementLabs,
-//     height: "24px",
-//   },
-// ];
-
 const web3Teams1 = [
   {
     url: "https://docs.arbitrum.io/inside-anytrust#data-availability-servers",
@@ -352,6 +281,15 @@ const web3Teams2 = [
     name: "Zeeve",
     ipfsImage: ipfsImages.logos.zeeve,
     height: "29px",
+  },
+];
+
+const web3Teams3 = [
+  {
+    url: "https://web3games.com",
+    name: "Web3Game",
+    ipfsImage: ipfsImages.logos.web3Game,
+    height: "28px",
   },
 ];
 
@@ -477,6 +415,28 @@ return (
         >
           Rollups
         </LogoText>
+
+        <LogoLinksWrapper>
+          <LogoLinks>
+            {web3Teams3.map((team) => (
+              <Link
+                href={team.url}
+                target="_blank"
+                title={team.name}
+                style={{ height: team.height, display: "inline-block" }}
+                key={team.name}
+              >
+                <Widget
+                  src="${REPL_MOB}/widget/Image"
+                  props={{
+                    image: returnIpfsImage(team.ipfsImage),
+                    alt: team.name,
+                  }}
+                />
+              </Link>
+            ))}
+          </LogoLinks>
+        </LogoLinksWrapper>
       </Flex>
     </Section>
 

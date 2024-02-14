@@ -1,32 +1,11 @@
-const accountId = props.accountId || context.accountId;
-const blockHeight = props.blockHeight;
-const blockTimestamp = props.blockTimestamp;
+let { accountId, blockHeight, blockTimestamp, profile, verifications, showFlagAccountFeature } = props;
+
+accountId = accountId || context.accountId;
+showFlagAccountFeature = showFlagAccountFeature ?? false;
+profile = profile || Social.get(`${accountId}/profile/**`, "final");
+
 const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
-const verifications = props.verifications;
-const showFlagAccountFeature = props.showFlagAccountFeature ?? false;
-const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
 
-function returnProfileForUser(user) {
-  const rawImage = user.profile_image_1 || user.profile_image_2 || user.profile_image_3;
-  const image = rawImage && rawImage.indexOf("http") === 0 ? { url: rawImage } : { ipfs_cid: rawImage };
-  const name = user.profile_name ?? "";
-  let tags = null;
-
-  if (user.profile_tags) {
-    tags = {};
-    user.profile_tags.forEach((tag) => (tags[tag] = ""));
-  }
-
-  if (image && tags) {
-    return {
-      image,
-      name,
-      tags,
-    };
-  }
-
-  return null;
-}
 const Wrapper = styled("Link")`
   display: inline-grid;
   width: 100%;
@@ -146,8 +125,8 @@ return (
   <Widget
     src="${REPL_ACCOUNT}/widget/AccountProfileOverlay"
     props={{
-      accountId: props.accountId,
-      profile: returnProfileForUser(profile),
+      accountId,
+      profile,
       children: AccountProfile,
       placement: props.overlayPlacement,
       verifications,

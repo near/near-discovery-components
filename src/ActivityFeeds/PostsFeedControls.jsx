@@ -134,7 +134,7 @@ const createQuery = (type, isUpdate) => {
 
     case "mutual":
       let userAccount = context.accountId;
-      queryFilter = `where: { 
+      queryFilter = `where: {
           _and: [
             {account_id: {_in: "${filteredAccountIds}"}},
             {_or: [
@@ -142,7 +142,7 @@ const createQuery = (type, isUpdate) => {
               {comments: {account_id: {_eq: "${userAccount}"}}}
               ]
             },
-            {block_timestamp: {${timeOperation}: ${queryTime}}}            
+            {block_timestamp: {${timeOperation}: ${queryTime}}}
           ]
         }`;
       break;
@@ -185,6 +185,11 @@ query FeedQuery($offset: Int, $limit: Int) {
       human_valid_until
       human_verification_level
     }
+    profile: account {
+      name
+      image
+      tags
+    }
   }
   dataplatform_near_feed_moderated_posts_aggregate(${queryFilter} order_by: {id: asc}) {
     aggregate {
@@ -226,9 +231,16 @@ const loadMorePosts = (isUpdate) => {
         if (newPosts.length > 0) {
           let filteredPosts = newPosts.filter((i) => !shouldFilter(i, postsModerationKey));
           filteredPosts = filteredPosts.map((post) => {
+            const image = post.profile?.image ? JSON.parse(post.profile.image ?? "") : null;
+            const tags = post.profile?.tags ? JSON.parse(post.profile.tags ?? "") : null;
             const prevComments = post.comments;
             const filteredComments = prevComments.filter((comment) => !shouldFilter(comment, commentsModerationKey));
             post.comments = filteredComments;
+            post.profile = {
+              name: post.profile?.name,
+              image,
+              tags,
+            };
             return post;
           });
 

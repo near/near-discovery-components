@@ -4,13 +4,22 @@ if (!fetchGraphQL || !loadItems) {
 }
 
 const accountId = props.accountId || context.accountId;
-const { entityType, buildQueries, queryName, collection, renderItem } = props;
+const { entityType, description, buildQueries, queryName, collection, renderItem, createWidget } = props;
+
+const finalCreateWidget = createWidget ?? "${REPL_ACCOUNT}" + `/widget/Entities.${entityType}.${entityType}Create`;
 
 const [searchKey, setSearchKey] = useState("");
 const [sort, setSort] = useState("");
 const [items, setItems] = useState([]);
 const [totalItems, setTotalItems] = useState(0);
+const [showCreateModal, setShowCreateModal] = useState(false);
 
+const closeModal = () => {
+  setShowCreateModal(false);
+};
+const toggleModal = () => {
+  setShowCreateModal(!showCreateModal);
+};
 const onLoad = (newItems, totalItems) => {
   setItems([...items, ...newItems]);
   setTotalItems(totalItems);
@@ -46,7 +55,7 @@ const Search = styled.div`
 
 const H1 = styled.h1`
   font-weight: 600;
-  font-size: 32px;
+  font-size: 24px;
   line-height: 39px;
   color: #11181c;
   margin: 0;
@@ -92,15 +101,48 @@ const Items = styled.div`
 `;
 
 const Item = styled.div``;
+const dialogStyles = {
+  maxWidth: "800px",
+  borderRadius: "14px",
+};
 
 return (
   <Wrapper className="container-xl">
     <Header>
-      <>
-        <H1>
-          {totalItems} {entityType + (totalItems > 1 ? "s" : "")}
-        </H1>
-      </>
+      <div className="row">
+        <div className="col">
+          <H1>
+            {totalItems} {entityType + (totalItems > 1 ? "s" : "")}
+          </H1>
+          {description && <Text>{description}</Text>}
+        </div>
+        {context.accountId && (
+          <div className="col-2">
+            <Widget
+              src="near/widget/DIG.Button"
+              props={{
+                label: "Create " + entityType,
+                onClick: toggleModal,
+                iconLeft: "ph ph-plus-circle",
+                variant: "primary",
+                fill: "outline",
+                size: "small",
+              }}
+            />
+            <Widget
+              src="${REPL_ACCOUNT}/widget/DIG.Dialog"
+              props={{
+                type: "dialog",
+                description: <Widget src={finalCreateWidget} props={{ onCancel: closeModal }} />,
+                onOpenChange: closeModal,
+                open: showCreateModal,
+                contentStyles: dialogStyles,
+                actionButtons: <></>,
+              }}
+            />
+          </div>
+        )}
+      </div>
     </Header>
 
     {items.length > 0 && (

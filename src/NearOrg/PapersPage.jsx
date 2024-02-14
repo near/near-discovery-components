@@ -1,10 +1,12 @@
+let { docs } = props;
+
 const papersDocs = [
   {
     name: "The NEAR White Paper",
     description:
       "This document describes the approach NEAR takes to designing and implementing the core technology of its system.",
     icon: "ph-file-doc",
-    url: "https://drive.google.com/file/d/1qxlYhQSvh_rpdI_nQMQF9C_QSWIstY2H/view?usp=sharing",
+    url: docs.whitePaperNearProtocol,
     target: "_blank",
   },
   {
@@ -12,7 +14,7 @@ const papersDocs = [
     description:
       "This document outlines the general approach to blockchain sharding, the major problems that need to be overcome, including state validity and data availability problems, and presents Nightshade, the solution NEAR Protocol is built upon that addresses those issues.",
     icon: "ph-file-doc",
-    url: "https://drive.google.com/file/d/1qxlYhQSvh_rpdI_nQMQF9C_QSWIstY2H/view?usp=sharing",
+    url: docs.nightshade,
     target: "_blank",
   },
   {
@@ -20,7 +22,7 @@ const papersDocs = [
     description:
       "Doomslug: block confirmation with single round of communication, and a finality gadget with guaranteed liveness",
     icon: "ph-file-doc",
-    url: "https://drive.google.com/file/d/1F2oEhJUNZXqJAqv_0U76Q8ZlC0hCNxKc/view?usp=sharing",
+    url: docs.doomslug,
     target: "_blank",
   },
 ];
@@ -172,6 +174,8 @@ const IconCircle = styled.div`
   }
 `;
 
+console.log("papersDocs", props);
+
 return (
   <Wrapper>
     <Section backgroundColor="#61E5E2" style={{ padding: "72px 0" }}>
@@ -201,6 +205,8 @@ return (
                 as: "a",
                 href: item.url,
                 target: item.target,
+                rel: "noopener noreferrer",
+                alt: item.name,
                 children: (
                   <>
                     <IconCircle>

@@ -18,6 +18,7 @@ const TextLink = styled("Link")`
 `;
 
 const renderItem = (item) => {
+  console.log("posts.Feed item", item);
   if (item.accounts_liked.length !== 0) {
     item.accounts_liked = JSON.parse(item.accounts_liked);
   }

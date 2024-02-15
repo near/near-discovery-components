@@ -4,6 +4,7 @@ if (!context.accountId) {
 
 const autocompleteEnabled = true;
 const item = props.item;
+const newAddedComment = props.newAddedComment;
 
 State.init({
   image: {},
@@ -82,6 +83,17 @@ function composeData() {
 }
 
 function onCommit() {
+  const newComment = {
+    account_id: context.accountId,
+    block_height: "now",
+    block_timestamp: Date.now() * 1000000,
+    content: JSON.stringify({
+      type: "md",
+      text: state.text,
+    }),
+  };
+  newAddedComment(newComment);
+
   State.update({
     image: {},
     text: "",

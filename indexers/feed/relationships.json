@@ -1,7 +1,7 @@
 {
   "object_relationships": [
     {
-      "name": "accounts",
+      "name": "account",
       "using": {
         "manual_configuration": {
           "column_mapping": {
@@ -9,7 +9,7 @@
           },
           "insertion_order": null,
           "remote_table": {
-            "name": "account",
+            "name": "accounts",
             "schema": "dataplatform_near_accounts"
           }
         }

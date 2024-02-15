@@ -38,7 +38,7 @@ CREATE TABLE
 CREATE TABLE
   "reposts" (
     "id" SERIAL NOT NULL,
-    "post_id" SERIAL NOT NULL,
+    "post_id" SERIAL NOT NULL, // this should be moderated posts in the future
     "account_id" VARCHAR NOT NULL,
     "content" TEXT NOT NULL,
     "block_height" DECIMAL(58, 0) NOT NULL,
@@ -67,8 +67,3 @@ ALTER TABLE
   "post_likes"
 ADD
   CONSTRAINT "post_likes_post_id_fkey" FOREIGN KEY ("post_id") REFERENCES "posts" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;
-
-ALTER TABLE
-  "reposts"
-ADD 
-  CONSTRAINT "reposts_post_id_fkey" FOREIGN KEY ("post_id") REFERENCES "posts" ("id") ON DELETE CASCADE ON UPDATE NO ACTION;

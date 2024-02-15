@@ -89,7 +89,7 @@ const shouldFilter = (item, socialDBObjectType) => {
 function fetchGraphQL(operationsDoc, operationName, variables) {
   return asyncFetch(`${GRAPHQL_ENDPOINT}/v1/graphql`, {
     method: "POST",
-    headers: { "x-hasura-role": "dataplatform_near" },
+    headers: { "x-hasura-role": "jacksonthedev_near" },
     body: JSON.stringify({
       query: operationsDoc,
       variables: variables,
@@ -166,7 +166,7 @@ const createQuery = (type, isUpdate) => {
 
   return `
 query FeedQuery($offset: Int, $limit: Int) {
-  dataplatform_near_social_feed_moderated_posts(${queryFilter} order_by: [${querySortOption} { block_height: desc }], offset: $offset, limit: $limit) {
+  jacksonthedev_near_social_feed_reposts_v12_posts_with_reposts_feed(${queryFilter} order_by: [${querySortOption} { block_height: desc }], offset: $offset, limit: $limit) {
     account_id
     block_height
     block_timestamp
@@ -174,24 +174,8 @@ query FeedQuery($offset: Int, $limit: Int) {
     receipt_id
     accounts_liked
     last_comment_timestamp
-    comments(order_by: {block_height: asc}) {
-      account_id
-      block_height
-      block_timestamp
-      content
-    }
-    verifications {
-      human_provider
-      human_valid_until
-      human_verification_level
-    }
-
   }
-  dataplatform_near_social_feed_moderated_posts_aggregate(${queryFilter} order_by: {id: asc}) {
-    aggregate {
-      count
-    }
-  }
+ 
 }
 `;
 };
@@ -222,13 +206,15 @@ const loadMorePosts = (isUpdate) => {
       }
       let data = result.body.data;
       if (data) {
-        const newPosts = data.dataplatform_near_social_feed_moderated_posts;
-        const postsCountLeft = data.dataplatform_near_social_feed_moderated_posts_aggregate.aggregate.count;
+        const newPosts = data.jacksonthedev_near_social_feed_reposts_v12_posts_with_reposts_feed;
+        const postsCountLeft =
+          data.jacksonthedev_near_social_feed_reposts_v12_posts_with_reposts_feed_aggregate.aggregate.count;
         if (newPosts.length > 0) {
           let filteredPosts = newPosts.filter((i) => !shouldFilter(i, postsModerationKey));
           filteredPosts = filteredPosts.map((post) => {
             const prevComments = post.comments;
-            const filteredComments = prevComments.filter((comment) => !shouldFilter(comment, commentsModerationKey));
+            // const filteredComments = prevComments.filter((comment) => !shouldFilter(comment, commentsModerationKey));
+            const filteredComments = prevComments;
             post.comments = filteredComments;
             return post;
           });

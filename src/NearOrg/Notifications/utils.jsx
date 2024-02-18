@@ -29,6 +29,7 @@ function createNotificationMessage(notificationType, path, postValue, customMess
     case "star":
       return "starred your component";
     case "custom":
+    case "buildhub/custom":
       return customMessage ?? "";
     case "devgovgigs/edit":
       return "edited your";
@@ -57,6 +58,10 @@ function getNotificationContent(notificationType, notificationValue, path, postV
     return getDevHubContent.snapshot.description;
   }
 
+  if (notificationType === "buildhub/custom") {
+    return;
+  }
+
   const commentAuthorAccountId = notificationType === "like" ? context.accountId : accountId;
   const contentBlockHeight = notificationType === "like" ? likeAtBlockHeight : blockHeight;
 
@@ -80,6 +85,7 @@ function createNotificationLink(notificationType, notificationValue, authorAccou
     case "mention":
       return `${pathPrefix}/NearOrg.Notifications.CommentPost?accountId=${authorAccountId}&blockHeight=${blockHeight}`;
     case "custom":
+    case "buildhub/custom":
       return `/${widget}?${Object.entries(params)
         .map(([k, v]) => `${k}=${v}`)
         .join("&")}`;
@@ -132,6 +138,7 @@ function getNotificationIconClassName(notificationType) {
     case "star":
       return "ph ph-star";
     case "custom":
+    case "buildhub/custom":
       return "ph ph-bell-simple";
     default:
       return "ph ph-bell-simple";

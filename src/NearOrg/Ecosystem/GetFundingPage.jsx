@@ -416,12 +416,12 @@ return (
             {fundingCards.map((item) => (
               <div className="col" key={item.key}>
                 <Card center>
-                  <a href={`#${item.key}`}>
+                  <Link href={`#${item.key}`}>
                     <SocialIcon className={item.iconClassName} color={`var(--${item.iconColor})`} />
                     <Text size="text-m" color="sand12">
                       {item.content}
                     </Text>
-                  </a>
+                  </Link>
                 </Card>
               </div>
             ))}

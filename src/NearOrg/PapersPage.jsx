@@ -174,8 +174,6 @@ const IconCircle = styled.div`
   }
 `;
 
-console.log("papersDocs", props);
-
 return (
   <Wrapper>
     <Section backgroundColor="#61E5E2" style={{ padding: "72px 0" }}>
@@ -227,5 +225,14 @@ return (
         </Grid>
       </Container>
     </Section>
+
+    <Widget
+      src="${REPL_ACCOUNT}/widget/NearOrg.BosCtaSection"
+      props={{
+        backgroundColor: "#61E5E2",
+      }}
+    />
+
+    <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Footer" />
   </Wrapper>
 );

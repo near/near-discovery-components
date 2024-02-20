@@ -158,7 +158,7 @@ const ecosystemGrantCards = [
     ipfsImage: ipfsImages.logoDevHub,
     title: "DevHub",
     content: "Funding & support for developers & builders",
-    href: "https://near.org/devhub.near/widget/app",
+    href: "https://${REPL_NEAR_URL}/devhub.near/widget/app",
   },
   {
     ipfsImage: ipfsImages.logoPotlock,

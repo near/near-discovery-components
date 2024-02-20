@@ -101,8 +101,7 @@ const nearItems = [
     name: "The NEAR White Paper",
     description: "Read the original white paper that was the origin of the NEAR Protocol.",
     icon: "ph-article",
-    url: "https://pages.near.org/papers/the-official-near-white-paper/",
-    target: "_blank",
+    url: "https://near.org/papers",
   },
   {
     name: "Videos explaining NEAR",

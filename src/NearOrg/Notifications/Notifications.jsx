@@ -56,7 +56,9 @@ const Card = styled.div`
       border-top: none;
     }
   }
+`;
 
+const NotificationsWrapper = styled.div`
   // hide default button from IndexFeed in favor of custom button
   .btn.btn-primary {
     display: none;
@@ -109,9 +111,11 @@ return (
       />
     )}
 
-    <Widget
-      src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsList"
-      props={{ showLimit, manageNotification, permission }}
-    />
+    <NotificationsWrapper>
+      <Widget
+        src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsList"
+        props={{ showLimit, manageNotification, permission }}
+      />
+    </NotificationsWrapper>
   </Card>
 );

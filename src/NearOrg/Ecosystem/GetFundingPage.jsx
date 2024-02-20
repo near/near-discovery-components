@@ -271,7 +271,7 @@ const communityDaoCards = [
     title: "Marketing DAO",
     content:
       "Grants for marketing support initiatives providing comprehensive founders support via PR agency, influencers, working hours, building marketing strategies and more",
-    href: "https://near.org/ndcdev.near/widget/MDAO.App?page=home",
+    href: "https://${REPL_NEAR_URL}/ndcdev.near/widget/MDAO.App?page=home",
   },
   {
     ipfsImage: ipfsImages.logoCreativeDao,

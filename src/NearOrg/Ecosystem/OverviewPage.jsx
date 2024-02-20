@@ -493,7 +493,7 @@ return (
           <Widget
             src="${REPL_ACCOUNT}/widget/DIG.Button"
             props={{
-              href: "https://near.org/applications",
+              href: "https://${REPL_NEAR_URL}/applications",
               iconRight: "ph-bold ph-arrow-up-right",
               label: "Visit Near Catalog",
               variant: "affirmative",

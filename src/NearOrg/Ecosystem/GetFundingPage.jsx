@@ -158,7 +158,7 @@ const ecosystemGrantCards = [
     ipfsImage: ipfsImages.logoDevHub,
     title: "DevHub",
     content: "Funding & support for developers & builders",
-    href: "https://near.org/devhub.near/widget/app",
+    href: "https://${REPL_NEAR_URL}/devhub.near/widget/app",
   },
   {
     ipfsImage: ipfsImages.logoPotlock,
@@ -271,7 +271,7 @@ const communityDaoCards = [
     title: "Marketing DAO",
     content:
       "Grants for marketing support initiatives providing comprehensive founders support via PR agency, influencers, working hours, building marketing strategies and more",
-    href: "https://near.org/ndcdev.near/widget/MDAO.App?page=home",
+    href: "https://${REPL_NEAR_URL}/ndcdev.near/widget/MDAO.App?page=home",
   },
   {
     ipfsImage: ipfsImages.logoCreativeDao,
@@ -283,7 +283,7 @@ const communityDaoCards = [
     ipfsImage: ipfsImages.logoDevHub,
     title: "DevHub",
     content: "The decentralized home base for NEAR builders",
-    href: "https://near.org/devhub.near/widget/app",
+    href: "https://${REPL_NEAR_URL}/devhub.near/widget/app",
   },
 ];
 const regionalHubCards = [
@@ -340,7 +340,7 @@ const infrastructure = [
     ipfsImage: ipfsImages.logoDevHub,
     title: "DevHub",
     content: "The decentralized home base for NEAR builders",
-    href: "https://near.org/devhub.near/widget/app",
+    href: "https://${REPL_NEAR_URL}/devhub.near/widget/app",
   },
 ];
 

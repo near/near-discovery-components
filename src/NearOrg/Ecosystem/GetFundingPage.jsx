@@ -283,7 +283,7 @@ const communityDaoCards = [
     ipfsImage: ipfsImages.logoDevHub,
     title: "DevHub",
     content: "The decentralized home base for NEAR builders",
-    href: "https://near.org/devhub.near/widget/app",
+    href: "https://${REPL_NEAR_URL}/devhub.near/widget/app",
   },
 ];
 const regionalHubCards = [

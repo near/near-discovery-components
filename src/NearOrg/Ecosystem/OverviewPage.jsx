@@ -493,9 +493,9 @@ return (
           <Widget
             src="${REPL_ACCOUNT}/widget/DIG.Button"
             props={{
-              href: "https://awesomenear.com/",
+              href: "https://near.org/applications",
               iconRight: "ph-bold ph-arrow-up-right",
-              label: "Visit AwesomeNEAR",
+              label: "Visit Near Catalog",
               variant: "affirmative",
               size: "large",
               target: "_blank",

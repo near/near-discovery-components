@@ -3,6 +3,7 @@ const ipfsImages = {
     devHub: "bafkreia5igkmp2pjnnxddpyz5sp6et7uowm6r3fk2ycxwca3aflzop2odq",
     horizon: "bafkreihcolnwvwigzerbvweyg5ygeuxgo5fngfrowogytjst2v3qchujne",
     ndc: "bafkreidx3swoxdm5t2gmibpheg5fuhjkgezacpn6u7iehkim3gcgemnsqi",
+    funding: "bafkreibj5poz4hg4acprnn4mo4ohn6hpku256gs2mvewo2nthzy65fvwiu",
   },
 };
 
@@ -192,7 +193,7 @@ return (
                   <Widget
                     src="${REPL_ACCOUNT}/widget/DIG.Button"
                     props={{
-                      href: "/devgovgigs.near/widget/Ideas",
+                      href: "/devhub.near/widget/app",
                       label: "Explore DevHub",
                       variant: "secondary",
                       fill: "outline",
@@ -266,6 +267,39 @@ return (
             image: returnIpfsImage(ipfsImages.illustrations.ndc),
             imageSide: "right",
             alt: "The NDC logo, the letters N, D, and C interconnected",
+          }}
+        />
+
+        <Widget
+          src="${REPL_ACCOUNT}/widget/NearOrg.ContentWithImage"
+          key="horizon"
+          props={{
+            content: (
+              <>
+                <Text size="text-xl" mobileSize="text-l" fontWeight="500">
+                  Funding & Amplification
+                </Text>
+                <Text>
+                  Building the Open Web together. Explore the NEAR Ecosystem groups that facilitate funding & provide
+                  support for a variety of focus areas.
+                </Text>
+                <div>
+                  <Widget
+                    src="${REPL_ACCOUNT}/widget/DIG.Button"
+                    props={{
+                      href: "/ecosystem/get-funding",
+                      label: "Ecosystem Funding",
+                      variant: "secondary",
+                      fill: "outline",
+                      size: "large",
+                    }}
+                  />
+                </div>
+              </>
+            ),
+            image: returnIpfsImage(ipfsImages.illustrations.funding),
+            imageSide: "left",
+            alt: "The Ecosystem Funding Homepage logo",
           }}
         />
       </Container>

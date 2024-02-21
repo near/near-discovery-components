@@ -177,7 +177,7 @@ const selfServeResources = [
   {
     name: "Content Repository",
     description:
-      "As a founder, I need to be able to access a repository housing templates, guides and resources essential for my journey.",
+      "Here you will find the templates, guides, and additional resources essential for a founder's journey.",
     icon: "ph-article",
     url: "https://near-horizon.notion.site/NEAR-Founder-Hub-Content-Database-d69fcf11613443128fa249fe9fa069f0",
     target: "_blank",
@@ -185,14 +185,14 @@ const selfServeResources = [
   {
     name: "Founder Co-Pilot",
     description:
-      "As a founder, I need interactive technical and business support to answer specific questions as I am building my product and company.",
+      "Engage with interactive technical and business support to answer specific questions that you will likely encounter while building your product and company.",
     icon: "ph-github-logo",
     url: "https://near-cp-alpha.vercel.app",
     target: "_blank",
   },
   {
     name: "Token Launch Resources",
-    description: "As a founder, I need support in understanding how to launch a token.",
+    description: "Discover detailed support to help you understand how to launch a token.",
     icon: "ph-file-doc",
     url: "https://drive.google.com/file/d/1-UkMbSj1GGqO4aa9LfkrTwVvscLYZkJ7/view",
     target: "_blank",
@@ -203,7 +203,7 @@ const ecosystemCommunityResources = [
   {
     name: "HZN Accelerator Application",
     description:
-      "As a founder, I need to understand what the HZN Accelerator program is, its core value propositions, who the target audience is, and how to apply.",
+      "Join the 8-week equity-free accelerator that provides multi-faceted support for early stage web3 projects.",
     icon: "ph-article",
     url: "https://www.hzn.xyz/hzn",
     target: "_blank",
@@ -211,14 +211,14 @@ const ecosystemCommunityResources = [
   {
     name: "Funding Opportunities & Founder & Builder Communities",
     description:
-      "As a founder, I need to understand which funding opportunities exist to support me and which communities I might be able to join.",
+      "NEAR Horizon connects the Founders, Builders, and Investors building on NEAR",
     icon: "ph-file-doc",
     url: "https://docs.google.com/document/d/12DkxQddpZmtDAMWyD89igZPL141Z2x9-iOER2jCDyXc/edit#heading=h.g1c5xapiejrw",
     target: "_blank",
   },
   {
     name: "Founder Events",
-    description: "As a founder, I want to be able to access founder-focused events.",
+    description: "Discover the events that are revolutionizing how founders and builders find support in Web3.",
     icon: "ph-calendar-plus",
     url: "https://lu.ma/u/usr-5oZHY9dEDbDcaHY",
     target: "_blank",

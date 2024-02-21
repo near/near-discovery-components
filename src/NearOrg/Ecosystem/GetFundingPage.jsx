@@ -111,6 +111,7 @@ const ipfsImages = {
   logoMarketingDao: "bafkreifnwvfi7x5bzzxrjjvp7xbfqd3xpojtlohcgzrowtvyygogrt2emq",
   logoToronto: "bafkreiftfra7wwdwivl2w4v6or6dwycjpswhpjnxxdr7nuhrfnlippxc34",
   logoAfrica: "bafkreiblt2ydxlgfywigkpsl2uon24fhayozfcbdlzcokkf57eaehpqehu",
+  logoBrasil: "bafkreifa7pytkthujigpqlgsw2bxgvgpfpvm2jhrext3hetihglgwurjiq",
   logoKorea: "bafkreifvp5gfpxmavmmcdh7ni2e7zpmggs7xdltiuwbhbsvrxoqn4hm7oi",
   flagKenia: "bafkreib4flzpg3emzmsyw2dro5hcnsnqqfrfk7gd2dvvsjks2xcvo5rbxa",
   logoIndia: "bafkreifn2vipi5tq43z5mmbbplrhedeuoh7c2w6d73kfxbdlzbzu4waava",
@@ -288,9 +289,9 @@ const communityDaoCards = [
 ];
 const regionalHubCards = [
   {
-    ipfsImage: ipfsImages.flagKenia,
-    title: "Kenya",
-    href: "https://sankore2.com",
+    ipfsImage: ipfsImages.logoAfrica,
+    title: "Africa",
+    href: "https://twitter.com/nearafrica_",
   },
   {
     ipfsImage: ipfsImages.flagBalcans,
@@ -303,14 +304,19 @@ const regionalHubCards = [
     href: "https://twitter.com/Banyan_NEAR",
   },
   {
+    ipfsImage: ipfsImages.logoBrasil,
+    title: "Brasil",
+    href: "https://twitter.com/near_brazil",
+  },
+  {
     ipfsImage: ipfsImages.logoIndia,
     title: "India",
     href: "https://twitter.com/NearIndia",
   },
   {
-    ipfsImage: ipfsImages.logoVietnam,
-    title: "Vietnam",
-    href: "https://nearvietnamhub.org",
+    ipfsImage: ipfsImages.flagKenia,
+    title: "Kenya",
+    href: "https://sankore2.com",
   },
   {
     ipfsImage: ipfsImages.logoKorea,
@@ -318,14 +324,14 @@ const regionalHubCards = [
     href: "https://twitter.com/NearKoreaHub",
   },
   {
-    ipfsImage: ipfsImages.logoAfrica,
-    title: "Africa",
-    href: "https://twitter.com/nearafrica_",
-  },
-  {
     ipfsImage: ipfsImages.logoToronto,
     title: "Toronto",
     href: "https://twitter.com/NEAR_Toronto",
+  },
+  {
+    ipfsImage: ipfsImages.logoVietnam,
+    title: "Vietnam",
+    href: "https://nearvietnamhub.org",
   },
 ];
 

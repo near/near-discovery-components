@@ -35,7 +35,7 @@ const primaryActions = {
     url: appUrl,
   },
   viewDetails: {
-    display: "View Details",
+    display: "View Source",
     url: detailsUrl,
   },
 };
@@ -206,7 +206,7 @@ return (
           src="${REPL_MOB}/widget/Image"
           props={{
             image: metadata.image,
-            fallbackUrl: "https://ipfs.near.social/ipfs/bafkreifc4burlk35hxom3klq4mysmslfirj7slueenbj7ddwg7pc6ixomu",
+            fallbackUrl: "https://ipfs.near.social/ipfs/bafkreigk3gygr4sqswn6tr2upw2w7xlp4klay36mic4cpc6by3ki45uqf4",
             alt: metadata.name,
           }}
         />
@@ -245,13 +245,9 @@ return (
       </ButtonLink>
 
       <ButtonLink href={`/edit/${src}`}>
-        {context.accountId === accountId ? (
+        {context.accountId === accountId && (
           <>
             <i className="bi bi-pencil-fill"></i> Edit
-          </>
-        ) : (
-          <>
-            <i className="bi bi-git"></i> Fork
           </>
         )}
       </ButtonLink>
@@ -278,11 +274,6 @@ return (
           ),
         }}
       />
-
-      <ButtonLink href={`${detailsUrl}&tab=source`}>
-        <i className="bi bi-code-square"></i>
-        View Source
-      </ButtonLink>
 
       <OverlayTrigger placement="top" overlay={<Tooltip>Copy URL to clipboard</Tooltip>}>
         <Button

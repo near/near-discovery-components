@@ -1,3 +1,7 @@
+const { textareaInputHandler, autoCompleteAccountId } = VM.require(
+  "${REPL_ACCOUNT}/widget/Posts.autoCompleteUtils",
+) || { textareaInputHandler: () => {}, autoCompleteAccountId: () => {} };
+
 if (!context.accountId) {
   return <></>;
 }
@@ -103,46 +107,6 @@ function onCommit() {
     image: {},
     text: "",
   });
-}
-
-function textareaInputHandler(value) {
-  const words = value.split(/\s+/);
-  const allMentiones = words
-    .filter((word) => word.startsWith("@"))
-    .map((mention) => mention.slice(1));
-  const newMentiones = allMentiones.filter(
-    (item) => !state.mentionsArray.includes(item)
-  );
-
-  State.update((lastKnownState) => ({
-    ...lastKnownState,
-    text: value,
-    showAccountAutocomplete: newMentiones?.length > 0,
-    mentionsArray: allMentiones,
-    mentionInput: newMentiones?.[0] ?? "",
-  }));
-}
-
-function autoCompleteAccountId(id) {
-  // to make sure we update the @ at correct index
-  let currentIndex = 0;
-  const updatedDescription = state.text.replace(
-    /(?:^|\s)(@[^\s]*)/g,
-    (match) => {
-      if (currentIndex === state.mentionsArray.indexOf(state.mentionInput)) {
-        currentIndex++;
-        return ` @${id}`;
-      } else {
-        currentIndex++;
-        return match;
-      }
-    }
-  );
-  State.update((lastKnownState) => ({
-    ...lastKnownState,
-    text: updatedDescription,
-    showAccountAutocomplete: false,
-  }));
 }
 
 const Wrapper = styled.div`
@@ -403,7 +367,18 @@ return (
         <Textarea data-value={state.text}>
           <textarea
             placeholder="What's happening?"
-            onInput={(event) => textareaInputHandler(event.target.value)}
+            onInput={(event) => {
+              const { text, showAccountAutocomplete, mentionsArray, mentionInput } = textareaInputHandler(
+                event.target.value,
+              );
+              State.update((lastKnownState) => ({
+                ...lastKnownState,
+                text,
+                showAccountAutocomplete,
+                mentionsArray,
+                mentionInput,
+              }));
+            }}
             onKeyUp={(event) => {
               if (event.key === "Escape") {
                 State.update({ showAccountAutocomplete: false });
@@ -428,7 +403,20 @@ return (
           src="${REPL_ACCOUNT}/widget/AccountAutocomplete"
           props={{
             term: state.mentionInput,
-            onSelect: autoCompleteAccountId,
+            onSelect: (id) => {
+              const { text, showAccountAutocomplete } = autoCompleteAccountId(
+                id,
+                state.text,
+                state.mentionsArray,
+                state.mentionInput,
+              );
+
+              State.update((lastKnownState) => ({
+                ...lastKnownState,
+                text,
+                showAccountAutocomplete,
+              }));
+            },
             onClose: () => State.update({ showAccountAutocomplete: false }),
           }}
         />

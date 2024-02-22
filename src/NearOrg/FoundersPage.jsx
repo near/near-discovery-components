@@ -1,3 +1,5 @@
+let { zendeskActivate } = props;
+
 const Wrapper = styled.div`
   --section-gap: 120px;
   --text-hero: 500 72px/1 "FK Grotesk", "Mona Sans", sans-serif;
@@ -261,6 +263,26 @@ return (
             <Resource key={`resource-${item.name}`} {...item} />
           ))}
         </Grid>
+      </Container>
+    </Section>
+
+    <Section backgroundColor="#F2F1EA">
+      <Container>
+        <Flex direction="column" gap="24px" alignItems="center">
+          <Text size="text-3xl" fontWeight="500" style={{ maxWidth: "808px", textAlign: "center" }}>
+            Get in touch with us to provide any feedback or ask for specific support
+          </Text>
+
+          <Widget
+            src="${REPL_ACCOUNT}/widget/DIG.Button"
+            props={{
+              label: "Contact Us",
+              variant: "primary",
+              size: "large",
+              onClick: () => zendeskActivate && zendeskActivate(),
+            }}
+          />
+        </Flex>
       </Container>
     </Section>
 

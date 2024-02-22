@@ -225,7 +225,6 @@ return (
         </Grid>
       </Container>
     </Section>
-
     <Widget
       src="${REPL_ACCOUNT}/widget/NearOrg.BosCtaSection"
       props={{

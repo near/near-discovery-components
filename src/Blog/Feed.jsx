@@ -227,7 +227,7 @@ const renderItem = (item, index) => {
   }
 
   return (
-    <Link href={`/${REPL_ACCOUNT}/widget/BlogPostPage?accountId=${item.account_id}&blockHeight=${item.block_height}`}>
+    <Link href={`/${REPL_ACCOUNT}/widget/PostPage?accountId=${item.account_id}&blockHeight=${item.block_height}`}>
       <Post key={index}>
         <ImageContainer>
           <PostImage

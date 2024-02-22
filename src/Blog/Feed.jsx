@@ -1,12 +1,11 @@
 const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
+
 //place id of the post you want to fetch from the dataplatform_near_social_feed_moderated_posts table
 const blogPostIds = props.blogPostIds || [75675];
 
-// const posts = props.posts || dummyData;
 const [posts, setPosts] = useState([]);
-const [isLoading, setIsLoading] = useState(false);
 
-const postsQuery = `
+const blogPostsQuery = `
 query FeedQuery {
   dataplatform_near_feed_moderated_posts(
     order_by: {block_height: desc}
@@ -43,36 +42,33 @@ function fetchGraphQL(operationsDoc, operationName, variables) {
   });
 }
 
-const getBlogPosts = () => {
-  fetchGraphQL(postsQuery, "FeedQuery", {}).then((result) => {
-    if (result.status === 200) {
-      if (result.body.data) {
-        const posts = result.body.data.dataplatform_near_feed_moderated_posts;
-        setPosts(posts);
-        console, log("ln 44", posts);
-        if (posts.length > 0) {
-          const post = posts[0];
-          let content = JSON.parse(post.content);
-          if (post.accounts_liked.length !== 0) {
-            if (typeof post.accounts_liked === "string") {
-              post.accounts_liked = JSON.parse(post.accounts_liked);
-            }
+fetchGraphQL(blogPostsQuery, "FeedQuery", {}).then((result) => {
+  if (result.status === 200) {
+    if (result.body.data) {
+      const posts = result.body.data.dataplatform_near_feed_moderated_posts;
+      setPosts(posts);
+      if (posts.length > 0) {
+        const post = posts[0];
+        let content = JSON.parse(post.content);
+        if (post.accounts_liked.length !== 0) {
+          if (typeof post.accounts_liked === "string") {
+            post.accounts_liked = JSON.parse(post.accounts_liked);
           }
-          const comments = post.comments;
-          State.update({
-            content: content,
-            comments: comments,
-            likes: post.accounts_liked,
-          });
-        } else {
-          State.update({
-            postExists: false,
-          });
         }
+        const comments = post.comments;
+        State.update({
+          blogPostContent: content,
+          blogPostComments: comments,
+          blogPostLikes: post.accounts_liked,
+        });
+      } else {
+        State.update({
+          blogPostExists: false,
+        });
       }
     }
-  });
-};
+  }
+});
 
 function parseMarkdown(markdown) {
   const parsedMarkdown = [];
@@ -135,12 +131,10 @@ const H2 = styled.h2`
   }
 `;
 
-// Define breakpoints for responsive design
 const breakpoints = {
   mobile: "768px", // this means anything below 768px width is considered mobile
 };
 
-// Create a styled div for the post container
 const PostContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -148,13 +142,11 @@ const PostContainer = styled.div`
   margin: 20px;
   { cursor: pointer; }
 
-  // Media query for mobile devices
   @media (max-width: ${breakpoints.mobile}) {
     grid-template-columns: 1fr;
   }
 `;
 
-// Create a styled div for each post
 const Post = styled.div`
   display: flex;
   background: #ffffff;
@@ -168,24 +160,20 @@ const Post = styled.div`
   }
 `;
 
-// Style for the image itself
 const PostImage = styled.img`
   width: 100%;
   height: 100%;
 `;
 
-// Style for the image container
 const ImageContainer = styled.div`
   width: 40%;
   height: 100%;
 
-  // Media query for mobile devices
   @media (max-width: ${breakpoints.mobile}) {
     width: 100%; // full width on mobile
   }
 `;
 
-// Style for the content container
 const ContentContainer = styled.div`
   padding: 20px;
   width: 60%;
@@ -193,13 +181,11 @@ const ContentContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
-  // Media query for mobile devices
   @media (max-width: ${breakpoints.mobile}) {
     width: 100%; // full width on mobile
   }
 `;
 
-// Create a styled h2 for the post title
 const PostTitle = styled.h2`
   font-size: 1rem;
   font-weight: 600;
@@ -208,33 +194,25 @@ const PostTitle = styled.h2`
   margin-top: 0.2rem;
   margin-bottom: 1rem;
 
-  // Media query for mobile devices
   @media (max-width: ${breakpoints.mobile}) {
     font-size: 1.25rem; // larger text on mobile
   }
 `;
 
-// Create a styled p for the post date
 const PostDate = styled.p`
   color: #999999;
   font-size: 0.8rem;
   margin: 0;
   align-self: flex-end;
 
-  // Media query for mobile devices
   @media (max-width: ${breakpoints.mobile}) {
     font-size: 0.9rem; // slightly larger text on mobile
   }
 `;
 
-const [postToShow, setPostToShow] = useState(null);
-
 const renderItem = (item, index) => {
-  let content;
-  if (item.content.type) {
-    content = item.content;
-  } else {
-    content = item.content;
+  let content = item.content;
+  if (!item.content.type) {
     content = JSON.parse(item.content);
   }
 
@@ -249,38 +227,24 @@ const renderItem = (item, index) => {
   }
 
   return (
-    <Post
-      key={index}
-      onClick={() => {
-        setPostToShow({ markdown: content.text });
-      }}
-    >
-      <ImageContainer>
-        <PostImage
-          src={markdownObj[0].imageUrl || "https://pages.near.org/wp-content/uploads/2023/06/generic-green-blog.png"}
-          alt="Post image"
-        />
-      </ImageContainer>
-      <ContentContainer>
-        <PostDate>{formattedDate}</PostDate>
-        <PostTitle>{title.text}</PostTitle>
-      </ContentContainer>
-    </Post>
+    <Link href={`/${REPL_ACCOUNT}/widget/BlogPostPage?accountId=${item.account_id}&blockHeight=${item.block_height}`}>
+      <Post key={index}>
+        <ImageContainer>
+          <PostImage
+            src={markdownObj[0].imageUrl || "https://pages.near.org/wp-content/uploads/2023/06/generic-green-blog.png"}
+            alt="Post image"
+          />
+        </ImageContainer>
+        <ContentContainer>
+          <PostDate>{formattedDate}</PostDate>
+          <PostTitle>{title.text}</PostTitle>
+        </ContentContainer>
+      </Post>
+    </Link>
   );
 };
 
-getBlogPosts();
-
 const renderedItems = posts?.map(renderItem, index);
-
-if (postToShow) {
-  return (
-    <Widget
-      src="${REPL_ACCOUNT}/widget/Blog.Post"
-      props={{ markdownPost: postToShow.markdown, setPostToShow: setPostToShow }}
-    />
-  );
-}
 
 return (
   <div style={{ background: "#f7f7f7", padding: "4em 2em" }}>

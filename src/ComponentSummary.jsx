@@ -33,10 +33,12 @@ const primaryActions = {
   open: {
     display: "Open",
     url: appUrl,
+    fork: context.accountId === accountId ? false : true,
   },
   viewDetails: {
     display: "View Source",
     url: detailsUrl,
+    fork: false,
   },
 };
 
@@ -244,13 +246,17 @@ return (
         {primaryActions[primaryAction].display}
       </ButtonLink>
 
-      <ButtonLink href={`/edit/${src}`}>
-        {context.accountId === accountId && (
-          <>
-            <i className="bi bi-pencil-fill"></i> Edit
-          </>
-        )}
-      </ButtonLink>
+      {context.accountId === accountId && (
+        <ButtonLink href={`/edit/${src}`}>
+          <i className="bi bi-pencil-fill"></i> Edit
+        </ButtonLink>
+      )}
+
+      {primaryActions[primaryAction].fork && (
+        <ButtonLink href={`/edit/${src}`}>
+          <i className="bi bi-git"></i> Fork
+        </ButtonLink>
+      )}
 
       <Widget
         src="${REPL_ACCOUNT}/widget/SocialIndexActionButton"

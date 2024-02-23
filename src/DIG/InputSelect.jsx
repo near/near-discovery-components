@@ -33,6 +33,7 @@ const Content = styled("Select.Content")`
   max-height: var(--radix-select-content-available-height);
   scroll-behavior: smooth;
   overflow: auto;
+  z-index: 1000;
 `;
 
 const Viewport = styled("Select.Viewport")``;

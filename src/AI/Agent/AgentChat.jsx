@@ -58,8 +58,6 @@ const routeApi = async (question) => {
   switch (model) {
     case "local":
       return localAI(question);
-    case "near":
-      return nearSocialAI(question);
     default:
       return openAI(question);
   }
@@ -72,18 +70,6 @@ const localAI = async (question) => {
     },
     responseType: "json",
     body: JSON.stringify([{ role: "system", content: data.prompt }, question]),
-  });
-};
-const nearSocialAI = async (question) => {
-  return asyncFetch(`https://ai.near.social/api`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    responseType: "json",
-    body: JSON.stringify([{ role: "system", content: data.prompt }, question]),
-  }).then((response) => {
-    return response.body.response;
   });
 };
 const openAI = async (question) => {
@@ -236,15 +222,6 @@ const renderSettings = () => {
                       {
                         label: "Local",
                         value: "local",
-                      },
-                    ],
-                  },
-                  {
-                    label: "NEAR",
-                    items: [
-                      {
-                        label: "NEAR",
-                        value: "near",
                       },
                     ],
                   },

@@ -8,10 +8,10 @@ const { agent, showActions } = props;
 const { accountId, name, displayName, prompt, logoUrl, tags } = agent;
 
 const chatLink = href({
-  widgetSrc: `${REPL_ACCOUNT}/widget/Entities.AgentFramework.AgentChat`,
+  widgetSrc: `${REPL_ACCOUNT}/widget/AI.Agent.AgentChat`,
   params: { src: `${accountId}/agent/${name}` },
 });
-const agentChatUrl = `https://${REPL_NEAR_URL}/near/widget/Entities.AgentFramework.AgentChat?src=${accountId}/agent/${name}`;
+const agentChatUrl = `https://${REPL_NEAR_URL}/${REPL_ACCOUNT}/widget/AI.Agent.AgentChat?src=${accountId}/agent/${name}`;
 
 const size = props.size || "small";
 

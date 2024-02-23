@@ -66,15 +66,15 @@ const AgentCard = ({ item, editFunction }) => {
   const imageUrl =
     logoUrl ?? "https://ipfs.near.social/ipfs/bafkreibysr2mkwhb4j36h2t7mqwhynqdy4vzjfygfkfg65kuspd2bawauu";
   const chatLink = href({
-    widgetSrc: `${REPL_ACCOUNT}/widget/Entities.AgentFramework.AgentChat`,
+    widgetSrc: `${REPL_ACCOUNT}/widget/AI.Agent.AgentChat`,
     params: { src: `${accountId}/agent/${name}` },
   });
   const detailsLink = href({
-    widgetSrc: `${REPL_ACCOUNT}/widget/Entities.AgentFramework.AgentDetails`,
+    widgetSrc: `${REPL_ACCOUNT}/widget/AI.Agent.AgentDetails`,
     params: { src: `${accountId}/agent/${name}` },
   });
 
-  const agentChatUrl = `https://${REPL_NEAR_URL}/near/widget/Entities.AgentFramework.AgentChat?src=${accountId}/agent/${item.name}`;
+  const agentChatUrl = `https://${REPL_NEAR_URL}/${REPL_ACCOUNT}/widget/AI.Agent.AgentChat?src=${accountId}/agent/${item.name}`;
   const editType = accountId === context.accountId ? "edit" : "fork";
   const editLabel = editType === "edit" ? "Edit" : "Fork";
   const editIcon = editType === "edit" ? "ph-bold ph-pencil-simple" : "ph-bold ph-git-fork";

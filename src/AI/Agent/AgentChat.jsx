@@ -13,7 +13,7 @@ const agent = { accountId, name: agentName, ...data };
 if (!data) return "Loading...";
 
 const listLink = href({
-  widgetSrc: `${REPL_ACCOUNT}/widget/Entities.AgentFramework.AgentPage`,
+  widgetSrc: `${REPL_ACCOUNT}/widget/AI.Nexus`,
 });
 
 const [question, setQuestion] = useState("");
@@ -94,7 +94,7 @@ return (
             </Header>
           </Link>
           <Widget
-            src="${REPL_ACCOUNT}/widget/Entities.AgentFramework.AgentSummary"
+            src="${REPL_ACCOUNT}/widget/AI.Agent.AgentSummary"
             props={{
               size: "small",
               showTags: true,

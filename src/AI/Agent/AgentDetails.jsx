@@ -23,7 +23,7 @@ const editType = accountId === context.accountId ? "edit" : "fork";
 const editLabel = editType === "edit" ? "Edit" : "Fork";
 const editIcon = editType === "edit" ? "ph-bold ph-pencil-simple" : "ph-bold ph-git-fork";
 const listLink = href({
-  widgetSrc: `${REPL_ACCOUNT}/widget/Entities.AgentFramework.AgentPage`,
+  widgetSrc: `${REPL_ACCOUNT}/widget/AI.Nexus`,
 });
 
 const Wrapper = styled.div`
@@ -74,7 +74,7 @@ return (
       </Header>
     </Link>
     <Widget
-      src="${REPL_ACCOUNT}/widget/Entities.AgentFramework.AgentSummary"
+      src="${REPL_ACCOUNT}/widget/AI.Agent.AgentSummary"
       props={{
         size: "small",
         showTags: true,
@@ -99,20 +99,13 @@ return (
             {
               name: editLabel,
               value: "edit",
-              content: (
-                <Widget src={"${REPL_ACCOUNT}/widget/Entities.AgentFramework.AgentCreate"} props={{ data: agent }} />
-              ),
+              content: <Widget src={"${REPL_ACCOUNT}/widget/AI.Agent.AgentCreate"} props={{ data: agent }} />,
               icon: editIcon,
             },
             {
               name: "Chat",
               value: "chat",
-              content: (
-                <Widget
-                  src={"${REPL_ACCOUNT}/widget/Entities.AgentFramework.AgentChat"}
-                  props={{ src, embedded: true }}
-                />
-              ),
+              content: <Widget src={"${REPL_ACCOUNT}/widget/AI.Agent.AgentChat"} props={{ src, embedded: true }} />,
               icon: "ph ph-code",
             },
           ],

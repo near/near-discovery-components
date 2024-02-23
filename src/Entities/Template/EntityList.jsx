@@ -117,9 +117,9 @@ return (
     <Header>
       <div className="row">
         <div className="col">
-          <H1>
+          <H2>
             {totalItems} {entityType + (totalItems > 1 ? "s" : "")}
-          </H1>
+          </H2>
           {description && <Text>{description}</Text>}
         </div>
         {context.accountId && (

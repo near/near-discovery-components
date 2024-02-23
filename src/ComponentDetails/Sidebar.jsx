@@ -1,6 +1,6 @@
 let { src } = props;
 
-const [accountId, widget, widgetName] = src.split("/");
+const [accountId, type, widgetName] = src.split("/");
 
 const GRAPHQL_ENDPOINT = "https://near-queryapi.api.pagoda.co";
 const STORE = "storage.googleapis.com";
@@ -406,7 +406,7 @@ return (
       <Container>
         <SmallTitle>Dependencies ({dependencySources.length})</SmallTitle>
         {dependencySources.length === 0 ? (
-          <Text>This component has no dependencies.</Text>
+          <Text>This {type} has no dependencies.</Text>
         ) : (
           <ItemsWrapper>
             {dependencySources

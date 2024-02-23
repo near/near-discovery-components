@@ -5,11 +5,10 @@ if (!typeMatch) {
 }
 
 const { data, onSubmit, onCancel } = props;
-
 const onSubmitDefault = (formValues) => {
   const { name, ...rest } = formValues;
   const agent = { [name]: rest };
-  Social.set({ agent: agent });
+  Social.set({ agent: agent }, { force: true });
 };
 const onSubmitFunction = onSubmit ?? onSubmitDefault;
 
@@ -22,7 +21,6 @@ const AgentInputsPartialSchema = {
       placeholder: "Choose a unique identifier for your agent. Example: travel-agent.",
       required: true,
     },
-
     label: "Name",
     order: 1,
   },
@@ -43,6 +41,7 @@ const AgentInputsPartialSchema = {
       placeholder: "The prompt for the agent.",
       required: true,
     },
+    multiline: true,
     label: "Prompt",
     order: 3,
   },
@@ -124,19 +123,11 @@ const AgentInputsPartialSchema = {
 const agentInputsValidator = (formValues) =>
   typeMatch(formValues) && Object.values(formValues).every((value) => typeof value === "string" && value.length > 0);
 
-const AgentInputsDefaults = {
-  handle: "",
-  name: "",
-  tag: "",
-  description: "",
-};
-
 return (
   <Widget
     src="devhub.near/widget/devhub.components.organism.Configurator"
     props={{
       heading: "Agent information",
-      externalState: AgentInputsDefaults,
       fullWidth: true,
       isActive: true,
       isUnlocked: true,
@@ -147,8 +138,9 @@ return (
         type: "bootstrap_icon",
         variant: "bi-rocket-takeoff-fill",
       },
-      submitLabel: "Launch",
+      submitLabel: data ? "Save" : "Launch",
       onCancel: onCancel,
+      externalState: data,
     }}
   />
 );

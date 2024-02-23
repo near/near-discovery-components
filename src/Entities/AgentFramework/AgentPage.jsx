@@ -61,12 +61,13 @@ const convertSnakeToPascal = (item) => {
   });
   return item;
 };
-const renderItem = (item) => {
+const renderItem = (item, editFunction) => {
   return (
     <Widget
       src="${REPL_ACCOUNT}/widget/Entities.AgentFramework.AgentCard"
       props={{
         item: convertSnakeToPascal(item),
+        editFunction,
       }}
     />
   );

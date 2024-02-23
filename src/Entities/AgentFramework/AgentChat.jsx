@@ -1,9 +1,20 @@
-const [accountId, agentType, agentName] = props.src.split("/") ?? [null, null, null];
-const blockHeight = props.blockHeight ?? "final";
+const { href } = VM.require("devhub.near/widget/core.lib.url");
+if (!href) {
+  return <></>;
+}
+const { src, embedded } = props;
+
+const [accountId, agentType, agentName] = src.split("/") ?? [null, null, null];
+const blockHeight = blockHeight ?? "final";
 
 const data = Social.getr(`${accountId}/agent/${agentName}`, blockHeight);
+const agent = { accountId, name: agentName, ...data };
 
 if (!data) return "Loading...";
+
+const listLink = href({
+  widgetSrc: `${REPL_ACCOUNT}/widget/Entities.AgentFramework.AgentPage`,
+});
 
 const [question, setQuestion] = useState("");
 const [prompt, setPrompt] = useState("");
@@ -42,16 +53,59 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 48px;
+  padding: 48px;
+`;
+
+const Overview = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+const Header = styled.h1`
+  font-size: 24px;
+  line-height: 39px;
+  color: #11181c;
+  margin: 0;
+  font-weight: 600;
+`;
+const Text = styled.p`
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: ${(p) => (p.bold ? "#11181C" : "#687076")};
+  font-weight: ${(p) => (p.bold ? "600" : "400")};
+  font-size: ${(p) => (p.small ? "12px" : "14px")};
+
+  i {
+    margin-right: 4px;
+  }
 `;
 
 return (
   <Wrapper>
     <div>
-      <div>Name: {data.displayName}</div>
-      <div>
-        Prompt: <pre>{data.prompt}</pre>
-      </div>
-
+      {!embedded && (
+        <Overview>
+          <Link to={listLink}>
+            <Header>
+              <i className="ph ph-arrow-left" />
+              Agent List
+            </Header>
+          </Link>
+          <Widget
+            src="${REPL_ACCOUNT}/widget/Entities.AgentFramework.AgentSummary"
+            props={{
+              size: "small",
+              showTags: true,
+              agent: agent,
+            }}
+          />
+          <Text>
+            Prompt: <pre>{data.prompt}</pre>
+          </Text>
+        </Overview>
+      )}
       <div className="mb-3">
         <div className="input-group">
           <input

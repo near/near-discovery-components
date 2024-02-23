@@ -1,6 +1,7 @@
 const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 
 const indexerAccount = props.indexerAccount || "dataplatform.near";
+const indexerAccountLink = indexerAccount.replace(".", "_");
 const indexerFilter = props.indexerFilter || null;
 const fullFilter = indexerFilter ? indexerAccount + "/" + indexerFilter : indexerAccount;
 
@@ -88,7 +89,12 @@ return (
         ))}
       </tbody>
     </StatusTable>
-
     <div>{errors}</div>
+    <Link
+      target="_blank"
+      href={`https://cloud.hasura.io/public/graphiql?endpoint=https://near-queryapi.api.pagoda.co/v1/graphql&header=x-hasura-role%3A${indexerAccountLink}`}
+    >
+      Explore Data
+    </Link>
   </div>
 );

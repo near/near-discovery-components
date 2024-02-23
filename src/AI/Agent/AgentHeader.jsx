@@ -1,4 +1,4 @@
-const { text, color, alpha } = props.text;
+const { text, color, alpha } = props;
 
 const colorToVec3 = (hexStr, alpha) => {
   if (/^#([0-9A-F]{3}){1,2}$/i.test(hexStr)) {

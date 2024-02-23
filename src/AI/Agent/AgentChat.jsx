@@ -279,7 +279,7 @@ const renderSettings = () => {
                   src="near/widget/DIG.Input"
                   props={{
                     label: "Credentials",
-                    assistiveText: "Your OpenAI API Key or other credentials. Will be stored in your browser.",
+                    assistiveText: "Your OpenAI API Key or other credentials, will be stored in your browser.",
                     iconLeft: "ph-bold ph-identification-card",
                     onInput: (e) => setCredential(e.target.value),
                     value: credential,

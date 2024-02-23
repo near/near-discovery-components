@@ -22,7 +22,7 @@ let {
 type = type ?? "dialog";
 enableCloseButton = enableCloseButton ?? false;
 
-if (["alert", "dialog"].indexOf(type) < 0) {
+if (["alert", "dialog", "custom"].indexOf(type) < 0) {
   return "Unsupported type of component. `type` could be only 'alert' or 'dialog'";
 }
 

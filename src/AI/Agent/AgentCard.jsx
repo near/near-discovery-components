@@ -74,7 +74,7 @@ const AgentCard = ({ item, editFunction }) => {
     params: { src: `${accountId}/agent/${name}` },
   });
 
-  const agentChatUrl = `https://${REPL_NEAR_URL}/near/widget/AI.Agent.AgentChat?src=${accountId}/agent/${item.name}`;
+  const agentChatUrl = `https://${REPL_NEAR_URL}/${REPL_ACCOUNT}/widget/AI.Agent.AgentChat?src=${accountId}/agent/${item.name}`;
   const editType = accountId === context.accountId ? "edit" : "fork";
   const editLabel = editType === "edit" ? "Edit" : "Fork";
   const editIcon = editType === "edit" ? "ph-bold ph-pencil-simple" : "ph-bold ph-git-fork";

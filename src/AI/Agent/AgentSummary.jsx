@@ -11,7 +11,7 @@ const chatLink = href({
   widgetSrc: `${REPL_ACCOUNT}/widget/AI.Agent.AgentChat`,
   params: { src: `${accountId}/agent/${name}` },
 });
-const agentChatUrl = `https://${REPL_NEAR_URL}/near/widget/AI.Agent.AgentChat?src=${accountId}/agent/${name}`;
+const agentChatUrl = `https://${REPL_NEAR_URL}/${REPL_ACCOUNT}/widget/AI.Agent.AgentChat?src=${accountId}/agent/${name}`;
 
 const size = props.size || "small";
 

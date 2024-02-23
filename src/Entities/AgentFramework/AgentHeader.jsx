@@ -409,8 +409,8 @@ class CreateParticles {
 	    return Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2));
 	}
 }
-</script>`;
 // Adapted from https://codepen.io/sanprieto/details/XWNjBdb under MIT LICENSE
+</script>`;
 
 src = src.replace("TEXT_PROPERTY", text);
 

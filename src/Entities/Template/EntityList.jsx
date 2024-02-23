@@ -13,12 +13,18 @@ const [sort, setSort] = useState("");
 const [items, setItems] = useState([]);
 const [totalItems, setTotalItems] = useState(0);
 const [showCreateModal, setShowCreateModal] = useState(false);
+const [activeItem, setActiveItem] = useState(null);
 
 const closeModal = () => {
+  setActiveItem(null);
   setShowCreateModal(false);
 };
 const toggleModal = () => {
   setShowCreateModal(!showCreateModal);
+};
+const editFunction = (item) => {
+  setActiveItem(item);
+  setShowCreateModal(true);
 };
 const onLoad = (newItems, totalItems) => {
   setItems([...items, ...newItems]);
@@ -133,7 +139,7 @@ return (
               src="${REPL_ACCOUNT}/widget/DIG.Dialog"
               props={{
                 type: "dialog",
-                description: <Widget src={finalCreateWidget} props={{ onCancel: closeModal }} />,
+                description: <Widget src={finalCreateWidget} props={{ onCancel: closeModal, data: activeItem }} />,
                 onOpenChange: closeModal,
                 open: showCreateModal,
                 contentStyles: dialogStyles,
@@ -161,7 +167,7 @@ return (
       >
         <Items>
           {items.map((item) => (
-            <Item key={item.accountId + item.widgetName}>{renderItem(item)}</Item>
+            <Item key={item.accountId + item.widgetName}>{renderItem(item, editFunction)}</Item>
           ))}
         </Items>
       </InfiniteScroll>

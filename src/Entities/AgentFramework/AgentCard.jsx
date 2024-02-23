@@ -61,18 +61,27 @@ const Actions = styled.div`
   align-items: center;
   gap: 12px;
 `;
-const AgentCard = ({ item }) => {
+const AgentCard = ({ item, editFunction }) => {
   const { accountId, name, displayName, prompt, logoUrl } = item;
   const imageUrl =
     logoUrl ?? "https://ipfs.near.social/ipfs/bafkreibysr2mkwhb4j36h2t7mqwhynqdy4vzjfygfkfg65kuspd2bawauu";
-  const link = href({
+  const chatLink = href({
     widgetSrc: `${REPL_ACCOUNT}/widget/Entities.AgentFramework.AgentChat`,
     params: { src: `${accountId}/agent/${name}` },
   });
+  const detailsLink = href({
+    widgetSrc: `${REPL_ACCOUNT}/widget/Entities.AgentFramework.AgentDetails`,
+    params: { src: `${accountId}/agent/${name}` },
+  });
+
+  const agentChatUrl = `https://${REPL_NEAR_URL}/near/widget/Entities.AgentFramework.AgentChat?src=${accountId}/agent/${item.name}`;
+  const editType = accountId === context.accountId ? "edit" : "fork";
+  const editLabel = editType === "edit" ? "Edit" : "Fork";
+  const editIcon = editType === "edit" ? "ph-bold ph-pencil-simple" : "ph-bold ph-git-fork";
 
   return (
     <Card>
-      <Link to={link} style={{ all: "unset" }}>
+      <Link to={chatLink} style={{ all: "unset" }}>
         <div className="row">
           <div className="col-4">
             <img className="logo" src={imageUrl} alt="agent logo" />
@@ -91,6 +100,79 @@ const AgentCard = ({ item }) => {
           </div>
         </div>
       </Link>
+      <Actions>
+        <Widget
+          src="near/widget/DIG.Tooltip"
+          props={{
+            content: editLabel,
+            trigger: (
+              <Widget
+                src="near/widget/DIG.Button"
+                props={{
+                  onClick: () => editFunction(item),
+                  iconLeft: editIcon,
+                  variant: "secondary",
+                  fill: "ghost",
+                  size: "small",
+                }}
+              />
+            ),
+          }}
+        />
+        <Widget
+          src="${REPL_ACCOUNT}/widget/CopyUrlButton"
+          props={{
+            url: agentChatUrl,
+          }}
+        />
+        <Widget
+          src="${REPL_ACCOUNT}/widget/ShareButton"
+          props={{
+            postType: "AI Agent",
+            url: agentChatUrl,
+          }}
+        />
+        <Widget
+          src="near/widget/DIG.Tooltip"
+          props={{
+            content: "View Details",
+            trigger: (
+              <Link to={detailsLink} style={{ all: "unset" }}>
+                <Widget
+                  src="near/widget/DIG.Button"
+                  props={{
+                    disabled: !context.accountId || context.accountId !== accountId,
+                    iconLeft: "ph-bold ph-eye",
+                    variant: "secondary",
+                    fill: "ghost",
+                    size: "small",
+                  }}
+                />
+              </Link>
+            ),
+          }}
+        />
+        <Widget
+          src="near/widget/DIG.Tooltip"
+          props={{
+            content: "Use agent",
+            trigger: (
+              <Link to={chatLink} style={{ all: "unset" }}>
+                <Widget
+                  src="near/widget/DIG.Button"
+                  props={{
+                    disabled: !context.accountId || context.accountId !== accountId,
+                    iconLeft: "ph-bold ph-chat-teardrop-text",
+                    variant: "secondary",
+                    fill: "ghost",
+                    size: "small",
+                  }}
+                />
+              </Link>
+            ),
+          }}
+        />
+      </Actions>
     </Card>
   );
 };

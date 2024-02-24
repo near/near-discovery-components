@@ -51,9 +51,10 @@ const CustomizeDialogContent = styled.div`
   }
 `;
 
+const { cookiesAcknowleged } = props;
+
 State.init({
-  cookiePopupTimestamp: null,
-  cookieAcceptance: null,
+  cookieAcceptance: cookiesAcknowleged,
   isDialogOpen: false,
 });
 
@@ -61,9 +62,10 @@ if (state.cookieAcceptance) {
   return "";
 }
 
-const onAccept = (cookie_acceptance) => {
-  State.update({ cookieAcceptance: cookie_acceptance });
+const onAccept = ({ all, onlyRequired }) => {
+  State.update({ cookieAcceptance: true });
   State.update({ isDialogOpen: false });
+  return <AnalyticsCookieConsent all onlyRequired />;
 };
 
 const onCustomize = () => {
@@ -111,7 +113,7 @@ return (
                 label: "Accept All",
                 variant: "primary",
                 size: "small",
-                onClick: () => onAccept("all"),
+                onClick: () => onAccept({ all: true }),
               }}
             />
             <Widget
@@ -120,10 +122,7 @@ return (
                 label: "Required Only",
                 variant: "secondary",
                 size: "small",
-                onClick: () => {
-                  onAccept("required_only");
-                  <AnalyticsOptedOut />;
-                },
+                onClick: () => onAccept({ onlyRequired: true }),
               }}
             />
           </div>
@@ -156,7 +155,7 @@ return (
           label: "Accept",
           variant: "primary",
           size: "small",
-          onClick: () => onAccept("all"),
+          onClick: () => onAccept({ all: true }),
         }}
       />
     </div>

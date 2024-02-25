@@ -32,9 +32,9 @@ const [question, setQuestion] = useState("");
 const [loading, setLoading] = useState(false);
 const [messages, setMessages] = useState([]);
 
-const [model, setModel] = useState(storedModel ?? "gpt-3.5-turbo");
-const [localModel, setLocalModel] = useState(storedLocalModel ?? "http://localhost:11434/api/generate");
-const [credentialType, setCredentailType] = useState(storedCredentialType ?? "openai");
+const [model, setModel] = useState(storedModel ?? "near-llama-7b");
+const [localModel, setLocalModel] = useState(storedLocalModel ?? "http://localhost:11434/");
+const [credentialType, setCredentailType] = useState(storedCredentialType ?? "bearer");
 const [credential, setCredential] = useState(storedCredential ?? "");
 
 useEffect(() => {
@@ -56,11 +56,39 @@ const toggleSettings = () => {
 
 const routeApi = async (question) => {
   switch (model) {
-    case "local":
-      return localAI(question);
+    case "near-llama-7b":
+      return nearLlama(question);
     default:
-      return openAI(question);
+      return openAICompatible(question);
   }
+};
+const urlForModel = (model) => {
+  switch (model) {
+    case "near-llama-7b":
+      return `https://ai.near.social/api`;
+    case "local":
+      return localModel;
+    case "gpt-4":
+    case "gpt-3.5-turbo":
+      return `https://api.openai.com/v1/chat/completions`;
+    case "mixtral-8x7b-32768":
+    case "llama2-70b-4096":
+      return "https://api.groq.com/openai/v1/chat/completions";
+    default:
+      return `https://api.openai.com/v1/chat/completions`;
+  }
+};
+const nearLlama = async (question) => {
+  return asyncFetch(`https://ai.near.social/api`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    responseType: "json",
+    body: JSON.stringify([{ role: "system", content: data.prompt }, question]),
+  }).then((response) => {
+    return response.body.response;
+  });
 };
 const localAI = async (question) => {
   return asyncFetch(localModel, {
@@ -72,8 +100,8 @@ const localAI = async (question) => {
     body: JSON.stringify([{ role: "system", content: data.prompt }, question]),
   });
 };
-const openAI = async (question) => {
-  return asyncFetch(`https://api.openai.com/v1/chat/completions`, {
+const openAICompatible = async (question) => {
+  return asyncFetch(urlForModel(model), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -120,7 +148,9 @@ const submitQuestion = () => {
   setQuestion("");
 };
 const requiresCredentials = (model) => {
-  return model === "gpt-4" || model === "gpt-3.5-turbo";
+  return (
+    model === "gpt-4" || model === "gpt-3.5-turbo" || model === "mixtral-8x7b-32768" || model === "llama2-70b-4096"
+  );
 };
 
 const Wrapper = styled.div`
@@ -204,6 +234,29 @@ const renderSettings = () => {
               props={{
                 groups: [
                   {
+                    label: "NEAR",
+                    items: [
+                      {
+                        label: "NEAR Llama 7b",
+                        value: "near-llama-7b",
+                      },
+                      // Hi hackathon teams, implementing calls to gpt4.near? Add it here. - the black dragon
+                    ],
+                  },
+                  {
+                    label: "Groq",
+                    items: [
+                      {
+                        label: "Mixtral 8x7b 32768",
+                        value: "mixtral-8x7b-32768",
+                      },
+                      {
+                        label: "Llama2 70b 4096",
+                        value: "llama2-70b-4096",
+                      },
+                    ],
+                  },
+                  {
                     label: "OpenAI",
                     items: [
                       {
@@ -211,7 +264,7 @@ const renderSettings = () => {
                         value: "gpt-4",
                       },
                       {
-                        label: "GPT-3",
+                        label: "GPT-3.5 turbo",
                         value: "gpt-3.5-turbo",
                       },
                     ],
@@ -257,11 +310,11 @@ const renderSettings = () => {
                   props={{
                     groups: [
                       {
-                        label: "Bearer Token",
+                        label: "OpenAI, Groq, or other API Key",
                         items: [
                           {
-                            label: "OpenAI API Key",
-                            value: "openai",
+                            label: "Bearer Token",
+                            value: "bearer",
                           },
                         ],
                       },
@@ -331,7 +384,7 @@ return (
         {renderSettings()}
         {requiresCredentials(model) && credential === "" && (
           <div className="alert alert-danger mx-3" role="alert">
-            <i className="ph ph-alert-circle" /> To use an OpenAI model enter your OpenAI API Key in Settings or change
+            <i className="ph ph-alert-circle" /> To use an OpenAI or Groq model enter your API Key in Settings or change
             to another provider.
           </div>
         )}

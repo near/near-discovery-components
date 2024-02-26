@@ -19,6 +19,7 @@ if (!exists) {
 
 agent = { accountId, name: agentName, ...agent };
 const { prompt } = agent;
+const agentComponent = item.component ? item.component : `${REPL_ACCOUNT}/widget/AI.Agent.AgentChat`;
 const editType = accountId === context.accountId ? "edit" : "fork";
 const editLabel = editType === "edit" ? "Edit" : "Fork";
 const editIcon = editType === "edit" ? "ph-bold ph-pencil-simple" : "ph-bold ph-git-fork";
@@ -64,6 +65,27 @@ const Text = styled.p`
     margin-right: 4px;
   }
 `;
+const PropValue = styled.p`
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  padding-bottom: 10px;
+`;
+const agentProperties = (obj) => {
+  const { accountId, name, displayName, logoUrl, ...displayProps } = obj;
+  return (
+    <>
+      {Object.keys(displayProps).map((k) => (
+        <>
+          <Text bold key={k}>
+            {k}:
+          </Text>
+          <PropValue>{obj[k]}</PropValue>
+        </>
+      ))}
+    </>
+  );
+};
 
 return (
   <Wrapper>
@@ -93,7 +115,7 @@ return (
             {
               name: "Properties",
               value: "prompt",
-              content: <Text>{prompt}</Text>,
+              content: agentProperties(agent),
               icon: "ph ph-code",
             },
             {
@@ -105,7 +127,7 @@ return (
             {
               name: "Chat",
               value: "chat",
-              content: <Widget src={"${REPL_ACCOUNT}/widget/AI.Agent.AgentChat"} props={{ src, embedded: true }} />,
+              content: <Widget src={agentComponent} props={{ src, embedded: true }} />,
               icon: "ph ph-code",
             },
           ],

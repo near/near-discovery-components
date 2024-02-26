@@ -5,13 +5,14 @@ if (!href) {
 }
 
 const { agent, showActions } = props;
-const { accountId, name, displayName, prompt, logoUrl, tags } = agent;
+const { accountId, name, displayName, prompt, logoUrl, tags, component } = agent;
 
+const agentComponent = item.component ? item.component : `${REPL_ACCOUNT}/widget/AI.Agent.AgentChat`;
 const chatLink = href({
-  widgetSrc: `${REPL_ACCOUNT}/widget/AI.Agent.AgentChat`,
+  widgetSrc: agentComponent,
   params: { src: `${accountId}/agent/${name}` },
 });
-const agentChatUrl = `https://${REPL_NEAR_URL}/${REPL_ACCOUNT}/widget/AI.Agent.AgentChat?src=${accountId}/agent/${name}`;
+const agentChatUrl = `https://${REPL_NEAR_URL}/${agentComponent}?src=${accountId}/agent/${name}`;
 
 const size = props.size || "small";
 

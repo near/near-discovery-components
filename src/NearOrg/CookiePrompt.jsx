@@ -75,7 +75,7 @@ const onCustomize = () => {
 return (
   <Cookies>
     <Widget
-      src="near/widget/DIG.Dialog"
+      src={`${REPL_ACCOUNT}/widget/DIG.Dialog`}
       props={{
         content: (
           <CustomizeDialogContent>

@@ -63,10 +63,11 @@ const Actions = styled.div`
 `;
 const AgentCard = ({ item, editFunction }) => {
   const { accountId, name, displayName, prompt, logoUrl } = item;
+  const agentComponent = item.component ? item.component : `${REPL_ACCOUNT}/widget/AI.Agent.AgentChat`;
   const imageUrl =
     logoUrl ?? "https://ipfs.near.social/ipfs/bafkreibysr2mkwhb4j36h2t7mqwhynqdy4vzjfygfkfg65kuspd2bawauu";
   const chatLink = href({
-    widgetSrc: `${REPL_ACCOUNT}/widget/AI.Agent.AgentChat`,
+    widgetSrc: agentComponent,
     params: { src: `${accountId}/agent/${name}` },
   });
   const detailsLink = href({
@@ -74,7 +75,7 @@ const AgentCard = ({ item, editFunction }) => {
     params: { src: `${accountId}/agent/${name}` },
   });
 
-  const agentChatUrl = `https://${REPL_NEAR_URL}/${REPL_ACCOUNT}/widget/AI.Agent.AgentChat?src=${accountId}/agent/${item.name}`;
+  const agentChatUrl = `https://${REPL_NEAR_URL}/${agentComponent}?src=${accountId}/agent/${item.name}`;
   const editType = accountId === context.accountId ? "edit" : "fork";
   const editLabel = editType === "edit" ? "Edit" : "Fork";
   const editIcon = editType === "edit" ? "ph-bold ph-pencil-simple" : "ph-bold ph-git-fork";
@@ -141,7 +142,6 @@ const AgentCard = ({ item, editFunction }) => {
                 <Widget
                   src="near/widget/DIG.Button"
                   props={{
-                    disabled: !context.accountId || context.accountId !== accountId,
                     iconLeft: "ph-bold ph-eye",
                     variant: "secondary",
                     fill: "ghost",
@@ -161,7 +161,6 @@ const AgentCard = ({ item, editFunction }) => {
                 <Widget
                   src="near/widget/DIG.Button"
                   props={{
-                    disabled: !context.accountId || context.accountId !== accountId,
                     iconLeft: "ph-bold ph-chat-teardrop-text",
                     variant: "secondary",
                     fill: "ghost",

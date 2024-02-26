@@ -75,16 +75,16 @@ const AgentInputsPartialSchema = {
   //     label: "A comma separated list of variables that should be passed into the prompt. Example: ['rfp', 'proposal'].",
   //     order: 6,
   // },
-  // component: {
-  //   inputProps: {
-  //     min: 2,
-  //     max: 255,
-  //     placeholder: "The component used to run the agent for the agent.",
-  //     required: false,
-  //   },
-  //   label: "Component",
-  //   order: 7,
-  // },
+  component: {
+    inputProps: {
+      min: 2,
+      max: 255,
+      placeholder: "The component used to run the agent, default is near/widget/AI.Agent.AgentChat",
+      required: false,
+    },
+    label: "Component",
+    order: 7,
+  },
   logoUrl: {
     inputProps: {
       min: 4,

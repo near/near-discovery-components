@@ -61,23 +61,30 @@ const convertSnakeToPascal = (item) => {
   });
   return item;
 };
-const renderItem = (item) => {
+const renderItem = (item, editFunction) => {
   return (
     <Widget
-      src="${REPL_ACCOUNT}/widget/Entities.AgentFramework.AgentCard"
+      src="${REPL_ACCOUNT}/widget/AI.Agent.AgentCard"
       props={{
         item: convertSnakeToPascal(item),
+        editFunction,
       }}
     />
   );
 };
 
-const createWidget = "${REPL_ACCOUNT}/widget/Entities.AgentFramework.AgentCreate";
-const description = "Intent is all you need";
+const createWidget = "${REPL_ACCOUNT}/widget/AI.Agent.AgentCreate";
+const description = "NEAR AI Nexus";
+
+const Header = styled.h1`
+  font-size: 24px;
+  color: #11181c;
+  margin: 0;
+  font-weight: 600;
+`;
 return (
   <div>
-    <Widget src="${REPL_ACCOUNT}/widget/Entities.AgentFramework.AgentHeader" props={{ text: description }} />
-
+    <Widget src="${REPL_ACCOUNT}/widget/AI.Agent.AgentHeader" props={{ text: description, color: "#11181c" }} />
     <Widget
       src="${REPL_ACCOUNT}/widget/Entities.Template.EntityList"
       props={{ entityType, buildQueries, queryName, collection, renderItem, createWidget }}

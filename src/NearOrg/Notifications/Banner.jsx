@@ -42,11 +42,18 @@ const Buttons = styled.div`
   gap: 8px;
 `;
 
+const TextLink = styled("Link")`
+  color: var(--white);
+  text-decoration: underline;
+`;
+
 return (
   <Card borderRadius={radius}>
     <Component>
       <Icon className="ph ph-bell-ringing" />
-      <Text>Don't miss out on updates, turn on desktop notifications.</Text>
+      <Text>
+        Don't miss out on updates, <TextLink href="/notifications-settings">turn on desktop notifications.</TextLink>
+      </Text>
       {showIosNoteText && (
         <Text small>
           <i className="ph-bold ph-info" />

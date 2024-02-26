@@ -1,4 +1,14 @@
-const text = props.text;
+const { text, color, alpha } = props;
+
+const colorToVec3 = (hexStr, alpha) => {
+  if (/^#([0-9A-F]{3}){1,2}$/i.test(hexStr)) {
+    const rbg = [hexStr.slice(1, 3), hexStr.slice(3, 5), hexStr.slice(5, 7)].map(
+      (x) => Math.round((parseInt(x, 16) / 255) * 1000) / 1000,
+    );
+    return rbg.join(",") + (alpha ? "," + alpha : ",0.05");
+  }
+  return "0.067,0.094,0.11,0.05";
+};
 
 let src = `
 <div id="scene"></div>
@@ -60,7 +70,7 @@ html, body {
  varying vec3 vColor;
 
  void main() {
-   gl_FragColor = vec4(0.201,0.885,1.000,0.03); //;vec4( color * vColor, 1.0 ); // for changing colors
+   gl_FragColor = vec4(COLOR_PROPERTY); //;vec4( color * vColor, 1.0 ); // for changing colors
    gl_FragColor = gl_FragColor * texture2D( pointTexture, gl_PointCoord );
  }
 </script>
@@ -409,10 +419,11 @@ class CreateParticles {
 	    return Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2));
 	}
 }
-</script>`;
 // Adapted from https://codepen.io/sanprieto/details/XWNjBdb under MIT LICENSE
+</script>`;
 
 src = src.replace("TEXT_PROPERTY", text);
+src = src.replace("COLOR_PROPERTY", colorToVec3(color, alpha));
 
 return (
   <div className="iframeContainer container">

@@ -1,31 +1,4 @@
-let { docs } = props;
-
-const papersDocs = [
-  {
-    name: "The NEAR White Paper",
-    description:
-      "This document describes the approach NEAR takes to designing and implementing the core technology of its system.",
-    icon: "ph-file-doc",
-    url: docs.whitePaperNearProtocol,
-    target: "_blank",
-  },
-  {
-    name: "Nightshade",
-    description:
-      "This document outlines the general approach to blockchain sharding, the major problems that need to be overcome, including state validity and data availability problems, and presents Nightshade, the solution NEAR Protocol is built upon that addresses those issues.",
-    icon: "ph-file-doc",
-    url: docs.nightshade,
-    target: "_blank",
-  },
-  {
-    name: "Doomslug",
-    description:
-      "Doomslug: block confirmation with single round of communication, and a finality gadget with guaranteed liveness",
-    icon: "ph-file-doc",
-    url: docs.doomslug,
-    target: "_blank",
-  },
-];
+let { zendeskActivate } = props;
 
 const Wrapper = styled.div`
   --section-gap: 120px;
@@ -174,18 +147,93 @@ const IconCircle = styled.div`
   }
 `;
 
+const Resource = ({ name, description, icon, url, target }) => (
+  <Widget
+    src="${REPL_ACCOUNT}/widget/NearOrg.Card"
+    key={name}
+    props={{
+      as: "a",
+      href: url,
+      target,
+      rel: "noopener noreferrer",
+      alt: name,
+      children: (
+        <>
+          <IconCircle>
+            <i className={`ph-duotone ${icon}`} />
+          </IconCircle>
+
+          <Flex direction="column" gap="16px">
+            <Text size="text-l" fontWeight="500">
+              {name}
+            </Text>
+            <Text size="text-s">{description}</Text>
+          </Flex>
+        </>
+      ),
+    }}
+  />
+);
+
+const selfServeResources = [
+  {
+    name: "Content Repository",
+    description:
+      "Here you will find the templates, guides, and additional resources essential for a founder's journey.",
+    icon: "ph-article",
+    url: "https://near-horizon.notion.site/NEAR-Founder-Hub-Content-Database-d69fcf11613443128fa249fe9fa069f0",
+    target: "_blank",
+  },
+  {
+    name: "Founder Co-Pilot",
+    description:
+      "Engage with interactive technical and business support to answer specific questions that you will likely encounter while building your product and company.",
+    icon: "ph-github-logo",
+    url: "https://near-cp-alpha.vercel.app",
+    target: "_blank",
+  },
+  // hidden before we get the pdf file
+  // {
+  //   name: "Token Launch Resources",
+  //   description: "Discover detailed support to help you understand how to launch a token.",
+  //   icon: "ph-file-doc",
+  //   url: "https://drive.google.com/file/d/1-UkMbSj1GGqO4aa9LfkrTwVvscLYZkJ7/view",
+  //   target: "_blank",
+  // },
+];
+
+const ecosystemCommunityResources = [
+  {
+    name: "HZN Accelerator Application",
+    description:
+      "Join the 8-week equity-free accelerator that provides multi-faceted support for early stage web3 projects.",
+    icon: "ph-article",
+    url: "https://www.hzn.xyz/hzn",
+    target: "_blank",
+  },
+  {
+    name: "Funding Opportunities & Builder Communities",
+    description: "NEAR Horizon connects the Founders, Builders, and Investors building on NEAR",
+    icon: "ph-article",
+    url: "https://${REPL_NEAR_URL}/ecosystem/get-funding",
+  },
+  {
+    name: "Founder Events",
+    description: "Discover the events that are revolutionizing how founders and builders find support in Web3.",
+    icon: "ph-calendar-plus",
+    url: "https://lu.ma/u/usr-5oZHY9dEDbDcaHY",
+    target: "_blank",
+  },
+];
+
 return (
   <Wrapper>
-    <Section backgroundColor="#61E5E2" style={{ padding: "72px 0" }}>
+    <Section backgroundColor="#00EC97" style={{ padding: "72px 0" }}>
       <Container center>
         <Pattern>
           <PatternContent>
             <Flex gap="32px" direction="column" alignItems="center">
-              <H1>Papers</H1>
-
-              <Text size="text-l" mobileSize="text-base">
-                Join us as we dive deep into our technology.
-              </Text>
+              <H1>FounderHub</H1>
             </Flex>
           </PatternContent>
         </Pattern>
@@ -194,41 +242,54 @@ return (
 
     <Section backgroundColor="#F2F1EA">
       <Container>
+        <Flex direction="column" gap="24px">
+          <H2>Self-Serve resources</H2>
+        </Flex>
         <Grid columns="1fr 1fr 1fr" gap="24px">
-          {papersDocs.map((item) => (
-            <Widget
-              src="${REPL_ACCOUNT}/widget/NearOrg.Card"
-              key={item.name}
-              props={{
-                as: "a",
-                href: item.url,
-                target: item.target,
-                rel: "noopener noreferrer",
-                alt: item.name,
-                children: (
-                  <>
-                    <IconCircle>
-                      <i className={`ph-duotone ${item.icon}`} />
-                    </IconCircle>
-
-                    <Flex direction="column" gap="16px">
-                      <Text size="text-l" fontWeight="500">
-                        {item.name}
-                      </Text>
-                      <Text size="text-s">{item.description}</Text>
-                    </Flex>
-                  </>
-                ),
-              }}
-            />
+          {selfServeResources.map((item) => (
+            <Resource key={`resource-${item.name}`} {...item} />
           ))}
         </Grid>
       </Container>
     </Section>
+
+    <Section backgroundColor="#ffffff">
+      <Container>
+        <Flex direction="column" gap="24px">
+          <H2>Ecosystem Community Resources</H2>
+        </Flex>
+        <Grid columns="1fr 1fr 1fr" gap="24px">
+          {ecosystemCommunityResources.map((item) => (
+            <Resource key={`resource-${item.name}`} {...item} />
+          ))}
+        </Grid>
+      </Container>
+    </Section>
+
+    <Section backgroundColor="#F2F1EA">
+      <Container>
+        <Flex direction="column" gap="24px" alignItems="center">
+          <Text size="text-3xl" fontWeight="500" style={{ maxWidth: "808px", textAlign: "center" }}>
+            Get in touch with us to provide any feedback or ask for specific support
+          </Text>
+
+          <Widget
+            src="${REPL_ACCOUNT}/widget/DIG.Button"
+            props={{
+              label: "Contact Us",
+              variant: "primary",
+              size: "large",
+              onClick: () => zendeskActivate && zendeskActivate(),
+            }}
+          />
+        </Flex>
+      </Container>
+    </Section>
+
     <Widget
       src="${REPL_ACCOUNT}/widget/NearOrg.BosCtaSection"
       props={{
-        backgroundColor: "#61E5E2",
+        backgroundColor: "#00EC97",
       }}
     />
 

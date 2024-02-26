@@ -45,10 +45,11 @@ const NotificationsListFromChain = () => {
 
 const NotificationsFromGraphQL = () => {
   if (context.accountId) {
-    const notificationsQuery = `query NotificationsQuery {
+    const notificationsQuery = `query NotificationsQuery($offset: Int, $limit: Int) {
       dataplatform_near_notifications_notifications(
         where: {receiver: {_eq: "${context.accountId}"}}
-        order_by: {blockHeight: desc}
+        order_by: {blockHeight: desc},
+        offset: $offset, limit: $limit
       ) {
         id
         blockHeight
@@ -58,14 +59,20 @@ const NotificationsFromGraphQL = () => {
         path
         receiver
         valueType
+        devhubPostId
+        actionAtBlockHeight
         profile: account {
           name
           image
+          tags
         }
       }
     }`;
 
-    fetchGraphQL(notificationsQuery, "NotificationsQuery", {}).then((result) => {
+    const offset = notifications.length;
+    const limit = showLimit ?? 10;
+
+    fetchGraphQL(notificationsQuery, "NotificationsQuery", { offset, limit }).then((result) => {
       if (result.status === 200) {
         if (result.body.data) {
           const notificationsList = result.body.data.dataplatform_near_notifications_notifications;
@@ -79,9 +86,10 @@ const NotificationsFromGraphQL = () => {
               profile,
               value: {
                 item: {
-                  // blockHeight
+                  blockHeight: notification?.actionAtBlockHeight,
                   path: notification.path,
                   type: notification.itemType,
+                  post: notification?.devhubPostId,
                 },
                 type: notification.valueType,
                 message: notification.message,
@@ -131,7 +139,22 @@ const NotificationsFromGraphQL = () => {
 
   console.log("here we go!", notifications);
 
-  return <>{notifications.map(renderItem)}</>;
+  return (
+    <InfiniteScroll
+      pageStart={0}
+      // loadMore={loadMorePosts}
+      // hasMore={hasMore}
+      initialLoad={false}
+      loader={
+        <div className="loader">
+          <span className="spinner-grow spinner-grow-sm me-1" role="status" aria-hidden="true" />
+          Loading ...
+        </div>
+      }
+    >
+      {notifications.map(renderItem)}
+    </InfiniteScroll>
+  );
 };
 
 // return <NotificationsListFromChain />;

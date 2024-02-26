@@ -3,6 +3,7 @@ const storedModel = Storage.get("agent-model");
 const storedLocalModel = Storage.get("agent-local-model");
 const storedCredentialType = Storage.get("agent-credential-type");
 const storedCredential = Storage.get("agent-credential");
+const storedJsonOutputSetting = Storage.get("agent-json-output-setting");
 if (
   !href ||
   storedCredential === null ||
@@ -32,10 +33,11 @@ const [question, setQuestion] = useState("");
 const [loading, setLoading] = useState(false);
 const [messages, setMessages] = useState([]);
 
-const [model, setModel] = useState(storedModel ?? "gpt-3.5-turbo");
-const [localModel, setLocalModel] = useState(storedLocalModel ?? "http://localhost:11434/api/generate");
-const [credentialType, setCredentailType] = useState(storedCredentialType ?? "openai");
+const [model, setModel] = useState(storedModel ?? "near-llama-7b");
+const [localModel, setLocalModel] = useState(storedLocalModel ?? "http://localhost:1234/v1/chat/completions");
+const [credentialType, setCredentialType] = useState(storedCredentialType ?? "bearer");
 const [credential, setCredential] = useState(storedCredential ?? "");
+const [jsonOutputSetting, setJsonOutputSetting] = useState(storedJsonOutputSetting ?? false);
 
 useEffect(() => {
   Storage.set("agent-model", model);
@@ -49,6 +51,9 @@ useEffect(() => {
 useEffect(() => {
   Storage.set("agent-credential", credential);
 }, [credential]);
+useEffect(() => {
+  Storage.set("agent-json-output-setting", jsonOutputSetting);
+}, [jsonOutputSetting]);
 
 const toggleSettings = () => {
   setSettingsOpen(!settingsOpen);
@@ -56,24 +61,68 @@ const toggleSettings = () => {
 
 const routeApi = async (question) => {
   switch (model) {
-    case "local":
-      return localAI(question);
+    case "near-llama-7b":
+      return nearLlama(question);
     default:
-      return openAI(question);
+      return openAICompatible(question);
   }
 };
-const localAI = async (question) => {
-  return asyncFetch(localModel, {
+const urlForModel = (model) => {
+  switch (model) {
+    case "near-llama-7b":
+      return `https://ai.near.social/api`;
+    case "local":
+      return localModel;
+    case "gpt-4":
+    case "gpt-3.5-turbo":
+      return `https://api.openai.com/v1/chat/completions`;
+    case "mixtral-8x7b-32768":
+    case "llama2-70b-4096":
+      return "https://api.groq.com/openai/v1/chat/completions";
+    default:
+      return `https://api.openai.com/v1/chat/completions`;
+  }
+};
+const nearLlama = async (question) => {
+  return asyncFetch(`https://ai.near.social/api`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     responseType: "json",
     body: JSON.stringify([{ role: "system", content: data.prompt }, question]),
+  }).then((response) => {
+    return response.body.response;
   });
 };
-const openAI = async (question) => {
-  return asyncFetch(`https://api.openai.com/v1/chat/completions`, {
+const openAICompatible = async (question) => {
+  let finalQuestion = question.content;
+  let options = {
+    model,
+  };
+  if (jsonOutputSetting) {
+    options.response_format = { type: "json_object" };
+    if (!finalQuestion.includes("json")) {
+      finalQuestion = `${finalQuestion} respond in json`;
+    }
+  }
+  // frequency_penalty: 0.0,
+  // logit_bias: {},
+  // log_props: true,
+  // top_logprobs: 5,
+  // max_tokens: 2048,
+  // n: 1,
+  // presence_penalty: 0.0,
+  // seed: 0,
+  // stop: ["\n"],
+  // stream: false,
+  // temperature: 0.7,
+  // top_p: 1,
+  // tools: agent.tools,
+  // tool_choice: 'auto',
+  // user: anonymize(context.accountId),
+
+  return asyncFetch(urlForModel(model), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -81,19 +130,14 @@ const openAI = async (question) => {
     },
     responseType: "json",
     body: JSON.stringify({
-      model,
+      ...options,
       messages: [
         { role: "system", content: data.prompt },
         {
           role: "user",
-          content: question.content,
+          content: finalQuestion,
         },
       ],
-      // max_tokens: 2048,
-      // temperature: 0.7,
-      // top_p: 1,
-      // n: 1,
-      // stop: ["\n"],
     }),
   }).then((response) => {
     const answer = response.body.choices[0].message.content;
@@ -120,7 +164,9 @@ const submitQuestion = () => {
   setQuestion("");
 };
 const requiresCredentials = (model) => {
-  return model === "gpt-4" || model === "gpt-3.5-turbo";
+  return (
+    model === "gpt-4" || model === "gpt-3.5-turbo" || model === "mixtral-8x7b-32768" || model === "llama2-70b-4096"
+  );
 };
 
 const Wrapper = styled.div`
@@ -204,6 +250,29 @@ const renderSettings = () => {
               props={{
                 groups: [
                   {
+                    label: "NEAR",
+                    items: [
+                      {
+                        label: "NEAR Llama 7b",
+                        value: "near-llama-7b",
+                      },
+                      // Hi hackathon teams, implementing calls to gpt4.near? Add it here. - the black dragon
+                    ],
+                  },
+                  {
+                    label: "Groq",
+                    items: [
+                      {
+                        label: "Mixtral 8x7b 32768",
+                        value: "mixtral-8x7b-32768",
+                      },
+                      {
+                        label: "Llama2 70b 4096",
+                        value: "llama2-70b-4096",
+                      },
+                    ],
+                  },
+                  {
                     label: "OpenAI",
                     items: [
                       {
@@ -211,7 +280,7 @@ const renderSettings = () => {
                         value: "gpt-4",
                       },
                       {
-                        label: "GPT-3",
+                        label: "GPT-3.5 turbo",
                         value: "gpt-3.5-turbo",
                       },
                     ],
@@ -257,11 +326,11 @@ const renderSettings = () => {
                   props={{
                     groups: [
                       {
-                        label: "Bearer Token",
+                        label: "OpenAI, Groq, or other API Key",
                         items: [
                           {
-                            label: "OpenAI API Key",
-                            value: "openai",
+                            label: "Bearer Token",
+                            value: "bearer",
                           },
                         ],
                       },
@@ -269,7 +338,7 @@ const renderSettings = () => {
                     label: "Credential Type",
                     rootProps: {
                       value: credentialType,
-                      onValueChange: setCredentailType,
+                      onValueChange: setCredentialType,
                     },
                   }}
                 />
@@ -288,6 +357,18 @@ const renderSettings = () => {
                 />
               </div>
             </div>
+          </InputWrapper>
+          <InputWrapper>
+            <Widget
+              src="near/widget/DIG.Checkbox"
+              props={{
+                id: "json-output",
+                label: "JSON Output mode",
+                checked: jsonOutputSetting,
+                onCheckedChange: setJsonOutputSetting,
+              }}
+            />{" "}
+            not supported by all providers.
           </InputWrapper>
         </AllSettings>
       )}
@@ -331,7 +412,7 @@ return (
         {renderSettings()}
         {requiresCredentials(model) && credential === "" && (
           <div className="alert alert-danger mx-3" role="alert">
-            <i className="ph ph-alert-circle" /> To use an OpenAI model enter your OpenAI API Key in Settings or change
+            <i className="ph ph-alert-circle" /> To use an OpenAI or Groq model enter your API Key in Settings or change
             to another provider.
           </div>
         )}

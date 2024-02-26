@@ -103,7 +103,6 @@ return (
           </CustomizeDialogContent>
         ),
         open: state.isDialogOpen,
-        type: "custom",
         enableCloseButton: false,
         actionButtons: (
           <div className="buttons">

@@ -1,4 +1,4 @@
-let { zendeskActivate } = props;
+let { zendeskActivate, docs } = props;
 
 const Wrapper = styled.div`
   --section-gap: 120px;
@@ -192,14 +192,13 @@ const selfServeResources = [
     url: "https://near-cp-alpha.vercel.app",
     target: "_blank",
   },
-  // hidden before we get the pdf file
-  // {
-  //   name: "Token Launch Resources",
-  //   description: "Discover detailed support to help you understand how to launch a token.",
-  //   icon: "ph-file-doc",
-  //   url: "https://drive.google.com/file/d/1-UkMbSj1GGqO4aa9LfkrTwVvscLYZkJ7/view",
-  //   target: "_blank",
-  // },
+  {
+    name: "Token Launch Resources",
+    description: "Discover detailed support to help you understand how to launch a token.",
+    icon: "ph-file-doc",
+    url: docs.tokenLaunchChecklist,
+    target: "_blank",
+  },
 ];
 
 const ecosystemCommunityResources = [
@@ -244,7 +243,7 @@ return (
     <Section backgroundColor="#F2F1EA">
       <Container>
         <Flex direction="column" gap="24px">
-          <H2>Self-Serve resources</H2>
+          <H2>Self-Serve Resources</H2>
         </Flex>
         <Grid columns="1fr 1fr 1fr" gap="24px">
           {selfServeResources.map((item) => (

@@ -75,7 +75,7 @@ const onCustomize = () => {
 return (
   <Cookies>
     <Widget
-      src="near/widget/DIG.Dialog"
+      src={`${REPL_ACCOUNT}/widget/DIG.Dialog`}
       props={{
         content: (
           <CustomizeDialogContent>
@@ -85,7 +85,7 @@ return (
                 <p>
                   These cookies are required for website functionality such as storing your settings and preferences, as
                   detailed{" "}
-                  <a href="/near/widget/NearOrg.CookieDetails" target="_blank">
+                  <a href={`${REPL_ACCOUNT}/widget/NearOrg.CookieDetails`} target="_blank">
                     here
                   </a>
                   .

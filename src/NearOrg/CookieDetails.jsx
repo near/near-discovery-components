@@ -18,7 +18,7 @@ const thirdPartyCookies = `| Identifer                                     | Pur
 
 return (
   <Widget
-    src="near/widget/DIG.Tabs"
+    src={`${REPL_ACCOUNT}/widget/DIG.Tabs`}
     props={{
       items: [
         {

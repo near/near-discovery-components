@@ -3,6 +3,7 @@ const storedModel = Storage.get("agent-model");
 const storedLocalModel = Storage.get("agent-local-model");
 const storedCredentialType = Storage.get("agent-credential-type");
 const storedCredential = Storage.get("agent-credential");
+const storedJsonOutputSetting = Storage.get("agent-json-output-setting");
 if (
   !href ||
   storedCredential === null ||
@@ -33,9 +34,10 @@ const [loading, setLoading] = useState(false);
 const [messages, setMessages] = useState([]);
 
 const [model, setModel] = useState(storedModel ?? "near-llama-7b");
-const [localModel, setLocalModel] = useState(storedLocalModel ?? "http://localhost:11434/");
-const [credentialType, setCredentailType] = useState(storedCredentialType ?? "bearer");
+const [localModel, setLocalModel] = useState(storedLocalModel ?? "http://localhost:1234/v1/chat/completions");
+const [credentialType, setCredentialType] = useState(storedCredentialType ?? "bearer");
 const [credential, setCredential] = useState(storedCredential ?? "");
+const [jsonOutputSetting, setJsonOutputSetting] = useState(storedJsonOutputSetting ?? false);
 
 useEffect(() => {
   Storage.set("agent-model", model);
@@ -49,6 +51,9 @@ useEffect(() => {
 useEffect(() => {
   Storage.set("agent-credential", credential);
 }, [credential]);
+useEffect(() => {
+  Storage.set("agent-json-output-setting", jsonOutputSetting);
+}, [jsonOutputSetting]);
 
 const toggleSettings = () => {
   setSettingsOpen(!settingsOpen);
@@ -90,17 +95,33 @@ const nearLlama = async (question) => {
     return response.body.response;
   });
 };
-const localAI = async (question) => {
-  return asyncFetch(localModel, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    responseType: "json",
-    body: JSON.stringify([{ role: "system", content: data.prompt }, question]),
-  });
-};
 const openAICompatible = async (question) => {
+  let finalQuestion = question.content;
+  let options = {
+    model,
+  };
+  if (jsonOutputSetting) {
+    options.response_format = { type: "json_object" };
+    if (!finalQuestion.includes("json")) {
+      finalQuestion = `${finalQuestion} respond in json`;
+    }
+  }
+  // frequency_penalty: 0.0,
+  // logit_bias: {},
+  // log_props: true,
+  // top_logprobs: 5,
+  // max_tokens: 2048,
+  // n: 1,
+  // presence_penalty: 0.0,
+  // seed: 0,
+  // stop: ["\n"],
+  // stream: false,
+  // temperature: 0.7,
+  // top_p: 1,
+  // tools: agent.tools,
+  // tool_choice: 'auto',
+  // user: anonymize(context.accountId),
+
   return asyncFetch(urlForModel(model), {
     method: "POST",
     headers: {
@@ -109,19 +130,14 @@ const openAICompatible = async (question) => {
     },
     responseType: "json",
     body: JSON.stringify({
-      model,
+      ...options,
       messages: [
         { role: "system", content: data.prompt },
         {
           role: "user",
-          content: question.content,
+          content: finalQuestion,
         },
       ],
-      // max_tokens: 2048,
-      // temperature: 0.7,
-      // top_p: 1,
-      // n: 1,
-      // stop: ["\n"],
     }),
   }).then((response) => {
     const answer = response.body.choices[0].message.content;
@@ -322,7 +338,7 @@ const renderSettings = () => {
                     label: "Credential Type",
                     rootProps: {
                       value: credentialType,
-                      onValueChange: setCredentailType,
+                      onValueChange: setCredentialType,
                     },
                   }}
                 />
@@ -341,6 +357,18 @@ const renderSettings = () => {
                 />
               </div>
             </div>
+          </InputWrapper>
+          <InputWrapper>
+            <Widget
+              src="near/widget/DIG.Checkbox"
+              props={{
+                id: "json-output",
+                label: "JSON Output mode",
+                checked: jsonOutputSetting,
+                onCheckedChange: setJsonOutputSetting,
+              }}
+            />{" "}
+            not supported by all providers.
           </InputWrapper>
         </AllSettings>
       )}

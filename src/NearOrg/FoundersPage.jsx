@@ -213,7 +213,8 @@ const ecosystemCommunityResources = [
   },
   {
     name: "Funding Opportunities & Builder Communities",
-    description: "NEAR Horizon connects the Founders, Builders, and Investors building on NEAR",
+    description:
+      "Explore ecosystem funding opportunities and builder communities to find the right support for your projects.",
     icon: "ph-article",
     url: "https://${REPL_NEAR_URL}/ecosystem/get-funding",
   },

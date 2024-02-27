@@ -106,7 +106,7 @@ const likeClick = () => {
 const title = hasLike ? "Unlike" : "Like";
 
 return (
-  <LikeButton disabled={state.loading || dataLoading || !context.accountId} title={title} onClick={likeClick}>
+  <LikeButton disabled={state.loading || dataLoading} title={title} onClick={likeClick}>
     <i className={`${hasLikeOptimistic ? "bi-heart-fill" : "bi-heart"}`} />
     {totalLikes}
   </LikeButton>

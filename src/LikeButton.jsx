@@ -107,9 +107,32 @@ const likeClick = () => {
 
 const title = hasLike ? "Unlike" : "Like";
 
+const handleUserNotSignedIn = () => {
+  console.log("handleUserNotSignedIn");
+  if (!context.accountId) {
+    window.open(`${REPL_ACCOUNT}/signup?redirect=${window.location.href}`, "_blank").focus();
+  }
+};
+
+const SignUpPrompt = (children) => {
+  <div
+    id="signUpPrompt"
+    onClick={() => {
+      console.log("is this firing?");
+      handleUserNotSignedIn();
+    }}
+  >
+    {children}
+  </div>;
+};
+
+console.log("context.accountId", context.accountId);
+
 return (
-  <LikeButton disabled={state.loading || dataLoading || !context.accountId} title={title} onClick={likeClick}>
-    <i className={`${hasLikeOptimistic ? "bi-heart-fill" : "bi-heart"}`} />
-    {totalLikes}
-  </LikeButton>
+  <SignUpPrompt>
+    <LikeButton disabled={state.loading || dataLoading || !context.accountId} title={title} onClick={likeClick}>
+      <i className={`${hasLikeOptimistic ? "bi-heart-fill" : "bi-heart"}`} />
+      {totalLikes}
+    </LikeButton>
+  </SignUpPrompt>
 );

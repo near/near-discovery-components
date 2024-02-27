@@ -1073,7 +1073,7 @@ return (
               <Widget
                 src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
-                  href: "/nearweekapp.near/widget/nearweek-news",
+                  href: "/nearweekapp.near/widget/nearweek.com",
                   label: "All News",
                   variant: "affirmative",
                   size: "large",

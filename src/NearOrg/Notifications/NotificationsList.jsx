@@ -1,5 +1,5 @@
-let { manageNotification, permission, showLimit } = props;
-const { fetchGraphQL } = VM.require("${REPL_ACCOUNT}/widget/QueryApi.utils") || (() => {});
+let { fetchNotifications, notificationsCount, shouldFallback, manageNotification, permission, showLimit } = props;
+showLimit = showLimit ?? 10;
 
 const [notifications, setNotifications] = useState([]);
 
@@ -43,107 +43,36 @@ const NotificationsListFromChain = () => {
   );
 };
 
-const NotificationsFromGraphQL = () => {
-  if (context.accountId) {
-    const notificationsQuery = `query NotificationsQuery($offset: Int, $limit: Int) {
-      dataplatform_near_notifications_notifications(
-        where: {receiver: {_eq: "${context.accountId}"}}
-        order_by: {blockHeight: desc},
-        offset: $offset, limit: $limit
-      ) {
-        id
-        blockHeight
-        initiatedBy
-        itemType
-        message
-        path
-        receiver
-        valueType
-        devhubPostId
-        actionAtBlockHeight
-        profile: account {
-          name
-          image
-          tags
-        }
-      }
-    }`;
+const fetchData = (offset, limit) => {
+  const notificationsMap = new Map();
+  const notificationsList = fetchNotifications(offset, limit);
 
-    const offset = notifications.length;
-    const limit = showLimit ?? 10;
+  [...notifications, ...notificationsList].forEach((notification) => {
+    if (!notificationsMap.has(notification.id)) {
+      notificationsMap.set(notification.id, notification);
+    }
+  });
+  setNotifications([...notificationsMap.values()]);
+};
 
-    fetchGraphQL(notificationsQuery, "NotificationsQuery", { offset, limit }).then((result) => {
-      if (result.status === 200) {
-        if (result.body.data) {
-          const notificationsList = result.body.data.dataplatform_near_notifications_notifications;
-          const notifications = notificationsList.map((notification) => {
-            const name = notification.profile?.name;
-            const image = notification.profile?.image ? JSON.parse(notification.profile.image) : null;
-            const profile = name && image ? { name, image } : null;
-            return {
-              accountId: notification.initiatedBy,
-              blockHeight: notification.blockHeight,
-              profile,
-              value: {
-                item: {
-                  blockHeight: notification?.actionAtBlockHeight,
-                  path: notification.path,
-                  type: notification.itemType,
-                  post: notification?.devhubPostId,
-                },
-                type: notification.valueType,
-                message: notification.message,
-              },
-            };
-          });
-          // console.log("notifications", notifications);
-          if (notifications.length > 0) {
-            setNotifications(notifications);
-          }
-        }
-      }
-    });
+useEffect(() => {
+  if (shouldFallback) {
+    return;
   }
+  fetchData(0, showLimit);
+}, [notificationsCount]);
 
-  // data sample from graphql
-
-  // blockHeight: 108409881
-  // id: 110942
-  // initiatedBy:"dima_sheleg_test.near"
-  // itemType: "social"
-  // message: null
-  // path: "dima_sheleg.near/post/main"
-  // profile: null
-  // receiver: "dima_sheleg.near"
-  // valueType: "like"
-
-  // data sample from chain
-  // accountId: "dima_sheleg_test.near"
-  // blockHeight: 108409881
-  // value: {
-  //   item: {
-  //     blockHeight: 99480931
-  //     path: "dima_sheleg.near/post/main"
-  //     type: "social"
-  //   },
-  //   type: "like"
-  // }
-
-  // devhub post
-  // accountId: "frol.near"
-  // blockHeight: 100248943
-  // value: {
-  //   post: 1152,
-  //   type: "devgovgigs/reply"
-  // }
-
-  console.log("here we go!", notifications);
+const NotificationsFromGraphQL = ({ notifications }) => {
+  const itemsLeft = notificationsCount - notifications.length;
+  const limit = itemsLeft > showLimit ? showLimit : itemsLeft;
 
   return (
     <InfiniteScroll
       pageStart={0}
-      // loadMore={loadMorePosts}
-      // hasMore={hasMore}
+      loadMore={() => {
+        fetchData(notifications.length, limit);
+      }}
+      hasMore={notifications.length < notificationsCount}
       initialLoad={false}
       loader={
         <div className="loader">
@@ -157,5 +86,6 @@ const NotificationsFromGraphQL = () => {
   );
 };
 
-// return <NotificationsListFromChain />;
-return <NotificationsFromGraphQL />;
+return (
+  <>{shouldFallback ? <NotificationsListFromChain /> : <NotificationsFromGraphQL notifications={notifications} />}</>
+);

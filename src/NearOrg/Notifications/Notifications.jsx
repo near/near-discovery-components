@@ -113,7 +113,7 @@ return (
 
     <NotificationsWrapper>
       <Widget
-        src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsList"
+        src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsMiddleware"
         props={{ showLimit, manageNotification, permission }}
       />
     </NotificationsWrapper>

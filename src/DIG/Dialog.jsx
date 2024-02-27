@@ -20,7 +20,7 @@ let {
 } = props;
 
 type = type ?? "dialog";
-enableCloseButton = enableCloseButton ?? false;
+enableCloseButton = enableCloseButton !== undefined ? enableCloseButton : type === "dialog";
 
 if (["alert", "dialog"].indexOf(type) < 0) {
   return "Unsupported type of component. `type` could be only 'alert' or 'dialog'";
@@ -201,7 +201,7 @@ return (
           </>
         )}
       </ActionWrapper>
-      {(type === "dialog" || enableCloseButton) && (
+      {enableCloseButton && (
         <CloseButtonWrapper>
           <Close>
             <i className="ph ph-x" />

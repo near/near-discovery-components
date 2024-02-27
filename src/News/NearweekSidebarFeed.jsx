@@ -248,7 +248,7 @@ return (
             </Card>
           ))}
         </Content>
-        <ButtonLink href="https://near.org/nearweekapp.near/widget/nearweek-news" target="_blank">
+        <ButtonLink href="https://near.org/nearweekapp.near/widget/nearweek.com" target="_blank">
           View All News
         </ButtonLink>
       </Wrapper>

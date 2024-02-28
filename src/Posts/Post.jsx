@@ -237,9 +237,9 @@ const PromptSignUpWrapper = ({ children }) => {
   }
 
   return (
-    <a href={url} target="_blank" style={{ textDecoration: "none" }}>
+    <Link href={url} target="_blank" style={{ textDecoration: "none" }}>
       {children}
-    </a>
+    </Link>
   );
 };
 

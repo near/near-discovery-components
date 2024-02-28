@@ -59,6 +59,7 @@ fetchGraphQL(blogPostQuery, "IndexerQuery", {}).then((result) => {
         }
         const comments = blogPost.comments;
         setBlog({
+          blogPost,
           blogContent: content.text,
           blogComments: comments,
           blogLikes: blogPost.accounts_liked,
@@ -79,13 +80,28 @@ if (blog === "not found") {
 }
 
 if (blog) {
+  const renderPost = (post) => {
+    return <Widget src="${REPL_ACCOUNT}/widget/Posts.Post" props={{ ...post }} />;
+  };
+  const renderData = (dataProps) => {
+    return <Widget src="${REPL_ACCOUNT}/widget/Posts.ModeratedPostData" props={{ ...dataProps, renderPost }} />;
+  };
+
   return (
     <>
-      <Link href={`/${REPL_ACCOUNT}/widget/Blog.Feed`} style={{ color: "black" }}>
-        <i className="bi bi-arrow-left"></i>
-        {` back`}
-      </Link>
-      <Widget src="${REPL_ACCOUNT}/widget/SocialMarkdown" props={{ text: blog.blogContent }} />
+      <Widget
+        src="${REPL_ACCOUNT}/widget/DIG.Button"
+        props={{
+          label: "Back",
+          href: `/${REPL_ACCOUNT}/widget/Blog.Feed`,
+          iconLeft: "ph ph-arrow-left",
+          variant: "secondary",
+          size: "small",
+        }}
+        style={{ marginBottom: "2em" }}
+      />
+      {/* <Widget src="${REPL_ACCOUNT}/widget/SocialMarkdown" props={{ text: blog.blogContent }} /> */}
+      <Widget src="${REPL_ACCOUNT}/widget/Moderation.CheckPostModeration" props={{ ...props, renderData }} />;
     </>
   );
 }

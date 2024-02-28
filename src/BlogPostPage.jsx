@@ -100,7 +100,6 @@ if (blog) {
         }}
         style={{ marginBottom: "2em" }}
       />
-      {/* <Widget src="${REPL_ACCOUNT}/widget/SocialMarkdown" props={{ text: blog.blogContent }} /> */}
       <Widget src="${REPL_ACCOUNT}/widget/Moderation.CheckPostModeration" props={{ ...props, renderData }} />;
     </>
   );

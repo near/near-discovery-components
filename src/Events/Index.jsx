@@ -1,16 +1,26 @@
 let { fetchEventsList } = props;
 
-const [eventsList, setEventsList] = useState([]);
+const dummyData = {
+  href: "#",
+  imgSrc: "",
+  title: "",
+  date: "",
+  location: "",
+};
+
+const [eventsList, setEventsList] = useState(Array(3).fill(dummyData));
+const [dataLoaded, setDataLoaded] = useState(false);
 
 const fetchEvents = () => {
-  fetchEventsList().then((events) => setEventsList(events));
+  fetchEventsList().then((events) => {
+    setEventsList(events);
+    setDataLoaded(true);
+  });
 };
 
 useEffect(() => {
   fetchEvents();
 }, []);
-
-console.log("eventsList: ", eventsList);
 
 const Wrapper = styled.div`
   --section-gap: 120px;
@@ -165,10 +175,10 @@ return (
       </Container>
     </Section>
 
-    <Section backgroundColor="#fff" style={{ padding: "72px 0" }}>
+    <Section backgroundColor="#fff" style={{ padding: "72px 24px" }}>
       <Container>
         <Flex direction="column" gap="80px" mobileGap="40px">
-          <Text size="text-3xl" mobileSize="text-l" fontWeight="500">
+          <Text size="text-3xl" mobileSize="text-2xl" fontWeight="500">
             Our Events
           </Text>
         </Flex>
@@ -194,10 +204,15 @@ return (
                 src="${REPL_ACCOUNT}/widget/Events.Card"
                 key={event.api_id}
                 props={{
+                  as: "a",
+                  href: event.url,
                   imgSrc: event.cover_url,
                   title: event.name,
                   date: formattedDate,
                   location,
+                  target: "_blank",
+                  rel: "noopener noreferrer",
+                  loading: !dataLoaded,
                 }}
               />
             );

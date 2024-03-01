@@ -9,11 +9,15 @@ const dummyData = {
 };
 
 const [eventsList, setEventsList] = useState(Array(3).fill(dummyData));
+const [moreEvents, setMoreEvents] = useState(false);
 const [dataLoaded, setDataLoaded] = useState(false);
 
 const fetchEvents = () => {
-  fetchEventsList().then((events) => {
-    setEventsList(events);
+  fetchEventsList().then((eventsData) => {
+    const { entries: events, hasMore } = eventsData;
+    const sortEvents = events.sort((a, b) => new Date(a.event.start_at) - new Date(b.event.start_at));
+    setEventsList(sortEvents);
+    setMoreEvents(hasMore);
     setDataLoaded(true);
   });
 };
@@ -27,6 +31,13 @@ const convertData = (data) => {
     year: "numeric",
   });
 };
+
+const formatLocation = (location) =>
+  location.city && location.country
+    ? `${location.city}, ${location.country}`
+    : location.address
+      ? location.address
+      : null;
 
 useEffect(() => {
   fetchEvents();
@@ -172,7 +183,9 @@ const IconCircle = styled.div`
   }
 `;
 
-console.log("eventsList: ", eventsList);
+const featuredEvent = [...eventsList].sort(
+  (a, b) => Math.abs(new Date(a.event.start_at) - new Date()) - Math.abs(new Date(b.event.start_at) - new Date()),
+)[0].event;
 
 return (
   <Wrapper>
@@ -196,20 +209,54 @@ return (
       <Container>
         <Flex direction="column" gap="80px" mobileGap="40px">
           <Text size="text-3xl" mobileSize="text-2xl" fontWeight="500">
+            Upcoming Event
+          </Text>
+        </Flex>
+
+        <Widget
+          src="${REPL_ACCOUNT}/widget/Events.CardLarge"
+          props={{
+            as: "a",
+            href: featuredEvent.url,
+            imgSrc: featuredEvent.cover_url,
+            title: featuredEvent.name,
+            description: featuredEvent.description,
+            date: { startAt: convertData(featuredEvent.start_at), endAt: convertData(featuredEvent.end_at) },
+            location: formatLocation(featuredEvent?.geo_address_json),
+            target: "_blank",
+            rel: "noopener noreferrer",
+            loading: !dataLoaded,
+            variant: "large",
+          }}
+        />
+      </Container>
+    </Section>
+
+    <Section backgroundColor="#fff" style={{ padding: "72px 24px" }}>
+      <Container>
+        <Flex gap="80px" mobileGap="40px" alignItems="center" justifyContent="space-between">
+          <Text size="text-3xl" mobileSize="text-2xl" fontWeight="500">
             Our Events
           </Text>
+          {moreEvents && (
+            <Widget
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
+              props={{
+                href: "https://lu.ma/NEAR-community",
+                target: "_blank",
+                label: "View All",
+                variant: "secondary",
+                size: "small",
+              }}
+            />
+          )}
         </Flex>
 
         <Grid columns="1fr 1fr 1fr" gap="20px">
           {eventsList.map(({ event }) => {
             const startAt = convertData(event?.start_at);
             const endAt = convertData(event?.end_at);
-            const location =
-              event.geo_address_json.city && event.geo_address_json.country
-                ? `${event.geo_address_json.city}, ${event.geo_address_json.country}`
-                : event.geo_address_json.address
-                  ? event.geo_address_json.address
-                  : null;
+            const location = formatLocation(event.geo_address_json);
             return (
               <Widget
                 src="${REPL_ACCOUNT}/widget/Events.Card"

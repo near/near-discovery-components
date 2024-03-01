@@ -1,12 +1,13 @@
-let { as, imgSrc, title, date, location, loading, ...forwardedProps } = props;
+let { as, imgSrc, title, description, date, location, loading, ...forwardedProps } = props;
 let { startAt, endAt } = date;
 
 const isClickable = as === "a" || as === "button";
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: 24px;
+  grid-template-columns: 2fr 1fr;
+  align-items: center;
   border: 4px solid transparent;
   transition: all 200ms;
 
@@ -22,11 +23,16 @@ const Wrapper = styled.div`
     border: 4px solid var(--violet4);
     border-radius: 12px;
   }
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    gap: ${(p) => p.mobileGap ?? p.gap};
+  }
 `;
 
 const CoverImageWrapper = styled.div`
   width: 100%;
-  height: 221px;
+  height: 471px;
   border-radius: 8px;
   overflow: hidden;
 `;
@@ -49,6 +55,7 @@ const CoverImage = styled.div`
 
   ${Wrapper}:hover & {
     ${!loading &&
+    isClickable &&
     `
       filter: brightness(1);
       transform: scale(1.02);
@@ -78,7 +85,7 @@ const Text = styled.p`
 
   display: -webkit-box;
   overflow: hidden;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: ${(p) => p.overflowLines ?? "2"};
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
   word-break: break-word;
@@ -161,8 +168,11 @@ return (
       <CoverImage src={imgSrc} />
     </CoverImageWrapper>
     <Flex direction="column" gap="24px">
-      <Text size="text-lg" fontWeight="bold" style={{ minHeight: loading && "31px" }} title={title}>
+      <Text size="text-2xl" fontWeight="bold" style={{ minHeight: loading && "31px" }} title={title}>
         {title}
+      </Text>
+      <Text size="text-lg" color="sand10" overflowLines={7} style={{ minHeight: loading && "31px" }} title={title}>
+        {description}
       </Text>
       <Flex gap="24px" alignItems="center">
         <Flex gap="8px" alignItems={startAt !== endAt ? "start" : "center"} style={{ width: "100%" }}>

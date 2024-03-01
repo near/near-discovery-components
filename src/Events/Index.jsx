@@ -18,6 +18,16 @@ const fetchEvents = () => {
   });
 };
 
+const convertData = (data) => {
+  if (!data) return null;
+  const createDate = new Date(data);
+  return createDate.toLocaleDateString([], {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+};
+
 useEffect(() => {
   fetchEvents();
 }, []);
@@ -84,7 +94,12 @@ const Grid = styled.div`
   grid-template-columns: ${(p) => p.columns};
   align-items: ${(p) => p.alignItems};
 
-  @media (max-width: 900px) {
+  @media (min-width: 690px) and (max-width: 900px) {
+    grid-template-columns: 1fr 1fr;
+    gap: ${(p) => p.mobileGap ?? p.gap};
+  }
+
+  @media (max-width: 689px) {
     grid-template-columns: 1fr;
     gap: ${(p) => p.mobileGap ?? p.gap};
   }
@@ -157,6 +172,8 @@ const IconCircle = styled.div`
   }
 `;
 
+console.log("eventsList: ", eventsList);
+
 return (
   <Wrapper>
     <Section backgroundColor="#fff" style={{ padding: "72px 0" }}>
@@ -183,16 +200,10 @@ return (
           </Text>
         </Flex>
 
-        <Grid columns="1fr 1fr 1fr" gap="24px">
+        <Grid columns="1fr 1fr 1fr" gap="20px">
           {eventsList.map(({ event }) => {
-            const date = event?.start_at ? new Date(event?.start_at) : null;
-            const formattedDate = date
-              ? date.toLocaleDateString([], {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                })
-              : null;
+            const startAt = convertData(event?.start_at);
+            const endAt = convertData(event?.end_at);
             const location =
               event.geo_address_json.city && event.geo_address_json.country
                 ? `${event.geo_address_json.city}, ${event.geo_address_json.country}`
@@ -208,7 +219,7 @@ return (
                   href: event.url,
                   imgSrc: event.cover_url,
                   title: event.name,
-                  date: formattedDate,
+                  date: { startAt, endAt },
                   location,
                   target: "_blank",
                   rel: "noopener noreferrer",

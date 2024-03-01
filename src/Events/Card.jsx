@@ -1,4 +1,5 @@
 let { as, imgSrc, title, date, location, loading, ...forwardedProps } = props;
+let { startAt, endAt } = date;
 
 const isClickable = as === "a" || as === "button";
 
@@ -6,6 +7,8 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
+  border: 4px solid transparent;
+  transition: all 200ms;
 
   &:hover {
     text-decoration: none;
@@ -13,6 +16,11 @@ const Wrapper = styled.div`
     & > p {
       text-decoration: underline;
     }
+  }
+
+  &:focus-within {
+    border: 4px solid var(--violet4);
+    border-radius: 12px;
   }
 `;
 
@@ -40,6 +48,11 @@ const CoverImage = styled.div`
     `}
   }
 
+  ${Wrapper}:focus-within & {
+    filter: brightness(1);
+    transform: scale(1);
+  }
+
   @keyframes waveAnimation {
     0% {
       background-position: 0px 0;
@@ -55,6 +68,13 @@ const Text = styled.p`
   font-weight: ${(p) => p.fontWeight} !important;
   color: var(--${(p) => p.color ?? "sand12"});
   margin: 0;
+
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  word-break: break-word;
 
   ${loading &&
   `
@@ -128,20 +148,30 @@ const Icon = styled.i`
   }
 `;
 
+console.log("startAt", startAt, "endAt", endAt);
+
 return (
   <Wrapper as={as} data-clickable={isClickable} {...forwardedProps}>
     <CoverImage src={imgSrc} />
-    <Text size="text-lg" fontWeight="bold" style={{ minHeight: loading && "31px" }}>
+    <Text size="text-lg" fontWeight="bold" style={{ minHeight: loading && "31px" }} title={title}>
       {title}
     </Text>
     <Flex gap="24px" alignItems="center">
-      <Flex gap="8px" alignItems="center" style={{ width: "100%" }}>
+      <Flex gap="8px" alignItems={startAt !== endAt ? "start" : "center"} style={{ width: "100%" }}>
         <Icon className="ph ph-calendar-blank" />
-        <Text size="text-s" color="sand10">
-          {date}
-        </Text>
+        <Flex direction="column" alignItems="start">
+          <Text size="text-s" color="sand10">
+            {startAt}
+            {startAt !== endAt && " -"}
+          </Text>
+          {endAt && startAt !== endAt && (
+            <Text size="text-s" color="sand10">
+              {endAt}
+            </Text>
+          )}
+        </Flex>
       </Flex>
-      <Flex gap="8px" alignItems="center" style={{ width: "100%" }}>
+      <Flex gap="8px" alignItems="center" style={{ width: "100%" }} title={location}>
         <Icon className="ph ph-map-pin" />
         <Text size="text-s" color="sand10">
           {location}

@@ -300,6 +300,36 @@ return (
       </Container>
     </Section>
 
+    <Section backgroundColor="var(--violet6)">
+      <Container>
+        <Flex direction="column" gap="24px" alignItems="center">
+          <Text
+            size="text-3xl"
+            mobileSize="text-2xl"
+            fontWeight="500"
+            style={{ maxWidth: "808px", textAlign: "center" }}
+          >
+            Hosting an event?
+          </Text>
+
+          <Text size="text-xl" mobileSize="text-lg" style={{ maxWidth: "808px", textAlign: "center" }}>
+            Do you want your NEAR community event posted here? Submit your event details via Luma to be considered.
+          </Text>
+
+          <Widget
+            src="${REPL_ACCOUNT}/widget/DIG.Button"
+            props={{
+              label: "Submit Event",
+              variant: "primary",
+              size: "large",
+              href: "https://lu.ma/NEAR-community",
+              target: "_blank",
+            }}
+          />
+        </Flex>
+      </Container>
+    </Section>
+
     <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Footer" />
   </Wrapper>
 );

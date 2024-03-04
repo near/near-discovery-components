@@ -1,7 +1,7 @@
 let { fetchNotifications, notificationsCount, shouldFallback, manageNotification, permission, showLimit } = props;
 showLimit = showLimit ?? 10;
 
-const [notifications, setNotifications] = useState([]);
+const [notifications, setNotifications] = useState(notifications ?? []);
 
 const renderItem = (item, i) => {
   if (i === 0) {

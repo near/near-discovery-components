@@ -53,8 +53,6 @@ const fetchNotifications = (offset, limit) => {
         const { data: notificationsList } = result.body.data;
         const { count: notificationsLeft } = result.body.data.count.aggregate;
 
-        console.log("notificationsList: ", notificationsList, "count: ", notificationsLeft);
-
         const newNotifications = notificationsList.map((notification) => {
           const name = notification.profile?.name;
           const image = notification.profile?.image ? JSON.parse(notification.profile.image) : null;
@@ -87,27 +85,33 @@ const fetchNotifications = (offset, limit) => {
   return notifications;
 };
 
-fetchGraphQL(lastNotificationQuery, "IndexerQuery", {})
-  .then((result) => {
-    if (result && result.body.data.data.length > 0) {
-      const nearSocialBlockHeight = lastNotificationOnChain[0].blockHeight;
-      const feedIndexerBlockHeight = result.body.data.data[0].blockHeight;
+const fetchLastNotification = () =>
+  fetchGraphQL(lastNotificationQuery, "IndexerQuery", {})
+    .then((result) => {
+      if (result && result.body.data.data.length > 0) {
+        const nearSocialBlockHeight = lastNotificationOnChain[0].blockHeight;
+        const feedIndexerBlockHeight = result.body.data.data[0].blockHeight;
 
-      const lag = nearSocialBlockHeight - feedIndexerBlockHeight;
-      let shouldFallback = lag > 2 || !feedIndexerBlockHeight;
-      if (shouldFallback === true) {
-        console.log(
-          "Falling back to Social index notifications. Block difference is: ",
-          nearSocialBlockHeight - feedIndexerBlockHeight,
-        );
-        setShouldFallback(true);
+        const lag = nearSocialBlockHeight - feedIndexerBlockHeight;
+        let shouldFallback = lag > 2 || !feedIndexerBlockHeight;
+        if (shouldFallback === true) {
+          console.log(
+            "Falling back to Social index notifications. Block difference is: ",
+            nearSocialBlockHeight - feedIndexerBlockHeight,
+          );
+          setShouldFallback(true);
+        }
       }
-    }
-  })
-  .catch((error) => {
-    console.log("Error while fetching QueryApi notifications (falling back to index notifications): ", error);
-    setShouldFallback(true);
-  });
+    })
+    .catch((error) => {
+      console.log("Error while fetching QueryApi notifications (falling back to index notifications): ", error);
+      setShouldFallback(true);
+    });
+
+useEffect(() => {
+  fetchLastNotification();
+}, []);
+
 return (
   <Widget
     src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsList"

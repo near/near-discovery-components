@@ -133,7 +133,7 @@ return (
         src,
       }}
     />
-    
+
     <Tabs>
       <TabsButton href={`${detailsUrl}&tab=source`} selected={selectedTab === "source"}>
         <Icon className="ph ph-code" />

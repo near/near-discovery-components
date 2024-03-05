@@ -3,11 +3,11 @@ const LIMIT = 8;
 const componentsUrl = "/${REPL_ACCOUNT}/widget/ComponentsPage";
 
 const sortRaw = Storage.get("queryapi:component-feed-sort");
-const intialSortOption = sortRaw === undefined ? 'featured' : sortRaw;
+const intialSortOption = sortRaw === undefined ? "featured" : sortRaw;
 
 const [components, setComponents] = useState([]);
 const [isLoading, setIsLoading] = useState(false);
-const [sortOption, setSortOption] = useState('');
+const [sortOption, setSortOption] = useState("");
 
 const featuredComponentListRes = Social.get("${REPL_FEATURED_COMP_MANAGER}/listManager/FeaturedComponents", "final");
 const featuredComponentPaths = featuredComponentListRes ? JSON.parse(featuredComponentListRes) : [];
@@ -18,8 +18,8 @@ const accountsFollowing =
   props.accountsFollowing ?? (followGraph ? Object.keys(followGraph[context.accountId].graph.follow || {}) : null);
 
 const optionsMap = {
-    featured: "Featured",
-    followed: "From Followed",
+  featured: "Featured",
+  followed: "From Followed",
 };
 
 function fetchGraphQL(operationsDoc, operationName, variables) {
@@ -56,40 +56,39 @@ const createQuery = () => {
       website
     }
   }`;
-  };
-  
+};
+
 const renderComponents = (sortOption) => {
   setIsLoading(true);
- 
+
   const componentContainer = [];
 
   if (sortOption === "featured") {
     if (componentData) {
       featuredComponentPaths.forEach((src) => {
         const path = src.split("/");
-        const result = { metadata: componentData[path[0]][path[1]][path[2]].metadata, src,};
+        const result = { metadata: componentData[path[0]][path[1]][path[2]].metadata, src };
         componentContainer.push(result);
       });
     }
     setComponents(componentContainer);
     setIsLoading(false);
   } else if (sortOption === "followed") {
-  const queryName = "ComponentFollowingQuery";
+    const queryName = "ComponentFollowingQuery";
 
-  fetchGraphQL(createQuery(), queryName, {
-    accountsFollowing: accountsFollowing,
-    limit: LIMIT,
-  } )
-  .then((result) => {    
+    fetchGraphQL(createQuery(), queryName, {
+      accountsFollowing: accountsFollowing,
+      limit: LIMIT,
+    }).then((result) => {
       if (result.status === 200 && result.body) {
-        if (result.body.errors) { 
+        if (result.body.errors) {
           console.log("error:", result.body.errors);
           return;
         }
         let data = result.body.data;
         if (data) {
           const components_item = data.dataplatform_near_components_metadata;
-          
+
           components_item.forEach((component) => {
             const {
               block_height,
@@ -104,32 +103,32 @@ const renderComponents = (sortOption) => {
               description,
               website,
             } = component;
-            
+
             const tagObject = {};
-            if(tags){
-              const tagsArray = tags.split(',');
+            if (tags) {
+              const tagsArray = tags.split(",");
               const tags = tagsArray.map((tag) => {
                 tag.trim();
-                tagObject[tag] = '';
+                tagObject[tag] = "";
               });
             }
 
-            const component_container ={
-              "metadata": {
-                "name": component_name,
-                "description": description,
-                "linktree": {
-                  "website": website
+            const component_container = {
+              metadata: {
+                name: component_name,
+                description: description,
+                linktree: {
+                  website: website,
                 },
-                "image": {
-                  "ipfs_cid": image_ipfs_cid
+                image: {
+                  ipfs_cid: image_ipfs_cid,
                 },
-                "tags": tagObject,
-                "star_count": star_count,
-                "fork_count": fork_count,
+                tags: tagObject,
+                star_count: star_count,
+                fork_count: fork_count,
               },
-              "src": component_id,
-            }
+              src: component_id,
+            };
             componentContainer.push(component_container);
           });
           setComponents(componentContainer);
@@ -138,7 +137,7 @@ const renderComponents = (sortOption) => {
       }
     });
   }
-}
+};
 
 useEffect(() => {
   renderComponents(sortOption);
@@ -156,7 +155,7 @@ const Wrapper = styled.div`
 const H2 = styled.h2`
   font-size: 19px;
   line-height: 22px;
-  color: #11181C;
+  color: #11181c;
   margin: 0;
 `;
 const Items = styled.div`
@@ -172,14 +171,14 @@ const Header = styled.div`
   gap: 12px;
 `;
 const TextLink = styled("Link")`
-  color: #006ADC;
+  color: #006adc;
   outline: none;
   font-weight: 600;
   font-size: 12px;
   line-height: 20px;
   &:hover,
   &:focus {
-    color: #006ADC;
+    color: #006adc;
     text-decoration: underline;
   }
 `;
@@ -187,27 +186,31 @@ return (
   <Wrapper>
     <Header>
       <H2>Components</H2>
-        <Widget
-          src={`${REPL_ACCOUNT}/widget/Select`}
-          props={{
-            noLabel: true,
-            value: { text: optionsMap[intialSortOption], value: intialSortOption },
-            onChange: ({ value }) => {
-              setSortOption(value);
-              Storage.set("queryapi:component-feed-sort", value);
-            },
-            options: [
-              { text: "Featured", value: "featured" },
-              { text: "From Followed", value: "followed" },
-            ],
-            border: "none",
-          }}
-        />
+      <Widget
+        src={`${REPL_ACCOUNT}/widget/Select`}
+        props={{
+          noLabel: true,
+          value: { text: optionsMap[intialSortOption], value: intialSortOption },
+          onChange: ({ value }) => {
+            setSortOption(value);
+            Storage.set("queryapi:component-feed-sort", value);
+          },
+          options: [
+            { text: "Featured", value: "featured" },
+            { text: "From Followed", value: "followed" },
+          ],
+          border: "none",
+        }}
+      />
     </Header>
     <Items>
-    {!isLoading && components.map((component) => (
+      {!isLoading &&
+        components.map((component) => (
           <Item key={component.src}>
-            <Widget src="${REPL_ACCOUNT}/widget/ComponentCard" props={{ ...component, hideBlockHeightTimestamp: true }} />
+            <Widget
+              src="${REPL_ACCOUNT}/widget/ComponentCard"
+              props={{ ...component, hideBlockHeightTimestamp: true }}
+            />
           </Item>
         ))}
     </Items>

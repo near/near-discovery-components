@@ -8,5 +8,6 @@
   "REPL_QUERYAPI_FEED": "discom-dev.testnet/widget/Posts",
   "REPL_FEATURED_COMP_MANAGER": "discom.testnet",
   "REPL_TIME_AGO_VERSION": "",
-  "REPL_BOZON": "bozon_testnet.testnet"
+  "REPL_BOZON": "bozon_testnet.testnet",
+  "REPL_NEARCATALOG": "discom-dev.testnet"
 }

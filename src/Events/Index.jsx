@@ -204,9 +204,11 @@ const IconCircle = styled.div`
   }
 `;
 
-const featuredEvent = eventsList.lenght > 0 && [...eventsList].sort(
-  (a, b) => Math.abs(new Date(a.event.start_at) - new Date()) - Math.abs(new Date(b.event.start_at) - new Date()),
-)[0].event;
+const featuredEvent =
+  eventsList.length > 0 &&
+  [...eventsList].sort(
+    (a, b) => Math.abs(new Date(a.event.start_at) - new Date()) - Math.abs(new Date(b.event.start_at) - new Date()),
+  )[0].event;
 
 return (
   <Wrapper>
@@ -255,7 +257,6 @@ return (
       </Section>
     )}
 
-
     <Section backgroundColor="#fff" style={{ padding: "72px 24px" }}>
       <Container>
         <Flex gap="80px" mobileGap="40px" alignItems="center" justifyContent="space-between">
@@ -276,7 +277,7 @@ return (
           )}
         </Flex>
 
-        {eventsList.lenght > 0 ? (
+        {eventsList.length > 0 ? (
           <Grid columns="1fr 1fr 1fr" gap="20px">
             {eventsList.map(({ event }) => {
               const startAt = convertData(event?.start_at);
@@ -301,7 +302,6 @@ return (
               );
             })}
           </Grid>
-
         ) : (
           <Flex direction="column" gap="24px" alignItems="center">
             <Text size="text-2xl" mobileSize="text-lg" style={{ textAlign: "center" }}>
@@ -313,7 +313,7 @@ return (
             <Widget
               src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
-                label: "Submit Event",
+                label: "Subscribe",
                 variant: "primary",
                 size: "large",
                 href: "https://lu.ma/NEAR-community",

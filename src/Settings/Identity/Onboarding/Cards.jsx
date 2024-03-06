@@ -112,12 +112,13 @@ return (
       </Step>
       <Title>Log into idOS compatible wallet</Title>
       <ImagesWrapper>
-        {walletImages.map((image) => (
-          <WalletImageWrapper key={image.name} active={connectedWallet === image.name} title={image.name}>
-            <WalletImage src={image.src} alt={image.name} />
-            {connectedWallet === image.name && <Checkmark className="ph-bold ph-check" />}
-          </WalletImageWrapper>
-        ))}
+        {walletImages &&
+          walletImages.map((image) => (
+            <WalletImageWrapper key={image.name} active={connectedWallet === image.name} title={image.name}>
+              <WalletImage src={image.src} alt={image.name} />
+              {connectedWallet === image.name && <Checkmark className="ph-bold ph-check" />}
+            </WalletImageWrapper>
+          ))}
       </ImagesWrapper>
       <Widget
         src="${REPL_ACCOUNT}/widget/DIG.Button"
@@ -125,7 +126,7 @@ return (
           variant: "primary",
           label: "Sign In",
           disabled: context.accountId,
-          href: "/signin",
+          href: "/${REPL_ACCOUNT}/widget/Settings.Index?requestAuth=1",
         }}
       />
     </Card>

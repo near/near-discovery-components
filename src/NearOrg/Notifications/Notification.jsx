@@ -232,7 +232,7 @@ return (
           <Timestamp>
             <Dot>·</Dot>
             {/* TODO: add title tag to show full time on hover */}
-            <Widget src="${REPL_MOB_2}/widget/TimeAgo@97556750" props={{ blockHeight }} />
+            <Widget src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}" props={{ blockHeight }} />
           </Timestamp>
         </Text>
         {previewContent && <Description>{previewContent}</Description>}

@@ -35,7 +35,7 @@ const CommentButton = styled.button`
 `;
 
 return (
-  <CommentButton disabled={dataLoading || !context.accountId} title="Add Comment" onClick={props.onClick}>
+  <CommentButton disabled={dataLoading} title="Add Comment" onClick={props.onClick}>
     <i className="bi-chat" />
     {!props.hideCount && totalComments}
   </CommentButton>

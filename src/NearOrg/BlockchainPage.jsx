@@ -252,7 +252,7 @@ return (
                   <Widget
                     src="${REPL_ACCOUNT}/widget/DIG.Button"
                     props={{
-                      href: "/signup",
+                      href: "/${REPL_NEARCATALOG}/widget/Index?requestAuth=1&createAccount=1",
                       label: "Create Account",
                       variant: "secondary",
                       fill: "outline",
@@ -438,7 +438,7 @@ return (
             <Widget
               src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
-                href: "/signup",
+                href: "/${REPL_NEARCATALOG}/widget/Index?requestAuth=1&createAccount=1",
                 label: "Create Account",
                 variant: "secondary",
                 size: "large",

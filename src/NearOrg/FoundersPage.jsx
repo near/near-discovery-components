@@ -1,4 +1,4 @@
-let { zendeskActivate } = props;
+let { zendeskActivate, docs } = props;
 
 const Wrapper = styled.div`
   --section-gap: 120px;
@@ -147,6 +147,11 @@ const IconCircle = styled.div`
   }
 `;
 
+const TextLink = styled("Link")`
+  color: inherit;
+  text-decoration: underline;
+`;
+
 const Resource = ({ name, description, icon, url, target }) => (
   <Widget
     src="${REPL_ACCOUNT}/widget/NearOrg.Card"
@@ -192,14 +197,13 @@ const selfServeResources = [
     url: "https://near-cp-alpha.vercel.app",
     target: "_blank",
   },
-  // hidden before we get the pdf file
-  // {
-  //   name: "Token Launch Resources",
-  //   description: "Discover detailed support to help you understand how to launch a token.",
-  //   icon: "ph-file-doc",
-  //   url: "https://drive.google.com/file/d/1-UkMbSj1GGqO4aa9LfkrTwVvscLYZkJ7/view",
-  //   target: "_blank",
-  // },
+  {
+    name: "Token Launch Resources",
+    description: "Discover detailed support to help you understand how to launch a token.",
+    icon: "ph-file-doc",
+    url: docs.tokenLaunchChecklist,
+    target: "_blank",
+  },
 ];
 
 const ecosystemCommunityResources = [
@@ -213,7 +217,8 @@ const ecosystemCommunityResources = [
   },
   {
     name: "Funding Opportunities & Builder Communities",
-    description: "NEAR Horizon connects the Founders, Builders, and Investors building on NEAR",
+    description:
+      "Explore ecosystem funding opportunities and builder communities to find the right support for your projects.",
     icon: "ph-article",
     url: "https://${REPL_NEAR_URL}/ecosystem/get-funding",
   },
@@ -240,16 +245,32 @@ return (
       </Container>
     </Section>
 
+    <Section backgroundColor="#ffffff">
+      <Container>
+        <Flex direction="column" gap="24px">
+          <H2>Welcome to NEAR, the best place to build Web3 projects</H2>
+          <Text size="text-2xl" mobileSize="text-l" style={{ maxWidth: "808px" }}>
+            From idea to launch, the NEAR FounderHub guides you every step of the way. Get the tailored resources,
+            support, and community you need to launch and scale your Web3 project on NEAR.
+          </Text>
+        </Flex>
+      </Container>
+    </Section>
     <Section backgroundColor="#F2F1EA">
       <Container>
         <Flex direction="column" gap="24px">
-          <H2>Self-Serve resources</H2>
+          <H2>Self-Serve Resources</H2>
         </Flex>
         <Grid columns="1fr 1fr 1fr" gap="24px">
           {selfServeResources.map((item) => (
             <Resource key={`resource-${item.name}`} {...item} />
           ))}
         </Grid>
+        <Flex direction="column" gap="24px">
+          <Text size="text-2xl" mobileSize="text-l" style={{ maxWidth: "808px" }}>
+            Tap into our curated resources: proven templates, expert insights, and a vibrant founder network.
+          </Text>
+        </Flex>
       </Container>
     </Section>
 
@@ -263,9 +284,31 @@ return (
             <Resource key={`resource-${item.name}`} {...item} />
           ))}
         </Grid>
+        <Flex direction="column" gap="24px">
+          <Text size="text-2xl" mobileSize="text-l" style={{ maxWidth: "808px" }}>
+            Find your place within the ecosystem: whether it&apos;s by joining our selective accelerator program,
+            getting involved with our builder groups or hanging out at a live event, your community is near.
+          </Text>
+        </Flex>
       </Container>
     </Section>
 
+    <Section backgroundColor="#161615">
+      <Container>
+        <Flex direction="column" gap="24px">
+          <H2 style={{ color: "var(--white)", maxWidth: "600px" }}>Accelerate your Web3 journey</H2>
+          <Text size="text-2xl" mobileSize="text-l" color="white" style={{ maxWidth: "808px" }}>
+            HZN3 applications are{" "}
+            <TextLink href="https://www.hzn.xyz/hzn" target="_blank">
+              open.
+            </TextLink>
+            Over 50 projects have been accelerated through HZN, our equity-free accelerator and gone on to raise over
+            $10M in external capital. Get the equity-free education, mentorship, and a network to take your project to
+            the next level.
+          </Text>
+        </Flex>
+      </Container>
+    </Section>
     <Section backgroundColor="#F2F1EA">
       <Container>
         <Flex direction="column" gap="24px" alignItems="center">

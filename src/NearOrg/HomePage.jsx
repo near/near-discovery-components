@@ -528,7 +528,7 @@ return (
                 <Widget
                   src="${REPL_ACCOUNT}/widget/DIG.Button"
                   props={{
-                    href: "/signup",
+                    href: "/${REPL_NEARCATALOG}/widget/Index?requestAuth=1&createAccount=1",
                     label: "Create Account",
                     variant: "affirmative",
                     size: "large",
@@ -1073,7 +1073,7 @@ return (
               <Widget
                 src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
-                  href: "/nearweekapp.near/widget/nearweek-news",
+                  href: "/nearweekapp.near/widget/nearweek.com",
                   label: "All News",
                   variant: "affirmative",
                   size: "large",

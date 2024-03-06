@@ -89,6 +89,7 @@ const ipfsImages = {
   arrows: "bafkreifdzknpkboed3jmm4rgtbg3mqaocziagtjbznfp6o3hvgd5ix6brm",
   logoAurora: "bafkreieoq7wpdctcx42uywfdaoi4k3uq6rgodbjjz6mhz3qesrmaben2ju",
   logoDevHub: "bafkreif4i3opjuumiq3djbyta74somrjsjzhlvd3zgrhknmh32iv4qgcgi",
+  logoHorizon: "bafkreietp2ohevk7v3w6bb66u5rrgstfnqgx75w7xal5foraimv4jxijh4",
   logoGlobeDao: "bafkreih6n3ukibgnb4cge3u44aorabmfvejzlpqjrjl6cnbht5rlegc2cu",
   logoMetaPool: "bafkreicj5zrz2oj2apb5balxtepk32nzxm5t5gywcznr6w2azxkpfd3uye",
   logoNearGamingDAO: "bafkreicpwgvxgjzifbci2omgtlbdail5a7rjpdyrjbpiwfklpwlgvuog7m",
@@ -127,7 +128,7 @@ const fundingCards = [
     key: "ecosystem_grants",
     iconClassName: "ph ph-circles-three-plus",
     iconColor: "violet7",
-    content: "Ecosystem Grants",
+    content: "Ecosystem Funding Outlets",
   },
   {
     key: "accelerators_and_incubators",
@@ -186,37 +187,20 @@ const ecosystemGrantCards = [
     href: "https://gov.near.org/c/community/globe/112",
   },
   {
-    ipfsImage: ipfsImages.logoAurora,
-    title: "Aurora",
-    content: "Aimed at projects looking to build on the Aurora EVM",
-    href: "https://aurora.dev/grants",
-  },
-  {
-    ipfsImage: ipfsImages.logoProximity,
-    title: "Proximity Labs",
-    content: "Aimed at supporting projects focused on DeFi",
-    href: "https://www.proximity.dev",
-  },
-  {
     ipfsImage: ipfsImages.logoMintBase,
     title: "Mintbase",
     content: "Aimed at supporting projects building in NFTs",
     href: "https://github.com/mintbase/Grants-Program#1-application",
   },
-  {
-    ipfsImage: ipfsImages.logoHumanGuild,
-    title: "Human Guild",
-    content: "Aimed at supporting projects building in Gaming",
-    href: "https://humanguild.io",
-  },
-  {
-    ipfsImage: ipfsImages.logoCypherpunkGuild,
-    title: "Cypherpunk Guild",
-    content: "Aimed at supporting projects building in Privacy",
-    href: "https://cypherpunkguild.medium.com/cypherpunk-guild-grant-program-d0ed5769b6b9",
-  },
 ];
 const acceleratorsCards = [
+  {
+    ipfsImage: ipfsImages.logoHorizon,
+    title: "HZN Accelerator Application",
+    content:
+      "Join the 8-week equity-free accelerator that provides multi-faceted support for early stage web3 projects.",
+    href: "https://www.hzn.xyz/hzn",
+  },
   {
     ipfsImage: ipfsImages.logoLyric,
     title: "Lyric Ventures",
@@ -234,24 +218,6 @@ const acceleratorsCards = [
     title: "NEARWEEK",
     content: "Amplification of twitter posts, newsletters, marketing campaigns, etc.",
     href: "https://nearweek.com/",
-  },
-  {
-    ipfsImage: ipfsImages.logoOctopus,
-    title: "Octopus Accelerator",
-    content: "Web3 accelerator for projects building appchains",
-    href: "https://accelerator.oct.network",
-  },
-  {
-    ipfsImage: ipfsImages.logoOWC,
-    title: "OWC",
-    content: "Web3 accelerator",
-    href: "https://www.openwebcollective.com",
-  },
-  {
-    ipfsImage: ipfsImages.logoStealthCapital,
-    title: "Stealth Capital",
-    content: "An investment fund",
-    href: "https://www.stealthcap.io",
   },
 ];
 const communityDaoCards = [

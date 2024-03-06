@@ -5,6 +5,7 @@ const firstPartyCookies = `| Identifer                     | Purpose           |
 | rl_session                    | product analytics | Rudderstack | .near.org | [Link](https://cookiedatabase.org/?lang=en&s=rl_session)                    | 1 year   | Stores the session-related information including the ID. |
 | rl_page_init_referring_domain | product analytics | Rudderstack | .near.org | [Link](https://cookiedatabase.org/?lang=en&s=rl_page_init_referring_domain) | 1 year   | to store referring website.                              |
 | rl_page_init_referrer         | product analytics | Rudderstack | .near.org | [Link](https://cookiedatabase.org/?lang=en&s=rl_page_init_referrer)         | 1 year   | to store referring website.                              |
+| user-country-code             | product analytics | Discovery Domain | .near.org | n/a | 1 year   | to store a visitor's country code                         |
 `;
 
 const thirdPartyCookies = `| Identifer                                     | Purpose               | Provider      | Domain                | Duration |

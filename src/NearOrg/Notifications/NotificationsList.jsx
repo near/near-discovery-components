@@ -44,8 +44,11 @@ const NotificationsListFromChain = () => {
 };
 
 const fetchData = (offset, limit) => {
+  console.log("Fetching data with offset: ", offset, " and limit: ", limit);
   const notificationsMap = new Map();
   const notificationsList = fetchNotifications(offset, limit);
+
+  console.log("NotificationsList: ", notificationsList, "length: ", notificationsList.length);
 
   [...notifications, ...notificationsList].forEach((notification) => {
     if (!notificationsMap.has(notification.id)) {
@@ -59,7 +62,11 @@ useEffect(() => {
   if (shouldFallback) {
     return;
   }
-  fetchData(0, showLimit);
+  fetchData(notifications.length, showLimit);
+  () => {
+    console.log("Cleaning up NotificationsList");
+    setNotifications([]);
+  };
 }, [notificationsCount]);
 
 const NotificationsFromGraphQL = ({ notifications }) => {

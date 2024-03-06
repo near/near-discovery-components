@@ -1,4 +1,4 @@
-const { fetchGraphQL } = VM.require("${REPL_ACCOUNT}/widget/Entities.QueryApi.utils") || (() => {});
+const { fetchGraphQL, loadItems } = VM.require("${REPL_ACCOUNT}/widget/Entities.QueryApi.Client") || (() => {});
 
 const [shouldFallback, setShouldFallback] = useState(false);
 const [notifications, setNotifications] = useState([]);
@@ -110,6 +110,13 @@ const fetchLastNotification = () =>
 
 useEffect(() => {
   fetchLastNotification();
+  () => {
+    console.log("Cleaning up NotificationsList");
+
+    setShouldFallback(false);
+    setNotifications([]);
+    setNotificationsCount(0);
+  };
 }, []);
 
 return (

@@ -65,7 +65,7 @@ if (state.cookieAcceptance) {
 const onAccept = ({ all, onlyRequired }) => {
   State.update({ cookieAcceptance: true });
   State.update({ isDialogOpen: false });
-  return <AnalyticsCookieConsent all onlyRequired />;
+  return <AnalyticsCookieConsent all={all} onlyRequired={onlyRequired} />;
 };
 
 const onCustomize = () => {

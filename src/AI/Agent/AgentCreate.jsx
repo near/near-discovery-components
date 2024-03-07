@@ -1,9 +1,3 @@
-const { typeMatch } = VM.require("devhub.near/widget/core.lib.struct");
-
-if (!typeMatch) {
-  return <p>Loading modules...</p>;
-}
-
 const { data, onSubmit, onCancel } = props;
 const onSubmitDefault = (formValues) => {
   const { name, ...rest } = formValues;
@@ -77,7 +71,7 @@ const AgentInputsPartialSchema = {
   // },
   component: {
     inputProps: {
-      min: 2,
+      min: 0,
       max: 255,
       placeholder: "The component used to run the agent, default is near/widget/AI.Agent.AgentChat",
       required: false,
@@ -121,7 +115,14 @@ const AgentInputsPartialSchema = {
 };
 
 const agentInputsValidator = (formValues) =>
-  typeMatch(formValues) && Object.values(formValues).every((value) => typeof value === "string" && value.length > 0);
+  formValues !== null &&
+  typeof formValues === "object" &&
+  !Array.isArray(formValues) &&
+  Object.keys(AgentInputsPartialSchema).every((key) => {
+    const val = AgentInputsPartialSchema[key];
+    const required = val?.inputProps?.required;
+    return !required || typeof formValues[key] === "string";
+  });
 
 return (
   <Widget

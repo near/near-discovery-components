@@ -119,7 +119,7 @@ const Pattern = styled.div`
 `;
 
 const PatternContent = styled.div`
-  padding: 1rem;
+  padding: 2rem 4rem;
   max-width: 496px;
   margin: 0 auto;
   background-color: var(--background-color);
@@ -148,8 +148,19 @@ const IconCircle = styled.div`
 `;
 
 const TextLink = styled("Link")`
-  color: inherit;
-  text-decoration: underline;
+  font: var(--text-base);
+  font-weight: 600;
+  line-height: 150%;
+  color: var(--white);
+  background: transparent;
+  text-decoration: none;
+  padding: 16px 24px;
+  border-radius: 50px;
+  border: 1px solid var(--green10);
+
+  &:hover {
+    text-decoration: none;
+  }
 `;
 
 const Resource = ({ name, description, icon, url, target }) => (
@@ -231,13 +242,19 @@ const ecosystemCommunityResources = [
   },
 ];
 
+function returnIpfsImage(cfid) {
+  return {
+    ipfs_cid: cfid,
+  };
+}
+
 return (
   <Wrapper>
     <Section backgroundColor="#00EC97" style={{ padding: "72px 0" }}>
       <Container center>
         <Pattern>
           <PatternContent>
-            <Flex gap="32px" direction="column" alignItems="center">
+            <Flex direction="column" alignItems="center">
               <H1>FounderHub</H1>
             </Flex>
           </PatternContent>
@@ -246,8 +263,8 @@ return (
     </Section>
 
     <Section backgroundColor="#ffffff">
-      <Container>
-        <Flex direction="column" gap="24px">
+      <Container center>
+        <Flex direction="column" gap="24px" alignItems="center">
           <H2>Welcome to NEAR, the best place to build Web3 projects</H2>
           <Text size="text-2xl" mobileSize="text-l" style={{ maxWidth: "808px" }}>
             From idea to launch, the NEAR FounderHub guides you every step of the way. Get the tailored resources,
@@ -260,17 +277,15 @@ return (
       <Container>
         <Flex direction="column" gap="24px">
           <H2>Self-Serve Resources</H2>
+          <Text size="text-2xl" mobileSize="text-l" style={{ maxWidth: "808px" }}>
+            Tap into our curated resources: proven templates, expert insights, and a vibrant founder network.
+          </Text>
         </Flex>
         <Grid columns="1fr 1fr 1fr" gap="24px">
           {selfServeResources.map((item) => (
             <Resource key={`resource-${item.name}`} {...item} />
           ))}
         </Grid>
-        <Flex direction="column" gap="24px">
-          <Text size="text-2xl" mobileSize="text-l" style={{ maxWidth: "808px" }}>
-            Tap into our curated resources: proven templates, expert insights, and a vibrant founder network.
-          </Text>
-        </Flex>
       </Container>
     </Section>
 
@@ -278,42 +293,59 @@ return (
       <Container>
         <Flex direction="column" gap="24px">
           <H2>Ecosystem Community Resources</H2>
+          <Text size="text-2xl" mobileSize="text-l" style={{ maxWidth: "808px" }}>
+            Find your place within the ecosystem — your community is near.
+          </Text>
         </Flex>
         <Grid columns="1fr 1fr 1fr" gap="24px">
           {ecosystemCommunityResources.map((item) => (
             <Resource key={`resource-${item.name}`} {...item} />
           ))}
         </Grid>
-        <Flex direction="column" gap="24px">
-          <Text size="text-2xl" mobileSize="text-l" style={{ maxWidth: "808px" }}>
-            Find your place within the ecosystem: whether it&apos;s by joining our selective accelerator program,
-            getting involved with our builder groups or hanging out at a live event, your community is near.
-          </Text>
-        </Flex>
       </Container>
     </Section>
 
     <Section backgroundColor="#161615">
       <Container>
         <Flex direction="column" gap="24px">
-          <H2 style={{ color: "var(--white)", maxWidth: "600px" }}>Accelerate your Web3 journey</H2>
-          <Text size="text-2xl" mobileSize="text-l" color="white" style={{ maxWidth: "808px" }}>
-            HZN3 applications are{" "}
-            <TextLink href="https://www.hzn.xyz/hzn" target="_blank">
-              open.
-            </TextLink>
-            Over 50 projects have been accelerated through HZN, our equity-free accelerator and gone on to raise over
-            $10M in external capital. Get the equity-free education, mentorship, and a network to take your project to
-            the next level.
-          </Text>
+          <H2 style={{ color: "var(--white)" }}>Accelerate your Web3 journey</H2>
         </Flex>
+
+        <Widget
+          src="${REPL_ACCOUNT}/widget/NearOrg.ContentWithImage"
+          props={{
+            content: (
+              <Flex direction="column" gap="32px">
+                <Text size="text-xl" mobileSize="text-l" fontWeight="500" color="white">
+                  HZN3 applications are open
+                </Text>
+                <Text color="white" style={{ maxWidth: "496px" }}>
+                  Over 50 projects have been accelerated through HZN, our equity-free accelerator and gone on to raise
+                  over $10M in external capital. Get the equity-free education, mentorship, and a network to take your
+                  project to the next level.
+                </Text>
+                <Flex>
+                  <TextLink href="https://www.hzn.xyz/hzn" target="_blank">
+                    Apply Now
+                  </TextLink>
+                </Flex>
+              </Flex>
+            ),
+            image: returnIpfsImage("bafkreib55qq67nbthwpkzqx2upjnecwnrutpo3q26zjqt3wz3n5iw4o6da"),
+            imageSide: "left",
+            alt: "The HZN logo.",
+          }}
+        />
       </Container>
     </Section>
-    <Section backgroundColor="#F2F1EA">
+    <Section backgroundColor="#00EC97">
       <Container>
         <Flex direction="column" gap="24px" alignItems="center">
           <Text size="text-3xl" fontWeight="500" style={{ maxWidth: "808px", textAlign: "center" }}>
-            Get in touch with us to provide any feedback or ask for specific support
+            Get in touch
+          </Text>
+          <Text size="text-xl" style={{ maxWidth: "658px", textAlign: "center" }}>
+            Reach out to us to provide your feedback or to ask for specific support.
           </Text>
 
           <Widget
@@ -328,13 +360,6 @@ return (
         </Flex>
       </Container>
     </Section>
-
-    <Widget
-      src="${REPL_ACCOUNT}/widget/NearOrg.BosCtaSection"
-      props={{
-        backgroundColor: "#00EC97",
-      }}
-    />
 
     <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Footer" />
   </Wrapper>

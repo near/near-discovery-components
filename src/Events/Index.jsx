@@ -204,9 +204,11 @@ const IconCircle = styled.div`
   }
 `;
 
-const featuredEvent = [...eventsList].sort(
-  (a, b) => Math.abs(new Date(a.event.start_at) - new Date()) - Math.abs(new Date(b.event.start_at) - new Date()),
-)[0].event;
+const featuredEvent =
+  eventsList.length > 0 &&
+  [...eventsList].sort(
+    (a, b) => Math.abs(new Date(a.event.start_at) - new Date()) - Math.abs(new Date(b.event.start_at) - new Date()),
+  )[0].event;
 
 return (
   <Wrapper>
@@ -226,32 +228,34 @@ return (
       </Container>
     </Section>
 
-    <Section backgroundColor="#fff" style={{ padding: "72px 24px" }}>
-      <Container>
-        <Flex direction="column" gap="80px" mobileGap="40px">
-          <Text size="text-3xl" mobileSize="text-2xl" fontWeight="500">
-            Upcoming Event
-          </Text>
-        </Flex>
+    {featuredEvent && (
+      <Section backgroundColor="#fff" style={{ padding: "72px 24px" }}>
+        <Container>
+          <Flex direction="column" gap="80px" mobileGap="40px">
+            <Text size="text-3xl" mobileSize="text-2xl" fontWeight="500">
+              Upcoming Event
+            </Text>
+          </Flex>
 
-        <Widget
-          src="${REPL_ACCOUNT}/widget/Events.CardLarge"
-          props={{
-            as: "a",
-            href: featuredEvent.url,
-            imgSrc: featuredEvent.cover_url,
-            title: featuredEvent.name,
-            description: featuredEvent.description,
-            date: { startAt: convertData(featuredEvent.start_at), endAt: convertData(featuredEvent.end_at) },
-            location: formatLocation(featuredEvent?.geo_address_json),
-            target: "_blank",
-            rel: "noopener noreferrer",
-            loading: !dataLoaded,
-            variant: "large",
-          }}
-        />
-      </Container>
-    </Section>
+          <Widget
+            src="${REPL_ACCOUNT}/widget/Events.CardLarge"
+            props={{
+              as: "a",
+              href: featuredEvent.url,
+              imgSrc: featuredEvent.cover_url,
+              title: featuredEvent.name,
+              description: featuredEvent.description,
+              date: { startAt: convertData(featuredEvent.start_at), endAt: convertData(featuredEvent.end_at) },
+              location: formatLocation(featuredEvent?.geo_address_json),
+              target: "_blank",
+              rel: "noopener noreferrer",
+              loading: !dataLoaded,
+              variant: "large",
+            }}
+          />
+        </Container>
+      </Section>
+    )}
 
     <Section backgroundColor="#fff" style={{ padding: "72px 24px" }}>
       <Container>
@@ -273,30 +277,51 @@ return (
           )}
         </Flex>
 
-        <Grid columns="1fr 1fr 1fr" gap="20px">
-          {eventsList.map(({ event }) => {
-            const startAt = convertData(event?.start_at);
-            const endAt = convertData(event?.end_at);
-            const location = formatLocation(event.geo_address_json);
-            return (
-              <Widget
-                src="${REPL_ACCOUNT}/widget/Events.Card"
-                key={event.api_id}
-                props={{
-                  as: "a",
-                  href: event.url,
-                  imgSrc: event.cover_url,
-                  title: event.name,
-                  date: { startAt, endAt },
-                  location,
-                  target: "_blank",
-                  rel: "noopener noreferrer",
-                  loading: !dataLoaded,
-                }}
-              />
-            );
-          })}
-        </Grid>
+        {eventsList.length > 0 ? (
+          <Grid columns="1fr 1fr 1fr" gap="20px">
+            {eventsList.map(({ event }) => {
+              const startAt = convertData(event?.start_at);
+              const endAt = convertData(event?.end_at);
+              const location = formatLocation(event.geo_address_json);
+              return (
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/Events.Card"
+                  key={event.api_id}
+                  props={{
+                    as: "a",
+                    href: event.url,
+                    imgSrc: event.cover_url,
+                    title: event.name,
+                    date: { startAt, endAt },
+                    location,
+                    target: "_blank",
+                    rel: "noopener noreferrer",
+                    loading: !dataLoaded,
+                  }}
+                />
+              );
+            })}
+          </Grid>
+        ) : (
+          <Flex direction="column" gap="24px" alignItems="center">
+            <Text size="text-2xl" mobileSize="text-lg" style={{ textAlign: "center" }}>
+              There are no upcoming events at the moment.
+            </Text>
+            <Text size="text-xl" mobileSize="text-lg" style={{ maxWidth: "808px", textAlign: "center" }}>
+              Subscribe to our Luma calendar to stay up to date with our events.
+            </Text>
+            <Widget
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
+              props={{
+                label: "Subscribe",
+                variant: "primary",
+                size: "large",
+                href: "https://lu.ma/NEAR-community",
+                target: "_blank",
+              }}
+            />
+          </Flex>
+        )}
       </Container>
     </Section>
 

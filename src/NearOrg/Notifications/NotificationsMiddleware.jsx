@@ -1,8 +1,6 @@
 const { fetchGraphQL, loadItems } = VM.require("${REPL_ACCOUNT}/widget/Entities.QueryApi.Client") || (() => {});
 
 const [shouldFallback, setShouldFallback] = useState(false);
-const [notifications, setNotifications] = useState([]);
-const [notificationsCount, setNotificationsCount] = useState(0);
 
 const lastNotificationQuery = `
   query IndexerQuery {
@@ -14,6 +12,7 @@ const lastNotificationQuery = `
 
 const notificationsQuery = `query NotificationsQuery($offset: Int, $limit: Int) {
   data: dataplatform_near_notifications_notifications(
+    distinct_on: blockHeight,
     where: {receiver: {_eq: "${context.accountId}"}}
     order_by: {blockHeight: desc},
     offset: $offset, limit: $limit
@@ -34,7 +33,10 @@ const notificationsQuery = `query NotificationsQuery($offset: Int, $limit: Int) 
       tags
     }
   }
-  count: dataplatform_near_notifications_notifications_aggregate(where: {receiver: {_eq: "${context.accountId}"}}) {
+  count: dataplatform_near_notifications_notifications_aggregate(
+    distinct_on: blockHeight,
+    where: {receiver: {_eq: "${context.accountId}"}}
+  ) {
     aggregate {
       count
     }
@@ -46,12 +48,12 @@ const lastNotificationOnChain = Social.index("notify", context.accountId, {
   order: "desc",
 });
 
-const fetchNotifications = (offset, limit) => {
+const fetchNotifications = (offset, limit, saveData) => {
   fetchGraphQL(notificationsQuery, "NotificationsQuery", { offset, limit }).then((result) => {
     if (result.status === 200) {
       if (result.body.data) {
         const { data: notificationsList } = result.body.data;
-        const { count: notificationsLeft } = result.body.data.count.aggregate;
+        const { count: notificationsTotal } = result.body.data.count.aggregate;
 
         const newNotifications = notificationsList.map((notification) => {
           const name = notification.profile?.name;
@@ -77,12 +79,10 @@ const fetchNotifications = (offset, limit) => {
           return dataSample;
         });
 
-        setNotifications(newNotifications);
-        setNotificationsCount(notificationsLeft);
+        saveData(newNotifications, notificationsTotal);
       }
     }
   });
-  return notifications;
 };
 
 const fetchLastNotification = () =>
@@ -111,8 +111,6 @@ const fetchLastNotification = () =>
 useEffect(() => {
   fetchLastNotification();
   () => {
-    console.log("Cleaning up NotificationsList");
-
     setShouldFallback(false);
     setNotifications([]);
     setNotificationsCount(0);
@@ -122,6 +120,6 @@ useEffect(() => {
 return (
   <Widget
     src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsList"
-    props={{ fetchNotifications, notificationsCount, shouldFallback, ...props }}
+    props={{ fetchNotifications, shouldFallback, ...props }}
   />
 );

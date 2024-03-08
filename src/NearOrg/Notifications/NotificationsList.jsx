@@ -1,7 +1,10 @@
-let { fetchNotifications, notificationsCount, shouldFallback, manageNotification, permission, showLimit } = props;
-showLimit = showLimit ?? 10;
+let { fetchNotifications, shouldFallback, manageNotification, permission, showLimit } = props;
+// showLimit means to fetch notificaitions for the preview and not the full list
 
 const [notifications, setNotifications] = useState(notifications ?? []);
+const [notificationsCount, setNotificationsCount] = useState(notificationsCount ?? 0);
+
+const notificationsMap = new Map();
 
 const renderItem = (item, i) => {
   if (i === 0) {
@@ -43,14 +46,12 @@ const NotificationsListFromChain = () => {
   );
 };
 
-const fetchData = (offset, limit) => {
-  console.log("Fetching data with offset: ", offset, " and limit: ", limit);
-  const notificationsMap = new Map();
-  const notificationsList = fetchNotifications(offset, limit);
+const saveData = (newNotifications, notificationsTotal) => {
+  if (notificationsCount !== notificationsTotal) {
+    setNotificationsCount(notificationsTotal);
+  }
 
-  console.log("NotificationsList: ", notificationsList, "length: ", notificationsList.length);
-
-  [...notifications, ...notificationsList].forEach((notification) => {
+  [...notifications, ...newNotifications].forEach((notification) => {
     if (!notificationsMap.has(notification.id)) {
       notificationsMap.set(notification.id, notification);
     }
@@ -58,28 +59,29 @@ const fetchData = (offset, limit) => {
   setNotifications([...notificationsMap.values()]);
 };
 
+const fetchData = (offset, limit) => {
+  if (notifications.length > 0 && showLimit) return;
+  fetchNotifications(offset, limit, saveData);
+};
+
 useEffect(() => {
   if (shouldFallback) {
     return;
   }
-  fetchData(notifications.length, showLimit);
+  fetchData(notifications.length, showLimit ?? 10);
   () => {
-    console.log("Cleaning up NotificationsList");
     setNotifications([]);
   };
 }, [notificationsCount]);
 
 const NotificationsFromGraphQL = ({ notifications }) => {
-  const itemsLeft = notificationsCount - notifications.length;
-  const limit = itemsLeft > showLimit ? showLimit : itemsLeft;
-
   return (
     <InfiniteScroll
       pageStart={0}
       loadMore={() => {
-        fetchData(notifications.length, limit);
+        fetchData(notifications.length, showLimit ?? 10);
       }}
-      hasMore={notifications.length < notificationsCount}
+      hasMore={!showLimit && notifications.length < notificationsCount}
       initialLoad={false}
       loader={
         <div className="loader">

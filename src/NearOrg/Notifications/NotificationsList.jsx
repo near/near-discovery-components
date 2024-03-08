@@ -4,8 +4,6 @@ let { fetchNotifications, shouldFallback, manageNotification, permission, showLi
 const [notifications, setNotifications] = useState(notifications ?? []);
 const [notificationsCount, setNotificationsCount] = useState(notificationsCount ?? 0);
 
-const notificationsMap = new Map();
-
 const renderItem = (item, i) => {
   if (i === 0) {
     Storage.set("lastBlockHeight", item.blockHeight);
@@ -50,13 +48,7 @@ const saveData = (newNotifications, notificationsTotal) => {
   if (notificationsCount !== notificationsTotal) {
     setNotificationsCount(notificationsTotal);
   }
-
-  [...notifications, ...newNotifications].forEach((notification) => {
-    if (!notificationsMap.has(notification.id)) {
-      notificationsMap.set(notification.id, notification);
-    }
-  });
-  setNotifications([...notificationsMap.values()]);
+  setNotifications([...notifications, ...newNotifications]);
 };
 
 const fetchData = (offset, limit) => {
@@ -72,9 +64,9 @@ useEffect(() => {
   () => {
     setNotifications([]);
   };
-}, [notificationsCount]);
+}, []);
 
-const NotificationsFromGraphQL = ({ notifications }) => {
+const NotificationsFromGraphQL = () => {
   return (
     <InfiniteScroll
       pageStart={0}
@@ -95,6 +87,4 @@ const NotificationsFromGraphQL = ({ notifications }) => {
   );
 };
 
-return (
-  <>{shouldFallback ? <NotificationsListFromChain /> : <NotificationsFromGraphQL notifications={notifications} />}</>
-);
+return <>{shouldFallback ? <NotificationsListFromChain /> : <NotificationsFromGraphQL />}</>;

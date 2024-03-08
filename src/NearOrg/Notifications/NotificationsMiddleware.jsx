@@ -69,12 +69,14 @@ const fetchNotifications = (offset, limit, saveData) => {
                 blockHeight: notification?.actionAtBlockHeight,
                 path: notification.path,
                 type: notification.itemType,
-                post: notification?.devhubPostId,
               },
               type: notification.valueType,
               message: notification.message,
             },
           };
+          if (notification?.devhubPostId) {
+            dataSample.value.post = notification.devhubPostId;
+          }
 
           return dataSample;
         });

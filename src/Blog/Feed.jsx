@@ -1,9 +1,10 @@
 const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 
 //place id of the post you want to fetch from the dataplatform_near_social_feed_moderated_posts table
-const blogPostIds = props.blogPostIds || [75675];
+const blogPostIds = [76797, 75675, 76460];
 
 const [posts, setPosts] = useState([]);
+const [blogPosts, setBlogPosts] = useState([]);
 
 const blogPostsQuery = `
 query FeedQuery {
@@ -11,7 +12,7 @@ query FeedQuery {
     order_by: {block_height: desc}
     where: {
       _and: {
-        id: {_in: ${blogPostIds}}
+        id: {_in: ${JSON.stringify(blogPostIds)}}
       }
     }
   ) {
@@ -43,24 +44,31 @@ function fetchGraphQL(operationsDoc, operationName, variables) {
 }
 
 fetchGraphQL(blogPostsQuery, "FeedQuery", {}).then((result) => {
+  console.log(' query ',blogPostsQuery);
   if (result.status === 200) {
     if (result.body.data) {
       const posts = result.body.data.dataplatform_near_feed_moderated_posts;
+      console.log(' query response',posts);
       setPosts(posts);
       if (posts.length > 0) {
-        const post = posts[0];
-        let content = JSON.parse(post.content);
-        if (post.accounts_liked.length !== 0) {
-          if (typeof post.accounts_liked === "string") {
-            post.accounts_liked = JSON.parse(post.accounts_liked);
+
+        posts.forEach((post) => {
+          console.log('here is a post', post);
+          
+          // const post = posts[0];
+          let content = JSON.parse(post.content);
+          if (post.accounts_liked.length !== 0) {
+            if (typeof post.accounts_liked === "string") {
+              post.accounts_liked = JSON.parse(post.accounts_liked);
+            }
           }
-        }
-        const comments = post.comments;
-        State.update({
-          blogPostContent: content,
-          blogPostComments: comments,
-          blogPostLikes: post.accounts_liked,
-        });
+          const comments = post.comments;
+          setBlogPosts([...posts,{
+            blogPostContent: content,
+            blogPostComments: comments,
+            blogPostLikes: post.accounts_liked,
+          }]);
+        })
       } else {
         State.update({
           blogPostExists: false,

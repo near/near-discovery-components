@@ -44,17 +44,16 @@ function fetchGraphQL(operationsDoc, operationName, variables) {
 }
 
 fetchGraphQL(blogPostsQuery, "FeedQuery", {}).then((result) => {
-  console.log(' query ',blogPostsQuery);
+  console.log(" query ", blogPostsQuery);
   if (result.status === 200) {
     if (result.body.data) {
       const posts = result.body.data.dataplatform_near_feed_moderated_posts;
-      console.log(' query response',posts);
+      console.log(" query response", posts);
       setPosts(posts);
       if (posts.length > 0) {
-
         posts.forEach((post) => {
-          console.log('here is a post', post);
-          
+          console.log("here is a post", post);
+
           // const post = posts[0];
           let content = JSON.parse(post.content);
           if (post.accounts_liked.length !== 0) {
@@ -63,12 +62,15 @@ fetchGraphQL(blogPostsQuery, "FeedQuery", {}).then((result) => {
             }
           }
           const comments = post.comments;
-          setBlogPosts([...posts,{
-            blogPostContent: content,
-            blogPostComments: comments,
-            blogPostLikes: post.accounts_liked,
-          }]);
-        })
+          setBlogPosts([
+            ...posts,
+            {
+              blogPostContent: content,
+              blogPostComments: comments,
+              blogPostLikes: post.accounts_liked,
+            },
+          ]);
+        });
       } else {
         State.update({
           blogPostExists: false,

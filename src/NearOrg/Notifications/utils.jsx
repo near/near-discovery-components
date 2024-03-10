@@ -4,12 +4,13 @@ function createNotificationMessage(notificationType, path, postValue, customMess
   const isComment = path.indexOf("/post/comment") > 0 || notificationType === "comment";
   const isPost = !isComment && path.indexOf("/post/main") > 0;
 
-  const getDevHubParentId = postValue
+  const getDevHubPostParentId = postValue
     ? Near.view("devgovgigs.near", "get_parent_id", {
         post_id: postValue,
       })
     : undefined;
-  const isDevHubPost = getDevHubParentId === null;
+
+  const isDevHubPost = getDevHubPostParentId === null;
 
   switch (notificationType) {
     case "like":
@@ -21,9 +22,13 @@ function createNotificationMessage(notificationType, path, postValue, customMess
     case "comment":
     case "devgovgigs/reply":
       return "replied to your post";
+    case "devhub/reply":
+      return "replied to your proposal";
     case "mention":
     case "devgovgigs/mention":
       return "mentioned you in their post";
+    case "devhub/mention":
+      return "mentioned you in their proposal";
     case "poke":
       return "poked you";
     case "star":
@@ -31,9 +36,12 @@ function createNotificationMessage(notificationType, path, postValue, customMess
     case "custom":
       return customMessage ?? "";
     case "devgovgigs/edit":
+    case "devhub/edit":
       return "edited your";
     case "devgovgigs/like":
       return isDevHubPost ? "liked your post" : "liked your comment";
+    case "devhub/like":
+      return "liked your proposal";
     default:
       return null;
   }
@@ -68,11 +76,12 @@ function getNotificationContent(notificationType, notificationValue, path, postV
 function createNotificationLink(notificationType, notificationValue, authorAccountId, accountId, blockHeight) {
   const pathPrefix = `/${REPL_ACCOUNT}/widget`;
 
-  let { item, widget, params, post } = notificationValue;
+  let { item, widget, params, post, proposal } = notificationValue;
   item = item ?? {};
   widget = widget ?? "";
   params = params ?? {};
   post = post ?? {};
+  proposal = proposal ?? {};
   let { blockHeight: likeAtBlockHeight, path } = item;
   path = path ?? "";
 
@@ -105,6 +114,17 @@ function createNotificationLink(notificationType, notificationValue, authorAccou
           id: post,
         },
       });
+    case "devhub/mention":
+    case "devhub/edit":
+    case "devhub/reply":
+    case "devhub/like":
+      return href({
+        widgetSrc: "devhub.near/widget/app",
+        params: {
+          page: "proposal",
+          id: proposal,
+        },
+      });
     default:
       return `${pathPrefix}/PostPage?accountId=${accountId}&blockHeight=${blockHeight}`;
   }
@@ -114,6 +134,7 @@ function getNotificationIconClassName(notificationType) {
   switch (notificationType) {
     case "like":
     case "devgovgigs/like":
+    case "devhub/like":
       return "ph ph-heart";
     case "fork":
       return "ph ph-git-fork";
@@ -123,9 +144,11 @@ function getNotificationIconClassName(notificationType) {
       return "ph ph-user-minus";
     case "comment":
     case "devgovgigs/reply":
+    case "devhub/reply":
       return "ph ph-share-fat";
     case "mention":
     case "devgovgigs/mention":
+    case "devhub/mention":
       return "ph ph-at";
     case "poke":
       return "ph ph-hand-pointing";

@@ -134,9 +134,9 @@ const Left = styled.div`
 const Right = styled.div``;
 
 let { blockHeight, accountId, manageNotification, permission, value } = props;
-let { item, type, post, message } = value;
+let { item, type, post, message, proposal } = value;
 item = item ?? {};
-post = post ?? {};
+post = post ?? proposal ?? {};
 message = message ?? "";
 const path = item.path || "";
 
@@ -147,6 +147,7 @@ const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 // which means it's not actionable
 // as for example "like", "comment", "star", "custom",
 // "devgovgigs/mention", "devgovgigs/edit", "devgovgigs/reply", "devgovgigs/like"
+// "devhub/mention", "devhub/edit", "devhub/reply", "devhub/like"
 const ordinaryNotification = ["follow", "unfollow", "poke"].indexOf(type) >= 0;
 
 // Assert is a valid type

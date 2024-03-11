@@ -1,7 +1,7 @@
 const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 
 //place id of the post you want to fetch from the dataplatform_near_social_feed_moderated_posts table
-const blogPostIds = [76797, 75675, 76460];
+const blogPostIds = [76994, 76797, 75675, 76460];
 
 const [posts, setPosts] = useState([]);
 const [blogPosts, setBlogPosts] = useState([]);
@@ -44,16 +44,12 @@ function fetchGraphQL(operationsDoc, operationName, variables) {
 }
 
 fetchGraphQL(blogPostsQuery, "FeedQuery", {}).then((result) => {
-  console.log(" query ", blogPostsQuery);
   if (result.status === 200) {
     if (result.body.data) {
       const posts = result.body.data.dataplatform_near_feed_moderated_posts;
-      console.log(" query response", posts);
       setPosts(posts);
       if (posts.length > 0) {
         posts.forEach((post) => {
-          console.log("here is a post", post);
-
           // const post = posts[0];
           let content = JSON.parse(post.content);
           if (post.accounts_liked.length !== 0) {
@@ -142,7 +138,7 @@ const H2 = styled.h2`
 `;
 
 const breakpoints = {
-  mobile: "768px", // this means anything below 768px width is considered mobile
+  mobile: "1100px", // this means anything below 768px width is considered mobile
 };
 
 const PostContainer = styled.div`
@@ -170,14 +166,21 @@ const Post = styled.div`
   }
 `;
 
+// center the image within the container horizontally and vertically
 const PostImage = styled.img`
   width: 100%;
   height: 100%;
+  object-fit: cover;
+  object-position: center;
 `;
 
+// center the image within the container horizontally and vertically
 const ImageContainer = styled.div`
   width: 40%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   @media (max-width: ${breakpoints.mobile}) {
     width: 100%; // full width on mobile
@@ -200,9 +203,6 @@ const PostTitle = styled.h2`
   font-size: 1rem;
   font-weight: 600;
   color: #3f4246;
-  margin: 0;
-  margin-top: 0.2rem;
-  margin-bottom: 1rem;
 
   @media (max-width: ${breakpoints.mobile}) {
     font-size: 1.25rem; // larger text on mobile
@@ -227,6 +227,7 @@ const renderItem = (item, index) => {
   }
 
   const markdownObj = parseMarkdown(content.text);
+
   const title = getFirstHeading(markdownObj);
 
   const time = new Date(item.block_timestamp / 1000000);

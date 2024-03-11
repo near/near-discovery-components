@@ -5,6 +5,24 @@ const Wrapper = styled.div`
   --text-hero: 500 72px/1 "FK Grotesk", "Mona Sans", sans-serif;
   margin-top: calc(var(--body-top-padding) * -1);
 
+  .darkButton {
+    color: #fff !important;
+    background: transparent !important;
+    border-color: #00ec97 !important;
+    &:focus {
+      border-color: var(--violet9) !important;
+    }
+    &:hover {
+      color: #000 !important;
+      background: #00ec97 !important;
+    }
+    &:active {
+      color: #000 !important;
+      background: var(--sand3) !important;
+      border-color: var(--sand3) !important;
+    }
+  }
+
   @media (max-width: 900px) {
     --section-gap: 80px;
   }
@@ -144,22 +162,6 @@ const IconCircle = styled.div`
   i {
     color: var(--sand11);
     font-size: 32px;
-  }
-`;
-
-const TextLink = styled("Link")`
-  font: var(--text-base);
-  font-weight: 600;
-  line-height: 150%;
-  color: var(--white);
-  background: transparent;
-  text-decoration: none;
-  padding: 16px 24px;
-  border-radius: 50px;
-  border: 1px solid var(--green10);
-
-  &:hover {
-    text-decoration: none;
   }
 `;
 
@@ -325,9 +327,18 @@ return (
                   project to the next level.
                 </Text>
                 <Flex>
-                  <TextLink href="https://www.hzn.xyz/hzn" target="_blank">
-                    Apply Now
-                  </TextLink>
+                  <Widget
+                    src="${REPL_ACCOUNT}/widget/DIG.Button"
+                    props={{
+                      href: "https://www.hzn.xyz/hzn",
+                      target: "_blank",
+                      label: "Apply Now",
+                      variant: "affirmative",
+                      fill: "outline",
+                      size: "large",
+                      className: "darkButton",
+                    }}
+                  />
                 </Flex>
               </Flex>
             ),

@@ -1,5 +1,4 @@
 const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
-
 const BlogPostWrapper = styled.div`
   @media (max-width: 1024px) {
     padding-left: 0;
@@ -298,6 +297,7 @@ if (blog) {
     return <Widget src="${REPL_ACCOUNT}/widget/Posts.ModeratedPostData" props={{ ...dataProps, renderPost }} />;
   };
 
+  const postUrl = `https://near.org/near/widget/BlogPostPage?accountId=${props.accountId}&blockHeight=${props.blockHeight}`;
   const markdownObj = parseMarkdown(blog.blogContent);
 
   const renderComment = (a) => {

@@ -194,7 +194,7 @@ return (
         }
       >
         {props.table ? (
-          items.map((item) => <div key={item.accountId + item.widgetName}>{renderItem(item, editFunction)}</div>)
+          items.map((item) => <div key={`${item.accountId}-${item.widgetName}`}>{renderItem(item, editFunction)}</div>)
         ) : (
           <Items>
             {items.map((item) => (

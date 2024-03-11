@@ -198,7 +198,7 @@ return (
         ) : (
           <Items>
             {items.map((item) => (
-              <Item key={item.accountId + item.widgetName}>{renderItem(item, editFunction)}</Item>
+              <Item key={`${item.accountId}-${item.widgetName}`}>{renderItem(item, editFunction)}</Item>
             ))}
           </Items>
         )}

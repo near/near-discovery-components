@@ -2,7 +2,7 @@
 // You can either:
 // A. Copy the Entity components and adapt them
 // B. Use the Entity components as is, passing in properties, as this file does.
-//    You'll need to create a <Entity>Page but can reuse EntityList
+//    You'll need to create a <Entity>Page but can reuse EntityList, EntityCreate
 // The entity type in this example is 'components'
 
 const entityType = "Component";

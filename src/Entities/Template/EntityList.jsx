@@ -17,7 +17,7 @@ const {
   createWidgetProps,
 } = props;
 
-const finalCreateWidget = createWidget ?? "${REPL_ACCOUNT}" + `/widget/Entities.Template.EntityCreate`;
+const finalCreateWidget = createWidget ?? `${REPL_ACCOUNT}/widget/Entities.Template.EntityCreate`;
 
 const [searchKey, setSearchKey] = useState("");
 const [sort, setSort] = useState("");

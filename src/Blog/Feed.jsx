@@ -50,7 +50,6 @@ fetchGraphQL(blogPostsQuery, "FeedQuery", {}).then((result) => {
       setPosts(posts);
       if (posts.length > 0) {
         posts.forEach((post) => {
-          // const post = posts[0];
           let content = JSON.parse(post.content);
           if (post.accounts_liked.length !== 0) {
             if (typeof post.accounts_liked === "string") {
@@ -93,7 +92,7 @@ function parseMarkdown(markdown) {
       parsedMarkdown.push(currentHeader);
     } else {
       if (currentHeader) {
-        currentHeader = null; // Reset currentHeader after encountering a non-header line
+        currentHeader = null;
       }
       if (line.trim().length > 0) {
         parsedMarkdown.push({ type: "paragraph", content: line });
@@ -111,7 +110,7 @@ function isImage(line) {
 function getImageUrl(line) {
   const match = line.match(/\((.*?)\)/);
   if (match) {
-    return match[1].replace(/'/g, ""); // remove single quotes if present
+    return match[1].replace(/'/g, "");
   }
   return null;
 }
@@ -122,7 +121,7 @@ function getFirstHeading(markdownArray) {
       return element;
     }
   }
-  return null; // Return null if no heading is found
+  return null;
 }
 
 const H2 = styled.h2`
@@ -138,7 +137,7 @@ const H2 = styled.h2`
 `;
 
 const breakpoints = {
-  mobile: "1100px", // this means anything below 768px width is considered mobile
+  mobile: "1100px",
 };
 
 const PostContainer = styled.div`
@@ -160,13 +159,11 @@ const Post = styled.div`
   border-radius: 8px;
   overflow: hidden;
 
-  // Media query for mobile devices
   @media (max-width: ${breakpoints.mobile}) {
     flex-direction: column;
   }
 `;
 
-// center the image within the container horizontally and vertically
 const PostImage = styled.img`
   width: 100%;
   height: 100%;
@@ -174,7 +171,6 @@ const PostImage = styled.img`
   object-position: center;
 `;
 
-// center the image within the container horizontally and vertically
 const ImageContainer = styled.div`
   width: 40%;
   height: 100%;
@@ -183,7 +179,7 @@ const ImageContainer = styled.div`
   justify-content: center;
 
   @media (max-width: ${breakpoints.mobile}) {
-    width: 100%; // full width on mobile
+    width: 100%;
   }
 `;
 
@@ -195,7 +191,7 @@ const ContentContainer = styled.div`
   justify-content: space-between;
 
   @media (max-width: ${breakpoints.mobile}) {
-    width: 100%; // full width on mobile
+    width: 100%;
   }
 `;
 
@@ -205,7 +201,7 @@ const PostTitle = styled.h2`
   color: #3f4246;
 
   @media (max-width: ${breakpoints.mobile}) {
-    font-size: 1.25rem; // larger text on mobile
+    font-size: 1.25rem;
   }
 `;
 
@@ -216,7 +212,7 @@ const PostDate = styled.p`
   align-self: flex-end;
 
   @media (max-width: ${breakpoints.mobile}) {
-    font-size: 0.9rem; // slightly larger text on mobile
+    font-size: 0.9rem;
   }
 `;
 

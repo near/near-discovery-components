@@ -262,7 +262,7 @@ function isImage(line) {
 function getImageUrl(line) {
   const match = line.match(/\((.*?)\)/);
   if (match) {
-    return match[1].replace(/'/g, ""); // remove single quotes if present
+    return match[1].replace(/'/g, "");
   }
   return null;
 }
@@ -273,7 +273,7 @@ function getFirstHeading(markdownArray) {
       return element;
     }
   }
-  return null; // Return null if no heading is found
+  return null;
 }
 
 const PromptSignUpWrapper = ({ children }) => {

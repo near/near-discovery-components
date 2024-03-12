@@ -52,7 +52,6 @@ const BlogPostContentWrapper = styled.div`
   max-width: 800px;
   margin: 0 auto;
   margin-bottom: 3rem;
-  padding: 0 2rem;
 
   @media (max-width: 1024px) {
     padding: 0 1rem;
@@ -66,11 +65,12 @@ const BlogPostContentWrapper = styled.div`
   }
 `;
 
-const BlogPostFooterWrapper = styled.div`
+const BlogPostActionsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
+  align-items: left;
+  text-align: left;
+  margin: 0 auto;
   width: 100%;
   max-width: 800px;
   margin-left: auto;
@@ -112,6 +112,7 @@ const Actions = styled.div`
 `;
 
 const Comments = styled.div`
+  margin-top: 2em;
   > div > div:first-child {
     padding-top: 12px;
   }
@@ -324,147 +325,157 @@ if (blog) {
   const renderedComments = blog.blogComments?.map(renderComment);
 
   return (
-    <BlogPostWrapper>
-      <Widget
-        src="${REPL_ACCOUNT}/widget/DIG.Button"
-        props={{
-          label: "Back To All Posts",
-          href: `/${REPL_ACCOUNT}/widget/Blog.Feed`,
-          iconLeft: "ph ph-arrow-left",
-          variant: "secondary",
-          size: "small",
-        }}
-        style={{ marginBottom: "1rem" }}
-      />
-      {/* RENDER BLOG HEADER IMAGE */}
-      <PostImage
-        imageUrl={markdownObj[0].imageUrl || "https://pages.near.org/wp-content/uploads/2023/06/generic-green-blog.png"}
-        alt="Post image"
-      />
-      <BlogPostContentWrapper>
-        <TitleSection>
-          {/* RENDER BLOG HEADER - TITLE   */}
-
-          <h1>{getFirstHeading(markdownObj)?.text || "Untitled"}</h1>
-
-          {/* RENDER BLOG HEADER - DATE */}
-
-          <p>
-            <Widget
-              src="${REPL_ACCOUNT}/widget/TimeAgo"
-              props={{ blockHeight: blog.block_height, blockTimestamp: blog.block_timestamp }}
-            />
-          </p>
-
-          {/* RENDER BLOG HEADER - AUTHOR INFO */}
-
-          <Widget
-            src="${REPL_ACCOUNT}/widget/AccountProfile"
-            key={blog.accountId}
-            props={{
-              accountId: blog.accountId,
-            }}
-          />
-        </TitleSection>
-
-        {/* RENDER BLOG BODY */}
-        {markdownObj.map((element, index) => {
-          if ((index <= 1 && element.type === "header") || element.type === "header-image") {
-            return;
-          } else {
-            return (
-              <ItemWrapper style={{ marginTop: element.type === "list-item" ? "" : "2em" }}>
-                <Widget src="${REPL_ACCOUNT}/widget/SocialMarkdown" props={{ text: element.content }} />
-              </ItemWrapper>
-            );
+    <>
+      <BlogPostWrapper>
+        <Widget
+          src="${REPL_ACCOUNT}/widget/DIG.Button"
+          props={{
+            label: "Back To All Posts",
+            href: `/${REPL_ACCOUNT}/widget/Blog.Feed`,
+            iconLeft: "ph ph-arrow-left",
+            variant: "secondary",
+            size: "small",
+          }}
+          style={{ marginBottom: "1rem" }}
+        />
+        {/* RENDER BLOG HEADER IMAGE */}
+        <PostImage
+          imageUrl={
+            markdownObj[0].imageUrl || "https://pages.near.org/wp-content/uploads/2023/06/generic-green-blog.png"
           }
-        })}
+          alt="Post image"
+        />
+        <BlogPostContentWrapper>
+          <TitleSection>
+            {/* RENDER BLOG HEADER - TITLE   */}
 
-        <>
-          {state.content && (
-            <Content>
-              {state.content.text && !state.editPost && (
-                <Widget src="${REPL_ACCOUNT}/widget/SocialMarkdown" props={{ text: state.content.text }} />
-              )}
+            <h1>{getFirstHeading(markdownObj)?.text || "Untitled"}</h1>
 
-              {state.editPost && (
-                <div className="mb-2">
+            {/* RENDER BLOG HEADER - DATE */}
+
+            <p>
+              <Widget
+                src="${REPL_ACCOUNT}/widget/TimeAgo"
+                props={{ blockHeight: blog.block_height, blockTimestamp: blog.block_timestamp }}
+              />
+            </p>
+
+            {/* RENDER BLOG HEADER - AUTHOR INFO */}
+
+            <Widget
+              src="${REPL_ACCOUNT}/widget/AccountProfile"
+              key={blog.accountId}
+              props={{
+                accountId: blog.accountId,
+              }}
+            />
+          </TitleSection>
+
+          {/* RENDER BLOG BODY */}
+          {markdownObj.map((element, index) => {
+            if ((index <= 1 && element.type === "header") || element.type === "header-image") {
+              return;
+            } else {
+              return (
+                <ItemWrapper style={{ marginTop: element.type === "list-item" ? "" : "2em" }}>
+                  <Widget src="${REPL_ACCOUNT}/widget/SocialMarkdown" props={{ text: element.content }} />
+                </ItemWrapper>
+              );
+            }
+          })}
+
+          <>
+            {state.content && (
+              <Content>
+                {state.content.text && !state.editPost && (
+                  <Widget src="${REPL_ACCOUNT}/widget/SocialMarkdown" props={{ text: state.content.text }} />
+                )}
+
+                {state.editPost && (
+                  <div className="mb-2">
+                    <Widget
+                      src="${REPL_ACCOUNT}/widget/Posts.Edit"
+                      props={{
+                        item: { accountId, blockHeight },
+                        content: state.content,
+                        onEdit: toggleEdit,
+                      }}
+                    />
+                  </div>
+                )}
+
+                {state.content.image && (
                   <Widget
-                    src="${REPL_ACCOUNT}/widget/Posts.Edit"
+                    src="${REPL_MOB}/widget/Image"
                     props={{
-                      item: { accountId, blockHeight },
-                      content: state.content,
-                      onEdit: toggleEdit,
+                      image: state.content.image,
                     }}
                   />
-                </div>
-              )}
+                )}
+              </Content>
+            )}
+          </>
+        </BlogPostContentWrapper>
 
-              {state.content.image && (
+        {/* RENDER BLOG FOOTER - COMMENTS / LIKES / ETC */}
+        <BlogPostActionsWrapper>
+          {blockHeight !== "now" && (
+            <Actions>
+              <PromptSignUpWrapper>
                 <Widget
-                  src="${REPL_MOB}/widget/Image"
+                  src="${REPL_ACCOUNT}/widget/v1.LikeButton"
                   props={{
-                    image: state.content.image,
+                    item,
+                    notifyAccountId,
+                    likes: state.likes,
                   }}
                 />
-              )}
-            </Content>
+
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/CommentButton"
+                  props={{
+                    item,
+                    onClick: () => State.update({ showReply: !state.showReply }),
+                  }}
+                />
+              </PromptSignUpWrapper>
+              <Widget
+                src="${REPL_ACCOUNT}/widget/CopyUrlButton"
+                props={{
+                  url: postUrl,
+                }}
+              />
+              <Widget
+                src="${REPL_ACCOUNT}/widget/ShareButton"
+                props={{
+                  postType: "post",
+                  url: postUrl,
+                }}
+              />
+            </Actions>
           )}
-        </>
-      </BlogPostContentWrapper>
-
-      {/* RENDER BLOG FOOTER - COMMENTS / LIKES / ETC */}
-      <BlogPostFooterWrapper>
-        {blockHeight !== "now" && (
-          <Actions>
-            <PromptSignUpWrapper>
+          {state.showReply && (
+            <div className="mb-2">
               <Widget
-                src="${REPL_ACCOUNT}/widget/v1.LikeButton"
+                src="${REPL_ACCOUNT}/widget/Comments.Compose"
                 props={{
-                  item,
                   notifyAccountId,
-                  likes: state.likes,
-                }}
-              />
-
-              <Widget
-                src="${REPL_ACCOUNT}/widget/CommentButton"
-                props={{
                   item,
-                  onClick: () => State.update({ showReply: !state.showReply }),
+                  onComment: () => State.update({ showReply: false }),
+                  newAddedComment: addNewCommentFn,
                 }}
               />
-            </PromptSignUpWrapper>
-            <Widget
-              src="${REPL_ACCOUNT}/widget/CopyUrlButton"
-              props={{
-                url: postUrl,
-              }}
-            />
-            <Widget
-              src="${REPL_ACCOUNT}/widget/ShareButton"
-              props={{
-                postType: "post",
-                url: postUrl,
-              }}
-            />
-          </Actions>
-        )}
-        {state.showReply && (
-          <div className="mb-2">
-            <Widget
-              src="${REPL_ACCOUNT}/widget/Comments.Compose"
-              props={{
-                notifyAccountId,
-                item,
-                onComment: () => State.update({ showReply: false }),
-                newAddedComment: addNewCommentFn,
-              }}
-            />
-          </div>
-        )}
-      </BlogPostFooterWrapper>
-    </BlogPostWrapper>
+            </div>
+          )}
+          {renderedComments && (
+            <Comments>
+              <CommentWrapper>{renderedComments}</CommentWrapper>
+            </Comments>
+          )}
+        </BlogPostActionsWrapper>
+      </BlogPostWrapper>
+      <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Footer" />
+    </>
   );
 }
 

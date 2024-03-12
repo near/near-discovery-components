@@ -73,7 +73,8 @@ async function getBlock(block: Block) {
             await handleNotify(
               accountId,
               blockHeight,
-              writeAction.args.data[accountId].index.notify
+              writeAction.args.data[accountId].index.notify,
+              writeAction.receiptId
             );
           }
         }
@@ -81,15 +82,26 @@ async function getBlock(block: Block) {
     );
   }
 
-  async function handleNotify(accountId, blockHeight, notifyPayload) {
+  async function handleNotify(
+    accountId,
+    blockHeight,
+    notifyPayload,
+    receiptId
+  ) {
     try {
       let data = JSON.parse(notifyPayload);
       data = Array.isArray(data) ? data : [data];
       console.log(data);
       const mutationPayload = data.map((notification) => {
         const { key, value } = notification;
-        const { message, item = {}, type: valueType } = value;
-        const { path, type: itemType } = item;
+        const {
+          message,
+          item = {},
+          type: valueType,
+          post: devhubPostId,
+        } = value;
+        const { path, type: itemType, blockHeight: actionAtBlockHeight } = item;
+        // actionAtBlockHeight related to "like" itemType
 
         return {
           initiatedBy: accountId,
@@ -99,30 +111,28 @@ async function getBlock(block: Block) {
           itemType,
           path,
           blockHeight,
+          devhubPostId,
+          actionAtBlockHeight,
+          receiptId,
         };
       });
 
       console.log(`handling notification triggered by ${accountId}`);
 
       //send graphql mutation
-      await context.graphql(
-        `mutation MyMutation($objects: [dataplatform_near_notifications_notifications_insert_input!]!) {
-        insert_dataplatform_near_notifications_notifications(
-          objects: $objects
-        ) {
-          returning {
-            blockHeight
-            id
-            initiatedBy
-            itemType
-            message
-            path
-            receiver
-            valueType
-          }
-        }
-      }`,
-        { objects: mutationPayload }
+      await context.db.Notifications.upsert(
+        mutationPayload,
+        ["receiptId"],
+        [
+          "initiatedBy",
+          "receiver",
+          "message",
+          "valueType",
+          "itemType",
+          "path",
+          "devhubPostId",
+          "actionAtBlockHeight",
+        ]
       );
       console.log("Successfully stored Notify record");
     } catch (e) {

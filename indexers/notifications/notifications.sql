@@ -8,5 +8,8 @@ CREATE TABLE
     "message" TEXT NULL,
     "itemType" TEXT NULL,
     "path" TEXT NULL,
+    "devhubPostId" INT NULL,
+    "actionAtBlockHeight" INT NULL,
+    "receiptId" VARCHAR NULL,
     PRIMARY KEY ("id")
   )

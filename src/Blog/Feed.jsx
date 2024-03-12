@@ -238,7 +238,10 @@ const renderItem = (item, index) => {
       <Post key={index}>
         <ImageContainer>
           <PostImage
-            src={markdownObj[0].imageUrl || "https://pages.near.org/wp-content/uploads/2023/06/generic-green-blog.png"}
+            src={
+              markdownObj[0].imageUrl ||
+              "https://ipfs.near.social/ipfs/bafkreiatutmf7b7siy2ul7ofo7cmypwc3qlgwseoij3gdxuqf7xzcdguia"
+            }
             alt="Post image"
           />
         </ImageContainer>

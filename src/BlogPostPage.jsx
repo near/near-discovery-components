@@ -81,7 +81,12 @@ const TitleSection = styled.div`
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  margin-bottom: 2rem;
+`;
+
+const PostDate = styled.div`
+  margin-top: -2rem;
+  margin-bottom: 1.5rem;
+  color: #706f6c;
 `;
 
 const ItemWrapper = styled.div`
@@ -290,14 +295,33 @@ const PromptSignUpWrapper = ({ children }) => {
   );
 };
 
-if (blog) {
-  const renderPost = (post) => {
-    return <Widget src="${REPL_ACCOUNT}/widget/Posts.Post" props={{ ...post }} />;
-  };
-  const renderData = (dataProps) => {
-    return <Widget src="${REPL_ACCOUNT}/widget/Posts.ModeratedPostData" props={{ ...dataProps, renderPost }} />;
-  };
+const getPostTime = (blockHeight) => {
+  const block = Near.block(blockHeight);
 
+  if (block === null) {
+    return "Loading";
+  }
+
+  if (!block) {
+    return "unknown";
+  }
+
+  const timeMs = parseFloat(block.header.timestamp_nanosec) / 1e6;
+  const date = new Date(timeMs);
+  const mdy = `${date.toLocaleDateString([], {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  })}`;
+
+  return {
+    timeMs,
+    date,
+    mdy,
+  };
+};
+
+if (blog) {
   const postUrl = `https://near.org/near/widget/BlogPostPage?accountId=${props.accountId}&blockHeight=${props.blockHeight}`;
   const markdownObj = parseMarkdown(blog.blogContent);
 
@@ -341,7 +365,8 @@ if (blog) {
         {/* RENDER BLOG HEADER IMAGE */}
         <PostImage
           imageUrl={
-            markdownObj[0].imageUrl || "https://pages.near.org/wp-content/uploads/2023/06/generic-green-blog.png"
+            markdownObj[0].imageUrl ||
+            "https://ipfs.near.social/ipfs/bafkreiatutmf7b7siy2ul7ofo7cmypwc3qlgwseoij3gdxuqf7xzcdguia"
           }
           alt="Post image"
         />
@@ -353,12 +378,7 @@ if (blog) {
 
             {/* RENDER BLOG HEADER - DATE */}
 
-            <p>
-              <Widget
-                src="${REPL_ACCOUNT}/widget/TimeAgo"
-                props={{ blockHeight: blog.block_height, blockTimestamp: blog.block_timestamp }}
-              />
-            </p>
+            <PostDate>{getPostTime(blog.block_height).mdy}</PostDate>
 
             {/* RENDER BLOG HEADER - AUTHOR INFO */}
 

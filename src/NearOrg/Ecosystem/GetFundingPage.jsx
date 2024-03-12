@@ -266,7 +266,7 @@ const regionalHubCards = [
   },
   {
     ipfsImage: ipfsImages.flagUSA,
-    title: "Bayan",
+    title: "Banyan",
     href: "https://twitter.com/Banyan_NEAR",
   },
   {

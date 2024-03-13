@@ -2,6 +2,7 @@ const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pa
 
 //place id of the post you want to fetch from the dataplatform_near_social_feed_moderated_posts table
 const blogPostIds = [76994, 76797, 75675, 76460];
+const requestAuthentication = props.requestAuthentication;
 
 const [posts, setPosts] = useState([]);
 const [blogPosts, setBlogPosts] = useState([]);
@@ -188,16 +189,16 @@ const ContentContainer = styled.div`
   width: 60%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
 
   @media (max-width: ${breakpoints.mobile}) {
     width: 100%;
   }
 `;
-
 const PostTitle = styled.h2`
   font-size: 1rem;
   font-weight: 600;
+  margin: 0;
   color: #3f4246;
 
   @media (max-width: ${breakpoints.mobile}) {
@@ -234,7 +235,7 @@ const renderItem = (item, index) => {
   }
 
   return (
-    <Link href={`/${REPL_ACCOUNT}/widget/BlogPostPage?accountId=${item.account_id}&blockHeight=${item.block_height}`}>
+    <Link href={`/bosblog?accountId=${item.account_id}&blockHeight=${item.block_height}`}>
       <Post key={index}>
         <ImageContainer>
           <PostImage

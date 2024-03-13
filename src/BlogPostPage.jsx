@@ -152,6 +152,13 @@ if (!props.accountId || !(props.blockHeight || props.commentBlockHeight)) {
 }
 
 const [blog, setBlog] = useState(null);
+const [showReply, setShowReply] = useState(false);
+const notifyAccountId = props.notifyAccountId;
+const item = {
+  type: "social",
+  path: `${accountId}/post/main`,
+  blockHeight,
+};
 
 const blogPostQuery = `
 query IndexerQuery {
@@ -348,6 +355,14 @@ if (blog) {
 
   const renderedComments = blog.blogComments?.map(renderComment);
 
+  const addNewCommentFn = (newComment) => {
+    setBlog(
+      Object.assign({}, blog, {
+        blogComments: [...blog.blogComments, newComment],
+      }),
+    );
+  };
+
   return (
     <>
       <BlogPostWrapper>
@@ -355,7 +370,7 @@ if (blog) {
           src="${REPL_ACCOUNT}/widget/DIG.Button"
           props={{
             label: "Back To All Posts",
-            href: `/${REPL_ACCOUNT}/widget/Blog.Feed`,
+            href: `/bosblog`,
             iconLeft: "ph ph-arrow-left",
             variant: "secondary",
             size: "small",
@@ -447,7 +462,7 @@ if (blog) {
                   props={{
                     item,
                     notifyAccountId,
-                    likes: state.likes,
+                    likes: blog.blogLikes,
                   }}
                 />
 
@@ -455,7 +470,7 @@ if (blog) {
                   src="${REPL_ACCOUNT}/widget/CommentButton"
                   props={{
                     item,
-                    onClick: () => State.update({ showReply: !state.showReply }),
+                    onClick: () => setShowReply(!showReply),
                   }}
                 />
               </PromptSignUpWrapper>
@@ -474,14 +489,14 @@ if (blog) {
               />
             </Actions>
           )}
-          {state.showReply && (
+          {showReply && (
             <div className="mb-2">
               <Widget
                 src="${REPL_ACCOUNT}/widget/Comments.Compose"
                 props={{
                   notifyAccountId,
                   item,
-                  onComment: () => State.update({ showReply: false }),
+                  onComment: () => setShowReply(false),
                   newAddedComment: addNewCommentFn,
                 }}
               />

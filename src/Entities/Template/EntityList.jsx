@@ -146,7 +146,7 @@ return (
         {context.accountId && (
           <div className="col-3">
             <Widget
-              src="near/widget/DIG.Button"
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
                 label: "Create " + humanizedEntityType,
                 onClick: toggleModal,

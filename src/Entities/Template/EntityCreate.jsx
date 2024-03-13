@@ -31,7 +31,7 @@ const actionType = data ? (data.accountId == context.accountId ? "Edit" : "Fork"
 
 return (
   <Widget
-    src="devhub.near/widget/devhub.components.organism.Configurator"
+    src="${REPL_DEVHUB}/widget/devhub.components.organism.Configurator"
     props={{
       heading: `${actionType} ${capitalizedEntityType}`,
       fullWidth: true,

@@ -5,9 +5,9 @@
   "REPL_MODERATOR": "bosmod.testnet",
   "REPL_NEAR_URL": "test.near.org",
   "REPL_NEARWEEK": "discom-dev.testnet",
-  "REPL_QUERYAPI_FEED": "discom.testnet/widget/Posts",
   "REPL_FEATURED_COMP_MANAGER": "discom.testnet",
   "REPL_TIME_AGO_VERSION": "",
   "REPL_BOZON": "bozon_testnet.testnet",
-  "REPL_NEARCATALOG": "discom-dev.testnet"
+  "REPL_NEARCATALOG": "discom-dev.testnet",
+  "REPL_DEVHUB": "devhubtest.testnet"
 }

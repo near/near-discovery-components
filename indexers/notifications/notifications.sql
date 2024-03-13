@@ -12,4 +12,11 @@ CREATE TABLE
     "actionAtBlockHeight" INT NULL,
     "receiptId" VARCHAR NULL,
     PRIMARY KEY ("id")
-  )
+  );
+
+ALTER TABLE notifications
+ADD CONSTRAINT notifications_receiptId_key UNIQUE (receiptId);
+
+CREATE UNIQUE INDEX notifications_pkey ON notifications USING BTREE (id);
+
+CREATE UNIQUE INDEX notifications_receiptId_key ON notifications USING BTREE (receiptId);

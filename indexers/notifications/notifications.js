@@ -137,19 +137,40 @@ async function getBlock(block: Block) {
         };
       });
 
-      await context.db.Notifications.upsert(
-        mutationPayload,
-        ["receiptId"],
-        [
-          "initiatedBy",
-          "receiver",
-          "message",
-          "valueType",
-          "itemType",
-          "path",
-          "devhubPostId",
-          "actionAtBlockHeight",
-        ]
+      await context.graphql(
+        `mutation MyMutation($objects: [dataplatform_near_notifications_notifications_insert_input!]!) {
+        insert_dataplatform_near_notifications_notifications(
+          objects: $objects
+on_conflict: {
+      constraint: notifications_receiptId_key,
+      update_columns: [
+          initiatedBy,
+          receiver,
+          message,
+          valueType,
+          itemType,
+          path,
+          blockHeight,
+          devhubPostId,
+          actionAtBlockHeight
+      ]
+    }
+        ) {
+          returning {
+            initiatedBy
+            receiver
+            message
+            valueType
+            itemType
+            path
+            blockHeight
+            devhubPostId
+            actionAtBlockHeight
+            receiptId
+          }
+        }
+      }`,
+        { objects: mutationPayload }
       );
       console.log(`Successfully stored Notify record for ${accountId}`);
     } catch (e) {

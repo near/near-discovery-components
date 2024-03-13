@@ -70,6 +70,11 @@ const likeClick = () => {
     return;
   }
 
+  if (!context.accountId) {
+    props.requestAuthentication();
+    return;
+  }
+
   State.update({
     loading: true,
     hasLikeOptimistic: !hasLike,

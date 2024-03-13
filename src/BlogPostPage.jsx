@@ -98,13 +98,13 @@ const ItemWrapper = styled.div`
 `;
 
 const PostImage = styled.img`
-  width: 100%; /* Full width of the container */
-  height: 0; /* Initial height, will be overridden by padding */
-  padding-bottom: 50%; /* Aspect ratio: height is 50% of the width, resulting in 2:1 */
+  width: 100%;
+  height: 0;
+  padding-bottom: 50%;
   background-image: url(${(props) => props.imageUrl});
   background-size: cover;
   background-position: center;
-  border-radius: 8px; /* Optional, for rounded corners */
+  border-radius: 8px;
   display: block;
   margin-bottom: 2rem;
 `;
@@ -288,20 +288,6 @@ function getFirstHeading(markdownArray) {
   return null;
 }
 
-const PromptSignUpWrapper = ({ children }) => {
-  const url = "/signup?";
-
-  if (context.accountId) {
-    return children;
-  }
-
-  return (
-    <Link href={url} target="_blank" style={{ textDecoration: "none" }}>
-      {children}
-    </Link>
-  );
-};
-
 const getPostTime = (blockHeight) => {
   const block = Near.block(blockHeight);
 
@@ -363,6 +349,14 @@ if (blog) {
     );
   };
 
+  const commentButtonHandler = () => {
+    if (!context.accountId) {
+      props.requestAuthentication();
+    } else {
+      setShowReply(!showReply);
+    }
+  };
+
   return (
     <>
       <BlogPostWrapper>
@@ -418,62 +412,30 @@ if (blog) {
               );
             }
           })}
-
-          <>
-            {state.content && (
-              <Content>
-                {state.content.text && !state.editPost && (
-                  <Widget src="${REPL_ACCOUNT}/widget/SocialMarkdown" props={{ text: state.content.text }} />
-                )}
-
-                {state.editPost && (
-                  <div className="mb-2">
-                    <Widget
-                      src="${REPL_ACCOUNT}/widget/Posts.Edit"
-                      props={{
-                        item: { accountId, blockHeight },
-                        content: state.content,
-                        onEdit: toggleEdit,
-                      }}
-                    />
-                  </div>
-                )}
-
-                {state.content.image && (
-                  <Widget
-                    src="${REPL_MOB}/widget/Image"
-                    props={{
-                      image: state.content.image,
-                    }}
-                  />
-                )}
-              </Content>
-            )}
-          </>
         </BlogPostContentWrapper>
 
         {/* RENDER BLOG FOOTER - COMMENTS / LIKES / ETC */}
         <BlogPostActionsWrapper>
           {blockHeight !== "now" && (
             <Actions>
-              <PromptSignUpWrapper>
-                <Widget
-                  src="${REPL_ACCOUNT}/widget/v1.LikeButton"
-                  props={{
-                    item,
-                    notifyAccountId,
-                    likes: blog.blogLikes,
-                  }}
-                />
+              <Widget
+                src="${REPL_ACCOUNT}/widget/v1.LikeButton"
+                props={{
+                  item,
+                  notifyAccountId,
+                  likes: blog.blogLikes,
+                  requestAuthentication: props.requestAuthentication,
+                }}
+              />
 
-                <Widget
-                  src="${REPL_ACCOUNT}/widget/CommentButton"
-                  props={{
-                    item,
-                    onClick: () => setShowReply(!showReply),
-                  }}
-                />
-              </PromptSignUpWrapper>
+              <Widget
+                src="${REPL_ACCOUNT}/widget/CommentButton"
+                props={{
+                  item,
+                  onClick: () => commentButtonHandler(),
+                }}
+              />
+
               <Widget
                 src="${REPL_ACCOUNT}/widget/CopyUrlButton"
                 props={{

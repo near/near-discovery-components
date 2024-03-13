@@ -68,7 +68,7 @@ const likeClick = () => {
     return;
   }
 
-  if (!context.accountId) {
+  if (!context.accountId && props.requestAuthentication) {
     props.requestAuthentication();
     return;
   }

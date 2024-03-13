@@ -30,7 +30,9 @@ useEffect(() => {
   Storage.set("moderator-all-tabs", activeTabs);
 }, [activeTabs]);
 
-if (props.menu && props.menu !== activeMenu) {
+const [paramsHandled, setParamsHandled] = useState(false);
+if (!paramsHandled && props.menu && props.menu !== activeMenu) {
+  setParamsHandled(true);
   setActiveMenu(props.menu);
   const activeTab = activeTabs[activeMenu];
   if (props.tab && props.tab !== activeTab) {

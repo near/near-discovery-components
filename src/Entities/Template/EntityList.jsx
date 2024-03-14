@@ -1,12 +1,23 @@
-const { fetchGraphQL, loadItems } = VM.require("${REPL_ACCOUNT}/widget/Entities.QueryApi.Client");
-if (!fetchGraphQL || !loadItems) {
+const loadItemsQueryApi = VM.require("${REPL_ACCOUNT}/widget/Entities.QueryApi.Client")?.loadItems;
+if (!loadItemsQueryApi) {
   return <p>Loading modules...</p>;
 }
+const loadItems = props.loadItems ?? loadItemsQueryApi;
 
 const accountId = props.accountId || context.accountId;
-const { entityType, description, buildQueries, queryName, collection, renderItem, createWidget } = props;
+const {
+  entityType,
+  schema,
+  description,
+  buildQueries,
+  queryName,
+  collection,
+  renderItem,
+  createWidget,
+  createWidgetProps,
+} = props;
 
-const finalCreateWidget = createWidget ?? "${REPL_ACCOUNT}" + `/widget/Entities.${entityType}.${entityType}Create`;
+const finalCreateWidget = createWidget ?? `${REPL_ACCOUNT}/widget/Entities.Template.EntityCreate`;
 
 const [searchKey, setSearchKey] = useState("");
 const [sort, setSort] = useState("");
@@ -36,6 +47,12 @@ useEffect(() => {
   setItems([]);
   loadItemsUseState();
 }, [sort, searchKey]);
+
+const humanize = (str) => {
+  if (!str) return "";
+  return str.replace(/([A-Z])/g, " $1").replace(/^./, (s) => s.toUpperCase());
+};
+const humanizedEntityType = humanize(entityType);
 
 const Wrapper = styled.div`
   display: flex;
@@ -111,6 +128,10 @@ const dialogStyles = {
   maxWidth: "800px",
   borderRadius: "14px",
 };
+const ScrollBox = styled.div`
+  max-height: 80vh;
+  overflow-y: auto;
+`;
 
 return (
   <Wrapper className="container-xl">
@@ -118,16 +139,16 @@ return (
       <div className="row">
         <div className="col">
           <H2>
-            {totalItems} {entityType + (totalItems > 1 ? "s" : "")}
+            {totalItems} {humanizedEntityType + (totalItems > 1 ? "s" : "")}
           </H2>
           {description && <Text>{description}</Text>}
         </div>
         {context.accountId && (
-          <div className="col-2">
+          <div className="col-3">
             <Widget
-              src="near/widget/DIG.Button"
+              src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
-                label: "Create " + entityType,
+                label: "Create " + humanizedEntityType,
                 onClick: toggleModal,
                 iconLeft: "ph ph-plus-circle",
                 variant: "primary",
@@ -139,7 +160,14 @@ return (
               src="${REPL_ACCOUNT}/widget/DIG.Dialog"
               props={{
                 type: "dialog",
-                description: <Widget src={finalCreateWidget} props={{ onCancel: closeModal, data: activeItem }} />,
+                description: (
+                  <ScrollBox>
+                    <Widget
+                      src={finalCreateWidget}
+                      props={{ schema, entityType, onCancel: closeModal, data: activeItem, ...createWidgetProps }}
+                    />
+                  </ScrollBox>
+                ),
                 onOpenChange: closeModal,
                 open: showCreateModal,
                 contentStyles: dialogStyles,
@@ -165,11 +193,15 @@ return (
           </div>
         }
       >
-        <Items>
-          {items.map((item) => (
-            <Item key={item.accountId + item.widgetName}>{renderItem(item, editFunction)}</Item>
-          ))}
-        </Items>
+        {props.table ? (
+          items.map((item) => <div key={`${item.accountId}-${item.widgetName}`}>{renderItem(item, editFunction)}</div>)
+        ) : (
+          <Items>
+            {items.map((item) => (
+              <Item key={`${item.accountId}-${item.widgetName}`}>{renderItem(item, editFunction)}</Item>
+            ))}
+          </Items>
+        )}
       </InfiniteScroll>
     )}
   </Wrapper>

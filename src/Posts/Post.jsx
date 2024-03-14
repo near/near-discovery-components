@@ -229,20 +229,6 @@ const addNewCommentFn = (newComment) => {
   State.update(state.comments.push(newComment));
 };
 
-const PromptSignUpWrapper = ({ children }) => {
-  const url = "/signup?";
-
-  if (context.accountId) {
-    return children;
-  }
-
-  return (
-    <Link href={url} target="_blank" style={{ textDecoration: "none" }}>
-      {children}
-    </Link>
-  );
-};
-
 return (
   <>
     {state.showToast && (
@@ -339,24 +325,23 @@ return (
 
             {blockHeight !== "now" && (
               <Actions>
-                <PromptSignUpWrapper>
-                  <Widget
-                    src="${REPL_ACCOUNT}/widget/v1.LikeButton"
-                    props={{
-                      item,
-                      notifyAccountId,
-                      likes: state.likes,
-                    }}
-                  />
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/v1.LikeButton"
+                  props={{
+                    item,
+                    notifyAccountId,
+                    likes: state.likes,
+                  }}
+                />
 
-                  <Widget
-                    src="${REPL_ACCOUNT}/widget/CommentButton"
-                    props={{
-                      item,
-                      onClick: () => State.update({ showReply: !state.showReply }),
-                    }}
-                  />
-                </PromptSignUpWrapper>
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/CommentButton"
+                  props={{
+                    item,
+                    onClick: () => State.update({ showReply: !state.showReply }),
+                  }}
+                />
+
                 <Widget
                   src="${REPL_ACCOUNT}/widget/CopyUrlButton"
                   props={{

@@ -323,9 +323,9 @@ return (
                 <Widget
                   src="${REPL_ACCOUNT}/widget/DIG.Button"
                   props={{
-                    href: "https://forms.gle/LWJoTpTiCbSheUL26",
+                    href: "https://${REPL_NEAR_URL}/blog/why-near-data-availability",
                     target: "_blank",
-                    label: "Get Updates",
+                    label: "Intro to NEAR DA",
                     variant: "primary",
                     size: "large",
                   }}
@@ -334,9 +334,9 @@ return (
                 <Widget
                   src="${REPL_ACCOUNT}/widget/DIG.Button"
                   props={{
-                    href: "https://pages.near.org/blog/why-near-data-availability/",
+                    href: "https://www.nearmodular.com",
                     target: "_blank",
-                    label: "Intro to NEAR DA",
+                    label: "Costs Dashboard",
                     variant: "secondary",
                     fill: "outline",
                     size: "large",
@@ -582,7 +582,7 @@ return (
             <Widget
               src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
-                href: "https://pages.near.org/blog/why-near-data-availability/",
+                href: "https://${REPL_NEAR_URL}/blog/why-near-data-availability",
                 target: "_blank",
                 label: "Intro to NEAR DA",
                 variant: "secondary",

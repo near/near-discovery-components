@@ -27,7 +27,18 @@ const inputsValidator = (formValues) =>
     return !required || typeof formValues[key] === "string";
   });
 
-const actionType = data ? (data.accountId == context.accountId ? "Edit" : "Fork") : "Create";
+const actionType = data ? (data.accountId === context.accountId ? "Edit" : "Fork") : "Create";
+
+const initialValues = (schema, data) => {
+  const initial = data ?? {};
+  Object.keys(schema).forEach((key) => {
+    const fieldProps = schema[key];
+    if (!data[key] && fieldProps.displayType !== "hidden" && fieldProps.type === "string") {
+      initial[key] = "";
+    }
+  });
+  return initial;
+};
 
 return (
   <Widget
@@ -47,7 +58,7 @@ return (
       submitLabel: data ? "Save" : "Launch",
       onCancel: onCancel,
       cancelLabel: cancelLabel,
-      externalState: data,
+      externalState: initialValues(schema, data),
     }}
   />
 );

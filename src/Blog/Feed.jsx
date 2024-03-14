@@ -1,9 +1,11 @@
 const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 
 //place id of the post you want to fetch from the dataplatform_near_social_feed_moderated_posts table
-const blogPostIds = props.blogPostIds || [75675];
+const blogPostIds = [76994, 76797, 75675, 76460];
+const requestAuthentication = props.requestAuthentication;
 
 const [posts, setPosts] = useState([]);
+const [blogPosts, setBlogPosts] = useState([]);
 
 const blogPostsQuery = `
 query FeedQuery {
@@ -11,7 +13,7 @@ query FeedQuery {
     order_by: {block_height: desc}
     where: {
       _and: {
-        id: {_in: ${blogPostIds}}
+        id: {_in: ${JSON.stringify(blogPostIds)}}
       }
     }
   ) {
@@ -48,18 +50,22 @@ fetchGraphQL(blogPostsQuery, "FeedQuery", {}).then((result) => {
       const posts = result.body.data.dataplatform_near_feed_moderated_posts;
       setPosts(posts);
       if (posts.length > 0) {
-        const post = posts[0];
-        let content = JSON.parse(post.content);
-        if (post.accounts_liked.length !== 0) {
-          if (typeof post.accounts_liked === "string") {
-            post.accounts_liked = JSON.parse(post.accounts_liked);
+        posts.forEach((post) => {
+          let content = JSON.parse(post.content);
+          if (post.accounts_liked.length !== 0) {
+            if (typeof post.accounts_liked === "string") {
+              post.accounts_liked = JSON.parse(post.accounts_liked);
+            }
           }
-        }
-        const comments = post.comments;
-        State.update({
-          blogPostContent: content,
-          blogPostComments: comments,
-          blogPostLikes: post.accounts_liked,
+          const comments = post.comments;
+          setBlogPosts([
+            ...posts,
+            {
+              blogPostContent: content,
+              blogPostComments: comments,
+              blogPostLikes: post.accounts_liked,
+            },
+          ]);
         });
       } else {
         State.update({
@@ -87,7 +93,7 @@ function parseMarkdown(markdown) {
       parsedMarkdown.push(currentHeader);
     } else {
       if (currentHeader) {
-        currentHeader = null; // Reset currentHeader after encountering a non-header line
+        currentHeader = null;
       }
       if (line.trim().length > 0) {
         parsedMarkdown.push({ type: "paragraph", content: line });
@@ -105,7 +111,7 @@ function isImage(line) {
 function getImageUrl(line) {
   const match = line.match(/\((.*?)\)/);
   if (match) {
-    return match[1].replace(/'/g, ""); // remove single quotes if present
+    return match[1].replace(/'/g, "");
   }
   return null;
 }
@@ -116,7 +122,7 @@ function getFirstHeading(markdownArray) {
       return element;
     }
   }
-  return null; // Return null if no heading is found
+  return null;
 }
 
 const H2 = styled.h2`
@@ -132,7 +138,7 @@ const H2 = styled.h2`
 `;
 
 const breakpoints = {
-  mobile: "768px", // this means anything below 768px width is considered mobile
+  mobile: "1100px",
 };
 
 const PostContainer = styled.div`
@@ -154,7 +160,6 @@ const Post = styled.div`
   border-radius: 8px;
   overflow: hidden;
 
-  // Media query for mobile devices
   @media (max-width: ${breakpoints.mobile}) {
     flex-direction: column;
   }
@@ -163,14 +168,19 @@ const Post = styled.div`
 const PostImage = styled.img`
   width: 100%;
   height: 100%;
+  object-fit: cover;
+  object-position: center;
 `;
 
 const ImageContainer = styled.div`
   width: 40%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   @media (max-width: ${breakpoints.mobile}) {
-    width: 100%; // full width on mobile
+    width: 100%;
   }
 `;
 
@@ -179,23 +189,20 @@ const ContentContainer = styled.div`
   width: 60%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
 
   @media (max-width: ${breakpoints.mobile}) {
-    width: 100%; // full width on mobile
+    width: 100%;
   }
 `;
-
 const PostTitle = styled.h2`
   font-size: 1rem;
   font-weight: 600;
-  color: #3f4246;
   margin: 0;
-  margin-top: 0.2rem;
-  margin-bottom: 1rem;
+  color: #3f4246;
 
   @media (max-width: ${breakpoints.mobile}) {
-    font-size: 1.25rem; // larger text on mobile
+    font-size: 1.25rem;
   }
 `;
 
@@ -206,7 +213,7 @@ const PostDate = styled.p`
   align-self: flex-end;
 
   @media (max-width: ${breakpoints.mobile}) {
-    font-size: 0.9rem; // slightly larger text on mobile
+    font-size: 0.9rem;
   }
 `;
 
@@ -217,6 +224,7 @@ const renderItem = (item, index) => {
   }
 
   const markdownObj = parseMarkdown(content.text);
+
   const title = getFirstHeading(markdownObj);
 
   const time = new Date(item.block_timestamp / 1000000);
@@ -227,11 +235,14 @@ const renderItem = (item, index) => {
   }
 
   return (
-    <Link href={`/${REPL_ACCOUNT}/widget/BlogPostPage?accountId=${item.account_id}&blockHeight=${item.block_height}`}>
+    <Link href={`/bosblog?accountId=${item.account_id}&blockHeight=${item.block_height}`}>
       <Post key={index}>
         <ImageContainer>
           <PostImage
-            src={markdownObj[0].imageUrl || "https://pages.near.org/wp-content/uploads/2023/06/generic-green-blog.png"}
+            src={
+              markdownObj[0].imageUrl ||
+              "https://ipfs.near.social/ipfs/bafkreiatutmf7b7siy2ul7ofo7cmypwc3qlgwseoij3gdxuqf7xzcdguia"
+            }
             alt="Post image"
           />
         </ImageContainer>

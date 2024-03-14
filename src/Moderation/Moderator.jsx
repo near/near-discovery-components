@@ -10,11 +10,36 @@ const Wrapper = styled.div`
   height: 100%;
 `;
 
-const activeTab = Storage.get("moderator-tab") || "overview";
-if (props.tab && props.tab !== activeTab) {
-  State.update({
-    activeTab: props.tab,
-  });
+const storedMenu = Storage.get("moderator-group");
+if (storedMenu === null) {
+  return <></>;
+}
+const storedTabs = Storage.get("moderator-all-tabs");
+if (storedTabs === null) {
+  return <></>;
+}
+const [activeMenu, setActiveMenu] = useState(storedMenu || "overview");
+
+useEffect(() => {
+  Storage.set("moderator-group", activeMenu);
+}, [activeMenu]);
+const [activeTabs, setActiveTabs] = useState(
+  storedTabs || { needsModeration: "needsModeration", previouslyModerated: "moderatedPosts" },
+);
+useEffect(() => {
+  Storage.set("moderator-all-tabs", activeTabs);
+}, [activeTabs]);
+
+const [paramsHandled, setParamsHandled] = useState(false);
+if (!paramsHandled && props.menu && props.menu !== activeMenu) {
+  setParamsHandled(true);
+  setActiveMenu(props.menu);
+  const activeTab = activeTabs[activeMenu];
+  if (props.tab && props.tab !== activeTab) {
+    const newTabs = { ...activeTabs };
+    newTabs[props.menu] = props.tab;
+    setActiveTabs(newTabs);
+  }
 }
 
 const moderatorAccount = props?.moderatorAccount || "${REPL_MODERATOR}";
@@ -91,7 +116,12 @@ function needsModeration() {
         props={{
           variant: "line",
           size: "large",
-          defaultValue: "needsModeration",
+          value: activeTabs[activeMenu] || "needsModeration",
+          onValueChange: (value) => {
+            const newTabs = { ...activeTabs };
+            newTabs["needsModeration"] = value;
+            setActiveTabs(newTabs);
+          },
           items: [
             {
               name: "Reported",
@@ -121,7 +151,12 @@ function previouslyModerated() {
         props={{
           variant: "line",
           size: "large",
-          defaultValue: "moderatedAccounts",
+          value: activeTabs[activeMenu] || "moderatedAccounts",
+          onValueChange: (value) => {
+            const newTabs = { ...activeTabs };
+            newTabs["previouslyModerated"] = value;
+            setActiveTabs(newTabs);
+          },
           items: [
             {
               name: "Moderated Accounts",
@@ -164,7 +199,7 @@ function previouslyModerated() {
 }
 
 const renderContent = () => {
-  switch (activeTab) {
+  switch (activeMenu) {
     case "overview":
       return overview();
     case "needsModeration":
@@ -177,7 +212,7 @@ const renderContent = () => {
 };
 
 const handleMenuClick = (value) => {
-  Storage.set("moderator-tab", value);
+  setActiveMenu(value);
 };
 return (
   <>
@@ -187,7 +222,7 @@ return (
           src={`${REPL_ACCOUNT}/widget/Moderation.Sidebar`}
           props={{
             title: "Moderation",
-            activeTab,
+            activeTab: activeMenu,
             items: [
               {
                 name: "Overview",

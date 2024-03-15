@@ -154,7 +154,7 @@ const ecosystemGrantCards = [
     ipfsImage: ipfsImages.logoNDC,
     title: "Near Digital Collective",
     content: "The NDC empowers builders to create sustainable impact in Web3",
-    href: "https://t.me/ndc_newsstream_chat",
+    href: "https://app.neardc.org/",
   },
   {
     ipfsImage: ipfsImages.logoDevHub,
@@ -473,17 +473,6 @@ return (
           There are several options to get financial support for your idea – whether it is a grant from an ecosystem
           fund, joining an accelerator, or getting venture support through our Ecosystem partners.
         </Text>
-        <Widget
-          src="${REPL_MOB}/widget/Image"
-          props={{
-            image: returnIpfsImage(ipfsImages.longImage),
-            className: "img-fluid",
-            style: {
-              maxWidth: "800px",
-              height: "auto",
-            },
-          }}
-        />
         <div>
           <Widget
             src="${REPL_ACCOUNT}/widget/DIG.Button"

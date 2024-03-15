@@ -128,6 +128,7 @@ return (
             <Widget
               src="${REPL_ACCOUNT}/widget/Posts.Menu"
               props={{
+                item,
                 elements: [
                   <button className={`btn`} onClick={toggleEdit}>
                     <i className="bi bi-pencil me-1" />

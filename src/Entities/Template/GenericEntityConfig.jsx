@@ -95,7 +95,7 @@ const convertPascalToSnake = (itemArray) => {
 const renderItem = (rawItem, editFunction) => {
   const item = convertSnakeToPascal(rawItem);
   const { accountId, name, displayName, logoUrl, attributes } = item;
-  const itemComponent = item.component ? item.component : `${REPL_AGIGUILD}/widget/Entities.Template.EntityDetails`;
+  const itemComponent = item.component ? item.component : `${REPL_ACCOUNT}/widget/Entities.Template.EntityDetails`;
   const imageUrl = logoUrl
     ? logoUrl
     : "https://ipfs.near.social/ipfs/bafkreibysr2mkwhb4j36h2t7mqwhynqdy4vzjfygfkfg65kuspd2bawauu";
@@ -104,7 +104,7 @@ const renderItem = (rawItem, editFunction) => {
     params: { src: `${accountId}/${entityType}/${name}`, schemaFile, namespace },
   });
   const detailsLink = href({
-    widgetSrc: `${REPL_AGIGUILD}/widget/Entities.Template.EntityDetails`,
+    widgetSrc: `${REPL_ACCOUNT}/widget/Entities.Template.EntityDetails`,
     params: { src: `${accountId}/${entityType}/${name}`, schemaFile, namespace },
   });
 

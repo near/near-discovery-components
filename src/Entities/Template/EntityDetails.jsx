@@ -29,9 +29,6 @@ const { prompt } = entity;
 const editType = accountId === context.accountId ? "edit" : "fork";
 const editLabel = editType === "edit" ? "Edit" : "Fork";
 const editIcon = editType === "edit" ? "ph-bold ph-pencil-simple" : "ph-bold ph-git-fork";
-const listLink = href({
-  widgetSrc: `${REPL_AGIGUILD}/widget/Nexus`,
-});
 
 const Wrapper = styled.div`
   display: flex;
@@ -95,14 +92,8 @@ const entityProperties = (obj) => {
 
 return (
   <Wrapper>
-    <Link to={listLink}>
-      <Header>
-        <i className="ph ph-arrow-left" />
-        {entityType} List
-      </Header>
-    </Link>
     <Widget
-      src="${REPL_AGIGUILD}/widget/Entities.Template.EntitySummary"
+      src="${REPL_ACCOUNT}/widget/Entities.Template.EntitySummary"
       props={{
         size: "small",
         showTags: true,

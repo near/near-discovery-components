@@ -87,7 +87,15 @@ return (
     <Widget src="${REPL_ACCOUNT}/widget/AI.Agent.AgentHeader" props={{ text: description, color: "#11181c" }} />
     <Widget
       src="${REPL_ACCOUNT}/widget/Entities.Template.EntityList"
-      props={{ entityType, buildQueries, queryName, collection, renderItem, createWidget }}
+      props={{
+        entityType,
+        buildQueries,
+        queryName,
+        collection,
+        renderItem,
+        createWidget,
+        schema: { entityTitle: "Agent" },
+      }}
     />
   </div>
 );

@@ -36,9 +36,28 @@ function loadItems(queries, queryName, offset, collection, onLoad) {
   });
 }
 
+function convertObjectKeysSnakeToPascal(item) {
+  const newItem = {};
+  Object.keys(item).forEach((key) => {
+    const pascalKey = key.replace(/(_\w)/g, (m) => m[1].toUpperCase());
+    newItem[pascalKey] = item[key];
+  });
+  return newItem;
+}
+function convertObjectKeysPascalToSnake(item) {
+  const newItem = {};
+  Object.keys(item).forEach((key) => {
+    const snakeKey = key.replace(/([A-Z])/g, (m) => "_" + m.toLowerCase());
+    newItem[snakeKey] = item[key];
+  });
+  return newItem;
+}
+
 return {
   fetchGraphQL,
   loadItems,
+  convertObjectKeysSnakeToPascal,
+  convertObjectKeysPascalToSnake,
   LIMIT,
   GRAPHQL_ENDPOINT,
   HASURA_ROLE,

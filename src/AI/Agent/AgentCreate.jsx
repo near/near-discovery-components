@@ -8,6 +8,7 @@ const onSubmitFunction = onSubmit ?? onSubmitDefault;
 
 const AgentInputsPartialSchema = {
   name: {
+    type: "string",
     inputProps: {
       min: 2,
       max: 80,
@@ -19,6 +20,7 @@ const AgentInputsPartialSchema = {
     order: 1,
   },
   displayName: {
+    type: "string",
     inputProps: {
       min: 2,
       max: 255,
@@ -29,6 +31,7 @@ const AgentInputsPartialSchema = {
     order: 2,
   },
   prompt: {
+    type: "string",
     inputProps: {
       min: 2,
       max: 8192,
@@ -70,6 +73,7 @@ const AgentInputsPartialSchema = {
   //     order: 6,
   // },
   component: {
+    type: "string",
     inputProps: {
       min: 0,
       max: 255,
@@ -80,6 +84,7 @@ const AgentInputsPartialSchema = {
     order: 7,
   },
   logoUrl: {
+    type: "string",
     inputProps: {
       min: 4,
       max: 255,
@@ -124,6 +129,17 @@ const agentInputsValidator = (formValues) =>
     return !required || typeof formValues[key] === "string";
   });
 
+const initialValues = (schema, data) => {
+  const initial = data ?? {};
+  Object.keys(schema).forEach((key) => {
+    const fieldProps = schema[key];
+    if (!data[key] && fieldProps.displayType !== "hidden" && fieldProps.type === "string") {
+      initial[key] = "";
+    }
+  });
+  return initial;
+};
+
 return (
   <Widget
     src="devhub.near/widget/devhub.components.organism.Configurator"
@@ -141,7 +157,7 @@ return (
       },
       submitLabel: data ? "Save" : "Launch",
       onCancel: onCancel,
-      externalState: data,
+      externalState: initialValues(AgentInputsPartialSchema, data),
     }}
   />
 );

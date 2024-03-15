@@ -12,9 +12,9 @@ const lastNotificationQuery = `
 
 const notificationsQuery = `query NotificationsQuery($offset: Int, $limit: Int) {
   data: dataplatform_near_notifications_notifications(
-    distinct_on: blockHeight,
+    distinct_on: [blockHeight, initiatedBy],
     where: {receiver: {_eq: "${context.accountId}"}}
-    order_by: {blockHeight: desc},
+    order_by: [{blockHeight: desc}, {initiatedBy:asc}],
     offset: $offset, limit: $limit
   ) {
     id
@@ -34,7 +34,7 @@ const notificationsQuery = `query NotificationsQuery($offset: Int, $limit: Int) 
     }
   }
   count: dataplatform_near_notifications_notifications_aggregate(
-    distinct_on: blockHeight,
+    distinct_on: [blockHeight, initiatedBy],
     where: {receiver: {_eq: "${context.accountId}"}}
   ) {
     aggregate {

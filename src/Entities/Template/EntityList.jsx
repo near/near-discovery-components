@@ -5,17 +5,7 @@ if (!loadItemsQueryApi) {
 const loadItems = props.loadItems ?? loadItemsQueryApi;
 
 const accountId = props.accountId || context.accountId;
-const {
-  entityType,
-  schema,
-  description,
-  buildQueries,
-  queryName,
-  collection,
-  renderItem,
-  createWidget,
-  createWidgetProps,
-} = props;
+const { schema, description, buildQueries, queryName, collection, renderItem, createWidget, createWidgetProps } = props;
 
 const finalCreateWidget = createWidget ?? `${REPL_ACCOUNT}/widget/Entities.Template.EntityCreate`;
 
@@ -47,12 +37,6 @@ useEffect(() => {
   setItems([]);
   loadItemsUseState();
 }, [sort, searchKey]);
-
-const humanize = (str) => {
-  if (!str) return "";
-  return str.replace(/([A-Z])/g, " $1").replace(/^./, (s) => s.toUpperCase());
-};
-const humanizedEntityType = humanize(entityType);
 
 const Wrapper = styled.div`
   display: flex;
@@ -139,7 +123,7 @@ return (
       <div className="row">
         <div className="col">
           <H2>
-            {totalItems} {humanizedEntityType + (totalItems > 1 ? "s" : "")}
+            {totalItems} {schema.entityTitle + (totalItems !== 1 ? "s" : "")}
           </H2>
           {description && <Text>{description}</Text>}
         </div>
@@ -148,7 +132,7 @@ return (
             <Widget
               src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
-                label: "Create " + humanizedEntityType,
+                label: "Create " + schema.entityTitle,
                 onClick: toggleModal,
                 iconLeft: "ph ph-plus-circle",
                 variant: "primary",
@@ -164,7 +148,7 @@ return (
                   <ScrollBox>
                     <Widget
                       src={finalCreateWidget}
-                      props={{ schema, entityType, onCancel: closeModal, data: activeItem, ...createWidgetProps }}
+                      props={{ schema, onCancel: closeModal, data: activeItem, ...createWidgetProps }}
                     />
                   </ScrollBox>
                 ),

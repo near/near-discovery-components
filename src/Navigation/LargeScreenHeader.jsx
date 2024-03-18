@@ -1,5 +1,4 @@
-let { title, wrapperStyles, className, children } = props;
-title = title ?? "[Current Page]";
+let { title, wrapperStyles, className, rightSideChildren } = props;
 
 const Flex = styled.div`
   display: flex;
@@ -26,12 +25,13 @@ const Flex = styled.div`
 
 const Wrapper = styled.div`
   display: flex;
+  width: 100%;
+  height: 64px;
   gap: 12px;
   align-items: center;
-  justify-content: space-between;
-  padding: 12px 0;
-  max-width: 1224px;
+  padding: 12px 16px;
   margin: 0 auto;
+  position: relative;
 `;
 
 const Text = styled.p`
@@ -47,6 +47,29 @@ const Text = styled.p`
   }
 `;
 
+const RightSide = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+`;
+
+const Search = styled.div`
+  width: min-content;
+  position: absolute;
+  top: 12px;
+  left: 0;
+  right: 0;
+  bottom: 12px;
+  margin: 0 auto;
+
+  > div,
+  > div > label,
+  > div > label > div {
+    height: 100%;
+  }
+`;
+
 const PageName = () => (
   <Text size="text-l" fontWeight="bold" color="sand12" lineHeight="26px">
     {title}
@@ -56,6 +79,11 @@ const PageName = () => (
 return (
   <Wrapper className={className} style={{ ...wrapperStyles }}>
     {title && <PageName />}
-    {children}
+
+    <Search>
+      <Widget src="${REPL_ACCOUNT}/widget/Navigation.Search" />
+    </Search>
+
+    <RightSide>{rightSideChildren}</RightSide>
   </Wrapper>
 );

@@ -134,12 +134,15 @@ const Left = styled.div`
 const Right = styled.div``;
 
 let { blockHeight, accountId, manageNotification, permission, value } = props;
-let { item, type, post, message, proposal } = value;
+let { item, type, post, message, proposal, notifier } = value;
 item = item ?? {};
 post = post ?? proposal ?? {};
 message = message ?? "";
 const path = item.path || "";
-
+const showAuthorProfile = type == "devhub/mention" || type == "devhub/edit";
+if (showAuthorProfile) {
+  accountId = notifier;
+}
 const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
 const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 

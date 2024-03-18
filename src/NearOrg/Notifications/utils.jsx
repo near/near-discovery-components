@@ -76,12 +76,13 @@ function getNotificationContent(notificationType, notificationValue, path, postV
 function createNotificationLink(notificationType, notificationValue, authorAccountId, accountId, blockHeight) {
   const pathPrefix = `/${REPL_ACCOUNT}/widget`;
 
-  let { item, widget, params, post, proposal } = notificationValue;
+  let { item, widget, params, post, proposal, notifier } = notificationValue;
   item = item ?? {};
   widget = widget ?? "";
   params = params ?? {};
   post = post ?? {};
-  proposal = proposal ?? {};
+  proposal = proposal ?? "";
+  notifier = notifier ?? "";
   let { blockHeight: likeAtBlockHeight, path } = item;
   path = path ?? "";
 
@@ -123,6 +124,7 @@ function createNotificationLink(notificationType, notificationValue, authorAccou
         params: {
           page: "proposal",
           id: proposal,
+          notifier: notifier,
         },
       });
     default:

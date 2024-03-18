@@ -1,4 +1,5 @@
-let { fetchNotifications, shouldFallback, manageNotification, permission, showLimit } = props;
+let { fetchNotifications, shouldFallback, manageNotification, permission, showLimit, moderatorAccount } = props;
+moderatorAccount = moderatorAccount ?? "${REPL_MODERATOR}";
 // showLimit means to fetch notificaitions for the preview and not the full list
 
 const [notifications, setNotifications] = useState(notifications ?? []);
@@ -38,7 +39,7 @@ const NotificationsListFromChain = () => {
         renderItem,
         nextLimit: 10,
         initialRenderLimit: showLimit ?? 10,
-        moderatorAccount: "${REPL_MODERATOR}",
+        moderatorAccount,
       }}
     />
   );

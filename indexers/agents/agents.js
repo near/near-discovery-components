@@ -82,39 +82,81 @@ async function getBlock(block: Block) {
             });
     };
 
+// Agi Guild
+    const agiWrites = getSocialOperations(block, "agiguild");
+
+    agiWrites.map(async ({ accountId, data }) => {
+        try {
+            const entityTypes = Object.keys(data);
+            entityTypes.map(async (entityType)=> {
+                const entities = Object.keys(data[entityType]);
+                entities.map(async (name) => {
+                    const entityProps = data[entityType][name];
+                    const {displayName, logoUrl, ...entityAttributes} = entityProps;
+                    const entity = {
+                        entity_type: entityType,
+                        account_id: accountId,
+                        name: name,
+                        display_name: displayName,
+                        logo_url: logoUrl,
+                        attributes: entityAttributes,
+                    };
+                    await context.db.Entities.upsert(
+                        entity,
+                        ["entity_type", "account_id", "name"],
+                        [
+                            "display_name",
+                            "logo_url",
+                            "attributes",
+                        ]
+                    );
+
+                    console.log(`${entityType} from ${accountId} has been added to the database`);
+                });
+            });
+        } catch (e) {
+            console.log(`Failed to store agent from ${accountId} to the database`, e);
+        }
+    });
+
+// Legacy
     const agentWrites = getSocialOperations(block, "agent");
     agentWrites.map(async ({ accountId, data }) => {
         try {
-            const agent = {
-                name: data.name,
-                account_id: accountId,
-                display_name: data.displayName,
-                preferred_provider: data.preferredProvider,
-                preferred_model: data.preferredModel,
-                prompt: data.prompt,
-                variables: data.variables,
-                component: data.component,
-                logo_url: data.logoUrl,
-                tools: data.tools,
-                properties: data.properties,
-            };
-            await context.db.Agents.upsert(
-                agent,
-                ["account_id", "name"],
-                [
-                    "display_name",
-                    "preferred_provider",
-                    "preferred_model",
-                    "prompt",
-                    "variables",
-                    "component",
-                    "logo_url",
-                    "tools",
-                    "properties",
-                ]
-            );
+            const names = Object.keys(data);
+            names.map( async (name) => {
+                const agentProps = data[name];
+                const agent = {
+                    name: name,
+                    account_id: accountId,
+                    display_name: agentProps.displayName,
+                    preferred_provider: agentProps.preferredProvider,
+                    preferred_model: agentProps.preferredModel,
+                    prompt: agentProps.prompt,
+                    variables: agentProps.variables,
+                    component: agentProps.component,
+                    logo_url: agentProps.logoUrl,
+                    tools: agentProps.tools,
+                    properties: agentProps.properties,
+                };
+                await context.db.Agents.upsert(
+                    agent,
+                    ["account_id", "name"],
+                    [
+                        "display_name",
+                        "preferred_provider",
+                        "preferred_model",
+                        "prompt",
+                        "variables",
+                        "component",
+                        "logo_url",
+                        "tools",
+                        "properties",
+                    ]
+                );
 
-            console.log(`Agent from ${accountId} has been added to the database`);
+                console.log(`Agent from ${accountId} has been added to the database`);
+            });
         } catch (e) {
             console.log(`Failed to store agent from ${accountId} to the database`, e);
         }

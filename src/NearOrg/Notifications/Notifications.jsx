@@ -1,11 +1,6 @@
 let {
-  isLocalStorageSupported,
-  isNotificationSupported,
-  isPermisionGranted,
-  isPushManagerSupported,
   manageNotification,
   handleTurnOn,
-  handleOnCancel,
   getNotificationLocalStorage,
   handleOnCancelBanner,
   accountId,
@@ -15,6 +10,7 @@ let {
   iOSDevice,
   iOSVersion,
   recomendedIOSVersion,
+  moderatorAccount,
 } = props;
 
 showInBox = showInBox ?? false;
@@ -113,8 +109,8 @@ return (
 
     <NotificationsWrapper>
       <Widget
-        src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsList"
-        props={{ showLimit, manageNotification, permission }}
+        src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsMiddleware"
+        props={{ showLimit, manageNotification, permission, moderatorAccount }}
       />
     </NotificationsWrapper>
   </Card>

@@ -1,29 +1,21 @@
 const accountId = context.accountId;
 const notificationFeedSrc = "${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsList";
 
-let {
-  isLocalStorageSupported,
-  isNotificationSupported,
-  isPermisionGranted,
-  isPushManagerSupported,
-  handleTurnOn,
-  handleOnCancel,
-  getNotificationLocalStorage,
-  handleOnCancelBanner,
-  mobileView,
-  moderatorAccount,
-} = props;
+let { size, buttonStyles, mobileView, moderatorAccount, ...forwardedProps } = props;
 
+size = size ?? "45px";
 moderatorAccount = moderatorAccount ?? "${REPL_MODERATOR}";
 
-const [previewOpen, setPreviewOpen] = useState(false);
+const CHECK_PERIOD = 5000;
+
+const [lastBlockHeight, setLastBlockHeight] = useState(null);
+const [notificationsCount, setNotificationsCount] = useState(0);
 
 const Wrapper = styled.div``;
 
 const ButtonWrapper = styled.div`
   position: relative;
   display: inline-flex;
-  margin: 1rem;
 `;
 
 const Count = styled.span`
@@ -43,66 +35,6 @@ const Count = styled.span`
   right: -1px;
 `;
 
-const PreviewWrapper = styled.div`
-  position: absolute;
-  border-radius: 6px;
-  background: var(--white);
-  box-shadow:
-    0px 4px 8px 0px rgba(0, 0, 0, 0.06),
-    0px 0px 0px 1px rgba(0, 0, 0, 0.06);
-  top: 70px;
-  right: 68%;
-  width: 460px;
-  max-height: 80vh;
-  visibility: hidden;
-  overflow: hidden auto;
-  transition: visibility 300ms ease;
-  transform-origin: right top;
-
-  &[data-state="true"] {
-    visibility: visible;
-    animation: fadeIn 200ms ease;
-  }
-  [data-state="false"] {
-    animation: fadeOut 200ms ease;
-  }
-
-  @keyframes fadeIn {
-    from {
-      visibility: hidden;
-      opacity: 0;
-    }
-    to {
-      visibility: visible;
-      opacity: 1;
-    }
-  }
-
-  @keyframes fadeOut {
-    from {
-      visibility: visible;
-      opacity: 1;
-    }
-    to {
-      visibility: hidden;
-      opacity: 0;
-    }
-  }
-`;
-
-const PreviewContent = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const SeeAll = styled.div`
-  padding: 16px;
-
-  div {
-    width: 100%;
-  }
-`;
-
 const Counter = ({ count }) => {
   if (!count) return;
   return <Count>{count}</Count>;
@@ -117,9 +49,8 @@ const Button = ({ count }) => {
         props={{
           icon,
           variant: "secondary",
-          style: { width: "45px", height: "45px" },
           href: "/notifications",
-          onClick: () => setPreviewOpen(false),
+          style: { width: size, height: size, ...buttonStyles },
         }}
       />
       <Counter count={count} />
@@ -127,98 +58,53 @@ const Button = ({ count }) => {
   );
 };
 
-const Notification = ({ count, disabled }) => {
-  if (disabled) {
-    return <Button count={count} />;
-  }
-  return (
-    <Wrapper
-      onMouseEnter={() => setPreviewOpen(true)}
-      onMouseLeave={() => setPreviewOpen(false)}
-      onClick={() => setPreviewOpen(false)}
-    >
-      <Button count={count} />
-      <PreviewWrapper data-state={previewOpen}>
-        {previewOpen && (
-          <PreviewContent>
-            <Widget
-              src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.Notifications"
-              props={{
-                isLocalStorageSupported,
-                isNotificationSupported,
-                isPermisionGranted,
-                isPushManagerSupported,
-                handleOnCancel,
-                getNotificationLocalStorage,
-                handleOnCancelBanner,
-                accountId,
-                handleTurnOn,
-                showLimit: 5,
-                showInBox: true,
-                bannerBorderRadius: "0",
-              }}
-            />
-            <SeeAll>
-              <Widget
-                src="${REPL_ACCOUNT}/widget/DIG.Button"
-                props={{
-                  href: "/notifications",
-                  variant: "primary",
-                  fill: "outline",
-                  label: "See all",
-                  size: "small",
-                  style: {
-                    width: "100%",
-                  },
-                }}
-              />
-            </SeeAll>
-          </PreviewContent>
-        )}
-      </PreviewWrapper>
-    </Wrapper>
-  );
-};
+useEffect(() => {
+  const checkLastBlockHeight = setInterval(() => {
+    const lastBlockHeight = Storage.get("lastBlockHeight", notificationFeedSrc);
+    setLastBlockHeight(lastBlockHeight);
+  }, CHECK_PERIOD);
+  () => {
+    clearInterval(checkLastBlockHeight);
+    setLastBlockHeight(null);
+  };
+}, [notificationFeedSrc]);
 
-if (context.loading || !accountId) {
-  return <Notification count={0} disabled={true} />;
-}
+useEffect(() => {
+  const checkNotificationsCountPeriod = setInterval(() => {
+    const filterUsersRaw = Social.get(
+      `${moderatorAccount}/moderate/users`, //TODO
+      "optimistic",
+    );
+    const filterUsers = filterUsersRaw ? JSON.parse(filterUsersRaw) : [];
+    const notifications =
+      Social.index("notify", accountId, {
+        order: "asc",
+        from: (lastBlockHeight ?? 0) + 1,
+      }) || [];
+    const filterNotifications =
+      notifications.lenght > 0 ? notifications.filter((i) => !filterUsers.includes(i.accountId)) : [];
+    setNotificationsCount(filterNotifications.length || 0);
+  }, CHECK_PERIOD);
+  () => {
+    clearInterval(checkNotificationsCountPeriod);
+    setFilterBlockedUsers(null);
+  };
+}, [lastBlockHeight, moderatorAccount, accountId]);
 
-const lastBlockHeight = Storage.get("lastBlockHeight", notificationFeedSrc);
+const disableCounter = lastBlockHeight === null || mobileView;
 
-if (lastBlockHeight === null) {
-  return <Notification count={0} disabled={true} />;
-}
-
-// load the list of users that have been flagged by the moderator
-const filterUsersRaw = Social.get(
-  `${moderatorAccount}/moderate/users`, //TODO
-  "optimistic",
-  {
-    subscribe: true,
-  },
+return (
+  <Widget
+    src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.Preview"
+    props={{
+      children: <Button count={notificationsCount} />,
+      accountId,
+      moderatorAccount,
+      showLimit: 5,
+      showInBox: true,
+      bannerBorderRadius: "0",
+      disabled: disableCounter,
+      ...forwardedProps,
+    }}
+  />
 );
-
-if (filterUsers === null) {
-  // haven't loaded filter list yet, return early
-  return <Notification count={0} disabled={true} />;
-}
-
-const filterUsers = filterUsersRaw ? JSON.parse(filterUsersRaw) : [];
-
-let notifications =
-  Social.index("notify", accountId, {
-    order: "asc",
-    from: (lastBlockHeight ?? 0) + 1,
-    subscribe: true,
-  }) || [];
-
-notifications = notifications.filter((i) => !filterUsers.includes(i.accountId));
-
-const notificationsCount = notifications.length || 0;
-
-if (mobileView) {
-  return <Notification count={notificationsCount} disabled={true} />;
-}
-
-return <Notification count={notificationsCount} disabled={false} />;

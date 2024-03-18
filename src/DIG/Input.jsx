@@ -49,7 +49,6 @@ const InputWrapper = styled.div`
     border-color 200ms,
     color 200ms,
     box-shadow 200ms;
-  flex-wrap: wrap;
 
   i {
     font-size: 16px;

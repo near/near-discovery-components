@@ -481,6 +481,7 @@ return (
               label: "Explore All Teams",
               variant: "affirmative",
               size: "large",
+              target: "_blank",
             }}
           />
         </div>

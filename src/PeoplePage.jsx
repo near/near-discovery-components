@@ -73,8 +73,6 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 48px;
-  padding-bottom: 48px;
-  padding-top: 48px;
 `;
 
 const Header = styled.div`
@@ -221,7 +219,7 @@ const TabsButton = styled("Link")`
 `;
 
 return (
-  <Wrapper className="container-xl">
+  <Wrapper className="gateway-page-container">
     <Header>
       <H1>{totalAccounts} People</H1>
       <H2>Connect with the NEAR community.</H2>

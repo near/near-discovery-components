@@ -25,13 +25,13 @@ if (!privacy) {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${(p) => !p.compact && "18px"};
-  padding-bottom: ${(p) => !p.compact && "48px"};
-  padding-top: ${(p) => !p.compact && "48px"};
+  gap: ${(p) => (p.$compact ? 0 : "18px")};
+  padding-bottom: ${(p) => (p.$compact ? 0 : undefined)};
+  padding-top: ${(p) => (p.$compact ? 0 : undefined)};
 `;
 
 return (
-  <Wrapper className="container-xl" compact={compact}>
+  <Wrapper className="gateway-page-container" $compact={compact}>
     <Markdown text={privacy} />
   </Wrapper>
 );

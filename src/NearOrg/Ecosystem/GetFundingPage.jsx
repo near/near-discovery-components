@@ -357,7 +357,7 @@ const fundingHugeCards = [
 
 return (
   <>
-    <Wrapper className="container-xl">
+    <Wrapper className="gateway-page-container">
       <Section center>
         <Flex gap="16px" direction="column" alignItems="center">
           <H1>Get Funded. Build the Future.</H1>
@@ -381,7 +381,6 @@ return (
             props={{
               image: returnIpfsImage(ipfsImages.arrows),
               className: "img-fluid d-none d-lg-block mx-auto",
-              style: { maxWidth: "1000px" },
             }}
           />
           <div className="row row-cols-lg-4 row-cols-md-2 row-cols-1 g-4">

@@ -29,9 +29,9 @@ const Text = styled.p`
   margin: 0;
   font-size: 14px;
   line-height: 20px;
-  color: ${(p) => (p.bold ? "#11181C" : "#687076")};
-  font-weight: ${(p) => (p.bold ? "600" : "400")};
-  font-size: ${(p) => (p.small ? "12px" : "14px")};
+  color: ${(p) => (p.$bold ? "#11181C" : "#687076")};
+  font-weight: ${(p) => (p.$bold ? "600" : "400")};
+  font-size: ${(p) => (p.$small ? "12px" : "14px")};
 
   i {
     margin-right: 4px;
@@ -65,7 +65,7 @@ const TabsButton = styled("Link")`
   font-size: 12px;
   padding: 0 12px;
   position: relative;
-  color: ${(p) => (p.selected ? "#11181C" : "#687076")};
+  color: ${(p) => (p.$selected ? "#11181C" : "#687076")};
   background: none;
   border: none;
   outline: none;
@@ -78,7 +78,7 @@ const TabsButton = styled("Link")`
 
   &::after {
     content: "";
-    display: ${(p) => (p.selected ? "block" : "none")};
+    display: ${(p) => (p.$selected ? "block" : "none")};
     position: absolute;
     bottom: 0;
     left: 0;
@@ -111,7 +111,7 @@ const Icon = styled.i`
 if (!exists) {
   return (
     <>
-      <Text bold>Error</Text>
+      <Text $bold>Error</Text>
       <Text>Could not find: {src}</Text>
     </>
   );
@@ -122,7 +122,7 @@ if (tab && tab !== selectedTab) {
 }
 
 return (
-  <Wrapper>
+  <Wrapper className="gateway-page-container">
     <Widget
       src="${REPL_ACCOUNT}/widget/ComponentSummary"
       props={{
@@ -135,15 +135,15 @@ return (
     />
 
     <Tabs>
-      <TabsButton href={`${detailsUrl}&tab=source`} selected={selectedTab === "source"}>
+      <TabsButton href={`${detailsUrl}&tab=source`} $selected={selectedTab === "source"}>
         <Icon className="ph ph-code" />
         Source & Preview
       </TabsButton>
-      <TabsButton href={`${detailsUrl}&tab=about`} selected={selectedTab === "about"}>
+      <TabsButton href={`${detailsUrl}&tab=about`} $selected={selectedTab === "about"}>
         <Icon className="ph ph-file-text" />
         Read.me
       </TabsButton>
-      <TabsButton href={`${detailsUrl}&tab=discussion`} selected={selectedTab === "discussion"}>
+      <TabsButton href={`${detailsUrl}&tab=discussion`} $selected={selectedTab === "discussion"}>
         <Icon className="ph ph-chat-circle-text" />
         Discussion
       </TabsButton>

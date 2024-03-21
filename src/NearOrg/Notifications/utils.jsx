@@ -31,7 +31,9 @@ function createNotificationMessage(notificationType, path, postValue, customMess
     case "custom":
       return customMessage ?? "";
     case "devgovgigs/edit":
-      return "edited your";
+      return "edited your post";
+    case "devhub/edit":
+      return "edited your proposal";
     case "devgovgigs/like":
       return isDevHubPost ? "liked your post" : "liked your comment";
     default:

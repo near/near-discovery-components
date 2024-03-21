@@ -7,7 +7,8 @@ const Cookies = styled.div`
   background-color: white;
   border-radius: 4px;
   margin: 8px auto;
-  max-width: 50%;
+  max-width: 100%;
+  width: 714px;
   padding: 12px;
   display: flex;
   gap: 10px;
@@ -25,9 +26,12 @@ const Cookies = styled.div`
     gap: 10px;
   }
 
-  @media only screen and (max-width: 800px) {
+  @media (max-width: 800px) {
     flex-direction: column;
     align-items: flex-start;
+    margin: 0;
+    border-radius: 0;
+    width: 100%;
   }
 `;
 

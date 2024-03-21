@@ -41,6 +41,25 @@ const Text = styled.p`
   @media (max-width: 900px) {
     font: var(--${(p) => p.$mobileSize ?? p.$size ?? "text-base"});
   }
+
+  ${(p) =>
+    p.$loading &&
+    `
+      border-radius: 2px;
+      background: linear-gradient(to right, var(--sand10) 33%, var(--sand9) 66%, var(--sand10) 99%);
+      animation: waveAnimation 5s linear infinite;
+      min-width: 25%;
+      min-height: 10px;
+    `}
+
+  @keyframes waveAnimation {
+    0% {
+      background-position: 0px 0;
+    }
+    100% {
+      background-position: 100em 0;
+    }
+  }
 `;
 
 const Flex = styled.div`
@@ -126,6 +145,7 @@ const ButtonLinkWrapper = styled("Link")`
   border: 1px solid transparent;
   border-radius: 6px;
   transition: all 200ms;
+  pointer-events: ${(p) => p.$pointerEvents};
 
   @media (max-width: 900px) {
     padding: 0;
@@ -170,6 +190,23 @@ const IconWrapper = styled.div`
   filter: ${(p) => p.$filter};
   transition: all 200ms;
 
+  ${(p) =>
+    p.$loading &&
+    `
+    background: linear-gradient(to right, var(--sand10) 33%, var(--sand9) 66%, var(--sand10) 99%);
+    background-position: center;
+    animation: waveAnimation 5s linear infinite;
+  `}
+
+  @keyframes waveAnimation {
+    0% {
+      background-position: 0px 0;
+    }
+    100% {
+      background-position: 100em 0;
+    }
+  }
+
   ${ButtonLinkWrapper}:hover & {
     border-color: var(--violet6);
 
@@ -210,10 +247,23 @@ const TextLink = styled("Link")`
   letter-spacing: 0.32px;
 `;
 
+const TRENDING_APPS_LIMIT = 6;
+const dummyData = {
+  slug: "",
+  profile: {
+    name: "",
+    tagline: "",
+    image: {
+      url: "",
+    },
+  },
+};
+const prefillData = Array(TRENDING_APPS_LIMIT).fill(dummyData);
+
 const nearCatalogApi = "https://nearcatalog.xyz/wp-json/nearcatalog/v1";
 const topRating = "projects-by-category?cid=trending";
-const TRENDING_APPS_LIMIT = 6;
-const [topRatingApps, setTopRatingApps] = useState([]);
+const [topRatingApps, setTopRatingApps] = useState(prefillData);
+const [loading, setLoading] = useState(true);
 
 const fetchTopRatingApps = () => {
   asyncFetch(`${nearCatalogApi}/${topRating}`)
@@ -223,6 +273,7 @@ const fetchTopRatingApps = () => {
         .slice(0, TRENDING_APPS_LIMIT)
         .map((key) => data[key]);
       setTopRatingApps(dataList);
+      setLoading(false);
     })
     .catch((err) => console.log("Error during fetch the list of top rating apps: ", err));
 };
@@ -230,7 +281,7 @@ const fetchTopRatingApps = () => {
 useEffect(() => {
   fetchTopRatingApps();
   return () => {
-    setTopRatingApps([]);
+    setTopRatingApps(prefillData);
   };
 }, []);
 
@@ -293,8 +344,17 @@ const Card = ({ title, text, children }) => (
   </Pattern>
 );
 
-const TrendingApp = ({ href, url, name, tagline }) => (
-  <ButtonLinkWrapper href={href} target="_blank" $gap="12px" $alignItems="center" $noHover title={tagline}>
+const TrendingApp = ({ href, url, name, tagline, loading }) => (
+  <ButtonLinkWrapper
+    href={href}
+    target="_blank"
+    $gap="12px"
+    $alignItems="center"
+    $noHover
+    title={tagline}
+    aria-disabled={loading}
+    $pointerEvents={loading ? "none" : "auto"}
+  >
     <RoundIcon
       url={url}
       $noHover
@@ -303,8 +363,9 @@ const TrendingApp = ({ href, url, name, tagline }) => (
       $borderRadius="50%"
       $background="var(--white)"
       $filter="drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.06)) drop-shadow(0px 0px 0px rgba(0, 0, 0, 0.06))"
+      $loading={loading}
     />
-    <Text $size="text-s" $fontWeight="600" $overflowLines="2" $letterSpacing="0.28px">
+    <Text $size="text-s" $fontWeight="600" $overflowLines="2" $letterSpacing="0.28px" $loading={loading}>
       {name}
     </Text>
   </ButtonLinkWrapper>
@@ -364,6 +425,7 @@ return (
                   url={app.profile.image.url}
                   name={app.profile.name}
                   tagline={app.profile.tagline}
+                  loading={loading}
                 />
               ))}
             </Grid>

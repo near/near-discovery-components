@@ -1,0 +1,19 @@
+{
+  "object_relationships": [
+    {
+      "name": "account",
+      "using": {
+        "manual_configuration": {
+          "column_mapping": {
+            "initiatedBy": "account_id"
+          },
+          "insertion_order": null,
+          "remote_table": {
+            "name": "accounts",
+            "schema": "dataplatform_near_accounts"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -123,7 +123,7 @@ const pathToType = (path) => {
     case "account":
       return "Account";
     default:
-      return "Unhandled Content Type" + path;
+      return path;
   }
 };
 

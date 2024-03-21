@@ -168,17 +168,24 @@ return (
       <CoverImage src={imgSrc} />
     </CoverImageWrapper>
     <Flex direction="column" gap="24px">
-      <Text size="text-2xl" fontWeight="bold" style={{ minHeight: loading && "31px" }} title={title}>
+      <Text
+        size="text-3xl"
+        fontWeight="500"
+        mobileSize="text-2xl"
+        style={{ minHeight: loading && "31px" }}
+        title={title}
+        overflowLines={3}
+      >
         {title}
       </Text>
-      <Text size="text-lg" color="sand10" overflowLines={7} style={{ minHeight: loading && "31px" }} title={title}>
+      <Text color="sand10" overflowLines={7} style={{ minHeight: loading && "31px" }} title={title}>
         {description}
       </Text>
-      <Flex gap="24px" alignItems="center">
-        <Flex gap="8px" alignItems={startAt !== endAt ? "start" : "center"} style={{ width: "100%" }}>
+      <Flex gap="24px">
+        <Flex gap="8px" style={{ width: "100%" }}>
           <Icon className="ph ph-calendar-blank" />
-          <Flex direction="column" alignItems="start">
-            <Text size="text-s" color="sand10">
+          <Flex direction="column">
+            <Text size="text-s" color="sand10" style={{ marginTop: "3px" }}>
               {startAt}
               {startAt !== endAt && " -"}
             </Text>
@@ -189,9 +196,9 @@ return (
             )}
           </Flex>
         </Flex>
-        <Flex gap="8px" alignItems="center" style={{ width: "100%" }} title={location}>
+        <Flex gap="8px" style={{ width: "100%" }} title={location}>
           <Icon className="ph ph-map-pin" />
-          <Text size="text-s" color="sand10">
+          <Text size="text-s" color="sand10" style={{ marginTop: "3px" }}>
             {location}
           </Text>
         </Flex>

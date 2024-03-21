@@ -15,7 +15,7 @@ const [dataLoaded, setDataLoaded] = useState(false);
 const fetchEvents = () => {
   fetchEventsList().then((eventsData) => {
     const { entries: events, hasMore } = eventsData;
-    const sortEvents = events.sort((a, b) => new Date(a.event.start_at) - new Date(b.event.start_at));
+    const sortEvents = [...events].sort((a, b) => new Date(a.event.start_at) - new Date(b.event.start_at));
     setEventsList(sortEvents);
     setMoreEvents(hasMore);
     setDataLoaded(true);
@@ -204,11 +204,17 @@ const IconCircle = styled.div`
   }
 `;
 
-const featuredEvent =
-  eventsList.length > 0 &&
-  [...eventsList].sort(
-    (a, b) => Math.abs(new Date(a.event.start_at) - new Date()) - Math.abs(new Date(b.event.start_at) - new Date()),
-  )[0].event;
+const featuredEvent = !dataLoaded
+  ? eventsList[0]
+  : eventsList.length > 0 &&
+    [...eventsList].sort(
+      (a, b) => Math.abs(new Date(a.event.start_at) - new Date()) - Math.abs(new Date(b.event.start_at) - new Date()),
+    )[0].event;
+
+// remove featured event from events list to avoid duplicate
+const eventsListFiltered = !dataLoaded
+  ? eventsList
+  : (eventsList.length > 0 && eventsList.filter((event) => event.api_id !== featuredEvent.api_id)) || [];
 
 return (
   <Wrapper>
@@ -230,7 +236,7 @@ return (
 
     {featuredEvent && (
       <Section backgroundColor="#fff" style={{ padding: "72px 24px" }}>
-        <Container>
+        <Container gap="48px">
           <Flex direction="column" gap="80px" mobileGap="40px">
             <Text size="text-3xl" mobileSize="text-2xl" fontWeight="500">
               Upcoming Event
@@ -257,29 +263,29 @@ return (
       </Section>
     )}
 
-    <Section backgroundColor="#fff" style={{ padding: "72px 24px" }}>
-      <Container>
-        <Flex gap="80px" mobileGap="40px" alignItems="center" justifyContent="space-between">
-          <Text size="text-3xl" mobileSize="text-2xl" fontWeight="500">
-            Our Events
-          </Text>
-          {moreEvents && (
-            <Widget
-              src="${REPL_ACCOUNT}/widget/DIG.Button"
-              props={{
-                href: "https://lu.ma/NEAR-community",
-                target: "_blank",
-                label: "View All",
-                variant: "secondary",
-                size: "small",
-              }}
-            />
-          )}
-        </Flex>
+    {eventsListFiltered.length > 0 && (
+      <Section backgroundColor="#fff" style={{ padding: "72px 24px" }}>
+        <Container gap="48px">
+          <Flex gap="80px" mobileGap="40px" alignItems="center" justifyContent="space-between">
+            <Text size="text-3xl" mobileSize="text-2xl" fontWeight="500">
+              Our Events
+            </Text>
+            {moreEvents && (
+              <Widget
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
+                props={{
+                  href: "https://lu.ma/NEAR-community",
+                  target: "_blank",
+                  label: "View All",
+                  variant: "secondary",
+                  size: "small",
+                }}
+              />
+            )}
+          </Flex>
 
-        {eventsList.length > 0 ? (
           <Grid columns="1fr 1fr 1fr" gap="20px">
-            {eventsList.map(({ event }) => {
+            {eventsListFiltered.map(({ event }) => {
               const startAt = convertData(event?.start_at);
               const endAt = convertData(event?.end_at);
               const location = formatLocation(event.geo_address_json);
@@ -302,28 +308,24 @@ return (
               );
             })}
           </Grid>
-        ) : (
+        </Container>
+      </Section>
+    )}
+
+    {eventsListFiltered.length === 0 && (
+      <Section backgroundColor="#fff" style={{ padding: "72px 24px" }}>
+        <Container>
           <Flex direction="column" gap="24px" alignItems="center">
-            <Text size="text-2xl" mobileSize="text-lg" style={{ textAlign: "center" }}>
-              There are no upcoming events at the moment.
+            <Text size="text-3xl" mobileSize="text-2xl" fontWeight="500">
+              New events coming soon!
             </Text>
-            <Text size="text-xl" mobileSize="text-lg" style={{ maxWidth: "808px", textAlign: "center" }}>
+            <Text size="text-xl" mobileSize="text-l" style={{ maxWidth: "808px", textAlign: "center" }}>
               Subscribe to our Luma calendar to stay up to date with our events.
             </Text>
-            <Widget
-              src="${REPL_ACCOUNT}/widget/DIG.Button"
-              props={{
-                label: "Subscribe",
-                variant: "primary",
-                size: "large",
-                href: "https://lu.ma/NEAR-community",
-                target: "_blank",
-              }}
-            />
           </Flex>
-        )}
-      </Container>
-    </Section>
+        </Container>
+      </Section>
+    )}
 
     <Section backgroundColor="var(--violet6)">
       <Container>
@@ -337,7 +339,7 @@ return (
             Hosting an event?
           </Text>
 
-          <Text size="text-xl" mobileSize="text-lg" style={{ maxWidth: "808px", textAlign: "center" }}>
+          <Text size="text-xl" mobileSize="text-l" style={{ maxWidth: "808px", textAlign: "center" }}>
             Do you want your NEAR community event posted here? Submit your event details via Luma to be considered.
           </Text>
 

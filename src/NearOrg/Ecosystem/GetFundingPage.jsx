@@ -109,7 +109,7 @@ const ipfsImages = {
   logoLyric: "bafkreicjhngar5ybinywhql3msk6tqi5cckngaf2zywjeuw65umkoqtq34",
   logoCreativeDao: "bafkreictzvvz2irr7tr7fhkdne2i7xpr4mf7x5b5i2vhgoqdswb73lbyyu",
   logoDevDao: "bafkreibvh3qys5z7qbekqqhmgump4iy32nw5wfvcyegejfs4gckrbqp7pq",
-  logoMarketingDao: "bafkreifnwvfi7x5bzzxrjjvp7xbfqd3xpojtlohcgzrowtvyygogrt2emq",
+  logoMarketingDao: "bafybeigtcsnc4s5qyrzqm2qmuffaezeyheaetqn5w3nvlzi4syltedmzqm",
   logoToronto: "bafkreiftfra7wwdwivl2w4v6or6dwycjpswhpjnxxdr7nuhrfnlippxc34",
   logoAfrica: "bafkreiblt2ydxlgfywigkpsl2uon24fhayozfcbdlzcokkf57eaehpqehu",
   logoBrasil: "bafkreifa7pytkthujigpqlgsw2bxgvgpfpvm2jhrext3hetihglgwurjiq",

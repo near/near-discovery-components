@@ -1,15 +1,10 @@
 const Wrapper = styled.div`
   --section-gap: 20px;
   --text-hero: 500 56px/1 "FK Grotesk", "Mona Sans", sans-serif;
-  margin-top: calc(var(--body-top-padding) * -1);
-  padding-top: calc(var(--body-top-padding) * 2);
-  padding-bottom: calc(var(--body-top-padding) * 2);
   gap: var(--section-gap);
   display: flex;
   flex-direction: column;
   max-width: 960px;
-  margin-left: auto;
-  margin-right: auto;
 `;
 
 const H1 = styled.h1`
@@ -372,7 +367,7 @@ const TrendingApp = ({ href, url, name, tagline, loading }) => (
 );
 
 return (
-  <Wrapper>
+  <Wrapper className="gateway-page-container">
     <Section>
       <Container>
         <Pattern $background="linear-gradient(264deg, #CFCCF5 0%, #A39CEC 99.35%)" $borderRadius="16px">

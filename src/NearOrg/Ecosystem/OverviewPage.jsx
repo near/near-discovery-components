@@ -407,7 +407,7 @@ const nearHubsCards = [
 
 return (
   <>
-    <Wrapper className="container-xl">
+    <Wrapper className="gateway-page-container">
       <Section center style={{ position: "relative" }}>
         <Flex gap="16px" direction="column" alignItems="center">
           <H1>Building the Open Web together</H1>

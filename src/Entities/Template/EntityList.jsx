@@ -42,8 +42,6 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 48px;
-  padding-bottom: 48px;
-  padding-top: 48px;
 `;
 
 const Header = styled.div`
@@ -118,7 +116,7 @@ const ScrollBox = styled.div`
 `;
 
 return (
-  <Wrapper className="container-xl">
+  <Wrapper className="gateway-page-container">
     <Header>
       <div className="row">
         <div className="col">

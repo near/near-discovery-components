@@ -47,7 +47,7 @@ const Sidebar = () => (
 );
 
 return (
-  <Wrapper className="container-xl">
+  <Wrapper className="gateway-page-container">
     <SettingsContent />
   </Wrapper>
 );

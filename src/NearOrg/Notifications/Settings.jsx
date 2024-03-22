@@ -20,10 +20,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding-bottom: 48px;
-  padding-top: 48px;
   max-width: 592px;
-  margin: 0 auto;
 `;
 
 const Text = styled.div`
@@ -77,7 +74,7 @@ const checkShow = () => {
 };
 
 return (
-  <Wrapper className="container-xl">
+  <Wrapper className="gateway-page-container">
     <Widget
       src="${REPL_ACCOUNT}/widget/NearOrg.Notifications.SettingsHeader"
       props={{

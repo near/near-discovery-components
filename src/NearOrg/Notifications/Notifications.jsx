@@ -17,7 +17,7 @@ showInBox = showInBox ?? false;
 
 const Header = styled.div`
   display: flex;
-  padding: ${(props) => (props.showInBox ? "16px 16px 16px 24px" : "48px 16px 24px 16px")};
+  padding: ${(props) => (props.showInBox ? "16px 16px 16px 24px" : "24px 16px 24px 16px")};
   align-items: center;
   align-self: stretch;
 `;
@@ -75,7 +75,7 @@ const checkShowBanner = () => {
 };
 
 return (
-  <Card className={showInBox ? "" : "container-xl"} showInBox={showInBox}>
+  <Card className={showInBox ? "" : "gateway-page-container"} showInBox={showInBox}>
     <Header showInBox={showInBox}>
       <Title>Notifications</Title>
       <Widget

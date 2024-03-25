@@ -172,7 +172,6 @@ const Flex = styled.div`
   }
 `;
 
-
 const Grid = styled.div`
   display: grid;
   gap: ${(p) => p.gap};
@@ -292,33 +291,33 @@ const Post = styled.div`
 `;
 
 const PostImage = styled.div`
-border-radius: 8px;
-overflow: hidden;
-width: 100%;
-height: 220px;
-transition: all 200ms;
-margin-bottom: 10px;
-position: relative;
-
-img {
-  display: block;
+  border-radius: 8px;
+  overflow: hidden;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  position: relative;
-  z-index: 5;
-}
-
-&::before {
-  content: "";
-  display: block;
-  inset: 0;
-  background: var(--whiteA6);
-  z-index: 10;
-  position: absolute;
-  opacity: 0;
+  height: 220px;
   transition: all 200ms;
-}
+  margin-bottom: 10px;
+  position: relative;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 5;
+  }
+
+  &::before {
+    content: "";
+    display: block;
+    inset: 0;
+    background: var(--whiteA6);
+    z-index: 10;
+    position: absolute;
+    opacity: 0;
+    transition: all 200ms;
+  }
 `;
 
 const Text = styled.p`
@@ -396,90 +395,88 @@ const renderItem = (item, index) => {
 
   return (
     <BlogPost key={index} href={`/bosblog?accountId=${item.account_id}&blockHeight=${item.block_height}`}>
-      
-        {/* <ImageContainer> */}
-          <PostImage>
-            <Widget
-                    src="${REPL_MOB}/widget/Image"
-                    props={{
-                      image: {ipfs_cid: markdownObj[0].imageUrl.split('/')[4] ||
-                      "https://ipfs.near.social/ipfs/bafkreiatutmf7b7siy2ul7ofo7cmypwc3qlgwseoij3gdxuqf7xzcdguia"}
-                    }}
-                  />
-            </PostImage>
-        {/* </ImageContainer> */}
-        {/* <ContentContainer> */}
-          {/* <PostDate>{formattedDate}</PostDate> */}
-          <Text>{formattedDate}</Text>
-          {/* <PostTitle>{title.text}</PostTitle> */}
-          <Text size="text-l" fontWeight="500" as="h3">
-          {title.text}
-            </Text>
-          {/* <PostTitle></PostTitle> */}
-        {/* </ContentContainer> */}
-      
+      {/* <ImageContainer> */}
+      <PostImage>
+        <Widget
+          src="${REPL_MOB}/widget/Image"
+          props={{
+            image: {
+              ipfs_cid:
+                markdownObj[0].imageUrl.split("/")[4] ||
+                "https://ipfs.near.social/ipfs/bafkreiatutmf7b7siy2ul7ofo7cmypwc3qlgwseoij3gdxuqf7xzcdguia",
+            },
+          }}
+        />
+      </PostImage>
+      {/* </ImageContainer> */}
+      {/* <ContentContainer> */}
+      {/* <PostDate>{formattedDate}</PostDate> */}
+      <Text>{formattedDate}</Text>
+      {/* <PostTitle>{title.text}</PostTitle> */}
+      <Text size="text-l" fontWeight="500" as="h3">
+        {title.text}
+      </Text>
+      {/* <PostTitle></PostTitle> */}
+      {/* </ContentContainer> */}
     </BlogPost>
   );
 };
 
-
-
 return (
   <Wrapper>
-  <Container className="container-xl">
-    <H2>Latest posts</H2>
-    {/* <PostContainer>{renderedItems}</PostContainer> */}
-    <Flex direction="column" gap="60px">
-    <Grid columns="1fr 1fr 1fr" gap="24px" mobileGap="48px">
-    {/* {posts.map(renderItem, index)} */}
-    {
-      posts.map((item, index) => {
-        let content = item.content;
-        if (!item.content.type) {
-          content = JSON.parse(item.content);
-        }
-      
-        const markdownObj = parseMarkdown(content.text);
-      
-        const title = getFirstHeading(markdownObj);
-      
-        const time = new Date(item.block_timestamp / 1000000);
-        const formattedDate = time.toLocaleDateString();
-      
-        if (content.type !== "md") {
-          return null;
-        }
-      
-        return (
-          <BlogPost key={index} href={`/bosblog?accountId=${item.account_id}&blockHeight=${item.block_height}`}>
-            
-              {/* <ImageContainer> */}
+    <Container className="container-xl">
+      <H2>Latest posts</H2>
+      {/* <PostContainer>{renderedItems}</PostContainer> */}
+      <Flex direction="column" gap="60px">
+        <Grid columns="1fr 1fr 1fr" gap="24px" mobileGap="48px">
+          {/* {posts.map(renderItem, index)} */}
+          {posts.map((item, index) => {
+            let content = item.content;
+            if (!item.content.type) {
+              content = JSON.parse(item.content);
+            }
+
+            const markdownObj = parseMarkdown(content.text);
+
+            const title = getFirstHeading(markdownObj);
+
+            const time = new Date(item.block_timestamp / 1000000);
+            const formattedDate = time.toLocaleDateString();
+
+            if (content.type !== "md") {
+              return null;
+            }
+
+            return (
+              <BlogPost key={index} href={`/bosblog?accountId=${item.account_id}&blockHeight=${item.block_height}`}>
+                {/* <ImageContainer> */}
                 <PostImage>
                   <Widget
-                          src="${REPL_MOB}/widget/Image"
-                          props={{
-                            image: {ipfs_cid: markdownObj[0].imageUrl.split('/')[4] ||
-                            "https://ipfs.near.social/ipfs/bafkreiatutmf7b7siy2ul7ofo7cmypwc3qlgwseoij3gdxuqf7xzcdguia"}
-                          }}
-                        />
-                  </PostImage>
-              {/* </ImageContainer> */}
-              {/* <ContentContainer> */}
+                    src="${REPL_MOB}/widget/Image"
+                    props={{
+                      image: {
+                        ipfs_cid:
+                          markdownObj[0].imageUrl.split("/")[4] ||
+                          "https://ipfs.near.social/ipfs/bafkreiatutmf7b7siy2ul7ofo7cmypwc3qlgwseoij3gdxuqf7xzcdguia",
+                      },
+                    }}
+                  />
+                </PostImage>
+                {/* </ImageContainer> */}
+                {/* <ContentContainer> */}
                 {/* <PostDate>{formattedDate}</PostDate> */}
                 <Text>{formattedDate}</Text>
                 {/* <PostTitle>{title.text}</PostTitle> */}
                 <Text size="text-l" fontWeight="500" as="h3">
-                {title.text}
-                  </Text>
+                  {title.text}
+                </Text>
                 {/* <PostTitle></PostTitle> */}
-              {/* </ContentContainer> */}
-            
-          </BlogPost>
-        );
-      })
-    }
-    </Grid>
-    </Flex>
-  </Container >
+                {/* </ContentContainer> */}
+              </BlogPost>
+            );
+          })}
+        </Grid>
+      </Flex>
+    </Container>
   </Wrapper>
 );

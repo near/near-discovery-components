@@ -139,6 +139,118 @@ function getFirstHeading(markdownArray) {
   return null;
 }
 
+const Container = styled.div`
+  display: flex;
+  max-width: 1224px;
+  margin: 0 auto;
+  gap: ${(p) => p.gap ?? "var(--section-gap)"};
+  flex-direction: column;
+  align-items: ${(p) => (p.center ? "center" : undefined)};
+  justify-content: ${(p) => (p.center ? "center" : undefined)};
+  text-align: ${(p) => (p.center ? "center" : undefined)};
+`;
+
+const Flex = styled.div`
+  display: flex;
+  gap: ${(p) => p.gap};
+  align-items: ${(p) => p.alignItems};
+  justify-content: ${(p) => p.justifyContent};
+  flex-direction: ${(p) => p.direction ?? "row"};
+  flex-wrap: ${(p) => p.wrap ?? "nowrap"};
+
+  ${(p) =>
+    p.mobileStack &&
+    `
+    @media (max-width: 900px) {
+      flex-direction: column;
+    }
+  `}
+
+  @media (max-width: 900px) {
+    gap: ${(p) => p.mobileGap ?? p.gap};
+    align-items: ${(p) => p.mobileAlignItems ?? p.alignItems};
+  }
+`;
+
+
+const Grid = styled.div`
+  display: grid;
+  gap: ${(p) => p.gap};
+  grid-template-columns: ${(p) => p.columns};
+  align-items: ${(p) => p.alignItems};
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    gap: ${(p) => p.mobileGap ?? p.gap};
+  }
+`;
+
+const Wrapper = styled.div`
+  --section-gap: 120px;
+  --text-hero: 500 72px/1 "FK Grotesk", "Mona Sans", sans-serif;
+  margin-top: calc(var(--body-top-padding) * -1);
+
+  .darkButton {
+    color: #fff !important;
+    background: transparent !important;
+    border-color: #fff !important;
+    &:focus {
+      border-color: var(--violet9) !important;
+    }
+    &:hover {
+      color: #000 !important;
+      background: #fff !important;
+    }
+    &:active {
+      color: #000 !important;
+      background: var(--sand3) !important;
+      border-color: var(--sand3) !important;
+    }
+  }
+
+  @media (max-width: 900px) {
+    --section-gap: 80px;
+  }
+`;
+
+const Section = styled.div`
+  --background-color: ${(p) => p.backgroundColor};
+  background-color: var(--background-color);
+  position: relative;
+  padding: 160px 24px;
+  overflow: hidden;
+
+  @media (max-width: 900px) {
+    padding: var(--section-gap) 24px;
+  }
+`;
+
+const BlogPost = styled("Link")`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-decoration: none !important;
+  outline: none;
+  box-shadow: 0 0 0 0px var(--violet4);
+
+  &:hover {
+    h3 {
+      text-decoration: underline;
+    }
+
+    div:first-child {
+      &::before {
+        opacity: 1;
+      }
+    }
+  }
+
+  &:focus {
+    div:first-child {
+      box-shadow: 0 0 0 4px var(--violet4);
+    }
+  }
+`;
 const H2 = styled.h2`
   font-size: 19px;
   line-height: 22px;
@@ -179,11 +291,45 @@ const Post = styled.div`
   }
 `;
 
-const PostImage = styled.img`
+const PostImage = styled.div`
+border-radius: 8px;
+overflow: hidden;
+width: 100%;
+height: 220px;
+transition: all 200ms;
+margin-bottom: 10px;
+position: relative;
+
+img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  position: relative;
+  z-index: 5;
+}
+
+&::before {
+  content: "";
+  display: block;
+  inset: 0;
+  background: var(--whiteA6);
+  z-index: 10;
+  position: absolute;
+  opacity: 0;
+  transition: all 200ms;
+}
+`;
+
+const Text = styled.p`
+  font: var(--${(p) => p.size ?? "text-base"});
+  font-weight: ${(p) => p.fontWeight} !important;
+  color: var(--${(p) => p.color ?? "sand12"});
+  margin: 0;
+
+  @media (max-width: 900px) {
+    font: var(--${(p) => p.mobileSize ?? p.size ?? "text-base"});
+  }
 `;
 
 const ImageContainer = styled.div`
@@ -249,31 +395,91 @@ const renderItem = (item, index) => {
   }
 
   return (
-    <Link href={`/bosblog?accountId=${item.account_id}&blockHeight=${item.block_height}`}>
-      <Post key={index}>
-        <ImageContainer>
-          <PostImage
-            src={
-              markdownObj[0].imageUrl ||
-              "https://ipfs.near.social/ipfs/bafkreiatutmf7b7siy2ul7ofo7cmypwc3qlgwseoij3gdxuqf7xzcdguia"
-            }
-            alt="Post image"
-          />
-        </ImageContainer>
-        <ContentContainer>
-          <PostDate>{formattedDate}</PostDate>
-          <PostTitle>{title.text}</PostTitle>
-        </ContentContainer>
-      </Post>
-    </Link>
+    <BlogPost key={index} href={`/bosblog?accountId=${item.account_id}&blockHeight=${item.block_height}`}>
+      
+        {/* <ImageContainer> */}
+          <PostImage>
+            <Widget
+                    src="${REPL_MOB}/widget/Image"
+                    props={{
+                      image: {ipfs_cid: markdownObj[0].imageUrl.split('/')[4] ||
+                      "https://ipfs.near.social/ipfs/bafkreiatutmf7b7siy2ul7ofo7cmypwc3qlgwseoij3gdxuqf7xzcdguia"}
+                    }}
+                  />
+            </PostImage>
+        {/* </ImageContainer> */}
+        {/* <ContentContainer> */}
+          {/* <PostDate>{formattedDate}</PostDate> */}
+          <Text>{formattedDate}</Text>
+          {/* <PostTitle>{title.text}</PostTitle> */}
+          <Text size="text-l" fontWeight="500" as="h3">
+          {title.text}
+            </Text>
+          {/* <PostTitle></PostTitle> */}
+        {/* </ContentContainer> */}
+      
+    </BlogPost>
   );
 };
 
-const renderedItems = posts?.map(renderItem, index);
+
 
 return (
-  <div style={{ background: "#f7f7f7", padding: "4em 2em" }}>
+  <Wrapper>
+  <Container className="container-xl">
     <H2>Latest posts</H2>
-    <PostContainer>{renderedItems}</PostContainer>
-  </div>
+    {/* <PostContainer>{renderedItems}</PostContainer> */}
+    <Flex direction="column" gap="60px">
+    <Grid columns="1fr 1fr 1fr" gap="24px" mobileGap="48px">
+    {/* {posts.map(renderItem, index)} */}
+    {
+      posts.map((item, index) => {
+        let content = item.content;
+        if (!item.content.type) {
+          content = JSON.parse(item.content);
+        }
+      
+        const markdownObj = parseMarkdown(content.text);
+      
+        const title = getFirstHeading(markdownObj);
+      
+        const time = new Date(item.block_timestamp / 1000000);
+        const formattedDate = time.toLocaleDateString();
+      
+        if (content.type !== "md") {
+          return null;
+        }
+      
+        return (
+          <BlogPost key={index} href={`/bosblog?accountId=${item.account_id}&blockHeight=${item.block_height}`}>
+            
+              {/* <ImageContainer> */}
+                <PostImage>
+                  <Widget
+                          src="${REPL_MOB}/widget/Image"
+                          props={{
+                            image: {ipfs_cid: markdownObj[0].imageUrl.split('/')[4] ||
+                            "https://ipfs.near.social/ipfs/bafkreiatutmf7b7siy2ul7ofo7cmypwc3qlgwseoij3gdxuqf7xzcdguia"}
+                          }}
+                        />
+                  </PostImage>
+              {/* </ImageContainer> */}
+              {/* <ContentContainer> */}
+                {/* <PostDate>{formattedDate}</PostDate> */}
+                <Text>{formattedDate}</Text>
+                {/* <PostTitle>{title.text}</PostTitle> */}
+                <Text size="text-l" fontWeight="500" as="h3">
+                {title.text}
+                  </Text>
+                {/* <PostTitle></PostTitle> */}
+              {/* </ContentContainer> */}
+            
+          </BlogPost>
+        );
+      })
+    }
+    </Grid>
+    </Flex>
+  </Container >
+  </Wrapper>
 );

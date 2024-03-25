@@ -2,6 +2,7 @@ const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pa
 
 const contributors = props.contributors || [];
 const requestAuthentication = props.requestAuthentication;
+const returnLocation = props.returnLocation || null;
 
 const [posts, setPosts] = useState([]);
 const [blogPosts, setBlogPosts] = useState([]);
@@ -389,7 +390,10 @@ const renderItem = (item, index) => {
   }
 
   return (
-    <BlogPost key={index} href={`/bosblog?accountId=${item.account_id}&blockHeight=${item.block_height}`}>
+    <BlogPost
+      key={index}
+      href={`/bosblog?accountId=${item.account_id}&blockHeight=${item.block_height}&returnLocation=${returnLocation}`}
+    >
       <PostImage>
         <Widget
           src="${REPL_MOB}/widget/Image"

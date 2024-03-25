@@ -1,4 +1,23 @@
+console.log("here are the props", props);
 const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
+console.log("returnLocation", props.returnLocation);
+
+function extractBackButtonDestination(url) {
+  // Split the URL by '&' to separate the parameters
+  const params = url.split("&");
+
+  // Filter out the backButtonDestination parameter
+  const backButtonDestParam = params.find((param) => param.startsWith("backButtonDestination="));
+
+  // Return the value part after 'backButtonDestination='
+  return backButtonDestParam ? backButtonDestParam.split("backButtonDestination=")[1] : null;
+}
+
+// Get backButtonDestination parameter
+// const backButtonDestination = extractBackButtonDestination(window.location.href);
+
+// console.log('backButtonDestination', backButtonDestination)
+
 const BlogPostWrapper = styled.div`
   @media (max-width: 1024px) {
     padding-left: 0;
@@ -141,6 +160,17 @@ const CommentWrapper = styled.div`
       }
     }
   }
+`;
+
+const Container = styled.div`
+  display: flex;
+  max-width: 1224px;
+  margin: 0 auto;
+  gap: ${(p) => p.gap ?? "var(--section-gap)"};
+  flex-direction: column;
+  align-items: ${(p) => (p.center ? "center" : undefined)};
+  justify-content: ${(p) => (p.center ? "center" : undefined)};
+  text-align: ${(p) => (p.center ? "center" : undefined)};
 `;
 
 if (!props.accountId || !(props.blockHeight || props.commentBlockHeight)) {
@@ -362,116 +392,119 @@ if (blog) {
   return (
     <>
       <BlogPostWrapper>
-        <Widget
-          src="${REPL_ACCOUNT}/widget/DIG.Button"
-          props={{
-            label: "Back To All Posts",
-            href: `/bosblog`,
-            iconLeft: "ph ph-arrow-left",
-            variant: "secondary",
-            size: "small",
-          }}
-          style={{ marginBottom: "1rem" }}
-        />
-        {/* RENDER BLOG HEADER IMAGE */}
-        <PostImage
-          imageUrl={
-            markdownObj[0].imageUrl ||
-            "https://ipfs.near.social/ipfs/bafkreiatutmf7b7siy2ul7ofo7cmypwc3qlgwseoij3gdxuqf7xzcdguia"
-          }
-          alt="Post image"
-        />
-        <BlogPostContentWrapper>
-          <TitleSection>
-            {/* RENDER BLOG HEADER - TITLE   */}
-
-            <h1>{getFirstHeading(markdownObj)?.text || "Untitled"}</h1>
-
-            {/* RENDER BLOG HEADER - DATE */}
-
-            <PostDate>{getPostTime(blog.block_height).mdy}</PostDate>
-
-            {/* RENDER BLOG HEADER - AUTHOR INFO */}
-
-            <Widget
-              src="${REPL_ACCOUNT}/widget/AccountProfile"
-              key={blog.accountId}
-              props={{
-                accountId: blog.accountId,
-              }}
-            />
-          </TitleSection>
-
-          {/* RENDER BLOG BODY */}
-          {markdownObj.map((element, index) => {
-            if ((index <= 1 && element.type === "header") || element.type === "header-image") {
-              return;
-            } else {
-              return (
-                <ItemWrapper style={{ marginTop: element.type === "list-item" ? "" : "2em" }}>
-                  <Widget src="${REPL_ACCOUNT}/widget/SocialMarkdown" props={{ text: element.content }} />
-                </ItemWrapper>
-              );
+        <Container>
+          <Widget
+            src="${REPL_ACCOUNT}/widget/DIG.Button"
+            props={{
+              label: "Back To All Posts",
+              href: props.backButtonDestination || `/bosblog`,
+              iconLeft: "ph ph-arrow-left",
+              variant: "primary",
+              size: "small",
+              variant: "ghost",
+            }}
+            style={{ marginBottom: "1rem" }}
+          />
+          {/* RENDER BLOG HEADER IMAGE */}
+          <PostImage
+            imageUrl={
+              markdownObj[0].imageUrl ||
+              "https://ipfs.near.social/ipfs/bafkreiatutmf7b7siy2ul7ofo7cmypwc3qlgwseoij3gdxuqf7xzcdguia"
             }
-          })}
-        </BlogPostContentWrapper>
+            alt="Post image"
+          />
+          <BlogPostContentWrapper>
+            <TitleSection>
+              {/* RENDER BLOG HEADER - TITLE   */}
 
-        {/* RENDER BLOG FOOTER - COMMENTS / LIKES / ETC */}
-        <BlogPostActionsWrapper>
-          {blockHeight !== "now" && (
-            <Actions>
-              <Widget
-                src="${REPL_ACCOUNT}/widget/v1.LikeButton"
-                props={{
-                  item,
-                  notifyAccountId,
-                  likes: blog.blogLikes,
-                  requestAuthentication: props.requestAuthentication,
-                }}
-              />
+              <h1>{getFirstHeading(markdownObj)?.text || "Untitled"}</h1>
+
+              {/* RENDER BLOG HEADER - DATE */}
+
+              <PostDate>{getPostTime(blog.block_height).mdy}</PostDate>
+
+              {/* RENDER BLOG HEADER - AUTHOR INFO */}
 
               <Widget
-                src="${REPL_ACCOUNT}/widget/CommentButton"
+                src="${REPL_ACCOUNT}/widget/AccountProfile"
+                key={blog.accountId}
                 props={{
-                  item,
-                  onClick: () => commentButtonHandler(),
+                  accountId: blog.accountId,
                 }}
               />
+            </TitleSection>
 
-              <Widget
-                src="${REPL_ACCOUNT}/widget/CopyUrlButton"
-                props={{
-                  url: postUrl,
-                }}
-              />
-              <Widget
-                src="${REPL_ACCOUNT}/widget/ShareButton"
-                props={{
-                  postType: "post",
-                  url: postUrl,
-                }}
-              />
-            </Actions>
-          )}
-          {showReply && (
-            <div className="mb-2">
-              <Widget
-                src="${REPL_ACCOUNT}/widget/Comments.Compose"
-                props={{
-                  notifyAccountId,
-                  item,
-                  onComment: () => setShowReply(false),
-                  newAddedComment: addNewCommentFn,
-                }}
-              />
-            </div>
-          )}
-          {renderedComments && (
-            <Comments>
-              <CommentWrapper>{renderedComments}</CommentWrapper>
-            </Comments>
-          )}
-        </BlogPostActionsWrapper>
+            {/* RENDER BLOG BODY */}
+            {markdownObj.map((element, index) => {
+              if ((index <= 1 && element.type === "header") || element.type === "header-image") {
+                return;
+              } else {
+                return (
+                  <ItemWrapper style={{ marginTop: element.type === "list-item" ? "" : "2em" }}>
+                    <Widget src="${REPL_ACCOUNT}/widget/SocialMarkdown" props={{ text: element.content }} />
+                  </ItemWrapper>
+                );
+              }
+            })}
+          </BlogPostContentWrapper>
+
+          {/* RENDER BLOG FOOTER - COMMENTS / LIKES / ETC */}
+          <BlogPostActionsWrapper>
+            {blockHeight !== "now" && (
+              <Actions>
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/v1.LikeButton"
+                  props={{
+                    item,
+                    notifyAccountId,
+                    likes: blog.blogLikes,
+                    requestAuthentication: props.requestAuthentication,
+                  }}
+                />
+
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/CommentButton"
+                  props={{
+                    item,
+                    onClick: () => commentButtonHandler(),
+                  }}
+                />
+
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/CopyUrlButton"
+                  props={{
+                    url: postUrl,
+                  }}
+                />
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/ShareButton"
+                  props={{
+                    postType: "post",
+                    url: postUrl,
+                  }}
+                />
+              </Actions>
+            )}
+            {showReply && (
+              <div className="mb-2">
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/Comments.Compose"
+                  props={{
+                    notifyAccountId,
+                    item,
+                    onComment: () => setShowReply(false),
+                    newAddedComment: addNewCommentFn,
+                  }}
+                />
+              </div>
+            )}
+            {renderedComments && (
+              <Comments>
+                <CommentWrapper>{renderedComments}</CommentWrapper>
+              </Comments>
+            )}
+          </BlogPostActionsWrapper>
+        </Container>
       </BlogPostWrapper>
       <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Footer" />
     </>

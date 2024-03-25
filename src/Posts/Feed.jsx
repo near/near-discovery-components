@@ -3,6 +3,8 @@ const loadMorePosts = props.loadMorePosts;
 const hasMore = props.hasMore || false;
 const posts = props.posts || [];
 
+console.log("posts", posts);
+
 const Post = styled.div`
   border-bottom: 1px solid #eceef0;
   padding: 24px 0 12px;

@@ -2,40 +2,40 @@ const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pa
 
 //place id of the post you want to fetch from the dataplatform_near_social_feed_moderated_posts table
 const blogPostIds = [76994, 76797, 75675, 76460];
+const contributors = props.contributors || [];
 const requestAuthentication = props.requestAuthentication;
 
 const [posts, setPosts] = useState([]);
 const [blogPosts, setBlogPosts] = useState([]);
 
-const blogPostsQuery = `
-query FeedQuery {
-  dataplatform_near_feed_moderated_posts(
+console.log("here are the contributors", contributors);
+
+const promotedPostsQuery = `
+query PromotedPostsQuery {
+  jacksonthedev_near_promote2_v1_promote(
+    
     order_by: {block_height: desc}
     where: {
       _and: {
-        id: {_in: ${JSON.stringify(blogPostIds)}}
+        account_id: {_in: ${JSON.stringify(contributors)}}
       }
     }
   ) {
     account_id
     block_height
     block_timestamp
-    content
     receipt_id
-    accounts_liked
-    comments(order_by: {block_height: asc}) {
-      account_id
-      block_height
-      block_timestamp
-      content
-    }
+    promotion_type
+    raw_promotion
+    content
+    post_id
   }
 }
 `;
 function fetchGraphQL(operationsDoc, operationName, variables) {
   return asyncFetch(`${GRAPHQL_ENDPOINT}/v1/graphql`, {
     method: "POST",
-    headers: { "x-hasura-role": "dataplatform_near" },
+    headers: { "x-hasura-role": "jacksonthedev_near" },
     body: JSON.stringify({
       query: operationsDoc,
       variables: variables,
@@ -44,13 +44,17 @@ function fetchGraphQL(operationsDoc, operationName, variables) {
   });
 }
 
-fetchGraphQL(blogPostsQuery, "FeedQuery", {}).then((result) => {
+fetchGraphQL(promotedPostsQuery, "PromotedPostsQuery", {}).then((result) => {
   if (result.status === 200) {
     if (result.body.data) {
-      const posts = result.body.data.dataplatform_near_feed_moderated_posts;
-      setPosts(posts);
+      const posts = result.body.data.jacksonthedev_near_promote2_v1_promote;
+      console.log("here are the posts ln 111", posts);
+
       if (posts.length > 0) {
-        posts.forEach((post) => {
+        const postsToDisplay = posts.map((post) => {
+          const promotion = JSON.parse(post.raw_promotion);
+          const promotedPostAccountId = promotion.value.post.path.split("/")[0];
+          const promotedPostBlockHeight = promotion.value.post.blockHeight;
           let content = JSON.parse(post.content);
           if (post.accounts_liked.length !== 0) {
             if (typeof post.accounts_liked === "string") {
@@ -66,7 +70,17 @@ fetchGraphQL(blogPostsQuery, "FeedQuery", {}).then((result) => {
               blogPostLikes: post.accounts_liked,
             },
           ]);
+          return {
+            ...post,
+            block_height: promotedPostBlockHeight,
+            account_id: promotedPostAccountId,
+            blogPostContent: content,
+            blogPostComments: comments,
+            blogPostLikes: post.accounts_liked,
+          };
         });
+
+        setPosts(postsToDisplay);
       } else {
         State.update({
           blogPostExists: false,

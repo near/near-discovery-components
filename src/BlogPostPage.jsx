@@ -151,6 +151,8 @@ if (!props.accountId || !(props.blockHeight || props.commentBlockHeight)) {
   );
 }
 
+const contributors = props.contributors || [];
+console.log("here are the contributors", contributors);
 const [blog, setBlog] = useState(null);
 const [showReply, setShowReply] = useState(false);
 const notifyAccountId = props.notifyAccountId;

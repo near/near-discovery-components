@@ -98,7 +98,8 @@ const promoteToBlog = () => {
       promote: JSON.stringify({
         key: context.accountId,
         value: {
-          operation: "addToBlog",
+          operation: "add",
+          type: "blog",
           post: item,
           blockHeight,
         },
@@ -140,6 +141,7 @@ const buildMenu = (accountId, blockHeight) => {
       iconLeft: "ph-bold ph-article",
       onSelect: () => promoteToBlog(accountId, blockHeight),
     });
+
     hideSubmenu.unshift({
       name: "Hide this " + capitalizedContentType,
       iconLeft: "ph-bold ph-eye-slash",
@@ -151,15 +153,7 @@ const buildMenu = (accountId, blockHeight) => {
       onSelect: () => showReportModal(capitalizedContentType),
     });
   }
-  return [
-    {
-      name: "Promote",
-      iconLeft: "ph-bold ph-arrow-up",
-      disabled: !context.accountId || context.accountId === accountId,
-      subMenuProps: {
-        items: promoteToBlogSubmenu,
-      },
-    },
+  const menu = [
     {
       name: "Hide",
       iconLeft: "ph-bold ph-eye-slash",
@@ -186,6 +180,19 @@ const buildMenu = (accountId, blockHeight) => {
     //   onSelect: parentFunctions.toggleEdit,
     //  },
   ];
+
+  if (item.path && item?.path?.includes("post/main")) {
+    menu.unshift({
+      name: "Promote",
+      iconLeft: "ph-bold ph-arrow-up",
+      disabled: !context.accountId || context.accountId === accountId,
+      subMenuProps: {
+        items: promoteToBlogSubmenu,
+      },
+    });
+  }
+
+  return menu;
 };
 
 // when set, value is the type of content to moderate (Account, Post or Comment)

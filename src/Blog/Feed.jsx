@@ -1,14 +1,10 @@
 const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 
-//place id of the post you want to fetch from the dataplatform_near_social_feed_moderated_posts table
-const blogPostIds = [76994, 76797, 75675, 76460];
 const contributors = props.contributors || [];
 const requestAuthentication = props.requestAuthentication;
 
 const [posts, setPosts] = useState([]);
 const [blogPosts, setBlogPosts] = useState([]);
-
-console.log("here are the contributors", contributors);
 
 const promotedPostsQuery = `
 query PromotedPostsQuery {
@@ -48,7 +44,6 @@ fetchGraphQL(promotedPostsQuery, "PromotedPostsQuery", {}).then((result) => {
   if (result.status === 200) {
     if (result.body.data) {
       const posts = result.body.data.jacksonthedev_near_promote2_v1_promote;
-      console.log("here are the posts ln 111", posts);
 
       if (posts.length > 0) {
         const postsToDisplay = posts.map((post) => {
@@ -227,7 +222,7 @@ const Section = styled.div`
 const BlogPost = styled("Link")`
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 24px;
   text-decoration: none !important;
   outline: none;
   box-shadow: 0 0 0 0px var(--violet4);
@@ -296,7 +291,6 @@ const PostImage = styled.div`
   width: 100%;
   height: 220px;
   transition: all 200ms;
-  margin-bottom: 10px;
   position: relative;
 
   img {
@@ -387,7 +381,8 @@ const renderItem = (item, index) => {
   const title = getFirstHeading(markdownObj);
 
   const time = new Date(item.block_timestamp / 1000000);
-  const formattedDate = time.toLocaleDateString();
+  const options = { year: "numeric", month: "short", day: "numeric" };
+  const formattedDate = time.toLocaleDateString("en-US", options);
 
   if (content.type !== "md") {
     return null;
@@ -395,7 +390,6 @@ const renderItem = (item, index) => {
 
   return (
     <BlogPost key={index} href={`/bosblog?accountId=${item.account_id}&blockHeight=${item.block_height}`}>
-      {/* <ImageContainer> */}
       <PostImage>
         <Widget
           src="${REPL_MOB}/widget/Image"
@@ -408,75 +402,29 @@ const renderItem = (item, index) => {
           }}
         />
       </PostImage>
-      {/* </ImageContainer> */}
-      {/* <ContentContainer> */}
-      {/* <PostDate>{formattedDate}</PostDate> */}
-      <Text>{formattedDate}</Text>
-      {/* <PostTitle>{title.text}</PostTitle> */}
       <Text size="text-l" fontWeight="500" as="h3">
         {title.text}
       </Text>
-      {/* <PostTitle></PostTitle> */}
-      {/* </ContentContainer> */}
+      <Text>{formattedDate}</Text>
     </BlogPost>
   );
 };
 
 return (
   <Wrapper>
-    <Container className="container-xl">
-      <H2>Latest posts</H2>
-      {/* <PostContainer>{renderedItems}</PostContainer> */}
-      <Flex direction="column" gap="60px">
-        <Grid columns="1fr 1fr 1fr" gap="24px" mobileGap="48px">
-          {/* {posts.map(renderItem, index)} */}
-          {posts.map((item, index) => {
-            let content = item.content;
-            if (!item.content.type) {
-              content = JSON.parse(item.content);
-            }
-
-            const markdownObj = parseMarkdown(content.text);
-
-            const title = getFirstHeading(markdownObj);
-
-            const time = new Date(item.block_timestamp / 1000000);
-            const formattedDate = time.toLocaleDateString();
-
-            if (content.type !== "md") {
-              return null;
-            }
-
-            return (
-              <BlogPost key={index} href={`/bosblog?accountId=${item.account_id}&blockHeight=${item.block_height}`}>
-                {/* <ImageContainer> */}
-                <PostImage>
-                  <Widget
-                    src="${REPL_MOB}/widget/Image"
-                    props={{
-                      image: {
-                        ipfs_cid:
-                          markdownObj[0].imageUrl.split("/")[4] ||
-                          "https://ipfs.near.social/ipfs/bafkreiatutmf7b7siy2ul7ofo7cmypwc3qlgwseoij3gdxuqf7xzcdguia",
-                      },
-                    }}
-                  />
-                </PostImage>
-                {/* </ImageContainer> */}
-                {/* <ContentContainer> */}
-                {/* <PostDate>{formattedDate}</PostDate> */}
-                <Text>{formattedDate}</Text>
-                {/* <PostTitle>{title.text}</PostTitle> */}
-                <Text size="text-l" fontWeight="500" as="h3">
-                  {title.text}
-                </Text>
-                {/* <PostTitle></PostTitle> */}
-                {/* </ContentContainer> */}
-              </BlogPost>
-            );
-          })}
-        </Grid>
-      </Flex>
+    <Container>
+      <Section style={{ padding: "72px 0" }}>
+        <Flex direction="column" gap="30px">
+          <Flex direction="column" gap="24px">
+            <Text size="text-3xl" mobileSize="text-l" fontWeight="500">
+              Latest posts
+            </Text>
+          </Flex>
+          <Grid columns="1fr 1fr 1fr" gap="24px" mobileGap="48px">
+            {posts.map(renderItem, index)}
+          </Grid>
+        </Flex>
+      </Section>
     </Container>
   </Wrapper>
 );

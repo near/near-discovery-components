@@ -1,3 +1,7 @@
+const { textareaInputHandler, autoCompleteAccountId } = VM.require(
+  "${REPL_ACCOUNT}/widget/Posts.autoCompleteUtils",
+) || { textareaInputHandler: () => {}, autoCompleteAccountId: () => {} };
+
 if (!context.accountId) {
   return <></>;
 }
@@ -14,6 +18,8 @@ const content = {
   type: "md",
   image: state.image.cid ? { ipfs_cid: state.image.cid } : undefined,
   text: state.text,
+  mentionInput: "", // text next to @ tag
+  mentionsArray: [], // all the mentions in the description
 };
 
 function extractMentions(text) {
@@ -69,17 +75,6 @@ function onCommit() {
     text: "",
   });
   props.onEdit();
-}
-
-function textareaInputHandler(value) {
-  const showAccountAutocomplete = /@[\w][^\s]*$/.test(value);
-  State.update({ text: value, showAccountAutocomplete });
-}
-
-function autoCompleteAccountId(id) {
-  let text = state.text.replace(/[\s]{0,1}@[^\s]*$/, "");
-  text = `${text} @${id}`.trim() + " ";
-  State.update({ text, showAccountAutocomplete: false });
 }
 
 const Wrapper = styled.div`
@@ -340,7 +335,18 @@ return (
         <Textarea data-value={state.text}>
           <textarea
             placeholder="What's happening?"
-            onInput={(event) => textareaInputHandler(event.target.value)}
+            onInput={(event) => {
+              const { text, showAccountAutocomplete, mentionsArray, mentionInput } = textareaInputHandler(
+                event.target.value,
+              );
+              State.update((lastKnownState) => ({
+                ...lastKnownState,
+                text,
+                showAccountAutocomplete,
+                mentionsArray,
+                mentionInput,
+              }));
+            }}
             onKeyUp={(event) => {
               if (event.key === "Escape") {
                 State.update({ showAccountAutocomplete: false });
@@ -364,8 +370,21 @@ return (
         <Widget
           src="${REPL_ACCOUNT}/widget/AccountAutocomplete"
           props={{
-            term: state.text.split("@").pop(),
-            onSelect: autoCompleteAccountId,
+            term: state.mentionInput,
+            onSelect: (id) => {
+              const { text, showAccountAutocomplete } = autoCompleteAccountId(
+                id,
+                state.text,
+                state.mentionsArray,
+                state.mentionInput,
+              );
+
+              State.update((lastKnownState) => ({
+                ...lastKnownState,
+                text,
+                showAccountAutocomplete,
+              }));
+            },
             onClose: () => State.update({ showAccountAutocomplete: false }),
           }}
         />

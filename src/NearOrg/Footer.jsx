@@ -138,7 +138,7 @@ const sections = [
       },
       {
         title: "Technical Papers",
-        url: "https://docs.near.org/concepts/advanced/papers",
+        url: "https://near.org/papers",
       },
     ],
   },

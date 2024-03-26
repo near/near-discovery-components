@@ -206,7 +206,7 @@ const UseCase = styled.div`
 
 return (
   <>
-    <Wrapper className="container-xl">
+    <Wrapper className="gateway-page-container">
       <Section center>
         <H1>Your first steps to becoming a Web3 citizen</H1>
       </Section>

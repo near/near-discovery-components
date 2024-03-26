@@ -1,14 +1,13 @@
 const [selectedTab, setSelectedTab] = useState(props.tab ?? "posts");
-
-if (props.tab && props.tab !== selectedTab) {
-  setSelectedTab(props.tab);
-}
-
 const activityUrl = `/${REPL_ACCOUNT}/widget/ActivityPage`;
 
 const Wrapper = styled.div`
-  margin-top: calc(var(--body-top-padding) * -1);
-  padding-bottom: 48px;
+  padding-top: 0;
+
+  @media (max-width: 1024px) {
+    padding-left: 0;
+    padding-right: 0;
+  }
 `;
 
 const Main = styled.div`
@@ -23,8 +22,8 @@ const Main = styled.div`
 
 const Section = styled.div`
   padding-top: 24px;
-  border-left: ${(p) => (p.primary ? "1px solid #ECEEF0" : "none")};
-  border-right: ${(p) => (p.primary ? "1px solid #ECEEF0" : "none")};
+  border-left: ${(p) => (p.$primary ? "1px solid #ECEEF0" : "none")};
+  border-right: ${(p) => (p.$primary ? "1px solid #ECEEF0" : "none")};
 
   > div {
     padding-bottom: 24px;
@@ -42,8 +41,8 @@ const Section = styled.div`
     padding-top: 0px;
     border-left: none;
     border-right: none;
-    display: ${(p) => (p.active ? "block" : "none")};
-    margin: ${(p) => (p.negativeMargin ? "0 -12px" : "0")};
+    display: ${(p) => (p.$active ? "block" : "none")};
+    padding: ${(p) => p.$smallScreenPadding};
   }
 `;
 
@@ -52,14 +51,11 @@ const Tabs = styled.div`
   height: 48px;
   background: #f8f9fa;
   border-bottom: 1px solid #eceef0;
-  margin-bottom: ${(p) => (p.noMargin ? "0" : p.halfMargin ? "24px" : "24px")};
   overflow: auto;
   scroll-behavior: smooth;
 
   @media (max-width: 1024px) {
     display: flex;
-    margin-left: -12px;
-    margin-right: -12px;
 
     > * {
       flex: 1;
@@ -76,7 +72,7 @@ const TabsButton = styled("Link")`
   font-size: 12px;
   padding: 0 12px;
   position: relative;
-  color: ${(p) => (p.selected ? "#11181C" : "#687076")};
+  color: ${(p) => (p.$selected ? "#11181C" : "#687076")};
   background: none;
   border: none;
   outline: none;
@@ -89,7 +85,7 @@ const TabsButton = styled("Link")`
 
   &::after {
     content: "";
-    display: ${(p) => (p.selected ? "block" : "none")};
+    display: ${(p) => (p.$selected ? "block" : "none")};
     position: absolute;
     bottom: 0;
     left: 0;
@@ -100,11 +96,11 @@ const TabsButton = styled("Link")`
 `;
 
 return (
-  <Wrapper className="container-xl" negativeMargin={selectedTab === "posts"}>
-    <Tabs halfMargin={selectedTab === "apps"} noMargin={selectedTab === "posts"}>
+  <Wrapper className="gateway-page-container">
+    <Tabs>
       <TabsButton
         href={`${activityUrl}?tab=posts`}
-        selected={selectedTab === "posts"}
+        $selected={selectedTab === "posts"}
         onClick={() => setSelectedTab("posts")}
       >
         Posts
@@ -112,7 +108,7 @@ return (
 
       <TabsButton
         href={`${activityUrl}?tab=apps`}
-        selected={selectedTab === "apps"}
+        $selected={selectedTab === "apps"}
         onClick={() => setSelectedTab("apps")}
       >
         Components
@@ -120,7 +116,7 @@ return (
 
       <TabsButton
         href={`${activityUrl}?tab=explore`}
-        selected={selectedTab === "explore"}
+        $selected={selectedTab === "explore"}
         onClick={() => setSelectedTab("explore")}
       >
         Explore
@@ -128,16 +124,16 @@ return (
     </Tabs>
 
     <Main>
-      <Section active={selectedTab === "apps"}>
+      <Section $smallScreenPadding="1rem" $active={selectedTab === "apps"}>
         <Widget src="${REPL_ACCOUNT}/widget/FeaturedComponents" />
         <Widget src="${REPL_ACCOUNT}/widget/LatestComponents" />
       </Section>
 
-      <Section negativeMargin primary active={selectedTab === "posts"}>
+      <Section $smallScreenPadding="0" $primary $active={selectedTab === "posts"}>
         <Widget src={`${REPL_ACCOUNT}/widget/ActivityFeeds.DetermineActivityFeed`} />
       </Section>
 
-      <Section active={selectedTab === "explore"}>
+      <Section $smallScreenPadding="1rem" $active={selectedTab === "explore"}>
         <Widget src="${REPL_ACCOUNT}/widget/ExploreWidgets" />
       </Section>
     </Main>

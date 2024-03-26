@@ -62,8 +62,6 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 48px;
-  padding-bottom: 48px;
-  padding-top: 48px;
 `;
 
 const Header = styled.div`
@@ -99,12 +97,12 @@ const H2 = styled.h2`
 const Text = styled.p`
   margin: 0;
   line-height: 1.5rem;
-  color: ${(p) => (p.bold ? "#11181C" : "#687076")} !important;
-  font-weight: ${(p) => (p.bold ? "600" : "400")};
-  font-size: ${(p) => (p.small ? "12px" : "14px")};
-  overflow: ${(p) => (p.ellipsis ? "hidden" : "")};
-  text-overflow: ${(p) => (p.ellipsis ? "ellipsis" : "")};
-  white-space: ${(p) => (p.ellipsis ? "nowrap" : "")};
+  color: ${(p) => (p.$bold ? "#11181C" : "#687076")} !important;
+  font-weight: ${(p) => (p.$bold ? "600" : "400")};
+  font-size: ${(p) => (p.$small ? "12px" : "14px")};
+  overflow: ${(p) => (p.$ellipsis ? "hidden" : "")};
+  text-overflow: ${(p) => (p.$ellipsis ? "ellipsis" : "")};
+  white-space: ${(p) => (p.$ellipsis ? "nowrap" : "")};
   overflow-wrap: anywhere;
 
   b {
@@ -168,8 +166,8 @@ const Tabs = styled.div`
   @media (max-width: 1024px) {
     background: #f8f9fa;
     border-top: 1px solid #eceef0;
-    margin-left: -12px;
-    margin-right: -12px;
+    margin-left: calc(var(--gateway-page-container-padding-x) * -1);
+    margin-right: calc(var(--gateway-page-container-padding-x) * -1);
 
     > * {
       flex: 1;
@@ -186,7 +184,7 @@ const TabsButton = styled("Link")`
   font-size: 12px;
   padding: 0 12px;
   position: relative;
-  color: ${(p) => (p.selected ? "#11181C" : "#687076")};
+  color: ${(p) => (p.$selected ? "#11181C" : "#687076")};
   background: none;
   border: none;
   outline: none;
@@ -199,7 +197,7 @@ const TabsButton = styled("Link")`
 
   &::after {
     content: "";
-    display: ${(p) => (p.selected ? "block" : "none")};
+    display: ${(p) => (p.$selected ? "block" : "none")};
     position: absolute;
     bottom: 0;
     left: 0;
@@ -210,7 +208,7 @@ const TabsButton = styled("Link")`
 `;
 
 return (
-  <Wrapper className="container-xl">
+  <Wrapper className="gateway-page-container">
     <Header>
       {state.selectedTab === "apps" && (
         <>
@@ -241,11 +239,11 @@ return (
 
     {!state.searchResults && (
       <Tabs>
-        <TabsButton href={`${componentsUrl}?tab=all`} selected={state.selectedTab === "all"}>
+        <TabsButton href={`${componentsUrl}?tab=all`} $selected={state.selectedTab === "all"}>
           All
         </TabsButton>
 
-        <TabsButton href={`${componentsUrl}?tab=apps`} selected={state.selectedTab === "apps"}>
+        <TabsButton href={`${componentsUrl}?tab=apps`} $selected={state.selectedTab === "apps"}>
           Apps
         </TabsButton>
       </Tabs>

@@ -85,7 +85,7 @@ const SocialIcon = styled.i`
 
 return (
   <>
-    <Wrapper className="container-xl">
+    <Wrapper className="gateway-page-container">
       <Section>
         <Flex gap="16px" direction="column" alignItems="start">
           <H1>Work & Earn</H1>

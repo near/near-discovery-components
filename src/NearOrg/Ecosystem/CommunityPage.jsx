@@ -211,7 +211,7 @@ const connectChannelsLinks = [
 
 return (
   <>
-    <Wrapper className="container-xl">
+    <Wrapper className="gateway-page-container">
       <Section>
         <Flex gap="16px" direction="column" alignItems="start">
           <H1>Community</H1>

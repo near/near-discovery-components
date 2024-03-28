@@ -1,3 +1,4 @@
+// deprecated, delete once agiguild nexus is live
 import { Block } from "@near-lake/primitives";
 /**
  * Note: We only support javascript at the moment. We will support Rust, Typescript in a further release.

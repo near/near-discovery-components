@@ -1,35 +1,14 @@
--- deprecated, delete once agiguild nexus is live
-
-CREATE TABLE
-    "agents" (
-                 "id" SERIAL NOT NULL,
-                 "account_id" TEXT NOT NULL,
-                 "name" TEXT NOT NULL,
-                 "display_name" TEXT,
-                 "preferred_provider" TEXT,
-                 "preferred_model" TEXT,
-                 "input_adaptor" TEXT,
-                 "output_adaptor" TEXT,
-                 "prompt" TEXT,
-                 "variables" TEXT,
-                 "component" TEXT,
-                 "logo_url" TEXT,
-                 "tools" JSONB,
-                 "properties" JSONB,
-                 PRIMARY KEY ("id")
-);
-
-ALTER TABLE "agents" ADD CONSTRAINT "unique_name" UNIQUE ("account_id", "name");
-
 -- commented lines are features that are not supported by context.db but are in the table
 -- that was created in the db
 CREATE TABLE "entities"
 (
     "id" SERIAL NOT NULL,
+    "namespace"   TEXT NOT NULL,
     "entity_type"  TEXT NOT NULL,
     "account_id"   TEXT NOT NULL,
     "name"         TEXT NOT NULL,
     "display_name" TEXT,
+    "description"  TEXT,
     "logo_url"     TEXT,
     "attributes"   JSONB,
     "stars"        integer, -- default 0

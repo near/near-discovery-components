@@ -5,12 +5,23 @@
 //    You'll need to create a <Entity>Page but can reuse EntityList, EntityCreate
 // The entity type in this example is 'components'
 
-const entityType = "Component";
+const { href } = VM.require("${REPL_DEVHUB}/widget/core.lib.url");
+if (!href) {
+  return <></>;
+}
+const { genSchema } = VM.require(`${REPL_ACCOUNT}/widget/Entities.Examples.ComponentSchema`);
+if (!genSchema) {
+  return <></>;
+}
+const schema = genSchema("", "component");
+
+const entityType = "component";
 const entityIndexer = "components";
 const entityTable = "metadata";
 
 const user = "dataplatform_near";
 const collection = `${user}_${entityIndexer}_${entityTable}`;
+
 const buildQueries = (searchKey, sort) => {
   const queryFilter = searchKey ? `name: {_ilike: "%${searchKey}%"}` : "";
   let querySortOption = "";
@@ -57,7 +68,7 @@ query ListQuery($offset: Int, $limit: Int) {
 };
 const queryName = "ListQuery";
 
-const renderItem = (item) => {
+const renderItem = (item, editFunction) => {
   return (
     <Widget
       src="${REPL_ACCOUNT}/widget/ComponentCard"
@@ -71,6 +82,6 @@ const renderItem = (item) => {
 return (
   <Widget
     src="${REPL_ACCOUNT}/widget/Entities.Template.EntityList"
-    props={{ entityType, buildQueries, queryName, collection, renderItem }}
+    props={{ loadItems, buildQueries, queryName, collection, renderItem, createWidget, schema }}
   />
 );

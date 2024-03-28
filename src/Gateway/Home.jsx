@@ -376,7 +376,7 @@ return (
               <Flex $direction="column" $gap="32px">
                 <H1>Welcome</H1>
                 <Text $size="text-xl" $mobileSize="text-l" style={{ maxWidth: "385px" }}>
-                  Get building right away with easy to use developer tools.
+                  Start building right away with easy to use developer tools.
                 </Text>
               </Flex>
               <Flex $direction="column" $gap="16px" $mobileGap="48px">

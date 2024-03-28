@@ -1,3 +1,5 @@
+let { fetchEventsList } = props;
+
 const ipfsImages = {
   apps: {
     bosAllStars: "bafkreicgnsizdxoc436tbln3ucqo45hdauumd7if4gltrqh3tbxgosi3q4",
@@ -1193,6 +1195,7 @@ return (
                     ))}
                   </>
                 ),
+                fetchEventsList,
               }}
             />
           </Grid>

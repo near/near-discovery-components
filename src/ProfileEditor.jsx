@@ -22,7 +22,7 @@ const Wrapper = styled.div`
 `;
 
 return (
-  <Wrapper>
+  <Wrapper className="gateway-page-container">
     <div className="row">
       <div className="col-lg-6">
         <div>

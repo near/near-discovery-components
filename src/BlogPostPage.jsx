@@ -1,4 +1,3 @@
-console.log("here are the props", props);
 const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 console.log("returnLocation", props.returnLocation);
 
@@ -12,11 +11,6 @@ function extractBackButtonDestination(url) {
   // Return the value part after 'backButtonDestination='
   return backButtonDestParam ? backButtonDestParam.split("backButtonDestination=")[1] : null;
 }
-
-// Get backButtonDestination parameter
-// const backButtonDestination = extractBackButtonDestination(window.location.href);
-
-// console.log('backButtonDestination', backButtonDestination)
 
 const BlogPostWrapper = styled.div`
   @media (max-width: 1024px) {

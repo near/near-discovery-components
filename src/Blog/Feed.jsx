@@ -5,34 +5,30 @@ const requestAuthentication = props.requestAuthentication;
 const returnLocation = props.returnLocation || null;
 
 const [posts, setPosts] = useState([]);
-const [blogPosts, setBlogPosts] = useState([]);
-
 const promotedPostsQuery = `
 query PromotedPostsQuery {
-  jacksonthedev_near_promote2_v1_promote(
-    
+  dataplatform_near_feed_promoted_blog_posts(
     order_by: {block_height: desc}
     where: {
       _and: {
-        account_id: {_in: ${JSON.stringify(contributors)}}
+        promoter_account_id: {_in: ${JSON.stringify(contributors)}}
       }
     }
   ) {
+    promoter_account_id
+    promote_block_height
+    promotion_type
+    content
     account_id
     block_height
     block_timestamp
-    receipt_id
-    promotion_type
-    raw_promotion
-    content
-    post_id
   }
 }
 `;
 function fetchGraphQL(operationsDoc, operationName, variables) {
   return asyncFetch(`${GRAPHQL_ENDPOINT}/v1/graphql`, {
     method: "POST",
-    headers: { "x-hasura-role": "jacksonthedev_near" },
+    headers: { "x-hasura-role": "dataplatform_near" },
     body: JSON.stringify({
       query: operationsDoc,
       variables: variables,
@@ -44,44 +40,8 @@ function fetchGraphQL(operationsDoc, operationName, variables) {
 fetchGraphQL(promotedPostsQuery, "PromotedPostsQuery", {}).then((result) => {
   if (result.status === 200) {
     if (result.body.data) {
-      const posts = result.body.data.jacksonthedev_near_promote2_v1_promote;
-
-      if (posts.length > 0) {
-        const postsToDisplay = posts.map((post) => {
-          const promotion = JSON.parse(post.raw_promotion);
-          const promotedPostAccountId = promotion.value.post.path.split("/")[0];
-          const promotedPostBlockHeight = promotion.value.post.blockHeight;
-          let content = JSON.parse(post.content);
-          if (post.accounts_liked.length !== 0) {
-            if (typeof post.accounts_liked === "string") {
-              post.accounts_liked = JSON.parse(post.accounts_liked);
-            }
-          }
-          const comments = post.comments;
-          setBlogPosts([
-            ...posts,
-            {
-              blogPostContent: content,
-              blogPostComments: comments,
-              blogPostLikes: post.accounts_liked,
-            },
-          ]);
-          return {
-            ...post,
-            block_height: promotedPostBlockHeight,
-            account_id: promotedPostAccountId,
-            blogPostContent: content,
-            blogPostComments: comments,
-            blogPostLikes: post.accounts_liked,
-          };
-        });
-
-        setPosts(postsToDisplay);
-      } else {
-        State.update({
-          blogPostExists: false,
-        });
-      }
+      const posts = result.body.data.dataplatform_near_feed_promoted_blog_posts;
+      setPosts(posts);
     }
   }
 });
@@ -395,17 +355,15 @@ const renderItem = (item, index) => {
       href={`/bosblog?accountId=${item.account_id}&blockHeight=${item.block_height}&returnLocation=${returnLocation}`}
     >
       <PostImage>
-        <Widget
-          src="${REPL_MOB}/widget/Image"
-          props={{
-            image: {
-              ipfs_cid:
-                markdownObj[0].imageUrl.split("/")[4] ||
-                "https://ipfs.near.social/ipfs/bafkreiatutmf7b7siy2ul7ofo7cmypwc3qlgwseoij3gdxuqf7xzcdguia",
-            },
-          }}
+        <img
+          alt="Blog Post image"
+          src={
+            markdownObj[0].imageUrl ||
+            "https://ipfs.near.social/ipfs/bafkreiatutmf7b7siy2ul7ofo7cmypwc3qlgwseoij3gdxuqf7xzcdguia"
+          }
         />
       </PostImage>
+
       <Text size="text-l" fontWeight="500" as="h3">
         {title.text}
       </Text>

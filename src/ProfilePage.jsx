@@ -294,7 +294,8 @@ return (
             src="${REPL_ACCOUNT}/widget/Blog.Feed"
             props={{
               contributors: [accountId],
-              returnLocation: `userprofile`,
+              returnLocation: "userprofile",
+              profileAccountId: accountId,
             }}
           />
         )}

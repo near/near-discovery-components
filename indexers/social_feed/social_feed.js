@@ -250,6 +250,10 @@ async function getBlock(block: Block) {
     receiptId,
     promoteString
   ) {
+
+    try {
+
+    
     const promotion = JSON.parse(promoteString);
     console.log("Promotion", promotion);
     const promotionOperation = promotion.value.operation;
@@ -267,6 +271,8 @@ async function getBlock(block: Block) {
     } else {
       // if an operation is implemented, we can handle it here
       console.log("Operation not implemented");
+    } } catch (error) {
+      console.log("Failed to parse promotion content. Skipping...", error);
     }
   }
 
@@ -277,7 +283,8 @@ async function getBlock(block: Block) {
     blockTimestamp,
     receiptId
   ) {
-    // Add your code here
+
+    try {
     const postAuthor = promotion.value.post.path.split("/")[0];
     const postBlockHeight = promotion.value.post.blockHeight;
     const promotionType = promotion.value.type;
@@ -285,7 +292,6 @@ async function getBlock(block: Block) {
     console.log("Post Author", postAuthor);
     console.log("Post Block Height", postBlockHeight);
     console.log("Promotion Type", promotionType);
-    try {
       const posts = await context.db.Posts.select(
         { account_id: postAuthor, block_height: postBlockHeight },
         1

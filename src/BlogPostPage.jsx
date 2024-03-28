@@ -1,17 +1,4 @@
 const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
-console.log("returnLocation", props.returnLocation);
-
-function extractBackButtonDestination(url) {
-  // Split the URL by '&' to separate the parameters
-  const params = url.split("&");
-
-  // Filter out the backButtonDestination parameter
-  const backButtonDestParam = params.find((param) => param.startsWith("backButtonDestination="));
-
-  // Return the value part after 'backButtonDestination='
-  return backButtonDestParam ? backButtonDestParam.split("backButtonDestination=")[1] : null;
-}
-
 const BlogPostWrapper = styled.div`
   @media (max-width: 1024px) {
     padding-left: 0;
@@ -175,8 +162,6 @@ if (!props.accountId || !(props.blockHeight || props.commentBlockHeight)) {
   );
 }
 
-const contributors = props.contributors || [];
-console.log("here are the contributors", contributors);
 const [blog, setBlog] = useState(null);
 const [showReply, setShowReply] = useState(false);
 const notifyAccountId = props.notifyAccountId;
@@ -383,6 +368,8 @@ if (blog) {
     }
   };
 
+  const destination = props.returnLocation + (props.tab === "blog" ? `&tab=blog` : "") || `/bosblog`;
+
   return (
     <>
       <BlogPostWrapper>
@@ -391,7 +378,7 @@ if (blog) {
             src="${REPL_ACCOUNT}/widget/DIG.Button"
             props={{
               label: "Back To All Posts",
-              href: props.backButtonDestination || `/bosblog`,
+              href: destination,
               iconLeft: "ph ph-arrow-left",
               variant: "primary",
               size: "small",

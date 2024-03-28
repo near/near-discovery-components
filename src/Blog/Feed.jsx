@@ -1,9 +1,7 @@
 const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 
 const contributors = props.contributors || [];
-const requestAuthentication = props.requestAuthentication;
-const returnLocation = props.returnLocation || null;
-
+const { requestAuthentication, returnLocation, profileAccountId } = props;
 const [posts, setPosts] = useState([]);
 const promotedPostsQuery = `
 query PromotedPostsQuery {
@@ -349,26 +347,40 @@ const renderItem = (item, index) => {
     return null;
   }
 
-  return (
-    <BlogPost
-      key={index}
-      href={`/bosblog?accountId=${item.account_id}&blockHeight=${item.block_height}&returnLocation=${returnLocation}`}
-    >
-      <PostImage>
-        <img
-          alt="Blog Post image"
-          src={
-            markdownObj[0].imageUrl ||
-            "https://ipfs.near.social/ipfs/bafkreiatutmf7b7siy2ul7ofo7cmypwc3qlgwseoij3gdxuqf7xzcdguia"
-          }
-        />
-      </PostImage>
+  const BlogPage = ({ destination }) => {
+    return (
+      <BlogPost key={index} href={destination}>
+        <PostImage>
+          <img
+            alt="Blog Post image"
+            src={
+              markdownObj[0].imageUrl ||
+              "https://ipfs.near.social/ipfs/bafkreiatutmf7b7siy2ul7ofo7cmypwc3qlgwseoij3gdxuqf7xzcdguia"
+            }
+          />
+        </PostImage>
 
-      <Text size="text-l" fontWeight="500" as="h3">
-        {title.text}
-      </Text>
-      <Text>{formattedDate}</Text>
-    </BlogPost>
+        <Text size="text-l" fontWeight="500" as="h3">
+          {title.text}
+        </Text>
+        <Text>{formattedDate}</Text>
+      </BlogPost>
+    );
+  };
+
+  // ensures the go back button goes back to the right location
+  if (returnLocation === "userprofile") {
+    return (
+      <BlogPage
+        destination={`/near/widget/BlogPostPage?accountId=${item.account_id}&blockHeight=${item.block_height}&returnLocation=/near/widget/ProfilePage?accountId=${profileAccountId}&tab=blog`}
+      />
+    );
+  }
+
+  return (
+    <BlogPage
+      destination={`/bosblog?accountId=${item.account_id}&blockHeight=${item.block_height}&returnLocation=${props.returnLocation}&profileAccountId=${props.profileAccountId}`}
+    />
   );
 };
 

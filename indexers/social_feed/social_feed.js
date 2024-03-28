@@ -13,17 +13,19 @@ import { Block } from "@near-lake/primitives";
  * @param {block} Block - A Near Protocol Block
  */
 async function getBlock(block: Block) {
+  console.log(block.actions());
+
   function base64decode(encodedValue) {
     let buff = Buffer.from(encodedValue, "base64");
     return JSON.parse(buff.toString("utf-8"));
   }
 
   async function handlePostCreation(
-      accountId,
-      blockHeight,
-      blockTimestamp,
-      receiptId,
-      content
+    accountId,
+    blockHeight,
+    blockTimestamp,
+    receiptId,
+    content
   ) {
     try {
       const postData = {
@@ -40,17 +42,17 @@ async function getBlock(block: Block) {
       console.log(`Post by ${accountId} has been added to the database`);
     } catch (e) {
       console.log(
-          `Failed to store post by ${accountId} to the database (perhaps it is already stored)`
+        `Failed to store post by ${accountId} to the database (perhaps it is already stored)`
       );
     }
   }
 
   async function handleCommentCreation(
-      accountId,
-      blockHeight,
-      blockTimestamp,
-      receiptId,
-      commentString
+    accountId,
+    blockHeight,
+    blockTimestamp,
+    receiptId,
+    commentString
   ) {
     try {
       const comment = JSON.parse(commentString);
@@ -61,8 +63,8 @@ async function getBlock(block: Block) {
       try {
         // Call GraphQL query to fetch posts that match specified criteria
         const posts = await context.db.Posts.select(
-            { account_id: postAuthor, block_height: postBlockHeight },
-            1
+          { account_id: postAuthor, block_height: postBlockHeight },
+          1
         );
         console.log(`posts: ${JSON.stringify(posts)}`);
         if (posts.length === 0) {
@@ -87,18 +89,18 @@ async function getBlock(block: Block) {
           // Update last comment timestamp in Post table
           const currentTimestamp = Date.now();
           await context.db.Posts.update(
-              { id: post.id },
-              { last_comment_timestamp: currentTimestamp }
+            { id: post.id },
+            { last_comment_timestamp: currentTimestamp }
           );
           console.log(`Comment by ${accountId} has been added to the database`);
         } catch (e) {
           console.log(
-              `Failed to store comment to the post ${postAuthor}/${postBlockHeight} by ${accountId} perhaps it has already been stored. Error ${e}`
+            `Failed to store comment to the post ${postAuthor}/${postBlockHeight} by ${accountId} perhaps it has already been stored. Error ${e}`
           );
         }
       } catch (e) {
         console.log(
-            `Failed to store comment to the post ${postAuthor}/${postBlockHeight} as we don't have the post stored.`
+          `Failed to store comment to the post ${postAuthor}/${postBlockHeight} as we don't have the post stored.`
         );
       }
     } catch (error) {
@@ -107,11 +109,11 @@ async function getBlock(block: Block) {
   }
 
   async function handleLike(
-      accountId,
-      blockHeight,
-      blockTimestamp,
-      receiptId,
-      likeContent
+    accountId,
+    blockHeight,
+    blockTimestamp,
+    receiptId,
+    likeContent
   ) {
     try {
       const like = JSON.parse(likeContent);
@@ -123,8 +125,8 @@ async function getBlock(block: Block) {
         case "main":
           try {
             const posts = await context.db.Posts.select(
-                { account_id: itemAuthor, block_height: itemBlockHeight },
-                1
+              { account_id: itemAuthor, block_height: itemBlockHeight },
+              1
             );
             if (posts.length == 0) {
               return;
@@ -134,11 +136,11 @@ async function getBlock(block: Block) {
             switch (likeAction) {
               case "like":
                 await _handlePostLike(
-                    post.id,
-                    accountId,
-                    blockHeight,
-                    blockTimestamp,
-                    receiptId
+                  post.id,
+                  accountId,
+                  blockHeight,
+                  blockTimestamp,
+                  receiptId
                 );
                 break;
               case "unlike":
@@ -147,7 +149,7 @@ async function getBlock(block: Block) {
             }
           } catch (e) {
             console.log(
-                `Failed to store like to post ${itemAuthor}/${itemBlockHeight} as we don't have it stored in the first place.`
+              `Failed to store like to post ${itemAuthor}/${itemBlockHeight} as we don't have it stored in the first place.`
             );
           }
           break;
@@ -166,11 +168,11 @@ async function getBlock(block: Block) {
   }
 
   async function _handlePostLike(
-      postId,
-      likeAuthorAccountId,
-      likeBlockHeight,
-      blockTimestamp,
-      receiptId
+    postId,
+    likeAuthorAccountId,
+    likeBlockHeight,
+    blockTimestamp,
+    receiptId
   ) {
     try {
       const posts = await context.db.Posts.select({ id: postId });
@@ -179,9 +181,9 @@ async function getBlock(block: Block) {
       }
       const post = posts[0];
       let accountsLiked =
-          post.accounts_liked.length === 0
-              ? post.accounts_liked
-              : JSON.parse(post.accounts_liked);
+        post.accounts_liked.length === 0
+          ? post.accounts_liked
+          : JSON.parse(post.accounts_liked);
 
       if (accountsLiked.indexOf(likeAuthorAccountId) === -1) {
         accountsLiked.push(likeAuthorAccountId);
@@ -189,8 +191,8 @@ async function getBlock(block: Block) {
 
       // Call GraphQL mutation to update a post's liked accounts list
       await context.db.Posts.update(
-          { id: postId },
-          { accounts_liked: JSON.stringify(accountsLiked) }
+        { id: postId },
+        { accounts_liked: JSON.stringify(accountsLiked) }
       );
 
       const postLikeData = {
@@ -215,20 +217,20 @@ async function getBlock(block: Block) {
       }
       const post = posts[0];
       let accountsLiked =
-          post.accounts_liked.length === 0
-              ? post.accounts_liked
-              : JSON.parse(post.accounts_liked);
+        post.accounts_liked.length === 0
+          ? post.accounts_liked
+          : JSON.parse(post.accounts_liked);
 
       console.log(accountsLiked);
 
       let indexOfLikeAuthorAccountIdInPost =
-          accountsLiked.indexOf(likeAuthorAccountId);
+        accountsLiked.indexOf(likeAuthorAccountId);
       if (indexOfLikeAuthorAccountIdInPost > -1) {
         accountsLiked.splice(indexOfLikeAuthorAccountIdInPost, 1);
         // Call GraphQL mutation to update a post's liked accounts list
         await context.db.Posts.update(
-            { id: postId },
-            { accounts_liked: JSON.stringify(accountsLiked) }
+          { id: postId },
+          { accounts_liked: JSON.stringify(accountsLiked) }
         );
       }
       // Call GraphQL mutation to delete a like for a post
@@ -238,6 +240,82 @@ async function getBlock(block: Block) {
       });
     } catch (e) {
       console.log(`Failed to delete like from the database: ${e}`);
+    }
+  }
+
+    async function handlePromotion(
+    accountId,
+    blockHeight,
+    blockTimestamp,
+    receiptId,
+    promoteString
+  ) {
+    const promotion = JSON.parse(promoteString);
+    console.log("Promotion", promotion);
+    const promotionOperation = promotion.value.operation;
+
+    if (promotionOperation === "add") {
+      console.log("handling add promotion");
+      await _handleAddPromotion(
+        promotion,
+        accountId,
+        blockHeight,
+        blockTimestamp,
+        receiptId
+      );
+      return;
+    } else {
+      // if an operation is implemented, we can handle it here
+      console.log("Operation not implemented");
+    }
+  }
+
+    async function _handleAddPromotion(
+    promotion,
+    accountId,
+    blockHeight,
+    blockTimestamp,
+    receiptId
+  ) {
+    // Add your code here
+    const postAuthor = promotion.value.post.path.split("/")[0];
+    const postBlockHeight = promotion.value.post.blockHeight;
+    const promotionType = promotion.value.type;
+
+    console.log("Post Author", postAuthor);
+    console.log("Post Block Height", postBlockHeight);
+    console.log("Promotion Type", promotionType);
+    try {
+      const posts = await context.db.Posts.select(
+        { account_id: postAuthor, block_height: postBlockHeight },
+        1
+      );
+
+      if (posts.length > 0) {
+        const post = posts[0];
+        let content = JSON.parse(post.content);
+
+        console.log("Post found in database", post);
+        console.log("Post content", content);
+
+        delete promotion["item"];
+
+        const promotionData = {
+          account_id: accountId,
+          receipt_id: receiptId,
+          block_height: blockHeight,
+          block_timestamp: blockTimestamp,
+          promotion_type: promotionType,
+          post_id: post.id,
+        };
+
+        // Call GraphQL mutation to insert a new promotion
+        await context.db.Promote.insert(promotionData);
+
+        console.log(`Promotion by ${accountId} has been added to the database`);
+      }
+    } catch (e) {
+      console.log("Error handling add promotion", JSON.stringify(e));
     }
   }
 
@@ -252,50 +330,50 @@ async function getBlock(block: Block) {
       return;
     }
     const contractActions = actions.filter(
-        (action) => action.receiverId === SOCIAL_DB
+      (action) => action.receiverId === SOCIAL_DB
     );
     if (!contractActions) {
       console.log("Block has no actions");
       return;
     }
     nearSocialPosts = contractActions.flatMap((action) =>
-        action.operations
-            .map((operation) => operation["FunctionCall"])
-            .filter((operation) => operation?.methodName === "set")
-            .map((functionCallOperation) => {
-              try {
-                return {
-                  ...functionCallOperation,
-                  args: base64decode(functionCallOperation.args),
-                  receiptId: action.receiptId, // providing receiptId as we need it
-                };
-              } catch (e) {
-                console.log("Error parsing function call", e);
-              }
-            })
-            .filter((functionCall) => {
-              try {
-                if (
-                    !functionCall ||
-                    !functionCall.args ||
-                    !functionCall.args.data ||
-                    !Object.keys(functionCall.args.data) ||
-                    !Object.keys(functionCall.args.data)[0]
-                ) {
-                  console.log(
-                      "Set operation did not have arg data in expected format"
-                  );
-                  return;
-                }
-                const accountId = Object.keys(functionCall.args.data)[0];
-                return (
-                    Object.keys(functionCall.args.data[accountId]).includes("post") ||
-                    Object.keys(functionCall.args.data[accountId]).includes("index")
-                );
-              } catch (e) {
-                console.log("Error parsing social args", functionCall);
-              }
-            })
+      action.operations
+        .map((operation) => operation["FunctionCall"])
+        .filter((operation) => operation?.methodName === "set")
+        .map((functionCallOperation) => {
+          try {
+            return {
+              ...functionCallOperation,
+              args: base64decode(functionCallOperation.args),
+              receiptId: action.receiptId, // providing receiptId as we need it
+            };
+          } catch (e) {
+            console.log("Error parsing function call", e);
+          }
+        })
+        .filter((functionCall) => {
+          try {
+            if (
+              !functionCall ||
+              !functionCall.args ||
+              !functionCall.args.data ||
+              !Object.keys(functionCall.args.data) ||
+              !Object.keys(functionCall.args.data)[0]
+            ) {
+              console.log(
+                "Set operation did not have arg data in expected format"
+              );
+              return;
+            }
+            const accountId = Object.keys(functionCall.args.data)[0];
+            return (
+              Object.keys(functionCall.args.data[accountId]).includes("post") ||
+              Object.keys(functionCall.args.data[accountId]).includes("index")
+            );
+          } catch (e) {
+            console.log("Error parsing social args", functionCall);
+          }
+        })
     );
   } catch (e) {
     console.log("Error parsing social operations", block.actions());
@@ -306,53 +384,68 @@ async function getBlock(block: Block) {
     const blockHeight = block.blockHeight;
     const blockTimestamp = block.header().timestampNanosec;
     await Promise.all(
-        nearSocialPosts.map(async (postAction) => {
-          const accountId = Object.keys(postAction.args.data)[0];
-          console.log(`ACCOUNT_ID: ${accountId}`);
+      nearSocialPosts.map(async (postAction) => {
+        const accountId = Object.keys(postAction.args.data)[0];
+        console.log(`ACCOUNT_ID: ${accountId}`);
 
-          // if creates a post
+        // if creates a post
+        if (
+          postAction.args.data[accountId].post &&
+          Object.keys(postAction.args.data[accountId].post).includes("main")
+        ) {
+          console.log("Creating a post...");
+          await handlePostCreation(
+            accountId,
+            blockHeight,
+            blockTimestamp,
+            postAction.receiptId,
+            postAction.args.data[accountId].post.main
+          );
+        } else if (
+          postAction.args.data[accountId].post &&
+          Object.keys(postAction.args.data[accountId].post).includes("comment")
+        ) {
+          // if creates a comment
+          await handleCommentCreation(
+            accountId,
+            blockHeight,
+            blockTimestamp,
+            postAction.receiptId,
+            postAction.args.data[accountId].post.comment
+          );
+        } else if (
+          Object.keys(postAction.args.data[accountId]).includes("index")
+        ) {
+          // Probably like or unlike action is happening
           if (
-              postAction.args.data[accountId].post &&
-              Object.keys(postAction.args.data[accountId].post).includes("main")
+            Object.keys(postAction.args.data[accountId].index).includes("like")
           ) {
-            console.log("Creating a post...");
-            await handlePostCreation(
-                accountId,
-                blockHeight,
-                blockTimestamp,
-                postAction.receiptId,
-                postAction.args.data[accountId].post.main
+            console.log("handling like");
+            await handleLike(
+              accountId,
+              blockHeight,
+              blockTimestamp,
+              postAction.receiptId,
+              postAction.args.data[accountId].index.like
             );
-          } else if (
-              postAction.args.data[accountId].post &&
-              Object.keys(postAction.args.data[accountId].post).includes("comment")
-          ) {
-            // if creates a comment
-            await handleCommentCreation(
-                accountId,
-                blockHeight,
-                blockTimestamp,
-                postAction.receiptId,
-                postAction.args.data[accountId].post.comment
-            );
-          } else if (
-              Object.keys(postAction.args.data[accountId]).includes("index")
-          ) {
-            // Probably like or unlike action is happening
-            if (
-                Object.keys(postAction.args.data[accountId].index).includes("like")
-            ) {
-              console.log("handling like");
-              await handleLike(
-                  accountId,
-                  blockHeight,
-                  blockTimestamp,
-                  postAction.receiptId,
-                  postAction.args.data[accountId].index.like
-              );
-            }
           }
-        })
+
+          if (
+            Object.keys(postAction.args.data[accountId].index).includes(
+              "promote"
+            )
+          ) {
+            console.log("handling promotion");
+            await handlePromotion(
+              accountId,
+              blockHeight,
+              blockTimestamp,
+              postAction.receiptId,
+              postAction.args.data[accountId].index.promote
+            );
+          }
+        }
+      })
     );
   }
 }

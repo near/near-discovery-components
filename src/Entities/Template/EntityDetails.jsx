@@ -6,7 +6,6 @@ let { src, tab, highlightComment, schemaFile, namespace } = props;
 const [accountId, entityType, entityName] = src.split("/") ?? [null, null, null];
 
 let entity = Social.get(`${accountId}/entities/${namespace}/${entityType}/${entityName}/**`);
-console.log("entity", `${accountId}/${namespace}/${entityType}/${entityName}/**`, entity);
 const exists = !existsData || Object.keys(existsData).length > 0;
 if (!exists) {
   return (

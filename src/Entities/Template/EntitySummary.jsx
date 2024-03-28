@@ -5,7 +5,7 @@ if (!href) {
 }
 
 const { entity, showActions } = props;
-const { accountId, name, displayName, logoUrl, tags } = entity;
+const { namespace, entityType, accountId, name, displayName, logoUrl, tags } = entity;
 const size = props.size || "small";
 
 const sizes = {
@@ -216,7 +216,7 @@ return (
             actionUndoName: "unstar",
             item: {
               type: "social",
-              path: `${accountId}/${entityType}/${name}`,
+              path: `${accountId}/entities/${namespace}/${entityType}/${name}`,
             },
             notifyAccountId: accountId,
             button: (starCount, starIsActive, starOnClick) => (

@@ -15,8 +15,9 @@ const namespace = schema.namespace;
 const onSubmitDefault = (formValues) => {
   const { name, ...rest } = formValues;
   const entity = { [name]: rest };
-  const data = namespace ? { [namespace]: { [entityType]: entity } } : { [entityType]: entity };
-  Social.set(data, { force: true });
+  const ns = namespace ? namespace : "default";
+  const data = { [ns]: { [entityType]: entity } };
+  Social.set({ entities: data }, { force: true });
 };
 const onSubmitFunction = onSubmit ?? onSubmitDefault;
 

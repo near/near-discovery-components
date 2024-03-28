@@ -5,7 +5,7 @@ if (!href) {
 let { src, tab, highlightComment, schemaFile, namespace } = props;
 const [accountId, entityType, entityName] = src.split("/") ?? [null, null, null];
 
-let entity = Social.get(`${accountId}/${namespace}/${entityType}/${entityName}/**`);
+let entity = Social.get(`${accountId}/entities/${namespace}/${entityType}/${entityName}/**`);
 const exists = !existsData || Object.keys(existsData).length > 0;
 if (!exists) {
   return (
@@ -24,7 +24,7 @@ if (!genSchema) {
 const schema = genSchema(namespace, entityType);
 const { title } = schema;
 
-entity = { accountId, name: entityName, ...entity };
+entity = { accountId, namespace: namespace, entityType: entityType, name: entityName, ...entity };
 const { prompt } = entity;
 const editType = accountId === context.accountId ? "edit" : "fork";
 const editLabel = editType === "edit" ? "Edit" : "Fork";
@@ -75,10 +75,10 @@ const PropValue = styled.p`
   padding-bottom: 10px;
 `;
 const entityProperties = (obj) => {
-  const { accountId, name, displayName, logoUrl, ...displayProps } = obj;
+  const { accountId, name, displayName, logoUrl, namespace, entityType, ...attributes } = obj;
   return (
     <>
-      {Object.keys(displayProps).map((k) => (
+      {Object.keys(attributes).map((k) => (
         <>
           <Text bold key={k}>
             {k}:

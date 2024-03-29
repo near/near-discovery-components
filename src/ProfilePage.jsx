@@ -227,6 +227,10 @@ return (
           <TabsButton href={`${accountUrl}&tab=followers`} selected={state.selectedTab === "followers"}>
             Followers
           </TabsButton>
+
+          <TabsButton href={`${accountUrl}&tab=blog`} selected={state.selectedTab === "blog"}>
+            Blog
+          </TabsButton>
         </Tabs>
 
         {state.selectedTab === "overview" && (
@@ -279,6 +283,17 @@ return (
               accountId,
               components: starredComponents,
               noDataText: "This account hasn't starred any components yet.",
+            }}
+          />
+        )}
+
+        {state.selectedTab === "blog" && (
+          <Widget
+            src="${REPL_ACCOUNT}/widget/Blog.Feed"
+            props={{
+              contributors: [accountId],
+              returnLocation: "userprofile",
+              profileAccountId: accountId,
             }}
           />
         )}

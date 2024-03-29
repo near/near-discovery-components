@@ -22,25 +22,21 @@ const entityTable = "metadata";
 const user = "dataplatform_near";
 const collection = `${user}_${entityIndexer}_${entityTable}`;
 
+const sortTypes = [
+  { text: "Most Stars", value: "{ star_count: desc }, { block_height: desc }" },
+  { text: "Least Stars", value: "{ star_count: asc }, { block_height: desc }" },
+  { text: "Name A-Z", value: "{ component_name: asc }" },
+  { text: "Name Z-A", value: "{ component_name: desc }" },
+  { text: "Newest", value: "{ block_height: desc }" },
+  { text: "Oldest", value: "{ block_height: asc }" },
+];
 const buildQueries = (searchKey, sort) => {
-  const queryFilter = searchKey ? `name: {_ilike: "%${searchKey}%"}` : "";
-  let querySortOption = "";
-  switch (sort) {
-    case "z-a":
-      querySortOption = `{ component_name: desc },`;
-      break;
-    case "a-z":
-      querySortOption = `{ component_name: asc },`;
-      break;
-    default:
-      querySortOption = "{ block_height: desc },";
-  }
-
+  const queryFilter = searchKey ? `component_name: {_ilike: "%${searchKey}%"}` : "";
   return `
 query ListQuery($offset: Int, $limit: Int) {
   ${collection}(
       where: {${queryFilter}}
-      order_by: [${querySortOption} { block_height: desc }], 
+      order_by: [${sort} { block_height: desc }], 
       offset: $offset, limit: $limit) {
     block_height
     block_timestamp_ms
@@ -58,7 +54,9 @@ query ListQuery($offset: Int, $limit: Int) {
     tags
     website
   }
-  ${collection}_aggregate {
+  ${collection}_aggregate(
+      where: {${queryFilter}}
+    ) {
     aggregate {
       count
     }
@@ -80,8 +78,10 @@ const renderItem = (item, editFunction) => {
   );
 };
 return (
-  <Widget
-    src="${REPL_ACCOUNT}/widget/Entities.Template.EntityList"
-    props={{ loadItems, buildQueries, queryName, collection, renderItem, createWidget, schema }}
-  />
+  <div className="gateway-page-container">
+    <Widget
+      src="${REPL_ACCOUNT}/widget/Entities.Template.EntityList"
+      props={{ loadItems, buildQueries, queryName, collection, renderItem, createWidget, schema, sortTypes }}
+    />
+  </div>
 );

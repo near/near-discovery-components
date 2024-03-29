@@ -9,12 +9,24 @@ const { schema, description, buildQueries, queryName, collection, renderItem, cr
 
 const finalCreateWidget = createWidget ?? `${REPL_ACCOUNT}/widget/Entities.Template.EntityCreate`;
 
+const sortTypes = props.sortTypes ?? [
+  { text: "Most Stars", value: "{ stars: desc }, { id: desc }" },
+  { text: "Least Stars", value: "{ stars: asc }, { id: desc }" },
+  { text: "Name A-Z", value: "{ display_name: asc }" },
+  { text: "Name Z-A", value: "{ display_name: desc }" },
+  { text: "Newest", value: "{ created_at: desc }" },
+  { text: "Oldest", value: "{ created_at: asc }" },
+  { text: "Newest Updates", value: "{ updated_at: desc }" },
+  { text: "Oldest Updates", value: "{ updated_at: asc }" },
+];
+
 const [searchKey, setSearchKey] = useState("");
-const [sort, setSort] = useState("");
-const [items, setItems] = useState([]);
-const [totalItems, setTotalItems] = useState(0);
+const [sort, setSort] = useState(sortTypes[0].value);
+const [items, setItems] = useState({ list: [], total: 0 });
 const [showCreateModal, setShowCreateModal] = useState(false);
 const [activeItem, setActiveItem] = useState(null);
+
+const [debounceTimer, setDebounceTimer] = useState(null);
 
 const closeModal = () => {
   setActiveItem(null);
@@ -28,26 +40,46 @@ const editFunction = (item) => {
   setShowCreateModal(true);
 };
 const onLoad = (newItems, totalItems) => {
-  setItems([...items, ...newItems]);
-  setTotalItems(totalItems);
+  setItems({ list: [...items.list, ...newItems], total: totalItems });
 };
-const loadItemsUseState = () =>
-  loadItems(buildQueries(searchKey, sort), queryName, items.length ?? 0, collection, onLoad);
+const onLoadReset = (newItems, totalItems) => {
+  setItems({ list: newItems, total: totalItems });
+};
+const loadItemsUseState = (isResetOrPageNumber) => {
+  const loader = isResetOrPageNumber === true ? onLoadReset : onLoad;
+  const offset = isResetOrPageNumber === true ? 0 : items.list.length;
+  return loadItems(buildQueries(searchKey, sort), queryName, offset, collection, loader);
+};
 useEffect(() => {
-  setItems([]);
-  loadItemsUseState();
-}, [sort, searchKey]);
+  if (debounceTimer) clearTimeout(debounceTimer);
+  const search = (searchKey ?? "").toLowerCase();
+  setItems({
+    list: items.list.filter((item) => (item.display_name ?? "").toLowerCase().includes(search)),
+    total: items.total,
+  });
+  setDebounceTimer(
+    setTimeout(() => {
+      loadItemsUseState(true);
+    }, 500),
+  );
+  return () => clearTimeout(debounceTimer);
+}, [searchKey]);
+useEffect(() => {
+  loadItemsUseState(true);
+}, [sort]);
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 48px;
+  padding-left: 24px;
 `;
 
 const Header = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  padding: 24px 0 12px 0px;
 `;
 
 const Search = styled.div`
@@ -57,7 +89,40 @@ const Search = styled.div`
     width: 100%;
   }
 `;
+const SortContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
 
+  @media (max-width: 1200px) {
+    padding: 12px;
+  }
+`;
+const Sort = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+
+  & > span.label {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    color: #11181c;
+    white-space: nowrap;
+  }
+
+  &:last-child {
+    width: 40%;
+
+    @media screen and (max-width: 768px) {
+      width: 85%;
+    }
+  }
+`;
 const H1 = styled.h1`
   font-weight: 600;
   font-size: 24px;
@@ -116,17 +181,17 @@ const ScrollBox = styled.div`
 `;
 
 return (
-  <Wrapper className="gateway-page-container">
+  <Wrapper>
     <Header>
       <div className="row">
         <div className="col">
           <H2>
-            {totalItems} {schema.entityTitle + (totalItems !== 1 ? "s" : "")}
+            {items.total} {schema.entityTitle + (items.total !== 1 ? "s" : "")}
           </H2>
           {description && <Text>{description}</Text>}
         </div>
         {context.accountId && (
-          <div className="col-3">
+          <div className="col-3" style={{ textAlign: "right" }}>
             <Widget
               src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
@@ -159,14 +224,45 @@ return (
           </div>
         )}
       </div>
+      <div className="row">
+        <div className="col">
+          <Search>
+            <Widget
+              src="${REPL_ACCOUNT}/widget/DIG.Input"
+              props={{
+                label: "",
+                placeholder: "Search by name",
+                value: searchKey,
+                onChange: (e) => setSearchKey(e.target.value),
+              }}
+            />
+          </Search>
+        </div>
+        <div className="col">
+          <SortContainer>
+            <Sort>
+              <Widget
+                src={`${REPL_ACCOUNT}/widget/Select`}
+                props={{
+                  noLabel: true,
+                  value: { text: sortTypes.find((it) => it.value === sort), value: sort },
+                  onChange: ({ value }) => setSort(value),
+                  options: sortTypes,
+                  border: "none",
+                }}
+              />
+            </Sort>
+          </SortContainer>
+        </div>
+      </div>
     </Header>
 
-    {items.length > 0 && (
+    {items.total > 0 && (
       <InfiniteScroll
         className="mb-5"
         pageStart={0}
         loadMore={loadItemsUseState}
-        hasMore={totalItems !== items.length}
+        hasMore={items.total > items.list.length}
         initialLoad={false}
         loader={
           <div className="loader">
@@ -176,10 +272,12 @@ return (
         }
       >
         {props.table ? (
-          items.map((item) => <div key={`${item.accountId}-${item.widgetName}`}>{renderItem(item, editFunction)}</div>)
+          items.list.map((item) => (
+            <div key={`${item.accountId}-${item.widgetName}`}>{renderItem(item, editFunction)}</div>
+          ))
         ) : (
           <Items>
-            {items.map((item) => (
+            {items.list.map((item) => (
               <Item key={`${item.accountId}-${item.widgetName}`}>{renderItem(item, editFunction)}</Item>
             ))}
           </Items>

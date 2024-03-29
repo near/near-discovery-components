@@ -22,23 +22,12 @@ const standardFields = ["id", "accountId", "name", "displayName", "logoUrl", "at
 const attributeFields = dataFields.filter((key) => !standardFields.includes(key));
 const ns = namespace ? namespace : "default";
 const buildQueries = (searchKey, sort) => {
-  const queryFilter = searchKey ? `name: {_ilike: "%${searchKey}%"}` : "";
-  let querySortOption;
-  switch (sort) {
-    case "z-a":
-      querySortOption = `{ name: desc },`;
-      break;
-    case "a-z":
-      querySortOption = `{ name: asc },`;
-      break;
-    default:
-      querySortOption = "{ stars: desc }, { id: desc }";
-  }
+  const queryFilter = searchKey ? `display_name: {_ilike: "%${searchKey}%"}` : "";
   return `
 query ListQuery($offset: Int, $limit: Int) {
   ${collection}(
       where: {namespace: {_eq: "${ns}"}, entity_type: {_eq: "${entityType}"}, ${queryFilter}}
-      order_by: [${querySortOption} ], 
+      order_by: [${sort} ], 
       offset: $offset, limit: $limit) {
       id
       account_id
@@ -132,7 +121,7 @@ const Button = styled.button`
     background: ${(p) => (p.primary ? "rgb(112 242 164)" : "#ECEDEE")};
   }
 `;
-const renderItem = (rawItem, editFunction) => {
+const defaultRenderTableItem = (rawItem, editFunction) => {
   const item = convertSnakeToPascal(rawItem);
   const { accountId, name, displayName, logoUrl, attributes } = item;
   const itemComponent = item.component ? item.component : `${REPL_ACCOUNT}/widget/Entities.Template.EntityDetails`;
@@ -161,9 +150,11 @@ const renderItem = (rawItem, editFunction) => {
       <div className="col-2">
         <Link to={detailsLink}>{displayName}</Link>
       </div>
-      {attributeFields.map((key) => (
-        <div className="col-1">{attributes[key]}</div>
-      ))}
+      {attributeFields.map((key) => {
+        const value = attributes[key];
+        const formattedValue = value?.length > 50 ? value.substring(0, 50) + "..." : value;
+        return <div className="col-1">{formattedValue}</div>;
+      })}
       <div className="col-2">
         <Actions>
           <Widget
@@ -205,6 +196,7 @@ const renderItem = (rawItem, editFunction) => {
           />
           <Widget
             src="${REPL_ACCOUNT}/widget/SocialIndexActionButton"
+            key={name}
             props={{
               actionName: "star",
               actionUndoName: "unstar",
@@ -252,13 +244,13 @@ const renderItem = (rawItem, editFunction) => {
 };
 
 const createWidget = "${REPL_ACCOUNT}/widget/Entities.Template.EntityCreate";
-
+const renderItem = props.renderItem ? props.renderItem : defaultRenderTableItem;
+const table = props.renderItem ? false : true;
 return (
   <div>
-    <h4>{title}</h4>
     <Widget
       src="${REPL_ACCOUNT}/widget/Entities.Template.EntityList"
-      props={{ table: true, buildQueries, queryName, collection, renderItem, createWidget, schema }}
+      props={{ table, buildQueries, queryName, collection, renderItem, createWidget, schema }}
     />
   </div>
 );

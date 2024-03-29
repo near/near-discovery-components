@@ -1,5 +1,5 @@
 return (
-  <>
+  <div className="gateway-page-container">
     <p>A custom message</p>
     <Widget
       src="${REPL_ACCOUNT}/widget/Entities.Template.GenericEntityConfig"
@@ -11,5 +11,5 @@ return (
         //todo defaultImage: "some car photo",
       }}
     />
-  </>
+  </div>
 );

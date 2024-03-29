@@ -276,6 +276,7 @@ return (
                 <Widget
                   src="${REPL_ACCOUNT}/widget/Posts.Menu"
                   props={{
+                    item,
                     accountId: accountId,
                     blockHeight: blockHeight,
                     parentFunctions: {

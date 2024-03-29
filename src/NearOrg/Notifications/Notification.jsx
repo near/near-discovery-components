@@ -1,5 +1,20 @@
-const { createNotificationMessage, getNotificationContent, createNotificationLink, getNotificationIconClassName } =
-  VM.require("${REPL_ACCOUNT}/widget/NearOrg.Notifications.utils") || (() => {});
+const {
+  createNotificationMessage,
+  getNotificationContent,
+  createNotificationLink,
+  getNotificationIconClassName,
+  checkNotificationValueAvailability,
+} = VM.require("${REPL_ACCOUNT}/widget/NearOrg.Notifications.utils") || (() => {});
+
+if (
+  !createNotificationMessage ||
+  !getNotificationContent ||
+  !createNotificationLink ||
+  !getNotificationIconClassName ||
+  !checkNotificationValueAvailability
+) {
+  return "";
+}
 
 const Notification = styled.div`
   display: flex;
@@ -133,13 +148,27 @@ const Left = styled.div`
 
 const Right = styled.div``;
 
+const getNotificationDetailsFromChain = (initiator, blockHeight) => {
+  try {
+    const data = Social.get(`${initiator}/index/notify`, blockHeight);
+    const { value } = data ? JSON.parse(data) : null ?? {};
+    return value;
+  } catch (error) {
+    console.error("Error fetching notification details from chain: ", error);
+    return null;
+  }
+};
+
 let { blockHeight, accountId, manageNotification, permission, value } = props;
-let { item, type, post, message, proposal, notifier } = value;
-item = item ?? {};
-post = post ?? proposal ?? {};
-message = message ?? "";
-const path = item.path || "";
-const showAuthorProfile = type == "devhub/mention" || type == "devhub/edit";
+const checkedValue = checkNotificationValueAvailability(value);
+value = checkedValue ? value : getNotificationDetailsFromChain(props.initiator, blockHeight);
+
+const notificationType = value?.type;
+const notifier = value?.notifier;
+
+const showAuthorProfile = notificationType == "devhub/mention" || notificationType == "devhub/edit";
+// notifier is the one who should be displayed as profile in notifications,
+// since all the notifications will be created by devhub.near account but the actual person initiating it is the notifier
 if (showAuthorProfile) {
   accountId = notifier;
 }
@@ -151,15 +180,15 @@ const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 // as for example "like", "comment", "star", "custom",
 // "devgovgigs/mention", "devgovgigs/edit", "devgovgigs/reply", "devgovgigs/like"
 // "devhub/mention", "devhub/edit", "devhub/reply", "devhub/like"
-const ordinaryNotification = ["follow", "unfollow", "poke"].indexOf(type) >= 0;
+const ordinaryNotification = ["follow", "unfollow", "poke"].indexOf(notificationType) >= 0;
 
 // Assert is a valid type
-const notificationMessageByType = createNotificationMessage && createNotificationMessage(type, path, post, message);
+const notificationMessageByType = createNotificationMessage && createNotificationMessage(value);
 if (!notificationMessageByType) return "";
 
-const previewContent = getNotificationContent(type, value, path, post, context, accountId, blockHeight);
-const postUrl = createNotificationLink(type, value, props.initiator, accountId, blockHeight);
-const iconClassName = getNotificationIconClassName(type);
+const previewContent = getNotificationContent(value, context.accountId, accountId, blockHeight);
+const postUrl = createNotificationLink(value, props.initiator, accountId, blockHeight);
+const iconClassName = getNotificationIconClassName(notificationType);
 
 const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -173,7 +202,7 @@ const onClose = () => {
 
 const onConfirm = async () => {
   const block = true;
-  manageNotification(context.accountId, type, block);
+  manageNotification(context.accountId, notificationType, block);
   setIsModalOpen(false);
 };
 
@@ -242,11 +271,11 @@ return (
         {previewContent && <Description>{previewContent}</Description>}
       </Left>
       <Right>
-        {(type === "follow" || type === "unfollow") && (
+        {(notificationType === "follow" || notificationType === "unfollow") && (
           <Widget src="${REPL_ACCOUNT}/widget/FollowButton" props={{ accountId }} />
         )}
 
-        {type === "poke" && (
+        {notificationType === "poke" && (
           <Widget
             src="${REPL_ACCOUNT}/widget/PokeButton"
             props={{
@@ -274,7 +303,7 @@ return (
         src="${REPL_ACCOUNT}/widget/DIG.Dialog"
         props={{
           type: "alert",
-          title: `Do you want to stop receiving push notification for ${type}?`,
+          title: `Do you want to stop receiving push notification for ${notificationType}?`,
           cancelButtonText: "Cancel",
           confirmButtonText: "Confirm",
           onCancel: onClose,

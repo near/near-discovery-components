@@ -1,6 +1,16 @@
 const { href } = VM.require("devhub.near/widget/core.lib.url") || (() => {});
 
-function createNotificationMessage(notificationType, path, postValue, customMessage) {
+if (!href) {
+  console.warn("Loading `href` module...");
+  return "";
+}
+
+function createNotificationMessage(value) {
+  const path = value?.item?.path ?? "";
+  const postValue = value?.post ?? value?.proposal ?? "";
+  const notificationType = value?.type ?? "";
+  const customMessage = value?.message ?? null;
+
   const isComment = path.indexOf("/post/comment") > 0 || notificationType === "comment";
   const isPost = !isComment && path.indexOf("/post/main") > 0;
 
@@ -37,7 +47,7 @@ function createNotificationMessage(notificationType, path, postValue, customMess
       return customMessage ?? "";
     case "devgovgigs/edit":
     case "devhub/edit":
-      return "edited your";
+      return "edited your post";
     case "devgovgigs/like":
       return isDevHubPost ? "liked your post" : "liked your comment";
     case "devhub/like":
@@ -47,11 +57,13 @@ function createNotificationMessage(notificationType, path, postValue, customMess
   }
 }
 
-function getNotificationContent(notificationType, notificationValue, path, postValue, context, accountId, blockHeight) {
+function getNotificationContent(value, contextAccountId, accountId, blockHeight) {
+  const path = value?.item?.path ?? "";
+  const postValue = value?.post ?? value?.proposal ?? "";
+  const notificationType = value?.type ?? "";
   // Do not show content for these notification types
   // as they are not having any content
-  let { item } = notificationValue;
-  let { blockHeight: likeAtBlockHeight } = item;
+  const likeAtBlockHeight = value?.item?.blockHeight ?? undefined;
 
   if (["follow", "unfollow", "poke"].indexOf(notificationType) >= 0) return null;
 
@@ -65,26 +77,24 @@ function getNotificationContent(notificationType, notificationValue, path, postV
     return getDevHubContent.snapshot.description;
   }
 
-  const commentAuthorAccountId = notificationType === "like" ? context.accountId : accountId;
+  const commentAuthorAccountId = notificationType === "like" ? contextAccountId : accountId;
   const contentBlockHeight = notificationType === "like" ? likeAtBlockHeight : blockHeight;
 
-  const contentPath = isPost ? `${context.accountId}/post/main` : `${commentAuthorAccountId}/post/comment`;
+  const contentPath = isPost ? `${contextAccountId}/post/main` : `${commentAuthorAccountId}/post/comment`;
   const contentDescription = JSON.parse(Social.get(contentPath, contentBlockHeight) ?? "null");
   return contentDescription.text;
 }
 
-function createNotificationLink(notificationType, notificationValue, authorAccountId, accountId, blockHeight) {
+function createNotificationLink(notificationValue, authorAccountId, accountId, blockHeight) {
   const pathPrefix = `/${REPL_ACCOUNT}/widget`;
+  const notificationType = notificationValue?.type ?? null;
 
-  let { item, widget, params, post, proposal, notifier } = notificationValue;
-  item = item ?? {};
-  widget = widget ?? "";
-  params = params ?? {};
-  post = post ?? {};
-  proposal = proposal ?? "";
-  notifier = notifier ?? "";
-  let { blockHeight: likeAtBlockHeight, path } = item;
-  path = path ?? "";
+  const widget = notificationValue?.widget ?? "";
+  const params = notificationValue?.params ?? {};
+  const post = notificationValue?.post ?? {};
+  const proposal = notificationValue?.proposal ?? "";
+  const likeAtBlockHeight = notificationValue?.item?.blockHeight ?? undefined;
+  const path = notificationValue?.item?.path ?? "";
 
   switch (notificationType) {
     case "mention":
@@ -124,7 +134,6 @@ function createNotificationLink(notificationType, notificationValue, authorAccou
         params: {
           page: "proposal",
           id: proposal,
-          notifier: notifier,
         },
       });
     default:
@@ -163,9 +172,61 @@ function getNotificationIconClassName(notificationType) {
   }
 }
 
+/*
+  @value - Notification value object
+  @description - Check if the notification value object has all the required fields
+*/
+
+function checkNotificationValueAvailability(value) {
+  if (!value) {
+    console.error("Notification value is missing.");
+    return false;
+  }
+  const notificationType = value?.type ?? null;
+  if (!notificationType) {
+    console.error("Notification type is missing.");
+    return false;
+  }
+  const type = value?.item?.type ?? null;
+  const path = value?.item?.path ?? null;
+  const blockHeight = value?.item?.blockHeight ?? null;
+  // devhub specific
+  const post = value?.post ?? null;
+  const notifier = value?.notifier ?? null;
+  const proposal = value?.proposal ?? null;
+
+  switch (notificationType) {
+    case "like":
+    case "comment":
+      return !(!type || !path || !blockHeight);
+    case "follow":
+    case "unfollow":
+    case "poke":
+      return true;
+    case "mention":
+    case "star":
+      return !(!type || !path);
+    case "devgovgigs/like":
+    case "devgovgigs/reply":
+    case "devgovgigs/mention":
+    case "devgovgigs/edit":
+      return !(!type || !post);
+    case "devhub/like":
+      return !(!type || !proposal);
+    case "devhub/edit":
+    case "devhub/mention":
+      return !(!type || !notifier || !proposal);
+    case "devhub/reply":
+      return !(!type || !path || !blockHeight || !proposal);
+    default:
+      return false;
+  }
+}
+
 return {
   createNotificationMessage,
   getNotificationContent,
   createNotificationLink,
   getNotificationIconClassName,
+  checkNotificationValueAvailability,
 };

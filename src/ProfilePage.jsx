@@ -34,9 +34,7 @@ if (starredComponentsData) {
 }
 const starredComponentsCount = (starredComponents ?? []).length;
 
-const Wrapper = styled.div`
-  padding-bottom: 48px;
-`;
+const Wrapper = styled.div``;
 
 const Main = styled.div`
   display: grid;
@@ -179,7 +177,7 @@ if (accountId !== context.accountId) {
 }
 
 return (
-  <Wrapper>
+  <Wrapper className="gateway-page-container">
     <BackgroundImage>
       {profile.backgroundImage && (
         <Widget

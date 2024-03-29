@@ -4,31 +4,14 @@ if (!href) {
 }
 
 const { namespace, entityType, title, schemaFile } = props;
-
 const schemaLocation = schemaFile ? schemaFile : `${REPL_ACCOUNT}/widget/Entities.Template.GenericSchema`;
-const { genSchema } = VM.require(schemaLocation, { namespace, entityType });
+const { genSchema } = VM.require(schemaLocation);
 if (!genSchema) {
   return <></>;
 }
 const schema = genSchema(namespace, entityType);
 
-const Row = styled.div`
-  vertical-align: middle;
-  padding-bottom: 1em;
-  img.logo {
-    width: 30%;
-    aspect-ratio: 1 / 1;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-`;
-const Actions = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 2px;
-`;
-
-const entityIndexer = "agents";
+const entityIndexer = "entities";
 const entityTable = "entities";
 
 const user = "dataplatform_near";
@@ -37,24 +20,14 @@ const collection = `${user}_${entityIndexer}_${entityTable}`;
 const dataFields = Object.keys(schema).filter((key) => typeof schema[key] === "object");
 const standardFields = ["id", "accountId", "name", "displayName", "logoUrl", "attributes"];
 const attributeFields = dataFields.filter((key) => !standardFields.includes(key));
+const ns = namespace ? namespace : "default";
 const buildQueries = (searchKey, sort) => {
-  const queryFilter = searchKey ? `name: {_ilike: "%${searchKey}%"}` : "";
-  let querySortOption;
-  switch (sort) {
-    case "z-a":
-      querySortOption = `{ name: desc },`;
-      break;
-    case "a-z":
-      querySortOption = `{ name: asc },`;
-      break;
-    default:
-      querySortOption = "{ id: desc },";
-  }
+  const queryFilter = searchKey ? `display_name: {_ilike: "%${searchKey}%"}` : "";
   return `
 query ListQuery($offset: Int, $limit: Int) {
   ${collection}(
-      where: {entity_type: {_eq: "${entityType}"}, ${queryFilter}}
-      order_by: [${querySortOption} ], 
+      where: {namespace: {_eq: "${ns}"}, entity_type: {_eq: "${entityType}"}, ${queryFilter}}
+      order_by: [${sort} ], 
       offset: $offset, limit: $limit) {
       id
       account_id
@@ -62,9 +35,12 @@ query ListQuery($offset: Int, $limit: Int) {
       display_name
       logo_url
       attributes
+      stars
+      created_at
+      updated_at
   }
   ${collection}_aggregate (
-      where: {entity_type: {_eq: "${entityType}"}, ${queryFilter}}
+      where: {namespace: {_eq: "${ns}"}, entity_type: {_eq: "${entityType}"}, ${queryFilter}}
     ){
     aggregate {
       count
@@ -92,7 +68,60 @@ const convertPascalToSnake = (itemArray) => {
   return newItems;
 };
 
-const renderItem = (rawItem, editFunction) => {
+const Row = styled.div`
+  vertical-align: middle;
+  padding-bottom: 1em;
+  img.logo {
+    width: 30%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+`;
+const Actions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 2px;
+`;
+const sharedButtonStyles = `
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 8px;
+  height: 32px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 15px;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+    outline: none;
+  }
+
+  i {
+    color: #7E868C;
+  }
+
+  .bi-16 {
+    font-size: 16px;
+  }
+`;
+const Button = styled.button`
+  ${sharedButtonStyles}
+  color: ${(p) => (p.primary ? "#09342E" : "#11181C")} !important;
+  background: ${(p) => (p.primary ? "#59E692" : "#FBFCFD")};
+  border: ${(p) => "none"};
+
+  &:hover,
+  &:focus {
+    background: ${(p) => (p.primary ? "rgb(112 242 164)" : "#ECEDEE")};
+  }
+`;
+const defaultRenderTableItem = (rawItem, editFunction) => {
   const item = convertSnakeToPascal(rawItem);
   const { accountId, name, displayName, logoUrl, attributes } = item;
   const itemComponent = item.component ? item.component : `${REPL_ACCOUNT}/widget/Entities.Template.EntityDetails`;
@@ -116,15 +145,16 @@ const renderItem = (rawItem, editFunction) => {
   return (
     <Row className="row">
       <div className="col-2">
-        <img className="logo" src={imageUrl} alt="logo" />
+        <img className="logo" src={imageUrl} alt="item logo" />
       </div>
-      <div className="col-4">{displayName}</div>
-      <div className="col-2">{accountId}</div>
       <div className="col-2">
-        {attributeFields.map((key) => (
-          <span>{attributes[key]}</span>
-        ))}
+        <Link to={detailsLink}>{displayName}</Link>
       </div>
+      {attributeFields.map((key) => {
+        const value = attributes[key];
+        const formattedValue = value?.length > 50 ? value.substring(0, 50) + "..." : value;
+        return <div className="col-1">{formattedValue}</div>;
+      })}
       <div className="col-2">
         <Actions>
           <Widget
@@ -146,19 +176,6 @@ const renderItem = (rawItem, editFunction) => {
             }}
           />
           <Widget
-            src="${REPL_ACCOUNT}/widget/CopyUrlButton"
-            props={{
-              url: actionUrl,
-            }}
-          />
-          <Widget
-            src="${REPL_ACCOUNT}/widget/ShareButton"
-            props={{
-              postType: "Placeholder",
-              url: actionUrl,
-            }}
-          />
-          <Widget
             src="${REPL_ACCOUNT}/widget/DIG.Tooltip"
             props={{
               content: "View Details",
@@ -177,6 +194,49 @@ const renderItem = (rawItem, editFunction) => {
               ),
             }}
           />
+          <Widget
+            src="${REPL_ACCOUNT}/widget/SocialIndexActionButton"
+            key={name}
+            props={{
+              actionName: "star",
+              actionUndoName: "unstar",
+              item: {
+                type: "social",
+                path: `${accountId}/entities/${namespace}/${entityType}/${name}`,
+              },
+              notifyAccountId: accountId,
+              button: (starCount, starIsActive, starOnClick) => (
+                <Button type="button" onClick={starOnClick} aria-label="Star this">
+                  {starIsActive ? (
+                    <i className="bi bi-star-fill" style={{ color: "var(--amber10)" }} />
+                  ) : (
+                    <i className="bi bi-star" />
+                  )}{" "}
+                  {starCount}
+                </Button>
+              ),
+            }}
+          />{" "}
+          <Button>
+            <Widget
+              src="${REPL_ACCOUNT}/widget/CopyUrlButton"
+              props={{
+                url: actionUrl,
+              }}
+            />
+          </Button>
+          <Button>
+            <Widget
+              src="${REPL_ACCOUNT}/widget/ShareButton"
+              props={{
+                postType: "Placeholder",
+                url: actionUrl,
+              }}
+            />
+          </Button>
+          <span style={{ whiteSpace: "nowrap" }}>
+            by <Widget src="${REPL_MOB}/widget/ProfileLine" props={{ accountId: accountId, hideAccountId: true }} />
+          </span>
         </Actions>
       </div>
     </Row>
@@ -184,13 +244,13 @@ const renderItem = (rawItem, editFunction) => {
 };
 
 const createWidget = "${REPL_ACCOUNT}/widget/Entities.Template.EntityCreate";
-
+const renderItem = props.renderItem ? props.renderItem : defaultRenderTableItem;
+const table = props.renderItem ? false : true;
 return (
   <div>
-    <h4>{title}</h4>
     <Widget
       src="${REPL_ACCOUNT}/widget/Entities.Template.EntityList"
-      props={{ table: true, loadItems, buildQueries, queryName, collection, renderItem, createWidget, schema }}
+      props={{ table, buildQueries, queryName, collection, renderItem, createWidget, schema }}
     />
   </div>
 );

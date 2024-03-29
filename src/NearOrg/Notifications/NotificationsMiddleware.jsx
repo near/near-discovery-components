@@ -1,5 +1,7 @@
 const { fetchGraphQL, loadItems } = VM.require("${REPL_ACCOUNT}/widget/Entities.QueryApi.Client") || (() => {});
 
+const accountId = context.accountId;
+
 const [shouldFallback, setShouldFallback] = useState(false);
 
 const lastNotificationQuery = `
@@ -13,7 +15,7 @@ const lastNotificationQuery = `
 const notificationsQuery = `query NotificationsQuery($offset: Int, $limit: Int) {
   data: dataplatform_near_notifications_notifications(
     distinct_on: [blockHeight, initiatedBy],
-    where: {receiver: {_eq: "${context.accountId}"}}
+    where: {receiver: {_eq: "${accountId}"}}
     order_by: [{blockHeight: desc}, {initiatedBy:asc}],
     offset: $offset, limit: $limit
   ) {
@@ -35,7 +37,7 @@ const notificationsQuery = `query NotificationsQuery($offset: Int, $limit: Int) 
   }
   count: dataplatform_near_notifications_notifications_aggregate(
     distinct_on: [blockHeight, initiatedBy],
-    where: {receiver: {_eq: "${context.accountId}"}}
+    where: {receiver: {_eq: "${accountId}"}}
   ) {
     aggregate {
       count
@@ -43,7 +45,7 @@ const notificationsQuery = `query NotificationsQuery($offset: Int, $limit: Int) 
   }
 }`;
 
-const lastNotificationOnChain = Social.index("notify", context.accountId, {
+const lastNotificationOnChain = Social.index("notify", accountId, {
   limit: 1,
   order: "desc",
 });
@@ -67,8 +69,8 @@ const fetchNotifications = (offset, limit, saveData) => {
             value: {
               item: {
                 blockHeight: notification?.actionAtBlockHeight,
-                path: notification.path,
-                type: notification.itemType,
+                path: notification?.path,
+                type: notification?.itemType,
               },
               type: notification.valueType,
               message: notification.message,

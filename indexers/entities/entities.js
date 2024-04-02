@@ -85,63 +85,63 @@ async function getBlock(block: Block) {
     const entityWrites = getSocialOperations(block, "entities");
     await entityWrites.map(async ({ accountId, data }) => {
         try {
-            if(typeof data === "string") {
+            if (typeof data === "string") {
                 data = JSON.parse(data);
             }
             const dataArray = Array.isArray(data) ? data : [data];
             dataArray.map(async (data) => {
                 const namespaces = Object.keys(data);
                 namespaces.map(async (namespace) => {
-                const namespaceData = data[namespace];
-                const entityTypes = Object.keys(namespaceData);
-                entityTypes.map(async (entityType) => {
-                    const entityTypeData = namespaceData[entityType];
-                    const entities = Object.keys(entityTypeData);
-                    entities.map(async (name) => {
-                        const entityProps = entityTypeData[name];
-                        if(!entityProps['operation']) {
-                            switch(entityProps['operation']) {
-                                case 'delete':
-                                    await context.db.Entities.delete({
-                                        namespace: namespace,
-                                        entity_type: entityType,
-                                        account_id: accountId,
-                                        name: name
-                                    });
-                                    console.log(
-                                        `${entityType} ${namespace}/${name} from ${accountId} has been deleted from the database`
-                                    );
-                                    return;
-                                default:
-                                    console.error(
-                                        `Operation ${entityProps['operation']} not supported`
-                                    );
-                                    return;
+                    const namespaceData = data[namespace];
+                    const entityTypes = Object.keys(namespaceData);
+                    entityTypes.map(async (entityType) => {
+                        const entityTypeData = namespaceData[entityType];
+                        const entities = Object.keys(entityTypeData);
+                        entities.map(async (name) => {
+                            const entityProps = entityTypeData[name];
+                            if (!entityProps["operation"]) {
+                                switch (entityProps["operation"]) {
+                                    case "delete":
+                                        await context.db.Entities.delete({
+                                            namespace: namespace,
+                                            entity_type: entityType,
+                                            account_id: accountId,
+                                            name: name,
+                                        });
+                                        console.log(
+                                            `${entityType} ${namespace}/${name} from ${accountId} has been deleted from the database`
+                                        );
+                                        return;
+                                    default:
+                                        console.error(
+                                            `Operation ${entityProps["operation"]} not supported`
+                                        );
+                                        return;
+                                }
                             }
-                        }
-                        const { displayName, logoUrl, ...entityAttributes } = entityProps;
-                        const entity = {
-                            namespace: namespace,
-                            entity_type: entityType,
-                            account_id: accountId,
-                            name: name,
-                            display_name: displayName,
-                            logo_url: logoUrl,
-                            attributes: entityAttributes,
-                        };
-                        await context.db.Entities.upsert(
-                            entity,
-                            ["entity_type", "account_id", "name"],
-                            ["display_name", "logo_url", "attributes"]
-                        );
+                            const { displayName, logoUrl, ...entityAttributes } = entityProps;
+                            const entity = {
+                                namespace: namespace,
+                                entity_type: entityType,
+                                account_id: accountId,
+                                name: name,
+                                display_name: displayName,
+                                logo_url: logoUrl,
+                                attributes: entityAttributes,
+                            };
+                            await context.db.Entities.upsert(
+                                entity,
+                                ["entity_type", "account_id", "name"],
+                                ["display_name", "logo_url", "attributes"]
+                            );
 
-                        console.log(
-                            `${entityType} from ${accountId} has been added to the database`
-                        );
+                            console.log(
+                                `${entityType} from ${accountId} has been added to the database`
+                            );
+                        });
                     });
                 });
             });
-          });
         } catch (e) {
             console.log(
                 `Failed to store entity from ${accountId} to the database`,
@@ -158,24 +158,30 @@ async function getBlock(block: Block) {
         })
         .map(async ({ accountId, data }) => {
             try {
-            const type = "star";
-            const starData = data[type];
-            if (!starData) {
-                console.log("No star data found");
-                return;
-            }
-            const star = JSON.parse(starData);
-            // "{\"key\":{\"type\":\"social\",\"path\":\"flatirons.near/examples/favoriteCar/delorean\"},\"value\":{\"type\":\"star\"}}"
-            const starArray = typeof star === "object" ? [star] : star;
-            starArray.map(async ({ key, value }) => {
-                if (!key || !value || !key.path || !value.type) {
-                    console.log("Required fields not found for star", key, value);
+                const type = "star";
+                const starData = data[type];
+                if (!starData) {
+                    console.log("No star data found");
                     return;
                 }
-                const { path } = key;
-                const { type } = value;
-                const [targetAccountId, entitiesConstant, namespace, entityType, name] = path.split("/");
-                const incDecQuery = `
+                const star = JSON.parse(starData);
+                // "{\"key\":{\"type\":\"social\",\"path\":\"flatirons.near/examples/favoriteCar/delorean\"},\"value\":{\"type\":\"star\"}}"
+                const starArray = typeof star === "object" ? [star] : star;
+                starArray.map(async ({ key, value }) => {
+                    if (!key || !value || !key.path || !value.type) {
+                        console.log("Required fields not found for star", key, value);
+                        return;
+                    }
+                    const { path } = key;
+                    const { type } = value;
+                    const [
+                        targetAccountId,
+                        entitiesConstant,
+                        namespace,
+                        entityType,
+                        name,
+                    ] = path.split("/");
+                    const incDecQuery = `
                 mutation ChangeStars {
                   update_dataplatform_near_entities_entities(
                     where: {namespace: {_eq: "${namespace}"}, entity_type: {_eq: "${entityType}"}, 
@@ -187,15 +193,14 @@ async function getBlock(block: Block) {
                   }
                 }
                 `;
-                console.log("mutation is", incDecQuery);
-                await context.graphql(incDecQuery, {});
-            });
+                    console.log("mutation is", incDecQuery);
+                    await context.graphql(incDecQuery, {});
+                });
             } catch (e) {
                 console.log(
                     `Failed to process star of entity from ${accountId} to the database`,
                     e
                 );
             }
-
         });
 }

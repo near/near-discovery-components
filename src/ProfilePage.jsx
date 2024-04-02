@@ -34,6 +34,24 @@ if (starredComponentsData) {
 }
 const starredComponentsCount = (starredComponents ?? []).length;
 
+const pinnedComponentsData = Social.keys(`${accountId}/graph/pin/*/widget/*`, "final", {
+  return_type: "BlockHeight",
+});
+let pinnedComponents = null;
+if (pinnedComponentsData) {
+  pinnedComponents = [];
+  const pinnedData = pinnedComponentsData[accountId]?.graph?.pin ?? {};
+  Object.keys(pinnedData).forEach((authorAccountId) => {
+    Object.keys(pinnedData[authorAccountId].widget).forEach((componentName) => {
+      pinnedComponents.push({
+        accountId: authorAccountId,
+        componentName,
+      });
+    });
+  });
+}
+const pinnedComponentsCount = (pinnedComponents ?? []).length;
+
 const Wrapper = styled.div``;
 
 const Main = styled.div`
@@ -216,6 +234,10 @@ return (
             Stars ({starredComponentsCount})
           </TabsButton>
 
+          <TabsButton href={`${accountUrl}&tab=pins`} selected={state.selectedTab === "pins"}>
+            Pins ({pinnedComponentsCount})
+          </TabsButton>
+
           <TabsButton href={`${accountUrl}&tab=nfts`} selected={state.selectedTab === "nfts"}>
             NFTs
           </TabsButton>
@@ -283,6 +305,17 @@ return (
               accountId,
               components: starredComponents,
               noDataText: "This account hasn't starred any components yet.",
+            }}
+          />
+        )}
+
+        {state.selectedTab === "pins" && (
+          <Widget
+            src="${REPL_ACCOUNT}/widget/ComponentCollection"
+            props={{
+              accountId,
+              components: pinnedComponents,
+              noDataText: "This account hasn't pinned any components yet.",
             }}
           />
         )}

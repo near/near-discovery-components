@@ -1,10 +1,11 @@
-if (!props.src) return "";
+let { emitGatewayEvent, src } = props;
+
+if (!src) return "";
 
 State.init({
   copiedShareUrl: false,
 });
 
-const src = props.src;
 const primaryAction = props.primaryAction || "viewDetails";
 const [accountId, widget, widgetName] = src.split("/");
 const data = Social.get(`${accountId}/widget/${widgetName}/metadata/**`);
@@ -200,6 +201,24 @@ function normalizeMarkdown(text) {
   return text.trim();
 }
 
+function emitPinnedAppsGatewayEvent(isPinned) {
+  const app = {
+    authorAccountId: accountId,
+    displayName: metadata.name || widgetName,
+    componentName: widgetName,
+    imageUrl: metadata.image?.ipfs_cid
+      ? `https://i.near.social/large/https://ipfs.near.social/ipfs/${metadata.image.ipfs_cid}`
+      : null,
+  };
+
+  emitGatewayEvent &&
+    emitGatewayEvent({
+      type: "PINNED_APPS",
+      app,
+      modification: isPinned ? "PINNED" : "UNPINNED",
+    });
+}
+
 return (
   <Wrapper>
     <Header size={size}>
@@ -260,6 +279,7 @@ return (
 
       <Widget
         src="${REPL_ACCOUNT}/widget/SocialIndexActionButton"
+        key="social-index-action-star"
         props={{
           actionName: "star",
           actionUndoName: "unstar",
@@ -281,22 +301,75 @@ return (
         }}
       />
 
-      <OverlayTrigger placement="top" overlay={<Tooltip>Copy URL to clipboard</Tooltip>}>
-        <Button
-          type="button"
-          onMouseLeave={() => {
-            State.update({ copiedShareUrl: false });
-          }}
-          onClick={() => {
-            clipboard.writeText(shareUrl).then(() => {
-              State.update({ copiedShareUrl: true });
-            });
-          }}
-        >
-          {state.copiedShareUrl ? <i className="bi bi-16 bi-check"></i> : <i className="bi bi-16 bi-link-45deg"></i>}
-          Share
-        </Button>
-      </OverlayTrigger>
+      <Widget
+        src="${REPL_ACCOUNT}/widget/SocialIndexActionButton"
+        key="social-index-action-pin"
+        props={{
+          actionName: "pin",
+          actionUndoName: "unpin",
+          item: {
+            type: "social",
+            path: src,
+          },
+          notifyAccountId: accountId,
+          onCommitStart: (pinIsActive) => {
+            emitPinnedAppsGatewayEvent(pinIsActive);
+          },
+          onCommitFailure: (pinIsActive) => {
+            emitPinnedAppsGatewayEvent(pinIsActive);
+          },
+          button: (pinCount, pinIsActive, pinOnClick) => (
+            <Widget
+              src="near/widget/DIG.Tooltip"
+              props={{
+                content: pinIsActive ? "Unpin this app" : "Pin this app to access it quickly",
+                trigger: (
+                  <Button type="button" onClick={pinOnClick} aria-label="Pin this component">
+                    {pinIsActive ? (
+                      <>
+                        <i className="ph-fill ph-push-pin" style={{ color: "var(--amber10)", fontSize: "1rem" }} />{" "}
+                        Pinned
+                      </>
+                    ) : (
+                      <>
+                        <i class="ph ph-push-pin" style={{ fontSize: "1rem" }} />
+                        Pin
+                      </>
+                    )}
+                  </Button>
+                ),
+              }}
+            />
+          ),
+        }}
+      />
+
+      <Widget
+        src="near/widget/DIG.Tooltip"
+        props={{
+          content: "Copy URL to clipboard",
+          trigger: (
+            <Button
+              type="button"
+              onMouseLeave={() => {
+                State.update({ copiedShareUrl: false });
+              }}
+              onClick={() => {
+                clipboard.writeText(shareUrl).then(() => {
+                  State.update({ copiedShareUrl: true });
+                });
+              }}
+            >
+              {state.copiedShareUrl ? (
+                <i className="bi bi-16 bi-check"></i>
+              ) : (
+                <i className="bi bi-16 bi-link-45deg"></i>
+              )}
+              Share
+            </Button>
+          ),
+        }}
+      />
     </Actions>
   </Wrapper>
 );

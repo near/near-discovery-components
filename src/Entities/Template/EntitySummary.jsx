@@ -6,6 +6,33 @@ if (!href) {
 
 const { entity, showActions } = props;
 const { namespace, entityType, accountId, name, displayName, logoUrl, tags } = entity;
+
+const [entityDeleted, setEntityDeleted] = useState(false);
+const deleteEntity = async (entity) => {
+  const { name } = entity;
+  const entityData = { [name]: { operation: "delete" } };
+  const ns = namespace ? namespace : "default";
+  const data = { [ns]: { [entityType]: entityData } };
+  const result = Social.set(
+    { entities: JSON.stringify(data) },
+    {
+      force: true,
+      onCommit: () => {
+        setEntityDeleted(true);
+      },
+      onCancel: () => {},
+    },
+  );
+};
+if (entityDeleted) {
+  return (
+    <div className="alert alert-success mx-3" role="alert">
+      <div>Entity deleted</div>
+      <Link to={href({ widgetSrc: `${REPL_ACCOUNT}/widget/Nexus` })}>Back to Nexus</Link>
+    </div>
+  );
+}
+
 const size = props.size || "small";
 
 const sizes = {
@@ -174,7 +201,7 @@ return (
 
     {showActions && (
       <Actions>
-        {false && accountId === context.accountId && (
+        {accountId === context.accountId && (
           <Widget
             src="${REPL_ACCOUNT}/widget/DIG.Tooltip"
             props={{
@@ -185,7 +212,7 @@ return (
                   props={{
                     label: "Delete",
                     disabled: !context.accountId || context.accountId !== accountId,
-                    // onClick: () => delete(entity.name),
+                    onClick: () => deleteEntity(entity),
                     iconLeft: "ph-bold ph-trash",
                     variant: "destructive",
                     fill: "ghost",

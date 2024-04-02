@@ -29,6 +29,8 @@ query SingleEntity {
           where: { account_id: {_eq: "${accountId}"}, name: {_eq: "${entityName}"}, 
                    entity_type: {_eq: "${entityType}"}, namespace: {_eq: "${namespace}"}}
         ) {
+        entity_type
+        namespace
         id
         account_id
         name
@@ -50,7 +52,7 @@ const onLoad = (itemInArray) => {
     return;
   }
   const fetchedItem = itemInArray[0];
-  const fullEntity = convertObjectKeysSnakeToPascal(fetchedItem); // { accountId, namespace: namespace, entityType: entityType, name: entityName, ...fetchedItem };
+  const fullEntity = convertObjectKeysSnakeToPascal(fetchedItem);
   setEntity(fullEntity);
 };
 loadItem(query, "SingleEntity", collection, onLoad);
@@ -58,8 +60,8 @@ loadItem(query, "SingleEntity", collection, onLoad);
 if (error) {
   return (
     <div className="alert alert-danger mx-3" role="alert">
-      <div>Error</div>
       <div>Could not find: {src}</div>
+      <Link to={href({ widgetSrc: `${REPL_ACCOUNT}/widget/Nexus` })}>Back to Nexus</Link>
     </div>
   );
 }

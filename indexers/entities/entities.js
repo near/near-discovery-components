@@ -99,7 +99,7 @@ async function getBlock(block: Block) {
                         const entities = Object.keys(entityTypeData);
                         entities.map(async (name) => {
                             const entityProps = entityTypeData[name];
-                            if (!entityProps["operation"]) {
+                            if (entityProps["operation"]) {
                                 switch (entityProps["operation"]) {
                                     case "delete":
                                         await context.db.Entities.delete({
@@ -136,7 +136,7 @@ async function getBlock(block: Block) {
                             );
 
                             console.log(
-                                `${entityType} from ${accountId} has been added to the database`
+                                `${entityType} ${namespace}/${name} from ${accountId} has been added to the database`
                             );
                         });
                     });

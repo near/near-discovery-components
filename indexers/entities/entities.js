@@ -85,8 +85,13 @@ async function getBlock(block: Block) {
     const entityWrites = getSocialOperations(block, "entities");
     await entityWrites.map(async ({ accountId, data }) => {
         try {
-            const namespaces = Object.keys(data);
-            namespaces.map(async (namespace) => {
+            if(typeof data === "string") {
+                data = JSON.parse(data);
+            }
+            const dataArray = Array.isArray(data) ? data : [data];
+            dataArray.map(async (data) => {
+                const namespaces = Object.keys(data);
+                namespaces.map(async (namespace) => {
                 const namespaceData = data[namespace];
                 const entityTypes = Object.keys(namespaceData);
                 entityTypes.map(async (entityType) => {
@@ -116,6 +121,7 @@ async function getBlock(block: Block) {
                     });
                 });
             });
+          });
         } catch (e) {
             console.log(
                 `Failed to store entity from ${accountId} to the database`,

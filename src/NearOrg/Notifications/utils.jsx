@@ -1,11 +1,9 @@
 const { href } = VM.require("devhub.near/widget/core.lib.url") || (() => {});
 
-if (!href) {
-  console.warn("Loading `href` module...");
-  return "";
-}
+if (!href) return {};
 
 function createNotificationMessage(value) {
+  if (!value) return null;
   const path = value?.item?.path ?? "";
   const postValue = value?.post ?? value?.proposal ?? "";
   const notificationType = value?.type ?? "";
@@ -58,6 +56,7 @@ function createNotificationMessage(value) {
 }
 
 function getNotificationContent(value, contextAccountId, accountId, blockHeight) {
+  if (!value) return null;
   const path = value?.item?.path ?? "";
   const postValue = value?.post ?? value?.proposal ?? "";
   const notificationType = value?.type ?? "";
@@ -86,6 +85,7 @@ function getNotificationContent(value, contextAccountId, accountId, blockHeight)
 }
 
 function createNotificationLink(notificationValue, authorAccountId, accountId, blockHeight) {
+  if (!notificationValue) return null;
   const pathPrefix = `/${REPL_ACCOUNT}/widget`;
   const notificationType = notificationValue?.type ?? null;
 

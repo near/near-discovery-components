@@ -13,7 +13,7 @@ if (
   !getNotificationIconClassName ||
   !checkNotificationValueAvailability
 ) {
-  return "";
+  return <></>;
 }
 
 const Notification = styled.div`
@@ -32,7 +32,7 @@ const Notification = styled.div`
   }
 `;
 
-const Content = styled("Link")`
+const Content = styled.div`
   display: flex;
   flex-direction: inherit;
   align-items: flex-start;
@@ -149,6 +149,7 @@ const Left = styled.div`
 const Right = styled.div``;
 
 const getNotificationDetailsFromChain = (initiator, blockHeight) => {
+  if (!initiator) return null;
   try {
     const data = Social.get(`${initiator}/index/notify`, blockHeight);
     const { value } = data ? JSON.parse(data) : null ?? {};
@@ -183,11 +184,11 @@ const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 const ordinaryNotification = ["follow", "unfollow", "poke"].indexOf(notificationType) >= 0;
 
 // Assert is a valid type
-const notificationMessageByType = createNotificationMessage && createNotificationMessage(value);
+const notificationMessageByType = createNotificationMessage(value) ?? null;
 if (!notificationMessageByType) return "";
 
-const previewContent = getNotificationContent(value, context.accountId, accountId, blockHeight);
-const postUrl = createNotificationLink(value, props.initiator, accountId, blockHeight);
+const previewContent = getNotificationContent(value, context.accountId, accountId, blockHeight) ?? null;
+const postUrl = createNotificationLink(value, props.initiator, accountId, blockHeight) ?? null;
 const iconClassName = getNotificationIconClassName(notificationType);
 
 const [isModalOpen, setIsModalOpen] = useState(false);
@@ -231,22 +232,28 @@ const buildMenu = () => {
   ];
 };
 
+const isClickable = !!(!ordinaryNotification && postUrl);
+const displayName = profile.name || accountId?.split(".near")[0];
+
 return (
   <Notification>
     <Icon className={iconClassName} />
     <Content
       className="notification-item"
-      as={!ordinaryNotification ? "Link" : "div"}
-      href={!ordinaryNotification && postUrl}
+      as={isClickable ? "a" : "div"}
+      data-clickable={isClickable}
+      href={isClickable && postUrl}
     >
       <Left>
-        <Link href={!props.onClick && profileUrl}>
+        <Link href={profileUrl}>
           <ProfileOverlay>
             <Widget
               src="${REPL_ACCOUNT}/widget/DIG.Avatar"
               props={{
                 alt: accountId,
-                image: profile.image,
+                image:
+                  profile.image ??
+                  "https://ipfs.near.social/ipfs/bafkreibiyqabm3kl24gcb2oegb7pmwdi6wwrpui62iwb44l7uomnn3lhbi",
                 size: "small",
               }}
             />
@@ -255,27 +262,31 @@ return (
         <Text>
           <ProfileOverlay>
             <div>
-              <Link href={!props.onClick && profileUrl}>
-                <Username>{profile.name || accountId.split(".near")[0]}</Username>
-              </Link>
+              {displayName && (
+                <Link href={profileUrl}>
+                  <Username>{displayName}</Username>
+                </Link>
+              )}
               <Action>{notificationMessageByType}</Action>
             </div>
           </ProfileOverlay>
 
           <Timestamp>
             <Dot>·</Dot>
-            {/* TODO: add title tag to show full time on hover */}
-            <Widget src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}" props={{ blockHeight }} />
+
+            {blockHeight && (
+              <Widget src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}" props={{ blockHeight }} />
+            )}
           </Timestamp>
         </Text>
         {previewContent && <Description>{previewContent}</Description>}
       </Left>
       <Right>
-        {(notificationType === "follow" || notificationType === "unfollow") && (
+        {(notificationType === "follow" || notificationType === "unfollow") && accountId && (
           <Widget src="${REPL_ACCOUNT}/widget/FollowButton" props={{ accountId }} />
         )}
 
-        {notificationType === "poke" && (
+        {notificationType === "poke" && accountId && (
           <Widget
             src="${REPL_ACCOUNT}/widget/PokeButton"
             props={{
@@ -286,7 +297,7 @@ return (
           />
         )}
 
-        {!ordinaryNotification && <Button href={postUrl}>View</Button>}
+        {!ordinaryNotification && postUrl && <Button href={postUrl}>View</Button>}
       </Right>
     </Content>
     {permission && (

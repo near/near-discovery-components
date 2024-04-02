@@ -99,6 +99,26 @@ async function getBlock(block: Block) {
                     const entities = Object.keys(entityTypeData);
                     entities.map(async (name) => {
                         const entityProps = entityTypeData[name];
+                        if(!entityProps['operation']) {
+                            switch(entityProps['operation']) {
+                                case 'delete':
+                                    await context.db.Entities.delete({
+                                        namespace: namespace,
+                                        entity_type: entityType,
+                                        account_id: accountId,
+                                        name: name
+                                    });
+                                    console.log(
+                                        `${entityType} ${namespace}/${name} from ${accountId} has been deleted from the database`
+                                    );
+                                    return;
+                                default:
+                                    console.error(
+                                        `Operation ${entityProps['operation']} not supported`
+                                    );
+                                    return;
+                            }
+                        }
                         const { displayName, logoUrl, ...entityAttributes } = entityProps;
                         const entity = {
                             namespace: namespace,

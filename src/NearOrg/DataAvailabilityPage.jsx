@@ -497,8 +497,12 @@ return (
                     Drastically reduce your costs
                   </Text>
                   <Text>
-                    Storing calldata on NEAR Protocol is approximately 8000x cheaper than storing the same amount of
-                    data on Ethereum.
+                    Storing calldata on NEAR Protocol is approximately 8000x
+                    cheaper than storing the same amount of data on Ethereum.
+                    Harness the power of NEAR's efficient network, optimized for
+                    transactions, data storage, and blockchain functionality.
+                    Say goodbye to high fees and embrace a new era of
+                    cost-effective blockchain solutions.
                   </Text>
                 </Flex>
 
@@ -507,8 +511,13 @@ return (
                     Easily validate proofs
                   </Text>
                   <Text>
-                    A trustless off-chain light client for NEAR provides easy access to validate that rollup data was
-                    stored on-chain.
+                    Validate proofs effortlessly with NEAR's trustless off-chain
+                    light client. Seamlessly access and verify the storage of
+                    rollup data on-chain. NEAR's user-friendly interface ensures
+                    convenient validation of blockchain transactions, enhancing
+                    transparency and trust in the system. With NEAR's innovative
+                    solution, easily ensure data availability and integrity in
+                    your blockchain transactions.
                   </Text>
                 </Flex>
 
@@ -516,7 +525,15 @@ return (
                   <Text size="text-xl" mobileSize="text-l" fontWeight="500">
                     Simple to interact with
                   </Text>
-                  <Text>NEAR readily provides an RPC to easily retrieve the on-chain data from anywhere</Text>
+                  <Text>NEAR Protocol offers an RPC interface for effortless
+                    retrieval of on-chain data from any location. Benefit from
+                    NEAR's streamlined approach to data availability on the
+                    blockchain, facilitating seamless access to critical
+                    information. With NEAR's user-friendly API, accessing
+                    blockchain data has never been easier. Experience the
+                    convenience of NEAR Protocol and unlock new possibilities in
+                    blockchain interaction.
+                  </Text>
                 </Flex>
 
                 <div>
@@ -550,8 +567,14 @@ return (
               Get started with NEAR's data availability layer
             </Text>
 
-            <Text size="text-l" mobileSize="text-l" style={{ maxWidth: "600px" }}>
-              Efficiently store state data and commitments on a NEAR contract for your L2 rollup.
+            <Text size="text-m" mobileSize="text-m" style={{ maxWidth: "600px" }}>
+              Efficiently store state data and commitments on a NEAR contract
+              for your L2 rollup. Whether you're processing transactions or
+              managing data on the blockchain layer, NEAR's Ethereum-compatible
+              infrastructure offers unparalleled efficiency ensuring seamless
+              interaction with nodes across the network. Explore the power of
+              rollups and experience the future of blockchain technology with
+              NEAR.
             </Text>
           </Flex>
 

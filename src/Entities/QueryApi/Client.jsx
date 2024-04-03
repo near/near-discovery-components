@@ -36,6 +36,24 @@ function loadItems(queries, queryName, offset, collection, onLoad) {
   });
 }
 
+function loadItem(queries, queryName, collection, onLoad) {
+  return fetchGraphQL(queries, queryName, {}).then((result) => {
+    if (result.status === 200 && result.body) {
+      if (result.body.errors) {
+        console.log("error:", result.body.errors);
+        return;
+      }
+      let data = result.body.data;
+      if (data) {
+        const newItem = data[collection];
+        if (newItem) {
+          onLoad(newItem);
+        }
+      }
+    }
+  });
+}
+
 function convertObjectKeysSnakeToPascal(item) {
   const newItem = {};
   Object.keys(item).forEach((key) => {
@@ -52,12 +70,18 @@ function convertObjectKeysPascalToSnake(item) {
   });
   return newItem;
 }
+const capitalize = (s) => {
+  if (typeof s !== "string") return "";
+  return s.charAt(0).toUpperCase() + s.slice(1);
+};
 
 return {
   fetchGraphQL,
   loadItems,
+  loadItem,
   convertObjectKeysSnakeToPascal,
   convertObjectKeysPascalToSnake,
+  capitalize,
   LIMIT,
   GRAPHQL_ENDPOINT,
   HASURA_ROLE,

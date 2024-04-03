@@ -14,7 +14,7 @@ import { Block } from "@near-lake/primitives";
  * @param {block} Block - A Near Protocol Block
  */
 async function getBlock(block: Block) {
-  const ACCOUNT_NAME = "dataplaform_near";
+  const ACCOUNT_NAME = "dataplatform_near";
   const INDEXER_NAME = `${ACCOUNT_NAME}_components`;
   const METADATA_TABLE = `${INDEXER_NAME}_metadata`;
   const VERSION_TABLE = `${INDEXER_NAME}_versions`;

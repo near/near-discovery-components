@@ -407,6 +407,10 @@ async function getBlock(block: Block) {
         return;
       }
       const accountId = Object.keys(functionCall.args.data)[0];
+      if (!functionCall.args.data[accountId]) {
+        console.log("Set operation did not have arg data for accountId");
+        return;
+      }
       const data_keys = Object.keys(functionCall.args.data[accountId]);
       if (!data_keys) {
         console.log(

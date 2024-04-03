@@ -30,6 +30,11 @@ const Notification = styled.div`
       color: #604cc8;
     }
   }
+
+  @media (max-width: 575px) {
+    padding: 16px;
+    margin: 0 -16px;
+  }
 `;
 
 const Content = styled.div`
@@ -53,11 +58,18 @@ const Username = styled.span`
   font: var(--text-s);
   font-weight: 600;
   color: var(--sand12);
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  word-break: break-word;
 `;
 
 const Action = styled.span`
   font: var(--text-s);
   color: #706f6c;
+  white-space: nowrap;
 `;
 
 const ComponentName = styled.span`
@@ -117,11 +129,13 @@ const Timestamp = styled.div`
   font: var(--text-s);
   color: #706f6c;
   padding-top: 2px;
+  white-space: nowrap;
 `;
 
 const Text = styled.div`
   display: flex;
-  direction: columns;
+  align-items: baseline;
+  flex-wrap: nowrap;
   padding-top: 8px;
 `;
 
@@ -164,6 +178,8 @@ let { blockHeight, accountId, manageNotification, permission, value } = props;
 const checkedValue = checkNotificationValueAvailability(value);
 value = checkedValue ? value : getNotificationDetailsFromChain(props.initiator, blockHeight);
 
+if (value === null) return "Loading...";
+
 const notificationType = value?.type;
 const notifier = value?.notifier;
 
@@ -174,6 +190,9 @@ if (showAuthorProfile) {
   accountId = notifier;
 }
 const profile = props.profile || Social.get(`${accountId}/profile/**`, "final");
+
+if (profile === null) return "Loading...";
+
 const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 
 // notification type that doesn't have a content preview
@@ -207,13 +226,14 @@ const onConfirm = async () => {
   setIsModalOpen(false);
 };
 
-const ProfileOverlay = ({ children }) => (
+const ProfileOverlay = ({ children, ...props }) => (
   <Widget
     src="${REPL_ACCOUNT}/widget/AccountProfileOverlay"
     props={{
       accountId,
       profile,
       children,
+      ...props,
     }}
   />
 );
@@ -260,17 +280,15 @@ return (
           </ProfileOverlay>
         </Link>
         <Text>
-          <ProfileOverlay>
-            <div>
-              {displayName && (
-                <Link href={profileUrl}>
-                  <Username>{displayName}</Username>
-                </Link>
-              )}
-              <Action>{notificationMessageByType}</Action>
-            </div>
-          </ProfileOverlay>
-
+          {displayName && (
+            <ProfileOverlay inline>
+              <Link href={profileUrl}>
+                <Username>{displayName}</Username>
+              </Link>
+            </ProfileOverlay>
+          )}
+          &nbsp;
+          <Action>{notificationMessageByType}</Action>
           <Timestamp>
             <Dot>·</Dot>
 

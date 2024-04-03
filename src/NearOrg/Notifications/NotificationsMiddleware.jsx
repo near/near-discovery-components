@@ -1,4 +1,6 @@
-const { fetchGraphQL, loadItems } = VM.require("${REPL_ACCOUNT}/widget/Entities.QueryApi.Client") || (() => {});
+const { fetchGraphQL } = VM.require("${REPL_ACCOUNT}/widget/Entities.QueryApi.Client") || (() => {});
+
+if (!fetchGraphQL) return <></>;
 
 const accountId = context.accountId;
 

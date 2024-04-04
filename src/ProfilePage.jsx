@@ -1,3 +1,5 @@
+let { emitGatewayEvent } = props;
+
 const accountId = props.accountId ?? context.accountId;
 if (!accountId) {
   return "No account ID";

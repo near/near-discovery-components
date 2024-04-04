@@ -567,10 +567,9 @@ return (
               Efficiently store state data and commitments on a NEAR contract
               for your L2 rollup. Whether you're processing transactions or
               managing data on the blockchain layer, NEAR's Ethereum-compatible
-              infrastructure offers unparalleled efficiency ensuring seamless
-              interaction with nodes across the network. Explore the power of
-              rollups and experience the future of blockchain technology with
-              NEAR.
+              infrastructure offers unparalleled efficiency through our robust
+              network of nodes. Enhance the functionality of your rollup and
+              experience the future of modular blockchain technology with NEAR.
             </Text>
           </Flex>
 

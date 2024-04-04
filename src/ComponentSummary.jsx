@@ -289,14 +289,26 @@ return (
           },
           notifyAccountId: accountId,
           button: (starCount, starIsActive, starOnClick) => (
-            <Button type="button" onClick={starOnClick} aria-label="Star this component">
-              {starIsActive ? (
-                <i className="bi bi-star-fill" style={{ color: "var(--amber10)" }} />
-              ) : (
-                <i className="bi bi-star" />
-              )}{" "}
-              {starCount}
-            </Button>
+            <Widget
+              src="near/widget/DIG.Tooltip"
+              props={{
+                content: context.accountId
+                  ? starIsActive
+                    ? "Unstar this app"
+                    : "Star this app"
+                  : "Sign in to star this app",
+                trigger: (
+                  <Button type="button" onClick={starOnClick} aria-label="Star this component">
+                    {starIsActive ? (
+                      <i className="bi bi-star-fill" style={{ color: "var(--amber10)" }} />
+                    ) : (
+                      <i className="bi bi-star" />
+                    )}{" "}
+                    {starCount}
+                  </Button>
+                ),
+              }}
+            />
           ),
         }}
       />
@@ -322,7 +334,11 @@ return (
             <Widget
               src="near/widget/DIG.Tooltip"
               props={{
-                content: pinIsActive ? "Unpin this app" : "Pin this app to access it quickly",
+                content: context.accountId
+                  ? pinIsActive
+                    ? "Unpin this app"
+                    : "Pin this app to access it quickly"
+                  : "Sign in to pin this app",
                 trigger: (
                   <Button type="button" onClick={pinOnClick} aria-label="Pin this component">
                     {pinIsActive ? (

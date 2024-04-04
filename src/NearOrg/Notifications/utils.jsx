@@ -1,13 +1,11 @@
 const { href } = VM.require("devhub.near/widget/core.lib.url") || (() => {});
 
-if (!href) {
-  console.warn("Loading `href` module...");
-  return "";
-}
+if (!href) return {};
 
 function createNotificationMessage(value) {
+  if (!value) return null;
   const path = value?.item?.path ?? "";
-  const postValue = value?.post ?? value?.proposal ?? "";
+  const postValue = value?.post ?? value?.proposal ?? null;
   const notificationType = value?.type ?? "";
   const customMessage = value?.message ?? null;
 
@@ -58,8 +56,9 @@ function createNotificationMessage(value) {
 }
 
 function getNotificationContent(value, contextAccountId, accountId, blockHeight) {
+  if (!value) return null;
   const path = value?.item?.path ?? "";
-  const postValue = value?.post ?? value?.proposal ?? "";
+  const postValue = value?.post ?? value?.proposal ?? null;
   const notificationType = value?.type ?? "";
   // Do not show content for these notification types
   // as they are not having any content
@@ -70,22 +69,25 @@ function getNotificationContent(value, contextAccountId, accountId, blockHeight)
   const isComment = path.indexOf("/post/comment") > 0 || notificationType === "comment";
   const isPost = !isComment && path.indexOf("/post/main") > 0;
 
-  if (notificationType && notificationType.startsWith("devgovgigs")) {
+  if (notificationType && notificationType.startsWith("devgovgigs") && postValue) {
     const getDevHubContent = Near.view("devgovgigs.near", "get_post", {
       post_id: postValue,
     });
-    return getDevHubContent.snapshot.description;
+    return getDevHubContent.snapshot.description ?? null;
   }
 
   const commentAuthorAccountId = notificationType === "like" ? contextAccountId : accountId;
   const contentBlockHeight = notificationType === "like" ? likeAtBlockHeight : blockHeight;
 
   const contentPath = isPost ? `${contextAccountId}/post/main` : `${commentAuthorAccountId}/post/comment`;
-  const contentDescription = JSON.parse(Social.get(contentPath, contentBlockHeight) ?? "null");
+  const getDescription = Social.get(contentPath, contentBlockHeight);
+  if (!getDescription) return null;
+  const contentDescription = JSON.parse(getDescription);
   return contentDescription.text;
 }
 
 function createNotificationLink(notificationValue, authorAccountId, accountId, blockHeight) {
+  if (!notificationValue) return null;
   const pathPrefix = `/${REPL_ACCOUNT}/widget`;
   const notificationType = notificationValue?.type ?? null;
 

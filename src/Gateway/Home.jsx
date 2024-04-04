@@ -148,7 +148,7 @@ const ButtonLinkWrapper = styled("Link")`
 
   &:hover {
     cursor: pointer;
-    text-decoration: none;
+    text-decoration: ${(p) => (!p.$noHover ? "none" : "underline")};
 
     @media (min-width: 901px) {
       background: ${(p) => !p.$noHover && "var(--violet3)"};
@@ -158,15 +158,24 @@ const ButtonLinkWrapper = styled("Link")`
     & p {
       color: ${(p) => !p.$noHover && "var(--violet12)"};
     }
+
+    .trending-round-icon {
+      filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.06)) drop-shadow(0px 0px 0px rgba(0, 0, 0, 0.06));
+    }
   }
 
   &:focus-within {
     background: ${(p) => !p.$noHover && "var(--violet3)"};
     border-color: ${(p) => !p.$noHover && "var(--violet6)"};
     box-shadow: ${(p) => !p.$noHover && "0 0 0 4px var(--violet4)"};
+    text-decoration: ${(p) => (!p.$noHover ? "none" : "underline")};
 
     & p {
       color: ${(p) => !p.$noHover && "var(--violet12)"};
+    }
+
+    .trending-round-icon {
+      filter: drop-shadow(0px 4px 8px var(--violet6)) drop-shadow(0px 0px 0px var(--violet6));
     }
   }
 `;
@@ -342,7 +351,6 @@ const Card = ({ title, text, children }) => (
 const TrendingApp = ({ href, url, name, tagline, loading }) => (
   <ButtonLinkWrapper
     href={href}
-    target="_blank"
     $gap="12px"
     $alignItems="center"
     $noHover
@@ -352,13 +360,12 @@ const TrendingApp = ({ href, url, name, tagline, loading }) => (
   >
     <RoundIcon
       url={url}
-      $noHover
       $size="60px"
       $padding="5px"
       $borderRadius="50%"
       $background="var(--white)"
-      $filter="drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.06)) drop-shadow(0px 0px 0px rgba(0, 0, 0, 0.06))"
       $loading={loading}
+      className="trending-round-icon"
     />
     <Text $size="text-s" $fontWeight="600" $overflowLines="2" $letterSpacing="0.28px" $loading={loading}>
       {name}
@@ -388,7 +395,7 @@ return (
                   text="Start tinkering with Jutsu.ai using a template or start a blank project."
                 />
                 <ButtonLink
-                  href="https://${REPL_NEAR_URL}/components"
+                  href="/components"
                   icon="ph-bold ph-git-fork"
                   title="Fork a Project"
                   text="Get started by forking a component or app from NEAR's open source community."
@@ -407,8 +414,7 @@ return (
             title="Trending Apps"
             text={
               <>
-                <TextLink href="https://${REPL_NEAR_URL}/applications">Explore</TextLink> more of the apps built by the
-                NEAR community.
+                <TextLink href="/applications">Explore</TextLink> more of the apps built by the NEAR community.
               </>
             }
           >
@@ -416,7 +422,7 @@ return (
               {topRatingApps.map((app) => (
                 <TrendingApp
                   key={app.slug}
-                  href={`https:/${REPL_NEAR_URL}/${REPL_NEARCATALOG}/widget/Index?id=${app.slug}`}
+                  href={`/${REPL_NEARCATALOG}/widget/Index?id=${app.slug}`}
                   url={app.profile.image.url}
                   name={app.profile.name}
                   tagline={app.profile.tagline}

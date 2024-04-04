@@ -29,6 +29,8 @@ query ListQuery($offset: Int, $limit: Int) {
       where: {namespace: {_eq: "${ns}"}, entity_type: {_eq: "${entityType}"}, ${queryFilter}}
       order_by: [${sort} ], 
       offset: $offset, limit: $limit) {
+      entity_type
+      namespace
       id
       account_id
       name
@@ -134,7 +136,7 @@ const defaultRenderTableItem = (rawItem, editFunction) => {
   });
   const detailsLink = href({
     widgetSrc: `${REPL_ACCOUNT}/widget/Entities.Template.EntityDetails`,
-    params: { src: `${accountId}/${entityType}/${name}`, schemaFile, namespace },
+    params: { src: `${accountId}/${entityType}/${name}`, schemaFile, namespace, entityType },
   });
 
   const actionUrl = `https://${REPL_NEAR_URL}/${itemComponent}?src=${accountId}/${entityType}/${item.name}`;

@@ -17,7 +17,7 @@ const onSubmitDefault = (formValues) => {
   const entity = { [name]: rest };
   const ns = namespace ? namespace : "default";
   const data = { [ns]: { [entityType]: entity } };
-  Social.set({ entities: data }, { force: true });
+  Social.set({ entities: JSON.stringify(data) }, { force: true });
 };
 const onSubmitFunction = onSubmit ?? onSubmitDefault;
 

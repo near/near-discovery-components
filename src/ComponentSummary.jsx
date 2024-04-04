@@ -215,8 +215,18 @@ function emitPinnedAppsGatewayEvent(isPinned) {
     emitGatewayEvent({
       type: "PINNED_APPS",
       app,
-      modification: isPinned ? "PINNED" : "UNPINNED",
+      action: isPinned ? "PINNED" : "UNPINNED",
     });
+}
+
+function pinnedAppsFeatureEnabled() {
+  if (emitGatewayEvent) {
+    return emitGatewayEvent({
+      type: "PINNED_APPS",
+      action: "FEATURE_ENABLED",
+    });
+  }
+  return false;
 }
 
 return (
@@ -313,52 +323,54 @@ return (
         }}
       />
 
-      <Widget
-        src="${REPL_ACCOUNT}/widget/SocialIndexActionButton"
-        key="social-index-action-pin"
-        props={{
-          actionName: "pin",
-          actionUndoName: "unpin",
-          item: {
-            type: "social",
-            path: src,
-          },
-          notifyAccountId: accountId,
-          onCommitStart: (pinIsActive) => {
-            emitPinnedAppsGatewayEvent(pinIsActive);
-          },
-          onCommitFailure: (pinIsActive) => {
-            emitPinnedAppsGatewayEvent(pinIsActive);
-          },
-          button: (pinCount, pinIsActive, pinOnClick) => (
-            <Widget
-              src="near/widget/DIG.Tooltip"
-              props={{
-                content: context.accountId
-                  ? pinIsActive
-                    ? "Unpin this app"
-                    : "Pin this app to access it quickly"
-                  : "Sign in to pin this app",
-                trigger: (
-                  <Button type="button" onClick={pinOnClick} aria-label="Pin this component">
-                    {pinIsActive ? (
-                      <>
-                        <i className="ph-fill ph-push-pin" style={{ color: "var(--amber10)", fontSize: "1rem" }} />{" "}
-                        Pinned
-                      </>
-                    ) : (
-                      <>
-                        <i class="ph ph-push-pin" style={{ fontSize: "1rem" }} />
-                        Pin
-                      </>
-                    )}
-                  </Button>
-                ),
-              }}
-            />
-          ),
-        }}
-      />
+      {pinnedAppsFeatureEnabled() && (
+        <Widget
+          src="${REPL_ACCOUNT}/widget/SocialIndexActionButton"
+          key="social-index-action-pin"
+          props={{
+            actionName: "pin",
+            actionUndoName: "unpin",
+            item: {
+              type: "social",
+              path: src,
+            },
+            notifyAccountId: accountId,
+            onCommitStart: (pinIsActive) => {
+              emitPinnedAppsGatewayEvent(pinIsActive);
+            },
+            onCommitFailure: (pinIsActive) => {
+              emitPinnedAppsGatewayEvent(pinIsActive);
+            },
+            button: (pinCount, pinIsActive, pinOnClick) => (
+              <Widget
+                src="near/widget/DIG.Tooltip"
+                props={{
+                  content: context.accountId
+                    ? pinIsActive
+                      ? "Unpin this app"
+                      : "Pin this app to access it quickly"
+                    : "Sign in to pin this app",
+                  trigger: (
+                    <Button type="button" onClick={pinOnClick} aria-label="Pin this component">
+                      {pinIsActive ? (
+                        <>
+                          <i className="ph-fill ph-push-pin" style={{ color: "var(--amber10)", fontSize: "1rem" }} />{" "}
+                          Pinned
+                        </>
+                      ) : (
+                        <>
+                          <i class="ph ph-push-pin" style={{ fontSize: "1rem" }} />
+                          Pin
+                        </>
+                      )}
+                    </Button>
+                  ),
+                }}
+              />
+            ),
+          }}
+        />
+      )}
 
       <Widget
         src="near/widget/DIG.Tooltip"

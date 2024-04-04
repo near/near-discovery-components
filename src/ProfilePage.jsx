@@ -52,6 +52,16 @@ if (pinnedComponentsData) {
 }
 const pinnedComponentsCount = (pinnedComponents ?? []).length;
 
+function pinnedAppsFeatureEnabled() {
+  if (emitGatewayEvent) {
+    return emitGatewayEvent({
+      type: "PINNED_APPS",
+      action: "FEATURE_ENABLED",
+    });
+  }
+  return false;
+}
+
 const Wrapper = styled.div``;
 
 const Main = styled.div`
@@ -234,9 +244,11 @@ return (
             Stars ({starredComponentsCount})
           </TabsButton>
 
-          <TabsButton href={`${accountUrl}&tab=pins`} selected={state.selectedTab === "pins"}>
-            Pins ({pinnedComponentsCount})
-          </TabsButton>
+          {pinnedAppsFeatureEnabled() && (
+            <TabsButton href={`${accountUrl}&tab=pins`} selected={state.selectedTab === "pins"}>
+              Pins ({pinnedComponentsCount})
+            </TabsButton>
+          )}
 
           <TabsButton href={`${accountUrl}&tab=nfts`} selected={state.selectedTab === "nfts"}>
             NFTs

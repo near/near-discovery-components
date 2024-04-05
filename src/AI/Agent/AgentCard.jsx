@@ -92,7 +92,7 @@ const AgentCard = ({ item, editFunction }) => {
             <h3>{displayName}</h3>
             <p>by {accountId}</p>
             <Widget
-              src="near/widget/DIG.Tooltip"
+              src="${REPL_ACCOUNT}/widget/DIG.Tooltip"
               props={{
                 content: <span style={{ whiteSpace: "pre-line" }}>{prompt}</span>,
                 trigger: <p>{prompt ? prompt.substring(0, 20) : ""}...</p>,
@@ -103,12 +103,12 @@ const AgentCard = ({ item, editFunction }) => {
       </Link>
       <Actions>
         <Widget
-          src="near/widget/DIG.Tooltip"
+          src="${REPL_ACCOUNT}/widget/DIG.Tooltip"
           props={{
             content: editLabel,
             trigger: (
               <Widget
-                src="near/widget/DIG.Button"
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
                   onClick: () => editFunction(item),
                   iconLeft: editIcon,
@@ -134,13 +134,13 @@ const AgentCard = ({ item, editFunction }) => {
           }}
         />
         <Widget
-          src="near/widget/DIG.Tooltip"
+          src="${REPL_ACCOUNT}/widget/DIG.Tooltip"
           props={{
             content: "View Details",
             trigger: (
               <Link to={detailsLink} style={{ all: "unset" }}>
                 <Widget
-                  src="near/widget/DIG.Button"
+                  src="${REPL_ACCOUNT}/widget/DIG.Button"
                   props={{
                     iconLeft: "ph-bold ph-eye",
                     variant: "secondary",
@@ -153,13 +153,13 @@ const AgentCard = ({ item, editFunction }) => {
           }}
         />
         <Widget
-          src="near/widget/DIG.Tooltip"
+          src="${REPL_ACCOUNT}/widget/DIG.Tooltip"
           props={{
             content: "Use agent",
             trigger: (
               <Link to={chatLink} style={{ all: "unset" }}>
                 <Widget
-                  src="near/widget/DIG.Button"
+                  src="${REPL_ACCOUNT}/widget/DIG.Button"
                   props={{
                     iconLeft: "ph-bold ph-chat-teardrop-text",
                     variant: "secondary",

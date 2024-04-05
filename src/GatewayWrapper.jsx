@@ -1,4 +1,4 @@
-let { targetComponent, targetProps, logOut, termsDomainName, privacyDomainName, recordToC } = props;
+let { emitGatewayEvent, targetComponent, targetProps, logOut, termsDomainName, privacyDomainName, recordToC } = props;
 
 const tosName = props.tosName ?? "${REPL_ACCOUNT}/widget/TosContent";
 
@@ -8,6 +8,7 @@ return (
       key="wrapper-tos-check"
       src="${REPL_ACCOUNT}/widget/TosCheck"
       props={{
+        emitGatewayEvent,
         logOut,
         termsDomainName,
         privacyDomainName,
@@ -16,6 +17,6 @@ return (
       }}
     />
 
-    <Widget key="wrapper-target" src={targetComponent} props={targetProps} />
+    <Widget key="wrapper-target" src={targetComponent} props={{ ...targetProps, emitGatewayEvent }} />
   </>
 );

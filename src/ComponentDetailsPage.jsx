@@ -1,4 +1,4 @@
-let { src, tab, highlightComment } = props;
+let { emitGatewayEvent, src, tab, highlightComment } = props;
 
 const [selectedTab, setSelectedTab] = useState(props.tab ?? "source");
 
@@ -126,6 +126,7 @@ return (
     <Widget
       src="${REPL_ACCOUNT}/widget/ComponentSummary"
       props={{
+        emitGatewayEvent,
         primaryAction: "open",
         size: "large",
         showTags: true,

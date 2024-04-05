@@ -51,7 +51,7 @@ const closeModal = (e) => {
 const renderButton = () => (
   <>
     <Widget
-      src="near/widget/DIG.Button"
+      src="${REPL_ACCOUNT}/widget/DIG.Button"
       props={{
         label: title,
         disabled: !context.accountId || state.loading || disabled,
@@ -78,7 +78,7 @@ const renderButton = () => (
 if (props.tooltip) {
   return (
     <Widget
-      src="near/widget/DIG.Tooltip"
+      src="${REPL_ACCOUNT}/widget/DIG.Tooltip"
       props={{
         content: <span style={{ whiteSpace: "pre-line" }}>{props.tooltip}</span>,
         trigger: renderButton(),

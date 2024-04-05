@@ -1,4 +1,4 @@
-const { actionName, actionUndoName, item, notifyAccountId } = props;
+const { actionName, actionUndoName, item, notifyAccountId, onCommitStart, onCommitSuccess, onCommitFailure } = props;
 
 const [isActive, setIsActive] = useState(null);
 const [isProcessingAction, setIsProcessingAction] = useState(false);
@@ -35,7 +35,10 @@ const onClick = () => {
     return;
   }
 
-  setIsActive((currentIsActive) => !currentIsActive); // Optimistically update
+  const existingIsActive = isActive;
+  const newIsActive = !isActive;
+  onCommitStart && onCommitStart(newIsActive); // Optimistically update
+  setIsActive(() => newIsActive); // Optimistically update
   setIsProcessingAction(true);
 
   // The following logic for generating the "data" object was copied from here:
@@ -78,9 +81,13 @@ const onClick = () => {
   }
 
   Social.set(data, {
-    onCommit: () => setIsProcessingAction(false),
+    onCommit: () => {
+      setIsProcessingAction(false);
+      onCommitSuccess && onCommitSuccess(newIsActive);
+    },
     onCancel: () => {
-      setIsActive((currentIsActive) => !currentIsActive); // Undo optimistic update
+      setIsActive(existingIsActive); // Undo optimistic update
+      onCommitFailure && onCommitFailure(existingIsActive); // Undo optimistic update
       setIsProcessingAction(false);
     },
   });

@@ -300,7 +300,7 @@ return (
           notifyAccountId: accountId,
           button: (starCount, starIsActive, starOnClick) => (
             <Widget
-              src="near/widget/DIG.Tooltip"
+              src="${REPL_ACCOUNT}/widget/DIG.Tooltip"
               props={{
                 content: context.accountId
                   ? starIsActive
@@ -343,7 +343,7 @@ return (
             },
             button: (pinCount, pinIsActive, pinOnClick) => (
               <Widget
-                src="near/widget/DIG.Tooltip"
+                src="${REPL_ACCOUNT}/widget/DIG.Tooltip"
                 props={{
                   content: context.accountId
                     ? pinIsActive
@@ -373,7 +373,7 @@ return (
       )}
 
       <Widget
-        src="near/widget/DIG.Tooltip"
+        src="${REPL_ACCOUNT}/widget/DIG.Tooltip"
         props={{
           content: "Copy URL to clipboard",
           trigger: (

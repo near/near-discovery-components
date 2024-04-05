@@ -206,9 +206,7 @@ function emitPinnedAppsGatewayEvent(isPinned) {
     authorAccountId: accountId,
     displayName: metadata.name || widgetName,
     componentName: widgetName,
-    imageUrl: metadata.image?.ipfs_cid
-      ? `https://i.near.social/large/https://ipfs.near.social/ipfs/${metadata.image.ipfs_cid}`
-      : null,
+    imageUrl: metadata.image?.ipfs_cid ? `https://ipfs.near.social/ipfs/${metadata.image.ipfs_cid}` : null,
   };
 
   emitGatewayEvent &&

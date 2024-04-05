@@ -8,9 +8,10 @@ const { loadItem, convertObjectKeysSnakeToPascal, capitalize } = VM.require(
 if (!loadItem) {
   return <p>Loading modules...</p>;
 }
-let { src, tab, schemaFile, namespace } = props;
+const { src, tab, schemaFile, namespace } = props; // url params
 const [accountId, entityType, entityName] = src.split("/") ?? [null, null, null];
 
+const summaryComponent = props.summaryComponent ?? "${REPL_ACCOUNT}/widget/Entities.Template.EntitySummary";
 const schemaLocation = schemaFile ? schemaFile : `${REPL_ACCOUNT}/widget/Entities.Template.GenericSchema`;
 const { genSchema } = VM.require(schemaLocation, { namespace, entityType });
 if (!genSchema) {
@@ -48,7 +49,7 @@ const [entity, setEntity] = useState(null);
 const [error, setError] = useState(null);
 const onLoad = (itemInArray) => {
   if (itemInArray.length === 0 || !itemInArray[0]) {
-    setError(`${entityType} with name ${name} not found`);
+    setError(`${entityType} with name ${entityName} not found`);
     return;
   }
   const fetchedItem = itemInArray[0];
@@ -60,7 +61,7 @@ loadItem(query, "SingleEntity", collection, onLoad);
 if (error) {
   return (
     <div className="alert alert-danger mx-3" role="alert">
-      <div>Could not find: {src}</div>
+      <div>{error}</div>
       <Link to={href({ widgetSrc: `${REPL_ACCOUNT}/widget/Nexus` })}>Back to Nexus</Link>
     </div>
   );
@@ -79,6 +80,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   gap: 32px;
   padding-bottom: 48px;
+  padding-left: 48px;
 `;
 
 const ContentWrapper = styled.div`
@@ -139,11 +141,20 @@ const entityProperties = (obj) => {
     </Properties>
   );
 };
+const listLink = href({
+  widgetSrc: `${REPL_AGIGUILD}/widget/Nexus`,
+});
 
 return (
   <Wrapper>
+    <Link to={listLink}>
+      <Header>
+        <i className="ph ph-arrow-left" />
+        Nexus
+      </Header>
+    </Link>
     <Widget
-      src="${REPL_ACCOUNT}/widget/Entities.Template.EntitySummary"
+      src={summaryComponent}
       props={{
         size: "small",
         showTags: true,

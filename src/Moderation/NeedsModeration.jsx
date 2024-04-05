@@ -240,7 +240,7 @@ const renderItem = (item) => {
       <div className="row">
         <div className="col-1">
           <Widget
-            src="near/widget/DIG.Tooltip"
+            src="${REPL_ACCOUNT}/widget/DIG.Tooltip"
             props={{
               content: <span style={{ whiteSpace: "pre-line" }}>{overviewTooltip}</span>,
               trigger: pathToType(item.moderated_path),
@@ -250,7 +250,7 @@ const renderItem = (item) => {
         <div className="col-3">
           {item.most_frequent_label} by
           <Widget
-            src="near/widget/DIG.Tooltip"
+            src="${REPL_ACCOUNT}/widget/DIG.Tooltip"
             props={{
               content: reporterList,
               trigger: ` ${item.reporter_count} ${item.reporter_count > 0 ? "users" : "user"}`,
@@ -259,7 +259,7 @@ const renderItem = (item) => {
         </div>
         <div className="col-1">
           <Widget
-            src="near/widget/DIG.Tooltip"
+            src="${REPL_ACCOUNT}/widget/DIG.Tooltip"
             props={{
               content: "How long ago this item was first reported",
               trigger: (
@@ -352,7 +352,7 @@ return (
       }
     >
       <Widget
-        src="near/widget/DIG.Accordion"
+        src="${REPL_ACCOUNT}/widget/DIG.Accordion"
         props={{
           type: "multiple",
           items: renderedItems,

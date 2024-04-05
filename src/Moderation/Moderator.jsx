@@ -112,7 +112,7 @@ function needsModeration() {
     <div>
       <h4 style={{ textAlign: "left" }}>Needs Moderation</h4>
       <Widget
-        src="near/widget/DIG.Tabs"
+        src="${REPL_ACCOUNT}/widget/DIG.Tabs"
         props={{
           variant: "line",
           size: "large",
@@ -147,7 +147,7 @@ function previouslyModerated() {
     <div>
       <h4 style={{ textAlign: "left" }}>Previously Moderated</h4>
       <Widget
-        src="near/widget/DIG.Tabs"
+        src="${REPL_ACCOUNT}/widget/DIG.Tabs"
         props={{
           variant: "line",
           size: "large",

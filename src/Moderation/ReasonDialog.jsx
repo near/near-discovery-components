@@ -65,7 +65,7 @@ const buildDialog = (reasons, descriptions) => {
           return (
             <div className="d-flex flex-row gap-2" key={reason}>
               <Widget
-                src="near/widget/DIG.Button"
+                src="${REPL_ACCOUNT}/widget/DIG.Button"
                 props={{
                   variant: "secondary",
                   fill: "ghost",

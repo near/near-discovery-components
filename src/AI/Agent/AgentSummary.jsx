@@ -185,12 +185,12 @@ return (
       <Actions>
         {false && accountId === context.accountId && (
           <Widget
-            src="near/widget/DIG.Tooltip"
+            src="${REPL_ACCOUNT}/widget/DIG.Tooltip"
             props={{
               content: "Edit",
               trigger: (
                 <Widget
-                  src="near/widget/DIG.Button"
+                  src="${REPL_ACCOUNT}/widget/DIG.Button"
                   props={{
                     label: "Delete",
                     disabled: !context.accountId || context.accountId !== accountId,
@@ -241,13 +241,13 @@ return (
           }}
         />{" "}
         <Widget
-          src="near/widget/DIG.Tooltip"
+          src="${REPL_ACCOUNT}/widget/DIG.Tooltip"
           props={{
             content: "Use agent",
             trigger: (
               <Link to={chatLink} style={{ all: "unset" }}>
                 <Widget
-                  src="near/widget/DIG.Button"
+                  src="${REPL_ACCOUNT}/widget/DIG.Button"
                   props={{
                     label: "Use Agent",
                     iconLeft: "ph-bold ph-chat-teardrop-text",

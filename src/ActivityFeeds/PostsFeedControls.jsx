@@ -599,7 +599,7 @@ return (
               {newUnseenPosts.length > 0 && (
                 <NewActivity>
                   <Widget
-                    src="near/widget/DIG.Button"
+                    src="${REPL_ACCOUNT}/widget/DIG.Button"
                     props={{
                       label: `Refresh (${newUnseenPosts.length} New)`,
                       onClick: displayNewPosts,

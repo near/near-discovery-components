@@ -106,7 +106,7 @@ return (
     />
     <ContentWrapper>
       <Widget
-        src="near/widget/DIG.Tabs"
+        src="${REPL_ACCOUNT}/widget/DIG.Tabs"
         props={{
           variant: "line",
           size: "large",

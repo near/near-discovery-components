@@ -243,6 +243,7 @@ if (blog === "not found") {
 }
 
 function parseMarkdown(markdown) {
+  console.log("markdown", markdown);
   const parsedMarkdown = [];
   const lines = markdown.split("\n");
 
@@ -369,6 +370,8 @@ if (blog) {
   };
 
   const destination = props.returnLocation + (props.tab === "blog" ? `&tab=blog` : "") || `/bosblog`;
+
+  console.log("markdownObj", markdownObj);
 
   return (
     <>

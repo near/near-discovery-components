@@ -185,7 +185,7 @@ const buildMenu = (accountId, blockHeight) => {
     menu.unshift({
       name: "Promote",
       iconLeft: "ph-bold ph-arrow-up",
-      disabled: !context.accountId || context.accountId === accountId,
+      disabled: !context.accountId,
       subMenuProps: {
         items: promoteToBlogSubmenu,
       },

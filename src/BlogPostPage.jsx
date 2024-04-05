@@ -146,7 +146,7 @@ const CommentWrapper = styled.div`
 const Container = styled.div`
   display: flex;
   max-width: 1224px;
-  margin: 0 auto;
+  margin: 1em auto;
   gap: ${(p) => p.gap ?? "var(--section-gap)"};
   flex-direction: column;
   align-items: ${(p) => (p.center ? "center" : undefined)};

@@ -497,11 +497,9 @@ return (
                     Drastically reduce your costs
                   </Text>
                   <Text>
-                    Storing rollup calldata on NEAR Protocol is approximately
-                    8000x cheaper than storing the same amount of data on
-                    Ethereum. Harness the power of NEAR's robust blockchain,
-                    optimized for speed, scalability, and cost. Say goodbye to
-                    high DA fees and embrace a new era of cost-effective modular
+                    Storing rollup calldata on NEAR Protocol is approximately 8000x cheaper than storing the same amount
+                    of data on Ethereum. Harness the power of NEAR's robust blockchain, optimized for speed,
+                    scalability, and cost. Say goodbye to high DA fees and embrace a new era of cost-effective modular
                     blockchain solutions.
                   </Text>
                 </Flex>
@@ -511,11 +509,9 @@ return (
                     Easily validate proofs
                   </Text>
                   <Text>
-                    Validate proofs effortlessly with NEAR's trustless off-chain
-                    light client. Seamlessly access and verify the storage of
-                    rollup data on-chain. NEAR's developer-friendly interface
-                    allows for convenient validation of blockchain transactions,
-                    enhancing transparency and trust in the system.
+                    Validate proofs effortlessly with NEAR's trustless off-chain light client. Seamlessly access and
+                    verify the storage of rollup data on-chain. NEAR's developer-friendly interface allows for
+                    convenient validation of blockchain transactions, enhancing transparency and trust in the system.
                   </Text>
                 </Flex>
 
@@ -524,11 +520,9 @@ return (
                     Simple to interact with
                   </Text>
                   <Text>
-                    NEAR Protocol offers an RPC interface for the effortless
-                    retrieval of on-chain data from anywhere. Accessing
-                    transaction data has never been easier. Experience the ease
-                    of NEAR's Data Availability solution and unlock new
-                    potential for your Ethereum rollup.
+                    NEAR Protocol offers an RPC interface for the effortless retrieval of on-chain data from anywhere.
+                    Accessing transaction data has never been easier. Experience the ease of NEAR's Data Availability
+                    solution and unlock new potential for your Ethereum rollup.
                   </Text>
                 </Flex>
 
@@ -564,12 +558,10 @@ return (
             </Text>
 
             <Text size="text-m" mobileSize="text-m" style={{ maxWidth: "600px" }}>
-              Efficiently store state data and commitments on a NEAR contract
-              for your L2 rollup. Whether you're processing transactions or
-              managing data on the blockchain layer, NEAR's Ethereum-compatible
-              infrastructure offers unparalleled efficiency through our robust
-              network of nodes. Enhance the functionality of your rollup and
-              experience the future of modular blockchain technology with NEAR.
+              Efficiently store state data and commitments on a NEAR contract for your L2 rollup. Whether you're
+              processing transactions or managing data on the blockchain layer, NEAR's Ethereum-compatible
+              infrastructure offers unparalleled efficiency through our robust network of nodes. Enhance the
+              functionality of your rollup and experience the future of modular blockchain technology with NEAR.
             </Text>
           </Flex>
 

@@ -146,6 +146,10 @@ const ButtonLinkWrapper = styled("Link")`
     padding: 0;
   }
 
+  .trending-round-icon {
+    filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.06)) drop-shadow(0px 0px 0px rgba(0, 0, 0, 0.06));
+  }
+
   &:hover {
     cursor: pointer;
     text-decoration: ${(p) => (!p.$noHover ? "none" : "underline")};
@@ -160,7 +164,7 @@ const ButtonLinkWrapper = styled("Link")`
     }
 
     .trending-round-icon {
-      filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.06)) drop-shadow(0px 0px 0px rgba(0, 0, 0, 0.06));
+      filter: drop-shadow(0px 4px 8px var(--violet6)) drop-shadow(0px 0px 0px var(--violet6));
     }
   }
 
@@ -175,7 +179,19 @@ const ButtonLinkWrapper = styled("Link")`
     }
 
     .trending-round-icon {
-      filter: drop-shadow(0px 4px 8px var(--violet6)) drop-shadow(0px 0px 0px var(--violet6));
+      animation: pulse 1s infinite;
+    }
+  }
+
+  @keyframes pulse {
+    0% {
+      filter: drop-shadow(0px 0px 0px var(--violet6));
+    }
+    50% {
+      filter: drop-shadow(0px 0px 8px var(--violet6));
+    }
+    100% {
+      filter: drop-shadow(0px 0px 0px var(--violet6));
     }
   }
 `;

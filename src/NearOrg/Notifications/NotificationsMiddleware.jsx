@@ -8,7 +8,7 @@ const [shouldFallback, setShouldFallback] = useState(false);
 
 const lastNotificationQuery = `
   query IndexerQuery {
-    data: dataplatform_near_notifications_notifications( limit: 1, order_by: { block_height: desc }) {
+    data: dataplatform_near_notifications_notifications( limit: 1, order_by: { blockHeight: desc }) {
       blockHeight
     }
   }
@@ -121,7 +121,7 @@ useEffect(() => {
     setNotifications([]);
     setNotificationsCount(0);
   };
-}, []);
+}, [lastNotificationOnChain]);
 
 return (
   <Widget

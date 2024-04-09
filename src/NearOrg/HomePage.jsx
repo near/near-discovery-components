@@ -627,8 +627,9 @@ return (
                 Application hosting with zero setup, fewer costs, & less headaches.
               </Text>
               <Text>
-                No more jumping through hoops to reach your audience. B.O.S enables you to host and serve your
-                applications entirely on the blockchain, eliminating reliance on traditional web hosting services.
+                No more jumping through hoops to reach your audience. Near's Blockchain Operating System (B.O.S) enables
+                you to host and serve your applications entirely on the blockchain, eliminating reliance on traditional
+                web hosting services.
               </Text>
               <div>
                 <Widget
@@ -888,7 +889,7 @@ return (
                   <Widget
                     src="${REPL_ACCOUNT}/widget/DIG.Button"
                     props={{
-                      href: "/signup",
+                      href: "https://docs.near.org/tools/fastauth-sdk",
                       label: "Try FastAuth",
                       variant: "secondary",
                       fill: "outline",

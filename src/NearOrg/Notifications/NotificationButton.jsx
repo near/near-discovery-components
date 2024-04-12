@@ -59,18 +59,10 @@ const Button = ({ count }) => {
 };
 
 useEffect(() => {
-  const checkLastBlockHeight = setInterval(() => {
+  const checkNotificationsCountPeriod = setInterval(() => {
     const lastBlockHeight = Storage.get("lastBlockHeight", notificationFeedSrc);
     setLastBlockHeight(lastBlockHeight);
-  }, CHECK_PERIOD);
-  () => {
-    clearInterval(checkLastBlockHeight);
-    setLastBlockHeight(null);
-  };
-}, [notificationFeedSrc]);
 
-useEffect(() => {
-  const checkNotificationsCountPeriod = setInterval(() => {
     const filterUsersRaw = Social.get(
       `${moderatorAccount}/moderate/users`, //TODO
       "optimistic",
@@ -80,14 +72,15 @@ useEffect(() => {
       Social.index("notify", accountId, {
         order: "asc",
         from: (lastBlockHeight ?? 0) + 1,
+        subscribe: true,
       }) || [];
-    const filterNotifications =
-      notifications.lenght > 0 ? notifications.filter((i) => !filterUsers.includes(i.accountId)) : [];
+    const filterNotifications = notifications?.filter((i) => !filterUsers.includes(i.accountId));
     setNotificationsCount(filterNotifications.length || 0);
   }, CHECK_PERIOD);
   () => {
     clearInterval(checkNotificationsCountPeriod);
     setFilterBlockedUsers(null);
+    setLastBlockHeight(null);
   };
 }, [lastBlockHeight, moderatorAccount, accountId]);
 

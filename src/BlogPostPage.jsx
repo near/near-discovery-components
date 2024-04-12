@@ -326,7 +326,7 @@ const getPostTime = (blockHeight) => {
 };
 
 if (blog) {
-  const postUrl = `https://near.org/near/widget/BlogPostPage?accountId=${props.accountId}&blockHeight=${props.blockHeight}`;
+  const postUrl = `https://${REPL_NEAR_URL}/s/b?a=${props.accountId}&b=${props.blockHeight}`;
   const markdownObj = parseMarkdown(blog.blogContent);
 
   const renderComment = (a) => {

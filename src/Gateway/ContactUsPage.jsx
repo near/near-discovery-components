@@ -339,9 +339,9 @@ return (
           <Grid $columns="1fr 1fr 1fr" $gap="1.5rem" $breakpoint="600px" $breakpointColumns="1fr 1fr">
             {channels.map((channel) => (
               <IconTextLink key={channel.url} href={channel.url} target="_blank" $iconColor="green11">
-                <i class={`ph-bold ${channel.icon}`} />
+                <i className={`ph-bold ${channel.icon}`} />
                 <span>{channel.label}</span>
-                <i class="ph ph-caret-right" />
+                <i className="ph ph-caret-right" />
               </IconTextLink>
             ))}
           </Grid>
@@ -356,7 +356,7 @@ return (
             <Text>Find articles about popular services and topics.</Text>
 
             <IconTextLink href={urls.helpCenter} target="_blank" $iconColor="violet11">
-              <i class="ph-bold ph-book-open-text" />
+              <i className="ph-bold ph-book-open-text" />
               <span>Launch help center</span>
             </IconTextLink>
           </Card>
@@ -369,7 +369,7 @@ return (
             <Text>Get in touch with our Customer Care Team.</Text>
 
             <IconTextLink href={urls.supportRequest} target="_blank" $iconColor="amber11">
-              <i class="ph-bold ph-chat-circle-dots" />
+              <i className="ph-bold ph-chat-circle-dots" />
               <span>Launch support form</span>
             </IconTextLink>
           </Card>

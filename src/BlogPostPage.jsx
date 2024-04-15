@@ -326,7 +326,7 @@ const getPostTime = (blockHeight) => {
 };
 
 if (blog) {
-  const postUrl = `https://${REPL_NEAR_URL}/s/b?a=${props.accountId}&b=${props.blockHeight}`;
+  const postUrl = `https://${REPL_NEAR_URL}/s/bp?a=${props.accountId}&b=${props.blockHeight}`;
   const markdownObj = parseMarkdown(blog.blogContent);
 
   const renderComment = (a) => {

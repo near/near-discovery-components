@@ -205,6 +205,8 @@ const faqs = [
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
   gap: 80px;
 `;
 

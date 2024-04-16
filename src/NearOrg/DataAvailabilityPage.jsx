@@ -16,6 +16,11 @@ const ipfsImages = {
     optimism: "bafkreidwitx5hu6hivyn3exi34moyea7livf6zfqk2dcny3z62ive7fpou",
     zeeve: "bafkreigwtxjuraug4l2rltpoy4wau6gaom6e52fwgyqfpdsh2t6voe6ypm",
     web3Game: "bafkreidbmy27gngqsz5opzy5dbhd7jdrnzt5r2e5grcpiad77zgjc4e6ki",
+    optimism: "bafkreih7y4fx44ky7u34l77r3gx3xfv2gai52bpgmuldgfcusozts35mn4",
+    gatewayFm: "bafkreiga33qbg5c4ffckdk7d4fnwc54ydafn4o3b3oucnabcd2mcq4s5ve",
+    ankr: "bafkreiaxqdtshibxuivqus3btgpx66z2mamse6idhoklp2ghwru5jxf4l4",
+    fraxFinance: "bafkreihsgo2ikwgfcjt4dbj3fv5srychvyw23disz4rimp3zwgxnfchs3q",
+    particleNetwork: "bafkreic7mcnt67qn4444u5zwbiuujl56vq2yomznqj2jjwcko7p3fhwiam",
   },
 };
 
@@ -230,6 +235,12 @@ const LogoLinks = styled.div`
   }
 `;
 
+const LinkLogo = styled.a`
+  img {
+    filter: ${(p) => p.$grayscale ?? "none"};
+  }
+`;
+
 const web3Teams1 = [
   {
     url: "https://docs.arbitrum.io/inside-anytrust#data-availability-servers",
@@ -277,10 +288,22 @@ const web3Teams2 = [
     height: "28px",
   },
   {
-    url: "https://www.zeeve.io/blog/zeeve-raas-partners-with-near-da-to-power-ethereum-rollup-builders-with-efficient-data-availability/",
+    url: "https://www.zeeve.io/blog/zeeve-raas-partners-with-near-da-to-power-ethereum-rollup-builders-with-efficient-data-availability",
     name: "Zeeve",
     ipfsImage: ipfsImages.logos.zeeve,
     height: "29px",
+  },
+  {
+    url: "https://gateway.fm",
+    name: "Gateway",
+    ipfsImage: ipfsImages.logos.gatewayFm,
+    height: "29px",
+  },
+  {
+    url: "https://www.ankr.com",
+    name: "Ankr",
+    ipfsImage: ipfsImages.logos.ankr,
+    height: "28px",
   },
 ];
 
@@ -290,6 +313,47 @@ const web3Teams3 = [
     name: "Web3Game",
     ipfsImage: ipfsImages.logos.web3Game,
     height: "28px",
+  },
+  {
+    url: "https://frax.finance",
+    name: "Frax Finance",
+    ipfsImage: ipfsImages.logos.fraxFinance,
+    height: "28px",
+  },
+  {
+    url: "https://particle.network",
+    name: "Particle Network",
+    ipfsImage: ipfsImages.logos.particleNetwork,
+    grayscaleImage: "grayscale(1) brightness(50%)",
+    height: "29px",
+  },
+];
+
+const web3Teams4 = [
+  {
+    url: "https://docs.optimism.io/",
+    name: "Optimism",
+    ipfsImage: ipfsImages.logos.optimism,
+    height: "28px",
+  },
+];
+
+const web3TeamsSections = [
+  {
+    title: "Frameworks",
+    teams: web3Teams1,
+  },
+  {
+    title: "Rollups as a Service",
+    teams: web3Teams2,
+  },
+  {
+    title: "Blockchains",
+    teams: web3Teams3,
+  },
+  {
+    title: "Rollup Frameworks",
+    teams: web3Teams4,
   },
 ];
 
@@ -356,113 +420,47 @@ return (
         <Text size="text-3xl" fontWeight="500" style={{ maxWidth: "600px" }}>
           Trusted by forward thinking teams
         </Text>
-        <LogoText
-          size="text-xs"
-          fontWeight="700"
-          color="sand11"
-          style={{
-            textTransform: "uppercase",
-            letterSpacing: "2px",
-            textAlign: "center",
-            marginTop: "60px",
-          }}
-        >
-          Frameworks
-        </LogoText>
 
-        <LogoLinksWrapper>
-          <LogoLinks>
-            {web3Teams1.map((team) => (
-              <Link
-                href={team.url}
-                target="_blank"
-                title={team.name}
-                style={{ height: team.height, display: "inline-block" }}
-                key={team.name}
-              >
-                <Widget
-                  src="${REPL_MOB}/widget/Image"
-                  props={{
-                    image: returnIpfsImage(team.ipfsImage),
-                    alt: team.name,
-                  }}
-                />
-              </Link>
-            ))}
-          </LogoLinks>
-        </LogoLinksWrapper>
-
-        <LogoText
-          size="text-xs"
-          fontWeight="700"
-          color="sand11"
-          style={{
-            textTransform: "uppercase",
-            letterSpacing: "2px",
-            textAlign: "center",
-            marginTop: "60px",
-          }}
-        >
-          Rollups as a Service
-        </LogoText>
-
-        <LogoLinksWrapper>
-          <LogoLinks>
-            {web3Teams2.map((team) => (
-              <Link
-                href={team.url}
-                target="_blank"
-                title={team.name}
-                style={{ height: team.height, display: "inline-block" }}
-                key={team.name}
-              >
-                <Widget
-                  src="${REPL_MOB}/widget/Image"
-                  props={{
-                    image: returnIpfsImage(team.ipfsImage),
-                    alt: team.name,
-                  }}
-                />
-              </Link>
-            ))}
-          </LogoLinks>
-        </LogoLinksWrapper>
-
-        <LogoText
-          size="text-xs"
-          fontWeight="700"
-          color="sand11"
-          style={{
-            textTransform: "uppercase",
-            letterSpacing: "2px",
-            textAlign: "center",
-            marginTop: "60px",
-          }}
-        >
-          Rollups
-        </LogoText>
-
-        <LogoLinksWrapper>
-          <LogoLinks>
-            {web3Teams3.map((team) => (
-              <Link
-                href={team.url}
-                target="_blank"
-                title={team.name}
-                style={{ height: team.height, display: "inline-block" }}
-                key={team.name}
-              >
-                <Widget
-                  src="${REPL_MOB}/widget/Image"
-                  props={{
-                    image: returnIpfsImage(team.ipfsImage),
-                    alt: team.name,
-                  }}
-                />
-              </Link>
-            ))}
-          </LogoLinks>
-        </LogoLinksWrapper>
+        {/* <TeamsList> */}
+        {web3TeamsSections.map((section) => (
+          <Flex gap="16px" direction="column" key={section.title.replace(/ /g, "_").toLowerCase()}>
+            <LogoText
+              size="text-xs"
+              fontWeight="700"
+              color="sand11"
+              style={{
+                textTransform: "uppercase",
+                letterSpacing: "2px",
+                textAlign: "center",
+                marginTop: "60px",
+              }}
+            >
+              {section.title}
+            </LogoText>
+            <LogoLinksWrapper>
+              <LogoLinks>
+                {section.teams.map((team) => (
+                  <LinkLogo
+                    href={team.url}
+                    target="_blank"
+                    title={team.name}
+                    style={{ height: team.height, display: "inline-block" }}
+                    key={team.name}
+                    $grayscale={team.grayscaleImage ?? false}
+                  >
+                    <Widget
+                      src="${REPL_MOB}/widget/Image"
+                      props={{
+                        image: returnIpfsImage(team.ipfsImage),
+                        alt: team.name,
+                      }}
+                    />
+                  </LinkLogo>
+                ))}
+              </LogoLinks>
+            </LogoLinksWrapper>
+          </Flex>
+        ))}
       </Flex>
     </Section>
 
@@ -471,8 +469,8 @@ return (
         <Flex direction="column" gap="24px">
           <H2 style={{ maxWidth: "1016px" }}>A data availability layer compatible with L2 frameworks</H2>
           <Text size="text-2xl" mobileSize="text-l" style={{ maxWidth: "808px" }}>
-            Plug NEAR’s DA layer into your L2 framework and start publishing transaction data on a blockchain with a
-            proven trajectory of 100% uptime over its lifetime.
+            Plug NEAR&apos;s DA layer into your L2 framework and start publishing transaction data on a blockchain with
+            a proven trajectory of 100% uptime over its lifetime.
           </Text>
         </Flex>
 

@@ -63,6 +63,8 @@ return (
       onCancel: onCancel,
       cancelLabel: cancelLabel,
       externalState: initialValues(schema, data),
+      namespace,
+      entityType,
     }}
   />
 );

@@ -4,7 +4,7 @@ if (!href) {
   return <></>;
 }
 
-const { entity, showActions } = props;
+const { entity, showActions, returnTo } = props;
 const { namespace, entityType, accountId, name, displayName, logoUrl, tags } = entity;
 
 const [entityDeleted, setEntityDeleted] = useState(false);
@@ -28,7 +28,7 @@ if (entityDeleted) {
   return (
     <div className="alert alert-success mx-3" role="alert">
       <div>Entity deleted</div>
-      <Link to={href({ widgetSrc: `${REPL_ACCOUNT}/widget/Nexus` })}>Back to Nexus</Link>
+      <Link to={href({ widgetSrc: returnTo })}>Back to List</Link>
     </div>
   );
 }

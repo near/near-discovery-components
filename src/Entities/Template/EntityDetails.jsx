@@ -8,7 +8,7 @@ const { loadItem, convertObjectKeysSnakeToPascal, capitalize } = VM.require(
 if (!loadItem) {
   return <p>Loading modules...</p>;
 }
-const { src, tab, schemaFile, namespace } = props; // url params
+const { src, tab, schemaFile, namespace, returnTo } = props; // url params
 const [accountId, entityType, entityName] = src.split("/") ?? [null, null, null];
 
 const summaryComponent = props.summaryComponent ?? "${REPL_ACCOUNT}/widget/Entities.Template.EntitySummary";
@@ -63,7 +63,7 @@ if (error) {
   return (
     <div className="alert alert-danger mx-3" role="alert">
       <div>{error}</div>
-      <Link to={href({ widgetSrc: `${REPL_ACCOUNT}/widget/Nexus` })}>Back to Nexus</Link>
+      <Link to={href({ widgetSrc: returnTo })}>Back to List</Link>
     </div>
   );
 }
@@ -143,17 +143,19 @@ const entityProperties = (obj) => {
   );
 };
 const listLink = href({
-  widgetSrc: `${REPL_AGIGUILD}/widget/Nexus`,
+  widgetSrc: returnTo,
 });
 
 return (
   <Wrapper>
-    <Link to={listLink}>
-      <Header>
-        <i className="ph ph-arrow-left" />
-        Nexus
-      </Header>
-    </Link>
+    {returnTo && (
+      <Link to={listLink}>
+        <Header>
+          <i className="ph ph-arrow-left" />
+          List
+        </Header>
+      </Link>
+    )}
     <Widget
       src={summaryComponent}
       props={{
@@ -161,6 +163,7 @@ return (
         showTags: true,
         entity,
         showActions: true,
+        returnTo,
       }}
     />
     <ContentWrapper>

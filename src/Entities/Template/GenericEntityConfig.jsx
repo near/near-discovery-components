@@ -3,7 +3,7 @@ if (!href) {
   return <></>;
 }
 
-const { namespace, entityType, title, schemaFile } = props;
+const { namespace, entityType, title, schemaFile, homeLink } = props;
 const schemaLocation = schemaFile ? schemaFile : `${REPL_ACCOUNT}/widget/Entities.Template.GenericSchema`;
 const { genSchema } = VM.require(schemaLocation);
 if (!genSchema) {
@@ -141,7 +141,7 @@ const defaultRenderTableItem = (rawItem, editFunction) => {
   });
   const detailsLink = href({
     widgetSrc: `${REPL_ACCOUNT}/widget/Entities.Template.EntityDetails`,
-    params: { src: `${accountId}/${entityType}/${name}`, schemaFile, namespace, entityType },
+    params: { src: `${accountId}/${entityType}/${name}`, schemaFile, namespace, entityType, returnTo: homeLink },
   });
 
   const actionUrl = `https://${REPL_NEAR_URL}/${itemComponent}?src=${accountId}/${entityType}/${item.name}`;

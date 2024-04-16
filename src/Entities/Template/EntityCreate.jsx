@@ -46,7 +46,7 @@ const initialValues = (schema, data) => {
 
 return (
   <Widget
-    src="${REPL_ACCOUNT}/widget/Entities.Template.FormBuilder"
+    src="${REPL_ACCOUNT}/widget/Entities.Template.Forms.FormBuilder"
     props={{
       heading: `${actionType} ${capitalizedEntityType}`,
       fullWidth: true,

@@ -51,11 +51,11 @@ const channels = [
     label: "Reddit",
     url: urls.reddit,
   },
-  // {
-  //   icon: "ph-wifi-high",
-  //   label: "Warpcast",
-  //   url: "",
-  // },
+  {
+    icon: "ph-wifi-high",
+    label: "Warpcast",
+    url: "https://warpcast.com/~/channel/near",
+  },
   {
     icon: "ph-youtube-logo",
     label: "YouTube",

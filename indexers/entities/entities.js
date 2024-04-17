@@ -1,3 +1,4 @@
+import { Block } from "@near-lake/primitives";
 /**
  * Note: We only support javascript at the moment. We will support Rust, Typescript in a further release.
  */
@@ -11,7 +12,7 @@
  *
  * @param {block} Block - A Near Protocol Block
  */
-export default async function getBlock(block) {
+async function getBlock(block) {
     function base64decode(encodedValue) {
         try {
             const buff = Buffer.from(encodedValue, "base64");
@@ -22,6 +23,16 @@ export default async function getBlock(block) {
                 'Error parsing JSON - skipping data for "functionCallOperation.args"',
                 error
             );
+        }
+    }
+    function arrayInPostgresForm(a) {
+        if (!a) return a;
+        try {
+            const stringArray = JSON.stringify(a);
+            return stringArray.replaceAll("[", "{").replaceAll("]", "}");
+        } catch (error) {
+            console.error("Error parsing JSON - skipping array field", error);
+            return "";
         }
     }
 
@@ -59,7 +70,9 @@ export default async function getBlock(block) {
                     !Object.keys(functionCall.args.data) ||
                     !Object.keys(functionCall.args.data)[0]
                 ) {
-                    console.error("Set operation did not have arg data in expected format");
+                    console.error(
+                        "Set operation did not have arg data in expected format"
+                    );
                     return;
                 }
                 const accountId = Object.keys(functionCall.args.data)[0];
@@ -79,7 +92,9 @@ export default async function getBlock(block) {
             .map((functionCall) => {
                 const accountId = Object.keys(functionCall.args.data)[0];
                 if (!functionCall.args.data[accountId]) {
-                    console.error("Set operation did not have arg data for accountId, in map op");
+                    console.error(
+                        "Set operation did not have arg data for accountId, in map op"
+                    );
                     return;
                 }
                 return {
@@ -97,41 +112,43 @@ export default async function getBlock(block) {
             }
             const dataArray = Array.isArray(data) ? data : [data];
             dataArray.map(async (data) => {
-                if(!data) {
-                    console.error('missing entity data');
+                if (!data) {
+                    console.error("missing entity data");
                     return;
                 }
                 const namespaces = Object.keys(data);
                 namespaces.map(async (namespace) => {
                     if (!namespace) {
-                        console.error('missing entity namespace');
+                        console.error("missing entity namespace");
                         return;
                     }
                     const namespaceData = data[namespace];
                     if (!namespaceData) {
-                        console.error('data not found for namespace ' + namespace);
+                        console.error("data not found for namespace " + namespace);
                         return;
                     }
                     const entityTypes = Object.keys(namespaceData);
                     entityTypes.map(async (entityType) => {
                         if (!entityType) {
-                            console.error('missing entity entityType');
+                            console.error("missing entity entityType");
                             return;
                         }
                         const entityTypeData = namespaceData[entityType];
                         if (!entityTypeData) {
-                            console.error('namespaceData not found for entityType ' + entityType);
+                            console.error(
+                                "namespaceData not found for entityType " + entityType
+                            );
                             return;
                         }
                         const entities = Object.keys(entityTypeData);
                         entities.map(async (name) => {
                             if (!name) {
-                                console.error('missing entity name');
+                                console.error("missing entity name");
                                 return;
                             }
                             const entityProps = entityTypeData[name];
                             if (!entityProps) {
-                                console.error('entityProps not found for entity named ' + name);
+                                console.error("entityProps not found for entity named " + name);
                                 return;
                             }
 
@@ -155,7 +172,13 @@ export default async function getBlock(block) {
                                         return;
                                 }
                             }
-                            const { displayName, logoUrl, ...entityAttributes } = entityProps;
+                            const {
+                                displayName,
+                                logoUrl,
+                                description,
+                                tags,
+                                ...entityAttributes
+                            } = entityProps;
                             const entity = {
                                 namespace,
                                 entity_type: entityType,
@@ -163,12 +186,20 @@ export default async function getBlock(block) {
                                 name: name,
                                 display_name: displayName,
                                 logo_url: logoUrl,
+                                description,
+                                tags: arrayInPostgresForm(tags),
                                 attributes: entityAttributes,
                             };
                             await context.db.Entities.upsert(
                                 entity,
                                 ["entity_type", "account_id", "name"],
-                                ["display_name", "logo_url", "attributes"]
+                                [
+                                    "display_name",
+                                    "logo_url",
+                                    "description",
+                                    "tags",
+                                    "attributes",
+                                ]
                             );
 
                             console.log(

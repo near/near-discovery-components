@@ -255,7 +255,7 @@ const web3Teams1 = [
     height: "29px",
   },
   {
-    url: "https://docs.starknet.io/documentation/architecture_and_concepts/Network_Architecture/on-chain-data/",
+    url: "https://docs.starknet.io/documentation/architecture_and_concepts/Network_Architecture/on-chain-data",
     name: "Starknet",
     ipfsImage: ipfsImages.logos.starknet,
     height: "29px",
@@ -265,6 +265,12 @@ const web3Teams1 = [
     name: "Movement Labs",
     ipfsImage: ipfsImages.logos.movementLabs,
     height: "24px",
+  },
+  {
+    url: "https://docs.optimism.io",
+    name: "Optimism",
+    ipfsImage: ipfsImages.logos.optimism,
+    height: "19px",
   },
 ];
 
@@ -329,15 +335,6 @@ const web3Teams3 = [
   },
 ];
 
-const web3Teams4 = [
-  {
-    url: "https://docs.optimism.io/",
-    name: "Optimism",
-    ipfsImage: ipfsImages.logos.optimism,
-    height: "28px",
-  },
-];
-
 const web3TeamsSections = [
   {
     title: "Frameworks",
@@ -350,10 +347,6 @@ const web3TeamsSections = [
   {
     title: "Blockchains",
     teams: web3Teams3,
-  },
-  {
-    title: "Rollup Frameworks",
-    teams: web3Teams4,
   },
 ];
 

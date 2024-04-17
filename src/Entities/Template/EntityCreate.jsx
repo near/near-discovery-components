@@ -46,7 +46,7 @@ const initialValues = (schema, data) => {
 
 return (
   <Widget
-    src="${REPL_DEVHUB}/widget/devhub.components.organism.Configurator"
+    src="${REPL_ACCOUNT}/widget/Entities.Template.Forms.FormBuilder"
     props={{
       heading: `${actionType} ${capitalizedEntityType}`,
       fullWidth: true,
@@ -63,6 +63,8 @@ return (
       onCancel: onCancel,
       cancelLabel: cancelLabel,
       externalState: initialValues(schema, data),
+      namespace,
+      entityType,
     }}
   />
 );

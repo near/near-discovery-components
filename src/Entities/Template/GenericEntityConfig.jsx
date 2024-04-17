@@ -38,6 +38,7 @@ query ListQuery($offset: Int, $limit: Int) {
       logo_url
       attributes
       stars
+      tags
       created_at
       updated_at
   }
@@ -123,9 +124,13 @@ const Button = styled.button`
     background: ${(p) => (p.primary ? "rgb(112 242 164)" : "#ECEDEE")};
   }
 `;
+const TagsWrapper = styled.div`
+  padding: 4px;
+`;
+
 const defaultRenderTableItem = (rawItem, editFunction) => {
   const item = convertSnakeToPascal(rawItem);
-  const { accountId, name, displayName, logoUrl, attributes } = item;
+  const { accountId, name, displayName, logoUrl, tags, attributes } = item;
   const itemComponent = item.component ? item.component : `${REPL_ACCOUNT}/widget/Entities.Template.EntityDetails`;
   const imageUrl = logoUrl
     ? logoUrl
@@ -151,6 +156,16 @@ const defaultRenderTableItem = (rawItem, editFunction) => {
       </div>
       <div className="col-2">
         <Link to={detailsLink}>{displayName}</Link>
+        {tags && tags.length > 0 && (
+          <TagsWrapper>
+            <Widget
+              src="${REPL_ACCOUNT}/widget/Tags"
+              props={{
+                tags,
+              }}
+            />
+          </TagsWrapper>
+        )}
       </div>
       {attributeFields.map((key) => {
         const value = attributes[key];

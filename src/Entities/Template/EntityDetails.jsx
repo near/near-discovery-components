@@ -39,6 +39,7 @@ query SingleEntity {
         logo_url
         attributes
         stars
+        tags
         created_at
         updated_at
         }

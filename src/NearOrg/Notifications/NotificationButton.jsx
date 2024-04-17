@@ -1,3 +1,8 @@
+const { fetchGraphQL } = VM.require("${REPL_ACCOUNT}/widget/Entities.QueryApi.Client");
+
+if (!fetchGraphQL) {
+  return <></>;
+}
 const accountId = context.accountId;
 const notificationFeedSrc = "${REPL_ACCOUNT}/widget/NearOrg.Notifications.NotificationsList";
 
@@ -58,36 +63,49 @@ const Button = ({ count }) => {
   );
 };
 
-useEffect(() => {
-  const checkLastBlockHeight = setInterval(() => {
-    const lastBlockHeight = Storage.get("lastBlockHeight", notificationFeedSrc);
-    setLastBlockHeight(lastBlockHeight);
-  }, CHECK_PERIOD);
-  () => {
-    clearInterval(checkLastBlockHeight);
-    setLastBlockHeight(null);
-  };
-}, [notificationFeedSrc]);
+const getNotificationsCountQuery = (blockHeight) => `
+  query NotificationsLeftCountQuery {
+    count: dataplatform_near_notifications_notifications_aggregate(where: {receiver: {_eq: "${accountId}"}, blockHeight: {_gt: ${blockHeight}}}, distinct_on: [blockHeight, initiatedBy]) {
+      aggregate {
+        count
+      }
+    }
+  }
+`;
 
 useEffect(() => {
   const checkNotificationsCountPeriod = setInterval(() => {
-    const filterUsersRaw = Social.get(
-      `${moderatorAccount}/moderate/users`, //TODO
-      "optimistic",
-    );
-    const filterUsers = filterUsersRaw ? JSON.parse(filterUsersRaw) : [];
-    const notifications =
-      Social.index("notify", accountId, {
-        order: "asc",
-        from: (lastBlockHeight ?? 0) + 1,
-      }) || [];
-    const filterNotifications =
-      notifications.lenght > 0 ? notifications.filter((i) => !filterUsers.includes(i.accountId)) : [];
-    setNotificationsCount(filterNotifications.length || 0);
+    const shouldFallback = Storage.get("notifications:shouldFallback", notificationFeedSrc);
+    const lastBlockHeight = Storage.get("lastBlockHeight", notificationFeedSrc);
+    setLastBlockHeight(lastBlockHeight);
+
+    if (shouldFallback) {
+      const filterUsersRaw = Social.get(
+        `${moderatorAccount}/moderate/users`, //TODO
+        "optimistic",
+      );
+      const filterUsers = filterUsersRaw ? JSON.parse(filterUsersRaw) : [];
+      const notifications =
+        Social.index("notify", accountId, {
+          order: "asc",
+          from: (lastBlockHeight ?? 0) + 1,
+          subscribe: true,
+        }) || [];
+      const filterNotifications = notifications?.filter((i) => !filterUsers.includes(i.accountId));
+      setNotificationsCount(filterNotifications.length || 0);
+    }
+
+    fetchGraphQL(getNotificationsCountQuery(lastBlockHeight), "NotificationsLeftCountQuery", {}).then((result) => {
+      if (result.status === 200 && result.body.data) {
+        const { count: notificationsTotal } = result.body.data.count.aggregate;
+        setNotificationsCount(notificationsTotal);
+      }
+    });
   }, CHECK_PERIOD);
   () => {
     clearInterval(checkNotificationsCountPeriod);
     setFilterBlockedUsers(null);
+    setLastBlockHeight(null);
   };
 }, [lastBlockHeight, moderatorAccount, accountId]);
 

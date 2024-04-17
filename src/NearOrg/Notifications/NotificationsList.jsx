@@ -59,9 +59,11 @@ const fetchData = (offset, limit) => {
 
 useEffect(() => {
   if (shouldFallback) {
+    Storage.set("notifications:shouldFallback", true);
     return;
   }
   fetchData(notifications.length, showLimit ?? 10);
+  Storage.set("notifications:shouldFallback", false);
   () => {
     setNotifications([]);
   };

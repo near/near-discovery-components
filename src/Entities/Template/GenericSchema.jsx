@@ -52,6 +52,17 @@ const genSchema = (namespace, entityType, entityTitle) => {
       label: "Logo URL",
       order: 5,
     },
+    tags: {
+      type: "tags",
+      inputProps: {
+        min: 1,
+        max: 255,
+        placeholder: `Tags: training, foundation, supervised, etc.`,
+        required: false,
+      },
+      label: "Tags",
+      order: 6,
+    },
   };
 };
 

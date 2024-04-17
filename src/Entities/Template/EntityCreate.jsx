@@ -58,7 +58,7 @@ const initialValues = (schema, data) => {
 
 return (
   <Widget
-    src="${REPL_ACCOUNT}/widget/Entities.Template.FormBuilder"
+    src="${REPL_ACCOUNT}/widget/Entities.Template.Forms.FormBuilder"
     props={{
       heading: `${actionType} ${capitalizedEntityType}`,
       fullWidth: true,
@@ -74,7 +74,9 @@ return (
       submitLabel: data ? "Save" : "Launch",
       onCancel: onCancel,
       cancelLabel: cancelLabel,
-      externalState: initialValues(schema, flattenedData),
+      externalState: initialValues(schema, data),
+      namespace,
+      entityType,
     }}
   />
 );

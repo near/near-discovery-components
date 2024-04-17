@@ -5,6 +5,11 @@ if (!Struct) {
   return <p>Loading modules...</p>;
 }
 
+const { namespace, entityType } = props;
+const passthroughFieldUpdate = ({ input, lastKnownValue, params }) => {
+  return input;
+};
+
 const useForm = ({ initialValues, onUpdate, stateKey }) => {
   const initialFormState = {
     hasUnsubmittedChanges: false,
@@ -72,29 +77,95 @@ const ValueView = styled.div`
 
 const fieldParamsByType = {
   array: {
-    name: "components.molecule.Input",
+    name: "devhub.near/widget/devhub.components.molecule.Input",
     inputProps: { type: "text" },
   },
 
   boolean: {
-    name: "components.atom.Toggle",
+    name: "devhub.near/widget/devhub.components.atom.Toggle",
   },
 
   string: {
-    name: "components.molecule.Input",
+    name: "devhub.near/widget/devhub.components.molecule.Input",
+    inputProps: { type: "text" },
+  },
+  tags: {
+    name: "mob.near/widget/TagsEditor",
     inputProps: { type: "text" },
   },
 };
 
+const renderInput = (
+  key,
+  form,
+  { label, fieldProps, fieldKey, noop, style, order, format, inputProps },
+  fieldType,
+  fieldValue,
+  isEditable,
+) => {
+  const isDisabled = noop ?? inputProps.disabled ?? false;
+  if (fieldType === "tags") {
+    return (
+      <div
+        className="d-flex flex-column align-items-start justify-content-evenly"
+        style={{ order: order, width: "100%" }}
+      >
+        <span className="d-inline-flex gap-1 text-wrap">
+          <span>{label}</span>
+          {inputProps.required ? <span className="text-danger">*</span> : null}
+        </span>
+        <Widget
+          src="${REPL_ACCOUNT}/widget/Entities.Template.Forms.TagsEditor"
+          props={{
+            value: fieldValue,
+            placeholder: "training, foundation, supervised",
+            setValue: form.update({ path: [key], via: passthroughFieldUpdate }),
+            namespace,
+            entityType,
+          }}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <Widget
+      src={`${fieldParamsByType[fieldType].name}`}
+      props={{
+        ...fieldProps,
+        className: ["w-100", fieldProps.className ?? "", isEditable && !noop ? "" : "d-none"].join(" "),
+
+        disabled: isDisabled,
+        format,
+        key: `${fieldKey}--editable`,
+        label,
+        onChange: form.update({ path: [key] }),
+        style: { ...style, order },
+
+        value: fieldType === "array" && format === "comma-separated" ? fieldValue.join(", ") : fieldValue,
+
+        inputProps: {
+          ...(inputProps ?? {}),
+          disabled: isDisabled,
+
+          title: noop ?? false ? "Temporarily disabled due to technical reasons." : inputProps.title,
+
+          ...(fieldParamsByType[fieldType].inputProps ?? {}),
+          tabIndex: order,
+        },
+      }}
+    />
+  );
+};
+
 const defaultFieldsRender = ({ schema, form, isEditable }) => (
   <>
-    {Object.entries(schema).map(([key, { format, inputProps, noop, label, order, style, ...fieldProps }], idx) => {
+    {Object.entries(schema).map(([key, fieldSchema], idx) => {
+      const { type, format, noop, label, order } = fieldSchema;
       const fieldKey = `${idx}-${key}`,
         fieldValue = form.values[key];
 
-      const fieldType = Array.isArray(fieldValue) ? "array" : typeof (fieldValue ?? "");
-
-      const isDisabled = noop ?? inputProps.disabled ?? false;
+      const fieldType = type ?? (Array.isArray(fieldValue) ? "array" : typeof (fieldValue ?? ""));
 
       const viewClassName = [(fieldValue?.length ?? 0) > 0 ? "" : "text-muted", "m-0"].join(" ");
 
@@ -128,32 +199,7 @@ const defaultFieldsRender = ({ schema, form, isEditable }) => (
             </ValueView>
           </div>
 
-          <Widget
-            src={`devhub.near/widget/devhub.${fieldParamsByType[fieldType].name}`}
-            props={{
-              ...fieldProps,
-              className: ["w-100", fieldProps.className ?? "", isEditable && !noop ? "" : "d-none"].join(" "),
-
-              disabled: isDisabled,
-              format,
-              key: `${fieldKey}--editable`,
-              label,
-              onChange: form.update({ path: [key] }),
-              style: { ...style, order },
-
-              value: fieldType === "array" && format === "comma-separated" ? fieldValue.join(", ") : fieldValue,
-
-              inputProps: {
-                ...(inputProps ?? {}),
-                disabled: isDisabled,
-
-                title: noop ?? false ? "Temporarily disabled due to technical reasons." : inputProps.title,
-
-                ...(fieldParamsByType[fieldType].inputProps ?? {}),
-                tabIndex: order,
-              },
-            }}
-          />
+          {renderInput(key, form, fieldSchema, fieldType, fieldValue, isEditable)}
         </>
       );
     })}

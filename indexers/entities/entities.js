@@ -1,4 +1,3 @@
-import { Block } from "@near-lake/primitives";
 /**
  * Note: We only support javascript at the moment. We will support Rust, Typescript in a further release.
  */
@@ -12,7 +11,7 @@ import { Block } from "@near-lake/primitives";
  *
  * @param {block} Block - A Near Protocol Block
  */
-async function getBlock(block) {
+export default async function getBlock(block) {
     function base64decode(encodedValue) {
         try {
             const buff = Buffer.from(encodedValue, "base64");

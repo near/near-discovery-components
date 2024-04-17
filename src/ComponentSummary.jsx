@@ -357,7 +357,7 @@ return (
                         </>
                       ) : (
                         <>
-                          <i class="ph ph-push-pin" style={{ fontSize: "1rem" }} />
+                          <i className="ph ph-push-pin" style={{ fontSize: "1rem" }} />
                           Pin
                         </>
                       )}

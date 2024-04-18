@@ -83,7 +83,7 @@ return (
       props={{
         content: (
           <CustomizeDialogContent>
-            <div class="info">
+            <div className="info">
               <div>
                 <h2>Necessary Cookies</h2>
                 <p>
@@ -142,7 +142,7 @@ return (
       </Link>
       .{" "}
     </p>
-    <div class="buttons">
+    <div className="buttons">
       <Widget
         src="${REPL_ACCOUNT}/widget/DIG.Button"
         props={{

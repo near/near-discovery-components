@@ -82,20 +82,6 @@ const H2 = styled.h2`
   margin: 0;
 `;
 
-const ClockIconSVG = () => {
-  return (
-    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M4.91345 2.39779V5.19946H7.01471M9.11597 5.19946C9.11597 5.75134 9.00727 6.29782 8.79607 6.8077C8.58487 7.31757 8.27532 7.78085 7.88508 8.17109C7.49484 8.56133 7.03156 8.87088 6.52168 9.08208C6.01181 9.29328 5.46533 9.40198 4.91345 9.40198C4.36157 9.40198 3.81509 9.29328 3.30522 9.08208C2.79535 8.87088 2.33206 8.56133 1.94183 8.17109C1.55159 7.78085 1.24203 7.31757 1.03083 6.8077C0.819639 6.29782 0.710937 5.75134 0.710938 5.19946C0.710938 4.08489 1.1537 3.01596 1.94183 2.22784C2.72995 1.43971 3.79888 0.996948 4.91345 0.996948C6.02803 0.996948 7.09695 1.43971 7.88508 2.22784C8.6732 3.01596 9.11597 4.08489 9.11597 5.19946Z"
-        stroke="#6F7679"
-        stroke-width="0.7"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    </svg>
-  );
-};
-
 const Content = styled.div`
   display: grid;
   margin: 36px 0 24px 0;
@@ -106,7 +92,7 @@ const Content = styled.div`
 const Card = styled.div`
   display: flex;
   @media (max-width: 768px) {
-    display: ${(props) => (props.index > 4 ? "none" : "flex")};
+    display: ${(props) => (props.$index > 4 ? "none" : "flex")};
   }
 `;
 
@@ -138,6 +124,8 @@ const CardTitle = styled.div`
 const CardImage = styled.img`
   border-radius: var(--bs-border-radius);
   border: 0.5px solid hsla(210, 12%, 93%, 1);
+  width: ${(p) => p.$width}px;
+  height: ${(p) => p.$height}px;
 `;
 
 const CardFooter = styled.div`
@@ -156,6 +144,10 @@ const CardDate = styled.div`
   font-size: 10px;
   line-height: 8px;
   letter-spacing: -0.02em;
+`;
+
+const ClockIcon = styled.i`
+  font-size: 11px;
 `;
 
 const Badges = styled.div`
@@ -225,9 +217,9 @@ return (
         <H2>News</H2>
         <Content>
           {news.map((item, index) => (
-            <Card index={index}>
-              <div class="d-flex flex-grow-1">
-                <CardImage width="78" height="78" src={item.thumbnail} alt="" />
+            <Card key={`${item.title?.substring(0, 8)?.replace(/ /g, "_")}_${index}`} $index={index}>
+              <div className="d-flex flex-grow-1">
+                <CardImage $width="78" $height="78" src={item.thumbnail} alt="" />
                 <CardContent>
                   <CardTitle>
                     <a href={item.url} target="_blank" rel="noreferrer noopener">
@@ -239,7 +231,7 @@ return (
                       {item.categories.length > 0 && item.categories.map((category) => <Badge>{category}</Badge>)}
                     </Badges>
                     <CardDate>
-                      <ClockIconSVG />
+                      <ClockIcon className="ph ph-clock" />
                       {item.createdAt ? `${dateToDays(item.createdAt)} ago` : ""}
                     </CardDate>
                   </CardFooter>
@@ -248,7 +240,7 @@ return (
             </Card>
           ))}
         </Content>
-        <ButtonLink href="https://near.org/nearweekapp.near/widget/nearweek.com" target="_blank">
+        <ButtonLink href="${REPL_NEARWEEK}/widget/nearweek.com" target="_blank">
           View All News
         </ButtonLink>
       </Wrapper>

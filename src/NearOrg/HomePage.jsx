@@ -530,7 +530,7 @@ return (
                 <Widget
                   src="${REPL_ACCOUNT}/widget/DIG.Button"
                   props={{
-                    href: "/${REPL_NEARCATALOG}/widget/Index?requestAuth=1&createAccount=1",
+                    href: "/signup",
                     label: "Create Account",
                     variant: "affirmative",
                     size: "large",

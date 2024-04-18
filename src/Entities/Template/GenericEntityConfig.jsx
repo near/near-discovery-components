@@ -229,7 +229,7 @@ const defaultRenderTableItem = (rawItem, editFunction) => {
                   ) : (
                     <i className="bi bi-star" />
                   )}{" "}
-                  {starCount}
+                  {item.stars}
                 </Button>
               ),
             }}

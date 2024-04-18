@@ -253,7 +253,7 @@ return (
                 ) : (
                   <i className="bi bi-star" />
                 )}{" "}
-                {starCount}
+                {entity.stars}
               </Button>
             ),
           }}

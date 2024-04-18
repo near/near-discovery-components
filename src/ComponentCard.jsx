@@ -17,11 +17,6 @@ const Card = styled.div`
   overflow: hidden;
 `;
 
-const Icon = styled.i`
-  height: 18px;
-  width: 18px;
-`;
-
 const CardBody = styled.div`
   padding: 16px;
   display: flex;
@@ -85,33 +80,17 @@ const TextLink = styled("Link")`
   margin: 0;
   font-size: 14px;
   line-height: 18px;
-  color: ${(p) => (p.bold ? "#11181C !important" : "#687076 !important")};
-  font-weight: ${(p) => (p.bold ? "600" : "400")};
-  font-size: ${(p) => (p.small ? "12px" : "14px")};
-  overflow: ${(p) => (p.ellipsis ? "hidden" : "visible")};
-  text-overflow: ${(p) => (p.ellipsis ? "ellipsis" : "unset")};
+  color: ${(p) => (p.$bold ? "#11181C !important" : "#687076 !important")};
+  font-weight: ${(p) => (p.$bold ? "600" : "400")};
+  font-size: ${(p) => (p.$small ? "12px" : "14px")};
+  overflow: ${(p) => (p.$ellipsis ? "hidden" : "visible")};
+  text-overflow: ${(p) => (p.$ellipsis ? "ellipsis" : "unset")};
   white-space: nowrap;
   outline: none;
 
   &:focus,
   &:hover {
     text-decoration: underline;
-  }
-`;
-
-const Text = styled.p`
-  margin: 0;
-  font-size: 14px;
-  line-height: 20px;
-  color: ${(p) => (p.bold ? "#11181C" : "#687076")};
-  font-weight: ${(p) => (p.bold ? "600" : "400")};
-  font-size: ${(p) => (p.small ? "12px" : "14px")};
-  overflow: ${(p) => (p.ellipsis ? "hidden" : "")};
-  text-overflow: ${(p) => (p.ellipsis ? "ellipsis" : "")};
-  white-space: nowrap;
-
-  i {
-    margin-right: 3px;
   }
 `;
 
@@ -153,7 +132,7 @@ const ButtonLink = styled("Link")`
   line-height: 15px;
   text-align: center;
   cursor: pointer;
-  color: ${(p) => (p.primary ? "#006ADC" : "#11181C")} !important;
+  color: ${(p) => (p.$primary ? "#006ADC" : "#11181C")} !important;
   background: #fbfcfd;
   white-space: nowrap;
 
@@ -169,7 +148,7 @@ return (
   <Card>
     {!props.hideBlockHeightTimestamp && (
       <CardTag>
-        <i className="bi bi-clock"></i>{" "}
+        <i className="bi bi-clock" />{" "}
         <Widget
           src="${REPL_MOB_2}/widget/TimeAgo${REPL_TIME_AGO_VERSION}"
           props={{
@@ -196,11 +175,11 @@ return (
       </Thumbnail>
 
       <CardContent>
-        <TextLink href={detailsUrl} bold ellipsis>
+        <TextLink href={detailsUrl} $bold $ellipsis>
           {metadata.name || widgetName}
         </TextLink>
 
-        <TextLink small href={accountUrl} ellipsis>
+        <TextLink href={accountUrl} $small $ellipsis>
           @{accountId}
         </TextLink>
 
@@ -221,10 +200,10 @@ return (
     {(props?.metadata?.star_count > 0 || props?.metadata?.fork_count > 0) && (
       <CardMetaDataContainer>
         <MetaDataItem>
-          <i class="ph ph-star"></i> <p>{props.metadata.star_count === 0 ? "-" : props.metadata.star_count}</p>
+          <i className="ph ph-star" /> <p>{props.metadata.star_count === 0 ? "-" : props.metadata.star_count}</p>
         </MetaDataItem>
         <MetaDataItem>
-          <i class="ph ph-git-fork"></i>
+          <i className="ph ph-git-fork" />
           <p>{props.metadata.fork_count === 0 ? "-" : props.metadata.fork_count}</p>
         </MetaDataItem>
       </CardMetaDataContainer>
@@ -233,7 +212,7 @@ return (
     {!props.hideButtons && (
       <CardFooter>
         <ButtonLink href={detailsUrl}>View Details</ButtonLink>
-        <ButtonLink href={appUrl} primary>
+        <ButtonLink href={appUrl} $primary>
           Open
         </ButtonLink>
       </CardFooter>

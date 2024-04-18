@@ -14,10 +14,11 @@ function fetchGraphQL(operationsDoc, operationName, variables) {
   });
 }
 
-function loadItems(queries, queryName, offset, collection, onLoad) {
+function loadItems(queries, queryName, offset, collection, onLoad, limit) {
+  const l = limit ?? LIMIT;
   return fetchGraphQL(queries, queryName, {
     offset: offset,
-    limit: LIMIT,
+    limit: l,
   }).then((result) => {
     if (result.status === 200 && result.body) {
       if (result.body.errors) {

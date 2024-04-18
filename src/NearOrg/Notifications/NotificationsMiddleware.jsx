@@ -1,7 +1,8 @@
-const { fetchGraphQL } = VM.require("${REPL_ACCOUNT}/widget/Entities.QueryApi.Client") || (() => {});
+const { fetchGraphQL } = VM.require("${REPL_ACCOUNT}/widget/Entities.QueryApi.Client");
 
-if (!fetchGraphQL) return <></>;
-
+if (!fetchGraphQL) {
+  return <></>;
+}
 const accountId = context.accountId;
 
 const [shouldFallback, setShouldFallback] = useState(false);

@@ -1,4 +1,3 @@
-import { Block } from "@near-lake/primitives";
 /**
  * Note: We only support javascript at the moment. We will support Rust, Typescript in a further release.
  */
@@ -12,17 +11,27 @@ import { Block } from "@near-lake/primitives";
  *
  * @param {block} Block - A Near Protocol Block
  */
-async function getBlock(block: Block) {
+export default async function getBlock(block) {
     function base64decode(encodedValue) {
         try {
             const buff = Buffer.from(encodedValue, "base64");
             const str = buff.toString("utf-8").replace(/\\xa0/g, " ");
             return JSON.parse(str);
         } catch (error) {
-            console.log(
+            console.error(
                 'Error parsing JSON - skipping data for "functionCallOperation.args"',
                 error
             );
+        }
+    }
+    function arrayInPostgresForm(a) {
+        if (!a) return a;
+        try {
+            const stringArray = JSON.stringify(a);
+            return stringArray.replaceAll("[", "{").replaceAll("]", "}");
+        } catch (error) {
+            console.error("Error parsing JSON - skipping array field", error);
+            return "";
         }
     }
 
@@ -60,13 +69,19 @@ async function getBlock(block: Block) {
                     !Object.keys(functionCall.args.data) ||
                     !Object.keys(functionCall.args.data)[0]
                 ) {
-                    console.log("Set operation did not have arg data in expected format");
+                    console.error(
+                        "Set operation did not have arg data in expected format"
+                    );
                     return;
                 }
                 const accountId = Object.keys(functionCall.args.data)[0];
+                if (!functionCall.args.data[accountId]) {
+                    console.error("Set operation did not have arg data for accountId");
+                    return;
+                }
                 const accountData = functionCall.args.data[accountId];
                 if (!accountData) {
-                    console.log(
+                    console.error(
                         "Set operation did not have arg data for accountId in expected format"
                     );
                     return;
@@ -75,6 +90,12 @@ async function getBlock(block: Block) {
             })
             .map((functionCall) => {
                 const accountId = Object.keys(functionCall.args.data)[0];
+                if (!functionCall.args.data[accountId]) {
+                    console.error(
+                        "Set operation did not have arg data for accountId, in map op"
+                    );
+                    return;
+                }
                 return {
                     accountId,
                     data: functionCall.args.data[accountId][operation],
@@ -90,15 +111,46 @@ async function getBlock(block: Block) {
             }
             const dataArray = Array.isArray(data) ? data : [data];
             dataArray.map(async (data) => {
+                if (!data) {
+                    console.error("missing entity data");
+                    return;
+                }
                 const namespaces = Object.keys(data);
                 namespaces.map(async (namespace) => {
+                    if (!namespace) {
+                        console.error("missing entity namespace");
+                        return;
+                    }
                     const namespaceData = data[namespace];
+                    if (!namespaceData) {
+                        console.error("data not found for namespace " + namespace);
+                        return;
+                    }
                     const entityTypes = Object.keys(namespaceData);
                     entityTypes.map(async (entityType) => {
+                        if (!entityType) {
+                            console.error("missing entity entityType");
+                            return;
+                        }
                         const entityTypeData = namespaceData[entityType];
+                        if (!entityTypeData) {
+                            console.error(
+                                "namespaceData not found for entityType " + entityType
+                            );
+                            return;
+                        }
                         const entities = Object.keys(entityTypeData);
                         entities.map(async (name) => {
+                            if (!name) {
+                                console.error("missing entity name");
+                                return;
+                            }
                             const entityProps = entityTypeData[name];
+                            if (!entityProps) {
+                                console.error("entityProps not found for entity named " + name);
+                                return;
+                            }
+
                             if (entityProps["operation"]) {
                                 switch (entityProps["operation"]) {
                                     case "delete":
@@ -119,20 +171,34 @@ async function getBlock(block: Block) {
                                         return;
                                 }
                             }
-                            const { displayName, logoUrl, ...entityAttributes } = entityProps;
+                            const {
+                                displayName,
+                                logoUrl,
+                                description,
+                                tags,
+                                ...entityAttributes
+                            } = entityProps;
                             const entity = {
-                                namespace: namespace,
+                                namespace,
                                 entity_type: entityType,
                                 account_id: accountId,
                                 name: name,
                                 display_name: displayName,
                                 logo_url: logoUrl,
+                                description,
+                                tags: arrayInPostgresForm(tags),
                                 attributes: entityAttributes,
                             };
                             await context.db.Entities.upsert(
                                 entity,
                                 ["entity_type", "account_id", "name"],
-                                ["display_name", "logo_url", "attributes"]
+                                [
+                                    "display_name",
+                                    "logo_url",
+                                    "description",
+                                    "tags",
+                                    "attributes",
+                                ]
                             );
 
                             console.log(
@@ -143,7 +209,7 @@ async function getBlock(block: Block) {
                 });
             });
         } catch (e) {
-            console.log(
+            console.error(
                 `Failed to store entity from ${accountId} to the database`,
                 e
             );
@@ -161,7 +227,7 @@ async function getBlock(block: Block) {
                 const type = "star";
                 const starData = data[type];
                 if (!starData) {
-                    console.log("No star data found");
+                    console.error("No star data found");
                     return;
                 }
                 const star = JSON.parse(starData);
@@ -169,7 +235,7 @@ async function getBlock(block: Block) {
                 const starArray = typeof star === "object" ? [star] : star;
                 starArray.map(async ({ key, value }) => {
                     if (!key || !value || !key.path || !value.type) {
-                        console.log("Required fields not found for star", key, value);
+                        console.error("Required fields not found for star", key, value);
                         return;
                     }
                     const { path } = key;
@@ -193,11 +259,10 @@ async function getBlock(block: Block) {
                   }
                 }
                 `;
-                    console.log("mutation is", incDecQuery);
                     await context.graphql(incDecQuery, {});
                 });
             } catch (e) {
-                console.log(
+                console.error(
                     `Failed to process star of entity from ${accountId} to the database`,
                     e
                 );

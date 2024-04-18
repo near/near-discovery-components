@@ -10,6 +10,7 @@ if (!loadItem) {
 }
 const { src, tab, schemaFile, namespace, returnTo } = props; // url params
 const [accountId, entityType, entityName] = src.split("/") ?? [null, null, null];
+const { additionalTabs } = props; // inline params
 
 const summaryComponent = props.summaryComponent ?? "${REPL_ACCOUNT}/widget/Entities.Template.EntitySummary";
 const schemaLocation = schemaFile ? schemaFile : `${REPL_ACCOUNT}/widget/Entities.Template.GenericSchema`;
@@ -54,7 +55,7 @@ const onLoad = (itemInArray) => {
     return;
   }
   const fetchedItem = itemInArray[0];
-  const fullEntity = convertObjectKeysSnakeToPascal(fetchedItem);
+  const fullEntity = convertObjectKeysSnakeToPascal({ ...fetchedItem, ...fetchedItem?.attributes });
   setEntity(fullEntity);
 };
 loadItem(query, "SingleEntity", collection, onLoad);
@@ -146,6 +147,32 @@ const listLink = href({
   widgetSrc: returnTo,
 });
 
+const tabs = () => {
+  const defaultTabs = [
+    {
+      name: "Properties",
+      value: "properties",
+      content: entityProperties(entity),
+      icon: "ph ph-code",
+    },
+    {
+      name: editLabel,
+      value: "edit",
+      content: (
+        <Widget
+          src={"${REPL_ACCOUNT}/widget/Entities.Template.EntityCreate"}
+          props={{ entityType, schema, data: entity, cancelLabel: "Clear changes" }}
+        />
+      ),
+      icon: editIcon,
+    },
+  ];
+  if (additionalTabs) {
+    return defaultTabs.concat(additionalTabs(entity));
+  }
+  return defaultTabs;
+};
+
 return (
   <Wrapper>
     {returnTo && (
@@ -162,6 +189,8 @@ return (
         size: "small",
         showTags: true,
         entity,
+        namespace,
+        entityType,
         showActions: true,
         returnTo,
       }}
@@ -173,25 +202,7 @@ return (
           variant: "line",
           size: "large",
           defaultValue: "properties",
-          items: [
-            {
-              name: "Properties",
-              value: "properties",
-              content: entityProperties(entity),
-              icon: "ph ph-code",
-            },
-            {
-              name: editLabel,
-              value: "edit",
-              content: (
-                <Widget
-                  src={"${REPL_ACCOUNT}/widget/Entities.Template.EntityCreate"}
-                  props={{ entityType, schema, data: entity, cancelLabel: "Clear changes" }}
-                />
-              ),
-              icon: editIcon,
-            },
-          ],
+          items: tabs(),
         }}
       />
 

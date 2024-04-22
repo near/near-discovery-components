@@ -3,11 +3,11 @@ if (!loadItems) {
   return <p>Loading modules...</p>;
 }
 
-const { namespace, entityType, onSelect, limit } = props;
+const { namespace, entityType, onSelect, limit, initialTags } = props;
 const tagLimit = limit ?? 100;
 
 const [items, setItems] = useState(null);
-const [tags, setTags] = useState(value || []);
+const [tags, setTags] = useState(initialTags);
 
 const user = "dataplatform_near";
 const entityIndexer = "entities";
@@ -118,6 +118,7 @@ const TooltipTag = styled.span`
 `;
 
 const selectTag = (tag) => {
+  setTags([tag]);
   if (onSelect) {
     onSelect(tag);
   }
@@ -126,6 +127,9 @@ const humanize = (str) => {
   if (!str) return "";
   return str.replace(/([A-Z])/g, " $1").replace(/^./, (s) => s.toUpperCase());
 };
+
+const isSelected = (tag, tagList) =>
+  tagList && tagList.find((t) => t.tag === tag.tag && t.entity_type === tag.entity_type);
 
 return (
   <div>
@@ -143,7 +147,7 @@ return (
                     </span>
                   ),
                   trigger: (
-                    <Tag key={i} onClick={() => selectTag(tag)}>
+                    <Tag key={i} onClick={() => selectTag(tag)} primary={isSelected(tag, props.initialTags)}>
                       {tag.tag} <Count>{tag.count}</Count>
                     </Tag>
                   ),

@@ -1,4 +1,4 @@
-let { items, variant, size, ...forwardedProps } = props;
+let { items, variant, size, contentProps, ...forwardedProps } = props;
 
 // this prop is just for preview
 const previewItems = [
@@ -221,7 +221,9 @@ return (
     </TabList>
 
     {items.map((item) => (
-      <TabContent value={item.value}>{item.content}</TabContent>
+      <TabContent value={item.value}>
+        {typeof item.content === "function" ? item.content(contentProps) : item.content}
+      </TabContent>
     ))}
   </TabGroup>
 );

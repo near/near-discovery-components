@@ -22,6 +22,7 @@ const sortTypes = props.sortTypes ?? [
 
 const [searchKey, setSearchKey] = useState("");
 const [sort, setSort] = useState(sortTypes[0].value);
+const [tagsFilter, setTagsFilter] = useState(null);
 const [items, setItems] = useState({ list: [], total: 0 });
 const [showCreateModal, setShowCreateModal] = useState(false);
 const [activeItem, setActiveItem] = useState(null);
@@ -48,7 +49,7 @@ const onLoadReset = (newItems, totalItems) => {
 const loadItemsUseState = (isResetOrPageNumber) => {
   const loader = isResetOrPageNumber === true ? onLoadReset : onLoad;
   const offset = isResetOrPageNumber === true ? 0 : items.list.length;
-  return loadItems(buildQueries(searchKey, sort), queryName, offset, collection, loader);
+  return loadItems(buildQueries(searchKey, sort, { tags: tagsFilter }), queryName, offset, collection, loader);
 };
 useEffect(() => {
   if (debounceTimer) clearTimeout(debounceTimer);
@@ -66,7 +67,7 @@ useEffect(() => {
 }, [searchKey]);
 useEffect(() => {
   loadItemsUseState(true);
-}, [sort]);
+}, [sort, tagsFilter]);
 
 const Wrapper = styled.div`
   display: flex;
@@ -237,6 +238,18 @@ return (
               }}
             />
           </Search>
+        </div>
+        <div className="col-2">
+          <Widget
+            src="${REPL_ACCOUNT}/widget/Entities.Template.Forms.TagsEditor"
+            props={{
+              placeholder: "Filter by Tag",
+              setValue: setTagsFilter,
+              namespace: schema.namespace,
+              entityType: schema.entityType,
+              allowNew: false,
+            }}
+          />
         </div>
         <div className="col">
           <SortContainer>

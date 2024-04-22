@@ -21,12 +21,43 @@ const dataFields = Object.keys(schema).filter((key) => typeof schema[key] === "o
 const standardFields = ["id", "accountId", "name", "displayName", "logoUrl", "attributes"];
 const attributeFields = dataFields.filter((key) => !standardFields.includes(key));
 const ns = namespace ? namespace : "default";
-const buildQueries = (searchKey, sort) => {
-  const queryFilter = searchKey ? `display_name: {_ilike: "%${searchKey}%"}` : "";
+const buildQueries = (searchKey, sort, filters) => {
+  function arrayInPostgresForm(a) {
+    if (!a) return a;
+    try {
+      const stringArray = JSON.stringify(a);
+      return stringArray.replaceAll("[", "{").replaceAll("]", "}").replaceAll('"', '\\"');
+    } catch (error) {
+      console.error("Malformed array field - Error parsing JSON", error);
+      return "";
+    }
+  }
+
+  let queryFilter = searchKey ? `, display_name: {_ilike: "%${searchKey}%"}` : "";
+  if (filters) {
+    Object.keys(filters).forEach((key) => {
+      const filter = filters[key];
+      if (!key || !filter) return;
+      if (filter) {
+        switch (key) {
+          case "tags":
+            queryFilter += `, tags: {_contains: "${arrayInPostgresForm(filter)}"}`;
+            break;
+          case "stars":
+            queryFilter += `, stars: {_gte: ${filter}}`;
+            break;
+          default:
+            queryFilter += `, ${key}: {_eq: "${filter}"}`;
+            break;
+        }
+      }
+    });
+  }
+
   return `
 query ListQuery($offset: Int, $limit: Int) {
   ${collection}(
-      where: {namespace: {_eq: "${ns}"}, entity_type: {_eq: "${entityType}"}, ${queryFilter}}
+      where: {namespace: {_eq: "${ns}"}, entity_type: {_eq: "${entityType}"} ${queryFilter}}
       order_by: [${sort} ], 
       offset: $offset, limit: $limit) {
       entity_type

@@ -3,7 +3,9 @@ if (!href) {
   return <></>;
 }
 
-const { namespace, entityType, title, schemaFile, homeLink } = props;
+const { namespace, entityType, schemaFile } = props; // data props
+const { title, homeLink } = props; // display props
+
 const schemaLocation = schemaFile ? schemaFile : `${REPL_ACCOUNT}/widget/Entities.Template.GenericSchema`;
 const { genSchema } = VM.require(schemaLocation);
 if (!genSchema) {
@@ -41,7 +43,9 @@ const buildQueries = (searchKey, sort, filters) => {
       if (filter) {
         switch (key) {
           case "tags":
-            queryFilter += `, tags: {_contains: "${arrayInPostgresForm(filter)}"}`;
+            if (filter && filter.length > 0) {
+              queryFilter += `, tags: {_contains: "${arrayInPostgresForm(filter)}"}`;
+            }
             break;
           case "stars":
             queryFilter += `, stars: {_gte: ${filter}}`;

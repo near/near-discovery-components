@@ -20,9 +20,13 @@ const sortTypes = props.sortTypes ?? [
   { text: "Oldest Updates", value: "{ updated_at: asc }" },
 ];
 
+const initialTagFilter = Storage.get("global-tag-filter");
+if (initialTagFilter) {
+  Storage.set("global-tag-filter", null);
+}
 const [searchKey, setSearchKey] = useState("");
 const [sort, setSort] = useState(sortTypes[0].value);
-const [tagsFilter, setTagsFilter] = useState(null);
+const [tagsFilter, setTagsFilter] = useState(initialTagFilter);
 const [items, setItems] = useState({ list: [], total: 0 });
 const [showCreateModal, setShowCreateModal] = useState(false);
 const [activeItem, setActiveItem] = useState(null);
@@ -244,6 +248,7 @@ return (
             src="${REPL_ACCOUNT}/widget/Entities.Template.Forms.TagsEditor"
             props={{
               placeholder: "Filter by Tag",
+              value: tagsFilter,
               setValue: setTagsFilter,
               namespace: schema.namespace,
               entityType: schema.entityType,

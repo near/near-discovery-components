@@ -5,7 +5,18 @@ if (!loadItemsQueryApi) {
 const loadItems = props.loadItems ?? loadItemsQueryApi;
 
 const accountId = props.accountId || context.accountId;
-const { schema, description, buildQueries, queryName, collection, renderItem, createWidget, createWidgetProps } = props;
+const {
+  schema,
+  description,
+  buildQueries,
+  queryName,
+  collection,
+  renderItem,
+  createWidget,
+  createWidgetProps,
+  globalTagFilter,
+  setGlobalTagFilter,
+} = props;
 
 const finalCreateWidget = createWidget ?? `${REPL_ACCOUNT}/widget/Entities.Template.EntityCreate`;
 
@@ -20,13 +31,11 @@ const sortTypes = props.sortTypes ?? [
   { text: "Oldest Updates", value: "{ updated_at: asc }" },
 ];
 
-const initialTagFilter = Storage.get("global-tag-filter");
-if (initialTagFilter) {
-  Storage.set("global-tag-filter", null);
-}
 const [searchKey, setSearchKey] = useState("");
 const [sort, setSort] = useState(sortTypes[0].value);
-const [tagsFilter, setTagsFilter] = useState(initialTagFilter);
+const [tagsFilter, setTagsFilter] = useState(
+  Array.isArray(globalTagFilter) ? globalTagFilter.map((it) => it.tag) : null,
+);
 const [items, setItems] = useState({ list: [], total: 0 });
 const [showCreateModal, setShowCreateModal] = useState(false);
 const [activeItem, setActiveItem] = useState(null);
@@ -55,6 +64,12 @@ const loadItemsUseState = (isResetOrPageNumber) => {
   const offset = isResetOrPageNumber === true ? 0 : items.list.length;
   return loadItems(buildQueries(searchKey, sort, { tags: tagsFilter }), queryName, offset, collection, loader);
 };
+
+const onTagFilterChanged = (tags) => {
+  setTagsFilter(tags);
+  setGlobalTagFilter(tags.map((tag) => ({ entity_type: schema.entityType, tag })));
+};
+
 useEffect(() => {
   if (debounceTimer) clearTimeout(debounceTimer);
   const search = (searchKey ?? "").toLowerCase();
@@ -249,7 +264,7 @@ return (
             props={{
               placeholder: "Filter by Tag",
               value: tagsFilter,
-              setValue: setTagsFilter,
+              setValue: onTagFilterChanged,
               namespace: schema.namespace,
               entityType: schema.entityType,
               allowNew: false,

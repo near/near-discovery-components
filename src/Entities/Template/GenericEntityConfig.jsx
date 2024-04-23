@@ -4,7 +4,7 @@ if (!href) {
 }
 
 const { namespace, entityType, schemaFile } = props; // data props
-const { title, homeLink } = props; // display props
+const { title, homeLink, globalTagFilter, setGlobalTagFilter } = props; // display props
 
 const schemaLocation = schemaFile ? schemaFile : `${REPL_ACCOUNT}/widget/Entities.Template.GenericSchema`;
 const { genSchema } = VM.require(schemaLocation);
@@ -302,7 +302,17 @@ return (
   <div>
     <Widget
       src="${REPL_ACCOUNT}/widget/Entities.Template.EntityList"
-      props={{ table, buildQueries, queryName, collection, renderItem, createWidget, schema }}
+      props={{
+        table,
+        buildQueries,
+        queryName,
+        collection,
+        renderItem,
+        createWidget,
+        schema,
+        globalTagFilter,
+        setGlobalTagFilter,
+      }}
     />
   </div>
 );

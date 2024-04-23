@@ -7,6 +7,7 @@ const fullFilter = indexerFilter ? indexerAccount + "/" + indexerFilter : indexe
 
 const [statuses, setIndexerStatuses] = useState([]);
 const [errors, setErrors] = useState("");
+const [timer, setTimer] = useState(null);
 function fetchGraphQL(operationsDoc, operationName, variables) {
   return asyncFetch(`${GRAPHQL_ENDPOINT}/v1/graphql`, {
     method: "POST",
@@ -20,27 +21,37 @@ function fetchGraphQL(operationsDoc, operationName, variables) {
 }
 const query = `query MyQuery {
   indexer_state(where: {function_name: {_like: "${fullFilter}%"}}) {
-    current_historical_block_height
     status
     current_block_height
     function_name
   }
 }`;
-fetchGraphQL(query).then((result) => {
-  if (result.status === 200 && result.body) {
-    if (result.body.errors) {
-      setErrors(result.body.errors);
-      return;
-    }
-    let data = result.body.data;
-    if (data) {
-      const statuses = data.indexer_state;
-      if (statuses.length > 0) {
-        setIndexerStatuses(statuses);
+
+function handleResults(result) {
+  try {
+    if (result.status === 200 && result.body) {
+      if (result.body.errors) {
+        setErrors(result.body.errors);
+        return;
+      }
+      let data = result.body.data;
+      if (data) {
+        const statuses = data.indexer_state;
+        if (statuses.length > 0) {
+          setIndexerStatuses(statuses);
+        }
       }
     }
+  } catch (e) {
+    setErrors(e);
   }
-});
+}
+
+fetchGraphQL(query).then((result) => handleResults(result));
+
+if (!timer) {
+  setTimer(setInterval(() => fetchGraphQL(query).then((result) => handleResults(result)), 3000));
+}
 
 const StatusTable = styled.table`
   border-collapse: collapse;
@@ -73,7 +84,6 @@ return (
           </TableHeader>
           <TableHeader>Status</TableHeader>
           <TableHeader>Current Block Height</TableHeader>
-          <TableHeader>Current Historical Block Height</TableHeader>
         </tr>
       </thead>
       <tbody>
@@ -84,7 +94,6 @@ return (
               <span style={{ color: status.status === "RUNNING" ? "green" : "red" }}>{status.status}</span>
             </TableElement>
             <TableElement>{status.current_block_height}</TableElement>
-            <TableElement>{status.current_historical_block_height}</TableElement>
           </tr>
         ))}
       </tbody>

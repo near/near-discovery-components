@@ -38,7 +38,7 @@ const toggleEdit = () => {
 
 // Load post if contents and comments are not passed in
 if (!state.content || !state.likes) {
-    const postsQuery = `
+  const postsQuery = `
   query IndexerQuery {
     dataplatform_near_social_feed_posts(
       order_by: {block_height: desc}
@@ -59,20 +59,20 @@ if (!state.content || !state.likes) {
     }
   }
   `;
-//   const postsQuery = `
-//   query IndexerQuery($offset: Int, $limit: Int) {
-//     dataplatform_near_social_feed_reposts_v12_posts_with_reposts_feed(${queryFilter} order_by: [${querySortOption} { block_height: desc }], offset: $offset, limit: $limit) {
-//       account_id
-//       block_height
-//       block_timestamp
-//       content
-//       receipt_id
-//       accounts_liked
-//       last_comment_timestamp
-//     }
-   
-//   }
-// `;
+  //   const postsQuery = `
+  //   query IndexerQuery($offset: Int, $limit: Int) {
+  //     dataplatform_near_social_feed_reposts_v12_posts_with_reposts_feed(${queryFilter} order_by: [${querySortOption} { block_height: desc }], offset: $offset, limit: $limit) {
+  //       account_id
+  //       block_height
+  //       block_timestamp
+  //       content
+  //       receipt_id
+  //       accounts_liked
+  //       last_comment_timestamp
+  //     }
+
+  //   }
+  // `;
 
   function fetchGraphQL(operationsDoc, operationName, variables) {
     return asyncFetch(`${GRAPHQL_ENDPOINT}/v1/graphql`, {

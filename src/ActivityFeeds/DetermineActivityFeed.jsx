@@ -1,4 +1,8 @@
-const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT ?? "https://near-queryapi.api.pagoda.co";
+const { fetchGraphQL, GRAPHQL_ENDPOINT } = VM.require("${REPL_ACCOUNT}/widget/Entities.QueryApi.Client");
+
+if (!fetchGraphQL || !GRAPHQL_ENDPOINT) return <></>;
+
+const LIMIT = 5;
 
 let lastPostSocialApi = Social.index("post", "main", {
   limit: 1,
@@ -13,18 +17,6 @@ State.init({
   // If QueryAPI Feed is lagging behind Social API, fallback to old widget.
   shouldFallback: false,
 });
-
-function fetchGraphQL(operationsDoc, operationName, variables) {
-  return asyncFetch(`${GRAPHQL_ENDPOINT}/v1/graphql`, {
-    method: "POST",
-    headers: { "x-hasura-role": "dataplatform_near" },
-    body: JSON.stringify({
-      query: operationsDoc,
-      variables: variables,
-      operationName: operationName,
-    }),
-  });
-}
 
 const lastPostQuery = `
 query IndexerQuery {
@@ -69,6 +61,7 @@ return (
             props={{
               showFlagAccountFeature: true,
               accounts: props.filteredAccountIds,
+              limit: LIMIT,
             }}
           />
         ) : (
@@ -76,6 +69,7 @@ return (
             src={`${REPL_ACCOUNT}/widget/v1.Posts`}
             props={{
               showFlagAccountFeature: true,
+              limit: LIMIT,
             }}
           />
         )}
@@ -84,8 +78,9 @@ return (
       <Widget
         src={`${REPL_ACCOUNT}/widget/ActivityFeeds.PostsFeedControls`}
         props={{
-          GRAPHQL_ENDPOINT,
+          GRAPHQL_ENDPOINT: props.GRAPHQL_ENDPOINT || GRAPHQL_ENDPOINT,
           showFlagAccountFeature: true,
+          limit: LIMIT,
           ...props,
         }}
       />

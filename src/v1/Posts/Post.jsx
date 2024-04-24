@@ -187,6 +187,12 @@ return (
               onClick: () => State.update({ showReply: !state.showReply }),
             }}
           />
+            <Widget
+                  src="${REPL_ACCOUNT}/widget/Posts.RepostButton"
+                  props={{
+                    item,
+                  }}
+                />
           <Widget
             src="${REPL_ACCOUNT}/widget/CopyUrlButton"
             props={{

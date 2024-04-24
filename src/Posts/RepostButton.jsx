@@ -92,10 +92,114 @@ const Button = styled.button`
   }
 `;
 
+const promoteToBlog = () => {
+  if (state.loading) {
+    return;
+  }
+
+  if (!context.accountId && props.requestAuthentication) {
+    props.requestAuthentication();
+    return;
+  } else if (!context.accountId) {
+    return;
+  }
+
+  State.update({
+    loading: true,
+  });
+
+  const data = {
+    index: {
+      promote: JSON.stringify({
+        key: context.accountId,
+        value: {
+          operation: "add",
+          type: "blog",
+          post: item,
+          blockHeight,
+        },
+      }),
+    },
+  };
+
+  Social.set(data, {
+    onCommit: () => State.update({ loading: false }),
+    onCancel: () =>
+      State.update({
+        loading: false,
+      }),
+  });
+};
+
+const buildMenu = (accountId, blockHeight) => {
+  const hideSubmenu = [
+    {
+      name: "Mute " + accountId,
+      iconLeft: "ph-bold ph-ear-slash",
+      onSelect: () => moderate(accountId, null, "hideAccount", "hide"),
+    },
+  ];
+
+  const reportSubmenu = [
+    {
+      name: "Report " + accountId,
+      iconLeft: "ph-bold ph-warning-octagon",
+      onSelect: () => showReportModal("Account"),
+    },
+  ];
+
+  const promoteToBlogSubmenu = [];
+
+  // if (blockHeight) {
+  //   promoteToBlogSubmenu.unshift({
+  //     name: `Promote this ${capitalizedContentType} to Blog`,
+  //     iconLeft: "ph-bold ph-article",
+  //     onSelect: () => promoteToBlog(accountId, blockHeight),
+  //   });
+
+  //   hideSubmenu.unshift({
+  //     name: "Hide this " + capitalizedContentType,
+  //     iconLeft: "ph-bold ph-eye-slash",
+  //     onSelect: () => moderate(accountId, blockHeight, "hideItem", "hide"),
+  //   });
+  //   reportSubmenu.unshift({
+  //     name: "Report this " + capitalizedContentType,
+  //     iconLeft: "ph-bold ph-warning-octagon",
+  //     onSelect: () => showReportModal(capitalizedContentType),
+  //   });
+  // }
+  const menu = [
+    {
+      name: "Activity Feed",
+      disabled: !context.accountId,
+      onSelect: () => repostClick(),
+    },
+  ];
+
+  if (item.path && item?.path?.includes("post/main")) {
+    menu.unshift( {
+      name: "My Blog",
+      disabled: !context.accountId,
+      onSelect: () => promoteToBlog(accountId, blockHeight),
+    });
+  }
+
+  return menu;
+};
+
 return (
-  <OverlayTrigger placement="top" overlay={<Tooltip>{!state.hasRepost ? "Repost" : "You've reposted"}</Tooltip>}>
+  <>
+      <OverlayTrigger placement="top" overlay={<Tooltip>{!state.hasRepost ? "Repost" : "You've reposted"}</Tooltip>}>
+  <Widget
+      src="${REPL_ACCOUNT}/widget/DIG.DropdownMenu"
+      props={{
+        trigger: !state.hasRepost ? <i className="bi bi-repeat" /> : <i className="bi bi-check2" />,
+        items: buildMenu(accountId, blockHeight),
+      }}
+    />
     <Button type="button" title="Repost" aria-label="Repost" onClick={repostClick}>
       {!state.hasRepost ? <i className="bi bi-repeat" /> : <i className="bi bi-check2" />}
     </Button>
   </OverlayTrigger>
+  </>
 );

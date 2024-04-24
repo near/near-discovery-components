@@ -89,7 +89,7 @@ const shouldFilter = (item, socialDBObjectType) => {
 function fetchGraphQL(operationsDoc, operationName, variables) {
   return asyncFetch(`${GRAPHQL_ENDPOINT}/v1/graphql`, {
     method: "POST",
-    headers: { "x-hasura-role": "jacksonthedev_near" },
+    headers: { "x-hasura-role": "dataplatform_near" },
     body: JSON.stringify({
       query: operationsDoc,
       variables: variables,
@@ -166,11 +166,7 @@ const createQuery = (type, isUpdate) => {
 
   return `
 query FeedQuery($offset: Int, $limit: Int) {
-<<<<<<< HEAD
-  dataplatform_near_feed_moderated_posts(${queryFilter} order_by: [${querySortOption} { block_height: desc }], offset: $offset, limit: $limit) {
-=======
-  jacksonthedev_near_social_feed_reposts_v12_posts_with_reposts_feed(${queryFilter} order_by: [${querySortOption} { block_height: desc }], offset: $offset, limit: $limit) {
->>>>>>> 85eb7f7 (chore: save reposts client side progress to work on blog)
+  dataplatform_near_feed_moderated_posts_with_reposts_feed(${queryFilter} order_by: [${querySortOption} { block_height: desc }], offset: $offset, limit: $limit) {
     account_id
     block_height
     block_timestamp
@@ -178,7 +174,6 @@ query FeedQuery($offset: Int, $limit: Int) {
     receipt_id
     accounts_liked
     last_comment_timestamp
-<<<<<<< HEAD
     comments(order_by: {block_height: asc}) {
       account_id
       block_height
@@ -200,8 +195,6 @@ query FeedQuery($offset: Int, $limit: Int) {
     aggregate {
       count
     }
-=======
->>>>>>> 85eb7f7 (chore: save reposts client side progress to work on blog)
   }
  
 }
@@ -234,14 +227,8 @@ const loadMorePosts = (isUpdate) => {
       }
       let data = result.body.data;
       if (data) {
-<<<<<<< HEAD
         const newPosts = data.dataplatform_near_feed_moderated_posts;
         const postsCountLeft = data.dataplatform_near_feed_moderated_posts_aggregate.aggregate.count;
-=======
-        const newPosts = data.jacksonthedev_near_social_feed_reposts_v12_posts_with_reposts_feed;
-        const postsCountLeft =
-          data.jacksonthedev_near_social_feed_reposts_v12_posts_with_reposts_feed_aggregate.aggregate.count;
->>>>>>> 85eb7f7 (chore: save reposts client side progress to work on blog)
         if (newPosts.length > 0) {
           let filteredPosts = newPosts.filter((i) => !shouldFilter(i, postsModerationKey));
           filteredPosts = filteredPosts.map((post) => {

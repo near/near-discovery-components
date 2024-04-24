@@ -38,46 +38,46 @@ const toggleEdit = () => {
 
 // Load post if contents and comments are not passed in
 if (!state.content || !state.likes) {
-  //   const postsQuery = `
-  // query IndexerQuery {
-  //   dataplatform_near_social_feed_posts(
-  //     order_by: {block_height: desc}
-  //     where: {_and: {block_height: {_eq: ${blockHeight}}, account_id: {_eq: "${accountId}"}}}
-  //   ) {
-  //     account_id
-  //     block_height
-  //     block_timestamp
-  //     content
-  //     receipt_id
-  //     accounts_liked
-  //     comments(order_by: {block_height: asc}) {
-  //       account_id
-  //       block_height
-  //       block_timestamp
-  //       content
-  //     }
-  //   }
-  // }
-  // `;
-  const postsQuery = `
-  query IndexerQuery($offset: Int, $limit: Int) {
-    jacksonthedev_near_social_feed_reposts_v12_posts_with_reposts_feed(${queryFilter} order_by: [${querySortOption} { block_height: desc }], offset: $offset, limit: $limit) {
+    const postsQuery = `
+  query IndexerQuery {
+    dataplatform_near_social_feed_posts(
+      order_by: {block_height: desc}
+      where: {_and: {block_height: {_eq: ${blockHeight}}, account_id: {_eq: "${accountId}"}}}
+    ) {
       account_id
       block_height
       block_timestamp
       content
       receipt_id
       accounts_liked
-      last_comment_timestamp
+      comments(order_by: {block_height: asc}) {
+        account_id
+        block_height
+        block_timestamp
+        content
+      }
     }
-   
   }
-`;
+  `;
+//   const postsQuery = `
+//   query IndexerQuery($offset: Int, $limit: Int) {
+//     dataplatform_near_social_feed_reposts_v12_posts_with_reposts_feed(${queryFilter} order_by: [${querySortOption} { block_height: desc }], offset: $offset, limit: $limit) {
+//       account_id
+//       block_height
+//       block_timestamp
+//       content
+//       receipt_id
+//       accounts_liked
+//       last_comment_timestamp
+//     }
+   
+//   }
+// `;
 
   function fetchGraphQL(operationsDoc, operationName, variables) {
     return asyncFetch(`${GRAPHQL_ENDPOINT}/v1/graphql`, {
       method: "POST",
-      headers: { "x-hasura-role": "jacksonthedev_near" },
+      headers: { "x-hasura-role": "dataplatform_near" },
       body: JSON.stringify({
         query: operationsDoc,
         variables: variables,
@@ -90,7 +90,7 @@ if (!state.content || !state.likes) {
     if (result.status === 200) {
       if (result.body.data) {
         // const posts = result.body.data.dataplatform_near_social_feed_posts;
-        const posts = result.body.data.jacksonthedev_near_social_feed_reposts_v12_posts_with_reposts_feed;
+        const posts = result.body.data.dataplatform_near_social_feed_posts;
         if (posts.length > 0) {
           console.log("made it here!");
           const post = posts[0];
@@ -362,12 +362,12 @@ return (
                   }}
                 />
 
-                <Widget
+                {/* <Widget
                   src="${REPL_ACCOUNT}/widget/Posts.RepostButton"
                   props={{
                     item,
                   }}
-                />
+                /> */}
                 <Widget
                   src="${REPL_ACCOUNT}/widget/CopyUrlButton"
                   props={{

@@ -1,7 +1,7 @@
 const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 
 const indexerAccount = props.indexerAccount || "dataplatform.near";
-const indexerAccountLink = indexerAccount.replace(".", "_");
+const sanitizedAccountId = indexerAccount.replace(/[^a-zA-Z0-9]/g, "_").replace(/^([0-9])/, "_$1");
 const indexerFilter = props.indexerFilter || null;
 
 const [statuses, setIndexerStatuses] = useState({});
@@ -19,7 +19,10 @@ if (!registry) {
   return <div>Loading indexer list from contract...</div>;
 } else {
   try {
-    setIndexerList(Object.keys(registry["Account"]).sort());
+    const keys = Object.keys(registry["Account"]);
+    const sanitizedIndexerNames = keys.map((k) => k.replace(/[^a-zA-Z0-9]/g, "_").replace(/^([0-9])/, "_$1"));
+
+    setIndexerList(sanitizedIndexerNames);
   } catch (e) {
     setErrors(e);
   }
@@ -49,7 +52,7 @@ if (!indexerList) {
 function fetchGraphQL(operationsDoc, operationName, variables) {
   return asyncFetch(`${GRAPHQL_ENDPOINT}/v1/graphql`, {
     method: "POST",
-    headers: { "x-hasura-role": indexerAccountLink },
+    headers: { "x-hasura-role": sanitizedAccountId },
     body: JSON.stringify({
       query: operationsDoc,
       variables: variables,
@@ -58,7 +61,7 @@ function fetchGraphQL(operationsDoc, operationName, variables) {
   });
 }
 const query = (indexer) => `query MyQuery {
-  ${indexerAccountLink}_${indexer}_sys_metadata {
+  ${sanitizedAccountId}_${indexer}_sys_metadata {
     attribute
     value
   }
@@ -73,7 +76,7 @@ function handleResults(indexer, result) {
       }
       let data = result.body.data;
       if (data) {
-        const statuses = data[`${indexerAccountLink}_${indexer}_sys_metadata`];
+        const statuses = data[`${sanitizedAccountId}_${indexer}_sys_metadata`];
         if (statuses.length > 0) {
           const status = statuses.find((s) => s.attribute === "STATUS")?.value;
           const blockHeight = statuses.find((s) => s.attribute === "LAST_PROCESSED_BLOCK_HEIGHT")?.value;
@@ -150,22 +153,24 @@ return (
           <TableElement>MAINNET</TableElement>
           <TableElement bold>{latestBlock}</TableElement>
         </tr>
-        {Object.entries(statuses).map(([indexer, status]) => (
-          <tr key={indexer}>
-            <TableElement>{indexer}</TableElement>
-            <TableElement>
-              <span style={{ color: status.status === "RUNNING" ? "green" : "red" }}>{status.status}</span>
-            </TableElement>
-            <TableElement>{status.blockHeight}</TableElement>
-          </tr>
-        ))}
+        {Object.entries(statuses)
+          .sort()
+          .map(([indexer, status]) => (
+            <tr key={indexer}>
+              <TableElement>{indexer}</TableElement>
+              <TableElement>
+                <span style={{ color: status.status === "RUNNING" ? "green" : "red" }}>{status.status}</span>
+              </TableElement>
+              <TableElement>{status.blockHeight}</TableElement>
+            </tr>
+          ))}
       </tbody>
     </StatusTable>
     <hr />
     <div>{errors ? JSON.stringify(errors) : ""}</div>
     <Link
       target="_blank"
-      href={`https://cloud.hasura.io/public/graphiql?endpoint=https://near-queryapi.api.pagoda.co/v1/graphql&header=x-hasura-role%3A${indexerAccountLink}`}
+      href={`https://cloud.hasura.io/public/graphiql?endpoint=https://near-queryapi.api.pagoda.co/v1/graphql&header=x-hasura-role%3A${sanitizedAccountId}`}
     >
       Explore Data
     </Link>

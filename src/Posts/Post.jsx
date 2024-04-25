@@ -343,12 +343,20 @@ return (
                   }}
                 />
 
+<Widget
+            src="${REPL_ACCOUNT}/widget/Posts.RepostButton"
+            props={{
+              item,
+            }}
+          />
+
                 <Widget
                   src="${REPL_ACCOUNT}/widget/CopyUrlButton"
                   props={{
                     url: postUrl,
                   }}
                 />
+                
                 <Widget
                   src="${REPL_ACCOUNT}/widget/ShareButton"
                   props={{

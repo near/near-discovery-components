@@ -132,7 +132,6 @@ const promoteToBlog = () => {
 };
 
 const buildMenu = (accountId, blockHeight) => {
-  
   // Hiding repost until dataplatform indexers are ready
   const menu = [
     // {

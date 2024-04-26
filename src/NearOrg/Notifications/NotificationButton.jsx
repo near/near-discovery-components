@@ -95,6 +95,9 @@ useEffect(() => {
       setNotificationsCount(filterNotifications.length || 0);
     }
 
+    // means the lastBlockHeight is not set yet
+    if (lastBlockHeight === null) return;
+
     fetchGraphQL(getNotificationsCountQuery(lastBlockHeight), "NotificationsLeftCountQuery", {}).then((result) => {
       if (result.status === 200 && result.body.data) {
         const { count: notificationsTotal } = result.body.data.count.aggregate;

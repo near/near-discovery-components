@@ -2,7 +2,7 @@ const { fetchGraphQL, GRAPHQL_ENDPOINT } = VM.require("${REPL_ACCOUNT}/widget/En
 
 if (!fetchGraphQL || !GRAPHQL_ENDPOINT) return <></>;
 
-const LIMIT = 5;
+const LIMIT = 10;
 
 let lastPostSocialApi = Social.index("post", "main", {
   limit: 1,

@@ -37,42 +37,28 @@ const toggleEdit = () => {
 };
 
 // Load post if contents and comments are not passed in
-if (!state.content || !state.likes) {
+if (!state.content || !state.comments || !state.likes) {
   const postsQuery = `
-  query IndexerQuery {
-    dataplatform_near_social_feed_posts(
-      order_by: {block_height: desc}
-      where: {_and: {block_height: {_eq: ${blockHeight}}, account_id: {_eq: "${accountId}"}}}
-    ) {
+query IndexerQuery {
+  dataplatform_near_social_feed_posts(
+    order_by: {block_height: desc}
+    where: {_and: {block_height: {_eq: ${blockHeight}}, account_id: {_eq: "${accountId}"}}}
+  ) {
+    account_id
+    block_height
+    block_timestamp
+    content
+    receipt_id
+    accounts_liked
+    comments(order_by: {block_height: asc}) {
       account_id
       block_height
       block_timestamp
       content
-      receipt_id
-      accounts_liked
-      comments(order_by: {block_height: asc}) {
-        account_id
-        block_height
-        block_timestamp
-        content
-      }
     }
   }
-  `;
-  //   const postsQuery = `
-  //   query IndexerQuery($offset: Int, $limit: Int) {
-  //     dataplatform_near_social_feed_reposts_v12_posts_with_reposts_feed(${queryFilter} order_by: [${querySortOption} { block_height: desc }], offset: $offset, limit: $limit) {
-  //       account_id
-  //       block_height
-  //       block_timestamp
-  //       content
-  //       receipt_id
-  //       accounts_liked
-  //       last_comment_timestamp
-  //     }
-
-  //   }
-  // `;
+}
+`;
 
   function fetchGraphQL(operationsDoc, operationName, variables) {
     return asyncFetch(`${GRAPHQL_ENDPOINT}/v1/graphql`, {
@@ -89,26 +75,22 @@ if (!state.content || !state.likes) {
   fetchGraphQL(postsQuery, "IndexerQuery", {}).then((result) => {
     if (result.status === 200) {
       if (result.body.data) {
-        // const posts = result.body.data.dataplatform_near_social_feed_posts;
         const posts = result.body.data.dataplatform_near_social_feed_posts;
         if (posts.length > 0) {
-          console.log("made it here!");
           const post = posts[0];
-          let content = JSON.parse(post?.content);
-          console.log("post", post);
-          if (post?.accounts_liked.length !== 0) {
+          let content = JSON.parse(post.content);
+          if (post.accounts_liked.length !== 0) {
             if (typeof post.accounts_liked === "string") {
               post.accounts_liked = JSON.parse(post.accounts_liked);
             }
           }
-          const comments = post?.comments;
+          const comments = post.comments;
           State.update({
             content: content,
             comments: comments,
             likes: post.accounts_liked,
           });
         } else {
-          console.log("-----post does not exist------");
           State.update({
             postExists: false,
           });
@@ -118,7 +100,6 @@ if (!state.content || !state.likes) {
   });
 
   if (state.postExists == false) {
-    console.log("post does not exist we are ln 121");
     return "Post does not exist";
   }
   return "loading...";
@@ -242,7 +223,7 @@ const renderComment = (a) => {
   );
 };
 
-// const renderedComments = state.comments.map(renderComment);
+const renderedComments = state.comments.map(renderComment);
 
 const addNewCommentFn = (newComment) => {
   State.update(state.comments.push(newComment));
@@ -362,18 +343,20 @@ return (
                   }}
                 />
 
-                {/* <Widget
+                <Widget
                   src="${REPL_ACCOUNT}/widget/Posts.RepostButton"
                   props={{
                     item,
                   }}
-                /> */}
+                />
+
                 <Widget
                   src="${REPL_ACCOUNT}/widget/CopyUrlButton"
                   props={{
                     url: postUrl,
                   }}
                 />
+
                 <Widget
                   src="${REPL_ACCOUNT}/widget/ShareButton"
                   props={{

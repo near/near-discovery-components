@@ -132,42 +132,7 @@ const promoteToBlog = () => {
 };
 
 const buildMenu = (accountId, blockHeight) => {
-  const hideSubmenu = [
-    {
-      name: "Mute " + accountId,
-      iconLeft: "ph-bold ph-ear-slash",
-      onSelect: () => moderate(accountId, null, "hideAccount", "hide"),
-    },
-  ];
-
-  const reportSubmenu = [
-    {
-      name: "Report " + accountId,
-      iconLeft: "ph-bold ph-warning-octagon",
-      onSelect: () => showReportModal("Account"),
-    },
-  ];
-
-  const promoteToBlogSubmenu = [];
-
-  // if (blockHeight) {
-  //   promoteToBlogSubmenu.unshift({
-  //     name: `Promote this ${capitalizedContentType} to Blog`,
-  //     iconLeft: "ph-bold ph-article",
-  //     onSelect: () => promoteToBlog(accountId, blockHeight),
-  //   });
-
-  //   hideSubmenu.unshift({
-  //     name: "Hide this " + capitalizedContentType,
-  //     iconLeft: "ph-bold ph-eye-slash",
-  //     onSelect: () => moderate(accountId, blockHeight, "hideItem", "hide"),
-  //   });
-  //   reportSubmenu.unshift({
-  //     name: "Report this " + capitalizedContentType,
-  //     iconLeft: "ph-bold ph-warning-octagon",
-  //     onSelect: () => showReportModal(capitalizedContentType),
-  //   });
-  // }
+  // Hiding repost until dataplatform indexers are ready
   const menu = [
     {
       name: "Activity Feed",

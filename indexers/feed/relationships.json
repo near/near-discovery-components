@@ -1,4 +1,70 @@
 {
+  "moderated_posts_with_reposts_feed": {
+    "object_relationships": [
+      {
+        "name": "account",
+        "using": {
+          "manual_configuration": {
+            "column_mapping": {
+              "account_id": "account_id"
+            },
+            "insertion_order": null,
+            "remote_table": {
+              "name": "accounts",
+              "schema": "dataplatform_near_accounts"
+            }
+          }
+        }
+      },
+      {
+        "name": "verifications",
+        "using": {
+          "manual_configuration": {
+            "column_mapping": {
+              "account_id": "account_id"
+            },
+            "insertion_order": null,
+            "remote_table": {
+              "name": "account",
+              "schema": "dataplatform_near_verifications"
+            }
+          }
+        }
+      }
+    ],
+    "array_relationships": [
+      {
+        "name": "comments",
+        "using": {
+          "manual_configuration": {
+            "column_mapping": {
+              "id": "post_id"
+            },
+            "insertion_order": null,
+            "remote_table": {
+              "name": "moderated_comments",
+              "schema": "dataplatform_near_feed"
+            }
+          }
+        }
+      },
+      {
+        "name": "post_likes",
+        "using": {
+          "manual_configuration": {
+            "column_mapping": {
+              "id": "post_id"
+            },
+            "insertion_order": null,
+            "remote_table": {
+              "name": "post_likes",
+              "schema": "dataplatform_near_social_feed"
+            }
+          }
+        }
+      }
+    ]
+  },
   "moderated_posts": {
     "object_relationships": [
       {

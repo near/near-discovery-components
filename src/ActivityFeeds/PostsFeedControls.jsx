@@ -191,7 +191,8 @@ query FeedQuery($offset: Int, $limit: Int) {
       tags
     }
   }
-  dataplatform_near_feed_moderated_posts_aggregate(${queryFilter} order_by: {id: asc}) {
+  
+dataplatform_near_feed_moderated_posts_with_reposts_feed_aggregate(${queryFilter} order_by: {id: asc}) {
     aggregate {
       count
     }
@@ -226,9 +227,10 @@ const loadMorePosts = (isUpdate) => {
         return;
       }
       let data = result.body.data;
+      console.log("data", data);
       if (data) {
-        const newPosts = data.dataplatform_near_feed_moderated_posts;
-        const postsCountLeft = data.dataplatform_near_feed_moderated_posts_aggregate.aggregate.count;
+        const newPosts = data.dataplatform_near_feed_moderated_posts_with_reposts_feed;
+        const postsCountLeft = data.dataplatform_near_feed_moderated_posts_with_reposts_feed_aggregate.aggregate.count;
         if (newPosts.length > 0) {
           let filteredPosts = newPosts.filter((i) => !shouldFilter(i, postsModerationKey));
           filteredPosts = filteredPosts.map((post) => {

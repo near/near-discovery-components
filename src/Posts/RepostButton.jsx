@@ -4,67 +4,72 @@ if (!item) {
   return "";
 }
 
-const reposts = Social.index("repost", item);
+// -------  Resposts is work in progress ---------
 
-const dataLoading = reposts === null;
+// const reposts = Social.index("repost", item);
+// console.log("reposts", reposts);
 
-const repostsByUsers = Object.fromEntries(
-  (reposts || []).filter((repost) => repost.value.type === "repost").map((repost) => [repost.accountId, repost]),
-);
+// const dataLoading = reposts === null;
 
-if (state.hasRepost === true) {
-  repostsByUsers[context.accountId] = {
-    accountId: context.accountId,
-  };
-}
+// const repostsByUsers = Object.fromEntries(
+//   (reposts || []).filter((repost) => repost.value.type === "repost").map((repost) => [repost.accountId, repost]),
+// );
 
-const accountsWithReposts = Object.keys(repostsByUsers);
-const hasRepost = context.accountId && !!repostsByUsers[context.accountId];
+// console.log("repostsByUsers", repostsByUsers);
 
-const repostClick = () => {
-  if (state.loading) {
-    return;
-  }
-  State.update({
-    loading: true,
-  });
-  const reposts = [
-    {
-      key: "main",
-      value: {
-        type: "repost",
-        item,
-      },
-    },
-  ];
-  if (!hasRepost) {
-    reposts.push({
-      key: item,
-      value: {
-        type: "repost",
-      },
-    });
-  }
-  const data = {
-    index: {
-      repost: JSON.stringify(reposts),
-    },
-  };
+// if (state.hasRepost === true) {
+//   repostsByUsers[context.accountId] = {
+//     accountId: context.accountId,
+//   };
+// }
 
-  if (!hasRepost && props.notifyAccountId) {
-    data.index.notify = JSON.stringify({
-      key: props.notifyAccountId,
-      value: {
-        type: "repost",
-        item,
-      },
-    });
-  }
-  Social.set(data, {
-    onCommit: () => State.update({ loading: false, hasRepost: true }),
-    onCancel: () => State.update({ loading: false }),
-  });
-};
+// const accountsWithReposts = Object.keys(repostsByUsers);
+// const hasRepost = context.accountId && !!repostsByUsers[context.accountId];
+
+// const repostClick = () => {
+//   if (state.loading) {
+//     return;
+//   }
+//   State.update({
+//     loading: true,
+//   });
+//   const reposts = [
+//     {
+//       key: "main",
+//       value: {
+//         type: "repost",
+//         item,
+//       },
+//     },
+//   ];
+//   if (!hasRepost) {
+//     reposts.push({
+//       key: item,
+//       value: {
+//         type: "repost",
+//       },
+//     });
+//   }
+//   const data = {
+//     index: {
+//       repost: JSON.stringify(reposts),
+//     },
+//   };
+
+//   if (!hasRepost && props.notifyAccountId) {
+//     data.index.notify = JSON.stringify({
+//       key: props.notifyAccountId,
+//       value: {
+//         type: "repost",
+//         item,
+//       },
+//     });
+//   }
+//   Social.set(data, {
+//     onCommit: () => State.update({ loading: false, hasRepost: true }),
+//     onCancel: () => State.update({ loading: false }),
+//   });
+// };
 
 const Button = styled.button`
   border: 0;

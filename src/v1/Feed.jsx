@@ -3,7 +3,7 @@ const index = {
   action: "post",
   key: "main",
   options: {
-    limit: 10,
+    limit: props.limit ?? 10,
     order: "desc",
     accountId: props.accounts,
   },

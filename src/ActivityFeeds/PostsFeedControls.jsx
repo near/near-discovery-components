@@ -1,5 +1,8 @@
-const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
-const LIMIT = 10;
+const { fetchGraphQL, GRAPHQL_ENDPOINT } = VM.require("${REPL_ACCOUNT}/widget/Entities.QueryApi.Client");
+
+if (!fetchGraphQL || !GRAPHQL_ENDPOINT) return <></>;
+
+const limit = props.limit ?? 10;
 const feeds = props.feeds ?? ["all", "following"];
 const feedLabels = { all: "All", following: "Following", mutual: "Mutual Activity" };
 const showCompose = props.showCompose ?? true;
@@ -86,17 +89,6 @@ const shouldFilter = (item, socialDBObjectType) => {
     }) || matchesModeration(selfModeration, socialDBObjectType, item)
   );
 };
-function fetchGraphQL(operationsDoc, operationName, variables) {
-  return asyncFetch(`${GRAPHQL_ENDPOINT}/v1/graphql`, {
-    method: "POST",
-    headers: { "x-hasura-role": "dataplatform_near" },
-    body: JSON.stringify({
-      query: operationsDoc,
-      variables: variables,
-      operationName: operationName,
-    }),
-  });
-}
 
 const createQuery = (type, isUpdate) => {
   let querySortOption = "";
@@ -214,10 +206,9 @@ const loadMorePosts = (isUpdate) => {
     setIsLoading(true);
   }
   const offset = isUpdate ? 0 : postsData.posts.length;
-  const limit = isUpdate ? 100 : LIMIT;
   fetchGraphQL(createQuery(selectedTab, isUpdate), queryName, {
-    offset: offset,
-    limit: LIMIT,
+    offset,
+    limit,
   }).then((result) => {
     if (result.status === 200 && result.body) {
       if (result.body.errors) {
@@ -550,7 +541,7 @@ return (
                       content: item.content,
                       comments: item.comments,
                       likes: item.accounts_liked,
-                      GRAPHQL_ENDPOINT,
+                      GRAPHQL_ENDPOINT: props.GRAPHQL_ENDPOINT ?? GRAPHQL_ENDPOINT,
                       verifications: item.verifications,
                       showFlagAccountFeature: false,
                     }}

@@ -132,14 +132,49 @@ const entityProperties = (obj) => {
   const attributes = obj.attributes;
   return (
     <Properties>
-      {Object.keys(attributes).map((k) => (
-        <>
-          <Text bold key={k}>
-            {capitalize(k)}:
-          </Text>
-          <PropValue>{attributes[k]}</PropValue>
-        </>
-      ))}
+      {attributes &&
+        Object.keys(attributes).map((key) => {
+          const schemaField = schema[key];
+          const value = attributes[key];
+          switch (schemaField.type) {
+            case "image":
+              return;
+              <>
+                <Text bold key={key}>
+                  {capitalize(key)}:
+                </Text>
+                <PropValue>
+                  <img className="logo" src={imageUrl} />
+                </PropValue>
+              </>;
+            case "file":
+              return (
+                <>
+                  <Text bold key={key}>
+                    {capitalize(key)}:
+                  </Text>
+                  <PropValue>
+                    {value && (
+                      <>
+                        <p>{value?.name}</p>
+                        <p>{value.type}</p>
+                        <p>{value.size} bytes</p>
+                      </>
+                    )}
+                  </PropValue>
+                </>
+              );
+            default:
+              return (
+                <>
+                  <Text bold key={key}>
+                    {capitalize(key)}:
+                  </Text>
+                  <PropValue>{value}</PropValue>
+                </>
+              );
+          }
+        })}
     </Properties>
   );
 };

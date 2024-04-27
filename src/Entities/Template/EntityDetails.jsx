@@ -112,7 +112,6 @@ const Properties = styled.div`
 `;
 const Text = styled.p`
   margin: 0;
-  font-size: 14px;
   line-height: 20px;
   color: ${(p) => (p.bold ? "#11181C" : "#687076")};
   font-weight: ${(p) => (p.bold ? "600" : "400")};
@@ -138,15 +137,16 @@ const entityProperties = (obj) => {
           const value = attributes[key];
           switch (schemaField.type) {
             case "image":
-              return;
-              <>
-                <Text bold key={key}>
-                  {capitalize(key)}:
-                </Text>
-                <PropValue>
-                  <img className="logo" src={imageUrl} />
-                </PropValue>
-              </>;
+              return (
+                <>
+                  <Text bold key={key}>
+                    {capitalize(key)}:
+                  </Text>
+                  <PropValue>
+                    <img className="logo" src={imageUrl} alt={key} />
+                  </PropValue>
+                </>
+              );
             case "file":
               return (
                 <>

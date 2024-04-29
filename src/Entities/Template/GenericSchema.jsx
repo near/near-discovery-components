@@ -17,18 +17,6 @@ const genSchema = (namespace, entityType, entityTitle) => {
       type: "text",
       displayType: "hidden",
     },
-    name: {
-      type: "string",
-      inputProps: {
-        min: 2,
-        max: 80,
-        allowCommaAndSpace: false,
-        placeholder: `Choose a unique identifier for your ${title}.`,
-        required: true,
-      },
-      label: "Name",
-      order: 1,
-    },
     displayName: {
       type: "string",
       inputProps: {
@@ -38,19 +26,19 @@ const genSchema = (namespace, entityType, entityTitle) => {
         required: true,
       },
       label: "Display Name",
-      order: 2,
+      order: 1,
     },
-    logoUrl: {
+    name: {
       type: "string",
       inputProps: {
-        min: 4,
-        max: 255,
-        placeholder: `The logo URL for the ${title}.`,
-        required: false,
+        min: 2,
+        max: 80,
+        allowCommaAndSpace: false,
+        placeholder: `A unique identifier. No spaces or commas.`,
+        required: true,
       },
-
-      label: "Logo URL",
-      order: 5,
+      label: "Unique System Name",
+      order: 2,
     },
     tags: {
       type: "tags",
@@ -61,7 +49,19 @@ const genSchema = (namespace, entityType, entityTitle) => {
         required: false,
       },
       label: "Tags",
-      order: 6,
+      order: 4,
+    },
+    logoUrl: {
+      type: "image",
+      inputProps: {
+        min: 4,
+        max: 255,
+        placeholder: `A representative image. Enter a http URL or upload a file.`,
+        required: false,
+      },
+
+      label: "Image",
+      order: 5,
     },
   };
 };

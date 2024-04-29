@@ -1,6 +1,9 @@
 const { href } = VM.require("${REPL_DEVHUB}/widget/core.lib.url");
-if (!href) {
-  return <></>;
+const { ipfsUrl } = VM.require("${REPL_ACCOUNT}/widget/Entities.QueryApi.Ipfs");
+const { convertObjectKeysSnakeToPascal } = VM.require("${REPL_ACCOUNT}/widget/Entities.QueryApi.Client");
+
+if (!href || !ipfsUrl || !convertObjectKeysSnakeToPascal) {
+  return <p>Loading modules...</p>;
 }
 
 const { namespace, entityType, schemaFile } = props; // data props
@@ -20,7 +23,7 @@ const user = "dataplatform_near";
 const collection = `${user}_${entityIndexer}_${entityTable}`;
 
 const dataFields = Object.keys(schema).filter((key) => typeof schema[key] === "object");
-const standardFields = ["id", "accountId", "name", "displayName", "logoUrl", "attributes"];
+const standardFields = ["id", "accountId", "name", "displayName", "logoUrl", "attributes", "tags"];
 const attributeFields = dataFields.filter((key) => !standardFields.includes(key));
 const ns = namespace ? namespace : "default";
 const buildQueries = (searchKey, sort, filters) => {
@@ -89,30 +92,12 @@ query ListQuery($offset: Int, $limit: Int) {
 };
 const queryName = "ListQuery";
 
-const convertSnakeToPascal = (item) => {
-  const newItems = {};
-  Object.keys(item).forEach((key) => {
-    const pascalKey = key.replace(/(_\w)/g, (m) => m[1].toUpperCase());
-    newItems[pascalKey] = item[key];
-  });
-  return newItems;
-};
-const convertPascalToSnake = (itemArray) => {
-  const newItems = [];
-  itemArray.forEach((key) => {
-    const snakeKey = key.replace(/([A-Z])/g, (m) => "_" + m.toLowerCase());
-    newItems.unshift(snakeKey);
-  });
-  return newItems;
-};
-
 const Row = styled.div`
   vertical-align: middle;
   padding-bottom: 1em;
   img.logo {
     width: 30%;
-    aspect-ratio: 1 / 1;
-    border-radius: 50%;
+    border-radius: 10%;
     object-fit: cover;
   }
 `;
@@ -164,11 +149,13 @@ const TagsWrapper = styled.div`
 `;
 
 const defaultRenderTableItem = (rawItem, editFunction) => {
-  const item = convertSnakeToPascal(rawItem);
+  const item = convertObjectKeysSnakeToPascal(rawItem);
   const { accountId, name, displayName, logoUrl, tags, attributes } = item;
   const itemComponent = item.component ? item.component : `${REPL_ACCOUNT}/widget/Entities.Template.EntityDetails`;
   const imageUrl = logoUrl
-    ? logoUrl
+    ? logoUrl.startsWith("http")
+      ? logoUrl
+      : ipfsUrl(logoUrl)
     : "https://ipfs.near.social/ipfs/bafkreibysr2mkwhb4j36h2t7mqwhynqdy4vzjfygfkfg65kuspd2bawauu";
   const actionLink = href({
     widgetSrc: itemComponent,
@@ -203,9 +190,31 @@ const defaultRenderTableItem = (rawItem, editFunction) => {
         )}
       </div>
       {attributeFields.map((key) => {
+        const schemaField = schema[key];
         const value = attributes[key];
-        const formattedValue = value?.length > 50 ? value.substring(0, 50) + "..." : value;
-        return <div className="col-1">{formattedValue}</div>;
+        switch (schemaField.type) {
+          case "image":
+            return <img className="logo" src={imageUrl} alt="item logo" />;
+          case "file":
+            return (
+              <div className="col-2">
+                {value && (
+                  <>
+                    <p>
+                      <Link to={ipfsUrl(value)} target="_blank">
+                        <i className="ph ph-bold ph-download-simple" /> {value?.name}
+                      </Link>
+                    </p>
+                    <p>{value.type}</p>
+                    <p>{value.size} bytes</p>
+                  </>
+                )}
+              </div>
+            );
+          default:
+            const formattedValue = value?.length > 50 ? value.substring(0, 50) + "..." : value;
+            return <div className="col-1">{formattedValue}</div>;
+        }
       })}
       <div className="col-2">
         <Actions>

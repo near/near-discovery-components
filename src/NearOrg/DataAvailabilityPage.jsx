@@ -507,9 +507,7 @@ return (
                   <Text size="text-xl" mobileSize="text-l" fontWeight="500">
                     Simple to interact with
                   </Text>
-                  <Text>
-                    NEAR readily provides an RPC to easily retrieve the on-chain data from anywhere
-                  </Text>
+                  <Text>NEAR readily provides an RPC to easily retrieve the on-chain data from anywhere</Text>
                 </Flex>
 
                 <div>

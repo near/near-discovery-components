@@ -1,4 +1,7 @@
-const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
+const { fetchGraphQL } = VM.require("${REPL_ACCOUNT}/widget/Entities.QueryApi.Client");
+if (!fetchGraphQL) {
+  return <p>Loading modules...</p>;
+}
 
 const indexerAccount = props.indexerAccount || "dataplatform.near";
 const sanitizedAccountId = indexerAccount.replace(/[^a-zA-Z0-9]/g, "_").replace(/^([0-9])/, "_$1");
@@ -9,6 +12,7 @@ const [errors, setErrors] = useState("");
 const [timer, setTimer] = useState(null);
 
 const [latestBlock, setLatestBlock] = useState(0);
+const [latestFinalBlock, setLatestFinalBlock] = useState(0);
 const [indexerList, setIndexerList] = useState(null);
 const registryContract = "queryapi.dataplatform.near";
 const registry = Near.view(registryContract, "list_indexer_functions", {
@@ -49,19 +53,8 @@ if (!indexerList) {
   );
 }
 
-function fetchGraphQL(operationsDoc, operationName, variables) {
-  return asyncFetch(`${GRAPHQL_ENDPOINT}/v1/graphql`, {
-    method: "POST",
-    headers: { "x-hasura-role": sanitizedAccountId },
-    body: JSON.stringify({
-      query: operationsDoc,
-      variables: variables,
-      operationName: operationName,
-    }),
-  });
-}
-const query = (indexer) => `query MyQuery {
-  ${sanitizedAccountId}_${indexer}_sys_metadata {
+const query = (indexer) => `query StatusQuery($offset: Int, $limit: Int) {
+  ${sanitizedAccountId}_${indexer}_sys_metadata(offset: $offset, limit: $limit) {
     attribute
     value
   }
@@ -90,7 +83,7 @@ function handleResults(indexer, result) {
   }
 }
 
-const update = () => {
+const rpcBlock = (finality) =>
   asyncFetch("https://rpc.mainnet.near.org", {
     method: "POST",
     headers: {
@@ -99,18 +92,34 @@ const update = () => {
     body: JSON.stringify({
       jsonrpc: "2.0",
       id: "dontcare",
-      method: "status",
-      params: {},
+      method: "block",
+      params: {
+        finality,
+      },
     }),
-  }).then((res) => setLatestBlock(res.body.result.sync_info.latest_block_height));
+  });
+
+const update = () => {
+  rpcBlock("optimistic").then((res) => setLatestBlock(res.body.result.header.height));
+  rpcBlock("final").then((res) => setLatestFinalBlock(res.body.result.header.height));
   if (indexerList) {
-    indexerList.forEach((indexer) => fetchGraphQL(query(indexer)).then((result) => handleResults(indexer, result)));
+    indexerList.forEach((indexer) =>
+      fetchGraphQL(
+        query(indexer),
+        "StatusQuery",
+        {
+          offset: 0,
+          limit: 100,
+        },
+        sanitizedAccountId,
+      ).then((result) => handleResults(indexer, result)),
+    );
   }
 };
 
-update();
 if (!timer) {
-  setTimer(setInterval(update, 3000));
+  update();
+  setTimer(setInterval(update, 1000));
 }
 
 const StatusTable = styled.table`
@@ -149,9 +158,14 @@ return (
       </thead>
       <tbody>
         <tr>
-          <TableElement bold>Latest Block</TableElement>
+          <TableElement bold>Latest Optimistic Block</TableElement>
           <TableElement>MAINNET</TableElement>
           <TableElement bold>{latestBlock}</TableElement>
+        </tr>
+        <tr>
+          <TableElement bold>Latest Final Block</TableElement>
+          <TableElement>MAINNET</TableElement>
+          <TableElement bold>{latestFinalBlock}</TableElement>
         </tr>
         {Object.entries(statuses)
           .sort()

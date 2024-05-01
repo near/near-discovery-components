@@ -246,8 +246,9 @@ return (
           items: tabs(),
         }}
       />
-
-      <Widget src="${REPL_ACCOUNT}/widget/ComponentDetails.Sidebar" props={{ src }} />
+      <div>
+        <Widget src="${REPL_ACCOUNT}/widget/ComponentDetails.Sidebar" props={{ src }} />
+      </div>
     </ContentWrapper>
   </Wrapper>
 );

@@ -81,8 +81,6 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 32px;
-  padding-bottom: 48px;
-  padding-left: 48px;
 `;
 
 const ContentWrapper = styled.div`
@@ -105,11 +103,12 @@ const Header = styled.h1`
 `;
 
 const Properties = styled.div`
-  margin: 2em;
-  display: grid;
-  grid-template-columns: 5em 1fr;
-  gap: 16px;
+  padding-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 `;
+
 const Text = styled.p`
   margin: 0;
   line-height: 20px;
@@ -121,12 +120,20 @@ const Text = styled.p`
     margin-right: 4px;
   }
 `;
-const PropValue = styled.p`
+const PropValue = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   margin: 0;
   font-size: 14px;
   line-height: 20px;
-  padding-bottom: 10px;
+  padding-bottom: 0.5rem;
+
+  p {
+    margin: 0;
+  }
 `;
+
 const entityProperties = (obj) => {
   const attributes = obj.attributes;
   return (
@@ -155,11 +162,11 @@ const entityProperties = (obj) => {
                   </Text>
                   <PropValue>
                     {value && (
-                      <>
-                        <p>{value?.name}</p>
-                        <p>{value.type}</p>
-                        <p>{value.size} bytes</p>
-                      </>
+                      <ul>
+                        <li>{value?.name}</li>
+                        <li>{value.type}</li>
+                        <li>{value.size} bytes</li>
+                      </ul>
                     )}
                   </PropValue>
                 </>
@@ -209,7 +216,7 @@ const tabs = () => {
 };
 
 return (
-  <Wrapper>
+  <Wrapper className="gateway-page-container">
     {returnTo && (
       <Link to={listLink}>
         <Header>
@@ -235,7 +242,6 @@ return (
         src="${REPL_ACCOUNT}/widget/DIG.Tabs"
         props={{
           variant: "line",
-          size: "large",
           defaultValue: "properties",
           items: tabs(),
         }}

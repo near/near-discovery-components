@@ -32,14 +32,16 @@ State.init({
   activeTab: items.length > 0 ? items[0].value : "",
 });
 
-const TabGroup = styled("Tabs.Root")``;
+const TabGroup = styled("Tabs.Root")`
+  width: 100%;
+`;
 
 const TabList = styled("Tabs.List")`
   display: inline-flex;
   align-items: center;
   margin-bottom: 1rem;
   transition: inherit;
-  gap: ${(p) => (p.size === "small" ? ".375rem" : ".5rem")};
+  gap: ${(p) => (p.size === "small" ? "1rem" : "2rem")};
   ${variant === "toggle" &&
   `
     border-radius: 6px;
@@ -47,6 +49,10 @@ const TabList = styled("Tabs.List")`
     gap: 2px !important;
     padding: 2px;
   `}
+  overflow: auto;
+  scroll-behavior: smooth;
+  max-width: 100%;
+  min-width: 0;
 `;
 
 const Tab = styled("Tabs.Trigger")`
@@ -60,6 +66,7 @@ const Tab = styled("Tabs.Trigger")`
   gap: ${(p) => (p.size === "small" ? ".375rem" : ".5rem")};
   font: ${(p) => (p.size === "small" ? "var(--text-xs)" : p.size === "large" ? "var(--text-base)" : "var(--text-s)")};
   font-weight: 600;
+  white-space: nowrap;
 
   &:hover {
     color: var(--sand12);
@@ -115,14 +122,14 @@ const Tab = styled("Tabs.Trigger")`
     ${
       size === "small"
         ? `
-      padding: 10px 12px;
+      padding: 10px 0;
     `
         : size === "large"
           ? `
-      padding: 12px 18px;
+      padding: 12px 0;
     `
           : `
-      padding: 10px 16px;
+      padding: 10px 0;
     `
     }
   `}

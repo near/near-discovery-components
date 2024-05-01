@@ -95,10 +95,6 @@ const Grid = styled.div`
 
 const Section = styled.div`
   position: relative;
-
-  @media (max-width: 900px) {
-    padding: 0 14px;
-  }
 `;
 
 const Container = styled.div`

@@ -1,5 +1,5 @@
 const Wrapper = styled.div`
-  --section-gap: 20px;
+  --section-gap: 2rem;
   --text-hero: 500 56px/1 "FK Grotesk", "Mona Sans", sans-serif;
   gap: var(--section-gap);
   display: flex;
@@ -349,7 +349,7 @@ const Card = ({ title, text, children }) => (
     $shadow="0px 0px 0px 1px rgba(0, 0, 0, 0.02), 0px 4px 8px 0px rgba(0, 0, 0, 0.06)"
   >
     <PatternContent $padding="24px">
-      <Flex $direction="column" $gap="56px" $mobileGap="48px">
+      <Flex $direction="column" $gap="36px" $mobileGap="24px">
         <Flex $direction="column" $gap="24px">
           <Text $size="text-xl" $fontWeight="500">
             {title}
@@ -395,14 +395,14 @@ return (
       <Container>
         <Pattern $background="linear-gradient(264deg, #CFCCF5 0%, #A39CEC 99.35%)" $borderRadius="16px">
           <PatternContent $padding="55px 24px 55px 48px" $mobilePadding="48px 20px">
-            <Grid $gap="24px" $columns="1fr 1fr">
+            <Grid $gap="24px" $mobileGap="48px" $columns="1fr 1fr">
               <Flex $direction="column" $gap="32px">
                 <H1>Welcome</H1>
                 <Text $size="text-xl" $mobileSize="text-l" style={{ maxWidth: "385px" }}>
                   Start building right away with easy to use developer tools.
                 </Text>
               </Flex>
-              <Flex $direction="column" $gap="16px" $mobileGap="48px">
+              <Flex $direction="column" $gap="0" $mobileGap="48px">
                 <ButtonLink
                   href="https://app.jutsu.ai"
                   target="_blank"
@@ -434,7 +434,7 @@ return (
               </>
             }
           >
-            <Grid $gap="20px" $rowGap="24px" $columns="1fr 1fr" $mobileColumns="1fr 1fr">
+            <Grid $gap="20px" $rowGap="24px" $columns="1fr 1fr">
               {topRatingApps.map((app) => (
                 <TrendingApp
                   key={app.slug}

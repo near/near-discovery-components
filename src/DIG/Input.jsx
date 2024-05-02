@@ -153,7 +153,7 @@ const Input = styled.input`
   border: none;
   background: none;
   margin: 0;
-  min-width: 150px;
+  min-width: 0;
   height: 40px;
   line-height: 40px;
   padding: 0;

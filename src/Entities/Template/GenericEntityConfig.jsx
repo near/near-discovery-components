@@ -92,20 +92,90 @@ query ListQuery($offset: Int, $limit: Int) {
 };
 const queryName = "ListQuery";
 
+const Primary = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex-grow: 1;
+`;
+
 const Row = styled.div`
-  vertical-align: middle;
-  padding-bottom: 1em;
-  img.logo {
-    width: 30%;
-    border-radius: 10%;
+  display: flex;
+  align-items: stretch;
+  gap: 2rem;
+  padding: 2rem;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid #eceef0;
+  box-shadow:
+    0px 1px 3px rgba(16, 24, 40, 0.1),
+    0px 1px 2px rgba(16, 24, 40, 0.06);
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+  }
+`;
+
+const Name = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .logo {
+    width: 3rem;
+    height: 3rem;
     object-fit: cover;
   }
 `;
+
+const NameAndTags = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+`;
+
+const Details = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  font: var(--text-xs);
+  padding-top: 1rem;
+
+  * {
+    margin: 0;
+  }
+
+  @media (max-width: 800px) {
+    padding-top: 0;
+  }
+`;
+
 const Actions = styled.div`
   display: flex;
   align-items: center;
   gap: 2px;
 `;
+
+const ActionsAndAuthor = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2rem;
+  flex-grow: 1;
+
+  @media (max-width: 800px) {
+    align-items: flex-start;
+    gap: 1rem;
+  }
+`;
+
+const Author = styled.div`
+  margin-top: auto;
+`;
+
 const sharedButtonStyles = `
   display: inline-flex;
   align-items: center;
@@ -144,9 +214,6 @@ const Button = styled.button`
     background: ${(p) => (p.primary ? "rgb(112 242 164)" : "#ECEDEE")};
   }
 `;
-const TagsWrapper = styled.div`
-  padding: 4px;
-`;
 
 const defaultRenderTableItem = (rawItem, editFunction) => {
   const item = convertObjectKeysSnakeToPascal(rawItem);
@@ -172,51 +239,65 @@ const defaultRenderTableItem = (rawItem, editFunction) => {
   const editIcon = editType === "edit" ? "ph-bold ph-pencil-simple" : "ph-bold ph-git-fork";
 
   return (
-    <Row className="row">
-      <div className="col-2">
-        <img className="logo" src={imageUrl} alt="item logo" />
-      </div>
-      <div className="col-2">
-        <Link to={detailsLink}>{displayName}</Link>
-        {tags && tags.length > 0 && (
-          <TagsWrapper>
-            <Widget
-              src="${REPL_ACCOUNT}/widget/Tags"
-              props={{
-                tags,
-              }}
-            />
-          </TagsWrapper>
-        )}
-      </div>
-      {attributeFields.map((key) => {
-        const schemaField = schema[key];
-        const value = attributes[key];
-        switch (schemaField.type) {
-          case "image":
-            return <img className="logo" src={imageUrl} alt="item logo" />;
-          case "file":
-            return (
-              <div className="col-2">
-                {value && (
-                  <>
-                    <p>
-                      <Link to={ipfsUrl(value)} target="_blank">
-                        <i className="ph ph-bold ph-download-simple" /> {value?.name}
-                      </Link>
-                    </p>
+    <Row>
+      <Primary>
+        <Name>
+          <img className="logo" src={imageUrl} alt="item logo" />
+
+          <NameAndTags>
+            <Link to={detailsLink}>{displayName}</Link>
+
+            {tags && tags.length > 0 && (
+              <Widget
+                src="${REPL_ACCOUNT}/widget/Tags"
+                props={{
+                  tags,
+                }}
+              />
+            )}
+          </NameAndTags>
+        </Name>
+
+        {attributeFields.map((key) => {
+          const schemaField = schema[key];
+          const value = attributes[key];
+          switch (schemaField.type) {
+            case "file":
+              if (value) {
+                return (
+                  <Details>
+                    <Widget
+                      src="${REPL_ACCOUNT}/widget/DIG.Button"
+                      props={{
+                        href: ipfsUrl(value),
+                        target: "_blank",
+                        icon: "ph-bold ph-download-simple",
+                        fill: "outline",
+                        size: "small",
+                        title: value?.name,
+                      }}
+                    />
                     <p>{value.type}</p>
                     <p>{value.size} bytes</p>
-                  </>
-                )}
-              </div>
-            );
-          default:
-            const formattedValue = value?.length > 50 ? value.substring(0, 50) + "..." : value;
-            return <div className="col-1">{formattedValue}</div>;
-        }
-      })}
-      <div className="col-2">
+                  </Details>
+                );
+              }
+              return <></>;
+            default:
+              const formattedValue = value?.length > 50 ? value.substring(0, 50) + "..." : value;
+              if (formattedValue) {
+                return (
+                  <Details>
+                    <p>{formattedValue}</p>
+                  </Details>
+                );
+              }
+              return <></>;
+          }
+        })}
+      </Primary>
+
+      <ActionsAndAuthor>
         <Actions>
           <Widget
             src="${REPL_ACCOUNT}/widget/DIG.Tooltip"
@@ -227,7 +308,7 @@ const defaultRenderTableItem = (rawItem, editFunction) => {
                   src="${REPL_ACCOUNT}/widget/DIG.Button"
                   props={{
                     onClick: () => editFunction(item),
-                    iconLeft: editIcon,
+                    icon: editIcon,
                     variant: "secondary",
                     fill: "ghost",
                     size: "small",
@@ -236,25 +317,26 @@ const defaultRenderTableItem = (rawItem, editFunction) => {
               ),
             }}
           />
+
           <Widget
             src="${REPL_ACCOUNT}/widget/DIG.Tooltip"
             props={{
               content: "View Details",
               trigger: (
-                <Link to={detailsLink} style={{ all: "unset" }}>
-                  <Widget
-                    src="${REPL_ACCOUNT}/widget/DIG.Button"
-                    props={{
-                      iconLeft: "ph-bold ph-eye",
-                      variant: "secondary",
-                      fill: "ghost",
-                      size: "small",
-                    }}
-                  />
-                </Link>
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/DIG.Button"
+                  props={{
+                    icon: "ph-bold ph-eye",
+                    variant: "secondary",
+                    fill: "ghost",
+                    size: "small",
+                    href: detailsLink,
+                  }}
+                />
               ),
             }}
           />
+
           <Widget
             src="${REPL_ACCOUNT}/widget/SocialIndexActionButton"
             key={name}
@@ -277,29 +359,28 @@ const defaultRenderTableItem = (rawItem, editFunction) => {
                 </Button>
               ),
             }}
-          />{" "}
-          <Button>
-            <Widget
-              src="${REPL_ACCOUNT}/widget/CopyUrlButton"
-              props={{
-                url: actionUrl,
-              }}
-            />
-          </Button>
-          <Button>
-            <Widget
-              src="${REPL_ACCOUNT}/widget/ShareButton"
-              props={{
-                postType: "Placeholder",
-                url: actionUrl,
-              }}
-            />
-          </Button>
-          <span style={{ whiteSpace: "nowrap" }}>
-            by <Widget src="${REPL_MOB}/widget/ProfileLine" props={{ accountId: accountId, hideAccountId: true }} />
-          </span>
+          />
+
+          <Widget
+            src="${REPL_ACCOUNT}/widget/CopyUrlButton"
+            props={{
+              url: actionUrl,
+            }}
+          />
+
+          <Widget
+            src="${REPL_ACCOUNT}/widget/ShareButton"
+            props={{
+              postType: "Placeholder",
+              url: actionUrl,
+            }}
+          />
         </Actions>
-      </div>
+
+        <Author>
+          by <Widget src="${REPL_MOB}/widget/ProfileLine" props={{ accountId: accountId, hideAccountId: true }} />
+        </Author>
+      </ActionsAndAuthor>
     </Row>
   );
 };

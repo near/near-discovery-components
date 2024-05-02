@@ -84,6 +84,7 @@ useEffect(() => {
   );
   return () => clearTimeout(debounceTimer);
 }, [searchKey]);
+
 useEffect(() => {
   loadItemsUseState(true);
 }, [sort, tagsFilter]);
@@ -91,58 +92,28 @@ useEffect(() => {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 48px;
-  padding-left: 24px;
+  gap: 2rem;
 `;
 
 const Header = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 24px 0 12px 0px;
+  gap: 1rem;
 `;
 
 const Search = styled.div`
   width: 246px;
+  margin-right: auto;
 
   @media (max-width: 500px) {
     width: 100%;
   }
 `;
-const SortContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
 
-  @media (max-width: 1200px) {
-    padding: 12px;
-  }
-`;
 const Sort = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 16px;
-
-  & > span.label {
-    font-family: "Inter";
-    font-style: normal;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 18px;
-    color: #11181c;
-    white-space: nowrap;
-  }
-
-  &:last-child {
-    width: 40%;
-
-    @media screen and (max-width: 768px) {
-      width: 85%;
-    }
-  }
+  width: min-content;
 `;
+
 const H1 = styled.h1`
   font-weight: 600;
   font-size: 24px;
@@ -152,10 +123,8 @@ const H1 = styled.h1`
 `;
 
 const H2 = styled.h2`
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 24px;
-  color: #687076;
+  font: var(--text-base);
+  font-weight: 600;
   margin: 0;
 `;
 
@@ -176,51 +145,91 @@ const Text = styled.p`
   }
 `;
 
-const Items = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
+const Flex = styled.div`
+  display: flex;
+  gap: ${(p) => p.$gap};
+  align-items: ${(p) => p.$alignItems};
+  justify-content: ${(p) => p.$justifyContent};
+  flex-direction: ${(p) => p.$direction ?? "row"};
+  flex-wrap: ${(p) => p.$wrap ?? "nowrap"};
 
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+  ${(p) =>
+    p.$mobileStack &&
+    `
+    @media (max-width: 900px) {
+      flex-direction: column;
+    }
+  `}
 
-  @media (max-width: 800px) {
-    grid-template-columns: minmax(0, 1fr);
+  @media (max-width: 900px) {
+    gap: ${(p) => p.$mobileGap ?? p.$gap};
+    align-items: ${(p) => p.$mobileAlignItems ?? p.$alignItems};
   }
 `;
 
-const Item = styled.div``;
+const Grid = styled.div`
+  display: grid;
+  gap: ${(p) => p.$gap};
+  grid-template-columns: ${(p) => p.$columns};
+  align-items: ${(p) => p.$alignItems};
+  row-gap: ${(p) => p.$rowGap};
+
+  @media (max-width: 900px) {
+    grid-template-columns: ${(p) => p.$mobileColumns ?? "1fr"};
+    gap: ${(p) => p.$mobileGap ?? p.$gap};
+    row-gap: ${(p) => p.$mobileRowGap ?? p.$rowGap};
+  }
+`;
+
 const dialogStyles = {
   maxWidth: "800px",
   borderRadius: "14px",
 };
+
 const ScrollBox = styled.div`
   max-height: 80vh;
   overflow-y: auto;
 `;
 
+const Items = styled.div`
+  display: ${props.table ? "flex" : "grid"};
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  @media (max-width: 950px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (max-width: 650px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+`;
+
 return (
   <Wrapper>
     <Header>
-      <div className="row">
-        <div className="col">
+      <Flex $alignItems="center" $gap="1rem">
+        <div style={{ marginRight: "auto" }}>
           <H2>
             {items.total} {schema.entityTitle + (items.total !== 1 ? "s" : "")}
           </H2>
+
           {description && <Text>{description}</Text>}
         </div>
+
         {context.accountId && (
-          <div className="col-3" style={{ textAlign: "right" }}>
+          <>
             <Widget
               src="${REPL_ACCOUNT}/widget/DIG.Button"
               props={{
-                label: "Create " + schema.entityTitle,
+                label: "Create",
                 onClick: toggleModal,
                 iconLeft: "ph ph-plus-circle",
-                variant: "primary",
-                fill: "outline",
+                variant: "affirmative",
                 size: "small",
+                title: "Create " + schema.entityTitle,
               }}
             />
             <Widget
@@ -241,58 +250,57 @@ return (
                 actionButtons: <></>,
               }}
             />
-          </div>
+          </>
         )}
-      </div>
-      <div className="row">
-        <div className="col">
-          <Search>
-            <Widget
-              src="${REPL_ACCOUNT}/widget/DIG.Input"
-              props={{
-                label: "",
-                placeholder: "Search by name",
-                value: searchKey,
-                onChange: (e) => setSearchKey(e.target.value),
-              }}
-            />
-          </Search>
-        </div>
-        <div className="col-2">
+      </Flex>
+
+      <Flex $alignItems="center" $gap="1rem">
+        <Search>
           <Widget
-            src="${REPL_ACCOUNT}/widget/Entities.Template.Forms.TagsEditor"
+            src="${REPL_ACCOUNT}/widget/DIG.Input"
             props={{
-              placeholder: "Filter by Tag",
-              value: tagsFilter,
-              setValue: onTagFilterChanged,
-              namespace: schema.namespace,
-              entityType: schema.entityType,
-              allowNew: false,
+              label: "",
+              placeholder: "Search by name",
+              value: searchKey,
+              onChange: (e) => setSearchKey(e.target.value),
             }}
           />
-        </div>
-        <div className="col">
-          <SortContainer>
-            <Sort>
-              <Widget
-                src={`${REPL_ACCOUNT}/widget/Select`}
-                props={{
-                  noLabel: true,
-                  value: { text: sortTypes.find((it) => it.value === sort), value: sort },
-                  onChange: ({ value }) => setSort(value),
-                  options: sortTypes,
-                  border: "none",
-                }}
-              />
-            </Sort>
-          </SortContainer>
-        </div>
-      </div>
+        </Search>
+
+        {/*
+          The tag selector has been commented out for now since tag filters can be selected 
+          in the parent UI. We need to create an official DIG.Autocomplete component.
+        */}
+
+        {/* <Widget
+          src="${REPL_ACCOUNT}/widget/Entities.Template.Forms.TagsEditor"
+          props={{
+            placeholder: "Filter by Tag",
+            value: tagsFilter,
+            setValue: onTagFilterChanged,
+            namespace: schema.namespace,
+            entityType: schema.entityType,
+            allowNew: false,
+          }}
+        /> */}
+
+        <Sort>
+          <Widget
+            src={`${REPL_ACCOUNT}/widget/Select`}
+            props={{
+              noLabel: true,
+              value: { text: sortTypes.find((it) => it.value === sort), value: sort },
+              onChange: ({ value }) => setSort(value),
+              options: sortTypes,
+              border: "none",
+            }}
+          />
+        </Sort>
+      </Flex>
     </Header>
 
     {items.total > 0 && (
       <InfiniteScroll
-        className="mb-5"
         pageStart={0}
         loadMore={loadItemsUseState}
         hasMore={items.total > items.list.length}
@@ -304,17 +312,11 @@ return (
           </div>
         }
       >
-        {props.table ? (
-          items.list.map((item) => (
+        <Items>
+          {items.list.map((item) => (
             <div key={`${item.accountId}-${item.widgetName}`}>{renderItem(item, editFunction)}</div>
-          ))
-        ) : (
-          <Items>
-            {items.list.map((item) => (
-              <Item key={`${item.accountId}-${item.widgetName}`}>{renderItem(item, editFunction)}</Item>
-            ))}
-          </Items>
-        )}
+          ))}
+        </Items>
       </InfiniteScroll>
     )}
   </Wrapper>

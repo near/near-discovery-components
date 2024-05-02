@@ -3,8 +3,6 @@ const loadMorePosts = props.loadMorePosts;
 const hasMore = props.hasMore || false;
 const posts = props.posts || [];
 
-console.log("posts", posts);
-
 const Post = styled.div`
   border-bottom: 1px solid #eceef0;
   padding: 24px 0 12px;
@@ -18,9 +16,19 @@ const TextLink = styled("Link")`
 `;
 
 const renderItem = (item) => {
-  console.log("posts.Feed item", item);
   if (item.accounts_liked.length !== 0) {
     item.accounts_liked = JSON.parse(item.accounts_liked);
+  }
+
+  if (item.content.includes("repost")) {
+    const repostData = JSON.parse(item.content);
+    const fullPath = repostData[0].value.item.path.split("/");
+    item.repostData = {
+      reposted_by: item.account_id,
+      reposted_content: JSON.parse(item.content),
+      original_post_accountId: fullPath[0],
+      original_post_blockHeight: repostData[0].value.item.blockHeight,
+    };
   }
   return (
     <Post className="post" key={item.block_height + "_" + item.account_id}>
@@ -37,6 +45,8 @@ const renderItem = (item) => {
           verifications: item.verifications,
           showFlagAccountFeature: props.showFlagAccountFeature ?? false,
           profile: item.profile,
+          isRespost: item.isRespost,
+          repostData: item.repostData,
         }}
       />
     </Post>

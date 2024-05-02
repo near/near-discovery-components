@@ -4,7 +4,11 @@ if (!item) {
   return "";
 }
 
+const [loading, setLoading] = useState(false);
+const [hasRepostByUser, setHasRepostByUser] = useState(false);
+
 const reposts = Social.index("repost", item);
+console.log("reposts", reposts);
 
 const dataLoading = reposts === null;
 
@@ -12,22 +16,13 @@ const repostsByUsers = Object.fromEntries(
   (reposts || []).filter((repost) => repost.value.type === "repost").map((repost) => [repost.accountId, repost]),
 );
 
-if (state.hasRepost === true) {
-  repostsByUsers[context.accountId] = {
-    accountId: context.accountId,
-  };
-}
-
-const accountsWithReposts = Object.keys(repostsByUsers);
-const hasRepost = context.accountId && !!repostsByUsers[context.accountId];
+setHasRepostByUser(context.accountId && !!repostsByUsers[context.accountId]);
 
 const repostClick = () => {
-  if (state.loading) {
+  if (loading) {
     return;
   }
-  State.update({
-    loading: true,
-  });
+  setLoading(true);
   const reposts = [
     {
       key: "main",
@@ -37,7 +32,7 @@ const repostClick = () => {
       },
     },
   ];
-  if (!hasRepost) {
+  if (!hasRepostByUser) {
     reposts.push({
       key: item,
       value: {
@@ -51,7 +46,7 @@ const repostClick = () => {
     },
   };
 
-  if (!hasRepost && props.notifyAccountId) {
+  if (!hasRepostByUser && props.notifyAccountId) {
     data.index.notify = JSON.stringify({
       key: props.notifyAccountId,
       value: {
@@ -60,9 +55,14 @@ const repostClick = () => {
       },
     });
   }
+  const handleCommit = () => {
+    setLoading(false);
+    setHasRepostByUser(true);
+  };
+
   Social.set(data, {
-    onCommit: () => State.update({ loading: false, hasRepost: true }),
-    onCancel: () => State.update({ loading: false }),
+    onCommit: () => handleCommit(),
+    onCancel: () => setLoading(false),
   });
 };
 
@@ -132,11 +132,10 @@ const promoteToBlog = () => {
 };
 
 const buildMenu = (accountId, blockHeight) => {
-  // Hiding repost until dataplatform indexers are ready
   const menu = [
     {
       name: "Activity Feed",
-      disabled: !context.accountId,
+      disabled: hasRepostByUser,
       onSelect: () => repostClick(),
     },
   ];
@@ -158,12 +157,12 @@ return (
       <Widget
         src="${REPL_ACCOUNT}/widget/DIG.DropdownMenu"
         props={{
-          trigger: !state.hasRepost ? <i className="bi bi-repeat" /> : <i className="bi bi-check2" />,
+          trigger: !hasRepostByUser ? <i className="bi bi-repeat" /> : <i className="bi bi-pencil" />,
           items: buildMenu(accountId, blockHeight),
         }}
       />
       <Button type="button" title="Repost" aria-label="Repost" onClick={repostClick}>
-        {!state.hasRepost ? <i className="bi bi-repeat" /> : <i className="bi bi-check2" />}
+        {!hasRepostByUser ? <i className="bi bi-repeat" /> : <i className="bi bi-check2" />}
       </Button>
     </OverlayTrigger>
   </>

@@ -1,12 +1,14 @@
 const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
-const accountId = props.accountId;
+let accountId = props.accountId;
+let blockHeight = props.blockHeight === "now" ? "now" : parseInt(props.blockHeight);
 const verifications = props.verifications;
-const blockHeight = props.blockHeight === "now" ? "now" : parseInt(props.blockHeight);
 const blockTimestamp = props.blockTimestamp;
 const notifyAccountId = accountId;
 const postUrl = `https://${REPL_NEAR_URL}/s/p?a=${accountId}&b=${blockHeight}`;
 const showFlagAccountFeature = props.showFlagAccountFeature;
 const profile = props.profile;
+let repostedByProfile = null;
+let repostedByProfileUrl = null;
 const parsedContent = props.content
   ? typeof props.content === "string"
     ? JSON.parse(props.content)
@@ -23,6 +25,19 @@ State.init({
   content: parsedContent,
   likes: props.likes ?? undefined,
 });
+
+console.log("post-props", props);
+
+const repostData = props.repostData || null;
+
+if (repostData) {
+  accountId = repostData.original_post_accountId;
+  blockHeight = repostData.original_post_blockHeight;
+  repostedByProfile = Social.get(`${repostData.reposted_by}/profile/**`, "final");
+  repostedByProfileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${repostData.reposted_by}`;
+}
+
+console.log("repost-data", repostData);
 
 const edits = []; // Social.index('edit', { accountId, blockHeight }, { limit: 1, order: "desc", accountId })
 
@@ -180,6 +195,29 @@ const CommentWrapper = styled.div`
   }
 `;
 
+const TextLink = styled("Link")`
+  display: in-line block;
+  margin: 0;
+  font-size: 14px;
+  line-height: 18px;
+  color: ${(p) => (p.bold ? "#11181C !important" : "#687076 !important")};
+  font-weight: ${(p) => (p.bold ? "600" : "400")};
+  font-size: ${(p) => (p.small ? "12px" : "14px")};
+  overflow: ${(p) => (p.ellipsis ? "hidden" : "visible")};
+  text-overflow: ${(p) => (p.ellipsis ? "ellipsis" : "unset")};
+  white-space: nowrap;
+  outline: none;
+
+  &:focus,
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const TagsWrapper = styled.div`
+  padding-top: 4px;
+`;
+
 const optimisticallyHideItem = (message) => {
   State.update({
     hasBeenFlaggedOptimistic: true,
@@ -248,15 +286,44 @@ return (
     )}
     {!state.hasBeenFlagged && (
       <Post>
+        <>
+          {repostData ? (
+            <Widget
+              src="${REPL_ACCOUNT}/widget/AccountProfileOverlay"
+              props={{
+                accountId,
+                profile,
+                children: (
+                  <div className="row">
+                    <div className="col-auto ">
+                      <i className="bi bi-repeat" /> reposted by{" "}
+                      <TextLink href={repostedByProfileUrl} ellipsis>
+                        @{repostData.reposted_by}
+                      </TextLink>
+                      {tags.length > 0 && (
+                        <TagsWrapper>
+                          <Widget src="${REPL_ACCOUNT}/widget/Tags" props={{ tags, scroll: true }} />
+                        </TagsWrapper>
+                      )}
+                    </div>
+                  </div>
+                ),
+                placement: props.overlayPlacement,
+                verifications,
+                showFlagAccountFeature,
+              }}
+            />
+          ) : null}
+        </>
         <Header>
           <div className="row">
             <div className="col-auto">
               <Widget
                 src="${REPL_ACCOUNT}/widget/AccountProfile"
                 props={{
-                  profile,
+                  profile: repostData ? null : profile,
                   verifications,
-                  accountId,
+                  accountId: repostData ? repostData.original_post_accountId : accountId,
                   hideAccountId: true,
                   inlineContent: (
                     <>
@@ -277,8 +344,8 @@ return (
                   src="${REPL_ACCOUNT}/widget/Posts.Menu"
                   props={{
                     item,
-                    accountId: accountId,
-                    blockHeight: blockHeight,
+                    accountId: repostData.original_post_accountId || accountId,
+                    blockHeight: repostData.original_post_blockHeight || blockHeight,
                     parentFunctions: {
                       toggleEdit,
                       optimisticallyHideItem,

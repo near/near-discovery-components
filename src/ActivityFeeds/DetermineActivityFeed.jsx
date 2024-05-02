@@ -1,5 +1,7 @@
 const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT ?? "https://near-queryapi.api.pagoda.co";
 
+console.log("determine activity feed props", props);
+
 let lastPostSocialApi = Social.index("post", "main", {
   limit: 1,
   order: "desc",

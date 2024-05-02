@@ -2,10 +2,10 @@ const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT ?? "https://near-queryapi.api.pa
 const LIMIT = props.LIMIT ?? 25;
 const HASURA_ROLE = props.HASURA_ROLE ?? "dataplatform_near";
 
-function fetchGraphQL(operationsDoc, operationName, variables) {
+function fetchGraphQL(operationsDoc, operationName, variables, hasuraRole) {
   return asyncFetch(`${GRAPHQL_ENDPOINT}/v1/graphql`, {
     method: "POST",
-    headers: { "x-hasura-role": HASURA_ROLE },
+    headers: { "x-hasura-role": hasuraRole ?? HASURA_ROLE },
     body: JSON.stringify({
       query: operationsDoc,
       variables: variables,

@@ -395,7 +395,7 @@ return (
               <Flex $direction="column" $gap="32px">
                 <H1>Welcome</H1>
                 <Text $size="text-xl" $mobileSize="text-l" style={{ maxWidth: "385px" }}>
-                  Start building right away with easy to use developer tools.
+                  Start building right away with easy to use tutorials.
                 </Text>
               </Flex>
               <Flex $direction="column" $gap="16px" $mobileGap="48px">
@@ -403,14 +403,15 @@ return (
                   href="https://app.jutsu.ai"
                   target="_blank"
                   icon="ph-bold ph-plus"
-                  title="Create a Project"
+                  title="Create a UI Project"
                   text="Start tinkering with Jutsu.ai using a template or start a blank project."
                 />
                 <ButtonLink
-                  href="/components"
-                  icon="ph-bold ph-git-fork"
-                  title="Fork a Project"
-                  text="Get started by forking a component or app from NEAR's open source community."
+                  href="https://docs.near.org/build/smart-contracts/quickstart"
+                  target="_blank"
+                  icon="ph-bold ph-code-block"
+                  title="Smart Contracts"
+                  text="Learn how to create your first smart contract in NEAR testnet."
                 />
               </Flex>
             </Grid>
@@ -443,24 +444,21 @@ return (
               ))}
             </Grid>
           </Card>
-          <Card
-            title="Documentation &amp; Learning"
-            text="Dive into the docs or get started with a tutorial from Jutsu.ai"
-          >
+          <Card title="Documentation &amp; Learning" text="Dive into example apps or get started with developer tools.">
             <Flex $direction="column" $gap="16px" $mobileGap="48px">
               <ButtonLink
-                href="https://docs.near.org"
+                href="https://near.org/devhub.near/widget/app?page=community&handle=chain-abstraction&tab=technical-resources"
                 target="_blank"
-                icon="ph-bold ph-book-open-text"
-                title="Documentation"
-                text="Learn key concepts and build with confidence."
+                icon="ph-bold ph-link"
+                title="Chain Abstraction"
+                text="Unlock blockchain interoperability via a single NEAR account."
               />
               <ButtonLink
-                href="https://app.jutsu.ai/learn"
+                href="https://github.com/near#%EF%B8%8F-dev-tools"
                 target="_blank"
-                icon="ph-bold ph-video"
-                title="Lessons"
-                text="Try Jutsu.ai tutorials to build a decentralized frontend or a basic smart contract."
+                icon="ph-bold ph-wrench"
+                title="Near Tooling"
+                text="Explore the Near ecosystem's complete set of tools for you to build better, quickly."
               />
             </Flex>
           </Card>

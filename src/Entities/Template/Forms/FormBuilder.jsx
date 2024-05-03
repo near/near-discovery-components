@@ -212,38 +212,61 @@ const renderInput = (
       );
 
     case "image":
+      let hasUploadedFile = fieldValue && typeof fieldValue === "object";
+      if (typeof fieldValue === "string" && fieldValue.indexOf("{") > -1) {
+        try {
+          fieldValue = JSON.parse(fieldValue);
+        } catch (ignored) {}
+        hasUploadedFile = true;
+      }
+      const [useImageUrl, setUseImageUrl] = useState(!hasUploadedFile);
+      if (typeof useImageUrl === "object") {
+        setUseImageUrl(!hasUploadedFile);
+      }
       return (
         <div
           className="d-flex flex-column align-items-start justify-content-evenly gap-1 p-2"
           style={{ order: order, width: "100%" }}
         >
-          {renderBaseInputComponent({
-            inputComponentProps,
-            fieldProps,
-            isEditable,
-            noop,
-            isDisabled,
-            format,
-            fieldKey,
-            label,
-            form,
-            key,
-            style,
-            order: null,
-            fieldType,
-            fieldValue,
-            skipPaddingGap: true,
-            inputProps,
-          })}
+          <Widget
+            src="near/widget/DIG.Checkbox"
+            props={{
+              id: "useImageUrl",
+              checked: useImageUrl,
+              label: "Set Image from URL",
+              onCheckedChange: (e) => setUseImageUrl(!useImageUrl),
+            }}
+          />
+          {useImageUrl &&
+            renderBaseInputComponent({
+              inputComponentProps,
+              fieldProps,
+              isEditable,
+              noop,
+              isDisabled,
+              format,
+              fieldKey,
+              label,
+              form,
+              key,
+              style,
+              order: null,
+              fieldType,
+              fieldValue: hasUploadedFile ? "" : fieldValue,
+              skipPaddingGap: true,
+              inputProps,
+            })}
           <div className="p-2 align-items-start text-start">
             {fieldValue && (
               <img
                 style={{ objectFit: "cover", width: "30%", borderRadius: "10%" }}
-                src={fieldValue.startsWith("http") ? fieldValue : ipfsUrl(fieldValue)}
+                src={typeof fieldValue === "string" && fieldValue.startsWith("http") ? fieldValue : ipfsUrl(fieldValue)}
                 alt="upload preview"
               />
             )}
-            <span className="p-2">{renderUpload(fieldType, fieldValue, key, form.update({ path: [key] }))}</span>
+            {!useImageUrl && (
+              <span className="p-2">{renderUpload(fieldType, fieldValue, key, form.update({ path: [key] }))}</span>
+            )}
           </div>
         </div>
       );

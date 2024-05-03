@@ -130,6 +130,13 @@ const Name = styled.div`
   }
 `;
 
+const Logo = styled.img`
+  objectfit: "cover";
+  max-width: 2.8rem;
+  max-height: 2.8rem;
+  borderradius: "10%";
+`;
+
 const NameAndTags = styled.div`
   display: flex;
   flex-direction: column;
@@ -220,7 +227,7 @@ const defaultRenderTableItem = (rawItem, editFunction) => {
   const { accountId, name, displayName, logoUrl, tags, attributes } = item;
   const itemComponent = item.component ? item.component : `${REPL_ACCOUNT}/widget/Entities.Template.EntityDetails`;
   const imageUrl = logoUrl
-    ? logoUrl.startsWith("http")
+    ? typeof logoUrl == "string" && logoUrl.startsWith("http")
       ? logoUrl
       : ipfsUrl(logoUrl)
     : "https://ipfs.near.social/ipfs/bafkreibysr2mkwhb4j36h2t7mqwhynqdy4vzjfygfkfg65kuspd2bawauu";
@@ -242,7 +249,7 @@ const defaultRenderTableItem = (rawItem, editFunction) => {
     <Row>
       <Primary>
         <Name>
-          <img className="logo" src={imageUrl} alt="item logo" />
+          <Logo src={imageUrl} alt="item logo" />
 
           <NameAndTags>
             <Link to={detailsLink}>{displayName}</Link>

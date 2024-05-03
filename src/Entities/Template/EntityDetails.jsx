@@ -145,14 +145,12 @@ const entityProperties = (obj) => {
           switch (schemaField.type) {
             case "image":
               return (
-                <>
-                  <Text bold key={key}>
-                    {capitalize(key)}:
-                  </Text>
+                <Fragment key={key}>
+                  <Text bold>{capitalize(key)}:</Text>
                   <PropValue>
                     <img className="logo" src={imageUrl} alt={key} />
                   </PropValue>
-                </>
+                </Fragment>
               );
             case "file":
               return (

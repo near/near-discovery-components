@@ -105,8 +105,8 @@ const Search = styled.div`
   width: 246px;
   margin-right: auto;
 
-  @media (max-width: 500px) {
-    width: 100%;
+  @media (max-width: 300px) {
+    width: 50%;
   }
 `;
 
@@ -147,23 +147,14 @@ const Text = styled.p`
 
 const Flex = styled.div`
   display: flex;
-  gap: ${(p) => p.$gap};
-  align-items: ${(p) => p.$alignItems};
-  justify-content: ${(p) => p.$justifyContent};
-  flex-direction: ${(p) => p.$direction ?? "row"};
-  flex-wrap: ${(p) => p.$wrap ?? "nowrap"};
+  gap: 1rem;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
 
-  ${(p) =>
-    p.$mobileStack &&
-    `
-    @media (max-width: 900px) {
-      flex-direction: column;
-    }
-  `}
-
-  @media (max-width: 900px) {
-    gap: ${(p) => p.$mobileGap ?? p.$gap};
-    align-items: ${(p) => p.$mobileAlignItems ?? p.$alignItems};
+  @media (max-width: 300px) {
+    flex-direction: column;
+    align-items: flex-end;
   }
 `;
 

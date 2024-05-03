@@ -167,20 +167,6 @@ const Flex = styled.div`
   }
 `;
 
-const Grid = styled.div`
-  display: grid;
-  gap: ${(p) => p.$gap};
-  grid-template-columns: ${(p) => p.$columns};
-  align-items: ${(p) => p.$alignItems};
-  row-gap: ${(p) => p.$rowGap};
-
-  @media (max-width: 900px) {
-    grid-template-columns: ${(p) => p.$mobileColumns ?? "1fr"};
-    gap: ${(p) => p.$mobileGap ?? p.$gap};
-    row-gap: ${(p) => p.$mobileRowGap ?? p.$rowGap};
-  }
-`;
-
 const dialogStyles = {
   maxWidth: "800px",
   borderRadius: "14px",
@@ -194,7 +180,6 @@ const ScrollBox = styled.div`
 const Items = styled.div`
   display: ${props.table ? "flex" : "grid"};
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  display: flex;
   flex-direction: column;
   gap: 1rem;
 

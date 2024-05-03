@@ -398,7 +398,7 @@ return (
                   Start building right away with easy to use developer tools.
                 </Text>
               </Flex>
-              <Flex $direction="column" $gap="0" $mobileGap="48px">
+              <Flex $direction="column" $gap="16px" $mobileGap="48px">
                 <ButtonLink
                   href="https://app.jutsu.ai"
                   target="_blank"

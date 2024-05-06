@@ -140,7 +140,7 @@ const buildMenu = (accountId, blockHeight) => {
   ];
 
   if (item.path && item?.path?.includes("post/main")) {
-    menu.unshift({
+    menu.push({
       name: "My Blog",
       disabled: !context.accountId,
       onSelect: () => promoteToBlog(accountId, blockHeight),
@@ -152,17 +152,15 @@ const buildMenu = (accountId, blockHeight) => {
 
 return (
   <>
-    <OverlayTrigger placement="top" overlay={<Tooltip>{!state.hasRepost ? "Repost" : "You've reposted"}</Tooltip>}>
       <Widget
         src="${REPL_ACCOUNT}/widget/DIG.DropdownMenu"
         props={{
-          trigger: !hasRepostByUser ? <i className="bi bi-repeat" /> : <i className="bi bi-pencil" />,
+          trigger:  <Button type="button" title="Repost" aria-label="Repost" onClick={repostClick}>
+          {!hasRepostByUser ? <i className="bi-repeat" /> : <i className="bi bi-pencil" />}
+        </Button>,
           items: buildMenu(accountId, blockHeight),
         }}
       />
-      <Button type="button" title="Repost" aria-label="Repost" onClick={repostClick}>
-        {!hasRepostByUser ? <i className="bi bi-repeat" /> : <i className="bi bi-check2" />}
-      </Button>
-    </OverlayTrigger>
+     
   </>
 );

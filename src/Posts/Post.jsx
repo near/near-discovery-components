@@ -4,7 +4,7 @@ let blockHeight = props.blockHeight === "now" ? "now" : parseInt(props.blockHeig
 const verifications = props.verifications;
 const blockTimestamp = props.blockTimestamp;
 const notifyAccountId = accountId;
-const postUrl = `https://${REPL_NEAR_URL}/s/p?a=${accountId}&b=${blockHeight}`;
+let postUrl = `https://${REPL_NEAR_URL}/s/p?a=${accountId}&b=${blockHeight}`;
 const showFlagAccountFeature = props.showFlagAccountFeature;
 const profile = props.profile;
 let repostedByProfile = null;
@@ -26,18 +26,17 @@ State.init({
   likes: props.likes ?? undefined,
 });
 
-console.log("post-props", props);
-
 const repostData = props.repostData || null;
 
-if (repostData) {
-  accountId = repostData.original_post_accountId;
-  blockHeight = repostData.original_post_blockHeight;
-  repostedByProfile = Social.get(`${repostData.reposted_by}/profile/**`, "final");
-  repostedByProfileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${repostData.reposted_by}`;
+if (repostData || props.isRepost) {
+  accountId = repostData.original_post_accountId || props.accountId;
+  blockHeight = repostData.original_post_blockHeight || props.blockHeight;
+  repostedByProfile = Social.get(`${repostData.reposted_by || props.repostedBy}/profile/**`, "final");
+  repostedByProfileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${repostData.reposted_by || props.repostedBy}`;
+  postUrl = `https://${REPL_NEAR_URL}/s/rp?a=${accountId}&b=${blockHeight}&rb=${
+    repostData.reposted_by || props.repostedBy
+  }`;
 }
-
-console.log("repost-data", repostData);
 
 const edits = []; // Social.index('edit', { accountId, blockHeight }, { limit: 1, order: "desc", accountId })
 
@@ -196,15 +195,15 @@ const CommentWrapper = styled.div`
 `;
 
 const TextLink = styled("Link")`
-  display: in-line block;
+  display: inline block;
   margin: 0;
   font-size: 14px;
   line-height: 18px;
-  color: ${(p) => (p.bold ? "#11181C !important" : "#687076 !important")};
-  font-weight: ${(p) => (p.bold ? "600" : "400")};
-  font-size: ${(p) => (p.small ? "12px" : "14px")};
-  overflow: ${(p) => (p.ellipsis ? "hidden" : "visible")};
-  text-overflow: ${(p) => (p.ellipsis ? "ellipsis" : "unset")};
+  color: ${(p) => (p.$bold ? "#11181C !important" : "#687076 !important")};
+  font-weight: ${(p) => (p.$bold ? "600" : "400")};
+  font-size: ${(p) => (p.$small ? "12px" : "14px")};
+  overflow: ${(p) => (p.$ellipsis ? "hidden" : "visible")};
+  text-overflow: ${(p) => (p.$ellipsis ? "ellipsis" : "unset")};
   white-space: nowrap;
   outline: none;
 
@@ -287,7 +286,7 @@ return (
     {!state.hasBeenFlagged && (
       <Post>
         <>
-          {repostData ? (
+          {repostData || isRepost ? (
             <Widget
               src="${REPL_ACCOUNT}/widget/AccountProfileOverlay"
               props={{
@@ -297,7 +296,7 @@ return (
                   <div className="row">
                     <div className="col-auto ">
                       <i className="bi bi-repeat" /> reposted by{" "}
-                      <TextLink href={repostedByProfileUrl} ellipsis>
+                      <TextLink href={repostedByProfileUrl} $ellipsis>
                         @{repostData.reposted_by}
                       </TextLink>
                       {tags.length > 0 && (

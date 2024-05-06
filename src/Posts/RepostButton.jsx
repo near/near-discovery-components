@@ -8,7 +8,6 @@ const [loading, setLoading] = useState(false);
 const [hasRepostByUser, setHasRepostByUser] = useState(false);
 
 const reposts = Social.index("repost", item);
-console.log("reposts", reposts);
 
 const dataLoading = reposts === null;
 

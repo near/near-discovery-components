@@ -227,7 +227,6 @@ const loadMorePosts = (isUpdate) => {
         return;
       }
       let data = result.body.data;
-      console.log("data", data);
       if (data) {
         const newPosts = data.dataplatform_near_feed_moderated_posts_with_reposts_feed;
         const postsCountLeft = data.dataplatform_near_feed_moderated_posts_with_reposts_feed_aggregate.aggregate.count;
@@ -238,7 +237,7 @@ const loadMorePosts = (isUpdate) => {
             const tags = post.profile?.tags ? JSON.parse(post.profile.tags ?? "") : null;
             const prevComments = post.comments;
             // const filteredComments = prevComments.filter((comment) => !shouldFilter(comment, commentsModerationKey));
-            const filteredComments = prevComments;
+            const filteredComments = prevComments.filter((comment) => !shouldFilter(comment, commentsModerationKey));
             post.comments = filteredComments;
             post.profile = {
               name: post.profile?.name,

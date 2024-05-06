@@ -7,6 +7,10 @@ const Wrapper = styled.div`
   width: 240px;
   height: 100%;
 `;
+const Section = styled.div`
+  border-top: 1px solid #eceef0;
+  padding-top: 24px;
+`;
 
 const Title = styled.h2`
   font: var(text-l);
@@ -69,5 +73,6 @@ return (
         <Text>{item.name}</Text>
       </MenuItem>
     ))}
+    {props.additionalContent && <Section>{props.additionalContent}</Section>}
   </Wrapper>
 );

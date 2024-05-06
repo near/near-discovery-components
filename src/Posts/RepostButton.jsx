@@ -161,6 +161,5 @@ return (
           items: buildMenu(accountId, blockHeight),
         }}
       />
-     
   </>
 );

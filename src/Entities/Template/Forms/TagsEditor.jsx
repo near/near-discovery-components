@@ -6,6 +6,7 @@ if (!loadItems) {
 const { namespace, entityType, value, setValue } = props;
 
 const placeholder = props.placeholder ?? "Tags";
+const allowNew = props.allowNew ?? true;
 
 const [items, setItems] = useState(null);
 const [tags, setTags] = useState(value || []);
@@ -89,7 +90,7 @@ return (
       placeholder={placeholder}
       selected={tags ?? []}
       positionFixed
-      allowNew
+      allowNew={allowNew}
     />
   </>
 );

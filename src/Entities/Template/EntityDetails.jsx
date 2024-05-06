@@ -81,8 +81,6 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 32px;
-  padding-bottom: 48px;
-  padding-left: 48px;
 `;
 
 const ContentWrapper = styled.div`
@@ -105,14 +103,14 @@ const Header = styled.h1`
 `;
 
 const Properties = styled.div`
-  margin: 2em;
-  display: grid;
-  grid-template-columns: 5em 1fr;
-  gap: 16px;
+  padding-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 `;
+
 const Text = styled.p`
   margin: 0;
-  font-size: 14px;
   line-height: 20px;
   color: ${(p) => (p.bold ? "#11181C" : "#687076")};
   font-weight: ${(p) => (p.bold ? "600" : "400")};
@@ -122,24 +120,66 @@ const Text = styled.p`
     margin-right: 4px;
   }
 `;
-const PropValue = styled.p`
+const PropValue = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   margin: 0;
   font-size: 14px;
   line-height: 20px;
-  padding-bottom: 10px;
+  padding-bottom: 0.5rem;
+
+  p {
+    margin: 0;
+  }
 `;
+
 const entityProperties = (obj) => {
   const attributes = obj.attributes;
   return (
     <Properties>
-      {Object.keys(attributes).map((k) => (
-        <>
-          <Text bold key={k}>
-            {capitalize(k)}:
-          </Text>
-          <PropValue>{attributes[k]}</PropValue>
-        </>
-      ))}
+      {attributes &&
+        Object.keys(attributes).map((key) => {
+          const schemaField = schema[key];
+          const value = attributes[key];
+          switch (schemaField.type) {
+            case "image":
+              return (
+                <Fragment key={key}>
+                  <Text bold>{capitalize(key)}:</Text>
+                  <PropValue>
+                    <img className="logo" src={imageUrl} alt={key} />
+                  </PropValue>
+                </Fragment>
+              );
+            case "file":
+              return (
+                <>
+                  <Text bold key={key}>
+                    {capitalize(key)}:
+                  </Text>
+                  <PropValue>
+                    {value && (
+                      <ul>
+                        <li>{value?.name}</li>
+                        <li>{value.type}</li>
+                        <li>{value.size} bytes</li>
+                      </ul>
+                    )}
+                  </PropValue>
+                </>
+              );
+            default:
+              return (
+                <>
+                  <Text bold key={key}>
+                    {capitalize(key)}:
+                  </Text>
+                  <PropValue>{value}</PropValue>
+                </>
+              );
+          }
+        })}
     </Properties>
   );
 };
@@ -174,7 +214,7 @@ const tabs = () => {
 };
 
 return (
-  <Wrapper>
+  <Wrapper className="gateway-page-container">
     {returnTo && (
       <Link to={listLink}>
         <Header>
@@ -200,13 +240,13 @@ return (
         src="${REPL_ACCOUNT}/widget/DIG.Tabs"
         props={{
           variant: "line",
-          size: "large",
           defaultValue: "properties",
           items: tabs(),
         }}
       />
-
-      <Widget src="${REPL_ACCOUNT}/widget/ComponentDetails.Sidebar" props={{ src }} />
+      <div>
+        <Widget src="${REPL_ACCOUNT}/widget/ComponentDetails.Sidebar" props={{ src }} />
+      </div>
     </ContentWrapper>
   </Wrapper>
 );

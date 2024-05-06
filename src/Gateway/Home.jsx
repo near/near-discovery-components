@@ -1,5 +1,5 @@
 const Wrapper = styled.div`
-  --section-gap: 20px;
+  --section-gap: 2rem;
   --text-hero: 500 56px/1 "FK Grotesk", "Mona Sans", sans-serif;
   gap: var(--section-gap);
   display: flex;
@@ -95,10 +95,6 @@ const Grid = styled.div`
 
 const Section = styled.div`
   position: relative;
-
-  @media (max-width: 900px) {
-    padding: 0 14px;
-  }
 `;
 
 const Container = styled.div`
@@ -349,7 +345,7 @@ const Card = ({ title, text, children }) => (
     $shadow="0px 0px 0px 1px rgba(0, 0, 0, 0.02), 0px 4px 8px 0px rgba(0, 0, 0, 0.06)"
   >
     <PatternContent $padding="24px">
-      <Flex $direction="column" $gap="56px" $mobileGap="48px">
+      <Flex $direction="column" $gap="36px" $mobileGap="24px">
         <Flex $direction="column" $gap="24px">
           <Text $size="text-xl" $fontWeight="500">
             {title}
@@ -395,11 +391,11 @@ return (
       <Container>
         <Pattern $background="linear-gradient(264deg, #CFCCF5 0%, #A39CEC 99.35%)" $borderRadius="16px">
           <PatternContent $padding="55px 24px 55px 48px" $mobilePadding="48px 20px">
-            <Grid $gap="24px" $columns="1fr 1fr">
+            <Grid $gap="24px" $mobileGap="48px" $columns="1fr 1fr">
               <Flex $direction="column" $gap="32px">
                 <H1>Welcome</H1>
                 <Text $size="text-xl" $mobileSize="text-l" style={{ maxWidth: "385px" }}>
-                  Start building right away with easy to use developer tools.
+                  Start building right away with easy to use tutorials.
                 </Text>
               </Flex>
               <Flex $direction="column" $gap="16px" $mobileGap="48px">
@@ -407,14 +403,15 @@ return (
                   href="https://app.jutsu.ai"
                   target="_blank"
                   icon="ph-bold ph-plus"
-                  title="Create a Project"
+                  title="Create a UI Project"
                   text="Start tinkering with Jutsu.ai using a template or start a blank project."
                 />
                 <ButtonLink
-                  href="/components"
-                  icon="ph-bold ph-git-fork"
-                  title="Fork a Project"
-                  text="Get started by forking a component or app from NEAR's open source community."
+                  href="https://docs.near.org/build/smart-contracts/quickstart"
+                  target="_blank"
+                  icon="ph-bold ph-code-block"
+                  title="Smart Contracts"
+                  text="Learn how to create your first smart contract in NEAR testnet."
                 />
               </Flex>
             </Grid>
@@ -434,7 +431,7 @@ return (
               </>
             }
           >
-            <Grid $gap="20px" $rowGap="24px" $columns="1fr 1fr" $mobileColumns="1fr 1fr">
+            <Grid $gap="20px" $rowGap="24px" $columns="1fr 1fr">
               {topRatingApps.map((app) => (
                 <TrendingApp
                   key={app.slug}
@@ -447,24 +444,21 @@ return (
               ))}
             </Grid>
           </Card>
-          <Card
-            title="Documentation &amp; Learning"
-            text="Dive into the docs or get started with a tutorial from Jutsu.ai"
-          >
+          <Card title="Documentation &amp; Learning" text="Dive into example apps or get started with developer tools.">
             <Flex $direction="column" $gap="16px" $mobileGap="48px">
               <ButtonLink
-                href="https://docs.near.org"
+                href="https://near.org/devhub.near/widget/app?page=community&handle=chain-abstraction&tab=technical-resources"
                 target="_blank"
-                icon="ph-bold ph-book-open-text"
-                title="Documentation"
-                text="Learn key concepts and build with confidence."
+                icon="ph-bold ph-link"
+                title="Chain Abstraction"
+                text="Unlock blockchain interoperability via a single NEAR account."
               />
               <ButtonLink
-                href="https://app.jutsu.ai/learn"
+                href="https://github.com/near#%EF%B8%8F-dev-tools"
                 target="_blank"
-                icon="ph-bold ph-video"
-                title="Lessons"
-                text="Try Jutsu.ai tutorials to build a decentralized frontend or a basic smart contract."
+                icon="ph-bold ph-wrench"
+                title="Near Tooling"
+                text="Explore the Near ecosystem's complete set of tools for you to build better, quickly."
               />
             </Flex>
           </Card>

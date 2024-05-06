@@ -1,46 +1,126 @@
-const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
+const { fetchGraphQL } = VM.require("${REPL_ACCOUNT}/widget/Entities.QueryApi.Client");
+if (!fetchGraphQL) {
+  return <p>Loading modules...</p>;
+}
 
 const indexerAccount = props.indexerAccount || "dataplatform.near";
-const indexerAccountLink = indexerAccount.replace(".", "_");
+const sanitizedAccountId = indexerAccount.replace(/[^a-zA-Z0-9]/g, "_").replace(/^([0-9])/, "_$1");
 const indexerFilter = props.indexerFilter || null;
-const fullFilter = indexerFilter ? indexerAccount + "/" + indexerFilter : indexerAccount;
 
-const [statuses, setIndexerStatuses] = useState([]);
+const [statuses, setIndexerStatuses] = useState({});
 const [errors, setErrors] = useState("");
-function fetchGraphQL(operationsDoc, operationName, variables) {
-  return asyncFetch(`${GRAPHQL_ENDPOINT}/v1/graphql`, {
-    method: "POST",
-    headers: { "x-hasura-role": "append" },
-    body: JSON.stringify({
-      query: operationsDoc,
-      variables: variables,
-      operationName: operationName,
-    }),
-  });
+const [timer, setTimer] = useState(null);
+
+const [latestBlock, setLatestBlock] = useState(0);
+const [latestFinalBlock, setLatestFinalBlock] = useState(0);
+const [indexerList, setIndexerList] = useState(null);
+const registryContract = "queryapi.dataplatform.near";
+const registry = Near.view(registryContract, "list_indexer_functions", {
+  account_id: indexerAccount,
+});
+
+if (!registry) {
+  return <div>Loading indexer list from contract...</div>;
+} else {
+  try {
+    const keys = Object.keys(registry["Account"]);
+    const sanitizedIndexerNames = keys.map((k) => k.replace(/[^a-zA-Z0-9]/g, "_").replace(/^([0-9])/, "_$1"));
+
+    setIndexerList(sanitizedIndexerNames);
+  } catch (e) {
+    setErrors(e);
+  }
 }
-const query = `query MyQuery {
-  indexer_state(where: {function_name: {_like: "${fullFilter}%"}}) {
-    current_historical_block_height
-    status
-    current_block_height
-    function_name
+
+const defaultIndexerList = [
+  "access_keys_v1",
+  "accounts",
+  "components",
+  "entities",
+  "feed",
+  "moderation",
+  "notifications",
+  "social_feed",
+  "verifications",
+];
+
+if (!indexerList) {
+  return (
+    <div>
+      <p>Indexer list failed to load from contract</p>
+      <button onClick={() => setIndexerList(defaultIndexerList)}>Use default indexer list</button>
+    </div>
+  );
+}
+
+const query = (indexer) => `query StatusQuery($offset: Int, $limit: Int) {
+  ${sanitizedAccountId}_${indexer}_sys_metadata(offset: $offset, limit: $limit) {
+    attribute
+    value
   }
 }`;
-fetchGraphQL(query).then((result) => {
-  if (result.status === 200 && result.body) {
-    if (result.body.errors) {
-      setErrors(result.body.errors);
-      return;
-    }
-    let data = result.body.data;
-    if (data) {
-      const statuses = data.indexer_state;
-      if (statuses.length > 0) {
-        setIndexerStatuses(statuses);
+
+function handleResults(indexer, result) {
+  try {
+    if (result.status === 200 && result.body) {
+      if (result.body.errors) {
+        setErrors(result.body.errors);
+        return;
+      }
+      let data = result.body.data;
+      if (data) {
+        const statuses = data[`${sanitizedAccountId}_${indexer}_sys_metadata`];
+        if (statuses.length > 0) {
+          const status = statuses.find((s) => s.attribute === "STATUS")?.value;
+          const blockHeight = statuses.find((s) => s.attribute === "LAST_PROCESSED_BLOCK_HEIGHT")?.value;
+          const newStatus = { [indexer]: { status, blockHeight } };
+          setIndexerStatuses((prev) => ({ ...prev, ...newStatus }));
+        }
       }
     }
+  } catch (e) {
+    setErrors(e);
   }
-});
+}
+
+const rpcBlock = (finality) =>
+  asyncFetch("https://rpc.mainnet.near.org", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      id: "dontcare",
+      method: "block",
+      params: {
+        finality,
+      },
+    }),
+  });
+
+const update = () => {
+  rpcBlock("optimistic").then((res) => setLatestBlock(res.body.result.header.height));
+  rpcBlock("final").then((res) => setLatestFinalBlock(res.body.result.header.height));
+  if (indexerList) {
+    indexerList.forEach((indexer) =>
+      fetchGraphQL(
+        query(indexer),
+        "StatusQuery",
+        {
+          offset: 0,
+          limit: 100,
+        },
+        sanitizedAccountId,
+      ).then((result) => handleResults(indexer, result)),
+    );
+  }
+};
+
+if (!timer) {
+  update();
+  setTimer(setInterval(update, 1000));
+}
 
 const StatusTable = styled.table`
   border-collapse: collapse;
@@ -59,6 +139,7 @@ const TableHeader = styled.th`
 `;
 
 const TableElement = styled.td`
+  font-weight: ${(td) => (td.bold ? "800" : "400")};
   word-wrap: break-word;
   padding: 1em;
 `;
@@ -73,26 +154,37 @@ return (
           </TableHeader>
           <TableHeader>Status</TableHeader>
           <TableHeader>Current Block Height</TableHeader>
-          <TableHeader>Current Historical Block Height</TableHeader>
         </tr>
       </thead>
       <tbody>
-        {statuses.map((status) => (
-          <tr key={status.function_name}>
-            <TableElement>{status.function_name?.split("/")[1]}</TableElement>
-            <TableElement>
-              <span style={{ color: status.status === "RUNNING" ? "green" : "red" }}>{status.status}</span>
-            </TableElement>
-            <TableElement>{status.current_block_height}</TableElement>
-            <TableElement>{status.current_historical_block_height}</TableElement>
-          </tr>
-        ))}
+        <tr>
+          <TableElement bold>Latest Optimistic Block</TableElement>
+          <TableElement>MAINNET</TableElement>
+          <TableElement bold>{latestBlock}</TableElement>
+        </tr>
+        <tr>
+          <TableElement bold>Latest Final Block</TableElement>
+          <TableElement>MAINNET</TableElement>
+          <TableElement bold>{latestFinalBlock}</TableElement>
+        </tr>
+        {Object.entries(statuses)
+          .sort()
+          .map(([indexer, status]) => (
+            <tr key={indexer}>
+              <TableElement>{indexer}</TableElement>
+              <TableElement>
+                <span style={{ color: status.status === "RUNNING" ? "green" : "red" }}>{status.status}</span>
+              </TableElement>
+              <TableElement>{status.blockHeight}</TableElement>
+            </tr>
+          ))}
       </tbody>
     </StatusTable>
-    <div>{errors}</div>
+    <hr />
+    <div>{errors ? JSON.stringify(errors) : ""}</div>
     <Link
       target="_blank"
-      href={`https://cloud.hasura.io/public/graphiql?endpoint=https://near-queryapi.api.pagoda.co/v1/graphql&header=x-hasura-role%3A${indexerAccountLink}`}
+      href={`https://cloud.hasura.io/public/graphiql?endpoint=https://near-queryapi.api.pagoda.co/v1/graphql&header=x-hasura-role%3A${sanitizedAccountId}`}
     >
       Explore Data
     </Link>

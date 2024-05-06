@@ -1,9 +1,14 @@
 const { href } = VM.require("${REPL_DEVHUB}/widget/core.lib.url");
-if (!href) {
-  return <></>;
+const { ipfsUrl } = VM.require("${REPL_ACCOUNT}/widget/Entities.QueryApi.Ipfs");
+const { convertObjectKeysSnakeToPascal } = VM.require("${REPL_ACCOUNT}/widget/Entities.QueryApi.Client");
+
+if (!href || !ipfsUrl || !convertObjectKeysSnakeToPascal) {
+  return <p>Loading modules...</p>;
 }
 
-const { namespace, entityType, title, schemaFile, homeLink } = props;
+const { namespace, entityType, schemaFile } = props; // data props
+const { title, homeLink, globalTagFilter, setGlobalTagFilter } = props; // display props
+
 const schemaLocation = schemaFile ? schemaFile : `${REPL_ACCOUNT}/widget/Entities.Template.GenericSchema`;
 const { genSchema } = VM.require(schemaLocation);
 if (!genSchema) {
@@ -18,15 +23,48 @@ const user = "dataplatform_near";
 const collection = `${user}_${entityIndexer}_${entityTable}`;
 
 const dataFields = Object.keys(schema).filter((key) => typeof schema[key] === "object");
-const standardFields = ["id", "accountId", "name", "displayName", "logoUrl", "attributes"];
+const standardFields = ["id", "accountId", "name", "displayName", "logoUrl", "attributes", "tags"];
 const attributeFields = dataFields.filter((key) => !standardFields.includes(key));
 const ns = namespace ? namespace : "default";
-const buildQueries = (searchKey, sort) => {
-  const queryFilter = searchKey ? `display_name: {_ilike: "%${searchKey}%"}` : "";
+const buildQueries = (searchKey, sort, filters) => {
+  function arrayInPostgresForm(a) {
+    if (!a) return a;
+    try {
+      const stringArray = JSON.stringify(a);
+      return stringArray.replaceAll("[", "{").replaceAll("]", "}").replaceAll('"', '\\"');
+    } catch (error) {
+      console.error("Malformed array field - Error parsing JSON", error);
+      return "";
+    }
+  }
+
+  let queryFilter = searchKey ? `, display_name: {_ilike: "%${searchKey}%"}` : "";
+  if (filters) {
+    Object.keys(filters).forEach((key) => {
+      const filter = filters[key];
+      if (!key || !filter) return;
+      if (filter) {
+        switch (key) {
+          case "tags":
+            if (filter && filter.length > 0) {
+              queryFilter += `, tags: {_contains: "${arrayInPostgresForm(filter)}"}`;
+            }
+            break;
+          case "stars":
+            queryFilter += `, stars: {_gte: ${filter}}`;
+            break;
+          default:
+            queryFilter += `, ${key}: {_eq: "${filter}"}`;
+            break;
+        }
+      }
+    });
+  }
+
   return `
 query ListQuery($offset: Int, $limit: Int) {
   ${collection}(
-      where: {namespace: {_eq: "${ns}"}, entity_type: {_eq: "${entityType}"}, ${queryFilter}}
+      where: {namespace: {_eq: "${ns}"}, entity_type: {_eq: "${entityType}"} ${queryFilter}}
       order_by: [${sort} ], 
       offset: $offset, limit: $limit) {
       entity_type
@@ -54,38 +92,97 @@ query ListQuery($offset: Int, $limit: Int) {
 };
 const queryName = "ListQuery";
 
-const convertSnakeToPascal = (item) => {
-  const newItems = {};
-  Object.keys(item).forEach((key) => {
-    const pascalKey = key.replace(/(_\w)/g, (m) => m[1].toUpperCase());
-    newItems[pascalKey] = item[key];
-  });
-  return newItems;
-};
-const convertPascalToSnake = (itemArray) => {
-  const newItems = [];
-  itemArray.forEach((key) => {
-    const snakeKey = key.replace(/([A-Z])/g, (m) => "_" + m.toLowerCase());
-    newItems.unshift(snakeKey);
-  });
-  return newItems;
-};
+const Primary = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex-grow: 1;
+`;
 
 const Row = styled.div`
-  vertical-align: middle;
-  padding-bottom: 1em;
-  img.logo {
-    width: 30%;
-    aspect-ratio: 1 / 1;
-    border-radius: 50%;
+  display: flex;
+  align-items: stretch;
+  gap: 2rem;
+  padding: 2rem;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid #eceef0;
+  box-shadow:
+    0px 1px 3px rgba(16, 24, 40, 0.1),
+    0px 1px 2px rgba(16, 24, 40, 0.06);
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+  }
+`;
+
+const Name = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .logo {
+    width: 3rem;
+    height: 3rem;
     object-fit: cover;
   }
 `;
+
+const Logo = styled.img`
+  objectfit: "cover";
+  max-width: 2.8rem;
+  max-height: 2.8rem;
+  borderradius: "10%";
+`;
+
+const NameAndTags = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+`;
+
+const Details = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  font: var(--text-xs);
+  padding-top: 1rem;
+
+  * {
+    margin: 0;
+  }
+
+  @media (max-width: 800px) {
+    padding-top: 0;
+  }
+`;
+
 const Actions = styled.div`
   display: flex;
   align-items: center;
   gap: 2px;
 `;
+
+const ActionsAndAuthor = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2rem;
+  flex-grow: 1;
+
+  @media (max-width: 800px) {
+    align-items: flex-start;
+    gap: 1rem;
+  }
+`;
+
+const Author = styled.div`
+  margin-top: auto;
+`;
+
 const sharedButtonStyles = `
   display: inline-flex;
   align-items: center;
@@ -124,16 +221,15 @@ const Button = styled.button`
     background: ${(p) => (p.primary ? "rgb(112 242 164)" : "#ECEDEE")};
   }
 `;
-const TagsWrapper = styled.div`
-  padding: 4px;
-`;
 
 const defaultRenderTableItem = (rawItem, editFunction) => {
-  const item = convertSnakeToPascal(rawItem);
+  const item = convertObjectKeysSnakeToPascal(rawItem);
   const { accountId, name, displayName, logoUrl, tags, attributes } = item;
   const itemComponent = item.component ? item.component : `${REPL_ACCOUNT}/widget/Entities.Template.EntityDetails`;
   const imageUrl = logoUrl
-    ? logoUrl
+    ? typeof logoUrl == "string" && logoUrl.startsWith("http")
+      ? logoUrl
+      : ipfsUrl(logoUrl)
     : "https://ipfs.near.social/ipfs/bafkreibysr2mkwhb4j36h2t7mqwhynqdy4vzjfygfkfg65kuspd2bawauu";
   const actionLink = href({
     widgetSrc: itemComponent,
@@ -150,29 +246,65 @@ const defaultRenderTableItem = (rawItem, editFunction) => {
   const editIcon = editType === "edit" ? "ph-bold ph-pencil-simple" : "ph-bold ph-git-fork";
 
   return (
-    <Row className="row">
-      <div className="col-2">
-        <img className="logo" src={imageUrl} alt="item logo" />
-      </div>
-      <div className="col-2">
-        <Link to={detailsLink}>{displayName}</Link>
-        {tags && tags.length > 0 && (
-          <TagsWrapper>
-            <Widget
-              src="${REPL_ACCOUNT}/widget/Tags"
-              props={{
-                tags,
-              }}
-            />
-          </TagsWrapper>
-        )}
-      </div>
-      {attributeFields.map((key) => {
-        const value = attributes[key];
-        const formattedValue = value?.length > 50 ? value.substring(0, 50) + "..." : value;
-        return <div className="col-1">{formattedValue}</div>;
-      })}
-      <div className="col-2">
+    <Row>
+      <Primary>
+        <Name>
+          <Logo src={imageUrl} alt="item logo" />
+
+          <NameAndTags>
+            <Link to={detailsLink}>{displayName}</Link>
+
+            {tags && tags.length > 0 && (
+              <Widget
+                src="${REPL_ACCOUNT}/widget/Tags"
+                props={{
+                  tags,
+                }}
+              />
+            )}
+          </NameAndTags>
+        </Name>
+
+        {attributeFields.map((key) => {
+          const schemaField = schema[key];
+          const value = attributes[key];
+          switch (schemaField.type) {
+            case "file":
+              if (value) {
+                return (
+                  <Details>
+                    <Widget
+                      src="${REPL_ACCOUNT}/widget/DIG.Button"
+                      props={{
+                        href: ipfsUrl(value),
+                        target: "_blank",
+                        icon: "ph-bold ph-download-simple",
+                        fill: "outline",
+                        size: "small",
+                        title: value?.name,
+                      }}
+                    />
+                    <p>{value.type}</p>
+                    <p>{value.size} bytes</p>
+                  </Details>
+                );
+              }
+              return <></>;
+            default:
+              const formattedValue = value?.length > 50 ? value.substring(0, 50) + "..." : value;
+              if (formattedValue) {
+                return (
+                  <Details>
+                    <p>{formattedValue}</p>
+                  </Details>
+                );
+              }
+              return <></>;
+          }
+        })}
+      </Primary>
+
+      <ActionsAndAuthor>
         <Actions>
           <Widget
             src="${REPL_ACCOUNT}/widget/DIG.Tooltip"
@@ -183,7 +315,7 @@ const defaultRenderTableItem = (rawItem, editFunction) => {
                   src="${REPL_ACCOUNT}/widget/DIG.Button"
                   props={{
                     onClick: () => editFunction(item),
-                    iconLeft: editIcon,
+                    icon: editIcon,
                     variant: "secondary",
                     fill: "ghost",
                     size: "small",
@@ -192,25 +324,26 @@ const defaultRenderTableItem = (rawItem, editFunction) => {
               ),
             }}
           />
+
           <Widget
             src="${REPL_ACCOUNT}/widget/DIG.Tooltip"
             props={{
               content: "View Details",
               trigger: (
-                <Link to={detailsLink} style={{ all: "unset" }}>
-                  <Widget
-                    src="${REPL_ACCOUNT}/widget/DIG.Button"
-                    props={{
-                      iconLeft: "ph-bold ph-eye",
-                      variant: "secondary",
-                      fill: "ghost",
-                      size: "small",
-                    }}
-                  />
-                </Link>
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/DIG.Button"
+                  props={{
+                    icon: "ph-bold ph-eye",
+                    variant: "secondary",
+                    fill: "ghost",
+                    size: "small",
+                    href: detailsLink,
+                  }}
+                />
               ),
             }}
           />
+
           <Widget
             src="${REPL_ACCOUNT}/widget/SocialIndexActionButton"
             key={name}
@@ -233,29 +366,28 @@ const defaultRenderTableItem = (rawItem, editFunction) => {
                 </Button>
               ),
             }}
-          />{" "}
-          <Button>
-            <Widget
-              src="${REPL_ACCOUNT}/widget/CopyUrlButton"
-              props={{
-                url: actionUrl,
-              }}
-            />
-          </Button>
-          <Button>
-            <Widget
-              src="${REPL_ACCOUNT}/widget/ShareButton"
-              props={{
-                postType: "Placeholder",
-                url: actionUrl,
-              }}
-            />
-          </Button>
-          <span style={{ whiteSpace: "nowrap" }}>
-            by <Widget src="${REPL_MOB}/widget/ProfileLine" props={{ accountId: accountId, hideAccountId: true }} />
-          </span>
+          />
+
+          <Widget
+            src="${REPL_ACCOUNT}/widget/CopyUrlButton"
+            props={{
+              url: actionUrl,
+            }}
+          />
+
+          <Widget
+            src="${REPL_ACCOUNT}/widget/ShareButton"
+            props={{
+              postType: "Placeholder",
+              url: actionUrl,
+            }}
+          />
         </Actions>
-      </div>
+
+        <Author>
+          by <Widget src="${REPL_MOB}/widget/ProfileLine" props={{ accountId: accountId, hideAccountId: true }} />
+        </Author>
+      </ActionsAndAuthor>
     </Row>
   );
 };
@@ -267,7 +399,17 @@ return (
   <div>
     <Widget
       src="${REPL_ACCOUNT}/widget/Entities.Template.EntityList"
-      props={{ table, buildQueries, queryName, collection, renderItem, createWidget, schema }}
+      props={{
+        table,
+        buildQueries,
+        queryName,
+        collection,
+        renderItem,
+        createWidget,
+        schema,
+        globalTagFilter,
+        setGlobalTagFilter,
+      }}
     />
   </div>
 );

@@ -31,7 +31,19 @@ const inputsValidator = (formValues) =>
     return !required || typeof formValues[key] === "string";
   });
 
-const actionType = data ? (data.accountId === context.accountId ? "Edit" : "Fork") : "Create";
+const flattenAttributes = (data) => {
+  if (!data.attributes) {
+    return data;
+  }
+  const flattened = { ...data };
+  Object.keys(data.attributes).forEach((key) => {
+    flattened[key] = data.attributes[key];
+  });
+  delete flattened.attributes;
+  return flattened;
+};
+const flattenedData = data ? flattenAttributes(data) : data;
+const actionType = data ? (flattenedData.accountId === context.accountId ? "Edit" : "Fork") : "Create";
 
 const initialValues = (schema, data) => {
   const initial = data ?? {};
@@ -62,7 +74,7 @@ return (
       submitLabel: data ? "Save" : "Launch",
       onCancel: onCancel,
       cancelLabel: cancelLabel,
-      externalState: initialValues(schema, data),
+      externalState: initialValues(schema, flattenedData),
       namespace,
       entityType,
     }}

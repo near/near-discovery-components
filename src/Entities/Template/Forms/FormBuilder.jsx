@@ -1,12 +1,13 @@
 // forked from devhub.near/widget/devhub.components.organism.Configurator
 const Struct = VM.require("devhub.near/widget/core.lib.struct");
+const { ipfsUpload, ipfsUrl } = VM.require("${REPL_ACCOUNT}/widget/Entities.QueryApi.Ipfs");
 
-if (!Struct) {
+if (!Struct || !ipfsUpload || !ipfsUrl) {
   return <p>Loading modules...</p>;
 }
 
 const { namespace, entityType } = props;
-const passthroughFieldUpdate = ({ input, lastKnownValue, params }) => {
+const passthroughFieldUpdate = ({ input }) => {
   return input;
 };
 
@@ -75,62 +76,79 @@ const ValueView = styled.div`
   }
 `;
 
-const fieldParamsByType = {
-  array: {
-    name: "devhub.near/widget/devhub.components.molecule.Input",
-    inputProps: { type: "text" },
-  },
-
+const inputComponentByType = {
   boolean: {
-    name: "devhub.near/widget/devhub.components.atom.Toggle",
-  },
-
-  string: {
-    name: "devhub.near/widget/devhub.components.molecule.Input",
-    inputProps: { type: "text" },
-  },
-  tags: {
-    name: "mob.near/widget/TagsEditor",
-    inputProps: { type: "text" },
+    component: "devhub.near/widget/devhub.components.atom.Toggle",
   },
 };
+const defaultInputComponentProperties = {
+  component: "devhub.near/widget/devhub.components.molecule.Input",
+  inputProps: { type: "text" },
+};
 
-const renderInput = (
-  key,
+const [uploadStatus, setUploadStatus] = useState({});
+
+const fileUpload = (files, updateFormFunction) => {
+  if (files?.length > 0) {
+    setUploadStatus({
+      uploading: true,
+      cid: null,
+    });
+    ipfsUpload(files[0]).then((cid) => {
+      const fileProps = files[0];
+      updateFormFunction({ cid, name: fileProps.name, type: fileProps.type, size: fileProps.size });
+      setUploadStatus({
+        uploading: false,
+        cid: cid,
+      });
+    });
+  } else {
+    setUploadStatus({});
+  }
+};
+
+const renderUpload = (type, fieldValue, key, updateFormFunction) => {
+  const typeText = type === "image" ? "Image" : "File";
+  return (
+    <>
+      <Files
+        multiple={false}
+        accepts={type === image ? ["image/*"] : null}
+        minFileSize={1}
+        clickable
+        onChange={(files) => {
+          fileUpload(files, updateFormFunction);
+        }}
+        className="btn btn-outline-primary"
+      >
+        {uploadStatus.uploading ? "Uploading..." : fieldValue ? "Replace " + typeText : "Upload " + typeText}
+      </Files>{" "}
+      <span style={{ paddingLeft: "5px" }}>32MB limit</span>
+    </>
+  );
+};
+
+function renderBaseInputComponent({
+  inputComponentProps,
+  fieldProps,
+  isEditable,
+  noop,
+  isDisabled,
+  format,
+  fieldKey,
+  label,
   form,
-  { label, fieldProps, fieldKey, noop, style, order, format, inputProps },
+  key,
+  style,
+  order,
   fieldType,
   fieldValue,
-  isEditable,
-) => {
-  const isDisabled = noop ?? inputProps.disabled ?? false;
-  if (fieldType === "tags") {
-    return (
-      <div
-        className="d-flex flex-column align-items-start justify-content-evenly"
-        style={{ order: order, width: "100%" }}
-      >
-        <span className="d-inline-flex gap-1 text-wrap">
-          <span>{label}</span>
-          {inputProps.required ? <span className="text-danger">*</span> : null}
-        </span>
-        <Widget
-          src="${REPL_ACCOUNT}/widget/Entities.Template.Forms.TagsEditor"
-          props={{
-            value: fieldValue,
-            placeholder: "training, foundation, supervised",
-            setValue: form.update({ path: [key], via: passthroughFieldUpdate }),
-            namespace,
-            entityType,
-          }}
-        />
-      </div>
-    );
-  }
-
+  skipPaddingGap,
+  inputProps,
+}) {
   return (
     <Widget
-      src={`${fieldParamsByType[fieldType].name}`}
+      src={inputComponentProps.component}
       props={{
         ...fieldProps,
         className: ["w-100", fieldProps.className ?? "", isEditable && !noop ? "" : "d-none"].join(" "),
@@ -143,19 +161,157 @@ const renderInput = (
         style: { ...style, order },
 
         value: fieldType === "array" && format === "comma-separated" ? fieldValue.join(", ") : fieldValue,
-
+        skipPaddingGap,
         inputProps: {
           ...(inputProps ?? {}),
           disabled: isDisabled,
 
           title: noop ?? false ? "Temporarily disabled due to technical reasons." : inputProps.title,
 
-          ...(fieldParamsByType[fieldType].inputProps ?? {}),
+          ...(inputComponentProps.inputProps ?? {}),
           tabIndex: order,
         },
       }}
     />
   );
+}
+
+const renderInput = (
+  key,
+  form,
+  { label, fieldProps, fieldKey, noop, style, order, format, inputProps },
+  fieldType,
+  fieldValue,
+  isEditable,
+) => {
+  const isDisabled = noop ?? inputProps.disabled ?? false;
+  const inputComponentProps = inputComponentByType[fieldType] ?? defaultInputComponentProperties;
+
+  switch (fieldType) {
+    case "tags":
+      return (
+        <div
+          className="d-flex flex-column align-items-start justify-content-evenly gap-1 p-2"
+          style={{ order: order, width: "100%" }}
+        >
+          <span className="d-inline-flex gap-1 text-wrap">
+            <span>{label}</span>
+            {inputProps.required ? <span className="text-danger">*</span> : null}
+          </span>
+          <Widget
+            src="${REPL_ACCOUNT}/widget/Entities.Template.Forms.TagsEditor"
+            props={{
+              value: fieldValue,
+              placeholder: "add tags to categorize",
+              setValue: form.update({ path: [key], via: passthroughFieldUpdate }),
+              namespace,
+              entityType,
+            }}
+          />
+        </div>
+      );
+
+    case "image":
+      let hasUploadedFile = fieldValue && typeof fieldValue === "object";
+      if (typeof fieldValue === "string" && fieldValue.indexOf("{") > -1) {
+        try {
+          fieldValue = JSON.parse(fieldValue);
+        } catch (ignored) {}
+        hasUploadedFile = true;
+      }
+      const [useImageUrl, setUseImageUrl] = useState(!hasUploadedFile);
+      if (typeof useImageUrl === "object") {
+        setUseImageUrl(!hasUploadedFile);
+      }
+      return (
+        <div
+          className="d-flex flex-column align-items-start justify-content-evenly gap-1 p-2"
+          style={{ order: order, width: "100%" }}
+        >
+          <Widget
+            src="near/widget/DIG.Checkbox"
+            props={{
+              id: "useImageUrl",
+              checked: useImageUrl,
+              label: "Set Image from URL",
+              onCheckedChange: (e) => setUseImageUrl(!useImageUrl),
+            }}
+          />
+          {useImageUrl &&
+            renderBaseInputComponent({
+              inputComponentProps,
+              fieldProps,
+              isEditable,
+              noop,
+              isDisabled,
+              format,
+              fieldKey,
+              label,
+              form,
+              key,
+              style,
+              order: null,
+              fieldType,
+              fieldValue: hasUploadedFile ? "" : fieldValue,
+              skipPaddingGap: true,
+              inputProps,
+            })}
+          <div className="p-2 align-items-start text-start">
+            {fieldValue && (
+              <img
+                style={{ objectFit: "cover", width: "30%", borderRadius: "10%" }}
+                src={typeof fieldValue === "string" && fieldValue.startsWith("http") ? fieldValue : ipfsUrl(fieldValue)}
+                alt="upload preview"
+              />
+            )}
+            {!useImageUrl && (
+              <span className="p-2">{renderUpload(fieldType, fieldValue, key, form.update({ path: [key] }))}</span>
+            )}
+          </div>
+        </div>
+      );
+    case "file":
+      return (
+        <div
+          className="d-flex flex-column align-items-start justify-content-evenly gap-1 p-2"
+          style={{ order: order, width: "100%" }}
+        >
+          <span className="d-inline-flex gap-1 text-wrap">
+            <span>{label}</span>
+            {inputProps.required ? <span className="text-danger">*</span> : null}
+          </span>
+          <div className="p-2 align-items-start text-start">
+            {fieldValue && (
+              <div>
+                <p>Name: {fieldValue.name}</p>
+                <p>Type: {fieldValue.type}</p>
+                <p>Size: {fieldValue.size} bytes</p>
+                <p>CID: {fieldValue.cid}</p>
+              </div>
+            )}
+            <p className="p-2">{renderUpload(fieldType, fieldValue, key, form.update({ path: [key] }))}</p>
+          </div>
+        </div>
+      );
+    default:
+      return renderBaseInputComponent({
+        inputComponentProps,
+        fieldProps,
+        isEditable,
+        noop,
+        isDisabled,
+        format,
+        fieldKey,
+        label,
+        form,
+        key,
+        style,
+        order,
+        fieldType,
+        fieldValue,
+        inputProps,
+      });
+  }
 };
 
 const defaultFieldsRender = ({ schema, form, isEditable }) => (
@@ -206,7 +362,7 @@ const defaultFieldsRender = ({ schema, form, isEditable }) => (
   </>
 );
 
-const Configurator = ({
+const FormBuilder = ({
   actionsAdditional,
   cancelLabel,
   classNames,
@@ -307,4 +463,4 @@ const Configurator = ({
   );
 };
 
-return Configurator(props);
+return FormBuilder(props);

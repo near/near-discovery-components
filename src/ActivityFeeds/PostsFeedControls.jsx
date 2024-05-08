@@ -227,7 +227,6 @@ const loadMorePosts = (isUpdate) => {
             const image = post.profile?.image ? JSON.parse(post.profile.image ?? "") : null;
             const tags = post.profile?.tags ? JSON.parse(post.profile.tags ?? "") : null;
             const prevComments = post.comments;
-            // const filteredComments = prevComments.filter((comment) => !shouldFilter(comment, commentsModerationKey));
             const filteredComments = prevComments.filter((comment) => !shouldFilter(comment, commentsModerationKey));
             post.comments = filteredComments;
             post.profile = {

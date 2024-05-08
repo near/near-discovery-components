@@ -4,72 +4,66 @@ if (!item) {
   return "";
 }
 
-// -------  Resposts is work in progress ---------
+const [loading, setLoading] = useState(false);
+const [hasRepostByUser, setHasRepostByUser] = useState(false);
 
-// const reposts = Social.index("repost", item);
-// console.log("reposts", reposts);
+const reposts = Social.index("repost", item);
 
-// const dataLoading = reposts === null;
+const dataLoading = reposts === null;
 
-// const repostsByUsers = Object.fromEntries(
-//   (reposts || []).filter((repost) => repost.value.type === "repost").map((repost) => [repost.accountId, repost]),
-// );
+const repostsByUsers = Object.fromEntries(
+  (reposts || []).filter((repost) => repost.value.type === "repost").map((repost) => [repost.accountId, repost]),
+);
 
-// console.log("repostsByUsers", repostsByUsers);
+setHasRepostByUser(context.accountId && !!repostsByUsers[context.accountId]);
 
-// if (state.hasRepost === true) {
-//   repostsByUsers[context.accountId] = {
-//     accountId: context.accountId,
-//   };
-// }
+const repostClick = () => {
+  if (loading) {
+    return;
+  }
+  setLoading(true);
+  const reposts = [
+    {
+      key: "main",
+      value: {
+        type: "repost",
+        item,
+      },
+    },
+  ];
+  if (!hasRepostByUser) {
+    reposts.push({
+      key: item,
+      value: {
+        type: "repost",
+      },
+    });
+  }
+  const data = {
+    index: {
+      repost: JSON.stringify(reposts),
+    },
+  };
 
-// const accountsWithReposts = Object.keys(repostsByUsers);
-// const hasRepost = context.accountId && !!repostsByUsers[context.accountId];
+  if (!hasRepostByUser && props.notifyAccountId) {
+    data.index.notify = JSON.stringify({
+      key: props.notifyAccountId,
+      value: {
+        type: "repost",
+        item,
+      },
+    });
+  }
+  const handleCommit = () => {
+    setLoading(false);
+    setHasRepostByUser(true);
+  };
 
-// const repostClick = () => {
-//   if (state.loading) {
-//     return;
-//   }
-//   State.update({
-//     loading: true,
-//   });
-//   const reposts = [
-//     {
-//       key: "main",
-//       value: {
-//         type: "repost",
-//         item,
-//       },
-//     },
-//   ];
-//   if (!hasRepost) {
-//     reposts.push({
-//       key: item,
-//       value: {
-//         type: "repost",
-//       },
-//     });
-//   }
-//   const data = {
-//     index: {
-//       repost: JSON.stringify(reposts),
-//     },
-//   };
-
-//   if (!hasRepost && props.notifyAccountId) {
-//     data.index.notify = JSON.stringify({
-//       key: props.notifyAccountId,
-//       value: {
-//         type: "repost",
-//         item,
-//       },
-//     });
-//   }
-//   Social.set(data, {
-//     onCommit: () => State.update({ loading: false, hasRepost: true }),
-//     onCancel: () => State.update({ loading: false }),
-//   });
-// };
+  Social.set(data, {
+    onCommit: () => handleCommit(),
+    onCancel: () => setLoading(false),
+  });
+};
 
 const Button = styled.button`
   border: 0;
@@ -137,17 +131,16 @@ const promoteToBlog = () => {
 };
 
 const buildMenu = (accountId, blockHeight) => {
-  // Hiding repost until dataplatform indexers are ready
   const menu = [
-    // {
-    //   name: "Activity Feed",
-    //   disabled: !context.accountId,
-    //   onSelect: () => repostClick(),
-    // },
+    {
+      name: "Activity Feed",
+      disabled: hasRepostByUser,
+      onSelect: () => repostClick(),
+    },
   ];
 
   if (item.path && item?.path?.includes("post/main")) {
-    menu.unshift({
+    menu.push({
       name: "My Blog",
       disabled: !context.accountId,
       onSelect: () => promoteToBlog(accountId, blockHeight),
@@ -159,17 +152,14 @@ const buildMenu = (accountId, blockHeight) => {
 
 return (
   <>
-    <OverlayTrigger placement="top" overlay={<Tooltip>{!state.hasRepost ? "Repost" : "You've reposted"}</Tooltip>}>
       <Widget
         src="${REPL_ACCOUNT}/widget/DIG.DropdownMenu"
         props={{
-          trigger: !state.hasRepost ? <i className="bi bi-repeat" /> : <i className="bi bi-check2" />,
+          trigger:  <Button type="button" title="Repost" aria-label="Repost" onClick={repostClick}>
+          {!hasRepostByUser ? <i className="bi-repeat" /> : <i className="bi bi-pencil" />}
+        </Button>,
           items: buildMenu(accountId, blockHeight),
         }}
       />
-      <Button type="button" title="Repost" aria-label="Repost" onClick={repostClick}>
-        {!state.hasRepost ? <i className="bi bi-repeat" /> : <i className="bi bi-check2" />}
-      </Button>
-    </OverlayTrigger>
   </>
 );

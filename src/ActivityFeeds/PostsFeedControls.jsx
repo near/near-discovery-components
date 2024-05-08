@@ -158,7 +158,7 @@ const createQuery = (type, isUpdate) => {
 
   return `
 query FeedQuery($offset: Int, $limit: Int) {
-  dataplatform_near_feed_moderated_posts(${queryFilter} order_by: [${querySortOption} { block_height: desc }], offset: $offset, limit: $limit) {
+  dataplatform_near_feed_moderated_posts_with_reposts_feed(${queryFilter} order_by: [${querySortOption} { block_height: desc }], offset: $offset, limit: $limit) {
     account_id
     block_height
     block_timestamp
@@ -183,11 +183,13 @@ query FeedQuery($offset: Int, $limit: Int) {
       tags
     }
   }
-  dataplatform_near_feed_moderated_posts_aggregate(${queryFilter} order_by: {id: asc}) {
+  
+dataplatform_near_feed_moderated_posts_with_reposts_feed_aggregate(${queryFilter} order_by: {id: asc}) {
     aggregate {
       count
     }
   }
+ 
 }
 `;
 };
@@ -217,8 +219,8 @@ const loadMorePosts = (isUpdate) => {
       }
       let data = result.body.data;
       if (data) {
-        const newPosts = data.dataplatform_near_feed_moderated_posts;
-        const postsCountLeft = data.dataplatform_near_feed_moderated_posts_aggregate.aggregate.count;
+        const newPosts = data.dataplatform_near_feed_moderated_posts_with_reposts_feed;
+        const postsCountLeft = data.dataplatform_near_feed_moderated_posts_with_reposts_feed_aggregate.aggregate.count;
         if (newPosts.length > 0) {
           let filteredPosts = newPosts.filter((i) => !shouldFilter(i, postsModerationKey));
           filteredPosts = filteredPosts.map((post) => {

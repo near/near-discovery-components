@@ -32,7 +32,7 @@ CREATE TABLE
     "receipt_id" VARCHAR NOT NULL,
     CONSTRAINT "post_likes_pkey" PRIMARY KEY ("post_id", "account_id")
   );
-  
+
 CREATE TABLE
   "promote" (
     "id" SERIAL NOT NULL,
@@ -42,7 +42,19 @@ CREATE TABLE
     "block_timestamp" DECIMAL(20, 0) NOT NULL,
     "promotion_type" TEXT NOT NULL,
     "post_id" SERIAL NOT NULL
-  );  
+  );
+
+CREATE TABLE
+  "reposts" (
+    "id" SERIAL NOT NULL,
+    "post_id" SERIAL NOT NULL,
+    "account_id" VARCHAR NOT NULL,
+    "content" TEXT NOT NULL,
+    "block_height" DECIMAL(58, 0) NOT NULL,
+    "block_timestamp" DECIMAL(20, 0) NOT NULL,
+    "receipt_id" VARCHAR NOT NULL,
+    CONSTRAINT "reposts_pkey" PRIMARY KEY ("post_id", "account_id")
+  ); 
 
 CREATE UNIQUE INDEX "posts_account_id_block_height_key" ON "posts" ("account_id" ASC, "block_height" ASC);
 

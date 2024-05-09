@@ -1,4 +1,4 @@
-import { Block } from "@near-lake/primitives";
+import * as primitives from "@near-lake/primitives";
 /**
  * Note: We only support javascript at the moment. We will support Rust, Typescript in a further release.
  */
@@ -12,9 +12,7 @@ import { Block } from "@near-lake/primitives";
  *
  * @param {block} Block - A Near Protocol Block
  */
-async function getBlock(block: Block) {
-  console.log(block.actions());
-
+async function getBlock(block: primitives.Block) {
   function base64decode(encodedValue) {
     let buff = Buffer.from(encodedValue, "base64");
     return JSON.parse(buff.toString("utf-8"));
@@ -243,17 +241,13 @@ async function getBlock(block: Block) {
     }
   }
 
-    async function handlePromotion(
+  async function handlePromotion(
     accountId,
     blockHeight,
     blockTimestamp,
     receiptId,
     promoteString
   ) {
-
-    try {
-
-    
     const promotion = JSON.parse(promoteString);
     console.log("Promotion", promotion);
     const promotionOperation = promotion.value.operation;
@@ -271,20 +265,17 @@ async function getBlock(block: Block) {
     } else {
       // if an operation is implemented, we can handle it here
       console.log("Operation not implemented");
-    } } catch (error) {
-      console.log("Failed to parse promotion content. Skipping...", error);
     }
   }
 
-    async function _handleAddPromotion(
+  async function _handleAddPromotion(
     promotion,
     accountId,
     blockHeight,
     blockTimestamp,
     receiptId
   ) {
-
-    try {
+    // Add your code here
     const postAuthor = promotion.value.post.path.split("/")[0];
     const postBlockHeight = promotion.value.post.blockHeight;
     const promotionType = promotion.value.type;
@@ -292,6 +283,7 @@ async function getBlock(block: Block) {
     console.log("Post Author", postAuthor);
     console.log("Post Block Height", postBlockHeight);
     console.log("Promotion Type", promotionType);
+    try {
       const posts = await context.db.Posts.select(
         { account_id: postAuthor, block_height: postBlockHeight },
         1
@@ -322,6 +314,78 @@ async function getBlock(block: Block) {
       }
     } catch (e) {
       console.log("Error handling add promotion", JSON.stringify(e));
+    }
+  }
+
+  async function handleRepost(
+    accountId,
+    blockHeight,
+    blockTimestamp,
+    receiptId,
+    repostContent
+  ) {
+    try {
+
+      const content = JSON.parse(repostContent);
+
+      if (content[1]?.value?.type !== "repost") {
+        console.log("Skipping non-repost content", content);
+        return;
+      }
+
+      const postAuthor = content[1].key.path.split("/")[0];
+      const postBlockHeight = content[1].key.blockHeight;
+
+      try {
+        const posts = await context.db.Posts.select(
+          { account_id: postAuthor, block_height: postBlockHeight },
+          1
+        );
+        console.log(`posts: ${JSON.stringify(posts)}`, posts);
+        if (posts.length == 0) {
+          return;
+        }
+
+        const post = posts[0];
+        const accountsReposted =
+          post.accounts_reposted.length === 0
+            ? post.accounts_reposted
+            : JSON.parse(post.accounts_reposted);
+        if (accountsReposted.indexOf(accountId) === -1) {
+          accountsReposted.push(accountId);
+        }
+
+        try {
+          const repostData = {
+            post_id: post.id,
+            account_id: accountId,
+            content: JSON.stringify(content),
+            block_height: blockHeight,
+            block_timestamp: blockTimestamp,
+            receipt_id: receiptId,
+          };
+          // Call GraphQL mutation to insert a new repost
+          await context.db.Reposts.insert(repostData);
+          console.log(`Repost by ${accountId} has been added to the database`);
+
+          // Call GraphQL mutation to update a post's reposted accounts list
+          await context.db.Posts.update(
+            { id: post.id },
+            { accounts_reposted: JSON.stringify(accountsReposted) }
+          );
+          console.log(`Repost by ${accountId} has been added to the database`);
+        } catch (e) {
+          console.log(
+            `Failed to store repost to the post ${postAuthor}/${postBlockHeight} by ${accountId} perhaps it has already been stored. Error ${e}`
+          );
+        }
+      } catch (e) {
+        console.log(
+          `Failed to store repost to the post ${postAuthor}/${postBlockHeight} as we don't have it stored in the first place. Error ${e}`
+        );
+      }
+    } catch (error) {
+      console.log("Failed to parse repost content. Skipping...", error);
     }
   }
 
@@ -448,6 +512,22 @@ async function getBlock(block: Block) {
               blockTimestamp,
               postAction.receiptId,
               postAction.args.data[accountId].index.promote
+            );
+          }
+
+          // Probably repost action is happening
+          if (
+            Object.keys(postAction.args.data[accountId].index).includes(
+              "repost"
+            )
+          ) {
+            console.log("handling repost");
+            await handleRepost(
+              accountId,
+              blockHeight,
+              blockTimestamp,
+              postAction.receiptId,
+              postAction.args.data[accountId].index.repost
             );
           }
         }

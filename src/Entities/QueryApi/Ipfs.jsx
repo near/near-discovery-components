@@ -8,13 +8,15 @@ const ipfsUpload = (f) =>
   }).then((res) => res.body.cid);
 
 const ipfsUrl = (cid) => {
-  let c = typeof cid === "object" ? cid.cid : cid;
-  if (c.startsWith("{")) {
-    try {
+  try {
+    let c = typeof cid === "object" ? cid.cid : cid;
+    if (c.startsWith("{")) {
       c = JSON.parse(c).cid;
-    } catch (ignored) {}
+    }
+    return `https://ipfs.near.social/ipfs/${c}`;
+  } catch (ignored) {
+    return "";
   }
-  return `https://ipfs.near.social/ipfs/${c}`;
 };
 
 return { ipfsUpload, ipfsUrl };

@@ -369,7 +369,10 @@ if (blog) {
     }
   };
 
-  const destination = props.returnLocation + (props.tab === "blog" ? `&tab=blog` : "") || `/${blogComponentUrl}`;
+  const destination =
+    props.returnLocation && props.tab
+      ? props.returnLocation + (props.tab === "blog" ? `&tab=blog` : "")
+      : `/${blogComponentUrl}`;
 
   return (
     <>

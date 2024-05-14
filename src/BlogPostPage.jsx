@@ -487,7 +487,8 @@ if (blog) {
           </BlogPostActionsWrapper>
         </Container>
       </BlogPostWrapper>
-      <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Footer" />
+
+      {props.includeFooter && <Widget src="${REPL_ACCOUNT}/widget/NearOrg.Footer" />}
     </>
   );
 }

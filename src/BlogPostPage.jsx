@@ -1,4 +1,5 @@
 const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
+const blogComponentUrl = props.blogComponentUrl || "bosblog";
 const BlogPostWrapper = styled.div`
   @media (max-width: 1024px) {
     padding-left: 0;
@@ -368,7 +369,7 @@ if (blog) {
     }
   };
 
-  const destination = props.returnLocation + (props.tab === "blog" ? `&tab=blog` : "") || `/bosblog`;
+  const destination = props.returnLocation + (props.tab === "blog" ? `&tab=blog` : "") || `/${blogComponentUrl}`;
 
   return (
     <>

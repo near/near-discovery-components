@@ -71,7 +71,7 @@ if (error) {
 if (!entity) {
   return <p>Loading...</p>;
 }
-const { title } = schema;
+const { entityTitle } = schema;
 
 const editType = accountId === context.accountId ? "edit" : "fork";
 const editLabel = editType === "edit" ? "Edit" : "Fork";
@@ -186,6 +186,11 @@ const entityProperties = (obj) => {
 const listLink = href({
   widgetSrc: returnTo,
 });
+const detailsLink = href({
+  widgetSrc: `${REPL_ACCOUNT}/widget/Entities.Template.EntityDetails`,
+  params: { src, schemaFile, namespace, entityType, returnTo: homeLink },
+});
+const detailsUrl = "https://${REPL_NEAR_URL}/" + detailsLink;
 
 const tabs = () => {
   const defaultTabs = [
@@ -231,8 +236,10 @@ return (
         entity,
         namespace,
         entityType,
+        title: entityTitle,
         showActions: true,
         returnTo,
+        detailsUrl,
       }}
     />
     <ContentWrapper>

@@ -225,22 +225,17 @@ const Button = styled.button`
 const defaultRenderTableItem = (rawItem, editFunction) => {
   const item = convertObjectKeysSnakeToPascal(rawItem);
   const { accountId, name, displayName, logoUrl, tags, attributes } = item;
-  const itemComponent = item.component ? item.component : `${REPL_ACCOUNT}/widget/Entities.Template.EntityDetails`;
   const imageUrl = logoUrl
     ? typeof logoUrl == "string" && logoUrl.startsWith("http")
       ? logoUrl
       : ipfsUrl(logoUrl)
     : "https://ipfs.near.social/ipfs/bafkreibysr2mkwhb4j36h2t7mqwhynqdy4vzjfygfkfg65kuspd2bawauu";
-  const actionLink = href({
-    widgetSrc: itemComponent,
-    params: { src: `${accountId}/${entityType}/${name}`, schemaFile, namespace },
-  });
   const detailsLink = href({
     widgetSrc: `${REPL_ACCOUNT}/widget/Entities.Template.EntityDetails`,
     params: { src: `${accountId}/${entityType}/${name}`, schemaFile, namespace, entityType, returnTo: homeLink },
   });
+  const detailsUrl = "https://${REPL_NEAR_URL}/" + detailsLink;
 
-  const actionUrl = `https://${REPL_NEAR_URL}/${itemComponent}?src=${accountId}/${entityType}/${item.name}`;
   const editType = accountId === context.accountId ? "edit" : "fork";
   const editLabel = editType === "edit" ? "Edit" : "Fork";
   const editIcon = editType === "edit" ? "ph-bold ph-pencil-simple" : "ph-bold ph-git-fork";
@@ -371,7 +366,7 @@ const defaultRenderTableItem = (rawItem, editFunction) => {
           <Widget
             src="${REPL_ACCOUNT}/widget/CopyUrlButton"
             props={{
-              url: actionUrl,
+              url: detailsUrl,
             }}
           />
 
@@ -379,7 +374,7 @@ const defaultRenderTableItem = (rawItem, editFunction) => {
             src="${REPL_ACCOUNT}/widget/ShareButton"
             props={{
               postType: "Placeholder",
-              url: actionUrl,
+              url: detailsUrl,
             }}
           />
         </Actions>

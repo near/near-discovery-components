@@ -1,11 +1,21 @@
 if (!props.entity) return "";
 const { href } = VM.require("${REPL_DEVHUB}/widget/core.lib.url");
-if (!href) {
+const { ipfsUrl } = VM.require("${REPL_ACCOUNT}/widget/Entities.QueryApi.Ipfs");
+
+if (!href || !ipfsUrl) {
   return <></>;
 }
 
-const { entity, showActions, returnTo } = props;
+const { entity, showActions, returnTo, entityActionUrlFunction, title, detailsUrl } = props;
 const { namespace, entityType, accountId, name, displayName, logoUrl, tags } = entity;
+
+const imageUrl = logoUrl
+  ? typeof logoUrl == "string" && logoUrl.startsWith("http")
+    ? logoUrl
+    : ipfsUrl(logoUrl)
+  : "https://ipfs.near.social/ipfs/bafkreibysr2mkwhb4j36h2t7mqwhynqdy4vzjfygfkfg65kuspd2bawauu";
+
+const entityActionUrl = entityActionUrlFunction ? entityActionUrlFunction(entity) : null;
 
 const [entityDeleted, setEntityDeleted] = useState(false);
 const deleteEntity = async (entity) => {
@@ -171,14 +181,7 @@ return (
   <Wrapper>
     <Header size={size}>
       <Thumbnail size={size}>
-        <Widget
-          src="${REPL_MOB}/widget/Image"
-          props={{
-            image: { url: logoUrl },
-            fallbackUrl: "https://ipfs.near.social/ipfs/bafkreibysr2mkwhb4j36h2t7mqwhynqdy4vzjfygfkfg65kuspd2bawauu",
-            alt: name,
-          }}
-        />
+        <img src={imageUrl} alt={"Agent logo"} />
       </Thumbnail>
 
       <div>
@@ -226,14 +229,14 @@ return (
         <Widget
           src="${REPL_ACCOUNT}/widget/CopyUrlButton"
           props={{
-            url: entityChatUrl,
+            url: entityActionUrl ?? detailsUrl,
           }}
         />
         <Widget
           src="${REPL_ACCOUNT}/widget/ShareButton"
           props={{
             postType: "AI Entity",
-            url: entityChatUrl,
+            url: entityActionUrl ?? detailsUrl,
           }}
         />
         <Widget
@@ -258,6 +261,28 @@ return (
             ),
           }}
         />{" "}
+        {entityActionUrlFunction && (
+          <Widget
+            src="${REPL_ACCOUNT}/widget/DIG.Tooltip"
+            props={{
+              content: "Use " + title,
+              trigger: (
+                <Link to={entityActionUrl} style={{ all: "unset" }}>
+                  <Widget
+                    src="${REPL_ACCOUNT}/widget/DIG.Button"
+                    props={{
+                      label: "Use " + title,
+                      iconLeft: "ph-bold ph-chat-teardrop-text",
+                      variant: "affirmative",
+                      fill: "solid",
+                      size: size,
+                    }}
+                  />
+                </Link>
+              ),
+            }}
+          />
+        )}
       </Actions>
     )}
   </Wrapper>

@@ -1,6 +1,7 @@
 const GRAPHQL_ENDPOINT = props.GRAPHQL_ENDPOINT || "https://near-queryapi.api.pagoda.co";
 
 const contributors = props.contributors || [];
+const blogComponentUrl = props.blogComponentUrl || "bosblog";
 const { requestAuthentication, returnLocation, profileAccountId } = props;
 const [posts, setPosts] = useState([]);
 const promotedPostsQuery = `
@@ -379,7 +380,7 @@ const renderItem = (item, index) => {
 
   return (
     <BlogPage
-      destination={`/bosblog?accountId=${item.account_id}&blockHeight=${item.block_height}&returnLocation=${props.returnLocation}&profileAccountId=${props.profileAccountId}`}
+      destination={`/${blogComponentUrl}?accountId=${item.account_id}&blockHeight=${item.block_height}&returnLocation=${props.returnLocation}&profileAccountId=${props.profileAccountId}`}
     />
   );
 };

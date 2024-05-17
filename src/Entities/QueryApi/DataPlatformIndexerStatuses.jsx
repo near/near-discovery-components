@@ -19,11 +19,15 @@ const registry = Near.view(registryContract, "list_indexer_functions", {
   account_id: indexerAccount,
 });
 
+if (errors && (!registry || !indexerList)) {
+  return <div>{errors ? JSON.stringify(errors) : null}</div>;
+}
+
 if (!registry) {
   return <div>Loading indexer list from contract...</div>;
 } else {
   try {
-    const keys = Object.keys(registry["Account"]);
+    const keys = Object.keys(registry["AccountIndexers"]);
     const sanitizedIndexerNames = keys.map((k) => k.replace(/[^a-zA-Z0-9]/g, "_").replace(/^([0-9])/, "_$1"));
 
     setIndexerList(sanitizedIndexerNames);
@@ -117,7 +121,7 @@ const update = () => {
   }
 };
 
-if (!timer) {
+if (registry && !timer) {
   update();
   setTimer(setInterval(update, 1000));
 }

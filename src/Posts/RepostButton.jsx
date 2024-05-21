@@ -152,14 +152,16 @@ const buildMenu = (accountId, blockHeight) => {
 
 return (
   <>
-      <Widget
-        src="${REPL_ACCOUNT}/widget/DIG.DropdownMenu"
-        props={{
-          trigger:  <Button type="button" title="Repost" aria-label="Repost" onClick={repostClick}>
-          {!hasRepostByUser ? <i className="bi-repeat" /> : <i className="bi bi-pencil" />}
-        </Button>,
-          items: buildMenu(accountId, blockHeight),
-        }}
-      />
+    <Widget
+      src="${REPL_ACCOUNT}/widget/DIG.DropdownMenu"
+      props={{
+        trigger: (
+          <Button type="button" title="Repost" aria-label="Repost" onClick={repostClick}>
+            {!hasRepostByUser ? <i className="bi-repeat" /> : <i className="bi bi-pencil" />}
+          </Button>
+        ),
+        items: buildMenu(accountId, blockHeight),
+      }}
+    />
   </>
 );

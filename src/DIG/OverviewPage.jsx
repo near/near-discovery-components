@@ -158,7 +158,7 @@ const ContentGrid = styled.div`
 `;
 
 return (
-  <Wrapper>
+  <Wrapper className="gateway-page-container">
     <Container>
       <Text size="text-3xl">DIG Components</Text>
 

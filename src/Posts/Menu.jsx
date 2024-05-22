@@ -77,45 +77,6 @@ const moderate = (account, block, messageKey, action) => {
   });
 };
 
-const promoteToBlog = () => {
-  if (state.loading) {
-    return;
-  }
-
-  if (!context.accountId && props.requestAuthentication) {
-    props.requestAuthentication();
-    return;
-  } else if (!context.accountId) {
-    return;
-  }
-
-  State.update({
-    loading: true,
-  });
-
-  const data = {
-    index: {
-      promote: JSON.stringify({
-        key: context.accountId,
-        value: {
-          operation: "add",
-          type: "blog",
-          post: item,
-          blockHeight,
-        },
-      }),
-    },
-  };
-
-  Social.set(data, {
-    onCommit: () => State.update({ loading: false }),
-    onCancel: () =>
-      State.update({
-        loading: false,
-      }),
-  });
-};
-
 const buildMenu = (accountId, blockHeight) => {
   const hideSubmenu = [
     {
@@ -133,15 +94,7 @@ const buildMenu = (accountId, blockHeight) => {
     },
   ];
 
-  const promoteToBlogSubmenu = [];
-
   if (blockHeight) {
-    promoteToBlogSubmenu.unshift({
-      name: `Promote this ${capitalizedContentType} to Blog`,
-      iconLeft: "ph-bold ph-article",
-      onSelect: () => promoteToBlog(accountId, blockHeight),
-    });
-
     hideSubmenu.unshift({
       name: "Hide this " + capitalizedContentType,
       iconLeft: "ph-bold ph-eye-slash",
@@ -180,17 +133,6 @@ const buildMenu = (accountId, blockHeight) => {
     //   onSelect: parentFunctions.toggleEdit,
     //  },
   ];
-
-  if (item.path && item?.path?.includes("post/main")) {
-    menu.unshift({
-      name: "Promote",
-      iconLeft: "ph-bold ph-arrow-up",
-      disabled: !context.accountId,
-      subMenuProps: {
-        items: promoteToBlogSubmenu,
-      },
-    });
-  }
 
   return menu;
 };

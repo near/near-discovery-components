@@ -1,9 +1,9 @@
-const SEARCH_API_KEY = props.searchApiKey ?? "0e42c01107b8f555a41bcc0fa7f2a4df";
+const SEARCH_API_KEY = props.searchApiKey ?? "fc7644a5da5306311e8e9418c24fddc4";
 const APPLICATION_ID = props.appId ?? "B6PI9UKKJT";
-const INDEX = props.index ?? "prod_near-social-feed";
+const INDEX = props.index ?? "replica_prod_near-social-feed";
 const API_URL = props.apiUrl ?? `https://${APPLICATION_ID}-dsn.algolia.net/1/indexes/${INDEX}/query?`;
 const INITIAL_PAGE = props.initialPage ?? 0;
-const facets = props.facets ?? ["All", "People", "Apps", "Components", "Posts"];
+const facets = props.facets ?? ["All", "People", "Apps", "Components", "Posts", "NEARCatalog"];
 const tab = props.tab ?? "All";
 const renderHeader = props.renderHeader;
 const showHeader = props.showHeader ?? true;
@@ -14,6 +14,7 @@ const userId = props.accountId ?? context.accountId;
 
 const componentsUrl = `/${REPL_ACCOUNT}/widget/ComponentsPage`;
 const peopleUrl = `/${REPL_ACCOUNT}/widget/PeoplePage`;
+const nearcatalogUrl = `/${REPL_NEARCATALOG}/widget/Index`;
 
 State.init({
   facet: tab,
@@ -174,7 +175,7 @@ const posts = (content, postType) => {
     if (post._highlightResult.content.matchLevel === "full") {
       // Use algolia provided snipped content:
       snipContent = false;
-      text = post._snippetResult.content.value.replaceAll("<em>", "").replaceAll("</em>", "");
+      text = post._snippetResult.content.value?.replaceAll("<em>", "")?.replaceAll("</em>", "");
     }
 
     const postContent = {
@@ -203,6 +204,25 @@ const components = (records) => {
     components.push({
       accountId,
       widgetName,
+      searchPosition: i,
+    });
+  }
+  return components;
+};
+
+// creates an array of components
+const nearcatalog = (records) => {
+  const components = [];
+  for (const [i, component] of records || []) {
+    const widgetName = "Index";
+    const accountId = "nearcatalog.near";
+    components.push({
+      accountId,
+      widgetName,
+      slug: component.slug,
+      image: component.image,
+      name: component.name,
+      tags: component.tags,
       searchPosition: i,
     });
   }
@@ -247,6 +267,7 @@ const fetchSearchHits = (query, { pageNumber, configs, optionalFilters }) => {
       "categories:widget<score=2>",
       "categories:post<score=1>",
       "categories:comment<score=0>",
+      "categories:nearcatalog<score=2>",
     ],
     clickAnalytics: true,
     ...configs,
@@ -271,6 +292,7 @@ const updateSearchHits = debounce(({ term, pageNumber, configs }) => {
         profiles: profiles(results["profile"]),
         components: components(results["app, widget"]).concat(components(results["widget"])),
         postsAndComments: posts(results["post"], "post").concat(posts(results["comment, post"], "post-comment")),
+        nearcatalog: nearcatalog(results["nearcatalog"]),
       },
       currentPage: pageNumber,
       paginate: {
@@ -307,6 +329,7 @@ const FACET_TO_CATEGORY = {
   Apps: "app",
   Components: "widget",
   Posts: "post",
+  NEARCatalog: "nearcatalog",
 };
 
 const searchFilters = (facet) => {
@@ -317,6 +340,9 @@ const searchFilters = (facet) => {
   }
   if (category === "app") {
     filters = `(${filters} OR tags:app)`;
+  }
+  if (category === "nearcatalog") {
+    filters = `(${filters} OR tags:nearcatalog)`;
   }
   if (filters) {
     filters = `${filters} AND `;
@@ -472,6 +498,40 @@ return (
                       searchPosition: component.searchPosition,
                       objectID: `${component.accountId}/widget/${component.widgetName}`,
                       eventName: "Clicked Component After Search",
+                    }),
+                }}
+              />
+            </Item>
+          ))}
+        </Items>
+      </Group>
+    )}
+
+    {state.search?.nearcatalog.length > 0 && (
+      <Group>
+        <GroupHeader>
+          <H3>NEAR Catalog</H3>
+          <TextLink href={nearcatalogUrl} small>
+            View All
+          </TextLink>
+        </GroupHeader>
+
+        <Items>
+          {state.search.nearcatalog.map((component, i) => (
+            <Item key={component.slug}>
+              <Widget
+                src="${REPL_ACCOUNT}/widget/Search.FullPage.ComponentCard"
+                props={{
+                  src: `${component.accountId}/widget/${component.widgetName}?id=${component.slug}`,
+                  variant: "nearcatalog",
+                  name: component.name,
+                  image: component.image,
+                  tags: component.tags,
+                  onClick: () =>
+                    onSearchResultClick({
+                      searchPosition: component.searchPosition,
+                      objectID: `${component.accountId}/widget/${component.widgetName}`,
+                      eventName: "Clicked NEAR Catalog After Search",
                     }),
                 }}
               />

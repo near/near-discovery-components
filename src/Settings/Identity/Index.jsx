@@ -1,4 +1,4 @@
-let { idosConnected, connectIdOS, walletImages, connectedWallet, ...forwardedProps } = props;
+let { idosConnected, connectIdOS, walletImages, connectedWallet, idosCreateAccountUrl, ...forwardedProps } = props;
 
 const [showBanner, setShowBanner] = useState(true);
 const [showSuccessTooltip, setShowSuccessTooltip] = useState(props.showTooltip);
@@ -46,6 +46,7 @@ return (
           connectIdOS,
           walletImages,
           connectedWallet,
+          idosCreateAccountUrl,
         }}
       />
     )}

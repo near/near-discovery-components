@@ -3,7 +3,7 @@ const APPLICATION_ID = props.appId ?? "B6PI9UKKJT";
 const INDEX = props.index ?? "replica_prod_near-social-feed";
 const API_URL = props.apiUrl ?? `https://${APPLICATION_ID}-dsn.algolia.net/1/indexes/${INDEX}/query?`;
 const INITIAL_PAGE = props.initialPage ?? 0;
-const facets = props.facets ?? ["All", "People", "Apps", "Components", "Posts", "NEARCatalog"];
+const facets = props.facets ?? ["All", "People", "Apps", "Components", "Posts"];
 const tab = props.tab ?? "All";
 const showHeader = props.showHeader ?? true;
 const showSearchBar = props.showSearchBar ?? true;
@@ -277,7 +277,6 @@ const resetSearcheHits = () => {
     apps: undefined,
     components: undefined,
     postsAndComments: undefined,
-    nearcatalog: undefined,
   });
 };
 
@@ -358,6 +357,7 @@ const nearcatalog = (records) => {
       slug: component.slug,
       image: component.image,
       name: component.name,
+      variant: "nearcatalog",
       searchPosition: i,
     });
   }
@@ -436,7 +436,9 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
           apps: {
             hitsTotal,
             hitsPerPage,
-            hits: components(results["app, widget"]).concat(components(results["widget"])),
+            hits: components(results["app, widget, nearcatalog"])
+              .concat(components(results["widget"]))
+              .concat(nearcatalog(results["nearcatalog"])),
             queryID: resp.body.queryID,
           },
         });
@@ -446,16 +448,6 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
             hitsTotal,
             hitsPerPage,
             hits: components(results["widget"]),
-            queryID: resp.body.queryID,
-          },
-        });
-      } else if (facet === "NEARCatalog") {
-        console.log("updateStateAfterFetching facet: ", facet);
-        State.update({
-          nearcatalog: {
-            hitsTotal,
-            hitsPerPage,
-            hits: nearcatalog(results["nearcatalog"]),
             queryID: resp.body.queryID,
           },
         });
@@ -501,15 +493,13 @@ const FACET_TO_CATEGORY = {
   Apps: "app",
   Components: "widget",
   Posts: "post",
-  NEARCatalog: "nearcatalog",
 };
 
 const FACET_TO_FILTER = {
   People: "categories:profile",
-  Apps: "(categories:app OR tags:app)",
+  Apps: "(categories:app OR tags:app OR categories:nearcatalog)",
   Components: "categories:widget",
   Posts: "(categories:post OR categories:comment)",
-  NEARCatalog: "categories:nearcatalog",
 };
 
 const searchFilters = (facet) => {
@@ -625,9 +615,6 @@ const tabCount = (tab) => {
     case "Posts":
       // Return the count for Posts
       return state.postsAndComments.hitsTotal ?? 0;
-    case "NEARCatalog":
-      // Return the count for NEARCatalog
-      return state.nearcatalog.hitsTotal ?? 0;
     default:
       // Return 0 if the tab name is not in the list
       return 0;
@@ -652,23 +639,33 @@ const topmostComponents = (apps) => {
 
   const queryID = apps ? state.apps.queryID : state.components.queryID;
   const eventName = apps ? "App" : "Component";
-  return output.map((component, i) => (
-    <Item key={`${component.accountId}/widget/${component.widgetName}`} onClick={handleCloseSearchMenu}>
-      <Widget
-        src="${REPL_ACCOUNT}/widget/Search.ComponentCard"
-        props={{
-          src: `${component.accountId}/widget/${component.widgetName}`,
-          onClick: () =>
-            onSearchResultClick({
-              queryID,
-              searchPosition: component.searchPosition,
-              objectID: `${component.accountId}/widget/${component.widgetName}`,
-              eventName: `Clicked ${eventName} After Search`,
-            }),
-        }}
-      />
-    </Item>
-  ));
+  return output.map((component, i) => {
+    const isNearCatalogItem = component.variant && component.variant === "nearcatalog";
+    const componentSrc = isNearCatalogItem
+      ? `${component.accountId}/widget/${component.widgetName}?id=${component.slug}`
+      : `${component.accountId}/widget/${component.widgetName}`;
+    const componentProps = isNearCatalogItem
+      ? { image: component.image, name: component.name, variant: component.variant }
+      : {};
+    return (
+      <Item key={componentSrc} onClick={handleCloseSearchMenu}>
+        <Widget
+          src="${REPL_ACCOUNT}/widget/Search.ComponentCard"
+          props={{
+            src: componentSrc,
+            ...componentProps,
+            onClick: () =>
+              onSearchResultClick({
+                queryID,
+                searchPosition: component.searchPosition,
+                objectID: `${component.accountId}/widget/${component.widgetName}`,
+                eventName: `Clicked ${eventName} After Search`,
+              }),
+          }}
+        />
+      </Item>
+    );
+  });
 };
 
 const topmostNEARCatalogComponents = () => {
@@ -773,16 +770,6 @@ const displayResultsByFacet = (selectedTab) => {
           />{" "}
         </>
       );
-    case "NEARCatalog":
-      return state.nearcatalog.hits?.length > 0 ? (
-        <DisplayResultsByFacet
-          title="NEARCatalog"
-          count={state.nearcatalog.hitsTotal}
-          items={topmostNEARCatalogComponents()}
-        />
-      ) : (
-        <TextMessage message={`No NEARCatalog components matches were found for "${state.term}".`} />
-      );
     case "Posts":
       return state.postsAndComments.hits?.length > 0 ? (
         <DisplayResultsByFacet
@@ -814,13 +801,6 @@ const displayResultsByFacet = (selectedTab) => {
               title="Posts and Comments"
               count={state.postsAndComments.hitsTotal}
               items={topmostPosts()}
-            />
-          )}
-          {state.nearcatalog.hits?.length > 0 && (
-            <DisplayResultsByFacet
-              title="NEARCatalog"
-              count={state.nearcatalog.hitsTotal}
-              items={topmostNEARCatalogComponents()}
             />
           )}
         </>

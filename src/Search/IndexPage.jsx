@@ -3,7 +3,7 @@ const APPLICATION_ID = props.appId ?? "B6PI9UKKJT";
 const INDEX = props.index ?? "replica_prod_near-social-feed";
 const API_URL = props.apiUrl ?? `https://${APPLICATION_ID}-dsn.algolia.net/1/indexes/${INDEX}/query?`;
 const INITIAL_PAGE = props.initialPage ?? 0;
-const facets = props.facets ?? ["All", "People", "Apps", "Components", "Posts", "NEARCatalog"];
+const facets = props.facets ?? ["All", "People", "Apps", "Components", "Posts"];
 const tab = props.tab ?? "All";
 const renderHeader = props.renderHeader;
 const showHeader = props.showHeader ?? true;
@@ -175,7 +175,7 @@ const posts = (content, postType) => {
     if (post._highlightResult.content.matchLevel === "full") {
       // Use algolia provided snipped content:
       snipContent = false;
-      text = post._snippetResult.content.value?.replaceAll("<em>", "")?.replaceAll("</em>", "");
+      text = post._snippetResult.content.value.replaceAll("<em>", "").replaceAll("</em>", "");
     }
 
     const postContent = {
@@ -223,6 +223,7 @@ const nearcatalog = (records) => {
       image: component.image,
       name: component.name,
       tags: component.tags,
+      variant: "nearcatalog",
       searchPosition: i,
     });
   }
@@ -263,11 +264,11 @@ const fetchSearchHits = (query, { pageNumber, configs, optionalFilters }) => {
     query,
     page: pageNumber ?? 0,
     optionalFilters: optionalFilters ?? [
+      "categories:nearcatalog<score=4>",
       "categories:profile<score=3>",
       "categories:widget<score=2>",
       "categories:post<score=1>",
       "categories:comment<score=0>",
-      "categories:nearcatalog<score=2>",
     ],
     clickAnalytics: true,
     ...configs,
@@ -290,9 +291,10 @@ const updateSearchHits = debounce(({ term, pageNumber, configs }) => {
     State.update({
       search: {
         profiles: profiles(results["profile"]),
-        components: components(results["app, widget"]).concat(components(results["widget"])),
+        components: components(results["app, widget, nearcatalog"])
+          .concat(components(results["widget"]))
+          .concat(nearcatalog(results["nearcatalog"])),
         postsAndComments: posts(results["post"], "post").concat(posts(results["comment, post"], "post-comment")),
-        nearcatalog: nearcatalog(results["nearcatalog"]),
       },
       currentPage: pageNumber,
       paginate: {
@@ -329,7 +331,6 @@ const FACET_TO_CATEGORY = {
   Apps: "app",
   Components: "widget",
   Posts: "post",
-  NEARCatalog: "nearcatalog",
 };
 
 const searchFilters = (facet) => {
@@ -339,10 +340,7 @@ const searchFilters = (facet) => {
     filters = `(${filters} OR categories:comment)`;
   }
   if (category === "app") {
-    filters = `(${filters} OR tags:app)`;
-  }
-  if (category === "nearcatalog") {
-    filters = `(${filters} OR tags:nearcatalog)`;
+    filters = `(${filters} OR tags:app OR categories:nearcatalog)`;
   }
   if (filters) {
     filters = `${filters} AND `;
@@ -487,56 +485,32 @@ return (
         </GroupHeader>
 
         <Items>
-          {state.search.components.map((component, i) => (
-            <Item key={component.accountId + component.widgetName}>
-              <Widget
-                src="${REPL_ACCOUNT}/widget/Search.FullPage.ComponentCard"
-                props={{
-                  src: `${component.accountId}/widget/${component.widgetName}`,
-                  onClick: () =>
-                    onSearchResultClick({
-                      searchPosition: component.searchPosition,
-                      objectID: `${component.accountId}/widget/${component.widgetName}`,
-                      eventName: "Clicked Component After Search",
-                    }),
-                }}
-              />
-            </Item>
-          ))}
-        </Items>
-      </Group>
-    )}
-
-    {state.search?.nearcatalog.length > 0 && (
-      <Group>
-        <GroupHeader>
-          <H3>NEAR Catalog</H3>
-          <TextLink href={nearcatalogUrl} small>
-            View All
-          </TextLink>
-        </GroupHeader>
-
-        <Items>
-          {state.search.nearcatalog.map((component, i) => (
-            <Item key={component.slug}>
-              <Widget
-                src="${REPL_ACCOUNT}/widget/Search.FullPage.ComponentCard"
-                props={{
-                  src: `${component.accountId}/widget/${component.widgetName}?id=${component.slug}`,
-                  variant: "nearcatalog",
-                  name: component.name,
-                  image: component.image,
-                  tags: component.tags,
-                  onClick: () =>
-                    onSearchResultClick({
-                      searchPosition: component.searchPosition,
-                      objectID: `${component.accountId}/widget/${component.widgetName}`,
-                      eventName: "Clicked NEAR Catalog After Search",
-                    }),
-                }}
-              />
-            </Item>
-          ))}
+          {state.search.components.map((component, i) => {
+            const isNearCatalogItem = component.variant && component.variant === "nearcatalog";
+            const componentSrc = isNearCatalogItem
+              ? `${component.accountId}/widget/${component.widgetName}?id=${component.slug}`
+              : `${component.accountId}/widget/${component.widgetName}`;
+            const componentProps = isNearCatalogItem
+              ? { image: component.image, name: component.name, tags: component.tags, variant: component.variant }
+              : {};
+            return (
+              <Item key={componentSrc}>
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/Search.FullPage.ComponentCard"
+                  props={{
+                    src: componentSrc,
+                    ...componentProps,
+                    onClick: () =>
+                      onSearchResultClick({
+                        searchPosition: component.searchPosition,
+                        objectID: `${component.accountId}/widget/${component.widgetName}`,
+                        eventName: "Clicked Component After Search",
+                      }),
+                  }}
+                />
+              </Item>
+            );
+          })}
         </Items>
       </Group>
     )}

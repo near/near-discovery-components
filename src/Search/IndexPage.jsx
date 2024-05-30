@@ -1,6 +1,6 @@
-const SEARCH_API_KEY = props.searchApiKey ?? "0e42c01107b8f555a41bcc0fa7f2a4df";
+const SEARCH_API_KEY = props.searchApiKey ?? "fc7644a5da5306311e8e9418c24fddc4";
 const APPLICATION_ID = props.appId ?? "B6PI9UKKJT";
-const INDEX = props.index ?? "prod_near-social-feed";
+const INDEX = props.index ?? "replica_prod_near-social-feed";
 const API_URL = props.apiUrl ?? `https://${APPLICATION_ID}-dsn.algolia.net/1/indexes/${INDEX}/query?`;
 const INITIAL_PAGE = props.initialPage ?? 0;
 const facets = props.facets ?? ["All", "People", "Apps", "Components", "Posts"];
@@ -14,6 +14,7 @@ const userId = props.accountId ?? context.accountId;
 
 const componentsUrl = `/${REPL_ACCOUNT}/widget/ComponentsPage`;
 const peopleUrl = `/${REPL_ACCOUNT}/widget/PeoplePage`;
+const nearcatalogUrl = `/${REPL_NEARCATALOG}/widget/Index`;
 
 State.init({
   facet: tab,
@@ -209,6 +210,26 @@ const components = (records) => {
   return components;
 };
 
+// creates an array of components
+const nearcatalog = (records) => {
+  const components = [];
+  for (const [i, component] of records || []) {
+    const widgetName = "Index";
+    const accountId = "nearcatalog.near";
+    components.push({
+      accountId,
+      widgetName,
+      slug: component.slug,
+      image: component.image,
+      name: component.name,
+      tags: component.tags,
+      variant: "nearcatalog",
+      searchPosition: i,
+    });
+  }
+  return components;
+};
+
 const categorizeSearchHits = (rawResp) => {
   const results = {};
   for (const [i, result] of rawResp.hits?.entries()) {
@@ -243,6 +264,7 @@ const fetchSearchHits = (query, { pageNumber, configs, optionalFilters }) => {
     query,
     page: pageNumber ?? 0,
     optionalFilters: optionalFilters ?? [
+      "categories:nearcatalog<score=4>",
       "categories:profile<score=3>",
       "categories:widget<score=2>",
       "categories:post<score=1>",
@@ -269,7 +291,9 @@ const updateSearchHits = debounce(({ term, pageNumber, configs }) => {
     State.update({
       search: {
         profiles: profiles(results["profile"]),
-        components: components(results["app, widget"]).concat(components(results["widget"])),
+        components: components(results["app, widget, nearcatalog"])
+          .concat(components(results["widget"]))
+          .concat(nearcatalog(results["nearcatalog"])),
         postsAndComments: posts(results["post"], "post").concat(posts(results["comment, post"], "post-comment")),
       },
       currentPage: pageNumber,
@@ -316,7 +340,7 @@ const searchFilters = (facet) => {
     filters = `(${filters} OR categories:comment)`;
   }
   if (category === "app") {
-    filters = `(${filters} OR tags:app)`;
+    filters = `(${filters} OR tags:app OR categories:nearcatalog)`;
   }
   if (filters) {
     filters = `${filters} AND `;
@@ -461,22 +485,32 @@ return (
         </GroupHeader>
 
         <Items>
-          {state.search.components.map((component, i) => (
-            <Item key={component.accountId + component.widgetName}>
-              <Widget
-                src="${REPL_ACCOUNT}/widget/Search.FullPage.ComponentCard"
-                props={{
-                  src: `${component.accountId}/widget/${component.widgetName}`,
-                  onClick: () =>
-                    onSearchResultClick({
-                      searchPosition: component.searchPosition,
-                      objectID: `${component.accountId}/widget/${component.widgetName}`,
-                      eventName: "Clicked Component After Search",
-                    }),
-                }}
-              />
-            </Item>
-          ))}
+          {state.search.components.map((component, i) => {
+            const isNearCatalogItem = component.variant && component.variant === "nearcatalog";
+            const componentSrc = isNearCatalogItem
+              ? `${component.accountId}/widget/${component.widgetName}?id=${component.slug}`
+              : `${component.accountId}/widget/${component.widgetName}`;
+            const componentProps = isNearCatalogItem
+              ? { image: component.image, name: component.name, tags: component.tags, variant: component.variant }
+              : {};
+            return (
+              <Item key={componentSrc}>
+                <Widget
+                  src="${REPL_ACCOUNT}/widget/Search.FullPage.ComponentCard"
+                  props={{
+                    src: componentSrc,
+                    ...componentProps,
+                    onClick: () =>
+                      onSearchResultClick({
+                        searchPosition: component.searchPosition,
+                        objectID: `${component.accountId}/widget/${component.widgetName}`,
+                        eventName: "Clicked Component After Search",
+                      }),
+                  }}
+                />
+              </Item>
+            );
+          })}
         </Items>
       </Group>
     )}

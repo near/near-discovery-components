@@ -1,6 +1,6 @@
-const SEARCH_API_KEY = props.searchApiKey ?? "0e42c01107b8f555a41bcc0fa7f2a4df";
+const SEARCH_API_KEY = props.searchApiKey ?? "fc7644a5da5306311e8e9418c24fddc4";
 const APPLICATION_ID = props.appId ?? "B6PI9UKKJT";
-const INDEX = props.index ?? "prod_near-social-feed";
+const INDEX = props.index ?? "replica_prod_near-social-feed";
 const API_URL = props.apiUrl ?? `https://${APPLICATION_ID}-dsn.algolia.net/1/indexes/${INDEX}/query?`;
 const INITIAL_PAGE = props.initialPage ?? 0;
 const facets = props.facets ?? ["All", "People", "Apps", "Components", "Posts"];
@@ -84,8 +84,15 @@ const FixedTabs = styled.div`
 `;
 
 const H2 = styled.h2`
+  display: ${(p) => p.$display ?? "block"};
+  justify-content: ${(p) => p.$justifyContent ?? "flex-start"};
+  align-items: ${(p) => p.$alignItems ?? "flex-start"};
+  position: ${(p) => p.$position ?? "relative"};
+  top: ${(p) => p.$top ?? "0"};
+  left: ${(p) => p.$left ?? "0"};
+  width: ${(p) => p.$width ?? "auto"};
   font-weight: 400;
-  font-size: 20px;
+  font-size: ${(p) => p.$fontSize ?? "20px"};
   line-height: 24px;
   color: #687076;
   margin: 0;
@@ -224,6 +231,40 @@ const ScrollableContent = styled.div`
 
 const Item = styled.div``;
 
+const DisplayResultsByFacet = ({ title, count, items }) => (
+  <Group>
+    <GroupHeader>
+      <H3>
+        {title}
+        <span
+          style={{
+            marginLeft: "10px",
+          }}
+        >
+          {count}
+        </span>
+      </H3>
+    </GroupHeader>
+    <Items>{items}</Items>
+  </Group>
+);
+
+const TextMessage = ({ message, ...props }) => (
+  <H2
+    $display="flex"
+    $justifyContent="center"
+    $alignItems="center"
+    $position="absolute"
+    $fontSize="15px"
+    $width="100%"
+    $top="40%"
+    $left="-0%"
+    {...props}
+  >
+    {message}
+  </H2>
+);
+
 //*********SEARCH FUNCTIONS ******** */
 
 // Reset Search Results
@@ -304,6 +345,25 @@ const components = (records, app) => {
   return components;
 };
 
+// creates an array of components
+const nearcatalog = (records) => {
+  const components = [];
+  for (const [i, component] of records || []) {
+    const widgetName = "Index";
+    const accountId = "nearcatalog.near";
+    components.push({
+      accountId,
+      widgetName,
+      slug: component.slug,
+      image: component.image,
+      name: component.name,
+      variant: "nearcatalog",
+      searchPosition: i,
+    });
+  }
+  return components;
+};
+
 const categorizeSearchHits = (rawResp) => {
   const results = {};
   for (const [i, result] of rawResp.hits?.entries()) {
@@ -376,7 +436,9 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
           apps: {
             hitsTotal,
             hitsPerPage,
-            hits: components(results["app, widget"]).concat(components(results["widget"])),
+            hits: components(results["app, widget, nearcatalog"])
+              .concat(components(results["widget"]))
+              .concat(nearcatalog(results["nearcatalog"])),
             queryID: resp.body.queryID,
           },
         });
@@ -413,7 +475,7 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
     };
   };
 
-  for (const facet of ["People", "Apps", "Components", "Posts"]) {
+  for (const facet of facets.filter((i) => i !== "All")) {
     fetchSearchHits(term, {
       pageNumber,
       configs: configsPerFacet(facet),
@@ -435,7 +497,7 @@ const FACET_TO_CATEGORY = {
 
 const FACET_TO_FILTER = {
   People: "categories:profile",
-  Apps: "(categories:app OR tags:app)",
+  Apps: "(categories:app OR tags:app OR categories:nearcatalog)",
   Components: "categories:widget",
   Posts: "(categories:post OR categories:comment)",
 };
@@ -577,17 +639,57 @@ const topmostComponents = (apps) => {
 
   const queryID = apps ? state.apps.queryID : state.components.queryID;
   const eventName = apps ? "App" : "Component";
+  return output.map((component, i) => {
+    const isNearCatalogItem = component.variant && component.variant === "nearcatalog";
+    const componentSrc = isNearCatalogItem
+      ? `${component.accountId}/widget/${component.widgetName}?id=${component.slug}`
+      : `${component.accountId}/widget/${component.widgetName}`;
+    const componentProps = isNearCatalogItem
+      ? { image: component.image, name: component.name, variant: component.variant }
+      : {};
+    return (
+      <Item key={componentSrc} onClick={handleCloseSearchMenu}>
+        <Widget
+          src="${REPL_ACCOUNT}/widget/Search.ComponentCard"
+          props={{
+            src: componentSrc,
+            ...componentProps,
+            onClick: () =>
+              onSearchResultClick({
+                queryID,
+                searchPosition: component.searchPosition,
+                objectID: `${component.accountId}/widget/${component.widgetName}`,
+                eventName: `Clicked ${eventName} After Search`,
+              }),
+          }}
+        />
+      </Item>
+    );
+  });
+};
+
+const topmostNEARCatalogComponents = () => {
+  let output = state.nearcatalog.hits.slice(0, 5);
+
+  const queryID = state.nearcatalog.queryID;
+  const eventName = "Component";
   return output.map((component, i) => (
-    <Item key={`${component.accountId}/widget/${component.widgetName}`} onClick={handleCloseSearchMenu}>
+    <Item
+      key={`${component.accountId}/widget/${component.widgetName}/${component.slug}`}
+      onClick={handleCloseSearchMenu}
+    >
       <Widget
         src="${REPL_ACCOUNT}/widget/Search.ComponentCard"
         props={{
-          src: `${component.accountId}/widget/${component.widgetName}`,
+          src: `${component.accountId}/widget/${component.widgetName}?id=${component.slug}`,
+          variant: "nearcatalog",
+          name: component.name,
+          image: component.image,
           onClick: () =>
             onSearchResultClick({
               queryID,
               searchPosition: component.searchPosition,
-              objectID: `${component.accountId}/widget/${component.widgetName}`,
+              objectID: `${component.accountId}/widget/${component.widgetName}?id=${component.slug}`,
               eventName: `Clicked ${eventName} After Search`,
             }),
         }}
@@ -636,243 +738,70 @@ const displayResultsByFacet = (selectedTab) => {
   switch (selectedTab) {
     case "People":
       return state.profiles.hits?.length > 0 ? (
-        <Group>
-          <GroupHeader>
-            <H3>
-              People
-              <span
-                style={{
-                  marginLeft: "10px",
-                }}
-              >
-                {state.profiles.hitsTotal}
-              </span>
-            </H3>
-          </GroupHeader>
-
-          <Items>{topmostAccounts()}</Items>
-        </Group>
+        <DisplayResultsByFacet title="People" count={state.profiles.hitsTotal} items={topmostAccounts()} />
       ) : (
-        <H2
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            position: "absolute",
-            top: "40%", // Adjust this value to position the text lower
-            width: "100%",
-            fontSize: "15px",
-            left: "-0%",
-          }}
-        >
-          No People matches were found for "{state.term}".
-        </H2>
+        <TextMessage message={`No People matches were found for "${state.term}".`} />
       );
     case "Apps": {
       return state.apps.hits?.length > 0 ? (
-        <Group>
-          <GroupHeader>
-            <H3>
-              Apps
-              <span
-                style={{
-                  marginLeft: "10px",
-                }}
-              >
-                {state.apps.hitsTotal}
-              </span>
-            </H3>
-          </GroupHeader>
-          <Items>{topmostComponents(true)}</Items>
-        </Group>
+        <DisplayResultsByFacet title="Apps" count={state.apps.hitsTotal} items={topmostComponents(true)} />
       ) : (
         <>
-          <H2
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              position: "absolute",
-              top: "40%", // Adjust this value to position the text lower
-              width: "100%",
-              fontSize: "15px",
-              left: "-0%",
-            }}
-          >
-            No App matches were found for "{state.term}".
-          </H2>
-          <H2
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              position: "absolute",
-              top: "45%", // Adjust this value to position the text lower
-              width: "100%",
-              fontSize: "12px",
-              left: "-0%",
-            }}
-          >
-            Trying to find a app built by an user? Try search their account id.
-          </H2>{" "}
+          <TextMessage message={`No App matches were found for "${state.term}".`} />
+          <TextMessage
+            message={`Trying to find a app built by an user? Try search their account id.`}
+            $fontSize="12px"
+            $top="45%"
+          />{" "}
         </>
       );
     }
 
     case "Components":
       return state.components.hits?.length > 0 ? (
-        <Group>
-          <GroupHeader>
-            <H3>
-              Components
-              <span
-                style={{
-                  marginLeft: "10px",
-                }}
-              >
-                {state.components.hitsTotal}
-              </span>
-            </H3>
-          </GroupHeader>
-
-          <Items>{topmostComponents(false)}</Items>
-        </Group>
+        <DisplayResultsByFacet title="Components" count={state.components.hitsTotal} items={topmostComponents(false)} />
       ) : (
         <>
-          <H2
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              position: "absolute",
-              top: "40%", // Adjust this value to position the text lower
-              width: "100%",
-              fontSize: "15px",
-              left: "-0%",
-            }}
-          >
-            No Component matches were found for "{state.term}".
-          </H2>
-          <H2
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              position: "absolute",
-              top: "45%", // Adjust this value to position the text lower
-              width: "100%",
-              fontSize: "12px",
-              left: "-0%",
-            }}
-          >
-            Trying to find a app built by an user? Try search their account id.
-          </H2>{" "}
+          <TextMessage message={`No Component matches were found for "${state.term}".`} />
+          <TextMessage
+            message={`Trying to find a app built by an user? Try search their account id.`}
+            $fontSize="12px"
+            $top="45%"
+          />{" "}
         </>
       );
     case "Posts":
       return state.postsAndComments.hits?.length > 0 ? (
-        <Group style={{ marginTop: "20px" }}>
-          <GroupHeader>
-            <H3>
-              Posts and Comments
-              <span
-                style={{
-                  marginLeft: "10px",
-                }}
-              >
-                {state.postsAndComments.hitsTotal}
-              </span>
-            </H3>
-          </GroupHeader>
-
-          <Items>{topmostPosts()}</Items>
-        </Group>
+        <DisplayResultsByFacet
+          title="Posts and Comments"
+          count={state.postsAndComments.hitsTotal}
+          items={topmostPosts()}
+        />
       ) : (
-        <H2
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            position: "absolute",
-            top: "40%", // Adjust this value to position the text lower
-            width: "100%",
-            fontSize: "15px",
-            left: "-0%",
-          }}
-        >
-          No Post matches were found for "{state.term}".
-        </H2>
+        <TextMessage message={`No Post matches were found for "${state.term}".`} />
       );
     case "All":
       return (
         <>
           {state.profiles.hits?.length > 0 && (
-            <Group>
-              <GroupHeader>
-                <H3>
-                  People
-                  <span
-                    style={{
-                      marginLeft: "10px",
-                    }}
-                  >
-                    {state.profiles.hitsTotal}
-                  </span>
-                </H3>
-              </GroupHeader>
-              <Items>{topmostAccounts()}</Items>
-            </Group>
+            <DisplayResultsByFacet title="People" count={state.profiles.hitsTotal} items={topmostAccounts()} />
           )}
           {state.apps.hits?.length > 0 && (
-            <Group>
-              <GroupHeader>
-                <H3>
-                  Apps
-                  <span
-                    style={{
-                      marginLeft: "10px",
-                    }}
-                  >
-                    {state.apps.hitsTotal}
-                  </span>
-                </H3>
-              </GroupHeader>
-              <Items>{topmostComponents(true)}</Items>
-            </Group>
+            <DisplayResultsByFacet title="Apps" count={state.apps.hitsTotal} items={topmostComponents(true)} />
           )}
           {state.components.hits?.length > 0 && (
-            <Group>
-              <GroupHeader>
-                <H3>
-                  Components
-                  <span
-                    style={{
-                      marginLeft: "10px",
-                    }}
-                  >
-                    {state.components.hitsTotal}
-                  </span>
-                </H3>
-              </GroupHeader>
-              <Items>{topmostComponents(false)}</Items>
-            </Group>
+            <DisplayResultsByFacet
+              title="Components"
+              count={state.components.hitsTotal}
+              items={topmostComponents(false)}
+            />
           )}
           {state.postsAndComments.hits?.length > 0 && (
-            <Group style={{ marginTop: "20px" }}>
-              <GroupHeader>
-                <H3>
-                  Posts and Comments
-                  <span
-                    style={{
-                      marginLeft: "10px",
-                    }}
-                  >
-                    {state.postsAndComments.hitsTotal}
-                  </span>
-                </H3>
-              </GroupHeader>
-              <Items>{topmostPosts()}</Items>
-            </Group>
+            <DisplayResultsByFacet
+              title="Posts and Comments"
+              count={state.postsAndComments.hitsTotal}
+              items={topmostPosts()}
+            />
           )}
         </>
       );

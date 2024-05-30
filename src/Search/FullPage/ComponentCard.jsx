@@ -1,8 +1,15 @@
 const [accountId, widget, widgetName] = props.src.split("/");
-const metadata = Social.get(`${accountId}/widget/${widgetName}/metadata/**`, "final");
-const tags = Object.keys(metadata.tags || {});
-const detailsUrl = `/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${accountId}/widget/${widgetName}`;
+const variant = props.variant ?? "default";
+const metadata =
+  variant === "nearcatalog"
+    ? { image: props.image, name: props.name, tags: props.tags }
+    : Social.get(`${accountId}/widget/${widgetName}/metadata/**`, "final");
+const tags = metadata.tags && Array.isArray(metadata.tags) ? metadata.tags : Object.keys(metadata.tags || {});
 const appUrl = `/${accountId}/widget/${widgetName}`;
+const detailsUrl =
+  variant === "nearcatalog"
+    ? appUrl
+    : `/${REPL_ACCOUNT}/widget/ComponentDetailsPage?src=${accountId}/widget/${widgetName}`;
 const accountUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 const onPointerUp =
   props.onClick ??
@@ -153,7 +160,7 @@ const ButtonLink = styled("Link")`
 
 return (
   <Card>
-    {
+    {variant !== "nearcatalog" && (
       <CardTag>
         <i className="bi bi-clock"></i>{" "}
         <Widget
@@ -165,7 +172,7 @@ return (
         />{" "}
         ago
       </CardTag>
-    }
+    )}
 
     <CardBody>
       <Thumbnail href={detailsUrl} onPointerUp={onPointerUp}>

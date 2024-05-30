@@ -1,8 +1,6 @@
-let { idosConnected, connectIdOS, walletImages, connectedWallet } = props;
+let { idosConnected, connectIdOS, walletImages, connectedWallet, idosCreateAccountUrl } = props;
 
 const idOSLearnLink = "https://idos-1.gitbook.io/idos-docs";
-const createAccountUrl =
-  "https://app.fractal.id/authorize?client_id=PXAbBxPErSPMXiKmMYQ3ged8Qxwqg1Px7ymhsuhaGP4&redirect_uri=https%3A%2F%2Fnear.org%2Fsettings&response_type=code&scope=contact%3Aread%20verification.uniqueness%3Aread%20verification.uniqueness.details%3Aread%20verification.idos%3Aread%20verification.idos.details%3Aread%20verification.wallet-near%3Aread%20verification.wallet-near.details%3Aread";
 
 const Wrapper = styled.div`
   display: grid;
@@ -165,7 +163,7 @@ return (
           variant: "affirmative",
           label: "Sign In",
           disabled: !context.accountId || idosConnected,
-          href: createAccountUrl,
+          href: idosCreateAccountUrl,
         }}
       />
     </Card>

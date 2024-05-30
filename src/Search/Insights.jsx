@@ -43,7 +43,7 @@ window.addEventListener("message", (message) => {
 return (
   <iframe
     srcDoc={code}
-    style={{ position: absolute, width: 0, height: 0, border: 0 }}
+    style={{ position: "absolute", width: 0, height: 0, border: 0 }}
     message={{ event: props.event }}
     onMessage={(resp) => onChange(resp)}
   />

@@ -231,6 +231,15 @@ const ScrollableContent = styled.div`
 
 const Item = styled.div``;
 
+const _parceDataByFacet = (facet, arr) => {
+  if (!arr || arr.length === 0) return [];
+  return arr.slice(0, topmostCount).map((item) => ({
+    ...item,
+    variant: item.variant ?? facet,
+    relevance: item.searchPosition,
+  }));
+};
+
 const DisplayResultsByFacet = ({ title, count, items }) => (
   <Group>
     <GroupHeader>
@@ -249,32 +258,12 @@ const DisplayResultsByFacet = ({ title, count, items }) => (
   </Group>
 );
 
-const DisplayAllResults = ({ data }) => {
-  const profiles =
-    state.profiles.hits?.length > 0
-      ? state.profiles.hits
-          .slice(0, topmostCount)
-          .map((hit) => ({ ...hit, variant: "profile", relevance: hit.searchPosition }))
-      : [];
-  const apps =
-    state.apps.hits?.length > 0
-      ? state.apps.hits
-          .slice(0, topmostCount)
-          .map((hit) => ({ ...hit, variant: hit.variant ?? "apps", relevance: hit.searchPosition }))
-      : [];
-  const components =
-    state.components.hits?.length > 0
-      ? state.components.hits
-          .slice(0, topmostCount)
-          .map((hit) => ({ ...hit, variant: "components", relevance: hit.searchPosition }))
-      : [];
-  const postsAndComments =
-    state.postsAndComments.hits?.length > 0
-      ? state.postsAndComments.hits
-          .slice(0, topmostCount)
-          .map((hit) => ({ ...hit, variant: "postsAndComments", relevance: hit.searchPosition }))
-      : [];
-  const allResults = [...profiles, ...apps, ...components, ...postsAndComments];
+const DisplayAllResults = () => {
+  const profiles = _parceDataByFacet("profile", state.profiles.hits);
+  const apps = _parceDataByFacet("apps", state.apps.hits);
+  const components = _parceDataByFacet("components", state.components.hits);
+  const postsAndComments = _parceDataByFacet("postsAndComments", state.postsAndComments.hits);
+  const allResults = [...apps, ...profiles, ...components, ...postsAndComments];
   const sortedResults = allResults?.sort((a, b) => a.relevance - b.relevance);
   return (
     <Group>

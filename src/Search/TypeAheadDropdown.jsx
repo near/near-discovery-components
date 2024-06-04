@@ -266,25 +266,13 @@ const DisplayAllResults = () => {
   const allResults = [...apps, ...profiles, ...components, ...postsAndComments];
   const sortedResults = allResults?.sort((a, b) => a.relevance - b.relevance);
   return (
-    <Group>
-      <GroupHeader>
-        <H3>
-          All
-          <span
-            style={{
-              marginLeft: "10px",
-            }}
-          >
-            {sortedResults.length}
-          </span>
-        </H3>
-      </GroupHeader>
-      <Items>
-        {sortedResults.map((item, index) => (
-          <ResultByFacet key={`${item.accountId}-${index}`} {...item} />
-        ))}
-      </Items>
-    </Group>
+    <DisplayResultsByFacet
+      title="All"
+      count={sortedResults.length}
+      items={sortedResults.map((item, index) => (
+        <ResultByFacet key={`${item.accountId}-${index}`} {...item} />
+      ))}
+    />
   );
 };
 

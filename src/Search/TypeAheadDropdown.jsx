@@ -5,9 +5,6 @@ const API_URL = props.apiUrl ?? `https://${APPLICATION_ID}-dsn.algolia.net/1/ind
 const INITIAL_PAGE = props.initialPage ?? 0;
 const facets = props.facets ?? ["All", "People", "Apps", "Components", "Posts"];
 const tab = props.tab ?? "All";
-const showHeader = props.showHeader ?? true;
-const showSearchBar = props.showSearchBar ?? true;
-const showPagination = props.showPagination ?? true;
 const userId = props.accountId ?? context.accountId;
 const searchPageUrl = "/${REPL_ACCOUNT}/widget/Search.IndexPage";
 const topmostCount = props.topmostCount ?? 3;
@@ -16,14 +13,6 @@ State.init({
   currentPage: 0,
   selectedTab: tab,
   facet: tab,
-  isFiltersPanelVisible: false,
-  numColumns: 3,
-  selectedTags: [],
-  searchResults: [], // Assuming search results are stored here
-  allTags: [],
-  activeTags: [],
-  showFollowed: false,
-  showNotFollowed: false,
 });
 
 // Styling Specifications

@@ -1,5 +1,6 @@
 const [value, setValue] = useState("");
 const [isFocused, setIsFocused] = useState(false);
+const [isCursorOutside, setIsCursorOutside] = useState(false);
 
 const showTypeAheadDropdown = isFocused && !!value;
 
@@ -8,12 +9,20 @@ const handleOnInput = (value) => {
   setIsFocused(!!value);
 };
 
-const handleInteractOutside = (e) => {
-  setIsFocused(false);
+const handleInteractOutside = (value) => {
+  setIsCursorOutside(!value);
+};
+
+const handleFocusChange = () => {
+  setIsFocused(!isFocused);
+};
+
+const handleOnBlur = () => {
+  setIsFocused(!isCursorOutside);
 };
 
 return (
-  <HoverCard.Root openDelay={200} closeDelay={300} open={showTypeAheadDropdown}>
+  <HoverCard.Root openDelay={200} closeDelay={300} open={showTypeAheadDropdown} onOpenChange={handleInteractOutside}>
     <HoverCard.Trigger asChild>
       <div>
         <Widget
@@ -21,8 +30,8 @@ return (
           props={{
             onQueryChange: handleOnInput,
             placeholder: "Search NEAR",
-            onBlur: () => setIsFocused(false),
-            onFocus: () => setIsFocused(true),
+            onBlur: handleOnBlur,
+            onFocus: handleFocusChange,
           }}
         />
       </div>

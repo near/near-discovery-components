@@ -13,19 +13,21 @@ const handleInteractOutside = (e) => {
 };
 
 return (
-  <Popover.Root open={showTypeAheadDropdown}>
-    <Popover.Trigger asChild>
+  <HoverCard.Root openDelay={200} closeDelay={300} open={showTypeAheadDropdown}>
+    <HoverCard.Trigger asChild>
       <div>
         <Widget
           src="${REPL_ACCOUNT}/widget/DIG.InputSearch"
           props={{
             onQueryChange: handleOnInput,
             placeholder: "Search NEAR",
+            onBlur: () => setIsFocused(false),
+            onFocus: () => setIsFocused(true),
           }}
         />
       </div>
-    </Popover.Trigger>
-    <Popover.Content asChild onInteractOutside={handleInteractOutside} onOpenAutoFocus={() => {}}>
+    </HoverCard.Trigger>
+    <HoverCard.Content asChild side="bottom" sideOffset={10} hideWhenDetached={true}>
       <div>
         <Widget
           src="${REPL_ACCOUNT}/widget/Search.TypeAheadDropdown"
@@ -35,6 +37,6 @@ return (
           }}
         />
       </div>
-    </Popover.Content>
-  </Popover.Root>
+    </HoverCard.Content>
+  </HoverCard.Root>
 );

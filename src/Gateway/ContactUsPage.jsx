@@ -1,18 +1,15 @@
 const urls = {
-  devHub: "https://near.org/devhub.near/widget/app",
   discord: "http://near.chat",
   discourse: "https://gov.near.org",
   docs: "https://docs.near.org",
-  facebook: "https://www.facebook.com/NEARProtocol",
   getFunding: "https://near.org/ecosystem/get-funding",
   github: "https://github.com/near",
   hackenproof: "https://hackenproof.com/near",
   helpCenter: "https://nearhelp.zendesk.com/hc/en-us",
   nearWallet: "https://wallet.near.org/",
   nearWeek: "https://subscribe.nearweek.com/",
-  reddit: "https://www.reddit.com/r/nearprotocol",
   supportRequest: "https://nearhelp.zendesk.com/hc/en-us/requests/new",
-  telegram: "https://t.me/cryptonear",
+  telegram: "https://t.me/neardev",
   twitter: "https://twitter.com/nearprotocol",
   wechat: "https://pages.near.org/wechat",
   withdrawNearFunds:
@@ -22,11 +19,6 @@ const urls = {
 
 const channels = [
   {
-    icon: "ph-users",
-    label: "DevHub",
-    url: urls.devHub,
-  },
-  {
     icon: "ph-telegram-logo",
     label: "Telegram",
     url: urls.telegram,
@@ -35,31 +27,6 @@ const channels = [
     icon: "ph-discord-logo",
     label: "Discord",
     url: urls.discord,
-  },
-  {
-    icon: "ph-chats-teardrop",
-    label: "Discourse",
-    url: urls.discourse,
-  },
-  {
-    icon: "ph-facebook-logo",
-    label: "Facebook",
-    url: urls.facebook,
-  },
-  {
-    icon: "ph-reddit-logo",
-    label: "Reddit",
-    url: urls.reddit,
-  },
-  {
-    icon: "ph-wifi-high",
-    label: "Warpcast",
-    url: "https://warpcast.com/~/channel/near",
-  },
-  {
-    icon: "ph-youtube-logo",
-    label: "YouTube",
-    url: urls.youtube,
   },
   {
     icon: "ph-github-logo",
@@ -350,27 +317,33 @@ return (
         <Flex $direction="column" $gap="1.5rem">
           <Card $background="violet5" $color="violet12" style={{ flexGrow: 1 }}>
             <Text $size="text-l" $fontWeight="700">
-              Help Center
+              Chat Support
             </Text>
 
-            <Text>Find articles about popular services and topics.</Text>
+            <Text>Chat with our developers and get live support</Text>
 
-            <IconTextLink href={urls.helpCenter} target="_blank" $iconColor="violet11">
-              <i className="ph-bold ph-book-open-text" />
-              <span>Launch help center</span>
+            <IconTextLink href={urls.telegram} target="_blank" $iconColor="violet11">
+              <i className="ph-bold ph-telegram-logo" />
+              <span>Telegram Support</span>
             </IconTextLink>
+            <IconTextLink href={urls.discord} target="_blank" $iconColor="violet11">
+              <i className="ph-bold ph-discord-logo" />
+              <span>Discord Support</span>
+            </IconTextLink>
+
           </Card>
 
           <Card $background="amber5" $color="amber12" style={{ flexGrow: 1 }}>
             <Text $size="text-l" $fontWeight="700">
-              Resolve an issue
+              Office Hours
             </Text>
 
-            <Text>Get in touch with our Customer Care Team.</Text>
+            <Text>Jump in a voice call with our developers </Text>
+            <Text> Thursdays - 11hs & 18hs (UTC) </Text>
 
-            <IconTextLink href={urls.supportRequest} target="_blank" $iconColor="amber11">
+            <IconTextLink href={urls.discord} target="_blank" $iconColor="amber11">
               <i className="ph-bold ph-chat-circle-dots" />
-              <span>Launch support form</span>
+              <span>Join our Discord</span>
             </IconTextLink>
           </Card>
         </Flex>

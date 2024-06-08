@@ -30,13 +30,17 @@ function createNotificationMessage(value) {
     case "comment":
     case "devgovgigs/reply":
       return "replied to your post";
-    case "devhub/reply":
+    case "proposal/reply":
       return "replied to your proposal";
+    case "rfp/reply":
+      return "replied to your RFP";
     case "mention":
     case "devgovgigs/mention":
       return "mentioned you in their post";
-    case "devhub/mention":
+    case "proposal/mention":
       return "mentioned you in their proposal";
+    case "rfp/mention":
+      return "mentioned you in their RFP";
     case "poke":
       return "poked you";
     case "star":
@@ -44,12 +48,16 @@ function createNotificationMessage(value) {
     case "custom":
       return customMessage ?? "";
     case "devgovgigs/edit":
-    case "devhub/edit":
-      return "edited your post";
+    case "proposal/edit":
+      return "edited your proposal";
+    case "rfp/edit":
+      return "edited the RFP";
     case "devgovgigs/like":
       return isDevHubPost ? "liked your post" : "liked your comment";
-    case "devhub/like":
+    case "proposal/like":
       return "liked your proposal";
+    case "rfp/like":
+      return "liked the RFP";
     default:
       return null;
   }
@@ -95,6 +103,8 @@ function createNotificationLink(notificationValue, authorAccountId, accountId, b
   const params = notificationValue?.params ?? {};
   const post = notificationValue?.post ?? {};
   const proposal = notificationValue?.proposal ?? "";
+  const rfp = notificationValue?.rfp ?? "";
+  const widgetAccountId = notificationValue?.widgetAccountId ?? "";
   const likeAtBlockHeight = notificationValue?.item?.blockHeight ?? undefined;
   const path = notificationValue?.item?.path ?? "";
 
@@ -127,15 +137,26 @@ function createNotificationLink(notificationValue, authorAccountId, accountId, b
           id: post,
         },
       });
-    case "devhub/mention":
-    case "devhub/edit":
-    case "devhub/reply":
-    case "devhub/like":
+    case "proposal/mention":
+    case "proposal/edit":
+    case "proposal/reply":
+    case "proposal/like":
       return href({
-        widgetSrc: "devhub.near/widget/app",
+        widgetSrc: `${widgetAccountId}/widget/app`,
         params: {
           page: "proposal",
           id: proposal,
+        },
+      });
+    case "rfp/mention":
+    case "rfp/edit":
+    case "rfp/reply":
+    case "rfp/like":
+      return href({
+        widgetSrc: `${widgetAccountId}/widget/app`,
+        params: {
+          page: "rfp",
+          id: rfp,
         },
       });
     default:
@@ -147,7 +168,8 @@ function getNotificationIconClassName(notificationType) {
   switch (notificationType) {
     case "like":
     case "devgovgigs/like":
-    case "devhub/like":
+    case "proposal/like":
+    case "rfp/like":
       return "ph ph-heart";
     case "fork":
       return "ph ph-git-fork";
@@ -157,11 +179,13 @@ function getNotificationIconClassName(notificationType) {
       return "ph ph-user-minus";
     case "comment":
     case "devgovgigs/reply":
-    case "devhub/reply":
+    case "proposal/reply":
+    case "rfp/reply":
       return "ph ph-share-fat";
     case "mention":
     case "devgovgigs/mention":
-    case "devhub/mention":
+    case "proposal/mention":
+    case "rfp/mention":
       return "ph ph-at";
     case "poke":
       return "ph ph-hand-pointing";
@@ -196,6 +220,7 @@ function checkNotificationValueAvailability(value) {
   const post = value?.post ?? null;
   const notifier = value?.notifier ?? null;
   const proposal = value?.proposal ?? null;
+  const rfp = value?.rfp ?? null;
 
   switch (notificationType) {
     case "like":
@@ -213,13 +238,20 @@ function checkNotificationValueAvailability(value) {
     case "devgovgigs/mention":
     case "devgovgigs/edit":
       return !(!type || !post);
-    case "devhub/like":
+    case "proposal/like":
       return !(!type || !proposal);
-    case "devhub/edit":
-    case "devhub/mention":
+    case "rfp/like":
+      return !(!type || !rfp);
+    case "proposal/edit":
+    case "proposal/mention":
       return !(!type || !notifier || !proposal);
-    case "devhub/reply":
+    case "rfp/edit":
+    case "rfp/mention":
+      return !(!type || !notifier || !rfp);
+    case "proposal/reply":
       return !(!type || !path || !blockHeight || !proposal);
+    case "rfp/reply":
+      return !(!type || !path || !blockHeight || !rfp);
     default:
       return false;
   }

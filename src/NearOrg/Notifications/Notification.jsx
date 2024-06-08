@@ -183,7 +183,11 @@ if (value === null) return "Loading...";
 const notificationType = value?.type;
 const notifier = value?.notifier;
 
-const showAuthorProfile = notificationType == "devhub/mention" || notificationType == "devhub/edit";
+const showAuthorProfile =
+  notificationType == "proposal/mention" ||
+  notificationType == "proposal/edit" ||
+  notificationType == "rfp/mention" ||
+  notificationType == "rfp/edit";
 // notifier is the one who should be displayed as profile in notifications,
 // since all the notifications will be created by devhub.near account but the actual person initiating it is the notifier
 if (showAuthorProfile) {
@@ -199,7 +203,7 @@ const profileUrl = `/${REPL_ACCOUNT}/widget/ProfilePage?accountId=${accountId}`;
 // which means it's not actionable
 // as for example "like", "comment", "star", "custom",
 // "devgovgigs/mention", "devgovgigs/edit", "devgovgigs/reply", "devgovgigs/like"
-// "devhub/mention", "devhub/edit", "devhub/reply", "devhub/like"
+// "proposal/mention", "proposal/edit", "proposal/reply", "proposal/like", "rfp/mention", "rfp/edit", "rfp/reply", "rfp/like"
 const ordinaryNotification = ["follow", "unfollow", "poke"].indexOf(notificationType) >= 0;
 
 // Assert is a valid type

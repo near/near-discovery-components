@@ -284,7 +284,7 @@ const [loading, setLoading] = useState(true);
 const fetchTopRatingApps = () => {
   asyncFetch(`${nearCatalogApi}/${topRating}`)
     .then((res) => {
-      const data = res.body;
+      const { data } = res.body;
       const dataList = Object.keys(data)
         .slice(0, TRENDING_APPS_LIMIT)
         .map((key) => data[key]);
@@ -445,8 +445,7 @@ return (
           <Card title="Documentation &amp; Learning" text="Dive into example apps or get started with developer tools.">
             <Flex $direction="column" $gap="16px" $mobileGap="48px">
               <ButtonLink
-                href="https://near.org/devhub.near/widget/app?page=community&handle=chain-abstraction&tab=technical-resources"
-                target="_blank"
+                href={`/${REPL_DEVHUB}/widget/app?page=community&handle=chain-abstraction&tab=technical-resources`}
                 icon="ph-bold ph-link"
                 title="Chain Abstraction"
                 text="Unlock blockchain interoperability via a single NEAR account."

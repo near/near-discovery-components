@@ -395,23 +395,21 @@ return (
               <Flex $direction="column" $gap="32px">
                 <H1>Welcome</H1>
                 <Text $size="text-xl" $mobileSize="text-l" style={{ maxWidth: "385px" }}>
-                  Start building right away with easy to use tutorials.
+                  Start building right away and get in contact with us.
                 </Text>
               </Flex>
               <Flex $direction="column" $gap="16px" $mobileGap="48px">
                 <ButtonLink
-                  href="https://app.jutsu.ai"
-                  target="_blank"
-                  icon="ph-bold ph-plus"
-                  title="Create a UI Project"
-                  text="Start tinkering with Jutsu.ai using a template or start a blank project."
+                  href="/documentation"
+                  icon="ph-bold ph-book-open-text"
+                  title="Read the Docs"
+                  text="Learn everything about NEAR in our official documentation"
                 />
                 <ButtonLink
-                  href="https://docs.near.org/build/smart-contracts/quickstart"
-                  target="_blank"
-                  icon="ph-bold ph-code-block"
-                  title="Smart Contracts"
-                  text="Learn how to create your first smart contract in NEAR testnet."
+                  href="/contact-us"
+                  icon="ph-bold ph-question"
+                  title="Reach Out"
+                  text="Discover all the channels where you can get in touch with us"
                 />
               </Flex>
             </Grid>

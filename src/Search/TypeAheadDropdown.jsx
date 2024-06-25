@@ -3,7 +3,7 @@ const APPLICATION_ID = props.appId ?? "B6PI9UKKJT";
 const INDEX = props.index ?? "replica_prod_near-social-feed";
 const API_URL = props.apiUrl ?? `https://${APPLICATION_ID}-dsn.algolia.net/1/indexes/${INDEX}/query?`;
 const INITIAL_PAGE = props.initialPage ?? 0;
-const facets = props.facets ?? ["All", "People", "Apps", "Components", "Posts"];
+const facets = props.facets ?? ["All", "Apps", "Components"];
 const tab = props.tab ?? "All";
 const userId = props.accountId ?? context.accountId;
 const searchPageUrl = "/${REPL_ACCOUNT}/widget/Search.IndexPage";
@@ -248,11 +248,9 @@ const DisplayResultsByFacet = ({ title, count, items }) => (
 );
 
 const DisplayAllResults = () => {
-  const profiles = _parceDataByFacet("profile", state.profiles.hits);
   const apps = _parceDataByFacet("apps", state.apps.hits);
   const components = _parceDataByFacet("components", state.components.hits);
-  const postsAndComments = _parceDataByFacet("postsAndComments", state.postsAndComments.hits);
-  const allResults = [...apps, ...profiles, ...components, ...postsAndComments];
+  const allResults = [...apps, ...components];
   const sortedResults = allResults?.sort((a, b) => a.relevance - b.relevance);
   return (
     <DisplayResultsByFacet
@@ -267,25 +265,6 @@ const DisplayAllResults = () => {
 
 const ResultByFacet = (record) => {
   switch (record.variant) {
-    case "profile":
-      return (
-        <Item key={record.accountId} onClick={handleCloseSearchMenu}>
-          <Widget
-            src="${REPL_ACCOUNT}/widget/Search.DropdownAccountCard"
-            props={{
-              accountId: record.accountId,
-              profile_name: props.profile_name,
-              onClick: () =>
-                onSearchResultClick({
-                  queryID: record.queryID,
-                  searchPosition: record.searchPosition,
-                  objectID: `${record.accountId}/profile`,
-                  eventName: "Clicked Profile After Search",
-                }),
-            }}
-          />
-        </Item>
-      );
     case "apps":
     case "components":
     case "nearcatalog":
@@ -309,28 +288,6 @@ const ResultByFacet = (record) => {
                   searchPosition: record.searchPosition,
                   objectID: `${record.accountId}/widget/${record.widgetName}`,
                   eventName: "Clicked App After Search",
-                }),
-            }}
-          />
-        </Item>
-      );
-    case "postsAndComments":
-      return (
-        <Item key={`${record.accountId}/${record.postType}/${record.blockHeight}`} onClick={handleCloseSearchMenu}>
-          <Widget
-            src="${REPL_ACCOUNT}/widget/Search.PostCard"
-            props={{
-              accountId: record.accountId,
-              blockHeight: record.blockHeight,
-              content: record.postContent,
-              term: props.term,
-              snipContent: true,
-              onClick: () =>
-                onSearchResultClick({
-                  queryID: record.queryID,
-                  searchPosition: record.searchPosition,
-                  objectID: `${record.accountId}/${record.postType}/${record.blockHeight}`,
-                  eventName: "Clicked Post After Search",
                 }),
             }}
           />
@@ -379,43 +336,6 @@ const writeStateTerm = (term) => {
   if (term === "") {
     resetSearcheHits();
   }
-};
-
-// creates an array of profiles
-const profiles = (records) => {
-  const profiles = [];
-  for (const [i, record] of records ?? []) {
-    profiles.push({
-      accountId: record.author,
-      profile_name: record.profile_name,
-      searchPosition: i,
-    });
-  }
-  return profiles;
-};
-
-// creates an array of objects that provide the details of the loaded posts
-const posts = (content, postType) => {
-  const posts = [];
-  for (const [i, post] of content || []) {
-    const accountId = post.author;
-    const blockHeight = post.objectID.split("/").slice(-1)[0];
-    const postContent = {
-      type: "md",
-      text: post.content,
-    };
-    const headerStyling = postType === "post" ? "border rounded-4 p-3 pb-1" : "pt-3 border-top pb-2";
-
-    posts.push({
-      accountId,
-      blockHeight,
-      postContent,
-      postType,
-      headerStyling,
-      searchPosition: i,
-    });
-  }
-  return posts;
 };
 
 // creates an array of components
@@ -482,10 +402,11 @@ const debounce = (callable, timeout) => {
   };
 };
 
-const fetchSearchHits = (query, { pageNumber, configs }) => {
+const fetchSearchHits = (query, { pageNumber, configs, optionalFilters }) => {
   let body = {
     query,
     page: pageNumber ?? 0,
+    optionalFilters: optionalFilters ?? ["categories:nearcatalog<score=1>", "categories:widget<score=2>"],
     clickAnalytics: true,
     ...configs,
   };
@@ -512,41 +433,23 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
     return (resp) => {
       const { results, hitsTotal, hitsPerPage } = categorizeSearchHits(resp.body);
 
-      if (facet === "People") {
-        State.update({
-          profiles: {
-            hitsTotal,
-            hitsPerPage,
-            hits: profiles(results["profile"]),
-            queryID: resp.body.queryID,
-          },
-        });
-      } else if (facet === "Apps") {
+      if (facet === "Apps") {
         State.update({
           apps: {
             hitsTotal,
             hitsPerPage,
             hits: components(results["app, widget, nearcatalog"])
-              .concat(components(results["widget"]))
-              .concat(nearcatalog(results["nearcatalog"])),
-            queryID: resp.body.queryID,
-          },
-        });
-      } else if (facet === "Components") {
-        State.update({
-          components: {
-            hitsTotal,
-            hitsPerPage,
-            hits: components(results["widget"]),
+              .concat(nearcatalog(results["nearcatalog"]))
+              .concat(components(results["widget"])),
             queryID: resp.body.queryID,
           },
         });
       } else {
         State.update({
-          postsAndComments: {
+          components: {
             hitsTotal,
             hitsPerPage,
-            hits: posts(results["post"], "post").concat(posts(results["comment, post"], "post-comment")),
+            hits: components(results["widget"]),
             queryID: resp.body.queryID,
           },
         });
@@ -579,17 +482,13 @@ const onSearchChange = ({ term }) => {
 };
 
 const FACET_TO_CATEGORY = {
-  People: "profile",
   Apps: "app",
   Components: "widget",
-  Posts: "post",
 };
 
 const FACET_TO_FILTER = {
-  People: "categories:profile",
-  Apps: "(categories:app OR tags:app OR categories:nearcatalog)",
+  Apps: "(categories:nearcatalog OR categories:app OR tags:app)",
   Components: "categories:widget",
-  Posts: "(categories:post OR categories:comment)",
 };
 
 const searchFilters = (facet) => {
@@ -655,56 +554,17 @@ const onSearchResultClick = ({ searchPosition, queryID, objectID, eventName }) =
   }, 100);
 };
 
-const topmostAccounts = () => {
-  let output = [];
-
-  if (state.selectedTab === "People") {
-    for (let i = 0; i < 6; i++) {
-      if (i < state.profiles.hits.length) {
-        output.push(state.profiles.hits[i]);
-      }
-    }
-  } else {
-    output = state.profiles.hits.slice(0, topmostCount);
-  }
-
-  return output.map((profile) => (
-    <Item key={profile.accountId} onClick={handleCloseSearchMenu}>
-      <Widget
-        src="${REPL_ACCOUNT}/widget/Search.DropdownAccountCard"
-        props={{
-          accountId: profile.accountId,
-          profile_name: profile.profile_name,
-          onClick: () =>
-            onSearchResultClick({
-              queryID: state.profiles.queryID,
-              searchPosition: profile.searchPosition,
-              objectID: `${profile.accountId}/profile`,
-              eventName: "Clicked Profile After Search",
-            }),
-        }}
-      />
-    </Item>
-  ));
-};
-
 const tabCount = (tab) => {
   switch (tab) {
     case "All":
       // Return the count for All
       return state.paginate?.hitsTotal;
-    case "People":
-      // Return the count for People
-      return state.profiles.hitsTotal ?? 0;
     case "Apps":
       // Return the count for Apps
       return state.apps.hitsTotal ?? 0;
     case "Components":
       // Return the count for Components
       return state.components.hitsTotal ?? 0;
-    case "Posts":
-      // Return the count for Posts
-      return state.postsAndComments.hitsTotal ?? 0;
     default:
       // Return 0 if the tab name is not in the list
       return 0;
@@ -758,50 +618,8 @@ const topmostComponents = (apps) => {
   });
 };
 
-const topmostPosts = () => {
-  let output = [];
-
-  if (state.selectedTab === "Posts") {
-    for (let i = 0; i < 6; i++) {
-      if (i < state.postsAndComments.hitsTotal) {
-        output.push(state.postsAndComments.hits[i]);
-      }
-    }
-  } else {
-    output = state.postsAndComments.hits.slice(0, topmostCount);
-  }
-
-  return output.map((post, i) => (
-    <Item key={`${post.accountId}/${post.postType}/${post.blockHeight}`} onClick={handleCloseSearchMenu}>
-      <Widget
-        src="${REPL_ACCOUNT}/widget/Search.PostCard"
-        props={{
-          accountId: post.accountId,
-          blockHeight: post.blockHeight,
-          content: post.postContent,
-          term: props.term,
-          snipContent: true,
-          onClick: () =>
-            onSearchResultClick({
-              queryID: state.postsAndComments.queryID,
-              searchPosition: post.searchPosition,
-              objectID: `${post.accountId}/${post.postType}/${post.blockHeight}`,
-              eventName: "Clicked Post After Search",
-            }),
-        }}
-      />
-    </Item>
-  ));
-};
-
 const displayResultsByFacet = (selectedTab) => {
   switch (selectedTab) {
-    case "People":
-      return state.profiles.hits?.length > 0 ? (
-        <DisplayResultsByFacet title="People" count={state.profiles.hitsTotal} items={topmostAccounts()} />
-      ) : (
-        <TextMessage message={`No People matches were found for "${state.term}".`} />
-      );
     case "Apps": {
       return state.apps.hits?.length > 0 ? (
         <DisplayResultsByFacet title="Apps" count={state.apps.hitsTotal} items={topmostComponents(true)} />
@@ -829,16 +647,6 @@ const displayResultsByFacet = (selectedTab) => {
             $top="45%"
           />{" "}
         </>
-      );
-    case "Posts":
-      return state.postsAndComments.hits?.length > 0 ? (
-        <DisplayResultsByFacet
-          title="Posts and Comments"
-          count={state.postsAndComments.hitsTotal}
-          items={topmostPosts()}
-        />
-      ) : (
-        <TextMessage message={`No Post matches were found for "${state.term}".`} />
       );
     case "All":
       return <DisplayAllResults />;

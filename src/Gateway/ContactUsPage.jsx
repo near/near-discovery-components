@@ -331,19 +331,23 @@ return (
               <span>Discord Support</span>
             </IconTextLink>
 
-          </Card>
-
-          <Card $background="amber5" $color="amber12" style={{ flexGrow: 1 }}>
-            <Text $size="text-l" $fontWeight="700">
-              Office Hours
-            </Text>
-
             <Text>Jump in a voice call with our developers </Text>
             <Text> Thursdays - 11hs & 18hs (UTC) </Text>
 
             <IconTextLink href={urls.discord} target="_blank" $iconColor="amber11">
               <i className="ph-bold ph-chat-circle-dots" />
               <span>Join our Discord</span>
+            </IconTextLink>
+          </Card>
+
+          <Card $background="amber5" $color="amber12" style={{ flexGrow: 1 }}>
+            <Text $size="text-l" $fontWeight="700">
+              Resolve an issue
+            </Text>
+
+            <IconTextLink href={urls.supportRequest} target="_blank" $iconColor="amber11">
+              <i className="ph-bold ph-chat-circle-dots" />
+              <span>Launch support form</span>
             </IconTextLink>
           </Card>
         </Flex>

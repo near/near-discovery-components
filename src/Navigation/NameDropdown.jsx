@@ -50,7 +50,7 @@ return (
       src="${REPL_ACCOUNT}/widget/DIG.DropdownMenu"
       props={{
         trigger: (
-          profile.name
+          profile.name || accountId
         ),
         items: menuItems,
       }}

@@ -1,3 +1,4 @@
+let { placeholder } = props;
 const [value, setValue] = useState("");
 const [isFocused, setIsFocused] = useState(false);
 const [isCursorOutside, setIsCursorOutside] = useState(false);
@@ -29,7 +30,7 @@ return (
           src="${REPL_ACCOUNT}/widget/DIG.InputSearch"
           props={{
             onQueryChange: handleOnInput,
-            placeholder: "Search NEAR",
+            placeholder: placeholder ?? "Search NEAR",
             onBlur: handleOnBlur,
             onFocus: handleFocusChange,
           }}

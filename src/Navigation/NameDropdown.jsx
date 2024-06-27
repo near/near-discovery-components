@@ -49,7 +49,7 @@ return (
   <Widget
     src="${REPL_ACCOUNT}/widget/DIG.DropdownMenu"
     props={{
-      trigger: profile.name,
+      trigger: profile.name || accountId,
       items: menuItems,
     }}
   />

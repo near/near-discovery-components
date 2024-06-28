@@ -46,13 +46,11 @@ const menuItems = [
 ];
 
 return (
-    <Widget
-      src="${REPL_ACCOUNT}/widget/DIG.DropdownMenu"
-      props={{
-        trigger: (
-          profile.name
-        ),
-        items: menuItems,
-      }}
-    />
+  <Widget
+    src="${REPL_ACCOUNT}/widget/DIG.DropdownMenu"
+    props={{
+      trigger: profile.name || accountId,
+      items: menuItems,
+    }}
+  />
 );

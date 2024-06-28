@@ -3,7 +3,7 @@ const APPLICATION_ID = props.appId ?? "B6PI9UKKJT";
 const INDEX = props.index ?? "replica_prod_near-social-feed";
 const API_URL = props.apiUrl ?? `https://${APPLICATION_ID}-dsn.algolia.net/1/indexes/${INDEX}/query?`;
 const INITIAL_PAGE = props.initialPage ?? 0;
-const facets = props.facets ?? ["All", "People", "Apps", "Components", "Posts"];
+const facets = props.facets ?? ["All", "Apps", "Components"];
 const tab = props.tab ?? "All";
 const renderHeader = props.renderHeader;
 const showHeader = props.showHeader ?? true;
@@ -13,7 +13,6 @@ const showPagination = props.showPagination ?? true;
 const userId = props.accountId ?? context.accountId;
 
 const componentsUrl = `/${REPL_ACCOUNT}/widget/ComponentsPage`;
-const peopleUrl = `/${REPL_ACCOUNT}/widget/PeoplePage`;
 const nearcatalogUrl = `/${REPL_NEARCATALOG}/widget/Index`;
 
 State.init({
@@ -152,49 +151,6 @@ const writeStateTerm = (term) => {
   }
 };
 
-const profiles = (records) => {
-  const profiles = [];
-  for (const [i, record] of records ?? []) {
-    profiles.push({
-      accountId: record.author,
-      profile_name: record.profile_name,
-      searchPosition: i,
-    });
-  }
-  return profiles;
-};
-
-const posts = (content, postType) => {
-  const posts = [];
-  for (const [i, post] of content || []) {
-    const accountId = post.author;
-    const blockHeight = post.objectID.split("/").slice(-1)[0];
-
-    let snipContent = true;
-    let text = post.content;
-    if (post._highlightResult.content.matchLevel === "full") {
-      // Use algolia provided snipped content:
-      snipContent = false;
-      text = post._snippetResult.content.value.replaceAll("<em>", "").replaceAll("</em>", "");
-    }
-
-    const postContent = {
-      type: "md",
-      text,
-    };
-
-    posts.push({
-      accountId,
-      blockHeight,
-      postContent,
-      postType,
-      snipContent,
-      searchPosition: i,
-    });
-  }
-  return posts;
-};
-
 const components = (records) => {
   const components = [];
   for (const [i, component] of records || []) {
@@ -263,13 +219,7 @@ const fetchSearchHits = (query, { pageNumber, configs, optionalFilters }) => {
   let body = {
     query,
     page: pageNumber ?? 0,
-    optionalFilters: optionalFilters ?? [
-      "categories:nearcatalog<score=4>",
-      "categories:profile<score=3>",
-      "categories:widget<score=2>",
-      "categories:post<score=1>",
-      "categories:comment<score=0>",
-    ],
+    optionalFilters: optionalFilters ?? ["categories:nearcatalog<score=1>", "categories:widget<score=2>"],
     clickAnalytics: true,
     ...configs,
   };
@@ -290,11 +240,9 @@ const updateSearchHits = debounce(({ term, pageNumber, configs }) => {
     const { results, hitsTotal, hitsPerPage } = categorizeSearchHits(resp.body);
     State.update({
       search: {
-        profiles: profiles(results["profile"]),
         components: components(results["app, widget, nearcatalog"])
-          .concat(components(results["widget"]))
-          .concat(nearcatalog(results["nearcatalog"])),
-        postsAndComments: posts(results["post"], "post").concat(posts(results["comment, post"], "post-comment")),
+          .concat(nearcatalog(results["nearcatalog"]))
+          .concat(components(results["widget"])),
       },
       currentPage: pageNumber,
       paginate: {
@@ -327,20 +275,15 @@ const onPageChange = (pageNumber) => {
 };
 
 const FACET_TO_CATEGORY = {
-  People: "profile",
   Apps: "app",
   Components: "widget",
-  Posts: "post",
 };
 
 const searchFilters = (facet) => {
   const category = FACET_TO_CATEGORY[facet];
   let filters = category ? `categories:${category}` : undefined;
-  if (category === "post") {
-    filters = `(${filters} OR categories:comment)`;
-  }
   if (category === "app") {
-    filters = `(${filters} OR tags:app OR categories:nearcatalog)`;
+    filters = `(${filters} OR categories:nearcatalog OR tags:app)`;
   }
   if (filters) {
     filters = `${filters} AND `;
@@ -445,36 +388,6 @@ return (
 
     {state.paginate?.hitsTotal == 0 && <H2>No matches were found for "{state.term}".</H2>}
 
-    {state.search?.profiles.length > 0 && (
-      <Group>
-        <GroupHeader>
-          <H3>People</H3>
-          <TextLink href={peopleUrl} small>
-            View All
-          </TextLink>
-        </GroupHeader>
-
-        <Items>
-          {state.search.profiles.map((profile, i) => (
-            <Item key={profile.accountId}>
-              <Widget
-                src="${REPL_ACCOUNT}/widget/Search.FullPage.AccountProfileCard"
-                props={{
-                  accountId: profile.accountId,
-                  onClick: () =>
-                    onSearchResultClick({
-                      searchPosition: profile.searchPosition,
-                      objectID: `${profile.accountId}/profile`,
-                      eventName: "Clicked Profile After Search",
-                    }),
-                }}
-              />
-            </Item>
-          ))}
-        </Items>
-      </Group>
-    )}
-
     {state.search?.components.length > 0 && (
       <Group>
         <GroupHeader>
@@ -511,37 +424,6 @@ return (
               </Item>
             );
           })}
-        </Items>
-      </Group>
-    )}
-
-    {state.search?.postsAndComments.length > 0 && (
-      <Group>
-        <GroupHeader>
-          <H3>Posts and Comments</H3>
-        </GroupHeader>
-
-        <Items>
-          {state.search.postsAndComments.map((post, i) => (
-            <Item key={`${post.accountId}/${post.postType}/${post.blockHeight}`}>
-              <Widget
-                src="${REPL_ACCOUNT}/widget/Search.FullPage.PostCard"
-                props={{
-                  accountId: post.accountId,
-                  blockHeight: post.blockHeight,
-                  content: post.postContent,
-                  snipContent: post.snipContent,
-                  postType: post.postType,
-                  onClick: () =>
-                    onSearchResultClick({
-                      searchPosition: post.searchPosition,
-                      objectID: `${post.accountId}/${post.postType}/${post.blockHeight}`,
-                      eventName: "Clicked Post After Search",
-                    }),
-                }}
-              />
-            </Item>
-          ))}
         </Items>
       </Group>
     )}

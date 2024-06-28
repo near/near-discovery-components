@@ -18,7 +18,7 @@ const onPointerUp =
     }
   });
 
-const Card = styled("Link")`
+const Card = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;

@@ -1,13 +1,43 @@
-const SEARCH_API_KEY = props.searchApiKey ?? "fc7644a5da5306311e8e9418c24fddc4";
-const APPLICATION_ID = props.appId ?? "B6PI9UKKJT";
-const INDEX = props.index ?? "replica_prod_near-social-feed";
-const API_URL = props.apiUrl ?? `https://${APPLICATION_ID}-dsn.algolia.net/1/indexes/${INDEX}/query?`;
+const SEARCH_API_KEY_APPS = props.searchApiKey ?? "fc7644a5da5306311e8e9418c24fddc4";
+const APPLICATION_ID_APPS = props.appId ?? "B6PI9UKKJT";
+const INDEX_APPS = props.index ?? "replica_prod_near-social-feed";
+const API_URL_APPS = props.apiUrl ?? `https://${APPLICATION_ID_APPS}-dsn.algolia.net/1/indexes/${INDEX_APPS}/query?`;
+
+const SEARCH_API_KEY_DOCS = props.searchApiKey ?? "6b114c851c9921e654b5a1ffa8cffb93";
+const APPLICATION_ID_DOCS = props.appId ?? "0LUM67N2P2";
+const INDEX_DOCS = props.index ?? "near";
+const API_URL_DOCS = props.apiUrl ?? `https://${APPLICATION_ID_DOCS}-dsn.algolia.net/1/indexes/${INDEX_DOCS}/query?`;
+
 const INITIAL_PAGE = props.initialPage ?? 0;
-const facets = props.facets ?? ["All", "Apps", "Components"];
-const tab = props.tab ?? "All";
+const facets = props.facets ?? ["All", "Docs", "Apps", "Components"];
+const tab = props.tab ?? "Docs";
 const userId = props.accountId ?? context.accountId;
 const searchPageUrl = "/${REPL_ACCOUNT}/widget/Search.IndexPage";
 const topmostCount = props.topmostCount ?? 3;
+
+// const log = (...args) => {
+//   console.log("TypeAhead ", ...args);
+// }
+const URLS = {
+  Docs: {
+    SEARCH_API_KEY: SEARCH_API_KEY_DOCS,
+    APPLICATION_ID: APPLICATION_ID_DOCS,
+    INDEX: INDEX_DOCS,
+    API_URL: API_URL_DOCS,
+  },
+  Apps: {
+    SEARCH_API_KEY: SEARCH_API_KEY_APPS,
+    APPLICATION_ID: APPLICATION_ID_APPS,
+    INDEX: INDEX_APPS,
+    API_URL: API_URL_APPS,
+  },
+  Components: {
+    SEARCH_API_KEY: SEARCH_API_KEY_APPS,
+    APPLICATION_ID: APPLICATION_ID_APPS,
+    INDEX: INDEX_APPS,
+    API_URL: API_URL_APPS,
+  },
+};
 
 State.init({
   currentPage: 0,
@@ -218,6 +248,48 @@ const ScrollableContent = styled.div`
   height: 350px;
 `;
 
+const CardDocs = styled.a`
+  width: 100%;
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  max-width: 400px;
+  text-decoration: none;
+  color: white;
+  text-align: left;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: none;
+  }
+`;
+
+const TitleDocs = styled.h2`
+  font-size: 18px;
+  font-weight: 500;
+  color: white;
+  margin: 0;
+  font-weigth: bold;
+  text-align: left;
+`;
+
+const SubtitleDocs = styled.h3`
+  font-size: 14px;
+  font-weight: normal;
+  margin: 4px 0 12px;
+  text-align: left;
+`;
+
+const ContentDocs = styled.p`
+  font-size: 14px;
+  color: #333;
+  margin: 0;
+  line-height: 1.4;
+  text-align: left;
+  color: white;
+`;
+
 const Item = styled.div``;
 
 const _parceDataByFacet = (facet, arr) => {
@@ -323,6 +395,7 @@ const resetSearcheHits = () => {
     profiles: undefined,
     apps: undefined,
     components: undefined,
+    docs: undefined,
     postsAndComments: undefined,
   });
 };
@@ -374,7 +447,23 @@ const nearcatalog = (records) => {
   return components;
 };
 
+const convertUrl = (url) => url.replace(/^https:\/\/docs\.near\.org\/(.+)$/, "https://dev.near.org/documentation/$1");
+
+const docsComponents = (rawResp) => {
+  return rawResp.hits.map((item) => {
+    console.log("docsComponents", item.content);
+    return (
+      <CardDocs href={convertUrl(item.url)}>
+        <TitleDocs>{item.hierarchy.lvl0}</TitleDocs>
+        <SubtitleDocs>{item.hierarchy.lvl1}</SubtitleDocs>
+        <ContentDocs>{item.content ? item.content.substr(0, 80) : ""}</ContentDocs>
+      </CardDocs>
+    );
+  });
+};
+
 const categorizeSearchHits = (rawResp) => {
+  console.log("TypeAhead categorizeSearchHits", rawResp);
   const results = {};
   for (const [i, result] of rawResp.hits?.entries()) {
     const { categories: categories_raw } = result;
@@ -393,6 +482,14 @@ const categorizeSearchHits = (rawResp) => {
   };
 };
 
+const parseSearchHitsForDocs = (rawResp) => {
+  return {
+    results: rawResp.hits,
+    hitsTotal: rawResp.nbHits,
+    hitsPerPage: rawResp.hitsPerPage,
+  };
+};
+
 const debounce = (callable, timeout) => {
   return (args) => {
     clearTimeout(state.timer);
@@ -402,7 +499,7 @@ const debounce = (callable, timeout) => {
   };
 };
 
-const fetchSearchHits = (query, { pageNumber, configs, optionalFilters }) => {
+const fetchSearchHits = (facet, query, { pageNumber, configs, optionalFilters }) => {
   let body = {
     query,
     page: pageNumber ?? 0,
@@ -410,12 +507,13 @@ const fetchSearchHits = (query, { pageNumber, configs, optionalFilters }) => {
     clickAnalytics: true,
     ...configs,
   };
-  return asyncFetch(API_URL, {
+
+  return asyncFetch(URLS[facet].API_URL, {
     body: JSON.stringify(body),
     headers: {
       "Content-Type": "application/json; charset=UTF-8",
-      "X-Algolia-Api-Key": SEARCH_API_KEY,
-      "X-Algolia-Application-Id": APPLICATION_ID,
+      "X-Algolia-Api-Key": URLS[facet].SEARCH_API_KEY,
+      "X-Algolia-Application-Id": URLS[facet].APPLICATION_ID,
     },
     method: "POST",
   });
@@ -431,7 +529,8 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
   // state with current near social isn't feasible.
   const updateStateAfterFetching = (facet) => {
     return (resp) => {
-      const { results, hitsTotal, hitsPerPage } = categorizeSearchHits(resp.body);
+      const { results, hitsTotal, hitsPerPage } =
+        facet != "Docs" ? categorizeSearchHits(resp.body) : parseSearchHitsForDocs(resp.body);
 
       if (facet === "Apps") {
         State.update({
@@ -444,7 +543,20 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
             queryID: resp.body.queryID,
           },
         });
-      } else {
+      }
+
+      if (facet === "Docs") {
+        State.update({
+          docs: {
+            hitsTotal,
+            hitsPerPage,
+            hits: docsComponents(resp.body),
+            queryID: resp.body.queryID,
+          },
+        });
+      }
+
+      if (facet === "Components") {
         State.update({
           components: {
             hitsTotal,
@@ -469,7 +581,7 @@ const updateSearchHits = debounce(({ term, pageNumber }) => {
   };
 
   for (const facet of facets.filter((i) => i !== "All")) {
-    fetchSearchHits(term, {
+    fetchSearchHits(facet, term, {
       pageNumber,
       configs: configsPerFacet(facet),
     }).then(updateStateAfterFetching(facet));
@@ -562,6 +674,9 @@ const tabCount = (tab) => {
     case "Apps":
       // Return the count for Apps
       return state.apps.hitsTotal ?? 0;
+    case "Docs":
+      // Return the count for Apps
+      return state.docs.hitsTotal ?? 0;
     case "Components":
       // Return the count for Components
       return state.components.hitsTotal ?? 0;
@@ -572,6 +687,11 @@ const tabCount = (tab) => {
 };
 
 const topmostComponents = (apps) => {
+  console.log("cohete topmostComponents", state, state.selectedTab);
+  if (state.selectedTab === "Docs") {
+    console.log("cohete", state.docs);
+    return <Items>{state.docs.hits}</Items>;
+  }
   let output = [];
   if (state.selectedTab === "Components" || state.selectedTab === "Apps") {
     if (state.selectedTab === "Components") {
@@ -620,6 +740,20 @@ const topmostComponents = (apps) => {
 
 const displayResultsByFacet = (selectedTab) => {
   switch (selectedTab) {
+    case "Docs":
+      return state.components.hits?.length > 0 ? (
+        <DisplayResultsByFacet title="Components" count={state.docs.hitsTotal} items={topmostComponents(false)} />
+      ) : (
+        <>
+          <TextMessage message={`No Component matches were found for "${state.term}".`} />
+          <TextMessage
+            message={`Trying to find a app built by an user? Try search their account id.`}
+            $fontSize="12px"
+            $top="45%"
+          />{" "}
+        </>
+      );
+
     case "Apps": {
       return state.apps.hits?.length > 0 ? (
         <DisplayResultsByFacet title="Apps" count={state.apps.hitsTotal} items={topmostComponents(true)} />
@@ -736,9 +870,9 @@ return (
           src="${REPL_ACCOUNT}/widget/Search.Insights"
           props={{
             event: state.event,
-            searchApiKey: SEARCH_API_KEY,
-            appId: APPLICATION_ID,
-            index: INDEX,
+            searchApiKey: SEARCH_API_KEY_APPS,
+            appId: APPLICATION_ID_APPS,
+            index: INDEX_APPS,
           }}
         />
       )}

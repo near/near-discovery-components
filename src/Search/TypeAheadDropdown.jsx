@@ -15,9 +15,6 @@ const userId = props.accountId ?? context.accountId;
 const searchPageUrl = "/${REPL_ACCOUNT}/widget/Search.IndexPage";
 const topmostCount = props.topmostCount ?? 3;
 
-// const log = (...args) => {
-//   console.log("TypeAhead ", ...args);
-// }
 const URLS = {
   Docs: {
     SEARCH_API_KEY: SEARCH_API_KEY_DOCS,
@@ -451,7 +448,6 @@ const convertUrl = (url) => url.replace(/^https:\/\/docs\.near\.org\/(.+)$/, "ht
 
 const docsComponents = (rawResp) => {
   return rawResp.hits.map((item) => {
-    console.log("docsComponents", item.content);
     return (
       <CardDocs href={convertUrl(item.url)}>
         <TitleDocs>{item.hierarchy.lvl0}</TitleDocs>
@@ -463,7 +459,6 @@ const docsComponents = (rawResp) => {
 };
 
 const categorizeSearchHits = (rawResp) => {
-  console.log("TypeAhead categorizeSearchHits", rawResp);
   const results = {};
   for (const [i, result] of rawResp.hits?.entries()) {
     const { categories: categories_raw } = result;
@@ -687,9 +682,7 @@ const tabCount = (tab) => {
 };
 
 const topmostComponents = (apps) => {
-  console.log("cohete topmostComponents", state, state.selectedTab);
   if (state.selectedTab === "Docs") {
-    console.log("cohete", state.docs);
     return <Items>{state.docs.hits}</Items>;
   }
   let output = [];

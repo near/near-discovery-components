@@ -1,3 +1,5 @@
+let { emitGatewayEvent } = props;
+
 const urls = {
   discord: "http://near.chat",
   discourse: "https://gov.near.org",
@@ -281,6 +283,14 @@ const IconTextLink = styled("Link")`
   }
 `;
 
+function openGleapWidget() {
+  emitGatewayEvent &&
+    emitGatewayEvent({
+      type: "GLEAP",
+      action: "OPEN",
+    });
+}
+
 return (
   <Wrapper className="gateway-page-container">
     <Section>
@@ -316,25 +326,10 @@ return (
 
         <Flex $direction="column" $gap="1.5rem">
           <Card $background="violet5" $color="violet12" style={{ flexGrow: 1 }}>
-            <Text $size="text-l" $fontWeight="700">
-              Chat Support
-            </Text>
+            <Text>Jump in a voice call with our developers</Text>
+            <Text>Thursdays: 11hs & 18hs</Text>
 
-            <Text>Chat with our developers and get live support</Text>
-
-            <IconTextLink href={urls.telegram} target="_blank" $iconColor="violet11">
-              <i className="ph-bold ph-telegram-logo" />
-              <span>Telegram Support</span>
-            </IconTextLink>
             <IconTextLink href={urls.discord} target="_blank" $iconColor="violet11">
-              <i className="ph-bold ph-discord-logo" />
-              <span>Discord Support</span>
-            </IconTextLink>
-
-            <Text>Jump in a voice call with our developers </Text>
-            <Text> Thursdays - 11hs & 18hs (UTC) </Text>
-
-            <IconTextLink href={urls.discord} target="_blank" $iconColor="amber11">
               <i className="ph-bold ph-chat-circle-dots" />
               <span>Join our Discord</span>
             </IconTextLink>
@@ -345,7 +340,9 @@ return (
               Resolve an issue
             </Text>
 
-            <IconTextLink href={urls.supportRequest} target="_blank" $iconColor="amber11">
+            <Text>Get in touch with our customer care team</Text>
+
+            <IconTextLink as="button" $iconColor="amber11" onClick={openGleapWidget}>
               <i className="ph-bold ph-chat-circle-dots" />
               <span>Launch support form</span>
             </IconTextLink>

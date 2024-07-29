@@ -462,6 +462,5 @@ return (
         </Grid>
       </Container>
     </Section>
-    <a href="/sandbox" />
   </Wrapper>
 );

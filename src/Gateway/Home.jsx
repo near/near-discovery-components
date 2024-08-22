@@ -276,7 +276,7 @@ const dummyData = {
 };
 const prefillData = Array(TRENDING_APPS_LIMIT).fill(dummyData);
 
-const nearCatalogApi = "https://nearcatalog.xyz/wp-json/nearcatalog/v1";
+const nearCatalogApi = "https://indexer.nearcatalog.xyz/wp-json/nearcatalog/v1";
 const topRating = "projects-by-category?cid=trending";
 const [topRatingApps, setTopRatingApps] = useState(prefillData);
 const [loading, setLoading] = useState(true);

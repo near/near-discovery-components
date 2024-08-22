@@ -199,7 +199,7 @@ const acceleratorsCards = [
     title: "HZN Accelerator Application",
     content:
       "Join the 8-week equity-free accelerator that provides multi-faceted support for early stage web3 projects.",
-    href: "https://www.hzn.xyz/hzn",
+    href: "https://www.hzn.xyz/",
   },
   {
     ipfsImage: ipfsImages.logoLyric,

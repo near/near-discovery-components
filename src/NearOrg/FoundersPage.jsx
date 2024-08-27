@@ -240,7 +240,7 @@ const ecosystemCommunityResources = [
     description:
       "Join the 8-week equity-free accelerator that provides multi-faceted support for early stage web3 projects.",
     icon: "ph-article",
-    url: "https://www.hzn.xyz/hzn",
+    url: "https://www.hzn.xyz/",
     target: "_blank",
   },
   {
@@ -335,18 +335,18 @@ return (
             content: (
               <Flex direction="column" gap="32px">
                 <Text size="text-xl" mobileSize="text-l" fontWeight="500" color="white">
-                  HZN3 applications are open
+                  HZN AI Incubation Program applications are open
                 </Text>
                 <Text color="white" style={{ maxWidth: "496px" }}>
-                  Over 50 projects have been accelerated through HZN, our equity-free accelerator and gone on to raise
-                  over $10M in external capital. Get the equity-free education, mentorship, and a network to take your
+                  Over 50 projects have been accelerated through HZN, our AI Incubation Program and gone on to raise
+                  over $10M in external capital. Get the education, mentorship, and a network to take your
                   project to the next level.
                 </Text>
                 <Flex>
                   <Widget
                     src="${REPL_ACCOUNT}/widget/DIG.Button"
                     props={{
-                      href: "https://www.hzn.xyz/hzn",
+                      href: "https://www.hzn.xyz/",
                       target: "_blank",
                       label: "Apply Now",
                       variant: "affirmative",
